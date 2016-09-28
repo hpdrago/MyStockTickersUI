@@ -1,0 +1,25 @@
+<ul class="stocks">
+    <!--
+        List Stocks
+    -->
+    <div *ngIf="stocksPage">
+        <li class="stocks" *ngFor="let stock of stocksPage.content"
+            (click)="onSelect(stock)"
+            [class.selected]="stock == selectedStock">
+            <span class="badge">{{stock.tickerSymbol}}</span> {{stock.companyName}}
+        </li>
+        last: {{stocksPage.last}}
+        first: {{stocksPage.first}}
+        number: {{stocksPage.number}}
+        size: {{stocksPage.size}}
+        totalPages : {{stocksPage.totalPages}}
+        itemsPerPage: {{stocksPage.itemsPerPage}}
+    </div>
+</ul>
+<div *ngIf="selectedStock">
+    <h2>
+        {{selectedStock.companyName | uppercase}} is my stock
+    </h2>
+    <button (click)="gotoStockDetail()">View Details</button>
+</div>
+
