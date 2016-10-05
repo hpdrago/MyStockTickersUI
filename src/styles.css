@@ -1,1 +1,32 @@
+@import "font-awesome/css/font-awesome.min.css";
+@import "../node_modules/primeng/resources/themes/omega/theme.css";
+@import "../node_modules/primeng/components/rating/rating.css";
+@import "../node_modules/primeng/components/dropdown/dropdown.css";
+@import "../node_modules/primeng/components/galleria/galleria.css";
+
 /* You can add global styles to this file, and also import other style files */
+/*
+body{
+    font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+    text-align: center;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 1.4rem;
+    line-height: 2rem;
+    letter-spacing: 0.01rem;
+    color: #212121;
+    background-color: #f5f5f5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    margin:20px
+}
+
+.datatable {
+    text-align: left;
+    width:75%;
+    margin:0 auto;
+}
+.datatable.vertical-scroll {
+    height:70vh;
+}*/

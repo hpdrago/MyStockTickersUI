@@ -1,6 +1,6 @@
 <h3>Top Stocks</h3>
 <div class="grid grid-pad">
-    <div *ngFor="let stock of stocks" (click)="gotoDetail(stock)" class="col-1-4">
+    <div *ngFor="let stock of stocks" (click)="gotoStockDetail(stock)" class="col-1-4">
         <div class="module stock">
             <h4>{{stock.tickerSymbol}}</h4>
         </div>

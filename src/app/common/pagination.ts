@@ -11,6 +11,7 @@ export interface PaginationPage<T>
     first?: boolean;
     number: number;
     size: number;
+    totalElements? : number;
     totalPages? : number;
     itemsPerPage?: number;
     sort?: Array<PaginationPropertySort>;

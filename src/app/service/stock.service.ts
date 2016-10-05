@@ -24,12 +24,24 @@ export class StockService
         this.http = http;
     }
 
+    /**
+     * Retrieves a specific page of stocks
+     * @param pageNumber The page to retrieve
+     * @returns {Observable<PaginationPage<Stock>>}
+     */
+    getStocksPage( pageNumber: number ): Observable<PaginationPage<Stock>>
+    {
+        return this.http.get( this.stocksUrl + "?page=" + pageNumber )
+            .map( ( response: Response ) => response.json() )
+            .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) );
+
+    }
+
     getStocks(): Observable<PaginationPage<Stock>>
     {
         return this.http.get( this.stocksUrl )
             .map( ( response: Response ) => response.json() )
             .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) );
-
     }
 
     // Get a new stock
