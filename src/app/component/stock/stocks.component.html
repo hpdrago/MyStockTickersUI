@@ -1,9 +1,14 @@
 <div *ngIf="stocksPage">
-    <p-dataTable [value]="stocksPage.content"
+    <p-dataTable [(value)]="stocksPage.content"
+                 [(selection)]="selectedStock"
+                 selectionMode="single"
                  [scrollable]="true"
                  [lazy]="true"
-                 selectionMode="single"
-                 [(selection)]="selectedStock"
+                 [paginator]="true"
+                 [pageLinks]="10"
+                 [responsive]="true"
+                 [rows]="20"
+                 [rowsPerPageOptions]="[5,10,20]"
                  [totalRecords]="totalRecords"
                  (onRowSelect)="onRowSelect($event)"
                  (onLazyLoad)="loadData($event)">

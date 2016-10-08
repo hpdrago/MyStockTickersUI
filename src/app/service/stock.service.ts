@@ -12,32 +12,35 @@ import 'rxjs/add/operator/catch';
 
 import { Stock } from '../model/stock';
 import { PaginationPage } from '../common/pagination';
+import { PaginationURL } from '../common/pagination-url';
 
 @Injectable()
 export class StockService
 {
-    private stocksUrl = 'http://localhost:8080/stocks';
+    private stocksUrl: string = 'http://localhost:8080/stocks';
+    private stocksPaginationUrl: PaginationURL;
     private http: Http;
 
     constructor( http: Http )
     {
         this.http = http;
+        this.stocksPaginationUrl = new PaginationURL( this.stocksUrl );
     }
 
     /**
      * Retrieves a specific page of stocks
-     * @param pageNumber The page to retrieve
+     * @param rowOffSet The page to retrieve
+     * @param rows The numbers of rows per page (rows to return for this page)
      * @returns {Observable<PaginationPage<Stock>>}
      */
-    getStocksPage( pageNumber: number ): Observable<PaginationPage<Stock>>
+    public getStocksPage( rowOffSet: number, rows: number ): Observable<PaginationPage<Stock>>
     {
-        return this.http.get( this.stocksUrl + "?page=" + pageNumber )
+        return this.http.get( this.stocksPaginationUrl.getPage( rowOffSet, rows ) )
             .map( ( response: Response ) => response.json() )
             .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) );
-
     }
 
-    getStocks(): Observable<PaginationPage<Stock>>
+    public getStocks(): Observable<PaginationPage<Stock>>
     {
         return this.http.get( this.stocksUrl )
             .map( ( response: Response ) => response.json() )
@@ -46,7 +49,7 @@ export class StockService
 
     // Get a new stock
     // Delete a stock
-    getStock( tickerSymbol: string ): Observable<Stock>
+    public getStock( tickerSymbol: string ): Observable<Stock>
     {
         return this.http.get( `${this.stocksUrl}/${tickerSymbol}` ) // ...using put request
             .map( ( res: Response ) => res.json() ) // ...and calling .json() on the response to return data
@@ -54,7 +57,7 @@ export class StockService
     }
 
     // Add a new stock
-    addStock( body: Object ): Observable<Stock[]>
+    public addStock( body: Object ): Observable<Stock[]>
     {
         let bodyString = JSON.stringify( body ); // Stringify payload
         let headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
@@ -66,7 +69,7 @@ export class StockService
     }
 
     // Update a stock
-    updateStock( body: Object ): Observable<Stock[]>
+    public updateStock( body: Object ): Observable<Stock[]>
     {
         let bodyString = JSON.stringify( body ); // Stringify payload
         let headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
@@ -78,7 +81,7 @@ export class StockService
     }
 
     // Delete a stock
-    removeStock( id: string ): Observable<Stock[]>
+    public removeStock( id: string ): Observable<Stock[]>
     {
         return this.http.delete( `${this.stocksUrl}/${id}` ) // ...using put request
             .map( ( res: Response ) => res.json() ) // ...and calling .json() on the response to return data

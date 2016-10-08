@@ -48,7 +48,7 @@ export class StocksComponent implements OnInit
         //multiSortMeta: An array of SortMeta objects used in multiple columns sorting. Each SortMeta has field and order properties.
         //filters: Filters object having field as key and filter value, filter matchMode as value
         this.stockService
-            .getStocksPage( event.first )
+            .getStocksPage( event.first, event.rows )
             .subscribe( stocksPage => this.setStocksPage( stocksPage ), //Bind to view
                         err => {
                             // Log errors if any
@@ -73,25 +73,25 @@ export class StocksComponent implements OnInit
     }
 
     /**
+     * A new stock page has been received
+     * @param stocksPage
+     */
+    private setStocksPage( stocksPage: PaginationPage<Stock> ): void
+    {
+        //this.logger.log( JSON.stringify( stocksPage ).valueOf() );
+        this.totalRecords = stocksPage.totalElements;
+        this.stocksPage = stocksPage;
+        this.logger.log( 'stocksComponent.setStocksPage: length: ' + stocksPage.content.length );
+        this.logger.log( 'stocksComponent.setStocksPage: totalElements: ' + stocksPage.totalElements );
+    }
+
+    /**
      * Jump to the stock detail component
      */
     private gotoStockDetail(): void
     {
         let link = ['/stockDetail', this.selectedStock.tickerSymbol];
         this.router.navigate(link);
-    }
-
-    /**
-     * A new stock page has been received
-     * @param stocksPage
-     */
-    private setStocksPage( stocksPage: PaginationPage<Stock> ): void
-    {
-        this.logger.log( JSON.stringify( stocksPage ).valueOf() );
-        this.totalRecords = stocksPage.totalElements;
-        this.stocksPage = stocksPage;
-        this.logger.log( 'stocksComponent.setStocksPage: length: ' + stocksPage.content.length );
-        this.logger.log( 'stocksComponent.setStocksPage: totalElements: ' + stocksPage.totalElements );
     }
 
     private onRowSelect( event )

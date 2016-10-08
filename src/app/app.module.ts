@@ -13,13 +13,7 @@ import { HttpModule  }    from '@angular/http';
  * Third party imports
  */
 import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng';
-
-import { Angular2DataTableModule } from 'angular2-data-table';
-import {
-    TableOptions,
-    TableColumn,
-    ColumnMode
-} from 'angular2-data-table'
+import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 /**
  * Application Imports
@@ -35,15 +29,18 @@ import { StockDetailComponent } from './component/stock/stock-detail.component';
 @NgModule({
     imports:
     [
+        // Angular2 modules
         BrowserModule,
         FormsModule,
         routing,
         HttpModule,
-        InputTextModule,
+        // PrimeNG modules
         DataTableModule,
         ButtonModule,
         DialogModule,
-        Angular2DataTableModule
+        InputTextModule,
+        // ng2-bootstrap modules
+        AlertModule
     ],
     declarations:
     [
@@ -58,6 +55,7 @@ import { StockDetailComponent } from './component/stock/stock-detail.component';
     ],
     providers:
     [
+        // Global providers -- singletons
         StockService,
         LoggerService
     ]

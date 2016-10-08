@@ -1,4 +1,5 @@
 /**
+ * These interfaces define the pagination information received from a Spring REST service request
  * Created by mike on 9/24/2016.
  */
 
