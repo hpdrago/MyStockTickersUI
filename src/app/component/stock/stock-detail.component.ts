@@ -3,7 +3,7 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Stock } from '../../model/Stock';
+import { Stock } from '../../model/stock';
 import { StockService } from '../../service/stock.service';
 
 @Component({

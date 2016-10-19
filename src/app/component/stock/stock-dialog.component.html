@@ -1,0 +1,55 @@
+<!--
+    Stock Form
+-->
+<div *ngIf="stock">
+    <p-dialog header="Stock Details"
+              [height]="350"
+              [width]="580"
+              [(visible)]="displayDialog"
+              [modal]="true"
+              [showEffect]="fade"
+              [closeOnEscape]="false"
+              [closable]="false"
+              [responsive]="true"
+              [appendTo]="body"
+              (onAfterShow)="onAfterShow()">
+
+        <fieldset>
+            <br/>
+            <label for="tickerSymbol">Ticker Symbol:</label>
+            <input id="tickerSymbol"
+                   size="5"
+                   type="text"
+                   pInputText required uppercase
+                   [(ngModel)]="stock.tickerSymbol"/>
+            <br/>
+
+            <label for="companyName">Company Name:</label>
+            <input id="companyName"
+                   size="30"
+                   type="text"
+                   pInputText required uppercase
+                   [(ngModel)]="stock.companyName"/>
+            <br/>
+
+            <label for="stockExchange">Exchange:</label>
+           <!-- <p-dropdown id="stockExchange"
+                [options]="stockExchanges"
+                [required]="true"
+                [(ngModel)]="stock.exchange">
+            </p-dropdown>-->
+            <p-selectButton id="stockExchange"
+                        [options]="stockExchanges"
+                        [required]="true"
+                        [(ngModel)]="stock.exchange">
+            </p-selectButton>
+            <br/>
+
+            <div style="text-align: center">
+                <button pButton type="OK" (click)="okButtonClick()" label="OK"></button>
+                &nbsp;&nbsp;
+                <button pButton type="Cancel" (click)="cancelButtonClick()" label="Cancel"></button>
+            </div>
+        </fieldset>
+    </p-dialog>
+</div>

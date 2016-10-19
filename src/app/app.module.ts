@@ -11,20 +11,24 @@ import { HttpModule  }    from '@angular/http';
 
 /**
  * Third party imports
- */
-import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng';
+*/
+import { InputTextModule, DataTableModule, ButtonModule, DialogModule, DropdownModule,
+         SelectButtonModule } from 'primeng/primeng';
 import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 /**
  * Application Imports
  */
-import { AppComponent }   from './app.component';
-import { StocksComponent } from './component/stock/stocks.component';
-import { StockService }   from './service/stock.service';
-import { LoggerService }   from './service/logger.service';
-import { routing }        from './app_routes';
+import { AppComponent }         from './app.component';
+import { StocksComponent }      from './component/stock/stocks.component';
+import { StockService }         from './service/stock.service';
+import { StockExchangeService } from './service/stock-exchange.service';
+import { LoggerService }        from './service/logger.service';
+import { routing }              from './app_routes';
 import { DashboardComponent }   from './component/dashboard/dashboard.component';
 import { StockDetailComponent } from './component/stock/stock-detail.component';
+import { StockDialogComponent } from "./component/stock/stock-dialog.component";
+import { UppercaseDirective }   from "./directives/uppercase.directive";
 
 @NgModule({
     imports:
@@ -35,10 +39,12 @@ import { StockDetailComponent } from './component/stock/stock-detail.component';
         routing,
         HttpModule,
         // PrimeNG modules
+        DropdownModule,
         DataTableModule,
         ButtonModule,
         DialogModule,
         InputTextModule,
+        SelectButtonModule,
         // ng2-bootstrap modules
         AlertModule
     ],
@@ -47,7 +53,9 @@ import { StockDetailComponent } from './component/stock/stock-detail.component';
         AppComponent,
         StocksComponent,
         StockDetailComponent,
-        DashboardComponent
+        DashboardComponent,
+        StockDialogComponent,
+        UppercaseDirective
     ],
     bootstrap:
     [
@@ -57,6 +65,7 @@ import { StockDetailComponent } from './component/stock/stock-detail.component';
     [
         // Global providers -- singletons
         StockService,
+        StockExchangeService,
         LoggerService
     ]
 })

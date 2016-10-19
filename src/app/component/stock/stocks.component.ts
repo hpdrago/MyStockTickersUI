@@ -14,11 +14,14 @@ import { LazyLoadEvent } from "primeng/components/common/api";
 export class StocksComponent implements OnInit
 {
     private stocksPage: PaginationPage<Stock>;
-    private selectedStock: Stock;
+    private selectedStock: Stock = null;
     private stockService: StockService;
     private logger: LoggerService;
     private router: Router;
     private totalRecords: number;
+    private newStock: boolean;
+    private displayableStock: Stock;
+    private displayDialog: boolean;
 
     /**
      * Create a new instance with required DI sources
@@ -94,19 +97,79 @@ export class StocksComponent implements OnInit
         this.router.navigate(link);
     }
 
-    private onRowSelect( event )
+    private showDialogToAdd()
     {
-        this.selectedStock = event.row;
-        this.gotoStockDetail();
+        this.newStock = true;
+        this.displayableStock = new Stock( "", "", "" );
+        this.displayDialog = true;
+    }
+
+    private showDialogToEdit()
+    {
+        this.displayableStock = this.selectedStock;
+        this.displayDialog = true;
+    }
+
+    private confirmDelete()
+    {
+        this.displayableStock = this.selectedStock;
+    }
+
+    private save()
+    {
+        if ( this.newStock )
+        {
+            this.stocksPage.content.push( this.displayableStock );
+        }
+        else
+        {
+            this.stocksPage.content[this.findSelectedStockIndex()] ;
+            this.displayableStock = null;
+            this.displayDialog = false;
+        }
     }
 
     /**
-     * This method is called when a user has selected a stock
-     * @param stock
+     * Determines the index of selectedStock in the stockPage.content array
+     * @returns {number}
      */
-    private onSelect( stock: Stock ) : void
+    private findSelectedStockIndex(): number
     {
-        this.selectedStock = stock;
+        for ( var i = 0; i < this.stocksPage.content.length; i++ )
+        {
+            var stock = this.stocksPage.content[i];
+            if ( stock.tickerSymbol === this.selectedStock.tickerSymbol )
+            {
+                return i;
+            }
+        }
+        throw new Error( "Could not find ticker symbol " + this.selectedStock.tickerSymbol );
+    }
+
+
+    public isEditButtonDisabled(): boolean
+    {
+        return !this.selectedStock;
+    }
+
+    public isDeleteButtonDisabled(): boolean
+    {
+        return !this.selectedStock;
+    }
+
+    public isAddButtonDisabled(): boolean
+    {
+        return false;
+    }
+
+    /*****************************************************************
+     *  E V E N T S
+     *****************************************************************/
+
+    private onEditComplete( event ): void
+    {
+        this.logger.log( 'stocksComponent.onEditComplete()' );
+        this.stockService.updateStock( this.selectedStock );
     }
 
     /**
@@ -114,8 +177,20 @@ export class StocksComponent implements OnInit
      */
     public ngOnInit(): void
     {
-        this.logger.log( 'stocksComponent.ngOnInit' );
+        this.logger.log( 'stocksComponent.ngOnInit()' );
         this.getStocks();
+    }
+
+    public onStockDialogOkButton(): void
+    {
+        this.logger.log( 'stocksComponent.onStockDialogOkButton()' );
+        this.displayDialog = false;
+    }
+
+    public onStockDialogCancelButton(): void
+    {
+        this.logger.log( 'stocksComponent.onStockDialogCancelButton()' );
+        this.displayDialog = false;
     }
 
 }

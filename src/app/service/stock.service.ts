@@ -5,10 +5,7 @@
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-
-// Import RxJs required methods
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import '../rxjs-operators';
 
 import { Stock } from '../model/stock';
 import { PaginationPage } from '../common/pagination';
@@ -57,13 +54,13 @@ export class StockService
     }
 
     // Add a new stock
-    public addStock( body: Object ): Observable<Stock[]>
+    public addStock( stock: Stock ): Observable<Stock[]>
     {
-        let bodyString = JSON.stringify( body ); // Stringify payload
+        let bodyString = JSON.stringify( stock ); // Stringify payload
         let headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
         let options = new RequestOptions( { headers: headers } ); // Create a request option
 
-        return this.http.post( this.stocksUrl, body, options ) // ...using post request
+        return this.http.post( this.stocksUrl, stock, options ) // ...using post request
             .map( ( res: Response ) => res.json() ) // ...and calling .json() on the response to return data
             .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ); //...errors if any
     }
@@ -88,4 +85,13 @@ export class StockService
             .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ); //...errors if any
     }
 
+    private handleError (error: any)
+    {
+        // In a real world app, we might use a remote logging infrastructure
+        // We'd also dig deeper into the error to get a better message
+        let errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.error(errMsg); // log to console instead
+        return Observable.throw(errMsg);
+    }
 }
