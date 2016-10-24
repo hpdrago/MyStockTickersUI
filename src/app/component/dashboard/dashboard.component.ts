@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 
 import { Stock } from '../../model/stock';
 import { StockService } from '../../service/stock.service';
-import { EmitterService } from '../../service/emitter.service';
 
 @Component(
 {
@@ -16,7 +15,7 @@ import { EmitterService } from '../../service/emitter.service';
 })
 export class DashboardComponent implements OnInit
 {
-    stocks: Stock[] = [];
+    private stocks: Stock[] = [];
 
     constructor( private router: Router,
                  private stockService: StockService )
@@ -33,12 +32,6 @@ export class DashboardComponent implements OnInit
                     console.log(err);
                 }
             );
-    }
-
-    gotoStockDetail( stock: Stock ): void
-    {
-        let link = ['/stockDetail', stock.tickerSymbol];
-        this.router.navigate(link);
     }
 
 }

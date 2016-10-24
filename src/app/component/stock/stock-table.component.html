@@ -1,0 +1,80 @@
+<div *ngIf="stocksPage">
+    <div style="width:50%; float: left">
+        <p-panel header="Stocks">
+            <p-dataTable [(value)]="stocksPage.content"
+                         [(selection)]="selectedStock"
+                         selectionMode="single"
+                         [scrollable]="true"
+                         [lazy]="true"
+                         [paginator]="true"
+                         [pageLinks]="10"
+                         [responsive]="true"
+                         [rows]="20"
+                         [rowsPerPageOptions]="[20,35,50]"
+                         [totalRecords]="totalRecords"
+                         (onRowSelect)="onRowSelect($event)"
+                         (onEditComplete)="onEditComplete($event)"
+                         (onLazyLoad)="loadData($event)">
+
+                <p-column field="tickerSymbol"
+                          header="Ticker"
+                          [style]="{'width':'50px'}"
+                          [editable]="true">
+                </p-column>
+
+                <p-column field="companyName"
+                          header="Company"
+                          [style]="{'width':'100px'}"
+                          [editable]="true">
+                </p-column>
+
+                <p-column field="exchange"
+                          header="Exchange"
+                          [style]="{'width':'50px'}"
+                          [editable]="true">
+                </p-column>
+            </p-dataTable>
+            <!--   last: {{stocksPage.last}}
+            first: {{stocksPage.first}}
+            number: {{stocksPage.number}}
+            size: {{stocksPage.size}}
+            totalElements: {{stocksPage.totalElements}}
+            totalPages : {{stocksPage.totalPages}}
+            itemsPerPage: {{stocksPage.itemsPerPage}}-->
+            <br/>
+            <div style="text-align: center; width: 100%">
+                <button
+                    type="button"
+                    pButton icon="fa-pencil-square-o"
+                    (click)="showDialogToAdd()"
+                    [disabled]="isAddButtonDisabled()"
+                    label="Add">
+                </button>
+                &nbsp;&nbsp;
+                <button
+                    type="button"
+                    pButton icon="fa-pencil-square-o"
+                    (click)="confirmDelete()"
+                    [disabled]="isDeleteButtonDisabled()"
+                    label="Delete">
+                </button>
+            </div>
+            <br/>
+        </p-panel>
+    </div>
+    <div style="width:50%; float: right">
+        <stock-form
+            [stock]="displayableStock"
+            [crudOperation]="crudOperation"
+            (buttonOk)="onStockDialogOkButton()"
+            (buttonCancel)="onStockDialogCancelButton()">
+        </stock-form>
+    </div>
+</div>
+<!--<div *ngIf="selectedStock">
+    <h2>
+        {{selectedStock.companyName | uppercase}} is my stock
+    </h2>
+    <button (click)="gotoStockDetail()">View Details</button>
+</div>-->
+

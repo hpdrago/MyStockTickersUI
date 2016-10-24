@@ -5,37 +5,58 @@
  * Angular Imports
  */
 import { NgModule }       from '@angular/core';
-import { FormsModule }    from '@angular/forms';
+import { FormsModule,
+         ReactiveFormsModule } from '@angular/forms';
+import { CommonModule }   from "@angular/common";
 import { BrowserModule  } from '@angular/platform-browser';
 import { HttpModule  }    from '@angular/http';
 
 /**
- * Third party imports
-*/
-import { InputTextModule, DataTableModule, ButtonModule, DialogModule, DropdownModule,
-         SelectButtonModule } from 'primeng/primeng';
+ * PrimeNG
+ */
+import { InputTextModule,
+         DataTableModule,
+         MenubarModule,
+         ButtonModule,
+         DialogModule,
+         DropdownModule,
+         PanelModule,
+         TabMenuModule,
+         SelectButtonModule,
+         GrowlModule } from 'primeng/primeng';
+
+/**
+ * Bootstrap
+ */
 import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
 
 /**
  * Application Imports
  */
-import { AppComponent }         from './app.component';
-import { StocksComponent }      from './component/stock/stocks.component';
-import { StockService }         from './service/stock.service';
-import { StockExchangeService } from './service/stock-exchange.service';
-import { LoggerService }        from './service/logger.service';
-import { routing }              from './app_routes';
-import { DashboardComponent }   from './component/dashboard/dashboard.component';
-import { StockDetailComponent } from './component/stock/stock-detail.component';
-import { StockDialogComponent } from "./component/stock/stock-dialog.component";
-import { UppercaseDirective }   from "./directives/uppercase.directive";
+import { Logger }                  from './service/logger.service';
+import { routing }                 from './app_routes';
+import { StockService }            from './service/stock.service';
+import { PortfolioService }        from './service/portfolio.service';
+import { StockExchangeService }    from './service/stock-exchange.service';
+import { SessionService }          from './service/session.service';
+import { AppConfigurationService } from "./service/app-configuration.service";
+import { AppComponent }            from './app.component';
+import { StockTableComponent }     from './component/stock/stock-table.component';
+import { MenuBarComponent }        from './component/common/menu-bar.component';
+import { DashboardComponent }      from './component/dashboard/dashboard.component';
+import { StockFormComponent }      from "./component/stock/stock-form.component";
+import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
+import { UppercaseDirective }      from "./directives/uppercase.directive";
+import { loggerServiceProvider } from "./providers/logger.service.provider";
 
 @NgModule({
     imports:
     [
         // Angular2 modules
         BrowserModule,
+        CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         routing,
         HttpModule,
         // PrimeNG modules
@@ -45,16 +66,21 @@ import { UppercaseDirective }   from "./directives/uppercase.directive";
         DialogModule,
         InputTextModule,
         SelectButtonModule,
+        TabMenuModule,
+        GrowlModule,
+        PanelModule,
+        MenubarModule,
         // ng2-bootstrap modules
         AlertModule
     ],
     declarations:
     [
         AppComponent,
-        StocksComponent,
-        StockDetailComponent,
+        MenuBarComponent,
+        StockTableComponent,
+        StockFormComponent,
+        PortfolioTableComponent,
         DashboardComponent,
-        StockDialogComponent,
         UppercaseDirective
     ],
     bootstrap:
@@ -65,8 +91,11 @@ import { UppercaseDirective }   from "./directives/uppercase.directive";
     [
         // Global providers -- singletons
         StockService,
+        PortfolioService,
         StockExchangeService,
-        LoggerService
+        Logger,
+        SessionService,
+        AppConfigurationService
     ]
 })
 export class AppModule {}

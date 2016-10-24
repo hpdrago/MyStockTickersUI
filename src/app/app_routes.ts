@@ -2,28 +2,33 @@
  * Created by mike on 9/16/2016.
  */
 import { Routes, RouterModule } from '@angular/router';
-import { StocksComponent }      from './component/stock/stocks.component';
+import { StockTableComponent }      from './component/stock/stock-table.component';
 import { DashboardComponent }   from './component/dashboard/dashboard.component';
-import { StockDetailComponent } from './component/stock/stock-detail.component';
+import { StockFormComponent } from './component/stock/stock-form.component';
+import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
 
 const routes: Routes = [
     {
+        path: 'portfolios',
+        component: PortfolioTableComponent,
+    },
+    {
         path: 'stocks',
-        component: StocksComponent,
+        component: StockTableComponent,
+    },
+    {
+        path: 'stockDetail/:tickerSymbol',
+        component: StockFormComponent
     },
     {
         path: 'dashboard',
         component: DashboardComponent,
     },
     {
-        path: 'stockDetail/:tickerSymbol',
-        component: StockDetailComponent
-    },
-    {
         path: '',
         redirectTo: '/dashboard',
         pathMatch: 'full'
-    },
+    }
 ];
 
 // - Updated Export

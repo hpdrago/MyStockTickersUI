@@ -1,9 +1,0 @@
-<div *ngIf="stock">
-    <h2 class="stocks">{{stock.companyName}} details!</h2>
-    <div><label>ticker symbol: </label>{{stock.tickerSymbol}}</div>
-    <div>
-        <label>Company Name: </label>
-        <input [(ngModel)]="stock.tickerSymbol" placeholder="tickerSymbol">
-    </div>
-    <button (click)="goBack()">Back</button>
-</div>

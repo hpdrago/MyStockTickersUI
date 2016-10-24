@@ -7,7 +7,7 @@ import {SelectItem} from 'primeng/primeng';
 
 export class StockExchanges
 {
-    public exchanges: Array<string> = [ 'AMEX', 'NASDAQ', 'NYSE' ];
+    public exchanges: Array<string> = [ 'AMEX', 'NASDAQ', 'NYSE', 'OTHER' ];
 
     /**
      * Creates and returns a SelectItem array to be used with PrimNG components

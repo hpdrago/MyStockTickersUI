@@ -2,7 +2,6 @@
  * Created by mike on 9/14/2016.
  */
 import { Component } from '@angular/core';
-import { StocksComponent } from './component/stock/stocks.component';
 
 @Component( {
     selector:    'app-root',

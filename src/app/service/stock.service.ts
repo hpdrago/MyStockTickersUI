@@ -10,17 +10,17 @@ import '../rxjs-operators';
 import { Stock } from '../model/stock';
 import { PaginationPage } from '../common/pagination';
 import { PaginationURL } from '../common/pagination-url';
+import { SessionService } from "./session.service";
 
 @Injectable()
 export class StockService
 {
     private stocksUrl: string = 'http://localhost:8080/stocks';
     private stocksPaginationUrl: PaginationURL;
-    private http: Http;
 
-    constructor( http: Http )
+    constructor( private http: Http,
+                 private session: SessionService )
     {
-        this.http = http;
         this.stocksPaginationUrl = new PaginationURL( this.stocksUrl );
     }
 
@@ -93,5 +93,26 @@ export class StockService
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         console.error(errMsg); // log to console instead
         return Observable.throw(errMsg);
+    }
+
+    /**
+     * Determines if the user (userId) is allowed to edit or delete the stock
+     * @param stock
+     * @param userId
+     * @returns true if the stock was entered by the logged in user, then he can change it.
+     *          Or if it is me logged in :-)
+     */
+    public canEditOrDelete( stock: Stock, userId: number )
+    {
+        var canEditOrDelete = false;
+        if ( stock.userEntered )
+        {
+            if ( stock.createdBy == userId ||
+                 this.session.isAdminUser() )
+            {
+                canEditOrDelete = true;
+            }
+        }
+        return canEditOrDelete;
     }
 }

@@ -1,40 +1,43 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from '@angular/router';
-import { Stock } from "../../model/stock";
-import { StockService } from "../../service/stock.service";
-import { LoggerService } from "../../service/logger.service";
+import { Component,
+         OnInit }         from "@angular/core";
+import { Router }         from '@angular/router';
+import { Stock }          from "../../model/stock";
+import { StockService }   from "../../service/stock.service";
+import { Logger }         from "../../service/logger.service";
 import { PaginationPage } from "../../common/pagination";
-import { LazyLoadEvent } from "primeng/components/common/api";
+import { LazyLoadEvent }  from "primeng/components/common/api";
+import { CrudOperation }  from "../../common/crud-operation";
+import { SessionService } from "../../service/session.service";
 
 @Component( {
-    selector:    'my-stocks',
-    templateUrl: 'stocks.component.html',
-    styleUrls:   ['stocks.component.css']
+    selector:    'stock-table',
+    templateUrl: 'stock-table.component.html',
+    styleUrls:   ['stock-table.component.css'],
+    providers:   [Logger]
 } )
-export class StocksComponent implements OnInit
+export class StockTableComponent implements OnInit
 {
+    /*
+     * Instance variables
+     */
     private stocksPage: PaginationPage<Stock>;
     private selectedStock: Stock = null;
-    private stockService: StockService;
-    private logger: LoggerService;
-    private router: Router;
-    private totalRecords: number;
     private newStock: boolean;
     private displayableStock: Stock;
-    private displayDialog: boolean;
+    private crudOperation: CrudOperation;
+    private totalRecords: number;
 
     /**
      * Create a new instance with required DI sources
      * @param stockService
      * @param router
      */
-    constructor( logger: LoggerService,
-                 stockService: StockService,
-                 router: Router )
+    constructor( private logger: Logger,
+                 private stockService: StockService,
+                 private router: Router,
+                 private session: SessionService )
     {
-        this.logger = logger;
-        this.stockService = stockService;
-        this.router = router;
+        this.logger.setClassName( StockTableComponent.name );
     }
 
     /**
@@ -43,7 +46,7 @@ export class StocksComponent implements OnInit
      */
     loadData( event: LazyLoadEvent ) : void
     {
-        this.logger.log( 'stocksComponent.loadData ' + JSON.stringify( event ) );
+        this.logger.log( 'loadData ' + JSON.stringify( event ) );
         //event.first = First row offset
         //event.rows = Number of rows per page
         //event.sortField = Field name to sort in single sort mode
@@ -52,8 +55,13 @@ export class StocksComponent implements OnInit
         //filters: Filters object having field as key and filter value, filter matchMode as value
         this.stockService
             .getStocksPage( event.first, event.rows )
-            .subscribe( stocksPage => this.setStocksPage( stocksPage ), //Bind to view
-                        err => {
+            .subscribe( stocksPage =>
+                        {
+                            this.setStocksPage( stocksPage );
+                            //alert( JSON.stringify( stocksPage))
+                        }, //Bind to view
+                        err =>
+                        {
                             // Log errors if any
                             console.log(err);
                         }
@@ -84,8 +92,8 @@ export class StocksComponent implements OnInit
         //this.logger.log( JSON.stringify( stocksPage ).valueOf() );
         this.totalRecords = stocksPage.totalElements;
         this.stocksPage = stocksPage;
-        this.logger.log( 'stocksComponent.setStocksPage: length: ' + stocksPage.content.length );
-        this.logger.log( 'stocksComponent.setStocksPage: totalElements: ' + stocksPage.totalElements );
+        this.logger.log( 'setStocksPage: length: ' + stocksPage.content.length );
+        this.logger.log( 'setStocksPage: totalElements: ' + stocksPage.totalElements );
     }
 
     /**
@@ -100,14 +108,12 @@ export class StocksComponent implements OnInit
     private showDialogToAdd()
     {
         this.newStock = true;
-        this.displayableStock = new Stock( "", "", "" );
-        this.displayDialog = true;
+        this.displayableStock = new Stock( '', '', '', 0, false );
     }
 
     private showDialogToEdit()
     {
         this.displayableStock = this.selectedStock;
-        this.displayDialog = true;
     }
 
     private confirmDelete()
@@ -125,7 +131,6 @@ export class StocksComponent implements OnInit
         {
             this.stocksPage.content[this.findSelectedStockIndex()] ;
             this.displayableStock = null;
-            this.displayDialog = false;
         }
     }
 
@@ -146,15 +151,29 @@ export class StocksComponent implements OnInit
         throw new Error( "Could not find ticker symbol " + this.selectedStock.tickerSymbol );
     }
 
+    /**
+     * Determines if the user can edit or delete the stock
+     * @returns {boolean}
+     */
+    private canEditOrDeleteSelectedStock(): boolean
+    {
+        var canEditOrDelete = false;
+        if ( this.selectedStock )
+        {
+            canEditOrDelete = this.stockService.canEditOrDelete( this.selectedStock,
+                                                                 this.session.getLoggedInUserId() );
+        }
+        return canEditOrDelete;
+    }
 
     public isEditButtonDisabled(): boolean
     {
-        return !this.selectedStock;
+        return !this.canEditOrDeleteSelectedStock();
     }
 
     public isDeleteButtonDisabled(): boolean
     {
-        return !this.selectedStock;
+        return !this.canEditOrDeleteSelectedStock();
     }
 
     public isAddButtonDisabled(): boolean
@@ -168,7 +187,7 @@ export class StocksComponent implements OnInit
 
     private onEditComplete( event ): void
     {
-        this.logger.log( 'stocksComponent.onEditComplete()' );
+        this.logger.log( 'onEditComplete()' );
         this.stockService.updateStock( this.selectedStock );
     }
 
@@ -177,20 +196,24 @@ export class StocksComponent implements OnInit
      */
     public ngOnInit(): void
     {
-        this.logger.log( 'stocksComponent.ngOnInit()' );
+        this.logger.log( 'ngOnInit()' );
         this.getStocks();
     }
 
     public onStockDialogOkButton(): void
     {
-        this.logger.log( 'stocksComponent.onStockDialogOkButton()' );
-        this.displayDialog = false;
+        this.logger.log( 'onStockDialogOkButton()' );
     }
 
     public onStockDialogCancelButton(): void
     {
-        this.logger.log( 'stocksComponent.onStockDialogCancelButton()' );
-        this.displayDialog = false;
+        this.logger.log( 'onStockDialogCancelButton()' );
     }
 
+    private onRowSelect( event ): void
+    {
+        this.selectedStock = event.data;
+        this.displayableStock = this.selectedStock;
+        this.logger.log( 'onRowSelect() ' + JSON.stringify( event ) );
+    }
 }
