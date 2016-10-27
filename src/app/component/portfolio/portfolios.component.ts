@@ -10,10 +10,10 @@ import { MenuItem } from "primeng/primeng";
 
 @Component(
 {
-    selector: 'portfolio-table',
-    templateUrl: 'portfolio-table.component.html'
+    selector: 'portfolios',
+    templateUrl: 'portfolios.component.html'
 })
-export class PortfolioTableComponent implements OnInit
+export class PortfoliosComponent implements OnInit
 {
     private menuItems: MenuItem[] = [];
     private portfolios: Portfolio[];
@@ -22,7 +22,7 @@ export class PortfolioTableComponent implements OnInit
                  private session: SessionService,
                  private portfolioService: PortfolioService )
     {
-        this.logger.setClassName( PortfolioTableComponent.name );
+        this.logger.setClassName( PortfoliosComponent.name );
     }
 
     ngOnInit(): void
@@ -57,6 +57,7 @@ export class PortfolioTableComponent implements OnInit
             let menuItem = <MenuItem>{};
             menuItem.label = portfolio.name;
             menuItem.icon = 'fa-chart';
+            menuItem.routerLink = ['/stocks'];
             //portfolioMenuItem.routerLink = 'fa-chart';
             this.menuItems.push( menuItem ) ;
         }

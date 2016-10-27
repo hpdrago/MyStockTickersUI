@@ -22,6 +22,7 @@ import { InputTextModule,
          DropdownModule,
          PanelModule,
          TabMenuModule,
+         TabViewModule,
          SelectButtonModule,
          GrowlModule } from 'primeng/primeng';
 
@@ -48,6 +49,7 @@ import { StockFormComponent }      from "./component/stock/stock-form.component"
 import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
 import { UppercaseDirective }      from "./directives/uppercase.directive";
 import { loggerServiceProvider } from "./providers/logger.service.provider";
+import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 
 @NgModule({
     imports:
@@ -67,6 +69,7 @@ import { loggerServiceProvider } from "./providers/logger.service.provider";
         InputTextModule,
         SelectButtonModule,
         TabMenuModule,
+        TabViewModule,
         GrowlModule,
         PanelModule,
         MenubarModule,
@@ -79,7 +82,7 @@ import { loggerServiceProvider } from "./providers/logger.service.provider";
         MenuBarComponent,
         StockTableComponent,
         StockFormComponent,
-        PortfolioTableComponent,
+        PortfoliosComponent,
         DashboardComponent,
         UppercaseDirective
     ],

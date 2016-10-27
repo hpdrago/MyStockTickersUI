@@ -11,20 +11,20 @@ import { Component } from "@angular/core";
 })
 export class MenuBarComponent
 {
-    private items: MenuItem[];
+    private menuItems: MenuItem[];
 
-    ngOnInit(): void
+    ngOnInit()
     {
-        this.initializeMenubar();
+        this.initializeMenuBar();
     }
 
-    private initializeMenubar()
+    private initializeMenuBar()
     {
-        this.items =
+        this.menuItems =
             [
                 { label: 'Dashboard', icon: 'fa-chart', routerLink: ['/dashboard'] },
                 { label: 'Portfolios', icon: 'fa-chart', routerLink: ['/portfolios'] },
-                { label: 'Stock Table', icon: 'fa-chart', routerLink: ['/stocks'] }
+                { label: 'Stocks', icon: 'fa-chart', routerLink: ['/stocks'] }
             ]
     }
 }

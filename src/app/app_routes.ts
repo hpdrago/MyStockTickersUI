@@ -6,11 +6,12 @@ import { StockTableComponent }      from './component/stock/stock-table.componen
 import { DashboardComponent }   from './component/dashboard/dashboard.component';
 import { StockFormComponent } from './component/stock/stock-form.component';
 import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
+import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 
 const routes: Routes = [
     {
         path: 'portfolios',
-        component: PortfolioTableComponent,
+        component: PortfoliosComponent,
     },
     {
         path: 'stocks',
@@ -26,7 +27,7 @@ const routes: Routes = [
     },
     {
         path: '',
-        redirectTo: '/dashboard',
+        redirectTo: 'portfolios',
         pathMatch: 'full'
     }
 ];
