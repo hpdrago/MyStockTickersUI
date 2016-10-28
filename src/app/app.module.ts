@@ -46,7 +46,7 @@ import { StockTableComponent }     from './component/stock/stock-table.component
 import { MenuBarComponent }        from './component/common/menu-bar.component';
 import { DashboardComponent }      from './component/dashboard/dashboard.component';
 import { StockFormComponent }      from "./component/stock/stock-form.component";
-import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
+//import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
 import { UppercaseDirective }      from "./directives/uppercase.directive";
 import { loggerServiceProvider } from "./providers/logger.service.provider";
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
