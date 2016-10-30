@@ -1,0 +1,14 @@
+.portfolio-div {
+    float: left;
+    display: inline-block;
+    background-color: #323435;
+    color: white;
+    width: 200px;
+    height: 50px;
+    margin-right: 5px;
+    padding: 10px;
+    border-width: 1px;
+    border-color: #BBBBBB;
+    border-style: solid;
+}
+

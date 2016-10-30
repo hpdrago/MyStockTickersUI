@@ -1,5 +1,5 @@
 <div *ngIf="stocksPage">
-    <div style="width:50%; float: left">
+    <div style="width:40%; float: left">
         <p-panel header="Stocks">
             <p-dataTable [(value)]="stocksPage.content"
                          [(selection)]="selectedStock"
@@ -28,11 +28,11 @@
                           [editable]="true">
                 </p-column>
 
-                <p-column field="exchange"
+                <!--<p-column field="exchange"
                           header="Exchange"
                           [style]="{'width':'50px'}"
                           [editable]="true">
-                </p-column>
+                </p-column>-->
             </p-dataTable>
             <!--   last: {{stocksPage.last}}
             first: {{stocksPage.first}}
@@ -45,15 +45,15 @@
             <div style="text-align: center; width: 100%">
                 <button
                     type="button"
-                    pButton icon="fa-pencil-square-o"
-                    (click)="showDialogToAdd()"
+                    pButton icon="fa-plus"
+                    (click)="showFormToAdd()"
                     [disabled]="isAddButtonDisabled()"
                     label="Add">
                 </button>
                 &nbsp;&nbsp;
                 <button
                     type="button"
-                    pButton icon="fa-pencil-square-o"
+                    pButton icon="fa-minus"
                     (click)="confirmDelete()"
                     [disabled]="isDeleteButtonDisabled()"
                     label="Delete">
@@ -62,12 +62,12 @@
             <br/>
         </p-panel>
     </div>
-    <div style="width:50%; float: right">
+    <div style="width:40%; float: left">
         <stock-form
             [stock]="displayableStock"
             [crudOperation]="crudOperation"
-            (buttonOk)="onStockDialogOkButton()"
-            (buttonCancel)="onStockDialogCancelButton()">
+            (buttonOk)="onStockFormOkButton()"
+            (buttonCancel)="onStockFormCancelButton()">
         </stock-form>
     </div>
 </div>

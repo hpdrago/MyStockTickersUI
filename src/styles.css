@@ -1,9 +1,73 @@
-@import "font-awesome/css/font-awesome.min.css";
+@import "../node_modules/font-awesome/css/font-awesome.min.css";
+@import "../node_modules/font-awesome/css/font-awesome.css";
 @import "../node_modules/primeng/resources/themes/omega/theme.css";
 @import "../node_modules/primeng/components/rating/rating.css";
 @import "../node_modules/primeng/components/dropdown/dropdown.css";
 @import "../node_modules/primeng/components/galleria/galleria.css";
-/*@import "primng-afterdark-theme.css"; */
+
+/*@import "jquery-style/jquery-ui.css";*/
+@import "primng-afterdark-theme.css";
+
+/* My customizations of PrimeNG afterdark theme */
+.ui-menuitem {
+    /*background-color: #2399e5;*/
+    background-color: #4d4d4d;
+}
+
+.ui-menuitem-link {
+    background-color: #4d4d4d;
+}
+
+.ui-datatable th.ui-state-default {
+    background-color: #4d4d4d;
+}
+
+.ui-column-title {
+    /*background-color: #4d4d4d;*/
+}
+
+.background-color-blue {
+    background-color: #2399e5;
+}
+
+body {
+    background-color: #1F2021;
+}
+
+
+.bgcolor4D4D4D {
+    color: white;
+    background: #4D4D4D;
+}
+
+.bgcolor2399e5 {
+    color: white;
+    background: #2399e5;
+}
+
+.bgcolor221D1D {
+    color: gray;
+    background: #221D1D;
+}
+
+.bg-highlight-color {
+    color: gray;
+    background: #BBBBBB;
+}
+
+.bg-color {
+    color: gray;
+    background: #1F2021;
+}
+
+.bgcolor323435 {
+    color: gray;
+    background: #323435;
+}
+
+
+/* PrimeNG DatTable */
+
 
 /* You can add global styles to this file, and also import other style files */
 /*

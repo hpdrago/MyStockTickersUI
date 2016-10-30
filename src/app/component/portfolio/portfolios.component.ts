@@ -11,12 +11,14 @@ import { MenuItem } from "primeng/primeng";
 @Component(
 {
     selector: 'portfolios',
-    templateUrl: 'portfolios.component.html'
+    templateUrl: 'portfolios.component.html',
+    styleUrls: ['portfolios.component.css']
 })
 export class PortfoliosComponent implements OnInit
 {
     private menuItems: MenuItem[] = [];
     private portfolios: Portfolio[];
+    private selectedPortfolio: Portfolio;
 
     constructor( private logger: Logger,
                  private session: SessionService,

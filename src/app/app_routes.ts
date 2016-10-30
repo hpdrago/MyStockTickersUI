@@ -5,7 +5,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { StockTableComponent }      from './component/stock/stock-table.component';
 import { DashboardComponent }   from './component/dashboard/dashboard.component';
 import { StockFormComponent } from './component/stock/stock-form.component';
-//import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 
 const routes: Routes = [
@@ -27,7 +26,7 @@ const routes: Routes = [
     },
     {
         path: '',
-        redirectTo: 'home',
+        redirectTo: 'dashboard',
         pathMatch: 'full'
     }
 ];

@@ -1,1 +1,11 @@
-<p-tabMenu [model]="menuItems"></p-tabMenu>
+<p-panel class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" header="Portfolios">
+    <div id="portfolio-list" class="ui-grid-row">
+        <div *ngFor="let portfolio of portfolios" (click)="showPortfolio(portfolio)">
+            <div class="portfolio-div">
+                {{portfolio.name}}
+            </div>
+        </div>
+    </div>
+    <div id="portfolio-stocks" class="ui-grid-row">
+    </div>
+</p-panel>

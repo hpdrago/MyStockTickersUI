@@ -27,11 +27,6 @@ import { InputTextModule,
          GrowlModule } from 'primeng/primeng';
 
 /**
- * Bootstrap
- */
-import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap';
-
-/**
  * Application Imports
  */
 import { Logger }                  from './service/logger.service';
@@ -46,7 +41,6 @@ import { StockTableComponent }     from './component/stock/stock-table.component
 import { MenuBarComponent }        from './component/common/menu-bar.component';
 import { DashboardComponent }      from './component/dashboard/dashboard.component';
 import { StockFormComponent }      from "./component/stock/stock-form.component";
-//import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
 import { UppercaseDirective }      from "./directives/uppercase.directive";
 import { loggerServiceProvider } from "./providers/logger.service.provider";
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
@@ -73,8 +67,6 @@ import { PortfoliosComponent } from "./component/portfolio/portfolios.component"
         GrowlModule,
         PanelModule,
         MenubarModule,
-        // ng2-bootstrap modules
-        AlertModule
     ],
     declarations:
     [

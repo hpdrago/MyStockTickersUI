@@ -105,13 +105,13 @@ export class StockTableComponent implements OnInit
         this.router.navigate(link);
     }
 
-    private showDialogToAdd()
+    private showFormToAdd()
     {
         this.newStock = true;
         this.displayableStock = new Stock( '', '', '', 0, false );
     }
 
-    private showDialogToEdit()
+    private showFormToEdit()
     {
         this.displayableStock = this.selectedStock;
     }
@@ -200,14 +200,14 @@ export class StockTableComponent implements OnInit
         this.getStocks();
     }
 
-    public onStockDialogOkButton(): void
+    public onStockFormOkButton(): void
     {
-        this.logger.log( 'onStockDialogOkButton()' );
+        this.logger.log( 'onStockFormOkButton()' );
     }
 
-    public onStockDialogCancelButton(): void
+    public onStockFormCancelButton(): void
     {
-        this.logger.log( 'onStockDialogCancelButton()' );
+        this.logger.log( 'onStockFormCancelButton()' );
     }
 
     private onRowSelect( event ): void
