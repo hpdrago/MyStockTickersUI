@@ -3,9 +3,28 @@
         <div *ngFor="let portfolio of portfolios" (click)="showPortfolio(portfolio)">
             <div class="portfolio-div">
                 {{portfolio.name}}
+                <i class="fa fa-times-circle" style="float: right" aria-hidden="true" (click)="promptToDeletePortfolio(portfolio)"></i>
             </div>
         </div>
+        <i class="fa fa-plus-circle fa-4x" aria-hidden="true" (click)="showAddPortfolioDialog()"></i>
     </div>
     <div id="portfolio-stocks" class="ui-grid-row">
     </div>
+
+    <!--
+    Confirm Delete Portfolio Dialog
+    -->
+    <delete-portfolio-dialog (portfolioDelete)="onDeletePortfolio()"></delete-portfolio-dialog>
+    <!--
+    Add Portfolio Dialog
+    -->
+    <p-dialog header="Add Portfolio" [(visible)]="displayAddPortfolioDialog">
+        Portfolio name: <input type="text" pInputText [(ngModel)]="newPortfolioName" maxlength="20" required>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-save" label="Save" (click)="addPortfolio()"></button>
+                <button type="button" pButton icon="fa-remove" label="Cancel" (click)="hideAddPortfolioDialog()"></button>
+            </div>
+        </footer>
+    </p-dialog>
 </p-panel>

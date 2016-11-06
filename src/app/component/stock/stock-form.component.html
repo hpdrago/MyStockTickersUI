@@ -75,9 +75,9 @@
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-2"></div>
                     <div class="ui-grid-col-7">
-                        <button pButton type="button" (click)="saveButtonClick()" label="Save Stock" [disabled]="!stockForm.valid"></button>
+                        <button pButton type="button" (click)="saveButtonClick()" label="Save Stock" [disabled]="isSaveButtonDisabled()"></button>
                         &nbsp;&nbsp;
-                        <button pButton type="button" (click)="addButtonClick()" label="Add Stock" [disabled]="!stockForm.valid"></button>
+                        <button pButton type="button" (click)="addButtonClick()" label="Add Stock" [disabled]="isAddButtonDisabled()"></button>
                     </div>
                     <div class="ui-grid-col-3"></div>
                 </div>

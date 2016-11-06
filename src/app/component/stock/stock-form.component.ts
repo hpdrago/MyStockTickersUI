@@ -45,6 +45,36 @@ export class StockFormComponent implements OnInit, OnChanges
     }
 
     /**
+     * Determines if the Save button is disabled.
+     * @returns {boolean} true if updating a stock and the input data is valid,
+     *                    false otherwise
+     */
+    private isSaveButtonDisabled()
+    {
+        var disabled = true;
+        if ( this.crudOperation == CrudOperation.UPDATE )
+        {
+            disabled = !this.stockForm.valid;
+        }
+        return disabled;
+    }
+
+    /**
+     * Determines if the Add button is disabled.
+     * @returns {boolean} true if adding a stock and the input data is valid,
+     *                    false otherwise
+     */
+    private isAddButtonDisabled()
+    {
+        var disabled = true;
+        if ( this.crudOperation == CrudOperation.INSERT )
+        {
+            disabled = !this.stockForm.valid;
+        }
+        return disabled;
+    }
+
+    /**
      * Initialize the class
      */
     public ngOnInit(): void
@@ -90,6 +120,10 @@ export class StockFormComponent implements OnInit, OnChanges
             {
                 this.disableInputs();
             }
+            else
+            {
+                this.enableInputs();
+            }
         }
     }
 
@@ -104,6 +138,16 @@ export class StockFormComponent implements OnInit, OnChanges
     }
 
     /**
+     * Enable the input fields
+     */
+    private enableInputs(): void
+    {
+        this.stockForm.controls["tickerSymbol"].enable();
+        this.stockForm.controls["companyName"].enable();
+        this.stockForm.controls["stockExchange"].enable();
+    }
+
+    /**
      * Determines if the stock should be read only and not able to be edited
      * @param stock
      * @returns {boolean}
@@ -111,47 +155,74 @@ export class StockFormComponent implements OnInit, OnChanges
     private isReadOnly( stock: Stock ): boolean
     {
         var isReadOnly = true;
-        if ( this.stock )
+        if ( this.crudOperation == CrudOperation.INSERT )
+        {
+            isReadOnly = false;
+        }
+        else if ( this.stock )
         {
             isReadOnly = this.stockService.canEditOrDelete( stock,
                                                             this.session.getLoggedInUserId() );
         }
-        this.logger.debug( "isReadOnly: " + isReadOnly );
+        this.logger.log( "isReadOnly: " + isReadOnly );
         return isReadOnly;
     }
 
+    /**
+     * Determines if the ticker symbol is invalid
+     * @returns {boolean}
+     */
     private isTickerSymbolInvalid(): boolean
     {
         return !this.stockForm.controls['tickerSymbol'].valid &&
                this.stockForm.controls['tickerSymbol'].dirty;
     }
 
+    /**
+     * Determines if the company name is invalid
+     * @returns {boolean}
+     */
     private isCompanyNameInvalid(): boolean
     {
         return !this.stockForm.controls['companyName'].valid &&
                this.stockForm.controls['companyName'].dirty;
     }
 
+    /**
+     * Determines if the stock exchange is invalid
+     * @returns {boolean}
+     */
     private isStockExchangeInvalid(): boolean
     {
         return !this.stockForm.controls['stockExchange'].valid &&
                this.stockForm.controls['stockExchange'].dirty;
     }
 
+    /**
+     * The user wants to save the stock
+     */
     private saveButtonClick()
     {
-        this.buttonSave.emit();
+        this.logger.log( "saveButtonClicked " + JSON.stringify( this.stock ));
+        this.stockService.updateStock( this.stock );
+        this.buttonSave.emit( this.stock );
         this.stockForm.reset();
     }
 
+    /**
+     * The user wants to add a new stock
+     */
     private addButtonClick()
     {
-        this.buttonAdd.emit();
+        this.logger.log( "addButtonClicked " + JSON.stringify( this.stock ));
+        this.stockService.addStock( this.stock );
+        this.buttonAdd.emit( this.stock );
         this.stockForm.reset();
     }
 
     private onSubmit()
     {
+        this.logger.log( "onSubmit " + JSON.stringify( this.stock ));
         this.submitted = true;
         this.msgs = [];
         this.msgs.push( { severity: 'info', summary: 'Success', detail: 'Form Submitted' } );

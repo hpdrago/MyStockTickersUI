@@ -1,39 +1,57 @@
 <div *ngIf="stocksPage">
-    <div style="width:40%; float: left">
+    <div id="stockTableDiv">
         <p-panel header="Stocks">
-            <p-dataTable [(value)]="stocksPage.content"
-                         [(selection)]="selectedStock"
-                         selectionMode="single"
-                         [scrollable]="true"
-                         [lazy]="true"
-                         [paginator]="true"
-                         [pageLinks]="10"
-                         [responsive]="true"
-                         [rows]="20"
-                         [rowsPerPageOptions]="[20,35,50]"
-                         [totalRecords]="totalRecords"
-                         (onRowSelect)="onRowSelect($event)"
-                         (onEditComplete)="onEditComplete($event)"
-                         (onLazyLoad)="loadData($event)">
+            <div id="searchDiv" >
+                <div id="searchInputDiv">
+                    <input id="companyNameInput"
+                           placeholder="Search..."
+                           size="30"
+                           type="text"
+                           pInputText uppercase
+                           (ngModelChange)="onCompanyNameSearch($event)"
+                           [(ngModel)]="companyNameSearch"/>
+                   <!-- <i id="clearSearchIcon"
+                       class="fa fa-times-circle fa-2x"
+                       (click)="onClearCompanySearch($event)">
+                    </i>-->
+                </div>
+            </div>
+            <div id="tableDiv">
+                <p-dataTable [(value)]="stocksPage.content"
+                             [(selection)]="selectedStock"
+                             selectionMode="single"
+                             [scrollable]="true"
+                             [lazy]="true"
+                             [paginator]="true"
+                             [pageLinks]="10"
+                             [responsive]="true"
+                             [rows]="20"
+                             [rowsPerPageOptions]="[20,35,50]"
+                             [totalRecords]="totalRecords"
+                             (onRowSelect)="onRowSelect($event)"
+                             (onEditComplete)="onEditComplete($event)"
+                             (onLazyLoad)="lazyLoadData($event)">
 
-                <p-column field="tickerSymbol"
-                          header="Ticker"
-                          [style]="{'width':'50px'}"
-                          [editable]="true">
-                </p-column>
+                    <p-column id="tickerSymbolColumn"
+                              field="tickerSymbol"
+                              header="Ticker"
+                              [style]="{'width':'100px'}"
+                              [editable]="true">
+                    </p-column>
 
-                <p-column field="companyName"
-                          header="Company"
-                          [style]="{'width':'100px'}"
-                          [editable]="true">
-                </p-column>
+                    <p-column id="companyNameColumn"
+                              field="companyName"
+                              header="Company"
+                              [editable]="true">
+                    </p-column>
 
-                <!--<p-column field="exchange"
-                          header="Exchange"
-                          [style]="{'width':'50px'}"
-                          [editable]="true">
-                </p-column>-->
-            </p-dataTable>
+                    <!--<p-column field="exchange"
+                              header="Exchange"
+                              [style]="{'width':'50px'}"
+                              [editable]="true">
+                    </p-column>-->
+                </p-dataTable>
+            </div>
             <!--   last: {{stocksPage.last}}
             first: {{stocksPage.first}}
             number: {{stocksPage.number}}
@@ -42,7 +60,7 @@
             totalPages : {{stocksPage.totalPages}}
             itemsPerPage: {{stocksPage.itemsPerPage}}-->
             <br/>
-            <div style="text-align: center; width: 100%">
+            <div id="buttonDiv">
                 <button
                     type="button"
                     pButton icon="fa-plus"
@@ -62,7 +80,7 @@
             <br/>
         </p-panel>
     </div>
-    <div style="width:40%; float: left">
+    <div id="stockFormDiv">
         <stock-form
             [stock]="displayableStock"
             [crudOperation]="crudOperation"
@@ -71,10 +89,4 @@
         </stock-form>
     </div>
 </div>
-<!--<div *ngIf="selectedStock">
-    <h2>
-        {{selectedStock.companyName | uppercase}} is my stock
-    </h2>
-    <button (click)="gotoStockDetail()">View Details</button>
-</div>-->
 

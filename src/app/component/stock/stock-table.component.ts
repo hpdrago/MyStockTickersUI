@@ -22,10 +22,10 @@ export class StockTableComponent implements OnInit
      */
     private stocksPage: PaginationPage<Stock>;
     private selectedStock: Stock = null;
-    private newStock: boolean;
     private displayableStock: Stock;
     private crudOperation: CrudOperation;
     private totalRecords: number;
+    private companyNameSearch: string;
 
     /**
      * Create a new instance with required DI sources
@@ -38,15 +38,38 @@ export class StockTableComponent implements OnInit
                  private session: SessionService )
     {
         this.logger.setClassName( StockTableComponent.name );
+        this.stocksPage =
+        {
+            content : [],
+            last: false,
+            first: true,
+            number: 1,
+            size: 20,
+            totalElements: 0,
+            totalPages : 0,
+            itemsPerPage: 20,
+            sort: []
+        }
     }
 
     /**
      * This event is triggered by the DataTable containing the stocks to request the load of a new page of stocks
      * @param event
      */
-    loadData( event: LazyLoadEvent ) : void
+    public lazyLoadData( event: LazyLoadEvent ) : void
     {
         this.logger.log( 'loadData ' + JSON.stringify( event ) );
+        this.loadPage( event.first,  event.rows );
+    }
+
+    /**
+     * Load a page of stocks
+     * @param pageNumber
+     * @param rows
+     */
+    private loadPage( pageNumber: number, rows: number, searchString?: string )
+    {
+        this.logger.log( `loadPage pageNumber ${pageNumber} rows: ${rows} searchString: ${searchString}` );
         //event.first = First row offset
         //event.rows = Number of rows per page
         //event.sortField = Field name to sort in single sort mode
@@ -54,7 +77,7 @@ export class StockTableComponent implements OnInit
         //multiSortMeta: An array of SortMeta objects used in multiple columns sorting. Each SortMeta has field and order properties.
         //filters: Filters object having field as key and filter value, filter matchMode as value
         this.stockService
-            .getStocksPage( event.first, event.rows )
+            .getStocksPage( pageNumber, rows, searchString )
             .subscribe( stocksPage =>
                         {
                             this.setStocksPage( stocksPage );
@@ -63,24 +86,8 @@ export class StockTableComponent implements OnInit
                         err =>
                         {
                             // Log errors if any
-                            console.log(err);
-                        }
-            );
-    }
-
-    /**
-     * Get a single page of stocks
-     */
-    private getStocks(): void
-    {
-        this.stockService
-            .getStocks()
-            .subscribe( stocksPage => this.setStocksPage( stocksPage ), //Bind to view
-                               err => {
-                                        // Log errors if any
-                                        console.log(err);
-                                      }
-            );
+                            console.log( err );
+                        } );
     }
 
     /**
@@ -104,26 +111,27 @@ export class StockTableComponent implements OnInit
         let link = ['/stockDetail', this.selectedStock.tickerSymbol];
         this.router.navigate(link);
     }
-
     private showFormToAdd()
     {
-        this.newStock = true;
+        this.crudOperation = CrudOperation.INSERT;
         this.displayableStock = new Stock( '', '', '', 0, false );
     }
 
     private showFormToEdit()
     {
+        this.crudOperation = CrudOperation.UPDATE;
         this.displayableStock = this.selectedStock;
     }
 
     private confirmDelete()
     {
+        this.crudOperation = CrudOperation.DELETE;
         this.displayableStock = this.selectedStock;
     }
 
     private save()
     {
-        if ( this.newStock )
+        if ( this.crudOperation == CrudOperation.INSERT  )
         {
             this.stocksPage.content.push( this.displayableStock );
         }
@@ -184,6 +192,16 @@ export class StockTableComponent implements OnInit
     /*****************************************************************
      *  E V E N T S
      *****************************************************************/
+    private onCompanyNameSearch( event )
+    {
+        this.logger.log( 'onCompanyNameSearch()' + this.companyNameSearch );
+        this.loadPage( 1, 20, this.companyNameSearch )
+    }
+
+    private onClearCompanySearch( event )
+    {
+        this.companyNameSearch = '';
+    }
 
     private onEditComplete( event ): void
     {
@@ -196,8 +214,8 @@ export class StockTableComponent implements OnInit
      */
     public ngOnInit(): void
     {
-        this.logger.log( 'ngOnInit()' );
-        this.getStocks();
+        //this.logger.log( 'ngOnInit()' );
+        //this.loadPage( 0, 20 );
     }
 
     public onStockFormOkButton(): void
@@ -210,10 +228,14 @@ export class StockTableComponent implements OnInit
         this.logger.log( 'onStockFormCancelButton()' );
     }
 
+    /**
+     * this method is called when the user selects a row in the stock table
+     * @param event
+     */
     private onRowSelect( event ): void
     {
+        this.logger.log( 'onRowSelect() ' + JSON.stringify( event ) );
         this.selectedStock = event.data;
         this.displayableStock = this.selectedStock;
-        this.logger.log( 'onRowSelect() ' + JSON.stringify( event ) );
     }
 }

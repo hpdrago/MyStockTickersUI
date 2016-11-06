@@ -4,7 +4,7 @@
 
 export class Portfolio
 {
-    public customerId: number;
     public id: number;
+    public customerId: number;
     public name: string;
 }

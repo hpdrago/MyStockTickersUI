@@ -7,31 +7,105 @@ import { SessionService } from "../../service/session.service";
 import { Portfolio } from "../../model/portfolio";
 import { Logger } from "../../service/logger.service";
 import { MenuItem } from "primeng/primeng";
+import { DeletePortfolioDialog } from "./delete-portfolio.dialog";
 
 @Component(
 {
     selector: 'portfolios',
     templateUrl: 'portfolios.component.html',
-    styleUrls: ['portfolios.component.css']
+    styleUrls: ['portfolios.component.css'],
+    providers: [DeletePortfolioDialog]
 })
 export class PortfoliosComponent implements OnInit
 {
     private menuItems: MenuItem[] = [];
     private portfolios: Portfolio[];
-    private selectedPortfolio: Portfolio;
+    private displayAddPortfolioDialog: boolean;
+    private newPortfolioName: string;
 
     constructor( private logger: Logger,
                  private session: SessionService,
-                 private portfolioService: PortfolioService )
+                 private portfolioService: PortfolioService,
+                 private deletePortfolioDialog: DeletePortfolioDialog )
     {
         this.logger.setClassName( PortfoliosComponent.name );
     }
 
+    /**
+     * Load the portfolios when this component is created
+     */
     ngOnInit(): void
     {
         this.loadPortfolios();
     }
 
+    /**
+     * This method is called when the user has clicked on a portfolio.
+     * The stocks for the portfolio will be retrieved and displayed in
+     * the stocks table
+     * @param portfolio
+     */
+    private showPortfolio( portfolio: Portfolio )
+    {
+
+    }
+
+    /**
+     * This method is called when the user has completed adding a new portfolio
+     */
+    private hideAddPortfolioDialog(): void
+    {
+        this.displayAddPortfolioDialog = false;
+    }
+
+    /**
+     * this method is called when the user wants to add a new portfolio
+     */
+    private showAddPortfolioDialog(): void
+    {
+        this.displayAddPortfolioDialog = true;
+    }
+
+    /**
+     * The method is called when the user clicks on the x icon on the right corner of
+     * the portfolio
+     * @param portfolio
+     */
+    private promptToDeletePortfolio( portfolio: Portfolio )
+    {
+        this.deletePortfolioDialog.confirm( portfolio );
+    }
+
+    /**
+     * This method is bound to the DeletePortfolioDialog event when the
+     * user has chosen to delete the portfolio.  This method is called
+     * upon completion of the REST call to delete the portfolio
+     */
+    private onDeletePortfolio(): void
+    {
+        this.loadPortfolios();
+    }
+
+    /**
+     * Save the new portfolio
+     */
+    private addPortfolio(): void
+    {
+        this.displayAddPortfolioDialog = false;
+        this.portfolioService.addPortfolio( this.session.getLoggedInUserId(), this.newPortfolioName )
+                             .subscribe( (portfolio)  =>
+                                {
+                                    this.loadPortfolios();
+                                },
+                                err =>
+                                {
+                                    console.log(err);
+                                });
+    }
+
+    /**
+     * Load the portfolios for the customer
+     */
     private loadPortfolios()
     {
         this.portfolioService

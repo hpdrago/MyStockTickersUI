@@ -24,6 +24,8 @@ import { InputTextModule,
          TabMenuModule,
          TabViewModule,
          SelectButtonModule,
+         ConfirmDialogModule,
+         ConfirmationService,
          GrowlModule } from 'primeng/primeng';
 
 /**
@@ -41,6 +43,7 @@ import { StockTableComponent }     from './component/stock/stock-table.component
 import { MenuBarComponent }        from './component/common/menu-bar.component';
 import { DashboardComponent }      from './component/dashboard/dashboard.component';
 import { StockFormComponent }      from "./component/stock/stock-form.component";
+import { DeletePortfolioDialog }   from "./component/portfolio/delete-portfolio.dialog";
 import { UppercaseDirective }      from "./directives/uppercase.directive";
 import { loggerServiceProvider } from "./providers/logger.service.provider";
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
@@ -67,6 +70,7 @@ import { PortfoliosComponent } from "./component/portfolio/portfolios.component"
         GrowlModule,
         PanelModule,
         MenubarModule,
+        ConfirmDialogModule
     ],
     declarations:
     [
@@ -76,6 +80,7 @@ import { PortfoliosComponent } from "./component/portfolio/portfolios.component"
         StockFormComponent,
         PortfoliosComponent,
         DashboardComponent,
+        DeletePortfolioDialog,
         UppercaseDirective
     ],
     bootstrap:
@@ -90,6 +95,7 @@ import { PortfoliosComponent } from "./component/portfolio/portfolios.component"
         StockExchangeService,
         Logger,
         SessionService,
+        ConfirmationService,
         AppConfigurationService
     ]
 })

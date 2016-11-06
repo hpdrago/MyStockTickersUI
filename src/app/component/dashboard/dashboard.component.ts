@@ -15,8 +15,6 @@ import { StockService } from '../../service/stock.service';
 })
 export class DashboardComponent implements OnInit
 {
-    private stocks: Stock[] = [];
-
     constructor( private router: Router,
                  private stockService: StockService )
     {
@@ -24,14 +22,6 @@ export class DashboardComponent implements OnInit
 
     ngOnInit(): void
     {
-        this.stockService
-            .getStocks()
-            .subscribe( page => this.stocks = page.content.slice(0, 5), //Bind to view
-                err => {
-                    // Log errors if any
-                    console.log(err);
-                }
-            );
     }
 
 }

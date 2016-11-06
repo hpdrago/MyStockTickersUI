@@ -1,6 +1,5 @@
 @import "../node_modules/font-awesome/css/font-awesome.min.css";
 @import "../node_modules/font-awesome/css/font-awesome.css";
-@import "../node_modules/primeng/resources/themes/omega/theme.css";
 @import "../node_modules/primeng/components/rating/rating.css";
 @import "../node_modules/primeng/components/dropdown/dropdown.css";
 @import "../node_modules/primeng/components/galleria/galleria.css";
@@ -9,22 +8,7 @@
 @import "primng-afterdark-theme.css";
 
 /* My customizations of PrimeNG afterdark theme */
-.ui-menuitem {
-    /*background-color: #2399e5;*/
-    background-color: #4d4d4d;
-}
 
-.ui-menuitem-link {
-    background-color: #4d4d4d;
-}
-
-.ui-datatable th.ui-state-default {
-    background-color: #4d4d4d;
-}
-
-.ui-column-title {
-    /*background-color: #4d4d4d;*/
-}
 
 .background-color-blue {
     background-color: #2399e5;

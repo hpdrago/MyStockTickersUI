@@ -5,18 +5,22 @@
  *
  * Created by mike on 10/5/2016.
  */
+import { Logger } from "../service/logger.service";
+
 export class PaginationURL
 {
     private url: string;
+    private logger: Logger;
 
     /**
      * Create a new instance
      * @param url The base URL to which the page number and number of rows will be added
      *        to make a proper request to a Spring REST service
      */
-    constructor( url: string )
+    constructor( logger: Logger, url: string )
     {
         this.url = url;
+        this.logger = logger;
     }
 
     /**
@@ -26,6 +30,11 @@ export class PaginationURL
     public getUrl(): string
     {
         return this.url;
+    }
+
+    public setUrl( url: string )
+    {
+        this.url = url;
     }
 
     /**
@@ -39,8 +48,10 @@ export class PaginationURL
         /*
          * Need to calculate the page number from the rowOffSet
          */
-        var pageNumber = (rowOffSet + rows) / rows;
+        this.logger.log( `getPage rowOffset: ${rowOffSet} rows: ${rows}` )
+        var pageNumber = ((rowOffSet + rows) / rows) - 1;
         var url = this.url + "?page=" + pageNumber + "&limit=" + rows;
+        this.logger.log( "getPage url: " + url );
         return url;
     }
 }
