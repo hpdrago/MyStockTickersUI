@@ -8,7 +8,7 @@ import { Logger } from "./logger.service";
 @Injectable()
 export class SessionService
 {
-    private loggedInUserId: number = 1;
+    private loggedInUserId: number = 2;
 
     constructor( private logger: Logger,
                  private config: AppConfigurationService )

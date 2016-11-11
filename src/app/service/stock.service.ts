@@ -36,23 +36,26 @@ export class StockService
      * @param rows The numbers of rows per page (rows to return for this page)
      * @returns {Observable<PaginationPage<Stock>>}
      */
-    public getStocksPage( rowOffSet: number, rows: number, searchString: string ): Observable<PaginationPage<Stock>>
+    public getStocksPage( rowOffSet: number, rows: number ): Observable<PaginationPage<Stock>>
     {
         let methodName = "getStocksPage";
-        this.logger.log( `${methodName} url: ${this.stocksUrl} rowOffset: ${rowOffSet} rows: ${rows} searchString: ${searchString}` );
-        if ( searchString == null )
-        {
-            return this.http.get( this.stocksPaginationUrl.getPage( rowOffSet, rows ) )
-                .map( ( response: Response ) => response.json() )
-                .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) );
-        }
-        else
-        {
-            this.stocksCompaniesLikePaginationUrl.setUrl( this.stocksCompaniesLikeUrl + '/' + searchString );
-            return this.http.get( this.stocksCompaniesLikePaginationUrl.getPage( rowOffSet, rows ) )
-                .map( ( response: Response ) => response.json() )
-                .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) );
-        }
+        this.logger.log( `${methodName} url: ${this.stocksUrl} rowOffset: ${rowOffSet} rows: ${rows}` );
+        return this.http.get( this.stocksPaginationUrl.getPage( rowOffSet, rows ) )
+                   .map( ( response: Response ) => response.json() )
+                   .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) );
+    }
+
+    /**
+     * Get a list of stocks where the company or ticker symbol matches {@code searchString}
+     * @param searchString
+     * @returns {Observable<R>}
+     */
+    public getStocksCompaniesLike( searchString: string ): Observable<PaginationPage<Stock>>
+    {
+        this.stocksCompaniesLikePaginationUrl.setUrl( this.stocksCompaniesLikeUrl + '/' + searchString );
+        return this.http.get( this.stocksCompaniesLikePaginationUrl.getPage( 0, 20 ) )
+                   .map( ( response: Response ) => response.json() )
+                   .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) );
     }
 
     /**
@@ -86,7 +89,7 @@ export class StockService
 
         return this.http.post( this.stocksUrl, bodyString, options ) // ...using post request
             .map( ( res: Response ) => res.json() ) // ...and calling .json() on the response to return data
-            .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ); //...errors if any
+            .catch( ( error: any ) => Observable.throw( error || 'Server error' ) ); //...errors if any
     }
 
     /**
@@ -147,8 +150,8 @@ export class StockService
         var canEditOrDelete = false;
         if ( stock.userEntered )
         {
-            if ( stock.createdBy == userId ||
-                 this.session.isAdminUser() )
+            //this.logger.log( "canEditOrDelete is user entered" );
+            if ( stock.createdBy == userId )
             {
                 canEditOrDelete = true;
             }

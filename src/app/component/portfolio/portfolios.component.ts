@@ -99,7 +99,7 @@ export class PortfoliosComponent implements OnInit
                                 },
                                 err =>
                                 {
-                                    console.log(err);
+                                    this.logger.error(err);
                                 });
     }
 

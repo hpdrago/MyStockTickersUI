@@ -7,6 +7,7 @@ import { SelectItem, Message } from "primeng/primeng";
 import { StockService } from "../../service/stock.service";
 import { SessionService } from "../../service/session.service";
 import { Logger } from "../../service/logger.service";
+import { RestException } from "../../common/RestException";
 
 /**
  * Created by mike on 10/8/2016.
@@ -23,14 +24,16 @@ export class StockFormComponent implements OnInit, OnChanges
     @Input()
     private stock: Stock;
     @Input()
-    private crudOperation: CrudOperation;
+    private crudOperation: CrudOperation = CrudOperation.NONE;
     @Output()
-    private buttonSave: EventEmitter<any> = new EventEmitter();
+    private onStockSave: EventEmitter<any> = new EventEmitter();
     @Output()
-    private buttonAdd: EventEmitter<any> = new EventEmitter();
-    private stockExchanges: SelectItem[];
+    private onStockAdd: EventEmitter<any> = new EventEmitter();
+    @Output()
+    private onStockDelete: EventEmitter<any> = new EventEmitter();
+    //private stockExchanges: SelectItem[];
 
-    private msgs: Message[] = [];
+    private messages: Message[] = [];
     private stockForm: FormGroup;
     private submitted: boolean;
 
@@ -42,36 +45,11 @@ export class StockFormComponent implements OnInit, OnChanges
     {
         this.stock = new Stock( '', '', '', 0, false );
         this.logger.setClassName( StockFormComponent.name );
-    }
-
-    /**
-     * Determines if the Save button is disabled.
-     * @returns {boolean} true if updating a stock and the input data is valid,
-     *                    false otherwise
-     */
-    private isSaveButtonDisabled()
-    {
-        var disabled = true;
-        if ( this.crudOperation == CrudOperation.UPDATE )
+        this.stockForm = this.formBuilder.group(
         {
-            disabled = !this.stockForm.valid;
-        }
-        return disabled;
-    }
-
-    /**
-     * Determines if the Add button is disabled.
-     * @returns {boolean} true if adding a stock and the input data is valid,
-     *                    false otherwise
-     */
-    private isAddButtonDisabled()
-    {
-        var disabled = true;
-        if ( this.crudOperation == CrudOperation.INSERT )
-        {
-            disabled = !this.stockForm.valid;
-        }
-        return disabled;
+            'tickerSymbol':  new FormControl( '', Validators.required ),
+            'companyName':   new FormControl( '', Validators.required )
+        } );
     }
 
     /**
@@ -79,14 +57,10 @@ export class StockFormComponent implements OnInit, OnChanges
      */
     public ngOnInit(): void
     {
-        this.stockExchanges = this.stockExchangeService.get().getSelectItems();
+        this.logger.log( "ngOnInit" );
+        //this.stockExchanges = this.stockExchangeService.get().getSelectItems();
         //alert( JSON.stringify( this.stockExchanges ) );
-        this.stockForm = this.formBuilder.group(
-        {
-            'tickerSymbol':  new FormControl( '', Validators.required ),
-            'companyName':   new FormControl( '', Validators.required ),
-            'stockExchange': new FormControl( '', Validators.required )
-        } );
+        //'stockExchange': new FormControl( '', Validators.required )
     }
 
     /**
@@ -95,36 +69,65 @@ export class StockFormComponent implements OnInit, OnChanges
      */
     public ngOnChanges( changes: {[propertyName: string]: SimpleChange} )
     {
-        var stockChange = changes['stock'];
-        this.logger.log( "stockChange: " + stockChange );
-        var curStock  = stockChange.currentValue;
-        var prevStock = stockChange.previousValue;
+        var methodName = "ngOnChanges";
+        var stockChanges = changes['stock'];
+        this.logger.log( methodName + " crudOperation: " + this.crudOperation );
+        var curStock  = stockChanges.currentValue;
+        var prevStock = stockChanges.previousValue;
         for (let propName in changes)
         {
-            this.logger.log( "property that changed: " + propName );
+            this.logger.log( methodName + " property that changed: " + propName );
             let chng = changes[propName];
-            this.logger.log( "chng: " + chng );
+            this.logger.log( methodName + " change: " + chng );
             let cur  = JSON.stringify(chng.currentValue);
             let prev = JSON.stringify(chng.previousValue);
-            this.logger.log(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+            this.logger.log( methodName + ` ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
             switch ( propName )
             {
                 case 'stock':
-                    this.logger.log( "stock changes" );
+                    this.logger.log( methodName + " stock changes" );
                     break;
             }
         }
-        if ( curStock )
+        if ( this.isReadOnly( curStock ) )
         {
-            if ( this.isReadOnly( curStock ) )
-            {
-                this.disableInputs();
-            }
-            else
-            {
-                this.enableInputs();
-            }
+            this.disableInputs();
         }
+        else
+        {
+            this.enableInputs();
+        }
+    }
+
+    /**
+     * Determines if the stock should be read only -- not able to be edited
+     * @param stock
+     * @returns {boolean}
+     */
+    private isReadOnly( stock: Stock ): boolean
+    {
+        var isReadOnly = true;
+        switch ( this.crudOperation )
+        {
+            case CrudOperation.INSERT:
+                isReadOnly = false;
+                break;
+
+            case CrudOperation.UPDATE:
+                isReadOnly = !this.stockService.canEditOrDelete( stock,
+                                                                 this.session.getLoggedInUserId() );
+                break;
+
+            case CrudOperation.DELETE:
+                isReadOnly = !this.stockService.canEditOrDelete( stock,
+                                                                 this.session.getLoggedInUserId() );
+                break;
+        }
+        /*
+        this.logger.log( "isReadOnly: " + isReadOnly +
+                         " crudOperation: " + this.crudOperation +
+                         " stock: " + JSON.stringify( stock ));*/
+        return isReadOnly;
     }
 
     /**
@@ -134,7 +137,7 @@ export class StockFormComponent implements OnInit, OnChanges
     {
         this.stockForm.controls["tickerSymbol"].disable();
         this.stockForm.controls["companyName"].disable();
-        this.stockForm.controls["stockExchange"].disable();
+        //this.stockForm.controls["stockExchange"].disable();
     }
 
     /**
@@ -142,30 +145,13 @@ export class StockFormComponent implements OnInit, OnChanges
      */
     private enableInputs(): void
     {
-        this.stockForm.controls["tickerSymbol"].enable();
-        this.stockForm.controls["companyName"].enable();
-        this.stockForm.controls["stockExchange"].enable();
-    }
-
-    /**
-     * Determines if the stock should be read only and not able to be edited
-     * @param stock
-     * @returns {boolean}
-     */
-    private isReadOnly( stock: Stock ): boolean
-    {
-        var isReadOnly = true;
-        if ( this.crudOperation == CrudOperation.INSERT )
+        if ( this.crudOperation != CrudOperation.NONE &&
+             this.crudOperation != CrudOperation.DELETE )
         {
-            isReadOnly = false;
+            this.stockForm.controls["tickerSymbol"].enable();
+            this.stockForm.controls["companyName"].enable();
+            //this.stockForm.controls["stockExchange"].enable();
         }
-        else if ( this.stock )
-        {
-            isReadOnly = this.stockService.canEditOrDelete( stock,
-                                                            this.session.getLoggedInUserId() );
-        }
-        this.logger.log( "isReadOnly: " + isReadOnly );
-        return isReadOnly;
     }
 
     /**
@@ -192,40 +178,164 @@ export class StockFormComponent implements OnInit, OnChanges
      * Determines if the stock exchange is invalid
      * @returns {boolean}
      */
-    private isStockExchangeInvalid(): boolean
+   /* private isStockExchangeInvalid(): boolean
     {
-        return !this.stockForm.controls['stockExchange'].valid &&
-               this.stockForm.controls['stockExchange'].dirty;
-    }
+        //return !this.stockForm.controls['stockExchange'].valid &&
+        //       this.stockForm.controls['stockExchange'].dirty;
+    }*/
 
     /**
      * The user wants to save the stock
      */
-    private saveButtonClick()
+    private onSaveButtonClick()
     {
-        this.logger.log( "saveButtonClicked " + JSON.stringify( this.stock ));
-        this.stockService.updateStock( this.stock );
-        this.buttonSave.emit( this.stock );
-        this.stockForm.reset();
+        var methodName = "onSaveButtonClick";
+        this.logger.log( methodName + " " + JSON.stringify( this.stock ));
+        this.stockService.updateStock( this.stock )
+                         .subscribe( () =>
+                                     {
+                                         this.logger.log( methodName + " add successful" );
+                                         this.onStockAdd.emit( this.stock );
+                                         this.stockForm.reset();
+                                     },
+                                     err => this.error( err )
+                         );
     }
 
     /**
      * The user wants to add a new stock
      */
-    private addButtonClick()
+    private onAddButtonClick()
     {
-        this.logger.log( "addButtonClicked " + JSON.stringify( this.stock ));
-        this.stockService.addStock( this.stock );
-        this.buttonAdd.emit( this.stock );
-        this.stockForm.reset();
+        var methodName = "onAddButtonClick";
+        this.logger.log( methodName + " " + JSON.stringify( this.stock ));
+        this.stockService.addStock( this.stock )
+                         .subscribe( () =>
+                                     {
+                                         this.logger.log( methodName + " save successful" );
+                                         this.onStockSave.emit( this.stock );
+                                         this.stockForm.reset();
+                                     },
+                                     err =>
+                                     {
+                                         this.error( err )
+                                     }
+                         );
+    }
+
+    /**
+     * The user wants to delete a new stock
+     */
+    private onDeleteButtonClick()
+    {
+        var methodName = "onDeleteButtonclick";
+        this.logger.log( methodName + " " + JSON.stringify( this.stock ));
+        this.stockService.deleteStock( this.stock )
+            .subscribe( () =>
+                        {
+                            this.logger.log( methodName + " delete successful" );
+                            this.onStockDelete.emit( this.stock );
+                            this.stockForm.reset();
+                        },
+                        err =>
+                        {
+                            this.error( err )
+                        }
+            );
+    }
+
+    /**
+     * Determines if the Save Button should be shown
+     * @returns {boolean}
+     */
+    private isShowSaveButton(): boolean
+    {
+        return this.crudOperation != CrudOperation.INSERT &&
+               this.crudOperation != CrudOperation.NONE
+    }
+
+    /**
+     * Determines if the Delete Button should be shown
+     * @returns {boolean}
+     */
+    private isShowDeleteButton(): boolean
+    {
+        return this.crudOperation != CrudOperation.INSERT &&
+               this.crudOperation != CrudOperation.NONE;
+    }
+
+    /**
+     * Determines if the Add Button should be shown
+     * @returns {boolean}
+     */
+    private isShowAddButton(): boolean
+    {
+        return this.crudOperation == CrudOperation.INSERT;
+    }
+
+    /**
+     * Determines if the Add button is disabled.
+     * @returns {boolean} true if adding a stock and the input data is valid,
+     *                    false otherwise
+     */
+    private isAddButtonDisabled()
+    {
+        var disabled = true;
+        if ( this.crudOperation == CrudOperation.INSERT )
+        {
+            disabled = !this.stockForm.valid;
+        }
+        return disabled;
+    }
+
+    /**
+     * Determines if the Save button is disabled.
+     * @returns {boolean} true if adding a stock and the input data is valid,
+     *                    false otherwise
+     */
+    private isSaveButtonDisabled()
+    {
+        var disabled = true;
+        if ( this.crudOperation == CrudOperation.UPDATE &&
+             !this.isReadOnly( this.stock ))
+        {
+            disabled = !this.stockForm.valid;
+        }
+        return disabled;
+    }
+
+    /**
+     * Determines if the Delete button is disabled.
+     * @returns {boolean} true if adding a stock and the input data is valid,
+     *                    false otherwise
+     */
+    private isDeleteButtonDisabled()
+    {
+        var disabled = true;
+        if ( this.crudOperation == CrudOperation.UPDATE &&
+             !this.isReadOnly( this.stock ))
+        {
+            disabled = !this.stockForm.valid;
+        }
+        return disabled;
     }
 
     private onSubmit()
     {
         this.logger.log( "onSubmit " + JSON.stringify( this.stock ));
         this.submitted = true;
-        this.msgs = [];
-        this.msgs.push( { severity: 'info', summary: 'Success', detail: 'Form Submitted' } );
+        this.messages = [];
+        this.messages.push( { severity: 'info', summary: 'Success', detail: 'Form Submitted' } );
+    }
+
+    /**
+     * General error handling.  Logs a message to the console and adds a message to the growl component.
+     * @param message
+     */
+    private error( error: any ): void
+    {
+        var exception: RestException = new RestException( error );
+        this.messages.push( { severity: 'error', summary: 'Failure', detail: exception.getMessage() } );
     }
 
     get diagnostic()

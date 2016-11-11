@@ -2,7 +2,7 @@
     Stock Form
 -->
 <div *ngIf="stock">
-    <p-growl [value]="msgs" sticky="sticky"></p-growl>
+    <p-growl [value]="messages" sticky="sticky"></p-growl>
     <form [formGroup]="stockForm" (ngSubmit)="onSubmit(stockForm.value)">
         <p-panel header="Stock Detail">
             <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
@@ -37,7 +37,7 @@
                                placeholder="Required"
                                size="30"
                                type="text"
-                               pInputText required uppercase
+                               pInputText required
                                [(ngModel)]="stock.companyName"/>
                     </div>
                     <div class="ui-grid-col-3">
@@ -48,16 +48,16 @@
                     </div>
                 </div>
 
-                <div class="ui-grid-row">
+<!--                <div class="ui-grid-row">
                     <div class="ui-grid-col-2">
                         Exchange:
                     </div>
                     <div class="ui-grid-col-7">
-                       <!-- <p-dropdown id="stockExchange"
+                       &lt;!&ndash; <p-dropdown id="stockExchange"
                             [options]="stockExchanges"
                             [required]="true"
                             [(ngModel)]="stock.exchange">
-                        </p-dropdown>-->
+                        </p-dropdown>&ndash;&gt;
                         <p-selectButton id="stockExchange"
                             formControlName="stockExchange"
                             [options]="stockExchanges"
@@ -71,13 +71,19 @@
                             Stock Exchange is required
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-2"></div>
                     <div class="ui-grid-col-7">
-                        <button pButton type="button" (click)="saveButtonClick()" label="Save Stock" [disabled]="isSaveButtonDisabled()"></button>
-                        &nbsp;&nbsp;
-                        <button pButton type="button" (click)="addButtonClick()" label="Add Stock" [disabled]="isAddButtonDisabled()"></button>
+                        <div *ngIf="isShowSaveButton()">
+                            <button pButton type="button" (click)="onSaveButtonClick()" label="Delete Stock" [disabled]="isSaveButtonDisabled()"></button>
+                        </div>
+                        <div *ngIf="isShowAddButton()">
+                            <button pButton type="button" (click)="onAddButtonClick()" label="Add Stock" [disabled]="isAddButtonDisabled()"></button>
+                        </div>
+                        <div *ngIf="isShowDeleteButton()">
+                            <button pButton type="button" (click)="onDeleteButtonClick()" label="Save Stock" [disabled]="isDeleteButtonDisabled()"></button>
+                        </div>
                     </div>
                     <div class="ui-grid-col-3"></div>
                 </div>

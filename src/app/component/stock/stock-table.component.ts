@@ -1,5 +1,7 @@
-import { Component,
-         OnInit }         from "@angular/core";
+/**
+ * This component lists the all of the stocks
+ */
+import { OnInit, Component } from "@angular/core";
 import { Router }         from '@angular/router';
 import { Stock }          from "../../model/stock";
 import { StockService }   from "../../service/stock.service";
@@ -26,6 +28,7 @@ export class StockTableComponent implements OnInit
     private crudOperation: CrudOperation;
     private totalRecords: number;
     private companyNameSearch: string;
+    private lastLoadEvent: LazyLoadEvent;
 
     /**
      * Create a new instance with required DI sources
@@ -56,28 +59,11 @@ export class StockTableComponent implements OnInit
      * This event is triggered by the DataTable containing the stocks to request the load of a new page of stocks
      * @param event
      */
-    public lazyLoadData( event: LazyLoadEvent ) : void
+    private lazyLoadData( event: LazyLoadEvent ) : void
     {
-        this.logger.log( 'loadData ' + JSON.stringify( event ) );
-        this.loadPage( event.first,  event.rows );
-    }
-
-    /**
-     * Load a page of stocks
-     * @param pageNumber
-     * @param rows
-     */
-    private loadPage( pageNumber: number, rows: number, searchString?: string )
-    {
-        this.logger.log( `loadPage pageNumber ${pageNumber} rows: ${rows} searchString: ${searchString}` );
-        //event.first = First row offset
-        //event.rows = Number of rows per page
-        //event.sortField = Field name to sort in single sort mode
-        //event.sortOrder = Sort order as number, 1 for asc and -1 for dec in single sort mode
-        //multiSortMeta: An array of SortMeta objects used in multiple columns sorting. Each SortMeta has field and order properties.
-        //filters: Filters object having field as key and filter value, filter matchMode as value
+        this.logger.log( 'lazyLoadData ' + JSON.stringify( event ) );
         this.stockService
-            .getStocksPage( pageNumber, rows, searchString )
+            .getStocksPage( event.first, event.rows )
             .subscribe( stocksPage =>
                         {
                             this.setStocksPage( stocksPage );
@@ -88,6 +74,28 @@ export class StockTableComponent implements OnInit
                             // Log errors if any
                             console.log( err );
                         } );
+        this.lastLoadEvent = event;
+    }
+
+    /**
+     * Load the stocks table with company names or ticker symbols matching {@code searchString}
+     * @param searchString
+     */
+    private getStockCompaniesLike( searchString: string )
+    {
+        this.logger.log( 'getStockCompaniesLike ' + searchString );
+        this.stockService
+            .getStocksCompaniesLike( searchString )
+            .subscribe( stocksPage =>
+                {
+                    this.setStocksPage( stocksPage );
+                    //alert( JSON.stringify( stocksPage))
+                }, //Bind to view
+                err =>
+                {
+                    // Log errors if any
+                    console.log( err );
+                } );
     }
 
     /**
@@ -111,6 +119,7 @@ export class StockTableComponent implements OnInit
         let link = ['/stockDetail', this.selectedStock.tickerSymbol];
         this.router.navigate(link);
     }
+
     private showFormToAdd()
     {
         this.crudOperation = CrudOperation.INSERT;
@@ -120,12 +129,6 @@ export class StockTableComponent implements OnInit
     private showFormToEdit()
     {
         this.crudOperation = CrudOperation.UPDATE;
-        this.displayableStock = this.selectedStock;
-    }
-
-    private confirmDelete()
-    {
-        this.crudOperation = CrudOperation.DELETE;
         this.displayableStock = this.selectedStock;
     }
 
@@ -160,30 +163,9 @@ export class StockTableComponent implements OnInit
     }
 
     /**
-     * Determines if the user can edit or delete the stock
+     * Determines if the Add button should be disabled
      * @returns {boolean}
      */
-    private canEditOrDeleteSelectedStock(): boolean
-    {
-        var canEditOrDelete = false;
-        if ( this.selectedStock )
-        {
-            canEditOrDelete = this.stockService.canEditOrDelete( this.selectedStock,
-                                                                 this.session.getLoggedInUserId() );
-        }
-        return canEditOrDelete;
-    }
-
-    public isEditButtonDisabled(): boolean
-    {
-        return !this.canEditOrDeleteSelectedStock();
-    }
-
-    public isDeleteButtonDisabled(): boolean
-    {
-        return !this.canEditOrDeleteSelectedStock();
-    }
-
     public isAddButtonDisabled(): boolean
     {
         return false;
@@ -195,7 +177,10 @@ export class StockTableComponent implements OnInit
     private onCompanyNameSearch( event )
     {
         this.logger.log( 'onCompanyNameSearch()' + this.companyNameSearch );
-        this.loadPage( 1, 20, this.companyNameSearch )
+        if ( this.companyNameSearch && this.companyNameSearch.length > 0 )
+        {
+            this.getStockCompaniesLike( this.companyNameSearch );
+        }
     }
 
     private onClearCompanySearch( event )
@@ -218,14 +203,24 @@ export class StockTableComponent implements OnInit
         //this.loadPage( 0, 20 );
     }
 
-    public onStockFormOkButton(): void
+    /**
+     * this method is called when the user clicks on the Sav button on the stock for.
+     */
+    public onStockFormButtonSave(): void
     {
-        this.logger.log( 'onStockFormOkButton()' );
+        this.logger.log( 'onStockFormButtonSave()' );
+        this.crudOperation = CrudOperation.NONE;
+        this.lazyLoadData( this.lastLoadEvent );
     }
 
-    public onStockFormCancelButton(): void
+    /**
+     * this method is called when the user clicks on the Sav button on the stock for.
+     */
+    public onStockFormButtonAdd(): void
     {
-        this.logger.log( 'onStockFormCancelButton()' );
+        this.logger.log( 'onStockFormButtonAdd()' );
+        this.crudOperation = CrudOperation.NONE;
+        this.lazyLoadData( this.lastLoadEvent );
     }
 
     /**
@@ -237,5 +232,6 @@ export class StockTableComponent implements OnInit
         this.logger.log( 'onRowSelect() ' + JSON.stringify( event ) );
         this.selectedStock = event.data;
         this.displayableStock = this.selectedStock;
+        this.crudOperation = CrudOperation.UPDATE;
     }
 }

@@ -68,14 +68,14 @@
                     [disabled]="isAddButtonDisabled()"
                     label="Add">
                 </button>
-                &nbsp;&nbsp;
+<!--                &nbsp;&nbsp;
                 <button
                     type="button"
                     pButton icon="fa-minus"
                     (click)="confirmDelete()"
                     [disabled]="isDeleteButtonDisabled()"
                     label="Delete">
-                </button>
+                </button>-->
             </div>
             <br/>
         </p-panel>
@@ -84,8 +84,9 @@
         <stock-form
             [stock]="displayableStock"
             [crudOperation]="crudOperation"
-            (buttonOk)="onStockFormOkButton()"
-            (buttonCancel)="onStockFormCancelButton()">
+            (onButtonSave)="onStockFormButtonSave()"
+            (onButtonAdd)="onStockFormButtonAdd()">
+            (onButtonDelete)="onStockFormButtonDelete()">
         </stock-form>
     </div>
 </div>
