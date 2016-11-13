@@ -84,8 +84,10 @@
         <stock-form
             [stock]="displayableStock"
             [crudOperation]="crudOperation"
-            (onButtonSave)="onStockFormButtonSave()"
-            (onButtonAdd)="onStockFormButtonAdd()">
+            (onStockSave)="onStockFormButtonSave( $event )"
+            (onStockAdd)="onStockFormButtonAdd( $event )"
+            (onStockDelete)="onStockFormButtonDelete( $event )"
+            (onJumpToStock)="onJumpToStock( $event )"
             (onButtonDelete)="onStockFormButtonDelete()">
         </stock-form>
     </div>

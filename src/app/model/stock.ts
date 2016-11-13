@@ -28,12 +28,21 @@ export class Stock
     }
 
     /**
-     * Determines if the stock was entered by a user. Otherwise, itwas download from a stock exchange source.
+     * Determines if the stock was entered by a user. Otherwise, it was download from a stock exchange source.
      * @returns false if the stock was entered by a user, otherwise true as it was information
      *          downloaded from a data feed
      */
     public isUserEntered(): boolean
     {
         return this.userEntered;
+    }
+
+    /**
+     * Create a new copy of the stock
+     * @returns {Stock}
+     */
+    public clone(): Stock
+    {
+        return new Stock( this.tickerSymbol, this.companyName, this.exchange, this.createdBy, this.userEntered );
     }
 }

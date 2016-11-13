@@ -77,7 +77,7 @@ export class StockService
      * @param stock
      * @returns {Observable<R>}
      */
-    public addStock( stock: Stock ): Observable<Stock[]>
+    public addStock( stock: Stock ): Observable<Stock>
     {
         let methodName = "addStock";
         stock.createdBy = this.session.getLoggedInUserId();
@@ -97,7 +97,7 @@ export class StockService
      * @param stock
      * @returns {Observable<R>}
      */
-    public updateStock( stock: Stock ): Observable<Stock[]>
+    public updateStock( stock: Stock ): Observable<Stock>
     {
         let methodName = "updateStock";
         let bodyString = JSON.stringify( stock ); // Stringify payload
@@ -117,14 +117,14 @@ export class StockService
      * @param stock
      * @returns {Observable<R>}
      */
-    public deleteStock( stock: Stock ): Observable<Stock[]>
+    public deleteStock( stock: Stock ): Observable<Response>
     {
         let methodName = "deleteStock";
         this.logger.log( methodName + " " + JSON.stringify( stock ) );
         let url = this.stocksUrl + "/" + stock.tickerSymbol;
         this.logger.log( methodName + " url: " + url ) ;
         return this.http.delete( url ) // ...using delete request
-            .map( ( res: Response ) => res.json() ) // ...and calling .json() on the response to return data
+            .map( ( res: Response ) => res.ok ) // ...and calling .json() on the response to return data
             .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ); //...errors if any
     }
 

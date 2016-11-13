@@ -8,6 +8,7 @@ import { StockService } from "../../service/stock.service";
 import { SessionService } from "../../service/session.service";
 import { Logger } from "../../service/logger.service";
 import { RestException } from "../../common/RestException";
+import { Response } from "@angular/http";
 
 /**
  * Created by mike on 10/8/2016.
@@ -26,11 +27,13 @@ export class StockFormComponent implements OnInit, OnChanges
     @Input()
     private crudOperation: CrudOperation = CrudOperation.NONE;
     @Output()
-    private onStockSave: EventEmitter<any> = new EventEmitter();
+    private onStockSave: EventEmitter<Stock> = new EventEmitter<Stock>();
     @Output()
-    private onStockAdd: EventEmitter<any> = new EventEmitter();
+    private onStockAdd: EventEmitter<Stock> = new EventEmitter<Stock>();
     @Output()
-    private onStockDelete: EventEmitter<any> = new EventEmitter();
+    private onStockDelete: EventEmitter<Stock> = new EventEmitter<Stock>();
+    @Output()
+    private onJumpToStock: EventEmitter<Stock> = new EventEmitter<Stock>();
     //private stockExchanges: SelectItem[];
 
     private messages: Message[] = [];
@@ -63,6 +66,12 @@ export class StockFormComponent implements OnInit, OnChanges
         //'stockExchange': new FormControl( '', Validators.required )
     }
 
+    private reset()
+    {
+        this.stockForm.reset();
+        this.stock = new Stock( '', '', '', 0, false );
+    }
+
     /**
      * This method is called for changes to the input data
      * @param changes
@@ -72,16 +81,14 @@ export class StockFormComponent implements OnInit, OnChanges
         var methodName = "ngOnChanges";
         var stockChanges = changes['stock'];
         this.logger.log( methodName + " crudOperation: " + this.crudOperation );
-        var curStock  = stockChanges.currentValue;
-        var prevStock = stockChanges.previousValue;
-        for (let propName in changes)
+        for ( let propName in changes )
         {
             this.logger.log( methodName + " property that changed: " + propName );
             let chng = changes[propName];
             this.logger.log( methodName + " change: " + chng );
-            let cur  = JSON.stringify(chng.currentValue);
-            let prev = JSON.stringify(chng.previousValue);
-            this.logger.log( methodName + ` ${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+            let cur = JSON.stringify( chng.currentValue );
+            let prev = JSON.stringify( chng.previousValue );
+            this.logger.log( methodName + ` ${propName}: currentValue = ${cur}, previousValue = ${prev}` );
             switch ( propName )
             {
                 case 'stock':
@@ -89,7 +96,8 @@ export class StockFormComponent implements OnInit, OnChanges
                     break;
             }
         }
-        if ( this.isReadOnly( curStock ) )
+        if ( this.crudOperation == CrudOperation.NONE ||
+             this.isReadOnly( this.stock ) )
         {
             this.disableInputs();
         }
@@ -195,8 +203,8 @@ export class StockFormComponent implements OnInit, OnChanges
                          .subscribe( () =>
                                      {
                                          this.logger.log( methodName + " add successful" );
-                                         this.onStockAdd.emit( this.stock );
-                                         this.stockForm.reset();
+                                         this.onStockSave.emit( this.stock );
+                                         this.reset();
                                      },
                                      err => this.error( err )
                          );
@@ -210,15 +218,26 @@ export class StockFormComponent implements OnInit, OnChanges
         var methodName = "onAddButtonClick";
         this.logger.log( methodName + " " + JSON.stringify( this.stock ));
         this.stockService.addStock( this.stock )
-                         .subscribe( () =>
+                         .subscribe( ( stock: any ) =>
                                      {
-                                         this.logger.log( methodName + " save successful" );
-                                         this.onStockSave.emit( this.stock );
-                                         this.stockForm.reset();
+                                         this.logger.log( methodName + " save successful " + JSON.stringify( stock ) );
+                                         this.stock = stock;
+                                         this.onStockAdd.emit( this.stock );
+                                         this.reset();
                                      },
                                      err =>
                                      {
-                                         this.error( err )
+                                         this.logger.log( methodName + " err: " + err );
+                                         var exception = this.error( err );
+                                         this.logger.log( methodName + " exception: " + JSON.stringify( exception ));
+                                         /*
+                                          *  If we get a duplicate key, tell the stock table to jump to that stock
+                                          */
+                                         if ( exception.isDuplicateKeyExists() )
+                                         {
+                                             this.logger.log( methodName + " duplicateKeyExists" );
+                                             this.onJumpToStock.emit( this.stock );
+                                         }
                                      }
                          );
     }
@@ -228,18 +247,19 @@ export class StockFormComponent implements OnInit, OnChanges
      */
     private onDeleteButtonClick()
     {
-        var methodName = "onDeleteButtonclick";
+        var methodName = "onDeleteButtonClick";
         this.logger.log( methodName + " " + JSON.stringify( this.stock ));
-        this.stockService.deleteStock( this.stock )
-            .subscribe( () =>
+        this.stockService
+            .deleteStock( this.stock )
+            .subscribe( (response: Response) =>
                         {
                             this.logger.log( methodName + " delete successful" );
                             this.onStockDelete.emit( this.stock );
-                            this.stockForm.reset();
+                            this.reset();
                         },
                         err =>
                         {
-                            this.error( err )
+                            this.messages.push( { severity: 'error', summary: 'Failure', detail: err } );
                         }
             );
     }
@@ -297,7 +317,8 @@ export class StockFormComponent implements OnInit, OnChanges
     {
         var disabled = true;
         if ( this.crudOperation == CrudOperation.UPDATE &&
-             !this.isReadOnly( this.stock ))
+             !this.isReadOnly( this.stock ) &&
+             this.stockForm.dirty )
         {
             disabled = !this.stockForm.valid;
         }
@@ -315,7 +336,7 @@ export class StockFormComponent implements OnInit, OnChanges
         if ( this.crudOperation == CrudOperation.UPDATE &&
              !this.isReadOnly( this.stock ))
         {
-            disabled = !this.stockForm.valid;
+            disabled = !this.stockForm.valid || this.stockForm.dirty;
         }
         return disabled;
     }
@@ -332,10 +353,12 @@ export class StockFormComponent implements OnInit, OnChanges
      * General error handling.  Logs a message to the console and adds a message to the growl component.
      * @param message
      */
-    private error( error: any ): void
+    private error( error: any ): RestException
     {
+        this.logger.log( "error: " + JSON.stringify( error ) );
         var exception: RestException = new RestException( error );
         this.messages.push( { severity: 'error', summary: 'Failure', detail: exception.getMessage() } );
+        return exception;
     }
 
     get diagnostic()

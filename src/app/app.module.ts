@@ -27,6 +27,9 @@ import { InputTextModule,
          ConfirmDialogModule,
          ConfirmationService,
          GrowlModule } from 'primeng/primeng';
+/**
+ * Third party imports
+ */
 
 /**
  * Application Imports
@@ -71,6 +74,7 @@ import { PortfoliosComponent } from "./component/portfolio/portfolios.component"
         PanelModule,
         MenubarModule,
         ConfirmDialogModule
+        // Third Party modules
     ],
     declarations:
     [

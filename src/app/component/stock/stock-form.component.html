@@ -2,7 +2,7 @@
     Stock Form
 -->
 <div *ngIf="stock">
-    <p-growl [value]="messages" sticky="sticky"></p-growl>
+    <p-growl [value]="messages"  sticky="sticky"></p-growl>
     <form [formGroup]="stockForm" (ngSubmit)="onSubmit(stockForm.value)">
         <p-panel header="Stock Detail">
             <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
@@ -76,13 +76,25 @@
                     <div class="ui-grid-col-2"></div>
                     <div class="ui-grid-col-7">
                         <div *ngIf="isShowSaveButton()">
-                            <button pButton type="button" (click)="onSaveButtonClick()" label="Delete Stock" [disabled]="isSaveButtonDisabled()"></button>
+                            <button pButton type="button"
+                                    (click)="onSaveButtonClick()"
+                                    label="Save Stock"
+                                    [disabled]="isSaveButtonDisabled()">
+                            </button>
                         </div>
                         <div *ngIf="isShowAddButton()">
-                            <button pButton type="button" (click)="onAddButtonClick()" label="Add Stock" [disabled]="isAddButtonDisabled()"></button>
+                            <button pButton type="button"
+                                    (click)="onAddButtonClick()"
+                                    label="Add Stock"
+                                    [disabled]="isAddButtonDisabled()">
+                            </button>
                         </div>
                         <div *ngIf="isShowDeleteButton()">
-                            <button pButton type="button" (click)="onDeleteButtonClick()" label="Save Stock" [disabled]="isDeleteButtonDisabled()"></button>
+                            <button pButton type="button"
+                                    (click)="onDeleteButtonClick()"
+                                    label="Delete Stock"
+                                    [disabled]="isDeleteButtonDisabled()">
+                            </button>
                         </div>
                     </div>
                     <div class="ui-grid-col-3"></div>

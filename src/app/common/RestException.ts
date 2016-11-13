@@ -49,6 +49,15 @@ export class RestException
     }
 
     /**
+     * Determines if the HTTP status code is duplicate key exists
+     * @returns {boolean}
+     */
+    public isDuplicateKeyExists(): boolean
+    {
+        return this.status == 409 // CONFLICT;
+    }
+
+    /**
      * Returns the exception message, the status, and the path
      * @returns {string}
      */

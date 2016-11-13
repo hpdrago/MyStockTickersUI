@@ -204,9 +204,9 @@ export class StockTableComponent implements OnInit
     }
 
     /**
-     * this method is called when the user clicks on the Sav button on the stock for.
+     * this method is called when the user clicks on the Save button on the stock form.
      */
-    public onStockFormButtonSave(): void
+    private onStockFormButtonSave( stock: Stock ): void
     {
         this.logger.log( 'onStockFormButtonSave()' );
         this.crudOperation = CrudOperation.NONE;
@@ -214,13 +214,33 @@ export class StockTableComponent implements OnInit
     }
 
     /**
-     * this method is called when the user clicks on the Sav button on the stock for.
+     * this method is called when the user clicks on the Add button on the stock form.
      */
-    public onStockFormButtonAdd(): void
+    private onStockFormButtonAdd( stock: Stock ): void
     {
         this.logger.log( 'onStockFormButtonAdd()' );
         this.crudOperation = CrudOperation.NONE;
+        this.getStockCompaniesLike( stock.tickerSymbol );
+    }
+
+    /**
+     * this method is called when the user clicks on the Delete button on the stock form.
+     */
+    private onStockFormButtonDelete( stock: Stock ): void
+    {
+        this.logger.log( 'onStockFormButtonDelete()' );
+        this.crudOperation = CrudOperation.NONE;
         this.lazyLoadData( this.lastLoadEvent );
+    }
+
+    /**
+     * this method is called as an event from the stock form to jump to a stock company in the table
+     * @param stock
+     */
+    private onJumpToStock( stock: Stock )
+    {
+        this.logger.log( 'onJumpToStock()'  );
+        this.getStockCompaniesLike( stock.tickerSymbol );
     }
 
     /**
@@ -230,8 +250,15 @@ export class StockTableComponent implements OnInit
     private onRowSelect( event ): void
     {
         this.logger.log( 'onRowSelect() ' + JSON.stringify( event ) );
-        this.selectedStock = event.data;
-        this.displayableStock = this.selectedStock;
+        this.selectedStock = new Stock( event.data.tickerSymbol,
+                                        event.data.companyName,
+                                        event.data.exchange,
+                                        event.data.createdBy,
+                                        event.data.userEntered );
+        /*
+         * Make a clone so that we are making changes to a clone and not the row in the table
+         */
+        this.displayableStock = this.selectedStock.clone();
         this.crudOperation = CrudOperation.UPDATE;
     }
 }
