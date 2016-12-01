@@ -2,13 +2,13 @@ import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChange
 import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { Stock } from "../../model/stock";
 import { CrudOperation } from "../../common/crud-operation";
-import { StockExchangeService } from "../../service/stock-exchange.service";
 import { SelectItem, Message } from "primeng/primeng";
 import { StockService } from "../../service/stock.service";
 import { SessionService } from "../../service/session.service";
-import { Logger } from "../../service/logger.service";
-import { RestException } from "../../common/RestException";
 import { Response } from "@angular/http";
+import { ModelFactory } from "../../model/model-factory";
+import { BaseComponent } from "../common/base.component";
+import { RestException } from "../../common/rest-exception";
 
 /**
  * Created by mike on 10/8/2016.
@@ -16,11 +16,9 @@ import { Response } from "@angular/http";
 @Component(
 {
     selector:    'stock-form',
-    templateUrl: 'stock-form.component.html',
-    styleUrls:   ['stock-form.component.css'],
-    providers:   [Logger]
+    templateUrl: 'stock-form.component.html'
 })
-export class StockFormComponent implements OnInit, OnChanges
+export class StockFormComponent extends BaseComponent implements OnInit, OnChanges
 {
     @Input()
     private stock: Stock;
@@ -41,13 +39,11 @@ export class StockFormComponent implements OnInit, OnChanges
     private submitted: boolean;
 
     constructor( private formBuilder: FormBuilder,
-                 private stockExchangeService: StockExchangeService,
                  private stockService: StockService,
-                 private session: SessionService,
-                 private logger: Logger )
+                 private session: SessionService )
     {
-        this.stock = new Stock( '', '', '', 0, false );
-        this.logger.setClassName( StockFormComponent.name );
+        super();
+        this.stock = ModelFactory.newStockInstance();
         this.stockForm = this.formBuilder.group(
         {
             'tickerSymbol':  new FormControl( '', Validators.required ),
@@ -69,7 +65,7 @@ export class StockFormComponent implements OnInit, OnChanges
     private reset()
     {
         this.stockForm.reset();
-        this.stock = new Stock( '', '', '', 0, false );
+        this.stock = ModelFactory.newStockInstance();
     }
 
     /**
@@ -259,6 +255,7 @@ export class StockFormComponent implements OnInit, OnChanges
                         },
                         err =>
                         {
+                            console.error( err );
                             this.messages.push( { severity: 'error', summary: 'Failure', detail: err } );
                         }
             );

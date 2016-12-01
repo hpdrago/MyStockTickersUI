@@ -1,16 +1,19 @@
 <p-panel class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" header="Portfolios">
     <div id="portfolio-list" class="ui-grid-row">
-        <div *ngFor="let portfolio of portfolios" (click)="showPortfolio(portfolio)">
-            <div class="portfolio-div">
+        <div *ngFor="let portfolio of portfolios">
+            <div class="portfolio-div"
+                 [class.ui-state-active]="portfolio == selectedPortfolio"
+                 (click)="showPortfolio(portfolio)">
                 {{portfolio.name}}
                 <i class="fa fa-times-circle" style="float: right" aria-hidden="true" (click)="promptToDeletePortfolio(portfolio)"></i>
             </div>
         </div>
         <i class="fa fa-plus-circle fa-4x" aria-hidden="true" (click)="showAddPortfolioDialog()"></i>
     </div>
-    <div id="portfolio-stocks" class="ui-grid-row">
-    </div>
-
+    <!--
+    Port folio stocks
+    -->
+    <portfolio-stocks></portfolio-stocks>
     <!--
     Confirm Delete Portfolio Dialog
     -->

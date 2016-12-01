@@ -3,16 +3,16 @@
  */
 import { Injectable } from "@angular/core";
 import { AppConfigurationService } from "./app-configuration.service";
-import { Logger } from "./logger.service";
+import { BaseService } from "./base,service";
 
 @Injectable()
-export class SessionService
+export class SessionService extends BaseService
 {
     private loggedInUserId: number = 2;
 
-    constructor( private logger: Logger,
-                 private config: AppConfigurationService )
+    constructor( private config: AppConfigurationService )
     {
+        super();
     }
 
     /**

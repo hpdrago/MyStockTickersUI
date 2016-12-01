@@ -1,13 +1,14 @@
 /**
  * Created by mike on 10/23/2016.
  */
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { PortfolioService } from "../../service/portfolio.service";
 import { SessionService } from "../../service/session.service";
 import { Portfolio } from "../../model/portfolio";
-import { Logger } from "../../service/logger.service";
 import { MenuItem } from "primeng/primeng";
 import { DeletePortfolioDialog } from "./delete-portfolio.dialog";
+import { PortfolioStocksComponent } from "./portfolio-stocks.component";
+import { BaseComponent } from "../common/base.component";
 
 @Component(
 {
@@ -16,19 +17,21 @@ import { DeletePortfolioDialog } from "./delete-portfolio.dialog";
     styleUrls: ['portfolios.component.css'],
     providers: [DeletePortfolioDialog]
 })
-export class PortfoliosComponent implements OnInit
+export class PortfoliosComponent extends BaseComponent implements OnInit
 {
     private menuItems: MenuItem[] = [];
     private portfolios: Portfolio[];
     private displayAddPortfolioDialog: boolean;
     private newPortfolioName: string;
+    private selectedPortfolio: Portfolio;
+    @ViewChild(PortfolioStocksComponent)
+    private portfolioStocksComponent: PortfolioStocksComponent;
 
-    constructor( private logger: Logger,
-                 private session: SessionService,
+    constructor( private session: SessionService,
                  private portfolioService: PortfolioService,
                  private deletePortfolioDialog: DeletePortfolioDialog )
     {
-        this.logger.setClassName( PortfoliosComponent.name );
+        super();
     }
 
     /**
@@ -47,7 +50,9 @@ export class PortfoliosComponent implements OnInit
      */
     private showPortfolio( portfolio: Portfolio )
     {
-
+        this.logger.log( 'showPortfolio ' + JSON.stringify( portfolio ));
+        this.selectedPortfolio = portfolio;
+        this.portfolioStocksComponent.loadPortfolio( portfolio );
     }
 
     /**

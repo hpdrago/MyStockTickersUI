@@ -27,6 +27,9 @@ import { InputTextModule,
          ConfirmDialogModule,
          ConfirmationService,
          GrowlModule } from 'primeng/primeng';
+import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
+import { AutoCompleteModule } from "primeng/components/autocomplete/autocomplete";
+import { InputMaskModule } from "primeng/components/inputmask/inputmask";
 /**
  * Third party imports
  */
@@ -34,22 +37,25 @@ import { InputTextModule,
 /**
  * Application Imports
  */
-import { Logger }                  from './service/logger.service';
-import { routing }                 from './app_routes';
-import { StockService }            from './service/stock.service';
-import { PortfolioService }        from './service/portfolio.service';
-import { StockExchangeService }    from './service/stock-exchange.service';
-import { SessionService }          from './service/session.service';
-import { AppConfigurationService } from "./service/app-configuration.service";
-import { AppComponent }            from './app.component';
-import { StockTableComponent }     from './component/stock/stock-table.component';
-import { MenuBarComponent }        from './component/common/menu-bar.component';
-import { DashboardComponent }      from './component/dashboard/dashboard.component';
-import { StockFormComponent }      from "./component/stock/stock-form.component";
-import { DeletePortfolioDialog }   from "./component/portfolio/delete-portfolio.dialog";
-import { UppercaseDirective }      from "./directives/uppercase.directive";
-import { loggerServiceProvider } from "./providers/logger.service.provider";
-import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
+import { routing }                     from './app_routes';
+import { StockService }                from './service/stock.service';
+import { PortfolioService }            from './service/portfolio.service';
+import { StockExchangeService }        from './service/stock-exchange.service';
+import { SessionService }              from './service/session.service';
+import { AppConfigurationService }     from "./service/app-configuration.service";
+import { AppComponent }                from './app.component';
+import { StockTableComponent }         from './component/stock/stock-table.component';
+import { MenuBarComponent }            from './component/menubar/menu-bar.component';
+import { DashboardComponent }          from './component/dashboard/dashboard.component';
+import { StockFormComponent }          from "./component/stock/stock-form.component";
+import { DeletePortfolioDialog }       from "./component/portfolio/delete-portfolio.dialog";
+import { UppercaseDirective }          from "./directives/uppercase.directive";
+import { PortfoliosComponent }         from "./component/portfolio/portfolios.component";
+import { PortfolioStocksComponent }    from "./component/portfolio/portfolio-stocks.component";
+import { PortfolioStockFormComponent } from "./component/portfolio/portfolio-stock-form.component";
+import { ModelFactory }                from "./model/model-factory";
+import { PortfolioStockDialog } from "./component/portfolio/portfolio-stock.dialog";
+import { PortfolioStockService } from "./service/portfolio-stock.service";
 
 @NgModule({
     imports:
@@ -63,6 +69,7 @@ import { PortfoliosComponent } from "./component/portfolio/portfolios.component"
         HttpModule,
         // PrimeNG modules
         DropdownModule,
+        InputMaskModule,
         DataTableModule,
         ButtonModule,
         DialogModule,
@@ -71,8 +78,10 @@ import { PortfoliosComponent } from "./component/portfolio/portfolios.component"
         TabMenuModule,
         TabViewModule,
         GrowlModule,
+        AutoCompleteModule,
         PanelModule,
         MenubarModule,
+        TieredMenuModule,
         ConfirmDialogModule
         // Third Party modules
     ],
@@ -83,6 +92,9 @@ import { PortfoliosComponent } from "./component/portfolio/portfolios.component"
         StockTableComponent,
         StockFormComponent,
         PortfoliosComponent,
+        PortfolioStocksComponent,
+        PortfolioStockFormComponent,
+        PortfolioStockDialog,
         DashboardComponent,
         DeletePortfolioDialog,
         UppercaseDirective
@@ -96,8 +108,9 @@ import { PortfoliosComponent } from "./component/portfolio/portfolios.component"
         // Global providers -- singletons
         StockService,
         PortfolioService,
+        PortfolioStockService,
         StockExchangeService,
-        Logger,
+        ModelFactory,
         SessionService,
         ConfirmationService,
         AppConfigurationService

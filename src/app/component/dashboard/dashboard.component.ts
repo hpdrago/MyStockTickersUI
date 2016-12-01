@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 
 import { Stock } from '../../model/stock';
 import { StockService } from '../../service/stock.service';
+import { BaseComponent } from "../common/base.component";
 
 @Component(
 {
@@ -13,11 +14,12 @@ import { StockService } from '../../service/stock.service';
    styleUrls: ['dashboard.component.css'],
    templateUrl: 'dashboard.component.html'
 })
-export class DashboardComponent implements OnInit
+export class DashboardComponent extends BaseComponent implements OnInit
 {
     constructor( private router: Router,
                  private stockService: StockService )
     {
+        super();
     }
 
     ngOnInit(): void

@@ -5,7 +5,8 @@
  *
  * Created by mike on 10/5/2016.
  */
-import { Logger } from "../service/logger.service";
+import { LoggerFactory } from "./logger-factory";
+import { Logger } from "./logger";
 
 export class PaginationURL
 {
@@ -17,10 +18,10 @@ export class PaginationURL
      * @param url The base URL to which the page number and number of rows will be added
      *        to make a proper request to a Spring REST service
      */
-    constructor( logger: Logger, url: string )
+    constructor( url: string )
     {
         this.url = url;
-        this.logger = logger;
+        this.logger = LoggerFactory.getLogger( PaginationURL.name );
     }
 
     /**

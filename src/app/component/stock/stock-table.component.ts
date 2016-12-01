@@ -5,19 +5,19 @@ import { OnInit, Component } from "@angular/core";
 import { Router }         from '@angular/router';
 import { Stock }          from "../../model/stock";
 import { StockService }   from "../../service/stock.service";
-import { Logger }         from "../../service/logger.service";
 import { PaginationPage } from "../../common/pagination";
 import { LazyLoadEvent }  from "primeng/components/common/api";
 import { CrudOperation }  from "../../common/crud-operation";
 import { SessionService } from "../../service/session.service";
+import { ModelFactory } from "../../model/model-factory";
+import { BaseComponent } from "../common/base.component";
 
 @Component( {
     selector:    'stock-table',
     templateUrl: 'stock-table.component.html',
     styleUrls:   ['stock-table.component.css'],
-    providers:   [Logger]
 } )
-export class StockTableComponent implements OnInit
+export class StockTableComponent extends BaseComponent implements OnInit
 {
     /*
      * Instance variables
@@ -35,12 +35,11 @@ export class StockTableComponent implements OnInit
      * @param stockService
      * @param router
      */
-    constructor( private logger: Logger,
-                 private stockService: StockService,
+    constructor( private stockService: StockService,
                  private router: Router,
                  private session: SessionService )
     {
-        this.logger.setClassName( StockTableComponent.name );
+        super();
         this.stocksPage =
         {
             content : [],
@@ -123,7 +122,7 @@ export class StockTableComponent implements OnInit
     private showFormToAdd()
     {
         this.crudOperation = CrudOperation.INSERT;
-        this.displayableStock = new Stock( '', '', '', 0, false );
+        this.displayableStock = ModelFactory.newStockInstance();
     }
 
     private showFormToEdit()
@@ -250,11 +249,7 @@ export class StockTableComponent implements OnInit
     private onRowSelect( event ): void
     {
         this.logger.log( 'onRowSelect() ' + JSON.stringify( event ) );
-        this.selectedStock = new Stock( event.data.tickerSymbol,
-                                        event.data.companyName,
-                                        event.data.exchange,
-                                        event.data.createdBy,
-                                        event.data.userEntered );
+        this.selectedStock = ModelFactory.newStockInstanceFromEvent( event.data );
         /*
          * Make a clone so that we are making changes to a clone and not the row in the table
          */

@@ -5,18 +5,21 @@ export class Stock
 {
     public tickerSymbol: string;
     public companyName: string;
+    public lastPrice: number;
     public exchange: string;
     public createdBy: number;
     public userEntered: boolean;
 
     constructor( tickerSymbol: string,
                  companyName: string,
+                 lastPrice: number,
                  exchange: string,
                  createdBy: number,
                  userEntered: boolean )
     {
         this.tickerSymbol = tickerSymbol;
         this.companyName = companyName;
+        this.lastPrice = lastPrice;
         this.exchange = exchange;
         this.createdBy = createdBy;
         this.userEntered = userEntered;
@@ -43,6 +46,6 @@ export class Stock
      */
     public clone(): Stock
     {
-        return new Stock( this.tickerSymbol, this.companyName, this.exchange, this.createdBy, this.userEntered );
+        return new Stock( this.tickerSymbol, this.companyName, this.lastPrice, this.exchange, this.createdBy, this.userEntered );
     }
 }

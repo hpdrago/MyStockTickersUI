@@ -1,9 +1,9 @@
 /**
+ * Class to log messages to the browser console
+ *
  * Created by mike on 4/24/2016.
  */
-import { Injectable } from "@angular/core";
 
-@Injectable()
 export class Logger
 {
     private className: string;

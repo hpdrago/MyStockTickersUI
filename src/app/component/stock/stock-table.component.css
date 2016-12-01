@@ -34,11 +34,6 @@
     display: inline;
 }
 
-#companyNameInput
-{
-    float: left;
-}
-
 #clearSearchIcon
 {
     float: right;
@@ -52,4 +47,9 @@
 #companyNameColumn
 {
     width: 100px;
+}
+
+#lastPriceColumn
+{
+    text-align: right;
 }

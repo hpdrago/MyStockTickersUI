@@ -11,23 +11,24 @@ import { Stock } from '../model/stock';
 import { PaginationPage } from '../common/pagination';
 import { PaginationURL } from '../common/pagination-url';
 import { SessionService } from "./session.service";
-import { Logger } from "./logger.service";
+import { StockSectorMap } from "../model/stock-sectors";
+import { BaseService } from "./base,service";
 
 @Injectable()
-export class StockService
+export class StockService extends BaseService
 {
     private stocksUrl: string = 'http://localhost:8080/stocks';
+    private stockSectorsUrl: string = 'http://localhost:8080/stocksectors';
     private stocksCompaniesLikeUrl: string = this.stocksUrl + '/companieslike/';
     private stocksPaginationUrl: PaginationURL;
     private stocksCompaniesLikePaginationUrl: PaginationURL;
 
     constructor( private http: Http,
-                 private session: SessionService,
-                 private logger: Logger )
+                 private session: SessionService )
     {
-        this.stocksPaginationUrl = new PaginationURL( logger, this.stocksUrl );
-        this.stocksCompaniesLikePaginationUrl = new PaginationURL( logger, this.stocksCompaniesLikeUrl );
-        this.logger.setClassName( StockService.name );
+        super();
+        this.stocksPaginationUrl = new PaginationURL( this.stocksUrl );
+        this.stocksCompaniesLikePaginationUrl = new PaginationURL( this.stocksCompaniesLikeUrl );
     }
 
     /**
@@ -145,7 +146,7 @@ export class StockService
      * @returns true if the stock was entered by the logged in user, then he can change it.
      *          Or if it is me logged in :-)
      */
-    public canEditOrDelete( stock: Stock, userId: number )
+    public canEditOrDelete( stock: Stock, userId: number ): boolean
     {
         var canEditOrDelete = false;
         if ( stock.userEntered )
@@ -157,5 +158,16 @@ export class StockService
             }
         }
         return canEditOrDelete;
+    }
+
+    /**
+     * Get the stock sector map
+     * @returns {Observable<R>}
+     */
+    public getStockSectors(): Observable<StockSectorMap>
+    {
+        return this.http.get( this.stockSectorsUrl )
+            .map( ( response: Response ) => response.json() )
+            .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) );
     }
 }
