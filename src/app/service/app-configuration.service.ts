@@ -2,7 +2,6 @@
  * Created by mike on 10/22/2016.
  */
 import { Injectable } from "@angular/core";
-import { StockSectorMap } from "../model/stock-sectors";
 
 @Injectable()
 export class AppConfigurationService

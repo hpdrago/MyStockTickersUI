@@ -1,3 +1,4 @@
+<p-growl [value]="messages" sticky="true"></p-growl>
 <div *ngIf="stocksPage">
     <div id="stockTableDiv">
         <p-panel header="Stocks">
@@ -18,7 +19,7 @@
             </div>
             <div id="tableDiv">
                 <p-dataTable [(value)]="stocksPage.content"
-                             [(selection)]="selectedStock"
+                             [(selection)]="selectedModelObject"
                              selectionMode="single"
                              [scrollable]="true"
                              [lazy]="true"
@@ -71,7 +72,7 @@
                 <button
                     type="button"
                     pButton icon="fa-plus"
-                    (click)="showFormToAdd()"
+                    (click)="addButtonClick()"
                     [disabled]="isAddButtonDisabled()"
                     label="Add">
                 </button>
@@ -88,15 +89,9 @@
         </p-panel>
     </div>
     <div id="stockFormDiv">
-        <stock-form
-            [stock]="displayableStock"
-            [crudOperation]="crudOperation"
-            (onStockSave)="onStockFormButtonSave( $event )"
-            (onStockAdd)="onStockFormButtonAdd( $event )"
-            (onStockDelete)="onStockFormButtonDelete( $event )"
-            (onJumpToStock)="onJumpToStock( $event )"
-            (onButtonDelete)="onStockFormButtonDelete()">
-        </stock-form>
+        <stock-panel
+            [crudPanelService]="stockPanelService">
+        </stock-panel>
     </div>
 </div>
 

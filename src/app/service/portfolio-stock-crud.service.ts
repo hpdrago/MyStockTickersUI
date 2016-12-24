@@ -1,0 +1,90 @@
+
+import { PortfolioStock } from "../model/portfolio-stock";
+import { AppConfigurationService } from "./app-configuration.service";
+import { SessionService } from "./session.service";
+import { Injectable } from "@angular/core";
+import { Http } from "@angular/http";
+import { PortfolioStockDTO } from "../dto/portfolio-stock.dto";
+import { Observable } from "rxjs";
+import { PortfolioStockFactory } from "../model/portfolio-stock-factory";
+import { CrudRestService } from "./crud-rest.serivce";
+
+/**
+ * This service manages REST communication for PortfolioStocks.
+ * The core functionality is inherited from CrudRestService.
+ * This class essentially defines the target URL's for the REST services.
+ *
+ * Created by mike on 11/26/2016.
+ */
+@Injectable()
+export class PortfolioStockCrudService extends CrudRestService<PortfolioStock>
+{
+    constructor( protected http: Http,
+                 protected sessionService: SessionService,
+                 protected appConfigurationService: AppConfigurationService,
+                 private portfolioStockFactory: PortfolioStockFactory )
+    {
+        super( http, sessionService, appConfigurationService );
+    }
+
+    protected getCreatedModelObjectUrl( baseUrl: string, modelObject: PortfolioStock ): string
+    {
+        var createUrl = this.getPortfolioStockUrl();
+        return createUrl;
+    }
+
+    protected getReadModelObjectUrl( baseUrl: string, modelObject: PortfolioStock ): string
+    {
+        var readUrl = this.getPortfolioStockUrl();
+        return readUrl;
+    }
+
+    protected getReadModelObjectListUrl( baseUrl: string, modelObject: PortfolioStock ): string
+    {
+        var url = `${this.getCustomerUrl()}${modelObject.customerId}/portfolio/${modelObject.portfolioId}/stocks`;
+        return url;
+    }
+
+    protected getUpdateModelObjectUrl( baseUrl: string, modelObject: PortfolioStock ): string
+    {
+        var updateUrl = this.getPortfolioStockUrl();
+        return updateUrl;
+    }
+
+    protected getDeleteModelObjectUrl( baseUrl: string, modelObject: PortfolioStock ): string
+    {
+        return undefined;
+    }
+
+    /**
+     * Defines the URL for REST services that start with /customer
+     * @return {string}
+     */
+    private getCustomerUrl(): string
+    {
+        return this.appConfigurationService.getBaseUrl() + "/customer/";
+    }
+
+    /**
+     * Defines the URL for REST services that start with /portfolioStock
+     * @return {string}
+     */
+    private getPortfolioStockUrl(): string
+    {
+        return this.appConfigurationService.getBaseUrl() + "/portfolioStock/";
+    }
+
+    /**
+     * Get the portfoio stock for the customer and portfolio id
+     * @param customerId
+     * @param portfolioId
+     * @return {Observable<Array<PortfolioStock>>}
+     */
+    public getPortfolioStocks( customerId: number, portfolioId: number ): Observable<Array<PortfolioStock>>
+    {
+        var portfolioStock: PortfolioStock = this.portfolioStockFactory.newModelObject();
+        portfolioStock.customerId = customerId;
+        portfolioStock.portfolioId = portfolioId;
+        return super.getModelObjectList( portfolioStock );
+    }
+}

@@ -1,0 +1,46 @@
+<!--
+    Stock Form
+-->
+<div *ngIf="modelObject">
+    <p-growl [value]="messages" sticky="true"></p-growl>
+    <p-panel header="Stock Detail">
+        <div>
+            <stock-form [crudFormService]="crudFormService">
+            </stock-form>
+        </div>
+        <div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2"></div>
+                <div class="ui-grid-col-7">
+                    <div *ngIf="isShowSaveButton()">
+                        <button pButton type="button"
+                                (click)="onSaveButtonClick()"
+                                label="Save Stock"
+                                [disabled]="isSaveButtonDisabled()">
+                        </button>
+                    </div>
+                    <div *ngIf="isShowAddButton()">
+                        <button pButton type="button"
+                                (click)="onAddButtonClick()"
+                                label="Add Stock"
+                                [disabled]="isAddButtonDisabled()">
+                        </button>
+                    </div>
+                    <div *ngIf="isShowDeleteButton()">
+                        <button pButton type="button"
+                                (click)="onDeleteButtonClick()"
+                                label="Delete Stock"
+                                [disabled]="isDeleteButtonDisabled()">
+                        </button>
+                    </div>
+                </div>
+                <div class="ui-grid-col-3"></div>
+            </div>
+            <div style="text-align:center;margin-top:20px" *ngIf="submitted">
+                Form Submitted
+                <br>
+                {{diagnostic}}
+            </div>
+        </div>
+    </p-panel>
+</div>

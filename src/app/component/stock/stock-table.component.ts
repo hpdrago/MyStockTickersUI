@@ -1,32 +1,26 @@
 /**
  * This component lists the all of the stocks
  */
-import { OnInit, Component } from "@angular/core";
-import { Router }         from '@angular/router';
-import { Stock }          from "../../model/stock";
-import { StockService }   from "../../service/stock.service";
+import { Component, OnInit } from "@angular/core";
+import { Stock } from "../../model/stock";
 import { PaginationPage } from "../../common/pagination";
-import { LazyLoadEvent }  from "primeng/components/common/api";
-import { CrudOperation }  from "../../common/crud-operation";
-import { SessionService } from "../../service/session.service";
-import { ModelFactory } from "../../model/model-factory";
-import { BaseComponent } from "../common/base.component";
+import { LazyLoadEvent } from "primeng/components/common/api";
+import { CrudOperation } from "../common/crud-operation";
+import { CrudTableComponent } from "../common/crud-table.component";
+import { StockFactory } from "../../model/stock-factory";
+import { StockPanelService } from "./stock-panel.service";
+import { StockCrudService } from "../../service/stock-crud.service";
+import { ToastsManager } from "ng2-toastr";
 
 @Component( {
     selector:    'stock-table',
-    templateUrl: 'stock-table.component.html',
-    styleUrls:   ['stock-table.component.css'],
+    templateUrl: './stock-table.component.html',
+    styleUrls:   ['./stock-table.component.css'],
+    outputs: ['selectedModelObject', 'displayableModelObject']
 } )
-export class StockTableComponent extends BaseComponent implements OnInit
+export class StockTableComponent extends CrudTableComponent<Stock> implements OnInit
 {
-    /*
-     * Instance variables
-     */
     private stocksPage: PaginationPage<Stock>;
-    private selectedStock: Stock = null;
-    private displayableStock: Stock;
-    private crudOperation: CrudOperation;
-    private totalRecords: number;
     private companyNameSearch: string;
     private lastLoadEvent: LazyLoadEvent;
 
@@ -35,11 +29,16 @@ export class StockTableComponent extends BaseComponent implements OnInit
      * @param stockService
      * @param router
      */
-    constructor( private stockService: StockService,
-                 private router: Router,
-                 private session: SessionService )
+    constructor( protected toaster: ToastsManager,
+                 protected stockService: StockCrudService,
+                 protected stockFactory: StockFactory,
+                 protected stockPanelService: StockPanelService )
     {
-        super();
+        super( toaster, stockFactory, stockPanelService, stockService );
+    }
+
+    public ngOnInit(): void
+    {
         this.stocksPage =
         {
             content : [],
@@ -71,7 +70,7 @@ export class StockTableComponent extends BaseComponent implements OnInit
                         err =>
                         {
                             // Log errors if any
-                            console.log( err );
+                            this.reportRestError( err );
                         } );
         this.lastLoadEvent = event;
     }
@@ -84,17 +83,17 @@ export class StockTableComponent extends BaseComponent implements OnInit
     {
         this.logger.log( 'getStockCompaniesLike ' + searchString );
         this.stockService
-            .getStocksCompaniesLike( searchString )
+            .getStockCompaniesLike( searchString )
             .subscribe( stocksPage =>
-                {
-                    this.setStocksPage( stocksPage );
-                    //alert( JSON.stringify( stocksPage))
-                }, //Bind to view
-                err =>
-                {
-                    // Log errors if any
-                    console.log( err );
-                } );
+            {
+                this.setStocksPage( stocksPage );
+                //alert( JSON.stringify( stocksPage))
+            }, //Bind to view
+            error =>
+            {
+                // Log errors if any
+                this.reportRestError( error );
+            } );
     }
 
     /**
@@ -110,37 +109,16 @@ export class StockTableComponent extends BaseComponent implements OnInit
         this.logger.log( 'setStocksPage: totalElements: ' + stocksPage.totalElements );
     }
 
-    /**
-     * Jump to the stock detail component
-     */
-    private gotoStockDetail(): void
-    {
-        let link = ['/stockDetail', this.selectedStock.tickerSymbol];
-        this.router.navigate(link);
-    }
-
-    private showFormToAdd()
-    {
-        this.crudOperation = CrudOperation.INSERT;
-        this.displayableStock = ModelFactory.newStockInstance();
-    }
-
-    private showFormToEdit()
-    {
-        this.crudOperation = CrudOperation.UPDATE;
-        this.displayableStock = this.selectedStock;
-    }
-
     private save()
     {
         if ( this.crudOperation == CrudOperation.INSERT  )
         {
-            this.stocksPage.content.push( this.displayableStock );
+            this.stocksPage.content.push( this.displayableModelObject );
         }
         else
         {
             this.stocksPage.content[this.findSelectedStockIndex()] ;
-            this.displayableStock = null;
+            this.displayableModelObject = null;
         }
     }
 
@@ -153,21 +131,12 @@ export class StockTableComponent extends BaseComponent implements OnInit
         for ( var i = 0; i < this.stocksPage.content.length; i++ )
         {
             var stock = this.stocksPage.content[i];
-            if ( stock.tickerSymbol === this.selectedStock.tickerSymbol )
+            if ( stock.tickerSymbol === this.selectedModelObject.tickerSymbol )
             {
                 return i;
             }
         }
-        throw new Error( "Could not find ticker symbol " + this.selectedStock.tickerSymbol );
-    }
-
-    /**
-     * Determines if the Add button should be disabled
-     * @returns {boolean}
-     */
-    public isAddButtonDisabled(): boolean
-    {
-        return false;
+        throw new Error( "Could not find ticker symbol " + this.selectedModelObject.tickerSymbol );
     }
 
     /*****************************************************************
@@ -175,7 +144,7 @@ export class StockTableComponent extends BaseComponent implements OnInit
      *****************************************************************/
     private onCompanyNameSearch( event )
     {
-        this.logger.log( 'onCompanyNameSearch()' + this.companyNameSearch );
+        this.logger.log( 'onCompanyNameSearch ' + this.companyNameSearch );
         if ( this.companyNameSearch && this.companyNameSearch.length > 0 )
         {
             this.getStockCompaniesLike( this.companyNameSearch );
@@ -185,51 +154,6 @@ export class StockTableComponent extends BaseComponent implements OnInit
     private onClearCompanySearch( event )
     {
         this.companyNameSearch = '';
-    }
-
-    private onEditComplete( event ): void
-    {
-        this.logger.log( 'onEditComplete()' );
-        this.stockService.updateStock( this.selectedStock );
-    }
-
-    /**
-     * On application start up initialization
-     */
-    public ngOnInit(): void
-    {
-        //this.logger.log( 'ngOnInit()' );
-        //this.loadPage( 0, 20 );
-    }
-
-    /**
-     * this method is called when the user clicks on the Save button on the stock form.
-     */
-    private onStockFormButtonSave( stock: Stock ): void
-    {
-        this.logger.log( 'onStockFormButtonSave()' );
-        this.crudOperation = CrudOperation.NONE;
-        this.lazyLoadData( this.lastLoadEvent );
-    }
-
-    /**
-     * this method is called when the user clicks on the Add button on the stock form.
-     */
-    private onStockFormButtonAdd( stock: Stock ): void
-    {
-        this.logger.log( 'onStockFormButtonAdd()' );
-        this.crudOperation = CrudOperation.NONE;
-        this.getStockCompaniesLike( stock.tickerSymbol );
-    }
-
-    /**
-     * this method is called when the user clicks on the Delete button on the stock form.
-     */
-    private onStockFormButtonDelete( stock: Stock ): void
-    {
-        this.logger.log( 'onStockFormButtonDelete()' );
-        this.crudOperation = CrudOperation.NONE;
-        this.lazyLoadData( this.lastLoadEvent );
     }
 
     /**
@@ -242,18 +166,4 @@ export class StockTableComponent extends BaseComponent implements OnInit
         this.getStockCompaniesLike( stock.tickerSymbol );
     }
 
-    /**
-     * this method is called when the user selects a row in the stock table
-     * @param event
-     */
-    private onRowSelect( event ): void
-    {
-        this.logger.log( 'onRowSelect() ' + JSON.stringify( event ) );
-        this.selectedStock = ModelFactory.newStockInstanceFromEvent( event.data );
-        /*
-         * Make a clone so that we are making changes to a clone and not the row in the table
-         */
-        this.displayableStock = this.selectedStock.clone();
-        this.crudOperation = CrudOperation.UPDATE;
-    }
 }

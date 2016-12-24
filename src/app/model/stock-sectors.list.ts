@@ -1,10 +1,9 @@
 import { SelectItem } from "primeng/components/common/api";
+import { ModelObject } from "./base-modelobject";
+
 /**
- * This class is a hierarchy sectors and sub sectors from the stock_sector table
- * Created by mike on 11/19/2016.
+ * Internal interface definition that defines the structure of the data
  */
-
-
 interface Sector
 {
     sectorId: string;
@@ -12,7 +11,11 @@ interface Sector
     subSectors: Array<Sector>;
 }
 
-export class StockSectorMap
+/**
+ * This class is a hierarchy sectors and sub sectors from the stock_sector table
+ * Created by mike on 11/19/2016.
+ */
+export class StockSectorList extends ModelObject<StockSectorList>
 {
     private sectors: Array<Sector>;
 
@@ -85,5 +88,10 @@ export class StockSectorMap
             }
         }
         return selectItems;
+    }
+
+    clone(): StockSectorList
+    {
+        return undefined;
     }
 }

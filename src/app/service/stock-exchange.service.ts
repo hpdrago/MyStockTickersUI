@@ -1,9 +1,9 @@
+import { StockExchanges } from "../model/stock-exchanges";
+
 /**
  * Stock Exchange service
  * Created by mike on 10/10/2016.
  */
-import { StockExchanges } from "../model/stock-exchanges";
-
 export class StockExchangeService
 {
     public get(): StockExchanges

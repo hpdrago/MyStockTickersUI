@@ -1,37 +1,45 @@
-/**
- * Created by mike on 10/23/2016.
- */
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { PortfolioService } from "../../service/portfolio.service";
 import { SessionService } from "../../service/session.service";
 import { Portfolio } from "../../model/portfolio";
 import { MenuItem } from "primeng/primeng";
 import { DeletePortfolioDialog } from "./delete-portfolio.dialog";
-import { PortfolioStocksComponent } from "./portfolio-stocks.component";
-import { BaseComponent } from "../common/base.component";
+import { PortfolioStockTableComponent } from "../portfoliostock/portfolio-stock-table.component";
+import { PortfolioCrudService } from "../../service/portfolio-crud.service";
+import { CrudTableComponent } from "../common/crud-table.component";
+import { PortfolioFactory } from "../../model/portfolio-factory";
+import { PortfolioPanelService } from "./portfolio-panel.service";
+import { ToastsManager } from "ng2-toastr";
 
+/**
+ * This class contains the UI for listing the user's portfolios.
+ *
+ * Created by mike on 10/23/2016.
+ */
 @Component(
 {
     selector: 'portfolios',
-    templateUrl: 'portfolios.component.html',
-    styleUrls: ['portfolios.component.css'],
+    templateUrl: './portfolios.component.html',
+    styleUrls: ['./portfolios.component.css'],
     providers: [DeletePortfolioDialog]
 })
-export class PortfoliosComponent extends BaseComponent implements OnInit
+export class PortfoliosComponent extends CrudTableComponent<Portfolio> implements OnInit
 {
     private menuItems: MenuItem[] = [];
     private portfolios: Portfolio[];
     private displayAddPortfolioDialog: boolean;
     private newPortfolioName: string;
     private selectedPortfolio: Portfolio;
-    @ViewChild(PortfolioStocksComponent)
-    private portfolioStocksComponent: PortfolioStocksComponent;
+    @ViewChild(PortfolioStockTableComponent)
+    private portfolioStocksComponent: PortfolioStockTableComponent;
 
-    constructor( private session: SessionService,
-                 private portfolioService: PortfolioService,
+    constructor( protected toaster: ToastsManager,
+                 private session: SessionService,
+                 private portfolioFactory: PortfolioFactory,
+                 private portfolioPanelService: PortfolioPanelService,
+                 private portfolioCrudService: PortfolioCrudService,
                  private deletePortfolioDialog: DeletePortfolioDialog )
     {
-        super();
+        super( toaster, portfolioFactory, portfolioPanelService, portfolioCrudService );
     }
 
     /**
@@ -60,6 +68,7 @@ export class PortfoliosComponent extends BaseComponent implements OnInit
      */
     private hideAddPortfolioDialog(): void
     {
+        this.newPortfolioName = "";
         this.displayAddPortfolioDialog = false;
     }
 
@@ -97,15 +106,15 @@ export class PortfoliosComponent extends BaseComponent implements OnInit
     private addPortfolio(): void
     {
         this.displayAddPortfolioDialog = false;
-        this.portfolioService.addPortfolio( this.session.getLoggedInUserId(), this.newPortfolioName )
-                             .subscribe( (portfolio)  =>
-                                {
-                                    this.loadPortfolios();
-                                },
-                                err =>
-                                {
-                                    this.logger.error(err);
-                                });
+        this.portfolioCrudService.addPortfolio( this.session.getLoggedInUserId(), this.newPortfolioName )
+                                 .subscribe( (portfolio)  =>
+                                    {
+                                        this.loadPortfolios();
+                                    },
+                                    err =>
+                                    {
+                                        this.reportRestError( err );
+                                    });
     }
 
     /**
@@ -113,22 +122,21 @@ export class PortfoliosComponent extends BaseComponent implements OnInit
      */
     private loadPortfolios()
     {
-        this.portfolioService
+        this.portfolioCrudService
             .getCustomerPortfolios( this.session.getLoggedInUserId() )
             .subscribe( portfolios =>
-                {
-                    this.portfolios = portfolios;
-                    this.logger.log( "loadPortfolios: " + JSON.stringify( this.portfolios ));
-                    this.logger.log( "loadPortfolios length: " + this.portfolios.length );
-                    this.logger.log( "loadPortfolios[0]: " + JSON.stringify( this.portfolios[0] ));
-                    this.logger.log( "loadPortfolios[0]: " + this.portfolios );
-                    this.initializeMenuBar();
-                }, //Bind to view
-                err =>
-                {
-                    // Log errors if any
-                    console.log(err);
-                });
+            {
+                this.portfolios = portfolios;
+                this.logger.log( "loadPortfolios: " + JSON.stringify( this.portfolios ));
+                this.logger.log( "loadPortfolios length: " + this.portfolios.length );
+                this.logger.log( "loadPortfolios[0]: " + JSON.stringify( this.portfolios[0] ));
+                this.logger.log( "loadPortfolios[0]: " + this.portfolios );
+                this.initializeMenuBar();
+            }, //Bind to view
+            err =>
+            {
+                this.reportRestError( err );
+            });
     }
 
     private initializeMenuBar()

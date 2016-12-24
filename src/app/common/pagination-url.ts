@@ -44,6 +44,24 @@ export class PaginationURL
      * @param rows The number of rows to retrieve
      * @returns {any}
      */
+    public getPageWithSearchString( searchString: string, rowOffSet: number, rows: number  ): string
+    {
+        /*
+         * Need to calculate the page number from the rowOffSet
+         */
+        this.logger.log( `getPage ${searchString} rowOffset: ${rowOffSet} rows: ${rows}` )
+        var pageNumber = ((rowOffSet + rows) / rows) - 1;
+        var url = `${this.url}/${searchString}?page=${pageNumber}&limit=${rows}`;
+        this.logger.log( "getPage url: " + url );
+        return url;
+    }
+
+    /**
+     * Format the URL to make a Spring REST page request
+     * @param pageNumber Starting at page number
+     * @param rows The number of rows to retrieve
+     * @returns {any}
+     */
     public getPage( rowOffSet: number, rows: number  ): string
     {
         /*

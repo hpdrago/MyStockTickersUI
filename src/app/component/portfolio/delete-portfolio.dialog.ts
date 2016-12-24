@@ -3,8 +3,8 @@
  */
 import { ConfirmationService } from "primeng/components/common/api";
 import { Component, Input, EventEmitter, Output } from "@angular/core";
-import { PortfolioService } from "../../service/portfolio.service";
 import { Portfolio } from "../../model/portfolio";
+import { PortfolioCrudService } from "../../service/portfolio-crud.service";
 
 @Component(
 {
@@ -25,7 +25,7 @@ export class DeletePortfolioDialog
     private portfolioDelete: EventEmitter<any> = new EventEmitter();
 
     constructor( private confirmationService: ConfirmationService,
-                 private portfolioService: PortfolioService )
+                 private portfolioService: PortfolioCrudService )
     {
     }
 
@@ -36,8 +36,8 @@ export class DeletePortfolioDialog
                          portfolio.name + '\' from your list?',
                 accept: () => {
                     this.portfolioService
-                        .deletePortfolio( portfolio.id )
-                        .subscribe( (any)  =>
+                        .deleteModelObject( portfolio )
+                        .subscribe( () =>
                             {
                                 this.portfolioDelete.emit();
                             },

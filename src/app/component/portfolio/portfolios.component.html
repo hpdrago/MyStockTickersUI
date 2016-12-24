@@ -1,5 +1,6 @@
+<p-growl [value]="messages" [sticky]="true"></p-growl>
 <p-panel class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" header="Portfolios">
-    <div id="portfolio-list" class="ui-grid-row">
+    <div id="portfolio-list">
         <div *ngFor="let portfolio of portfolios">
             <div class="portfolio-div"
                  [class.ui-state-active]="portfolio == selectedPortfolio"
@@ -13,7 +14,9 @@
     <!--
     Port folio stocks
     -->
-    <portfolio-stocks></portfolio-stocks>
+    <div class="ui-grid-row">
+        <portfolio-stock-table></portfolio-stock-table>
+    </div>
     <!--
     Confirm Delete Portfolio Dialog
     -->

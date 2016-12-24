@@ -1,6 +1,8 @@
+<p-growl [value]="messages"></p-growl>
+<p-growl [value]="messages"></p-growl>
 <p-dataTable [value]="stocks"
              selectionMode="single"
-             [(selection)]="selectedStock"
+             [(selection)]="selectedModelObject"
              (onRowSelect)="onRowSelect($event)"
              [paginator]="true"
              [pageLinks]="3"
@@ -32,8 +34,12 @@
     </footer>
 </p-dataTable>
 <portfolio-stock-dialog
-        (onCloseButton)="displayStockForm=false"
-        [modelObject]="selectedPortfolioStock"
+    [crudPanelService]="portfolioStockPanelService"
+    [(displayDialog)]="displayDialog">
+        <!--[modelObject]="selectedPortfolioStock"
+        (addButtonClick)="onAddButtonClick($event)"
+        (closeButtonClick)="onCloseButtonClick($event)"
         [crudOperation]="crudOperation"
-        [(visible)]="displayStockForm">
+        [portfolio]="portfolio"
+        [(displayDialog)]="displayDialog">-->
 </portfolio-stock-dialog>

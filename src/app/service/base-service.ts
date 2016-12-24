@@ -15,4 +15,9 @@ export abstract class BaseService
         this.logger = LoggerFactory.getLogger( (<any>this).constructor.name );
     }
 
+    protected reportError( error ): string
+    {
+        this.logger.error( error );
+        return error;
+    }
 }

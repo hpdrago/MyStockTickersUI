@@ -3,23 +3,23 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { Stock } from '../../model/stock';
-import { StockService } from '../../service/stock.service';
 import { BaseComponent } from "../common/base.component";
+import { StockCrudService } from "../../service/stock-crud.service";
+import { ToastsManager } from "ng2-toastr";
 
 @Component(
 {
    selector: 'my-dashboard',
-   styleUrls: ['dashboard.component.css'],
-   templateUrl: 'dashboard.component.html'
+   styleUrls: ['./dashboard.component.css'],
+   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent extends BaseComponent implements OnInit
 {
-    constructor( private router: Router,
-                 private stockService: StockService )
+    constructor( protected toaster: ToastsManager,
+                 private router: Router,
+                 private stockService: StockCrudService )
     {
-        super();
+        super( toaster );
     }
 
     ngOnInit(): void

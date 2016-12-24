@@ -9,6 +9,16 @@
 
 /* My customizations of PrimeNG afterdark theme */
 
+/*
+ * Overflow settings so that drop down p-dropdown work correctly
+ */
+.ui-dialog {
+    overflow: visible;
+}
+
+.ui-dialog-content {
+    overflow: visible;
+}
 
 .background-color-blue {
     background-color: #2399e5;

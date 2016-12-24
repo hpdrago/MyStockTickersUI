@@ -6,7 +6,7 @@ import { StockTableComponent }      from './component/stock/stock-table.componen
 import { DashboardComponent }   from './component/dashboard/dashboard.component';
 import { StockFormComponent } from './component/stock/stock-form.component';
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
-import { PortfolioStockFormComponent } from "./component/portfolio/portfolio-stock-form.component";
+import { PortfolioStockFormComponent } from "./component/portfoliostock/portfolio-stock-form.component";
 
 const routes: Routes = [
     {

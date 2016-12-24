@@ -1,110 +1,78 @@
 <!--
     Stock Form
 -->
-<div *ngIf="stock">
-    <p-growl [value]="messages"  sticky="sticky"></p-growl>
-    <form [formGroup]="stockForm" (ngSubmit)="onSubmit(stockForm.value)">
-        <p-panel header="Stock Detail">
-            <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-2">
-                        <label>Ticker Symbol:</label>
-                    </div>
-                    <div class="ui-grid-col-7">
-                        <input id="tickerSymbol"
-                               formControlName="tickerSymbol"
-                               placeholder="Required"
-                               size="5"
-                               type="text"
-                               pInputText required uppercase
-                               [(ngModel)]="stock.tickerSymbol"/>
-                    </div>
-                    <div class="ui-grid-col-3">
-                        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="isTickerSymbolInvalid()">
-                            <i class="fa fa-close"></i>
-                            Ticker Symbol is required
-                        </div>
-                    </div>
-                </div>
-
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-2">
-                        <label>Company Name:</label>
-                    </div>
-                    <div class="ui-grid-col-7">
-                        <input id="companyName"
-                               formControlName="companyName"
-                               placeholder="Required"
-                               size="30"
-                               type="text"
-                               pInputText required
-                               [(ngModel)]="stock.companyName"/>
-                    </div>
-                    <div class="ui-grid-col-3">
-                        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="isCompanyNameInvalid()">
-                            <i class="fa fa-close"></i>
-                            Company Name is required
-                        </div>
-                    </div>
-                </div>
-
-<!--                <div class="ui-grid-row">
-                    <div class="ui-grid-col-2">
-                        Exchange:
-                    </div>
-                    <div class="ui-grid-col-7">
-                       &lt;!&ndash; <p-dropdown id="stockExchange"
-                            [options]="stockExchanges"
-                            [required]="true"
-                            [(ngModel)]="stock.exchange">
-                        </p-dropdown>&ndash;&gt;
-                        <p-selectButton id="stockExchange"
-                            formControlName="stockExchange"
-                            [options]="stockExchanges"
-                            [required]="true"
-                            [(ngModel)]="stock.exchange">
-                        </p-selectButton>
-                    </div>
-                    <div class="ui-grid-col-3">
-                        <div class="ui-message ui-messages-error ui-corner-all" *ngIf="isStockExchangeInvalid()">
-                            <i class="fa fa-close"></i>
-                            Stock Exchange is required
-                        </div>
-                    </div>
-                </div>-->
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-2"></div>
-                    <div class="ui-grid-col-7">
-                        <div *ngIf="isShowSaveButton()">
-                            <button pButton type="button"
-                                    (click)="onSaveButtonClick()"
-                                    label="Save Stock"
-                                    [disabled]="isSaveButtonDisabled()">
-                            </button>
-                        </div>
-                        <div *ngIf="isShowAddButton()">
-                            <button pButton type="button"
-                                    (click)="onAddButtonClick()"
-                                    label="Add Stock"
-                                    [disabled]="isAddButtonDisabled()">
-                            </button>
-                        </div>
-                        <div *ngIf="isShowDeleteButton()">
-                            <button pButton type="button"
-                                    (click)="onDeleteButtonClick()"
-                                    label="Delete Stock"
-                                    [disabled]="isDeleteButtonDisabled()">
-                            </button>
-                        </div>
-                    </div>
-                    <div class="ui-grid-col-3"></div>
-                </div>
-                <div style="text-align:center;margin-top:20px" *ngIf="submitted">
-                    Form Submitted
-                    <br>
-                    {{diagnostic}}
+<form [formGroup]="crudForm" (ngSubmit)="onSubmit(stockForm.value)">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+                <label for="tickerSymbol">Ticker Symbol:</label>
+            </div>
+            <div class="ui-grid-col-7">
+                <input id="tickerSymbol"
+                       formControlName="tickerSymbol"
+                       placeholder="Required"
+                       size="5"
+                       type="text"
+                       pInputText required uppercase
+                       [(ngModel)]="modelObject.tickerSymbol"/>
+            </div>
+            <div class="ui-grid-col-3">
+                <div class="ui-message ui-messages-error ui-corner-all" *ngIf="isTickerSymbolInvalid()">
+                    <i class="fa fa-close"></i>
+                    Ticker Symbol is required
                 </div>
             </div>
-        </p-panel>
-    </form>
-</div>
+        </div>
+
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+                <label for="companyName">Company Name:</label>
+            </div>
+            <div class="ui-grid-col-7">
+                <input id="companyName"
+                       formControlName="companyName"
+                       placeholder="Required"
+                       size="30"
+                       type="text"
+                       pInputText required
+                       [(ngModel)]="modelObject.companyName"/>
+            </div>
+            <div class="ui-grid-col-3">
+                <div class="ui-message ui-messages-error ui-corner-all" *ngIf="isCompanyNameInvalid()">
+                    <i class="fa fa-close"></i>
+                    Company Name is required
+                </div>
+            </div>
+        </div>
+
+<!--                <div class="ui-grid-row">
+            <div class="ui-grid-col-2">
+                Exchange:
+            </div>
+            <div class="ui-grid-col-7">
+               &lt;!&ndash; <p-dropdown id="stockExchange"
+                    [options]="stockExchanges"
+                    [required]="true"
+                    [(ngModel)]="stock.exchange">
+                </p-dropdown>&ndash;&gt;
+                <p-selectButton id="stockExchange"
+                    formControlName="stockExchange"
+                    [options]="stockExchanges"
+                    [required]="true"
+                    [(ngModel)]="stock.exchange">
+                </p-selectButton>
+            </div>
+            <div class="ui-grid-col-3">
+                <div class="ui-message ui-messages-error ui-corner-all" *ngIf="isStockExchangeInvalid()">
+                    <i class="fa fa-close"></i>
+                    Stock Exchange is required
+                </div>
+            </div>
+        </div>-->
+        <div style="text-align:center;margin-top:20px" *ngIf="submitted">
+            Form Submitted
+            <br>
+            {{diagnostic}}
+        </div>
+    </div>
+</form>

@@ -1,7 +1,9 @@
+import { ModelObject } from "./base-modelobject";
 /**
+ * This class defines the fields and methods for a single Stock
  * Created by mike on 9/12/2016.
  */
-export class Stock
+export class Stock extends ModelObject<Stock>
 {
     public tickerSymbol: string;
     public companyName: string;
@@ -17,6 +19,7 @@ export class Stock
                  createdBy: number,
                  userEntered: boolean )
     {
+        super();
         this.tickerSymbol = tickerSymbol;
         this.companyName = companyName;
         this.lastPrice = lastPrice;
