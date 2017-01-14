@@ -1,13 +1,13 @@
 <!--
     Stock Form
 -->
-<form [formGroup]="crudForm" (ngSubmit)="onSubmit(stockForm.value)">
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
         <div class="ui-grid-row">
-            <div class="ui-grid-col-2">
-                <label for="tickerSymbol">Ticker Symbol:</label>
+            <div class="ui-grid-col-4">
+                <label style="float: right" for="tickerSymbol">Ticker Symbol:</label>
             </div>
-            <div class="ui-grid-col-7">
+            <div class="ui-grid-col-8">
                 <input id="tickerSymbol"
                        formControlName="tickerSymbol"
                        placeholder="Required"
@@ -16,19 +16,24 @@
                        pInputText required uppercase
                        [(ngModel)]="modelObject.tickerSymbol"/>
             </div>
-            <div class="ui-grid-col-3">
-                <div class="ui-message ui-messages-error ui-corner-all" *ngIf="isTickerSymbolInvalid()">
-                    <i class="fa fa-close"></i>
-                    Ticker Symbol is required
+        </div>
+        <div *ngIf="isTickerSymbolInvalid()">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                </div>
+                <div class="ui-grid-col-8">
+                    <div class="ui-message ui-messages-error ui-corner-all">
+                        <i class="fa fa-close"></i>
+                        Ticker Symbol is required
+                    </div>
                 </div>
             </div>
         </div>
-
         <div class="ui-grid-row">
-            <div class="ui-grid-col-2">
-                <label for="companyName">Company Name:</label>
+            <div class="ui-grid-col-4">
+                <label style="float: right" for="companyName">Company Name:</label>
             </div>
-            <div class="ui-grid-col-7">
+            <div class="ui-grid-col-8">
                 <input id="companyName"
                        formControlName="companyName"
                        placeholder="Required"
@@ -37,7 +42,11 @@
                        pInputText required
                        [(ngModel)]="modelObject.companyName"/>
             </div>
-            <div class="ui-grid-col-3">
+        </div>
+        <div *ngIf="isCompanyNameInvalid()">
+            <div class="ui-grid-col-4">
+            </div>
+            <div class="ui-grid-col-8">
                 <div class="ui-message ui-messages-error ui-corner-all" *ngIf="isCompanyNameInvalid()">
                     <i class="fa fa-close"></i>
                     Company Name is required
@@ -69,10 +78,5 @@
                 </div>
             </div>
         </div>-->
-        <div style="text-align:center;margin-top:20px" *ngIf="submitted">
-            Form Submitted
-            <br>
-            {{diagnostic}}
-        </div>
     </div>
 </form>

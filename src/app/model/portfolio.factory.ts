@@ -1,5 +1,5 @@
 import { PortfolioStock } from "./portfolio-stock";
-import { ModelObjectFactory } from "./model-object-factory";
+import { ModelObjectFactory } from "./model-object.factory";
 import { Portfolio } from "./portfolio";
 import { Injectable } from "@angular/core";
 
@@ -8,13 +8,8 @@ import { Injectable } from "@angular/core";
  * Created by mike on 12/13/2016.
  */
 @Injectable()
-export class PortfolioFactory implements ModelObjectFactory<Portfolio>
+export class PortfolioFactory extends ModelObjectFactory<Portfolio>
 {
-    newModelObjectFromEvent( event ): Portfolio
-    {
-        return undefined;
-    }
-
     /**
      * Create a new PortfolioStock instance
      * @returns {PortfolioStock}

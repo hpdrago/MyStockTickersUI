@@ -3,11 +3,9 @@ import { PortfolioStock } from "../../model/portfolio-stock";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { SelectItem } from "primeng/components/common/api";
 import { Stock } from "../../model/stock";
-import { PaginationPage } from "../../common/pagination";
 import { CrudFormComponent } from "../common/crud-form.component";
 import { StockSectorList } from "../../model/stock-sectors.list";
-import { PortfolioStockFactory } from "../../model/portfolio-stock-factory";
-import { PortfolioStockFormService } from "./portfolio-stock-form.service";
+import { PortfolioStockFactory } from "../../model/portfolio-stock.factory";
 import { StockCrudService } from "../../service/stock-crud.service";
 import { StockSectorCrudService } from "../../service/stock-sector-crud.service";
 import { ToastsManager } from "ng2-toastr";
@@ -18,27 +16,24 @@ import { ToastsManager } from "ng2-toastr";
 @Component(
 {
     selector:    'portfolio-stock-form',
-    styleUrls:   ['./portfolio-stock-form.component.css'],
     templateUrl: './portfolio-stock-form.component.html',
-    inputs:      ['modelObject']
+    inputs:      ['portfolioStockFormService']
 })
 export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStock> implements OnInit
 {
     private stockSectorMap: StockSectorList = new StockSectorList();
     private stockSubSectors: SelectItem[];
     private stockSectors: SelectItem[];
-    private stockSearchResults: string[];
     private dataLoaded: boolean = false;
-    private stockSearch: string;
+    private selectedStock: Stock;
 
     constructor( protected toaster: ToastsManager,
                  protected formBuilder: FormBuilder,
                  protected stockCrudService: StockCrudService,
-                 protected portfolioStockFormService: PortfolioStockFormService,
                  protected stockSectorService: StockSectorCrudService,
                  protected portfolioStockFactory: PortfolioStockFactory )
     {
-        super( toaster, portfolioStockFormService, portfolioStockFactory );
+        super( toaster, portfolioStockFactory );
     }
 
     /**
@@ -48,6 +43,54 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
     {
         super.ngOnInit();
         this.loadStockSectorMap();
+    }
+
+    /**
+     * This method is called when the user selects a stock using the stock/company search input
+     * @param stock
+     */
+    private onStockSelected( stock )
+    {
+        this.logger.debug( "onStockSelected: " + JSON.stringify( stock ));
+        this.selectedStock = stock;
+        this.modelObject.lastPrice = stock.lastPrice;
+        this.modelObject.tickerSymbol = stock.tickerSymbol;
+        this.modelObject.companyName = stock.companyName;
+        (<FormControl>this.formGroup.controls['tickerSymbol']).setValue( stock.tickerSymbol );
+        (<FormControl>this.formGroup.controls['companyName']).setValue( stock.companyName );
+        (<FormControl>this.formGroup.controls['lastPrice']).setValue( stock.lastPrice );
+    }
+
+    /**
+     * This method is called when the ticker symbol input loses focus
+     */
+    private onTickerSymbolLostFocus(): void
+    {
+        var methodName = "onTickerSymbolLostFocus";
+        this.logger.debug( methodName + " selectedStock: " + JSON.stringify( this.selectedStock ) );
+        /*
+         * It's possible that the ticker symbol does not exist in the database so load it after the user has
+         * pressed the tab key
+         */
+        if ( !this.selectedStock || this.selectedStock.tickerSymbol != this.getTickerSymbolFormValue() )
+        {
+            this.stockCrudService.getStock( this.getTickerSymbolFormValue() )
+                .subscribe( (stock) =>
+                            {
+                                this.logger.log( methodName + " found: " + stock.tickerSymbol );
+                                this.onStockSelected( stock );
+                            },
+                            error =>
+                            {
+                                this.resetForm();
+                                this.reportRestError( error );
+                            });
+        }
+    }
+
+    private getTickerSymbolFormValue(): string
+    {
+        return (<FormControl>this.formGroup.controls['tickerSymbol']).value;
     }
 
     /**
@@ -110,59 +153,6 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
         this.logger.log( "onStockSectorChange: " + JSON.stringify( this.stockSubSectors ));
     }
 
-    /**
-     * this method is called from the p-autoComplete component when the user is searching for a stock by company name
-     * or ticker symbol.
-     * @param event
-     */
-    private onStockSearch( event ): void
-    {
-        this.logger.log( "onStockSearch " + JSON.stringify( event.query ));
-        this.stockCrudService.getStockCompaniesLike( event.query )
-                         .subscribe( ( data: PaginationPage<Stock> ) =>
-                                     {
-                                         this.stockSearchResults = [];
-                                         for ( let stock of data.content )
-                                         {
-                                             this.stockSearchResults.push( "[" + stock.tickerSymbol + "] " + stock.companyName );
-                                         }
-                                     },
-                                     err =>
-                                     {
-                                         this.reportRestError( err );
-                                     }
-        );
-    }
-
-    /**
-     * This method is called by the p-autoComplete component when the user has selected one of the stock companies
-     * as a result of a search
-     * @param event
-     */
-    private onStockSearchSelected( event ): void
-    {
-        this.logger.log( "onStockSearchSelected " + JSON.stringify( event ));
-        var matches = /\[(.*)] (.*)/.exec( event );
-        var tickerSymbol = matches[1];
-        var companyName = matches[2];
-        this.stockCrudService.getStock( tickerSymbol )
-                         .subscribe( (stock) =>
-                                     {
-                                         this.modelObject.lastPrice = stock.lastPrice;
-                                         this.modelObject.tickerSymbol = tickerSymbol;
-                                         this.modelObject.companyName = companyName;
-                                         (<FormControl>this.crudForm.controls['tickerSymbol']).setValue( tickerSymbol );
-                                         (<FormControl>this.crudForm.controls['companyName']).setValue( companyName );
-                                     }
-                                     ,
-                                     error =>
-                                     {
-                                         this.reportRestError( error );
-                                     });
-        this.crudForm.controls['stockSearch'].reset( "" );
-        this.logger.log( "onStockSearchSelected tickerSymbol: " + this.modelObject.tickerSymbol );
-    }
-
     private onMenuSelect( sector, subSector ): void
     {
         alert( "onMenuSelect sector: " + sector + " subSector: " + subSector );
@@ -174,8 +164,8 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      */
     private isTickerSymbolInvalid(): boolean
     {
-        return !this.crudForm.controls['tickerSymbol'].valid &&
-               this.crudForm.controls['tickerSymbol'].dirty;
+        return !this.formGroup.controls['tickerSymbol'].valid &&
+               this.formGroup.controls['tickerSymbol'].dirty;
     }
 
     /**
@@ -184,8 +174,8 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      */
     private isCompanyNameInvalid(): boolean
     {
-        return !this.crudForm.controls['companyName'].valid &&
-               this.crudForm.controls['companyName'].dirty;
+        return !this.formGroup.controls['companyName'].valid &&
+               this.formGroup.controls['companyName'].dirty;
     }
 
     protected primaryKeyFields(): Array<string>

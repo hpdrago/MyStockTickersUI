@@ -4,9 +4,8 @@ import { AppConfigurationService } from "./app-configuration.service";
 import { SessionService } from "./session.service";
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
-import { PortfolioStockDTO } from "../dto/portfolio-stock.dto";
 import { Observable } from "rxjs";
-import { PortfolioStockFactory } from "../model/portfolio-stock-factory";
+import { PortfolioStockFactory } from "../model/portfolio-stock.factory";
 import { CrudRestService } from "./crud-rest.serivce";
 
 /**
@@ -24,10 +23,10 @@ export class PortfolioStockCrudService extends CrudRestService<PortfolioStock>
                  protected appConfigurationService: AppConfigurationService,
                  private portfolioStockFactory: PortfolioStockFactory )
     {
-        super( http, sessionService, appConfigurationService );
+        super( http, sessionService, appConfigurationService, portfolioStockFactory );
     }
 
-    protected getCreatedModelObjectUrl( baseUrl: string, modelObject: PortfolioStock ): string
+    protected getCreateModelObjectUrl( baseUrl: string, modelObject: PortfolioStock ): string
     {
         var createUrl = this.getPortfolioStockUrl();
         return createUrl;
@@ -51,9 +50,10 @@ export class PortfolioStockCrudService extends CrudRestService<PortfolioStock>
         return updateUrl;
     }
 
-    protected getDeleteModelObjectUrl( baseUrl: string, modelObject: PortfolioStock ): string
+    protected getDeleteModelObjectUrl( baseUrl: string, portfolioStock: PortfolioStock ): string
     {
-        return undefined;
+        var updateUrl = this.getPortfolioStockUrl() + portfolioStock.id;
+        return updateUrl;
     }
 
     /**
@@ -86,5 +86,16 @@ export class PortfolioStockCrudService extends CrudRestService<PortfolioStock>
         portfolioStock.customerId = customerId;
         portfolioStock.portfolioId = portfolioId;
         return super.getModelObjectList( portfolioStock );
+    }
+
+    /**
+     * Create a new PortfolioStock
+     * @param modelObject
+     * @return {Observable<PortfolioStock>}
+     */
+    public createModelObject( modelObject: PortfolioStock ): Observable<PortfolioStock>
+    {
+        modelObject.customerId = this.sessionService.getLoggedInUserId();
+        return super.createModelObject( modelObject );
     }
 }

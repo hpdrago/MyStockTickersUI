@@ -90,7 +90,17 @@ export class StockSectorList extends ModelObject<StockSectorList>
         return selectItems;
     }
 
-    clone(): StockSectorList
+    public clone(): StockSectorList
+    {
+        return undefined;
+    }
+
+    public equals( modelObject: StockSectorList )
+    {
+        return true;
+    }
+
+    public getDeleteKey(): string
     {
         return undefined;
     }

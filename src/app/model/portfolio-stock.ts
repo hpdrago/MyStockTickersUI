@@ -26,7 +26,17 @@ export class PortfolioStock extends ModelObject<PortfolioStock>
 
     public clone(): PortfolioStock
     {
-
         return undefined;
     }
+
+    public equals( modelObject: PortfolioStock )
+    {
+        var isEqual = false;
+        if ( modelObject )
+        {
+            isEqual = this.tickerSymbol === modelObject.tickerSymbol;
+        }
+        return isEqual;
+    }
+
 }

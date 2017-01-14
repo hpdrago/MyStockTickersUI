@@ -52,8 +52,7 @@ export abstract class BaseComponent implements OnChanges
     }
 
     /**
-     * Reports the error to the console and adds an error message to the messages which will result in an error
-     * dialog if the component has added messages to the outputs array of the component and added a <growl> tag
+     * Reports the error to the console and a visible message to the user.
      * @param rawJsonError The JSON text returned from the REST call
      */
     protected reportRestError( rawJsonError ): RestException
@@ -72,7 +71,7 @@ export abstract class BaseComponent implements OnChanges
         }
         else
         {
-            this.logger.log( "reportRestError: here" );
+            this.logger.log( "reportRestError: rawJsonError data does not have a status value" );
             this.showError( rawJsonError );
         }
         return exception;

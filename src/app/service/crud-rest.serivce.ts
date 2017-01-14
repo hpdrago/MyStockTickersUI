@@ -4,6 +4,7 @@ import { Response, Headers, RequestOptions, Http } from "@angular/http";
 import { SessionService } from "./session.service";
 import { AppConfigurationService } from "./app-configuration.service";
 import { ModelObject } from "../model/base-modelobject";
+import { ModelObjectFactory } from "../model/model-object.factory";
 
 /**
  * Generic Service class for REST CRUD methods
@@ -17,7 +18,8 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends BaseServ
 {
     constructor( protected http: Http,
                  protected sessionService: SessionService,
-                 protected appConfigurationService: AppConfigurationService )
+                 protected appConfigurationService: AppConfigurationService,
+                 protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super();
     }
@@ -26,7 +28,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends BaseServ
      * Returns the URL string to Create a single model object via REST
      * @param modelObject
      */
-    protected abstract getCreatedModelObjectUrl( baseUrl: string, modelObject: T ): string;
+    protected abstract getCreateModelObjectUrl( baseUrl: string, modelObject: T ): string;
 
     /**
      * Returns the URL string to Read a single model object via REST
@@ -69,8 +71,8 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends BaseServ
         return this.http.get( url ) // ...using put request
                    .map( ( response: Response ) =>
                          {
-                             this.logger.log( methodName + " received: " + response.json() )
-                             return response.json();
+                             this.logger.log( methodName + " received: " + JSON.stringify( response.json() ))
+                             return this.modelObjectFactory.newModelObjectFromObject( response.json() );
                          } ) // ...and calling .json() on the response to return data
                    .catch( ( error: any ) => Observable.throw( this.reportError( error )) );
     }
@@ -89,7 +91,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends BaseServ
                    .map( ( response: Response ) =>
                          {
                              this.logger.log( methodName + " received response" );
-                             return response.json()
+                             return this.modelObjectFactory.newModelObjectArray( response.json() )
                          } )
                    .catch( ( error: any ) => Observable.throw( this.reportError( error )) );
     }
@@ -100,20 +102,21 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends BaseServ
      * @param modelObject
      * @returns {Observable<T>}
      */
-    public addCreateModelObject( modelObject: T ): Observable<T>
+    public createModelObject( modelObject: T ): Observable<T>
     {
-        var methodName = "addCreateModelObject";
+        var methodName = "createModelObject";
+        modelObject.createdBy = this.sessionService.getLoggedInUserId();
         var bodyString = JSON.stringify( modelObject ); // Stringify payload
         this.logger.log( methodName + " modelObject: " + bodyString );
         var headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
         var options = new RequestOptions( { headers: headers } ); // Create a request option
-        var url = this.getCreatedModelObjectUrl( this.appConfigurationService.getBaseUrl(), modelObject );
+        var url = this.getCreateModelObjectUrl( this.appConfigurationService.getBaseUrl(), modelObject );
         this.logger.log( methodName + " url: " + url );
         return this.http.post( url, bodyString, options ) // ...using post request
             .map( ( res: Response ) =>
             {
-                this.logger.log( methodName + " received: " + res.json() );
-                return res.json();
+                this.logger.log( methodName + " received: " + JSON.stringify( res.json() ) );
+                return this.modelObjectFactory.newModelObjectFromObject( res.json() );
             } ) // ...and calling .json() on the response to return data
             .catch( ( error: any ) => Observable.throw( error || 'Server error' ) ); //...errors if any
     }
@@ -128,6 +131,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends BaseServ
     {
         var methodName = "updateModelObject";
         var bodyString = JSON.stringify( modelObject ); // Stringify payload
+        modelObject.updatedBy = this.sessionService.getLoggedInUserId();
         this.logger.log( methodName + " modelObject: " + bodyString );
         var headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
         var options = new RequestOptions( { headers: headers } ); // Create a request option
@@ -137,8 +141,8 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends BaseServ
         return this.http.put( url, bodyString, options ) // ...using put request
             .map( ( res: Response ) =>
             {
-                this.logger.log( methodName + " received: " + res.json() );
-                return res.json();
+                this.logger.log( methodName + " received: " + JSON.stringify( res.json() ));
+                return this.modelObjectFactory.newModelObjectFromObject( res.json() );
             } ) // ...and calling .json() on the response to return data
             .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ); //...errors if any
     }
@@ -156,7 +160,15 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends BaseServ
         var url = this.getDeleteModelObjectUrl( this.appConfigurationService.getBaseUrl(), modelObject );
         this.logger.log( methodName + " url: " + url ) ;
         return this.http.delete( url ) // ...using delete request
-            .map( ( res: Response ) => res.json() ) // ...and calling .json() on the response to return data
+            .map( ( res: Response ) =>
+                  {
+                      this.logger.debug( methodName + " res: "+ JSON.stringify( res ));
+                      if ( !res.ok )
+                      {
+                          throw Observable.throw( "Delete was not OK" );
+                      }
+                      return;
+                  } ) // ...and calling .json() on the response to return data
             .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ); //...errors if any
     }
 

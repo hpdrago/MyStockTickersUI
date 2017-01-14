@@ -5,8 +5,11 @@ import { Http } from "@angular/http";
 import { SessionService } from "./session.service";
 import { AppConfigurationService } from "./app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
+import { PortfolioFactory } from "../model/portfolio.factory";
 
 /**
+ * This class provides all CRUD REST services.
+ *
  * Created by mike on 10/23/2016.
  */
 @Injectable()
@@ -16,12 +19,13 @@ export class PortfolioCrudService extends CrudRestService<Portfolio>
 
     constructor( protected http: Http,
                  protected sessionService: SessionService,
-                 protected appConfigurationService: AppConfigurationService )
+                 protected appConfigurationService: AppConfigurationService,
+                 protected portfolioFactory: PortfolioFactory )
     {
-        super( http, sessionService, appConfigurationService );
+        super( http, sessionService, appConfigurationService, portfolioFactory );
     }
 
-    protected getCreatedModelObjectUrl( baseUrl: string, portfolio: Portfolio ): string
+    protected getCreateModelObjectUrl( baseUrl: string, portfolio: Portfolio ): string
     {
         return baseUrl + `/customer/${portfolio.customerId}/portfolio`;
     }
@@ -62,7 +66,7 @@ export class PortfolioCrudService extends CrudRestService<Portfolio>
         let portfolio = new Portfolio();
         portfolio.customerId = customerId;
         portfolio.name = portfolioName;
-        return super.addCreateModelObject( portfolio );
+        return super.createModelObject( portfolio );
     }
 
     /**

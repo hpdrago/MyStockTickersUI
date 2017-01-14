@@ -8,7 +8,7 @@ import { PaginationURL } from "../common/pagination-url";
 import { SessionService } from "./session.service";
 import { PagingRestCRUDService } from "./paging-rest-crud.service";
 import { AppConfigurationService } from "./app-configuration.service";
-import { StockFactory } from "../model/stock-factory";
+import { StockFactory } from "../model/stock.factory";
 
 /**
  * This class provides all of the REST communication services for Stocks.
@@ -27,7 +27,7 @@ export class StockCrudService extends PagingRestCRUDService<Stock>
                  protected appConfig: AppConfigurationService,
                  private stockFactory: StockFactory )
     {
-        super( http, session, appConfig );
+        super( http, session, appConfig, stockFactory );
         this.stocksCompaniesLikePaginationUrl = new PaginationURL( appConfig.getBaseUrl() + this.stocksCompaniesLikeUrl );
     }
 
@@ -36,7 +36,7 @@ export class StockCrudService extends PagingRestCRUDService<Stock>
         return new PaginationURL( this.appConfig.getBaseUrl() + '/' + this.stocksUrl );
     }
 
-    protected getCreatedModelObjectUrl( baseUrl: string, stock: Stock ): string
+    protected getCreateModelObjectUrl( baseUrl: string, stock: Stock ): string
     {
         return this.appConfig.getBaseUrl() + `/${this.stocksUrl}`;
     }
@@ -107,11 +107,10 @@ export class StockCrudService extends PagingRestCRUDService<Stock>
      * @return {Observable<C>}
      * @override To set createdBy and userEntered before the insert
      */
-    public addModelObject( stock: Stock ): Observable<Stock>
+    public createModelObject( stock: Stock ): Observable<Stock>
     {
-        stock.createdBy = this.sessionService.getLoggedInUserId();
         stock.userEntered = true;
-        return super.addCreateModelObject( stock );
+        return super.createModelObject( stock );
     }
 
     /**

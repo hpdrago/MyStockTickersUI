@@ -1,0 +1,48 @@
+<div *ngIf="modelObject">
+    <div *ngIf="isShowDeleteButton()" class="crud-panel-delete-message">
+        <p>
+        {{getDeleteMessage()}}
+        </p>
+    </div>
+    <div class="crud-panel-buttons">
+        <div class="crud-panel-button" *ngIf="isShowSaveButton()">
+            <button class="crud-panel-button" pButton type="button"
+                    (click)="onSaveButtonClick()"
+                    label="{{getSaveButtonLabel()}}"
+                    icon="fa-save"
+                    [disabled]="isSaveButtonDisabled()">
+            </button>
+        </div>
+        <div class="crud-panel-button" *ngIf="isShowAddButton()">
+            <button class="crud-panel-button" pButton type="button"
+                    (click)="onAddButtonClick()"
+                    label="{{getAddButtonLabel()}}"
+                    icon="fa-save"
+                    [disabled]="isAddButtonDisabled()">
+            </button>
+        </div>
+        <div class="crud-panel-button" *ngIf="isShowDeleteButton()">
+            <button class="crud-panel-button" pButton type="button"
+                    (click)="onDeleteButtonClick()"
+                    label="{{getDeleteButtonLabel()}}"
+                    icon="fa-trash"
+                    [disabled]="isDeleteButtonDisabled()">
+            </button>
+        </div>
+        <div class="crud-panel-button" *ngIf="crudDialogService && isShowCloseButton()">
+            <button class="crud-panel-button" pButton type="button"
+                    (click)="onCloseButtonClick()"
+                    label="Cancel"
+                    icon="fa-close"
+                    [disabled]="isCloseButtonDisabled()">
+            </button>
+        </div>
+        <div class="crud-panel-button" *ngIf="isShowResetButton()">
+            <button class="crud-panel-button" pButton type="button"
+                    (click)="onResetButtonClick()"
+                    icon="fa-refresh"
+                    label="{{getResetLabel()}}">
+            </button>
+        </div>
+    </div>
+</div>

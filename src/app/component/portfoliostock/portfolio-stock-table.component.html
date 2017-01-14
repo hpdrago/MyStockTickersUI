@@ -1,6 +1,4 @@
-<p-growl [value]="messages"></p-growl>
-<p-growl [value]="messages"></p-growl>
-<p-dataTable [value]="stocks"
+<p-dataTable [value]="rows"
              selectionMode="single"
              [(selection)]="selectedModelObject"
              (onRowSelect)="onRowSelect($event)"
@@ -8,6 +6,7 @@
              [pageLinks]="3"
              [rowsPerPageOptions]="[20,30,40]"
              [rows]="25"
+             (onRowDblclick)="onRowDoubleClick($event)"
              [responsive]="true">
 
     <header>{{title}}</header>
@@ -21,25 +20,14 @@
     <p-column field="profitTakingPrice" header="PT Price" [sortable]="true"></p-column>
     <p-column field="profitTakingShares" header="PT Shares" [sortable]="true"></p-column>
     <footer>
-        <div class="ui-helper-clearfix"
-             style="width:100%">
-            <button type="button"
-                    pButton icon="fa-plus"
-                    style="float:left"
-                    (click)="showDialogToAdd()"
-                    [disabled]="isAddButtonDisabled()"
-                    label="Add Stock to Portfolio">
-            </button>
-        </div>
+        <portfolio-stock-table-buttons [portfolio]="portfolio"
+                                       [crudTableButtonsService]="portfolioStockTableButtonsService">
+        </portfolio-stock-table-buttons>
     </footer>
 </p-dataTable>
 <portfolio-stock-dialog
-    [crudPanelService]="portfolioStockPanelService"
-    [(displayDialog)]="displayDialog">
-        <!--[modelObject]="selectedPortfolioStock"
-        (addButtonClick)="onAddButtonClick($event)"
-        (closeButtonClick)="onCloseButtonClick($event)"
-        [crudOperation]="crudOperation"
-        [portfolio]="portfolio"
-        [(displayDialog)]="displayDialog">-->
+    [portfolio]="portfolio"
+    [crudFormService]="portfolioStockFormService"
+    [crudPanelButtonsService]="portfolioStockPanelButtonsService"
+    [crudDialogService]="portfolioStockDialogService">
 </portfolio-stock-dialog>

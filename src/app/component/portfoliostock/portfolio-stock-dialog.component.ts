@@ -1,11 +1,10 @@
-import { Component, Input, ChangeDetectorRef } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { PortfolioStock } from "../../model/portfolio-stock";
-import { Portfolio } from "../../model/portfolio";
-import { CrudPanelComponent } from "../common/crud-panel.component";
-import { PortfolioStockFactory } from "../../model/portfolio-stock-factory";
-import { PortfolioStockFormService } from "./portfolio-stock-form.service";
 import { PortfolioStockCrudService } from "../../service/portfolio-stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
+import { CrudDialogComponent } from "../common/crud-dialog.component";
+import { PortfolioStockDialogService } from "./portfolio-stock-dialog.service";
+import { Portfolio } from "../../model/portfolio";
 
 /**
  * This class manages the modal dialog that contains the Portfolio Stock
@@ -17,33 +16,16 @@ import { ToastsManager } from "ng2-toastr";
 ({
     selector:    'portfolio-stock-dialog',
     templateUrl: './portfolio-stock-dialog.component.html',
-    inputs:      ['crudPanelService']
+    inputs:      ['portfolio', 'crudDialogService', 'crudFormService', 'crudPanelButtonsService']
 })
-export class PortfolioStockDialogComponent extends CrudPanelComponent<PortfolioStock>
+export class PortfolioStockDialogComponent extends CrudDialogComponent<PortfolioStock>
 {
     @Input()
-    displayDialog: boolean;
-    @Input()
-    portfolio: Portfolio;
+    private portfolio: Portfolio;
 
-    constructor( protected toaster: ToastsManager,
-                 protected crudFormService: PortfolioStockFormService,
-                 protected portfolioStockCrudService: PortfolioStockCrudService,
-                 protected portfolioStockFactory: PortfolioStockFactory )
+    constructor( protected toaster: ToastsManager )
     {
-        super( toaster, crudFormService, portfolioStockCrudService, portfolioStockFactory );
-    }
-
-
-    protected onCloseButtonClick(): void
-    {
-        this.displayDialog = false;
-        return super.onCloseButtonClick();
-    }
-
-    protected onDeleteButtonClick()
-    {
-        this.logger.log( "onDeleteButtonClick" );
+        super( toaster );
     }
 
     /**
@@ -51,7 +33,11 @@ export class PortfolioStockDialogComponent extends CrudPanelComponent<PortfolioS
      */
     protected getDuplicateKeyErrorMessage(): string
     {
-        return this.modelObject.tickerSymbol + " already exists in " + this.portfolio.name + " portfolio";
+        return this.modelObject.tickerSymbol + " already exists in portfolio";
     }
 
+    protected isContinuousAdd(): boolean
+    {
+        return true;
+    }
 }

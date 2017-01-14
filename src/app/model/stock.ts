@@ -28,11 +28,6 @@ export class Stock extends ModelObject<Stock>
         this.userEntered = userEntered;
     }
 
-    public getTickerSymbol(): string
-    {
-        return this.tickerSymbol;
-    }
-
     /**
      * Determines if the stock was entered by a user. Otherwise, it was download from a stock exchange source.
      * @returns false if the stock was entered by a user, otherwise true as it was information
@@ -50,5 +45,15 @@ export class Stock extends ModelObject<Stock>
     public clone(): Stock
     {
         return new Stock( this.tickerSymbol, this.companyName, this.lastPrice, this.exchange, this.createdBy, this.userEntered );
+    }
+
+    public equals( modelObject: Stock )
+    {
+        var isEqual = false;
+        if ( modelObject )
+        {
+            isEqual = this.tickerSymbol === modelObject.tickerSymbol;
+        }
+        return isEqual;
     }
 }

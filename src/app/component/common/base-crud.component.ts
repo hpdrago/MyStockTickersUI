@@ -1,6 +1,5 @@
 import { BaseComponent } from "./base.component";
 import { CrudOperation } from "./crud-operation";
-import { ModelObjectFactory } from "../../model/model-object-factory";
 import { ModelObject } from "../../model/base-modelobject";
 import { ToastsManager } from "ng2-toastr";
 /**
@@ -10,8 +9,17 @@ import { ToastsManager } from "ng2-toastr";
  */
 export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
 {
-    constructor( protected toaster: ToastsManager,
-                 protected modelObjectFactory: ModelObjectFactory<T> )
+    /**
+     * Identifies the type of CRUD action
+     */
+    protected crudOperation: CrudOperation;
+
+    /**
+     * The object that contains the form's data
+     */
+    protected modelObject: T;
+
+    constructor( protected toaster: ToastsManager )
     {
         super( toaster );
     }
@@ -26,15 +34,21 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected inputPropertyChange( property: string, previousValue: any, newValue: any )
    {
-      this.debug( "inputPropertyChange: " + property );
+      this.debug( "inputPropertyChange: " + property + " " + newValue );
       switch ( property )
       {
          case 'crudOperation':
-            this.crudOperationChanged( newValue );
-            break;
+             /*
+              * The object might still be initializing so execute on next clock tick
+              */
+             //this.tickThenRun( () => this.crudOperationChanged( newValue ) );
+             this.crudOperationChanged( newValue );
+             break;
+
          case 'modelObject':
-            this.modelObjectChange( newValue );
-            break;
+             //this.tickThenRun( () => this.modelObjectChanged( newValue ) );
+             this.modelObjectChanged( newValue );
+             break;
       }
    }
 
@@ -42,9 +56,20 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     * This method is called whenever the model object changes.
     * @param modelObject
     */
-   protected modelObjectChange( modelObject: T )
+   protected modelObjectChanged( modelObject: T )
    {
-      this.debug( "modelObjectChange " + modelObject );
+      this.debug( "modelObjectChanged " + JSON.stringify( modelObject ));
+      this.modelObject = modelObject;
+   }
+
+    /**
+     * Allow sub classes to change the model object through a method that will record (log) the change.
+     * @param modelObject
+     */
+   protected setModelObject( modelObject: T )
+   {
+       this.debug( "setModelObject " + JSON.stringify( modelObject ));
+       this.modelObject = modelObject;
    }
 
    /**
@@ -54,6 +79,48 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
    protected crudOperationChanged( crudOperation: CrudOperation )
    {
       this.debug( "crudOperation change " + crudOperation );
+      this.crudOperation = crudOperation;
    }
 
+    /**
+     * Allow subclasses to change the {@code CrudOperation} and log the change.
+     * @param crudOperation
+     */
+    protected setCrudOperation( crudOperation: CrudOperation )
+    {
+        this.debug( "setCrudOperation " + crudOperation );
+        this.crudOperation = crudOperation;
+    }
+
+    protected tickThenRun( fn: () => any )
+    {
+        setTimeout( fn, 0 );
+    }
+
+    /**
+     * Returns true if the current {@code crudOperation} value is CREATE
+     * @return {boolean}
+     */
+    protected isCrudInsertOperation(): boolean
+    {
+        return this.crudOperation == CrudOperation.CREATE;
+    }
+
+    /**
+     * Returns true if the current {@code crudOperation} value is UPDATE
+     * @return {boolean}
+     */
+    protected isCrudUpdateOperation(): boolean
+    {
+        return this.crudOperation == CrudOperation.UPDATE;
+    }
+
+    /**
+     * Returns true if the current {@code crudOperation} value is DELETE
+     * @return {boolean}
+     */
+    protected isCrudDeleteOperation(): boolean
+    {
+        return this.crudOperation == CrudOperation.DELETE;
+    }
 }

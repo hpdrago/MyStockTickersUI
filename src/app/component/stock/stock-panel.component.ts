@@ -2,9 +2,6 @@
 import { CrudPanelComponent } from "../common/crud-panel.component";
 import { Stock } from "../../model/stock";
 import { Component } from "@angular/core";
-import { StockFactory } from "../../model/stock-factory";
-import { StockFormService } from "./stock-form.service";
-import { StockCrudService } from "../../service/stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
 
 /**
@@ -16,17 +13,12 @@ import { ToastsManager } from "ng2-toastr";
 {
     selector:    'stock-panel',
     templateUrl: './stock-panel.component.html',
-    inputs: ['crudPanelService'],
-    outputs: ['closeButtonClick', 'modelObjectUpdated', 'modelObjectDeleted', 'modelObjectCreated',
-              'jumpToModelObject']
+    inputs: ['crudFormService', 'crudPanelButtonsService']
 })
 export class StockPanelComponent extends CrudPanelComponent<Stock>
 {
-    constructor( protected toaster: ToastsManager,
-                 protected stockFormService: StockFormService,
-                 protected stockService: StockCrudService,
-                 protected stockFactory: StockFactory )
+    constructor( protected toaster: ToastsManager )
     {
-        super( toaster, stockFormService, stockService, stockFactory );
+        super( toaster );
     }
 }

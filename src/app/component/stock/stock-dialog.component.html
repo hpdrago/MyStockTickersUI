@@ -1,0 +1,22 @@
+<div *ngIf="modelObject">
+    <p-dialog header="Stock Detail"
+                     [modal]="true"
+                     [closable]="false"
+                     [closeOnEscape]="false"
+                     [responsive]="true"
+                     [width]="400"
+                     [height]="200"
+                     [minWidth]="400"
+                     [minHeight]="200"
+                     [resizable]="false"
+                     [(visible)]="displayDialog">
+    <stock-form [crudFormService]="crudFormService">
+    </stock-form>
+    <footer>
+        <stock-panel-buttons [crudFormService]="crudFormService"
+                             [crudPanelButtonsService]="crudPanelButtonsService"
+                             [crudDialogService]="crudDialogService">
+        </stock-panel-buttons>
+    </footer>
+    </p-dialog>
+</div>

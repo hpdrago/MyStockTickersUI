@@ -1,0 +1,15 @@
+
+<div *ngIf="modelObject">
+    <p-panel header="Portfolo Detail">
+        <div>
+            <portfolio-form [crudFormService]="crudFormService">
+            </portfolio-form>
+        </div>
+        <div>
+            <portfolio-panel-buttons [crudFormService]="portfolioFormService"
+                                     [crudPanelButtonsService]="portfolioPanelButtonsService"
+                                     [crudDialogService]="portfolioDialogService">
+            </portfolio-panel-buttons>
+        </div>
+    </p-panel>
+</div>

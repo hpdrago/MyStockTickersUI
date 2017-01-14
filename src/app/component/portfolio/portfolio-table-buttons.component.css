@@ -1,0 +1,11 @@
+.portfolio-table-button
+{
+    margin-right: 10px;
+}
+
+div.portfolio-table-button
+{
+    display: inline-block;
+    width: 175px;
+    height: 35px;
+}

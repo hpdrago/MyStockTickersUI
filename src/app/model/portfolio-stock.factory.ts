@@ -1,18 +1,15 @@
 import { PortfolioStock } from "./portfolio-stock";
-import { ModelObjectFactory } from "./model-object-factory";
+import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
 
 /**
+ * This class provides factory methods for the Stock ModelObject.
+ *
  * Created by mike on 12/13/2016.
  */
 @Injectable()
-export class PortfolioStockFactory implements ModelObjectFactory<PortfolioStock>
+export class PortfolioStockFactory extends ModelObjectFactory<PortfolioStock>
 {
-    newModelObjectFromEvent( event ): PortfolioStock
-    {
-        return undefined;
-    }
-
     /**
      * Create a new PortfolioStock instance
      * @returns {PortfolioStock}

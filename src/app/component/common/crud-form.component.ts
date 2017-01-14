@@ -4,43 +4,34 @@ import { ValidationService } from "../../service/validation-service";
 import { CrudOperation } from "./crud-operation";
 import { BaseCrudComponent } from "./base-crud.component";
 import { CrudFormService } from "./crud-form.service";
-import { ModelObjectFactory } from "../../model/model-object-factory";
+import { ModelObjectFactory } from "../../model/model-object.factory";
 import { ModelObject } from "../../model/base-modelobject";
 import { ToastsManager } from "ng2-toastr";
 
 /**
  * This class contains the common functionality for a form for a CRUD model object.
  *
- * inputs: ['modelObject'],
+ * inputs: ['crudFormService']
  *
  * Created by mike on 12/4/2016.
  */
 export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCrudComponent<T> implements OnInit
 {
-    /**
-     * Identifies the current CRUD operation
-     */
-    protected crudOperation: CrudOperation;
-
-    /**
-     * The modelObject is the object that contains the data on the form
-     */
     @Input()
-    protected modelObject: T;
+    protected crudFormService: CrudFormService<T>;
 
     /**
-     * The crudForm is the Dynamic Form object
+     * The formGroup is the Dynamic Form object
      */
-    protected crudForm: FormGroup;
+    protected formGroup: FormGroup;
 
     /**
      * C O N S T R U C T O R
      */
     constructor( protected toaster: ToastsManager,
-                 protected crudFormService: CrudFormService<T>,
                  protected modelObjectFactory: ModelObjectFactory<T> )
     {
-        super( toaster, modelObjectFactory );
+        super( toaster );
     }
 
     /**
@@ -48,14 +39,18 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     public ngOnInit()
     {
+        if ( !this.crudFormService )
+        {
+            throw new Error( "crudFormService has not been set by Input value" );
+        }
         this.modelObject = this.modelObjectFactory.newModelObject();
-        this.crudForm = this.createCrudForm();
+        this.formGroup = this.createCrudForm();
         this.subscribeToFormChanges();
         this.subscribeToCrudFormServiceEvents();
     }
 
     /**
-     * This method must be override to create the crudForm
+     * This method must be override to create the formGroup
      */
     protected abstract createCrudForm(): FormGroup;
 
@@ -70,11 +65,11 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected subscribeToCrudFormServiceEvents()
     {
-        this.crudFormService.handleReset().subscribe( () => this.reset() );
+        this.crudFormService.handleFormReset().subscribe( () => this.resetForm() );
         this.crudFormService.handleCrudOperationChanged().subscribe( ( crudOperation: CrudOperation ) =>
                                                                         this.crudOperationChanged( crudOperation ) )
         this.crudFormService.handleModelObjectChanged().subscribe( ( modelObject: T ) =>
-                                                                      this.modelObjectChange( modelObject ) );
+                                                                      this.modelObjectChanged( modelObject ) );
     }
 
     /**
@@ -84,8 +79,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected crudOperationChanged( crudOperation: CrudOperation )
     {
-        this.logger.log( "crudOperationChanged " + crudOperation );
-        this.crudOperation = crudOperation;
         super.crudOperationChanged( crudOperation );
         this.enableDisableInputs();
     }
@@ -95,22 +88,20 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      * @param modelObject
      * @override
      */
-    protected modelObjectChange( modelObject: T ): any
+    protected modelObjectChanged( modelObject: T ): any
     {
-        this.logger.log( "modelObjectChange " + JSON.stringify( modelObject ) );
-        this.modelObject = modelObject;
-        super.modelObjectChange( modelObject );
+        super.modelObjectChanged( modelObject );
         this.enableDisableInputs();
     }
 
     /**
      * Initializes the form and the model object to empty values
      */
-    protected reset()
+    protected resetForm()
     {
-        this.crudForm.reset();
+        this.logger.debug( "resetForm" );
+        this.formGroup.reset();
         this.modelObject = this.modelObjectFactory.newModelObject();
-        this.logger.debug( "reset" );
     }
 
     /**
@@ -127,7 +118,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         /*
          * Initialize the change stream, the $ means an Observable variable
          */
-        const myFormValueChanges$ = this.crudForm.valueChanges;
+        const myFormValueChanges$ = this.formGroup.valueChanges;
         /*
          * Subscribe to the stream
          */
@@ -149,16 +140,16 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.emitFormDirtyChange();
         this.emitFormValidChange();
         //this.modelObjectChange.emit( this.modelObject );
-        if ( !this.crudForm.valid )
+        if ( !this.formGroup.valid )
         {
             //this.debug( "Form is not valid" );
-            for (let propertyName in this.crudForm.errors)
+            for (let propertyName in this.formGroup.errors)
             {
-                if ( this.crudForm.errors.hasOwnProperty( propertyName ) &&
-                    this.crudForm.touched )
+                if ( this.formGroup.errors.hasOwnProperty( propertyName ) &&
+                    this.formGroup.touched )
                 {
                     var errorMessage = ValidationService.getValidatorErrorMessage( propertyName,
-                                                                                   this.crudForm.errors[propertyName] );
+                                                                                   this.formGroup.errors[propertyName] );
                     //this.debug( methodName + " error: " + error );
                     return errorMessage;
                 }
@@ -179,7 +170,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected emitFormValidChange()
     {
         //this.logger.debug( "emitFormValidChange" );
-        this.crudFormService.sendFormValid( this.crudForm.valid );
+        this.crudFormService.sendFormValid( this.formGroup.valid );
     }
 
     /**
@@ -190,7 +181,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected emitFormDirtyChange()
     {
         //this.logger.debug( "emitFormDirtyChange" );
-        this.crudFormService.sendFormDirty( this.crudForm.dirty );
+        this.crudFormService.sendFormDirty( this.formGroup.dirty );
     }
 
     /**
@@ -201,7 +192,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     {
         var methodName = "enableDisableInputs";
         this.logger.debug( methodName );
-        if ( this.crudForm )
+        if ( this.formGroup )
         {
             var readOnly: boolean = this.isModelObjectReadOnly( this.modelObject );
             this.logger.debug( methodName + " crudOperation: " + this.crudOperation );
@@ -217,7 +208,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         }
         else
         {
-            this.logger.debug( methodName + " this.crudForm is null" );
+            this.logger.debug( methodName + " this.formGroup is null" );
         }
     }
 
@@ -227,9 +218,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected disableInputs(): void
     {
         this.logger.debug( "disableInputs" );
-        if ( this.crudForm )
+        if ( this.formGroup )
         {
-            for ( let fieldName in this.crudForm.controls )
+            for ( let fieldName in this.formGroup.controls )
             {
                 this.disableField( fieldName );
             }
@@ -243,9 +234,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected disableField( fieldName: string )
     {
-        this.logger.debug( "crudForm.disableField " + fieldName );
-        //this.crudForm.disable( fieldName );
-        this.crudForm.controls[fieldName].disable();
+        this.logger.debug( "formGroup.disableField " + fieldName );
+        //this.formGroup.disable( fieldName );
+        this.formGroup.controls[fieldName].disable();
     }
 
     /**
@@ -257,7 +248,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         if ( this.crudOperation != CrudOperation.NONE &&
              this.crudOperation != CrudOperation.DELETE )
         {
-            for ( let fieldName in this.crudForm.controls )
+            for ( let fieldName in this.formGroup.controls )
             {
                 this.enableField( fieldName );
             }
@@ -278,13 +269,13 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         }
         if ( doEnable )
         {
-            this.crudForm.controls[fieldName].enable();
-            this.logger.debug( "crudForm.enableField enable: " + fieldName );
+            this.formGroup.controls[fieldName].enable();
+            this.logger.debug( "formGroup.enableField enable: " + fieldName );
         }
         else
         {
-            this.crudForm.controls[fieldName].disable();
-            this.logger.debug( "crudForm.enableField disable: " + fieldName );
+            this.formGroup.controls[fieldName].disable();
+            this.logger.debug( "formGroup.enableField disable: " + fieldName );
         }
     }
 
@@ -317,7 +308,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         var isReadOnly = true;
         switch ( this.crudOperation )
         {
-            case CrudOperation.INSERT:
+            case CrudOperation.CREATE:
                 isReadOnly = false;
                 break;
 

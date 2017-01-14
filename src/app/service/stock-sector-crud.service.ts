@@ -5,6 +5,7 @@ import { Http } from "@angular/http";
 import { SessionService } from "./session.service";
 import { AppConfigurationService } from "./app-configuration.service";
 import { Injectable } from "@angular/core";
+import { StockSectorFactory } from "../model/stock-sector.factory";
 
 /**
  * This class provides CRUD REST services for StockSectors
@@ -16,16 +17,17 @@ export class StockSectorCrudService extends CrudRestService<StockSectorList>
 {
     constructor( protected http: Http,
                  protected sessionService: SessionService,
-                 protected appConfigurationService: AppConfigurationService )
+                 protected appConfigurationService: AppConfigurationService,
+                 protected stockSectorFactory: StockSectorFactory )
     {
-        super( http, sessionService, appConfigurationService );
+        super( http, sessionService, appConfigurationService, stockSectorFactory );
     }
 
     protected getReadModelObjectListUrl( baseUrl: string, modelObject: StockSectorList ): string
     {
         return  baseUrl + '/stockSectors';
     }
-    protected getCreatedModelObjectUrl( baseUrl: string,  modelObject: StockSectorList ): string
+    protected getCreateModelObjectUrl( baseUrl: string, modelObject: StockSectorList ): string
     {
         return undefined;
     }

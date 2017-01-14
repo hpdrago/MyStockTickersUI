@@ -1,54 +1,25 @@
-<p-growl [value]="messages" [sticky]="true"></p-growl>
-<p-dialog header="Portfolio Stock Detail"
-                     [modal]="true"
-                     [closable]="false"
-                     [closeOnEscape]="false"
-                     [responsive]="true"
-                     [width]="800"
-                     [height]="650"
-                     [minWidth]="800"
-                     [minHeight]="650"
-                     [resizable]="false"
-                     [(visible)]="displayDialog">
+<div *ngIf="modelObject">
+    <p-dialog header="Portfolio Stock Detail"
+                         [modal]="true"
+                         [closable]="false"
+                         [closeOnEscape]="false"
+                         [responsive]="true"
+                         [width]="600"
+                         [height]="500"
+                         [minWidth]="600"
+                         [minHeight]="500"
+                         [resizable]="false"
+                         [(visible)]="displayDialog">
 
-    <portfolio-stock-form>
-    </portfolio-stock-form>
+        <portfolio-stock-form [crudFormService]="crudFormService">
+        </portfolio-stock-form>
 
-    <footer>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-2"></div>
-            <div class="ui-grid-col-7">
-                <button pButton type="button"
-                        (click)="onCloseButtonClick()"
-                        label="Close">
-                </button>
-                <div *ngIf="isShowSaveButton()">
-                    <button pButton type="button"
-                            (click)="onSaveButtonClick()"
-                            label="Save Stock"
-                            [disabled]="isSaveButtonDisabled()">
-                    </button>
-                </div>
-                <div *ngIf="isShowAddButton()">
-                    <button pButton type="button"
-                            (click)="onAddButtonClick()"
-                            label="Add Stock"
-                            [disabled]="isAddButtonDisabled()">
-                    </button>
-                </div>
-                <div *ngIf="isShowDeleteButton()">
-                    <button pButton type="button"
-                            (click)="onDeleteButtonClick()"
-                            label="Delete Stock"
-                            [disabled]="isDeleteButtonDisabled()">
-                    </button>
-                </div>
-                <button pButton type="button"
-                        (click)="onClearButtonClick()"
-                        label="Clear">
-                </button>
-            </div>
-            <div class="ui-grid-col-3"></div>
-        </div>
-    </footer>
-</p-dialog>
+        <footer>
+            <portfolio-stock-panel-buttons [portfolio]="portfolio"
+                                           [crudFormService]="crudFormService"
+                                           [crudPanelButtonsService]="crudPanelButtonsService"
+                                           [crudDialogService]="crudDialogService">
+            </portfolio-stock-panel-buttons>
+        </footer>
+    </p-dialog>
+</div>

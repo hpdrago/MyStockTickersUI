@@ -15,10 +15,10 @@ import { ModelObject } from "../../model/base-modelobject";
  */
 export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
-    protected clearFormSubject: Subject<void> = new Subject<void>();
     protected formDirtySubject: Subject<boolean> = new Subject<boolean>();
     protected formTouchedSubject: Subject<boolean> = new Subject<boolean>();
     protected formValidSubject: Subject<boolean> = new Subject<boolean>();
+    protected formResetSubject: Subject<void> = new Subject<void>();
 
     constructor()
     {
@@ -31,14 +31,14 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
 
     /**
      * The {@code CrudFormForm} will call this method and register to the Observable
-     * and perform the necessary work to reset the form
+     * and perform the necessary work to resetForm the form
      *
      * @return {Observable<void>}
      */
-    public handleReset(): Observable<void>
+    public handleFormReset(): Observable<void>
     {
         //this.logger.log( "handleReset" );
-        return this.clearFormSubject.asObservable();
+        return this.formResetSubject.asObservable();
     }
 
     /**
@@ -81,12 +81,12 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      */
 
     /**
-     * The form container [@code CrudFormPanelComponent) will call this method when to notify the form to reset.
+     * The form container [@code CrudFormPanelComponent) will call this method when to notify the form to resetForm.
      */
-    public sendReset()
+    public sendFormReset()
     {
-        this.logger.log( "sendReset" );
-        this.tickThenRun( () => this.clearFormSubject.next() );
+        this.logger.log( "sendFormReset" );
+        this.tickThenRun( () => this.formResetSubject.next() );
     }
 
     /**

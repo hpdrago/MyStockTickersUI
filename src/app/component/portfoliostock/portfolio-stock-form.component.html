@@ -1,82 +1,80 @@
 <div *ngIf="dataLoaded">
-    <p-growl [value]="messages" sticky="true"></p-growl>
-    <form id="stockForm" [formGroup]="crudForm">
+    <form id="stockForm" [formGroup]="formGroup">
         <p-tabView id="tabView">
             <!--
             M A I N  T A B
             -->
             <p-tabPanel header="Main">
-                <p-fieldset >
+                <fieldset>
                     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
                        <!-- <div class="ui-grid-row">
                             <div class="ui-grid-col-12">
                                 <i>Enter your ticker symbol directly or enter the company name</i>
                             </div>
                         </div>-->
-                        <div class="ui-grid-row">
-                            <div class="ui-grid-col-2">
-                                <label>Stock Search</label>
+                        <div *ngIf="isCrudInsertOperation()" class="ui-grid-row">
+                            <div class="ui-grid-col-3">
                             </div>
-                            <div class="ui-grid-col-10">
-                                <p-autoComplete [(ngModel)]="stockSearch"
-                                                formControlName="stockSearch"
-                                                [suggestions]="stockSearchResults"
-                                                [minLength]="1"
-                                                (completeMethod)="onStockSearch( $event )"
-                                                (onSelect)="onStockSearchSelected( $event )"
-                                                uppercase
-                                                placeholder="Enter company name of ticker symbol">
-                                </p-autoComplete>
+                            <div class="ui-grid-col-9">
+                                NOTE: If you enter a ticker symbol and it does not show up in the list, press the tab key to
+                                initiate a further search.
+                            </div>
+                        </div>
+                        <div *ngIf="isCrudInsertOperation()" class="ui-grid-row crud-form">
+                            <div class="crud-form-label ui-grid-col-3">
+                                <label class="crud-form" for="stockSearch">Stock Search:</label>
+                            </div>
+                            <div class="ui-grid-col-9">
+                                <stock-autocomplete id="stockSearch"
+                                                    [formGroup]="formGroup"
+                                                    (stockSelected)="onStockSelected( $event )"
+                                                    (focusout)="onTickerSymbolLostFocus()">
+                                </stock-autocomplete>
                             </div>
                         </div>
 
-                        <div class="ui-grid-row">
-                            <div class="ui-grid-col-2">
-                                <label>Ticker Symbol:</label>
+                        <div class="ui-grid-row crud-form">
+                            <div class="crud-form-label ui-grid-col-3">
+                                <label class="crud-form" for="tickerSymbolColumn">Ticker Symbol:</label>
                             </div>
-                            <div class="ui-grid-col-10">
+                            <div id="tickerSymbolColumn" class="ui-grid-col-1">
                                 {{modelObject.tickerSymbol}}
-                                <!--<input id="tickerSymbol"
-                                   formControlName="tickerSymbol"
-                                   placeholder="Required"
-                                   size="5"
-                                   type="text"
-                                   pInputText required uppercase
-                                   [(ngModel)]="portfolioStock.tickerSymbol"/>-->
                             </div>
                         </div>
-                        <div [hidden]="crudForm.controls['tickerSymbol'].valid" class="ui-grid-row">
+
+                        <div [hidden]="formGroup.controls['tickerSymbol'].valid" class="ui-grid-row">
                             <div class="ui-message ui-messages-error ui-corner-all" *ngIf="isTickerSymbolInvalid()">
                                 <i class="fa fa-close"></i>
                                 Ticker Symbol is required
                             </div>
                         </div>
 
-                        <div class="ui-grid-row">
-                            <div class="ui-grid-col-2">
-                                <label>Company Name:</label>
+                        <div class="crud-form ui-grid-row">
+                            <div class="crud-form-label ui-grid-col-3">
+                                <label class="crud-form" for="companyNameColumn">Company:</label>
                             </div>
-                            <div class="ui-grid-col-10">
+                            <div id="companyNameColumn" class="ui-grid-col-9">
                                 {{modelObject.companyName}}
                             </div>
                         </div>
 
                         <div class="ui-grid-row">
-                            <div class="ui-grid-col-2">
-                                <label>Last Price:</label>
+                            <div class="crud-form-label ui-grid-col-3">
+                                <label class="crud-form" for="lastPriceColumn">Last Price:</label>
                             </div>
-                            <div class="ui-grid-col-10">
+                            <div id="lastPriceColumn" class="ui-grid-col-3">
                                 {{modelObject.lastPrice}}
                             </div>
                         </div>
 
                         <div class="ui-grid-row">
-                            <div class="ui-grid-col-2">
-                                <label>Shares:</label>
+                            <div class="crud-form-label ui-grid-col-3">
+                                <label class="crud-form" for="numberOfShares">Shares:</label>
                             </div>
-                            <div class="ui-grid-col-10">
+                            <div class="ui-grid-col-9">
                                 <p-inputMask
                                     id="numberOfShares"
+                                    class="crud-form"
                                     formControlName="numberOfShares"
                                     [(ngModel)]="modelObject.numberOfShares"
                                     [style]="{'width':'60px'}"
@@ -88,101 +86,116 @@
                         </div>
 
                         <div class="ui-grid-row">
-                            <div class="ui-grid-col-2">
-                                <label>Cost Basis:</label>
+                            <div class="crud-form-label ui-grid-col-3">
+                                <label class="crud-form" for="costBasisColumn">Cost Basis:</label>
                             </div>
-                            <div class="ui-grid-col-10">
+                            <div id="costBasisColumn" class="ui-grid-col-9">
                                 <p-inputMask
                                     formControlName="costBasis"
+                                    class="crud-form"
                                     [(ngModel)]="modelObject.costBasis"
                                     [style]="{'width':'70px'}"
                                     maxLength="6"
                                     placeholder="$"
+                                    unmask="true"
                                     mask="$9?99999">
+                                </p-inputMask>
+                            </div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="crud-form-label ui-grid-col-3">
+                                <label class="crud-form" for="realizedGain">Realized Gain:</label>
+                            </div>
+                            <div class="ui-grid-col-9">
+                                <p-inputMask
+                                        id="realizedGain"
+                                        class="crud-form"
+                                        formControlName="realizedGain"
+                                        [(ngModel)]="modelObject.realizedGain"
+                                        [style]="{'width':'70px'}"
+                                        maxLength="6"
+                                        placeholder="$"
+                                        unmask="true"
+                                        mask="$9?99999">
                                 </p-inputMask>
                             </div>
                         </div>
 
                         <div class="ui-grid-row">
-                            <div class="ui-grid-col-2">
-                                <label>Sector:</label>
+                            <div class="crud-form-label ui-grid-col-3">
+                                <label class="crud-form" for="realizeLoss">Realized Loss:</label>
                             </div>
-                            <div class="ui-grid-col-10">
-                                <p-dropdown
+                            <div class="ui-grid-col-9">
+                                <p-inputMask
+                                        id="realizeLoss"
+                                        class="crud-form"
+                                        formControlName="realizedLoss"
+                                        [(ngModel)]="modelObject.realizedLoss"
+                                        [style]="{'width':'70px'}"
+                                        maxLength="6"
+                                        placeholder="$"
+                                        unmask="true"
+                                        mask="$9?99999">
+                                </p-inputMask>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </p-tabPanel>
+            <!--
+            S T O P  L O S S  /  P R O F I T  T A K I N G
+            -->
+            <p-tabPanel header="Sector/Orders">
+                <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+                    <div class="ui-grid-row">
+                        <div class="crud-form-label ui-grid-col-2">
+                            <label for="realizeLoss" for="sector">Sector:</label>
+                        </div>
+                        <div class="ui-grid-col-3">
+                            <p-dropdown
+                                    id="sector"
+                                    class="crud-form"
                                     formControlName="sector"
-                                    [style]="{'width':'175px', 'position':'fixed', 'z-index':'1000'}"
+                                    [style]="{'width':'175px', 'position':'fixed', 'z-index':'1000', 'overflow': 'visible'}"
                                     (onChange)="onStockSectorChange($event);"
                                     [options]="stockSectors"
                                     [(ngModel)]="modelObject.sector">
-                                </p-dropdown>
-                            </div>
+                            </p-dropdown>
                         </div>
-
-                        <div class="ui-grid-row">
-                            <div class="ui-grid-col-2">
-                                <label>Sub Sector:</label>
-                            </div>
-                            <div class="ui-grid-col-10">
-                                <p-dropdown
+                        <div class="crud-form-label ui-grid-col-3">
+                            <label class="crud-form" for="subSector">Sub Sector:</label>
+                        </div>
+                        <div class="ui-grid-col-3">
+                            <p-dropdown
+                                    id="subSector"
+                                    class="crud-form"
                                     formControlName="subSector"
-                                    [style]="{'width':'175px', 'position':'fixed', 'z-index':'1000'}"
+                                    [style]="{'width':'175px', 'position':'fixed', 'z-index':'1001', 'overflow':'visible'}"
                                     [options]="stockSubSectors"
                                     [(ngModel)]="modelObject.subSector">
-                                </p-dropdown>
-                            </div>
+                            </p-dropdown>
                         </div>
                     </div>
-                </p-fieldset>
-            </p-tabPanel>
-            <!--
-            G A I N / L O S S  T A B
-            -->
-            <p-tabPanel header="Gain/Loss">
-                <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+                    <div class="ui-grid-row">
+                        <br/>
+                    </div>
                     <div class="ui-grid-row">
                         <div class="ui-grid-col-2">
-                            <label>Realized Gain:</label>
                         </div>
                         <div class="ui-grid-col-10">
-                            <p-inputMask
-                                formControlName="realizedGain"
-                                [(ngModel)]="modelObject.realizedGain"
-                                [style]="{'width':'70px'}"
-                                maxLength="6"
-                                placeholder="$"
-                                mask="$9?99999">
-                            </p-inputMask>
+                            NOTE: The following information will be displayed when you view the stocks in your portfolio
+                            so that you can quickly identify which stocks are protected by such orders and
+                            those that are not.
                         </div>
                     </div>
-
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            <label>Realized Loss:</label>
+                        <div class="crud-form-label ui-grid-col-4">
+                            <label class="crud-form" for="stopLossPrice">Stop Loss Price:</label>
                         </div>
-                        <div class="ui-grid-col-10">
+                        <div class="ui-grid-col-8">
                             <p-inputMask
-                                formControlName="realizedLoss"
-                                [(ngModel)]="modelObject.realizedLoss"
-                                [style]="{'width':'70px'}"
-                                maxLength="6"
-                                placeholder="$"
-                                mask="$9?99999">
-                            </p-inputMask>
-                        </div>
-                    </div>
-                </div>
-            </p-tabPanel>
-            <!--
-            S T O P  L O S S  /  P T O F I T  T A K I N G
-            -->
-            <p-tabPanel header="Stop Loss/Profit Taking">
-                <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            <label>Stop Loss Price:</label>
-                        </div>
-                        <div class="ui-grid-col-10">
-                            <p-inputMask
+                                id="stopLossPrice"
+                                class="crud-form"
                                 formControlName="stopLossPrice"
                                 [(ngModel)]="modelObject.stopLossPrice"
                                 [style]="{'width':'70px'}"
@@ -194,12 +207,13 @@
                     </div>
 
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            <label>Stop Loss Shares:</label>
+                        <div class="crud-form-label ui-grid-col-4">
+                            <label class="crud-form" for="stopLossShares">Stop Loss Shares:</label>
                         </div>
-                        <div class="ui-grid-col-10">
+                        <div class="ui-grid-col-8">
                             <p-inputMask
                                 id="stopLossShares"
+                                class="crud-form"
                                 formControlName="stopLossShares"
                                 [(ngModel)]="modelObject.stopLossShares"
                                 [style]="{'width':'60px'}"
@@ -211,11 +225,13 @@
                     </div>
 
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            <label>Profit Taking Price:</label>
+                        <div class="crud-form-label ui-grid-col-4">
+                            <label class="crud-form" for="profitTakingPrice">Profit Taking Price:</label>
                         </div>
-                        <div class="ui-grid-col-10">
+                        <div class="ui-grid-col-8">
                             <p-inputMask
+                                id="profitTakingPrice"
+                                class="crud-form"
                                 formControlName="profitTakingPrice"
                                 [(ngModel)]="modelObject.profitTakingPrice"
                                 [style]="{'width':'70px'}"
@@ -227,12 +243,13 @@
                     </div>
 
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-2">
-                            <label>Profit Taking Shares:</label>
+                        <div class="crud-form-label ui-grid-col-4">
+                            <label class="crud-form" for="profitTakingShares">Profit Taking Shares:</label>
                         </div>
-                        <div class="ui-grid-col-10">
+                        <div class="ui-grid-col-8">
                             <p-inputMask
                                 id="profitTakingShares"
+                                class="crud-form"
                                 formControlName="profitTakingShares"
                                 [(ngModel)]="modelObject.profitTakingShares"
                                 [style]="{'width':'60px'}"

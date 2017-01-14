@@ -4,7 +4,7 @@
 export enum CrudOperation
 {
     NONE,
-    INSERT,
+    CREATE,
     UPDATE,
     DELETE
 }

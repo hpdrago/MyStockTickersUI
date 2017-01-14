@@ -14,7 +14,7 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>>
     protected logger: Logger;
     protected modelObjectChangedSubject: Subject<T> = new Subject<T>();
     protected crudOperationChangedSubject: Subject<CrudOperation> = new Subject<CrudOperation>();
-    protected crudOperationError: Subject<string> = new Subject<string>();
+    protected crudOperationErrorSubject: Subject<string> = new Subject<string>();
 
     constructor()
     {
@@ -29,7 +29,7 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>>
     public handleCrudOperationError(): Observable<string>
     {
         this.logger.log( "handleCrudOperationError" );
-        return this.crudOperationError.asObservable();
+        return this.crudOperationErrorSubject.asObservable();
     }
 
     /**
@@ -58,7 +58,7 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>>
     public sendCrudOperationError( errorMessage: string )
     {
         this.logger.log( "sendCrudOperationError " + errorMessage );
-        this.tickThenRun( () => this.crudOperationError.next( errorMessage ) );
+        this.tickThenRun( () => this.crudOperationErrorSubject.next( errorMessage ) );
     }
 
     /**

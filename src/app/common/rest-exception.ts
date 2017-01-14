@@ -58,15 +58,6 @@ export class RestException
     }
 
     /**
-     * Returns the exception message, the status, and the path
-     * @returns {string}
-     */
-    public formatGrowlMessage(): string
-    {
-        return `${this.message}.  Status: ${this.status}.  URL: ${this.path}`;
-    }
-
-    /**
      * Returns the exception message
      * @returns {string}
      */

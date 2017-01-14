@@ -1,0 +1,36 @@
+<p-panel class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" header="Portfolios">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+                <div id="portfolio-list">
+                    <div *ngFor="let portfolio of rows">
+                        <div class="portfolio-div"
+                             [class.ui-state-active]="isSelectedPortfolio(portfolio)"
+                             (click)="onRowSelect(portfolio)">
+                             {{portfolio.name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+                <portfolio-table-buttons [crudTableButtonsService]="portfolioTableButtonsService">
+                </portfolio-table-buttons>
+            </div>
+        </div>
+    </div>
+    <!--
+    Portfolio stocks
+    -->
+    <div class="ui-grid-row">
+        <portfolio-stock-table></portfolio-stock-table>
+    </div>
+    <!--
+    Add Portfolio Dialog
+    -->
+    <portfolio-dialog [crudDialogService]="portfolioDialogService"
+                      [crudFormService]="portfolioFormService"
+                      [crudPanelButtonsService]="portfolioPanelButtonService">
+    </portfolio-dialog>
+</p-panel>

@@ -5,13 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { StockTableComponent }      from './component/stock/stock-table.component';
 import { DashboardComponent }   from './component/dashboard/dashboard.component';
 import { StockFormComponent } from './component/stock/stock-form.component';
-import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 import { PortfolioStockFormComponent } from "./component/portfoliostock/portfolio-stock-form.component";
+import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
 
 const routes: Routes = [
     {
         path: 'portfolios',
-        component: PortfoliosComponent,
+        component: PortfolioTableComponent,
     },
     {
         path: 'portfoliostock',

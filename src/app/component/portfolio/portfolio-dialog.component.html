@@ -1,0 +1,22 @@
+<div *ngIf="modelObject">
+    <p-dialog header="Portfolio"
+              [modal]="true"
+              [closable]="false"
+              [closeOnEscape]="false"
+              [responsive]="true"
+              [width]="450"
+              [height]="isCrudDeleteOperation() ? 275 : 175"
+              [minWidth]="450"
+              [minHeight]="isCrudDeleteOperation() ? 275 : 175"
+              [resizable]="false"
+              [(visible)]="displayDialog">
+        <portfolio-form [crudFormService]="crudFormService">
+        </portfolio-form>
+        <footer>
+            <portfolio-panel-buttons [crudFormService]="crudFormService"
+                                     [crudPanelButtonsService]="crudPanelButtonsService"
+                                     [crudDialogService]="crudDialogService">
+            </portfolio-panel-buttons>
+        </footer>
+    </p-dialog>
+</div>

@@ -9,8 +9,20 @@ export class Portfolio extends ModelObject<Portfolio>
     public customerId: number;
     public name: string;
 
-    clone(): Portfolio
+    public clone(): Portfolio
     {
-        return undefined;
+        var newPortfolio = new Portfolio();
+        this.copyProperties( this, newPortfolio );
+        return newPortfolio;
+    }
+
+    public equals( modelObject: Portfolio )
+    {
+        var isEqual = false;
+        if ( modelObject )
+        {
+            isEqual = this.id === modelObject.id;
+        }
+        return isEqual;
     }
 }

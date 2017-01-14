@@ -2,11 +2,8 @@ import { Component } from "@angular/core";
 import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { Stock } from "../../model/stock";
 import { CrudOperation } from "../common/crud-operation";
-import { SessionService } from "../../service/session.service";
 import { CrudFormComponent } from "../common/crud-form.component";
-import { StockFactory } from "../../model/stock-factory";
-import { StockFormService } from "./stock-form.service";
-import { StockCrudService } from "../../service/stock-crud.service";
+import { StockFactory } from "../../model/stock.factory";
 import { ToastsManager } from "ng2-toastr";
 
 /**
@@ -22,12 +19,9 @@ export class StockFormComponent extends CrudFormComponent<Stock>
 {
     constructor( protected toaster: ToastsManager,
                  private formBuilder: FormBuilder,
-                 private session: SessionService,
-                 private stockService: StockCrudService,
-                 protected stockFormService: StockFormService,
                  protected stockFactory: StockFactory )
     {
-        super( toaster, stockFormService, stockFactory );
+        super( toaster, stockFactory );
     }
 
     /**
@@ -56,20 +50,20 @@ export class StockFormComponent extends CrudFormComponent<Stock>
         var isReadOnly = true;
         switch ( this.crudOperation )
         {
-            case CrudOperation.INSERT:
+            case CrudOperation.CREATE:
                 isReadOnly = false;
                 break;
 
             case CrudOperation.UPDATE:
                 /*
-                isReadOnly = !this.stockService.canEditOrDelete( stock,
+                isReadOnly = !this.stockCrudService.canEditOrDelete( stock,
                                                                  this.session.getLoggedInUserId() );
                                                                  */
                 break;
 
             case CrudOperation.DELETE:
                 /*
-                isReadOnly = !this.stockService.canEditOrDelete( stock,
+                isReadOnly = !this.stockCrudService.canEditOrDelete( stock,
                                                                  this.session.getLoggedInUserId() );
                                                                  */
                 break;
@@ -83,8 +77,8 @@ export class StockFormComponent extends CrudFormComponent<Stock>
      */
     public isTickerSymbolInvalid(): boolean
     {
-        return !this.crudForm.controls['tickerSymbol'].valid &&
-               this.crudForm.controls['tickerSymbol'].dirty;
+        return !this.formGroup.controls['tickerSymbol'].valid &&
+               this.formGroup.controls['tickerSymbol'].dirty;
     }
 
     /**
@@ -93,8 +87,8 @@ export class StockFormComponent extends CrudFormComponent<Stock>
      */
     public isCompanyNameInvalid(): boolean
     {
-        return !this.crudForm.controls['companyName'].valid &&
-               this.crudForm.controls['companyName'].dirty;
+        return !this.formGroup.controls['companyName'].valid &&
+               this.formGroup.controls['companyName'].dirty;
     }
 
     /**
@@ -113,8 +107,8 @@ export class StockFormComponent extends CrudFormComponent<Stock>
      */
    /* private isStockExchangeInvalid(): boolean
     {
-        //return !this.crudForm.controls['stockExchange'].valid &&
-        //       this.crudForm.controls['stockExchange'].dirty;
+        //return !this.formGroup.controls['stockExchange'].valid &&
+        //       this.formGroup.controls['stockExchange'].dirty;
     }*/
 
 }

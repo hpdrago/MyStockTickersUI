@@ -1,66 +1,53 @@
-/**
- * This component lists the all of the stocks
- */
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { Stock } from "../../model/stock";
 import { PaginationPage } from "../../common/pagination";
 import { LazyLoadEvent } from "primeng/components/common/api";
-import { CrudOperation } from "../common/crud-operation";
 import { CrudTableComponent } from "../common/crud-table.component";
-import { StockFactory } from "../../model/stock-factory";
-import { StockPanelService } from "./stock-panel.service";
+import { StockFactory } from "../../model/stock.factory";
 import { StockCrudService } from "../../service/stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
+import { StockFormService } from "./stock-form.service";
+import { StockPanelButtonsService } from "./stock-panel-buttons.service";
+import { StockTableButtonsService } from "./stock-table-buttons.service";
+import { StockDialogService } from "./stock-dialog.service";
 
+/**
+ * This component lists the all of the stocks in the database.
+ */
 @Component( {
     selector:    'stock-table',
     templateUrl: './stock-table.component.html',
     styleUrls:   ['./stock-table.component.css'],
-    outputs: ['selectedModelObject', 'displayableModelObject']
+    outputs: ['modelObject']
 } )
-export class StockTableComponent extends CrudTableComponent<Stock> implements OnInit
+export class StockTableComponent extends CrudTableComponent<Stock>
 {
-    private stocksPage: PaginationPage<Stock>;
     private companyNameSearch: string;
     private lastLoadEvent: LazyLoadEvent;
 
     /**
      * Create a new instance with required DI sources
-     * @param stockService
-     * @param router
      */
     constructor( protected toaster: ToastsManager,
-                 protected stockService: StockCrudService,
                  protected stockFactory: StockFactory,
-                 protected stockPanelService: StockPanelService )
+                 protected stockCrudService: StockCrudService,
+                 protected stockFormService: StockFormService,
+                 protected stockPanelButtonsService: StockPanelButtonsService,
+                 protected stockDialogService: StockDialogService,
+                 protected stockTableButtonsService: StockTableButtonsService )
     {
-        super( toaster, stockFactory, stockPanelService, stockService );
-    }
-
-    public ngOnInit(): void
-    {
-        this.stocksPage =
-        {
-            content : [],
-            last: false,
-            first: true,
-            number: 1,
-            size: 20,
-            totalElements: 0,
-            totalPages : 0,
-            itemsPerPage: 20,
-            sort: []
-        }
+        super( toaster, stockFactory, stockCrudService, stockPanelButtonsService,
+               stockDialogService, stockTableButtonsService );
     }
 
     /**
      * This event is triggered by the DataTable containing the stocks to request the load of a new page of stocks
      * @param event
      */
-    private lazyLoadData( event: LazyLoadEvent ) : void
+    protected lazyLoadData( event: LazyLoadEvent ) : void
     {
         this.logger.log( 'lazyLoadData ' + JSON.stringify( event ) );
-        this.stockService
+        this.stockCrudService
             .getStocksPage( event.first, event.rows )
             .subscribe( stocksPage =>
                         {
@@ -82,7 +69,7 @@ export class StockTableComponent extends CrudTableComponent<Stock> implements On
     private getStockCompaniesLike( searchString: string )
     {
         this.logger.log( 'getStockCompaniesLike ' + searchString );
-        this.stockService
+        this.stockCrudService
             .getStockCompaniesLike( searchString )
             .subscribe( stocksPage =>
             {
@@ -102,41 +89,18 @@ export class StockTableComponent extends CrudTableComponent<Stock> implements On
      */
     private setStocksPage( stocksPage: PaginationPage<Stock> ): void
     {
+        this.logger.log( "setStocksPage" );
         //this.logger.log( JSON.stringify( stocksPage ).valueOf() );
-        this.totalRecords = stocksPage.totalElements;
-        this.stocksPage = stocksPage;
+        //this.stocksPage = stocksPage;
+        this.rows = this.stockFactory.newModelObjectArray( stocksPage.content );
+        for ( var stock of this.rows )
+        {
+            this.logger.log( "setStockPage.stock: " + JSON.stringify( stock ) );
+            stock.isUserEntered();
+        }
+        this.totalRows = stocksPage.totalElements;
         this.logger.log( 'setStocksPage: length: ' + stocksPage.content.length );
         this.logger.log( 'setStocksPage: totalElements: ' + stocksPage.totalElements );
-    }
-
-    private save()
-    {
-        if ( this.crudOperation == CrudOperation.INSERT  )
-        {
-            this.stocksPage.content.push( this.displayableModelObject );
-        }
-        else
-        {
-            this.stocksPage.content[this.findSelectedStockIndex()] ;
-            this.displayableModelObject = null;
-        }
-    }
-
-    /**
-     * Determines the index of selectedStock in the stockPage.content array
-     * @returns {number}
-     */
-    private findSelectedStockIndex(): number
-    {
-        for ( var i = 0; i < this.stocksPage.content.length; i++ )
-        {
-            var stock = this.stocksPage.content[i];
-            if ( stock.tickerSymbol === this.selectedModelObject.tickerSymbol )
-            {
-                return i;
-            }
-        }
-        throw new Error( "Could not find ticker symbol " + this.selectedModelObject.tickerSymbol );
     }
 
     /*****************************************************************
@@ -165,5 +129,4 @@ export class StockTableComponent extends CrudTableComponent<Stock> implements On
         this.logger.log( 'onJumpToStock()'  );
         this.getStockCompaniesLike( stock.tickerSymbol );
     }
-
 }
