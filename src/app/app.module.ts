@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpModule } from "@angular/http";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+
 /**
  * PrimeNG
  */
@@ -33,7 +35,7 @@ import { FieldsetModule } from "primeng/components/fieldset/fieldset";
 /**
  * Third party imports
  */
-import { ToastModule, ToastsManager } from "ng2-toastr/ng2-toastr";
+import {ToastModule, ToastOptions, ToastsManager} from "ng2-toastr/ng2-toastr";
 /**
  * Application Imports
  */
@@ -94,6 +96,7 @@ import { StockSectorFactory } from "./model/stock-sector.factory";
         ReactiveFormsModule,
         routing,
         HttpModule,
+        BrowserAnimationsModule,
         // PrimeNG modules
         DropdownModule,
         InputMaskModule,
@@ -110,7 +113,7 @@ import { StockSectorFactory } from "./model/stock-sector.factory";
         MenubarModule,
         TieredMenuModule,
         ConfirmDialogModule,
-        ToastModule
+        ToastModule.forRoot()
         // Third Party modules
     ],
     declarations:
@@ -177,6 +180,7 @@ import { StockSectorFactory } from "./model/stock-sector.factory";
         SessionService,
         ConfirmationService,
         AppConfigurationService,
+        ToastOptions,
         ToastsManager
     ]
 })
