@@ -1,8 +1,8 @@
 import { CrudTableButtonsComponent } from "../common/crud-table-buttons.component";
-import { Stock } from "../../model/stock";
+import { Stock } from "../../model/class/stock";
 import { Component, Input } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { Portfolio } from "../../model/portfolio";
+import { Portfolio } from "../../model/class/portfolio";
 
 /**
  * Created by mike on 1/2/2017.

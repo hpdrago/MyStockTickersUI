@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
 import { CrudPanelButtonsComponent } from "../common/crud-panel-buttons.component";
 import { ToastsManager } from "ng2-toastr";
-import { Portfolio } from "../../model/portfolio";
-import { PortfolioFactory } from "../../model/portfolio.factory";
+import { Portfolio } from "../../model/class/portfolio";
+import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 import { PortfolioCrudService } from "../../service/portfolio-crud.service";
 import { SessionService } from "../../service/session.service";
 

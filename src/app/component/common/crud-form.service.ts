@@ -1,7 +1,7 @@
 import { Observable, Subject } from "rxjs";
 import { ApplicationRef } from "@angular/core";
 import { BaseCrudComponentService } from "./base-crud-component.service";
-import { ModelObject } from "../../model/base-modelobject";
+import { ModelObject } from "../../model/class/base-modelobject";
 /**
  * This service provides communication from the CrudFormComponent's parent aka CrudPanelComponent
  * to the CrudFormComponent.
@@ -35,9 +35,9 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      *
      * @return {Observable<void>}
      */
-    public handleFormReset(): Observable<void>
+    public subscribeToFormResetEvent(): Observable<void>
     {
-        //this.logger.log( "handleReset" );
+        this.logger.debug( "handleReset" );
         return this.formResetSubject.asObservable();
     }
 
@@ -47,9 +47,9 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      *
      * @return {Observable<boolean>}
      */
-    public handleFormDirty(): Observable<boolean>
+    public subscribeToFormDirtyEvent(): Observable<boolean>
     {
-        //this.logger.log( "handleFormDirty" );
+        this.logger.debug( "subscribeToFormDirtyEvent" );
         return this.formDirtySubject.asObservable();
     }
 
@@ -59,9 +59,9 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      *
      * @return {Observable<boolean>}
      */
-    public handleFormTouched(): Observable<boolean>
+    public subscribeToFormTouchedEvent(): Observable<boolean>
     {
-        //this.logger.log( "handleFormTouched" );
+        this.logger.debug( "subscribeToFormTouchedEvent" );
         return this.formTouchedSubject.asObservable();
     }
 
@@ -70,9 +70,9 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      * form's valid status.
      * @return {Observable<boolean>}
      */
-    public handleFormValid(): Observable<boolean>
+    public subscribeToFormValidEvent(): Observable<boolean>
     {
-        //this.logger.log( "handleFormValid" );
+        this.logger.debug( "subscribeToFormValidEvent" );
         return this.formValidSubject.asObservable();
     }
 
@@ -83,9 +83,9 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
     /**
      * The form container [@code CrudFormPanelComponent) will call this method when to notify the form to resetForm.
      */
-    public sendFormReset()
+    public sendFormResetEvent()
     {
-        this.logger.log( "sendFormReset" );
+        this.logger.debug( "sendFormResetEvent" );
         this.tickThenRun( () => this.formResetSubject.next() );
     }
 
@@ -95,9 +95,9 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      *
      * @param dirty
      */
-    public sendFormDirty( dirty: boolean )
+    public sendFormDirtyEvent( dirty: boolean )
     {
-        //this.logger.log( "sendFormDirty " + dirty );
+        this.logger.debug( "sendFormDirtyEvent " + dirty );
         this.tickThenRun( () => this.formDirtySubject.next( dirty ) );
     }
 
@@ -106,9 +106,9 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      *
      * @param touched
      */
-    public sendFormTouched( touched: boolean )
+    public sendFormTouchedEvent( touched: boolean )
     {
-        //this.logger.log( "sendFormTouched " + touched );
+        this.logger.debug( "sendFormTouchedEvent " + touched );
         this.tickThenRun( () => this.formTouchedSubject.next( touched ) );
     }
 
@@ -116,9 +116,9 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      * The {@code CrudFromComponent} will call this method to notify the panel when the valid status has changed.
      * @param valid
      */
-    public sendFormValid( valid: boolean )
+    public sendFormValidEvent( valid: boolean )
     {
-        //this.logger.log( "sendFormValid " + valid );
+        this.logger.debug( "sendFormValidEvent " + valid );
         this.tickThenRun( () => this.formValidSubject.next( valid ) );
     }
 }

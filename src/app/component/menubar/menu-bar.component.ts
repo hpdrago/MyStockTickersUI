@@ -23,6 +23,7 @@ export class MenuBarComponent
         this.menuItems =
             [
                 { label: 'Dashboard', icon: 'fa-chart', routerLink: ['/dashboard'] },
+                { label: 'Stock Notes', icon: 'fa-chart', routerLink: ['/stockNotes'] },
                 { label: 'Portfolios', icon: 'fa-chart', routerLink: ['/portfolios'] },
                 { label: 'Stocks', icon: 'fa-chart', routerLink: ['/stocks'] }
             ]

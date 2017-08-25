@@ -1,5 +1,5 @@
 import { CrudTableButtonsComponent } from "../common/crud-table-buttons.component";
-import { Stock } from "../../model/stock";
+import { Stock } from "../../model/class/stock";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { SessionService } from "../../service/session.service";

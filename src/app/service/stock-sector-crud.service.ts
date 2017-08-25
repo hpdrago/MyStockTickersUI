@@ -1,11 +1,11 @@
-import { StockSectorList } from "../model/stock-sectors.list";
+import { StockSectorList } from "../model/class/stock-sectors.list";
 import { Observable } from "rxjs";
 import { CrudRestService } from "./crud-rest.serivce";
 import { Http } from "@angular/http";
 import { SessionService } from "./session.service";
 import { AppConfigurationService } from "./app-configuration.service";
 import { Injectable } from "@angular/core";
-import { StockSectorFactory } from "../model/stock-sector.factory";
+import { StockSectorFactory } from "../model/factory/stock-sector.factory";
 
 /**
  * This class provides CRUD REST services for StockSectors

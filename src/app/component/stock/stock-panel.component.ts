@@ -1,6 +1,6 @@
 
 import { CrudPanelComponent } from "../common/crud-panel.component";
-import { Stock } from "../../model/stock";
+import { Stock } from "../../model/class/stock";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 

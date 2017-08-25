@@ -1,10 +1,10 @@
 import { Component, Input } from "@angular/core";
-import { PortfolioStock } from "../../model/portfolio-stock";
+import { PortfolioStock } from "../../model/class/portfolio-stock";
 import { PortfolioStockCrudService } from "../../service/portfolio-stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
 import { CrudDialogComponent } from "../common/crud-dialog.component";
 import { PortfolioStockDialogService } from "./portfolio-stock-dialog.service";
-import { Portfolio } from "../../model/portfolio";
+import { Portfolio } from "../../model/class/portfolio";
 
 /**
  * This class manages the modal dialog that contains the Portfolio Stock

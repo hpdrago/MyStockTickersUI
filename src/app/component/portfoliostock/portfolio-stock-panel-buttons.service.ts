@@ -1,4 +1,4 @@
-import { PortfolioStock } from "../../model/portfolio-stock";
+import { PortfolioStock } from "../../model/class/portfolio-stock";
 import { CrudPanelButtonsService } from "../common/crud-panel-buttons.service";
 /**
  * This class defines a Panel Service for the Portfolio Stock CRUD form

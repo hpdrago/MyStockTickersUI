@@ -1,11 +1,11 @@
 
-import { PortfolioStock } from "../model/portfolio-stock";
+import { PortfolioStock } from "../model/class/portfolio-stock";
 import { AppConfigurationService } from "./app-configuration.service";
 import { SessionService } from "./session.service";
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
 import { Observable } from "rxjs";
-import { PortfolioStockFactory } from "../model/portfolio-stock.factory";
+import { PortfolioStockFactory } from "../model/factory/portfolio-stock.factory";
 import { CrudRestService } from "./crud-rest.serivce";
 
 /**

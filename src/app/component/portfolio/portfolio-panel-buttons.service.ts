@@ -1,4 +1,4 @@
-import { Portfolio } from "../../model/portfolio";
+import { Portfolio } from "../../model/class/portfolio";
 import { Injectable } from "@angular/core";
 import { CrudPanelButtonsService } from "../common/crud-panel-buttons.service";
 /**

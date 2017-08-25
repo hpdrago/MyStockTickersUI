@@ -1,3 +1,4 @@
+///<reference path="service/stock-note-crud.service.ts"/>
 /**
  * Created by mike on 9/16/2016.
  */
@@ -26,7 +27,8 @@ import {
     TabViewModule,
     SelectButtonModule,
     ConfirmDialogModule,
-    ConfirmationService
+    ConfirmationService,
+    InputTextareaModule
 } from "primeng/primeng";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
 import { AutoCompleteModule } from "primeng/components/autocomplete/autocomplete";
@@ -53,13 +55,13 @@ import { PortfolioStockFormComponent } from "./component/portfoliostock/portfoli
 import { PortfolioStockCrudService } from "./service/portfolio-stock-crud.service";
 import { PortfolioStockTableComponent } from "./component/portfoliostock/portfolio-stock-table.component";
 import { StockPanelComponent } from "./component/stock/stock-panel.component";
-import { PortfolioStockFactory } from "./model/portfolio-stock.factory";
-import { StockFactory } from "./model/stock.factory";
+import { PortfolioStockFactory } from "./model/factory/portfolio-stock.factory";
+import { StockFactory } from "./model/factory/stock.factory";
 import { StockFormService } from "./component/stock/stock-form.service";
 import { PortfolioStockFormService } from "./component/portfoliostock/portfolio-stock-form.service";
 import { StockCrudService } from "./service/stock-crud.service";
 import { PortfolioCrudService } from "./service/portfolio-crud.service";
-import { PortfolioFactory } from "./model/portfolio.factory";
+import { PortfolioFactory } from "./model/factory/portfolio.factory";
 import { StockSectorCrudService } from "./service/stock-sector-crud.service";
 import { StockAutoCompleteComponent } from "./component/common/stock-autocomplete.component";
 import { PortfolioStockPanelButtonsComponent } from "./component/portfoliostock/portfolio-stock-panel-buttons.component";
@@ -84,7 +86,20 @@ import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.c
 import { PortfolioPanelButtonsComponent } from "./component/portfolio/portfolio-panel-buttons.component";
 import { PortfolioTableButtonsComponent } from "./component/portfolio/portfolio-table-buttons.component";
 import { PortfolioDialogService } from "./component/portfolio/portfolio-dialog.service";
-import { StockSectorFactory } from "./model/stock-sector.factory";
+import { StockSectorFactory } from "./model/factory/stock-sector.factory";
+import {StockNotesDialogComponent} from "./component/stocknotes/stock-notes-dialog.component";
+import {StockNotesTableComponent} from "./component/stocknotes/stock-notes-table.component";
+import {StockNotesTableButtonsComponent} from "./component/stocknotes/stock-notes-table-buttons.component";
+import {StockNotesFormComponent} from "./component/stocknotes/stock-notes-form.component";
+import {StockNotesPanelButtonsComponent} from "./component/stocknotes/stock-notes-panel-buttons.component";
+import {StockNoteCrudService} from "./service/stock-note-crud.service";
+import {StockNoteFactory} from "./model/factory/stock-note.factory";
+import {StockNotesFormService} from "./component/stocknotes/stock-notes-form.service";
+import {StockNotesTableButtonsService} from "./component/stocknotes/stock-notes-table-buttons.service";
+import {StockNotesPanelButtonsService} from "./component/stocknotes/stock-notes-panel-buttons.service";
+import {StockNotesDialogService} from "./component/stocknotes/stock-notes-dialog.service";
+import {StockNoteCountFactory} from "./model/factory/stock-note-count.factory";
+import { StockNotesPanelComponent } from "./component/stocknotes/stock-notes-panel.component";
 
 @NgModule({
     imports:
@@ -113,7 +128,8 @@ import { StockSectorFactory } from "./model/stock-sector.factory";
         MenubarModule,
         TieredMenuModule,
         ConfirmDialogModule,
-        ToastModule.forRoot()
+        ToastModule.forRoot(),
+        InputTextareaModule
         // Third Party modules
     ],
     declarations:
@@ -140,6 +156,13 @@ import { StockSectorFactory } from "./model/stock-sector.factory";
         PortfolioStockFormComponent,
         PortfolioStockDialogComponent,
         PortfolioStockPanelButtonsComponent,
+
+        StockNotesTableComponent,
+        StockNotesTableButtonsComponent,
+        StockNotesFormComponent,
+        StockNotesDialogComponent,
+        StockNotesPanelComponent,
+        StockNotesPanelButtonsComponent,
 
         DashboardComponent,
         UppercaseDirective,
@@ -175,6 +198,14 @@ import { StockSectorFactory } from "./model/stock-sector.factory";
         PortfolioStockPanelButtonsService,
         PortfolioStockDialogService,
         PortfolioStockFactory,
+
+        StockNoteCrudService,
+        StockNotesFormService,
+        StockNotesTableButtonsService,
+        StockNotesPanelButtonsService,
+        StockNotesDialogService,
+        StockNoteFactory,
+        StockNoteCountFactory,
 
         StockSectorFactory,
         SessionService,

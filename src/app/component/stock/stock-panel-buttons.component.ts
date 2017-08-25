@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
 import { CrudPanelButtonsComponent } from "../common/crud-panel-buttons.component";
 import { ToastsManager } from "ng2-toastr";
-import { Stock } from "../../model/stock";
+import { Stock } from "../../model/class/stock";
 import { StockCrudService } from "../../service/stock-crud.service";
-import { StockFactory } from "../../model/stock.factory";
+import { StockFactory } from "../../model/factory/stock.factory";
 
 /**
  * Button panel component for the Stock dialog.

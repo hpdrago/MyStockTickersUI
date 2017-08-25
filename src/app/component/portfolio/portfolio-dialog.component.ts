@@ -1,5 +1,5 @@
 import { CrudDialogComponent } from "../common/crud-dialog.component";
-import { Portfolio } from "../../model/portfolio";
+import { Portfolio } from "../../model/class/portfolio";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 

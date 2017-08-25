@@ -1,5 +1,5 @@
 import { Subject, Observable } from "rxjs";
-import { ModelObject } from "../../model/base-modelobject";
+import { ModelObject } from "../../model/class/base-modelobject";
 import { Injectable } from "@angular/core";
 import { BaseCrudComponentService } from "./base-crud-component.service";
 
@@ -21,18 +21,18 @@ export abstract class CrudDialogService<T extends ModelObject<T>> extends BaseCr
      * Handle the request to display the dialog
      * @return {Observable<void>}
      */
-    public handleDisplayDialogRequest(): Observable<void>
+    public subscribeToDisplayDialogRequestEvent(): Observable<void>
     {
-        this.logger.log( "handleDisplayDialogRequest" );
+        this.log( "subscribeToDisplayDialogRequestEvent" );
         return this.displayDialogRequestSubject.asObservable();
     }
 
     /**
      * Sends a request to display the CRUD dialog
      */
-    public sendDisplayDialogRequest()
+    public sendDisplayDialogRequestEvent()
     {
-        this.logger.log( "sendDisplayDialogRequest" );
+        this.log( "sendDisplayDialogRequestEvent" );
         this.tickThenRun( () => this.displayDialogRequestSubject.next() );
     }
 
@@ -41,18 +41,18 @@ export abstract class CrudDialogService<T extends ModelObject<T>> extends BaseCr
      * button is clicked on the panel.
      * @return {Observable<void>}
      */
-    public handleCloseButtonClicked(): Observable<void>
+    public subscribeToCloseButtonClickedEvent(): Observable<void>
     {
-        this.logger.log( "handleCloseButtonClicked" );
+        this.log( "subscribeToCloseButtonClickedEvent" );
         return this.closeButtonClickedSubject.asObservable();
     }
 
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the close button.
      */
-    public sendCloseButtonClicked()
+    public sendCloseButtonClickedEvent()
     {
-        this.logger.log( "sendCloseButtonClicked" );
+        this.log( "sendCloseButtonClickedEvent" );
         this.tickThenRun( () => this.closeButtonClickedSubject.next() );
     }
 

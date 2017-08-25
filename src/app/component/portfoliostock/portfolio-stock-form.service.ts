@@ -1,5 +1,5 @@
 import { CrudFormService } from "../common/crud-form.service";
-import { PortfolioStock } from "../../model/portfolio-stock";
+import { PortfolioStock } from "../../model/class/portfolio-stock";
 import { Injectable, ApplicationRef } from "@angular/core";
 /**
  * Created by mike on 12/14/2016.

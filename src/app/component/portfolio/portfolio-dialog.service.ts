@@ -1,7 +1,7 @@
 import { CrudDialogService } from "../common/crud-dialog.service";
-import { PortfolioStock } from "../../model/portfolio-stock";
+import { PortfolioStock } from "../../model/class/portfolio-stock";
 import { Injectable } from "@angular/core";
-import { Portfolio } from "../../model/portfolio";
+import { Portfolio } from "../../model/class/portfolio";
 /**
  * This class inherits from the {@code CrudDialogService} class to implement a specific service
  * for {@code Portfolio}.

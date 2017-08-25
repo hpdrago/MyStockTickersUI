@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudDialogComponent } from "../common/crud-dialog.component";
-import { Stock } from "../../model/stock";
+import { Stock } from "../../model/class/stock";
 
 /**
  * This class manages the modal dialog that contains the Stock

@@ -1,5 +1,5 @@
 import { CrudTableButtonsService } from "../common/crud-table-buttons.service";
-import { PortfolioStock } from "../../model/portfolio-stock";
+import { PortfolioStock } from "../../model/class/portfolio-stock";
 import { Injectable } from "@angular/core";
 
 /**

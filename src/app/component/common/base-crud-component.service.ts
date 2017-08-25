@@ -1,24 +1,22 @@
-import { Logger } from "../../common/logger";
-import { LoggerFactory } from "../../common/logger-factory";
 import { Subject, Observable } from "rxjs";
 import { CrudOperation } from "./crud-operation";
-import { ModelObject } from "../../model/base-modelobject";
+import { ModelObject } from "../../model/class/base-modelobject";
+import { BaseClass } from "../../common/base-class";
 /**
  * This class services as a base abstract class for CRUD based component services to provide common methods
  * and properties.
  *
  * Created by mike on 12/17/2016.
  */
-export abstract class BaseCrudComponentService<T extends ModelObject<T>>
+export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClass
 {
-    protected logger: Logger;
     protected modelObjectChangedSubject: Subject<T> = new Subject<T>();
     protected crudOperationChangedSubject: Subject<CrudOperation> = new Subject<CrudOperation>();
     protected crudOperationErrorSubject: Subject<string> = new Subject<string>();
 
     constructor()
     {
-        this.logger = LoggerFactory.getLogger( (<any>this).constructor.name );
+        super();
     }
 
     /**
@@ -26,18 +24,18 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>>
      * This parent panel that contains CRUD components, should register for these events and
      * property report the error to the user.
      */
-    public handleCrudOperationError(): Observable<string>
+    public subscribeToCrudOperationError(): Observable<string>
     {
-        this.logger.log( "handleCrudOperationError" );
+        this.debug( "subscribeToCrudOperationError" );
         return this.crudOperationErrorSubject.asObservable();
     }
 
     /**
      * This method is used to register for events when the {@code ModelObject} instance has changed
      */
-    public handleModelObjectChanged(): Observable<T>
+    public subscribeToModelObjectChangedEvent(): Observable<T>
     {
-        this.logger.log( "handleModelObjectChanged" );
+        this.debug( "subscribeToModelObjectChangedEvent" );
         return this.modelObjectChangedSubject.asObservable();
     }
 
@@ -45,9 +43,9 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>>
      * This method is used by an observer to be notified as result of a change to the crud operation.
      * @return {Observable<CrudOperation>}
      */
-    public handleCrudOperationChanged(): Observable<CrudOperation>
+    public subscribeToCrudOperationChangeEvent(): Observable<CrudOperation>
     {
-        this.logger.log( "handleCrudOperationChanged" );
+        this.debug( "subscribeToCrudOperationChangeEvent" );
         return this.crudOperationChangedSubject.asObservable();
     }
 
@@ -55,9 +53,9 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>>
      * This method is use by sub components to report an error to the containing panel.
      * @param errorMessage
      */
-    public sendCrudOperationError( errorMessage: string )
+    public sendCrudOperationErrorEvent( errorMessage: string )
     {
-        this.logger.log( "sendCrudOperationError " + errorMessage );
+        this.debug( "sendCrudOperationErrorEvent " + errorMessage );
         this.tickThenRun( () => this.crudOperationErrorSubject.next( errorMessage ) );
     }
 
@@ -66,9 +64,9 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>>
      * will be notified.
      * @param modelObject
      */
-    public sendModelObjectChanged( modelObject: T )
+    public sendModelObjectChangedEvent( modelObject: T )
     {
-        this.logger.log( "sendModelObjectChanged " + JSON.stringify( modelObject ) );
+        this.debug( "sendModelObjectChangedEvent " + JSON.stringify( modelObject ) );
         this.tickThenRun( () => this.modelObjectChangedSubject.next( modelObject ) );
     }
 
@@ -77,14 +75,15 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>>
      * will be notified.
      * @param crudOperation
      */
-    public sendCrudOperationChanged( crudOperation: CrudOperation )
+    public sendCrudOperationChangedEvent( crudOperation: CrudOperation )
     {
-        this.logger.log( "sendCrudOperationChanged " + crudOperation );
+        this.debug( "sendCrudOperationChangedEvent " + crudOperation );
         this.tickThenRun( () => this.crudOperationChangedSubject.next( crudOperation ) );
     }
 
     protected tickThenRun( fn: () => any )
     {
-        setTimeout( fn, 0 );
+        //setTimeout( fn, 0 );
+        fn();
     }
 }

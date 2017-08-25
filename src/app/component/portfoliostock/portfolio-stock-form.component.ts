@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { PortfolioStock } from "../../model/portfolio-stock";
+import { PortfolioStock } from "../../model/class/portfolio-stock";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { SelectItem } from "primeng/components/common/api";
-import { Stock } from "../../model/stock";
+import { Stock } from "../../model/class/stock";
 import { CrudFormComponent } from "../common/crud-form.component";
-import { StockSectorList } from "../../model/stock-sectors.list";
-import { PortfolioStockFactory } from "../../model/portfolio-stock.factory";
+import { StockSectorList } from "../../model/class/stock-sectors.list";
+import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
 import { StockCrudService } from "../../service/stock-crud.service";
 import { StockSectorCrudService } from "../../service/stock-sector-crud.service";
 import { ToastsManager } from "ng2-toastr";
@@ -146,14 +146,14 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      * When this occurs, the sub sector dropdown is populated with the sub sectors
      * @param event
      */
-    private onStockSectorChange( event )
+    public onStockSectorChange( event )
     {
         this.logger.log( "onStockSectorChange: " + JSON.stringify( event.value ));
         this.stockSubSectors = this.stockSectorMap.getSubSectors( event.value.name );
         this.logger.log( "onStockSectorChange: " + JSON.stringify( this.stockSubSectors ));
     }
 
-    private onMenuSelect( sector, subSector ): void
+    public onMenuSelect( sector, subSector ): void
     {
         alert( "onMenuSelect sector: " + sector + " subSector: " + subSector );
     }
@@ -162,7 +162,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      * Determines if the ticker symbol is invalid
      * @returns {boolean}
      */
-    private isTickerSymbolInvalid(): boolean
+    public isTickerSymbolInvalid(): boolean
     {
         return !this.formGroup.controls['tickerSymbol'].valid &&
                this.formGroup.controls['tickerSymbol'].dirty;
@@ -172,7 +172,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      * Determines if the company name is invalid
      * @returns {boolean}
      */
-    private isCompanyNameInvalid(): boolean
+    public isCompanyNameInvalid(): boolean
     {
         return !this.formGroup.controls['companyName'].valid &&
                this.formGroup.controls['companyName'].dirty;

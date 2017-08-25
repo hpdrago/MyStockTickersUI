@@ -1,5 +1,5 @@
 import { CrudPanelComponent } from "./crud-panel.component";
-import { ModelObject } from "../../model/base-modelobject";
+import { ModelObject } from "../../model/class/base-modelobject";
 import { ToastsManager } from "ng2-toastr";
 import { CrudDialogService } from "./crud-dialog.service";
 import { Input } from "@angular/core";
@@ -62,13 +62,13 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      */
     protected subscribeToCrudDialogServiceEvents()
     {
-        this.crudDialogService.handleCloseButtonClicked().subscribe( () => this.onCloseButtonClick() );
-        this.crudDialogService.handleDisplayDialogRequest().subscribe( () => this.setDisplayDialog( true ) );
-        this.crudDialogService.handleCrudOperationChanged().subscribe(
+        this.crudDialogService.subscribeToCloseButtonClickedEvent().subscribe( () => this.onCloseButtonClick() );
+        this.crudDialogService.subscribeToDisplayDialogRequestEvent().subscribe( () => this.setDisplayDialog( true ) );
+        this.crudDialogService.subscribeToCrudOperationChangeEvent().subscribe(
             (crudOperation: CrudOperation) => this.crudOperationChanged( crudOperation ) );
-        this.crudDialogService.handleModelObjectChanged().subscribe( (modelObject: T) => this.modelObjectChanged( modelObject ));
-        this.crudPanelButtonsService.handleAddButtonClicked().subscribe( ( modelObject ) => this.onAddButtonClicked( modelObject ) )
-        this.crudPanelButtonsService.handleDeleteButtonClicked().subscribe( ( modelObject ) => this.onDeleteButtonClicked( modelObject ) )
+        this.crudDialogService.subscribeToModelObjectChangedEvent().subscribe( ( modelObject: T) => this.modelObjectChanged( modelObject ));
+        this.crudPanelButtonsService.subscribeToAddButtonClickedEvent().subscribe( ( modelObject ) => this.onAddButtonClicked( modelObject ) )
+        this.crudPanelButtonsService.subscribeToHandleDeleteButtonClickedEvent().subscribe( ( modelObject ) => this.onDeleteButtonClicked( modelObject ) )
     }
 
     /**

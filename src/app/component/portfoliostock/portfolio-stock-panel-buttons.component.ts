@@ -1,10 +1,10 @@
-import { PortfolioStock } from "../../model/portfolio-stock";
+import { PortfolioStock } from "../../model/class/portfolio-stock";
 import { Component, Input } from "@angular/core";
 import { CrudPanelButtonsComponent } from "../common/crud-panel-buttons.component";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockCrudService } from "../../service/portfolio-stock-crud.service";
-import { Portfolio } from "../../model/portfolio";
-import { PortfolioStockFactory } from "../../model/portfolio-stock.factory";
+import { Portfolio } from "../../model/class/portfolio";
+import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
 
 /**
  * Created by mike on 12/31/2016.

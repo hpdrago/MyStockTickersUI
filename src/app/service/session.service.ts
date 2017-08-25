@@ -8,7 +8,7 @@ import { BaseService } from "./base-service";
 @Injectable()
 export class SessionService extends BaseService
 {
-    private loggedInUserId: number = 2;
+    private loggedInUserId: number = 1;
 
     constructor( private config: AppConfigurationService )
     {

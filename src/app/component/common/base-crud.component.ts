@@ -1,6 +1,6 @@
 import { BaseComponent } from "./base.component";
 import { CrudOperation } from "./crud-operation";
-import { ModelObject } from "../../model/base-modelobject";
+import { ModelObject } from "../../model/class/base-modelobject";
 import { ToastsManager } from "ng2-toastr";
 /**
  * This class is the base class for all CRUD components
@@ -34,21 +34,29 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected inputPropertyChange( property: string, previousValue: any, newValue: any )
    {
-      this.debug( "inputPropertyChange: " + property + " " + newValue );
       switch ( property )
       {
          case 'crudOperation':
+             this.debug( "inputPropertyChange: " + property +
+                 " previousValue: " + (previousValue ? JSON.stringify( previousValue ) : previousValue ) +
+                 " newValue: " + (newValue ? JSON.stringify( newValue ) : newValue ));
              /*
               * The object might still be initializing so execute on next clock tick
               */
-             //this.tickThenRun( () => this.crudOperationChanged( newValue ) );
-             this.crudOperationChanged( newValue );
+             this.tickThenRun( () => this.crudOperationChanged( newValue ) );
+             //this.crudOperationChanged( newValue );
              break;
 
          case 'modelObject':
-             //this.tickThenRun( () => this.modelObjectChanged( newValue ) );
-             this.modelObjectChanged( newValue );
+             this.debug( "inputPropertyChange: " + property +
+                 " previousValue: " + (previousValue ? JSON.stringify( previousValue ) : previousValue ) +
+                 " newValue: " + (newValue ? JSON.stringify( newValue ) : newValue ));
+             this.tickThenRun( () => this.modelObjectChanged( newValue ) );
+             //this.modelObjectChanged( newValue );
              break;
+
+         //default:
+             //this.debug( "inputPropertyChange: " + property + " previousValue: " + previousValue + " newValue: " + newValue );
       }
    }
 
@@ -58,7 +66,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected modelObjectChanged( modelObject: T )
    {
-      this.debug( "modelObjectChanged " + JSON.stringify( modelObject ));
+      this.log( "modelObjectChanged " + JSON.stringify( modelObject ));
       this.modelObject = modelObject;
    }
 
@@ -68,7 +76,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
    protected setModelObject( modelObject: T )
    {
-       this.debug( "setModelObject " + JSON.stringify( modelObject ));
+       this.log( "setModelObject " + JSON.stringify( modelObject ));
        this.modelObject = modelObject;
    }
 
@@ -78,7 +86,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected crudOperationChanged( crudOperation: CrudOperation )
    {
-      this.debug( "crudOperation change " + crudOperation );
+      this.log( "crudOperation change " + crudOperation );
       this.crudOperation = crudOperation;
    }
 
@@ -88,13 +96,8 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
     protected setCrudOperation( crudOperation: CrudOperation )
     {
-        this.debug( "setCrudOperation " + crudOperation );
+        this.log( "setCrudOperation " + crudOperation );
         this.crudOperation = crudOperation;
-    }
-
-    protected tickThenRun( fn: () => any )
-    {
-        setTimeout( fn, 0 );
     }
 
     /**

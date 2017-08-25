@@ -1,5 +1,6 @@
 /**
  * This class is the base class for all ModelObject factories.
+ * It provides the methods to convert objects to and from JSON.
  *
  * Created by mike on 12/13/2016.
  */

@@ -1,5 +1,5 @@
 import { BaseCrudComponentService } from "./base-crud-component.service";
-import { ModelObject } from "../../model/base-modelobject";
+import { ModelObject } from "../../model/class/base-modelobject";
 import { Subject, Observable } from "rxjs";
 
 /**
@@ -33,9 +33,9 @@ export abstract class CrudPanelButtonsService<T extends ModelObject<T>> extends 
      * @param modelObject
      * @return {Observable<T>}
      */
-    public handleNavigateToModelObject( modelObject: T ): Observable<T>
+    public subscribeToNavigateToModelObjectEvent( modelObject: T ): Observable<T>
     {
-        this.logger.log( "subscribed to navigateToModelObject" );
+        this.log( "subscribed to navigateToModelObject" );
         return this.navigateToModelObjectSubject.asObservable();
     }
 
@@ -44,9 +44,9 @@ export abstract class CrudPanelButtonsService<T extends ModelObject<T>> extends 
      * model object.
      * @param modelObject
      */
-    public sendNavigateToModelObject( modelObject: T )
+    public sendNavigateToModelObjectEvent( modelObject: T )
     {
-        this.logger.log( "sendNavigateToModelObject" );
+        this.log( "sendNavigateToModelObjectEvent" );
         this.tickThenRun( () => this.navigateToModelObjectSubject.next( modelObject ) );
     }
 
@@ -55,9 +55,9 @@ export abstract class CrudPanelButtonsService<T extends ModelObject<T>> extends 
      * button is clicked on the panel.
      * @return {Observable<T>}
      */
-    public handleAddButtonClicked(): Observable<T>
+    public subscribeToAddButtonClickedEvent(): Observable<T>
     {
-        this.logger.log( "subscribe to addButtonClicked" );
+        this.log( "subscribed to addButtonClicked" );
         return this.addButtonClickedSubject.asObservable();
     }
 
@@ -65,9 +65,9 @@ export abstract class CrudPanelButtonsService<T extends ModelObject<T>> extends 
      * The {@code CrudPanelComponent will call this method when the user clicks the Add button.
      * @param modelObject
      */
-    public sendAddButtonClicked( modelObject: T )
+    public sendAddButtonClickedEvent( modelObject: T )
     {
-        this.logger.log( "sendAddButtonClicked" );
+        this.log( "sendAddButtonClickedEvent" );
         this.tickThenRun( () => this.addButtonClickedSubject.next( modelObject ) );
     }
 
@@ -76,9 +76,9 @@ export abstract class CrudPanelButtonsService<T extends ModelObject<T>> extends 
      * button is clicked on the panel.
      * @return {Observable<T>}
      */
-    public handleDeleteButtonClicked(): Observable<T>
+    public subscribeToHandleDeleteButtonClickedEvent(): Observable<T>
     {
-        this.logger.log( "subscribed to deleteButtonClicked" );
+        this.log( "subscribed to deleteButtonClicked" );
         return this.deleteButtonClickedSubject.asObservable();
     }
 
@@ -86,9 +86,9 @@ export abstract class CrudPanelButtonsService<T extends ModelObject<T>> extends 
      * The {@code CrudPanelComponent will call this method when the user clicks the Delete button.
      * @param modelObject
      */
-    public sendDeleteButtonClicked( modelObject: T )
+    public sendDeleteButtonClickedEvent( modelObject: T )
     {
-        this.logger.log( "sendDeleteButtonClicked" );
+        this.log( "sendDeleteButtonClickedEvent" );
         this.tickThenRun( () => this.deleteButtonClickedSubject.next( modelObject ) );
     }
 
@@ -97,9 +97,9 @@ export abstract class CrudPanelButtonsService<T extends ModelObject<T>> extends 
      * button is clicked on the panel.
      * @return {Observable<void>}
      */
-    public handleSaveButtonClicked(): Observable<T>
+    public subscribeToSaveButtonClickedEvent(): Observable<T>
     {
-        this.logger.log( "subscribed to saveButtonClicked" );
+        this.log( "subscribed to saveButtonClicked" );
         return this.saveButtonClickedSubject.asObservable();
     }
 
@@ -107,9 +107,9 @@ export abstract class CrudPanelButtonsService<T extends ModelObject<T>> extends 
      * The {@code CrudPanelComponent will call this method when the user clicks the Save button.
      * @param modelObject
      */
-    public sendSaveButtonClicked( modelObject: T )
+    public sendSaveButtonClickedEvent( modelObject: T )
     {
-        this.logger.log( "sendSaveButtonClicked" );
+        this.log( "sendSaveButtonClickedEvent" );
         this.tickThenRun( () => this.saveButtonClickedSubject.next( modelObject ) );
     }
 
@@ -118,18 +118,18 @@ export abstract class CrudPanelButtonsService<T extends ModelObject<T>> extends 
      * button is clicked on the panel.
      * @return {Observable<void>}
      */
-    public handleResetButtonClicked(): Observable<void>
+    public registerToResetButtonClickedEvent(): Observable<void>
     {
-        this.logger.log( "subscribed to resetButtonClicked" );
+        this.log( "subscribed to resetButtonClicked" );
         return this.resetButtonClickedSubject.asObservable();
     }
 
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the Reset button.
      */
-    public sendResetButtonClicked()
+    public sendResetButtonClickedEvent()
     {
-        this.logger.log( "sendResetButtonClicked" );
+        this.log( "sendResetButtonClickedEvent" );
         this.tickThenRun( () => this.resetButtonClickedSubject.next() );
     }
 }

@@ -1,9 +1,9 @@
 import { CrudFormComponent } from "../common/crud-form.component";
-import { Portfolio } from "../../model/portfolio";
+import { Portfolio } from "../../model/class/portfolio";
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { PortfolioFactory } from "../../model/portfolio.factory";
+import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 
 /**
  * This is the Portfolio Form Component class.

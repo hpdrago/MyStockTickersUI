@@ -4,8 +4,8 @@ import { ValidationService } from "../../service/validation-service";
 import { CrudOperation } from "./crud-operation";
 import { BaseCrudComponent } from "./base-crud.component";
 import { CrudFormService } from "./crud-form.service";
-import { ModelObjectFactory } from "../../model/model-object.factory";
-import { ModelObject } from "../../model/base-modelobject";
+import { ModelObjectFactory } from "../../model/factory/model-object.factory";
+import { ModelObject } from "../../model/class/base-modelobject";
 import { ToastsManager } from "ng2-toastr";
 
 /**
@@ -39,6 +39,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     public ngOnInit()
     {
+        this.logger.debug( "ngOnInit.begin" );
         if ( !this.crudFormService )
         {
             throw new Error( "crudFormService has not been set by Input value" );
@@ -47,6 +48,53 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.formGroup = this.createCrudForm();
         this.subscribeToFormChanges();
         this.subscribeToCrudFormServiceEvents();
+        this.logger.debug( "ngOnInit.end" );
+    }
+
+    public ngAfterViewInit()
+    {
+        this.logger.debug( "ngAfterViewInit.begin" );
+        this.logger.debug( "ngAfterViewInit.end" );
+    }
+
+    /**
+     * This method will subscribe to events for the stock form.
+     * As data changes, or other events occur, this method will be called.
+     *
+     * The following three events will be emitted for each change:
+     * 1. formDirtyChange<boolean>
+     * 2. formValidChange<boolean>
+     * 3. modelObjectChange<T>
+     */
+    protected subscribeToFormChanges()
+    {
+        this.logger.debug( "subscribeToFormChanges.begin" );
+        /*
+         * Initialize the change stream, the $ means an Observable variable
+         */
+        const myFormValueChanges$ = this.formGroup.valueChanges;
+        /*
+         * Subscribe to the stream
+         */
+        myFormValueChanges$.subscribe( (formData: any) =>
+                                       {
+                                           this.onFormChange( formData );
+                                       });
+        this.logger.debug( "subscribeToFormChanges.end" );
+    }
+
+    /**
+     * Subscribes to {@code CrudFormService} events through the {@code crudFormService} service.
+     */
+    protected subscribeToCrudFormServiceEvents()
+    {
+        this.logger.debug( "subscribeToCrudFormServiceEvents.begin" );
+        this.crudFormService.subscribeToFormResetEvent().subscribe( () => this.resetForm() );
+        this.crudFormService.subscribeToCrudOperationChangeEvent().subscribe( ( crudOperation: CrudOperation ) =>
+                                                                         this.crudOperationChanged( crudOperation ) )
+        this.crudFormService.subscribeToModelObjectChangedEvent().subscribe( ( modelObject: T ) =>
+                                                                       this.modelObjectChanged( modelObject ) );
+        this.logger.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 
     /**
@@ -61,18 +109,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected abstract primaryKeyFields(): Array<string>;
 
     /**
-     * Subscribes to {@code CrudFormService} events through the {@code crudFormService} service.
-     */
-    protected subscribeToCrudFormServiceEvents()
-    {
-        this.crudFormService.handleFormReset().subscribe( () => this.resetForm() );
-        this.crudFormService.handleCrudOperationChanged().subscribe( ( crudOperation: CrudOperation ) =>
-                                                                        this.crudOperationChanged( crudOperation ) )
-        this.crudFormService.handleModelObjectChanged().subscribe( ( modelObject: T ) =>
-                                                                      this.modelObjectChanged( modelObject ) );
-    }
-
-    /**
      * This method is called whenever the crudOperation changes.
      * @param crudOperation
      * @override
@@ -84,7 +120,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * This method is called whenver the modelObject changes
+     * This method is called whenever the modelObject changes
      * @param modelObject
      * @override
      */
@@ -105,30 +141,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * This method will subscribe to events for the stock form.
-     * As data changes, or other events occur, this method will be called.
-     *
-     * The following three events will be emitted for each change:
-     * 1. formDirtyChange<boolean>
-     * 2. formValidChange<boolean>
-     * 3. modelObjectChange<T>
-     */
-    protected subscribeToFormChanges()
-    {
-        /*
-         * Initialize the change stream, the $ means an Observable variable
-         */
-        const myFormValueChanges$ = this.formGroup.valueChanges;
-        /*
-         * Subscribe to the stream
-         */
-        myFormValueChanges$.subscribe( (formData: any) =>
-        {
-            this.onFormChange( formData );
-        });
-    }
-
-    /**
      * This method is called whenever there is a change in the form data
      * @param formData
      * @return {any}
@@ -136,30 +148,33 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onFormChange( formData: any )
     {
         var methodName = "onFormChange";
-        //this.debug( "onFormChange.begin " + JSON.stringify( formData ) );
-        this.emitFormDirtyChange();
-        this.emitFormValidChange();
-        //this.modelObjectChange.emit( this.modelObject );
-        if ( !this.formGroup.valid )
+        this.debug( "onFormChange.begin " + JSON.stringify( formData ) );
+        if ( 0 )
         {
-            //this.debug( "Form is not valid" );
-            for (let propertyName in this.formGroup.errors)
+            this.emitFormDirtyChange();
+            this.emitFormValidChange();
+            //this.modelObjectChange.emit( this.modelObject );
+            if ( !this.formGroup.valid )
             {
-                if ( this.formGroup.errors.hasOwnProperty( propertyName ) &&
-                    this.formGroup.touched )
+                this.debug( "Form is not valid" );
+                for ( let propertyName in this.formGroup.errors )
                 {
-                    var errorMessage = ValidationService.getValidatorErrorMessage( propertyName,
-                                                                                   this.formGroup.errors[propertyName] );
-                    //this.debug( methodName + " error: " + error );
-                    return errorMessage;
+                    if ( this.formGroup.errors.hasOwnProperty( propertyName ) &&
+                        this.formGroup.touched )
+                    {
+                        var errorMessage = ValidationService.getValidatorErrorMessage( propertyName,
+                                                                                       this.formGroup.errors[propertyName] );
+                        this.debug( methodName + " error: " + errorMessage );
+                        return errorMessage;
+                    }
                 }
             }
+            else
+            {
+                //this.debug( "Form IS valid" );
+            }
         }
-        else
-        {
-            //this.debug( "Form IS valid" );
-        }
-        //this.debug( methodName + ".end" );
+        this.debug( methodName + ".end" );
     }
 
     /**
@@ -170,7 +185,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected emitFormValidChange()
     {
         //this.logger.debug( "emitFormValidChange" );
-        this.crudFormService.sendFormValid( this.formGroup.valid );
+        this.crudFormService.sendFormValidEvent( this.formGroup.valid );
     }
 
     /**
@@ -181,7 +196,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected emitFormDirtyChange()
     {
         //this.logger.debug( "emitFormDirtyChange" );
-        this.crudFormService.sendFormDirty( this.formGroup.dirty );
+        this.crudFormService.sendFormDirtyEvent( this.formGroup.dirty );
     }
 
     /**

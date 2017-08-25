@@ -3,7 +3,7 @@ import { Observable } from "rxjs";
 import { PaginationPage } from "../common/pagination";
 import { Response } from "@angular/http";
 import { CrudRestService } from "./crud-rest.serivce";
-import { ModelObject } from "../model/base-modelobject";
+import { ModelObject } from "../model/class/base-modelobject";
 
 /**
  * Extension of the CrudRestService to add paging and sorting capabilities

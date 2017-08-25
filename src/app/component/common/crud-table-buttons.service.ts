@@ -1,4 +1,4 @@
-import { ModelObject } from "../../model/base-modelobject";
+import { ModelObject } from "../../model/class/base-modelobject";
 import { BaseCrudComponentService } from "./base-crud-component.service";
 import { Subject, Observable } from "rxjs";
 
@@ -20,18 +20,18 @@ export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudC
      * button is clicked on the panel.
      * @return {Observable<void>}
      */
-    public handleAddButtonClicked(): Observable<void>
+    public subscribeToAddButtonClickedEvent(): Observable<void>
     {
-        this.logger.log( "handleAddButtonClicked" );
+        this.log( "subscribeToAddButtonClickedEvent" );
         return this.addButtonClickedSubject.asObservable();
     }
 
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the Add button.
      */
-    public sendAddButtonClicked()
+    public sendAddButtonClickedEvent()
     {
-        this.logger.log( "sendAddButtonClicked" );
+        this.log( "sendAddButtonClickedEvent" );
         this.tickThenRun( () => this.addButtonClickedSubject.next() );
     }
 
@@ -40,18 +40,18 @@ export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudC
      * button is clicked on the panel.
      * @return {Observable<void>}
      */
-    public handleDeleteButtonClicked(): Observable<T>
+    public subscribeToDeleteButtonClickedEvent(): Observable<T>
     {
-        this.logger.log( "handleDeleteButtonClicked" );
+        this.log( "subscribeToDeleteButtonClickedEvent" );
         return this.deleteButtonClickedSubject.asObservable();
     }
 
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the Delete button.
      */
-    public sendDeleteButtonClicked( modelObject: T )
+    public sendDeleteButtonClickedEvent( modelObject: T )
     {
-        this.logger.log( "sendDeleteButtonClicked" );
+        this.log( "sendDeleteButtonClickedEvent" );
         this.tickThenRun( () => this.deleteButtonClickedSubject.next( modelObject ) );
     }
 
@@ -60,18 +60,18 @@ export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudC
      * button is clicked on the panel.
      * @return {Observable<void>}
      */
-    public handleEditButtonClicked(): Observable<T>
+    public subscribteToEditButtonClickedEvent(): Observable<T>
     {
-        this.logger.log( "handleEditButtonClicked" );
+        this.log( "subscribteToEditButtonClickedEvent" );
         return this.editButtonClickedSubject.asObservable();
     }
 
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the Edit button.
      */
-    public sendEditButtonClicked( modelObject: T )
+    public sendEditButtonClickedEvent( modelObject: T )
     {
-        this.logger.log( "sendEditButtonClicked" );
+        this.log( "sendEditButtonClickedEvent" );
         this.tickThenRun( () => this.editButtonClickedSubject.next( modelObject ) );
     }
 }

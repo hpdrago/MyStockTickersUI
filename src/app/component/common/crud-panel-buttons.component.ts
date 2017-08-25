@@ -1,5 +1,5 @@
 import { BaseCrudComponent } from "./base-crud.component";
-import { ModelObject } from "../../model/base-modelobject";
+import { ModelObject } from "../../model/class/base-modelobject";
 import { Input } from "@angular/core";
 import { CrudOperation } from "./crud-operation";
 import { CrudFormService } from "./crud-form.service";
@@ -7,7 +7,7 @@ import { CrudRestService } from "../../service/crud-rest.serivce";
 import { ToastsManager } from "ng2-toastr";
 import { CrudPanelButtonsService } from "./crud-panel-buttons.service";
 import { CrudDialogService } from "./crud-dialog.service";
-import { ModelObjectFactory } from "../../model/model-object.factory";
+import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 
 /**
  * This class manages the set of buttons for a model object dialog.
@@ -86,13 +86,15 @@ export abstract class CrudPanelButtonsComponent<T extends ModelObject<T>> extend
      */
     private subscribeToCrudFormServiceEvents(): void
     {
-        this.crudFormService.handleFormDirty().subscribe( ( dirty: boolean ) => this.onFormDirty( dirty ) );
-        this.crudFormService.handleFormTouched().subscribe( ( touched: boolean ) => this.onFormTouched( touched ) );
-        this.crudFormService.handleFormValid().subscribe( ( valid: boolean ) => this.onFormValid( valid ) );
-        this.crudFormService.handleCrudOperationChanged().subscribe( (crudOperation: CrudOperation) =>
+        this.debug( "subscribeToCrudFormServiceEvents.begin" );
+        this.crudFormService.subscribeToFormDirtyEvent().subscribe( ( dirty: boolean ) => this.onFormDirty( dirty ) );
+        this.crudFormService.subscribeToFormTouchedEvent().subscribe( ( touched: boolean ) => this.onFormTouched( touched ) );
+        this.crudFormService.subscribeToFormValidEvent().subscribe( ( valid: boolean ) => this.onFormValid( valid ) );
+        this.crudFormService.subscribeToCrudOperationChangeEvent().subscribe( ( crudOperation: CrudOperation) =>
                                                                          this.crudOperationChanged( crudOperation ) );
-        this.crudFormService.handleModelObjectChanged().subscribe( (modelObject: T) =>
+        this.crudFormService.subscribeToModelObjectChangedEvent().subscribe( ( modelObject: T) =>
                                                                          this.modelObjectChanged( modelObject ) );
+        this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 
     /**
@@ -249,7 +251,7 @@ export abstract class CrudPanelButtonsComponent<T extends ModelObject<T>> extend
      */
     protected onResetButtonClick(): void
     {
-        this.crudFormService.sendFormReset();
+        this.crudFormService.sendFormResetEvent();
     }
 
     /**
@@ -266,8 +268,8 @@ export abstract class CrudPanelButtonsComponent<T extends ModelObject<T>> extend
                             this.modelObject = updatedModelObject;
                             this.logger.log( methodName + " saved successful.  modelObject; " +
                                              JSON.stringify( this.modelObject ));
-                            this.crudFormService.sendFormReset();
-                            this.crudPanelButtonsService.sendSaveButtonClicked( updatedModelObject );
+                            this.crudFormService.sendFormResetEvent();
+                            this.crudPanelButtonsService.sendSaveButtonClickedEvent( updatedModelObject );
                         },
                         err => this.reportRestError( err )
             );
@@ -286,8 +288,8 @@ export abstract class CrudPanelButtonsComponent<T extends ModelObject<T>> extend
                             this.modelObject = newModelObject;
                             this.logger.log( methodName + " add successful.  modelObject: " +
                                              JSON.stringify( this.modelObject ) );
-                            this.crudFormService.sendFormReset();
-                            this.crudPanelButtonsService.sendAddButtonClicked( newModelObject );
+                            this.crudFormService.sendFormResetEvent();
+                            this.crudPanelButtonsService.sendAddButtonClickedEvent( newModelObject );
                         },
                         err =>
                         {
@@ -300,7 +302,7 @@ export abstract class CrudPanelButtonsComponent<T extends ModelObject<T>> extend
                             if ( exception.isDuplicateKeyExists() )
                             {
                                 this.logger.log( methodName + " duplicateKeyExists" );
-                                this.crudPanelButtonsService.sendNavigateToModelObject( this.modelObject );
+                                this.crudPanelButtonsService.sendNavigateToModelObjectEvent( this.modelObject );
                             }
                         }
             );
@@ -318,8 +320,8 @@ export abstract class CrudPanelButtonsComponent<T extends ModelObject<T>> extend
             .subscribe( () =>
                         {
                             this.logger.log( methodName + " delete successful" );
-                            this.crudFormService.sendFormReset();
-                            this.crudPanelButtonsService.sendDeleteButtonClicked( this.modelObject );
+                            this.crudFormService.sendFormResetEvent();
+                            this.crudPanelButtonsService.sendDeleteButtonClickedEvent( this.modelObject );
                         },
                         err =>
                         {
@@ -334,7 +336,7 @@ export abstract class CrudPanelButtonsComponent<T extends ModelObject<T>> extend
      */
     protected onCloseButtonClick(): void
     {
-        this.crudDialogService.sendCloseButtonClicked();
+        this.crudDialogService.sendCloseButtonClickedEvent();
     }
 
     /**

@@ -1,4 +1,4 @@
-import { Stock } from "./stock";
+import { Stock } from "../class/stock";
 import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
 

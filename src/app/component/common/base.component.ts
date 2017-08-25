@@ -1,20 +1,17 @@
-import { Logger } from "../../common/logger";
-import { LoggerFactory } from "../../common/logger-factory";
 import { OnChanges, SimpleChange } from "@angular/core";
 import { RestException } from "../../common/rest-exception";
 import { ToastsManager, Toast } from "ng2-toastr";
+import { BaseClass } from "../../common/base-class";
 
 /**
  * This is the base class for all application components to contain common methods, services, and data
  * Created by mike on 11/27/2016.
  */
-export abstract class BaseComponent implements OnChanges
+export abstract class BaseComponent extends BaseClass implements OnChanges
 {
-    protected logger: Logger;
-
     constructor( protected toaster: ToastsManager )
     {
-        this.logger = LoggerFactory.getLogger( this.getClassName() );
+        super();
     }
 
     /**
@@ -40,15 +37,7 @@ export abstract class BaseComponent implements OnChanges
      */
     protected inputPropertyChange( property: string, previousValue: any, currentValue: any )
     {
-        this.logger.log( `inputPropertyChange property: ${property} ${previousValue} ==> ${currentValue}`)
-    }
-
-    /**
-     * Get the class name of this object
-     */
-    private getClassName(): string
-    {
-        return (<any>this).constructor.name;
+        this.debug( `inputPropertyChange property: ${property} ${previousValue} ==> ${currentValue}`)
     }
 
     /**
@@ -58,7 +47,7 @@ export abstract class BaseComponent implements OnChanges
     protected reportRestError( rawJsonError ): RestException
     {
         var exception: RestException;
-        this.logger.log( "reportRestError: " + JSON.stringify( rawJsonError ) );
+        this.log( "reportRestError: " + JSON.stringify( rawJsonError ) );
         if ( rawJsonError.status )
         {
             exception = new RestException( rawJsonError );
@@ -71,7 +60,7 @@ export abstract class BaseComponent implements OnChanges
         }
         else
         {
-            this.logger.log( "reportRestError: rawJsonError data does not have a status value" );
+            this.log( "reportRestError: rawJsonError data does not have a status value" );
             this.showError( rawJsonError );
         }
         return exception;
@@ -84,15 +73,6 @@ export abstract class BaseComponent implements OnChanges
     protected getDuplicateKeyErrorMessage(): string
     {
         return 'Sorry, you are attempting to create a duplicate entry';
-    }
-
-    /**
-     * Logs a debug message
-     * @param message
-     */
-    protected debug( message: string )
-    {
-        this.logger.debug( message );
     }
 
     /**
@@ -133,4 +113,5 @@ export abstract class BaseComponent implements OnChanges
     {
         return this.toaster.info( message );
     }
+
 }

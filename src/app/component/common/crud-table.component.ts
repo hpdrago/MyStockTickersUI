@@ -1,6 +1,6 @@
 import { CrudOperation } from "./crud-operation";
-import { ModelObject } from "../../model/base-modelobject";
-import { ModelObjectFactory } from "../../model/model-object.factory";
+import { ModelObject } from "../../model/class/base-modelobject";
+import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 import { BaseCrudComponent } from "./base-crud.component";
 import { OnInit } from "@angular/core";
 import { CrudRestService } from "../../service/crud-rest.serivce";
@@ -53,11 +53,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudPanelEvents()
     {
-        this.crudPanelButtonsService.handleSaveButtonClicked().subscribe(
+        this.crudPanelButtonsService.subscribeToSaveButtonClickedEvent().subscribe(
             ( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) );
-        this.crudPanelButtonsService.handleAddButtonClicked().subscribe(
+        this.crudPanelButtonsService.subscribeToAddButtonClickedEvent().subscribe(
             ( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) );
-        this.crudPanelButtonsService.handleDeleteButtonClicked().subscribe(
+        this.crudPanelButtonsService.subscribeToHandleDeleteButtonClickedEvent().subscribe(
             ( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) );
     }
 
@@ -66,9 +66,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudTableButtonEvents()
     {
-        this.crudTableButtonsService.handleAddButtonClicked().subscribe( () => this.showDialogToAdd() );
-        this.crudTableButtonsService.handleEditButtonClicked().subscribe( () => this.showDialogToEdit( this.modelObject ) );
-        this.crudTableButtonsService.handleDeleteButtonClicked().subscribe( () => this.showDialogToDelete( this.modelObject ) );
+        this.crudTableButtonsService.subscribeToAddButtonClickedEvent().subscribe( () => this.showDialogToAdd() );
+        this.crudTableButtonsService.subscribteToEditButtonClickedEvent().subscribe( () => this.showDialogToEdit( this.modelObject ) );
+        this.crudTableButtonsService.subscribeToDeleteButtonClickedEvent().subscribe( () => this.showDialogToDelete( this.modelObject ) );
     }
 
     /**
@@ -120,14 +120,14 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
          */
         if ( this.modelObjectEditMode == CrudModelObjectEditMode.PANEL )
         {
-            this.crudPanelButtonsService.sendCrudOperationChanged( this.crudOperation );
-            this.crudPanelButtonsService.sendModelObjectChanged( this.modelObject );
+            this.crudPanelButtonsService.sendCrudOperationChangedEvent( this.crudOperation );
+            this.crudPanelButtonsService.sendModelObjectChangedEvent( this.modelObject );
         }
         else
         {
-            this.crudDialogService.sendCrudOperationChanged( this.crudOperation );
-            this.crudDialogService.sendModelObjectChanged( this.modelObject );
-            this.crudDialogService.sendDisplayDialogRequest();
+            this.crudDialogService.sendCrudOperationChangedEvent( this.crudOperation );
+            this.crudDialogService.sendModelObjectChangedEvent( this.modelObject );
+            this.crudDialogService.sendDisplayDialogRequestEvent();
         }
     }
 
@@ -236,6 +236,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         //super.setModelObject( this.modelObjectFactory.newModelObjectFromJSON( modelObject ));
         super.setModelObject( modelObject );
-        this.crudTableButtonsService.sendModelObjectChanged( modelObject );
+        this.crudTableButtonsService.sendModelObjectChangedEvent( modelObject );
     }
 }

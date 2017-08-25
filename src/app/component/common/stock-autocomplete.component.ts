@@ -3,12 +3,12 @@ import { PaginationPage } from "../../common/pagination";
 import { StockCrudService } from "../../service/stock-crud.service";
 import { BaseComponent } from "./base.component";
 import { ToastsManager } from "ng2-toastr";
-import { Stock } from "../../model/stock";
+import { Stock } from "../../model/class/stock";
 import { FormGroup, FormControl } from "@angular/forms";
 /**
+ * This component is a text input that finds stocks based on the incremental search of the input
  * Created by mike on 12/24/2016.
  */
-
 @Component(
 {
     selector: 'stock-autocomplete',
@@ -42,7 +42,7 @@ export class StockAutoCompleteComponent extends BaseComponent
 
     public ngOnInit()
     {
-       this.logger.log( "ngOnInit" );
+        this.logger.log( "ngOnInit" );
         if ( !this.stockSelected )
         {
             throw new Error( "stockSelected has not been set by Input value" );

@@ -1,0 +1,33 @@
+<div *ngIf="modelObject">
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
+        <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-4">
+                    <label class="crud-form" for="tickerSymbol">Ticker:</label>
+                </div>
+                <div class="ui-grid-col-8">
+                    <stock-autocomplete id="tickerSymbol"
+                                        [formGroup]="formGroup"
+                                        (stockSelected)="onStockSelected( $event )">
+                    </stock-autocomplete>
+                </div>
+            </div>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-4">
+                    <label class="crud-form" for="stockNotes">Notes:</label>
+                </div>
+                <div class="ui-grid-col-8">
+                    <textarea id="stockNotes"
+                              class="crud-form"
+                              formControlName="tickerSymbol"
+                              placeholder="Required"
+                              pInputTextarea
+                              autoResize="autoResize"
+                              required
+                              [(ngModel)]="notes">
+                    </textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+

@@ -1,4 +1,4 @@
-import { Stock } from "../../model/stock";
+import { Stock } from "../../model/class/stock";
 import { CrudPanelButtonsService } from "../common/crud-panel-buttons.service";
 
 /**

@@ -1,5 +1,5 @@
-import { PortfolioStock } from "../model/portfolio-stock";
-import { Portfolio } from "../model/portfolio";
+import { PortfolioStock } from "../model/class/portfolio-stock";
+import { Portfolio } from "../model/class/portfolio";
 
 /**
  * Created by mike on 12/3/2016.

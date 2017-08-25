@@ -1,4 +1,4 @@
-import { ModelObject } from "../../model/base-modelobject";
+import { ModelObject } from "../../model/class/base-modelobject";
 import { BaseCrudComponent } from "./base-crud.component";
 import { Input, OnInit } from "@angular/core";
 import { CrudTableButtonsService } from "./crud-table-buttons.service";
@@ -27,7 +27,7 @@ export class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCru
         {
             throw new Error( "crudTableButtonsService has not been set by Input value" );
         }
-        this.crudTableButtonsService.handleModelObjectChanged().subscribe( (modelObject: T) => this.modelObjectChanged( modelObject ) );
+        this.crudTableButtonsService.subscribeToModelObjectChangedEvent().subscribe( ( modelObject: T) => this.modelObjectChanged( modelObject ) );
     }
     /**
      * Returns the default Add button label
@@ -64,7 +64,7 @@ export class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCru
     protected onAddButtonClick(): void
     {
         this.logger.debug( "onAddButtonClick" );
-        this.crudTableButtonsService.sendAddButtonClicked();
+        this.crudTableButtonsService.sendAddButtonClickedEvent();
     }
 
     /**
@@ -102,7 +102,7 @@ export class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCru
     protected onDeleteButtonClick(): void
     {
         this.logger.debug( "onDeleteButtonClick" );
-        this.crudTableButtonsService.sendDeleteButtonClicked( this.modelObject );
+        this.crudTableButtonsService.sendDeleteButtonClickedEvent( this.modelObject );
     }
 
     /**

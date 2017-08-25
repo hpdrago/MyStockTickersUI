@@ -1,4 +1,4 @@
-import { StockExchanges } from "../model/stock-exchanges";
+import { StockExchanges } from "../model/class/stock-exchanges";
 
 /**
  * Stock Exchange service
