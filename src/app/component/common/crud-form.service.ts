@@ -1,7 +1,7 @@
 import { Observable, Subject } from "rxjs";
 import { ApplicationRef } from "@angular/core";
 import { BaseCrudComponentService } from "./base-crud-component.service";
-import { ModelObject } from "../../model/class/base-modelobject";
+import { ModelObject } from "../../model/class/modelobject";
 /**
  * This service provides communication from the CrudFormComponent's parent aka CrudPanelComponent
  * to the CrudFormComponent.

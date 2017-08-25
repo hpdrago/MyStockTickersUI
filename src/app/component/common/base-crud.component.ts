@@ -1,6 +1,6 @@
 import { BaseComponent } from "./base.component";
 import { CrudOperation } from "./crud-operation";
-import { ModelObject } from "../../model/class/base-modelobject";
+import { ModelObject } from "../../model/class/modelobject";
 import { ToastsManager } from "ng2-toastr";
 /**
  * This class is the base class for all CRUD components

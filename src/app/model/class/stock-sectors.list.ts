@@ -1,5 +1,5 @@
 import { SelectItem } from "primeng/components/common/api";
-import { ModelObject } from "./base-modelobject";
+import { ModelObject } from "./modelobject";
 
 /**
  * Internal interface definition that defines the structure of the data

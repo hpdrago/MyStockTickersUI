@@ -5,7 +5,7 @@ import { CrudOperation } from "./crud-operation";
 import { BaseCrudComponent } from "./base-crud.component";
 import { CrudFormService } from "./crud-form.service";
 import { ModelObjectFactory } from "../../model/factory/model-object.factory";
-import { ModelObject } from "../../model/class/base-modelobject";
+import { ModelObject } from "../../model/class/modelobject";
 import { ToastsManager } from "ng2-toastr";
 
 /**

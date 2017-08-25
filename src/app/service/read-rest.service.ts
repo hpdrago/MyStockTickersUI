@@ -1,6 +1,6 @@
 
 import {BaseService} from "./base-service";
-import {ModelObject} from "../model/class/base-modelobject";
+import {ModelObject} from "../model/class/modelobject";
 import {SessionService} from "./session.service";
 import {AppConfigurationService} from "./app-configuration.service";
 import {ModelObjectFactory} from "../model/factory/model-object.factory";

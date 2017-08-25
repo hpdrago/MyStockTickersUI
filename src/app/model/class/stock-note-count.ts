@@ -1,4 +1,4 @@
-import { ModelObject } from "./base-modelobject";
+import { ModelObject } from "./modelobject";
 /**
  * Contains the number of stock notes for one ticker symbol for the customer
  * Created by mike on 8/17/2017.

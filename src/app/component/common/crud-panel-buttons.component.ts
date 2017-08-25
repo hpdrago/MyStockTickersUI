@@ -1,5 +1,5 @@
 import { BaseCrudComponent } from "./base-crud.component";
-import { ModelObject } from "../../model/class/base-modelobject";
+import { ModelObject } from "../../model/class/modelobject";
 import { Input } from "@angular/core";
 import { CrudOperation } from "./crud-operation";
 import { CrudFormService } from "./crud-form.service";

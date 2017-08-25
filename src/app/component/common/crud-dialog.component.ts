@@ -1,5 +1,5 @@
 import { CrudPanelComponent } from "./crud-panel.component";
-import { ModelObject } from "../../model/class/base-modelobject";
+import { ModelObject } from "../../model/class/modelobject";
 import { ToastsManager } from "ng2-toastr";
 import { CrudDialogService } from "./crud-dialog.service";
 import { Input } from "@angular/core";

@@ -1,5 +1,5 @@
 import { Subject, Observable } from "rxjs";
-import { ModelObject } from "../../model/class/base-modelobject";
+import { ModelObject } from "../../model/class/modelobject";
 import { Injectable } from "@angular/core";
 import { BaseCrudComponentService } from "./base-crud-component.service";
 

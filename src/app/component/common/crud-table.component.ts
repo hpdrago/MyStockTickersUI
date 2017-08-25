@@ -1,5 +1,5 @@
 import { CrudOperation } from "./crud-operation";
-import { ModelObject } from "../../model/class/base-modelobject";
+import { ModelObject } from "../../model/class/modelobject";
 import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 import { BaseCrudComponent } from "./base-crud.component";
 import { OnInit } from "@angular/core";

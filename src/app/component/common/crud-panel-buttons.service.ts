@@ -1,5 +1,5 @@
 import { BaseCrudComponentService } from "./base-crud-component.service";
-import { ModelObject } from "../../model/class/base-modelobject";
+import { ModelObject } from "../../model/class/modelobject";
 import { Subject, Observable } from "rxjs";
 
 /**

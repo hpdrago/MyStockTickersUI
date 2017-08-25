@@ -1,4 +1,4 @@
-import { ModelObject } from "../../model/class/base-modelobject";
+import { ModelObject } from "../../model/class/modelobject";
 import { BaseCrudComponent } from "./base-crud.component";
 import { Input, OnInit } from "@angular/core";
 import { CrudTableButtonsService } from "./crud-table-buttons.service";
