@@ -15,11 +15,11 @@
         </portfolio-stock-form>
 
         <footer>
-            <portfolio-stock-panel-buttons [portfolio]="portfolio"
-                                           [crudFormService]="crudFormService"
-                                           [crudPanelButtonsService]="crudPanelButtonsService"
-                                           [crudDialogService]="crudDialogService">
-            </portfolio-stock-panel-buttons>
+            <portfolio-stock-form-buttons [portfolio]="portfolio"
+                                          [crudFormService]="crudFormService"
+                                          [crudButtonsService]="crudButtonsService"
+                                          [crudDialogService]="crudDialogService">
+            </portfolio-stock-form-buttons>
         </footer>
     </p-dialog>
 </div>

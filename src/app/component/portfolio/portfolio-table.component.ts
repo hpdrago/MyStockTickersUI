@@ -6,11 +6,11 @@ import { PortfolioCrudService } from "../../service/portfolio-crud.service";
 import { CrudTableComponent } from "../common/crud-table.component";
 import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 import { ToastsManager } from "ng2-toastr";
-import { PortfolioPanelButtonsService } from "./portfolio-panel-buttons.service";
 import { PortfolioDialogService } from "./portfolio-dialog.service";
 import { PortfolioTableButtonsService } from "./portfolio-table-buttons.service";
 import { PortfolioFormService } from "./portfolio-form.service";
 import { PortfolioStockTableComponent } from "../portfoliostock/portfolio-stock-table.component";
+import { PortfolioFormButtonsService } from "./portfolio-form-buttons.service";
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -35,12 +35,17 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
                  protected portfolioFactory: PortfolioFactory,
                  protected portfolioCrudService: PortfolioCrudService,
                  protected portfolioFormService: PortfolioFormService,
-                 protected portfolioPanelButtonService: PortfolioPanelButtonsService,
+                 protected portfolioFormButtonsService: PortfolioFormButtonsService,
                  protected portfolioDialogService: PortfolioDialogService,
                  protected portfolioTableButtonsService: PortfolioTableButtonsService )
     {
-        super( toaster, portfolioFactory, portfolioCrudService, portfolioPanelButtonService,
-               portfolioDialogService, portfolioTableButtonsService );
+        super( toaster,
+               portfolioFactory,
+               portfolioCrudService,
+               portfolioFormService,
+               portfolioFormButtonsService,
+               portfolioDialogService,
+               portfolioTableButtonsService );
     }
 
     /**

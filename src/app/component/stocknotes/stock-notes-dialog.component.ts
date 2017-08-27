@@ -9,7 +9,7 @@ import { StockNote } from "../../model/class/stock-note";
 @Component({
     selector: 'stock-notes-dialog',
     templateUrl: './stock-notes-dialog.component.html',
-    inputs: ['crudDialogService', 'crudFormService', 'crudPanelButtonsService']
+    inputs: ['crudDialogService', 'crudFormService', 'crudButtonsService', 'continuousAdd']
 })
 export class StockNotesDialogComponent extends CrudDialogComponent<StockNote>
 {

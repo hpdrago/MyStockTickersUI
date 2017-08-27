@@ -12,11 +12,11 @@
               [(visible)]="displayDialog">
         <portfolio-form [crudFormService]="crudFormService">
         </portfolio-form>
-        <footer>
-            <portfolio-panel-buttons [crudFormService]="crudFormService"
-                                     [crudPanelButtonsService]="crudPanelButtonsService"
-                                     [crudDialogService]="crudDialogService">
-            </portfolio-panel-buttons>
-        </footer>
+        <p-footer>
+            <portfolio-dialog-buttons [crudFormService]="crudFormService"
+                                      [crudButtonsService]="crudButtonsService"
+                                      [crudDialogService]="crudDialogService">
+            </portfolio-dialog-buttons>
+        </p-footer>
     </p-dialog>
 </div>

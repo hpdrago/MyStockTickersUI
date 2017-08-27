@@ -10,7 +10,15 @@
               [minHeight]="isCrudDeleteOperation() ? 325 : 225"
               [resizable]="false"
               [(visible)]="displayDialog">
-        <stock-notes-panel [crudPanelButtonsService]="crudPanelButtonsService">
-        </stock-notes-panel>
+            <div>
+                <stock-notes-form [crudFormService]="crudFormService">
+                </stock-notes-form>
+            </div>
+            <p-footer>
+                <stock-notes-form-buttons [crudFormService]="stockNotesFormService"
+                                          [crudButtonsService]="stockNotesPanelButtonsService"
+                                          [crudDialogService]="stockNotesDialogService">
+                </stock-notes-form-buttons>
+            </p-footer>
     </p-dialog>
 </div>

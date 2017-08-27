@@ -5,11 +5,11 @@ import { CrudDialogService } from "./crud-dialog.service";
 import { Input } from "@angular/core";
 import { CrudOperation } from "./crud-operation";
 import { CrudFormService } from "./crud-form.service";
-import { CrudPanelButtonsService } from "./crud-panel-buttons.service";
+import { CrudFormButtonsService } from "./crud-form-buttons.service";
 /**
  * This is the base class for Modal dialogs that provide CRUD operations on a model object.
  *
- * inputs: ['crudDialogService', 'crudFormService', 'crudPanelButtonsService', 'continuousAdd']
+ * inputs: ['crudDialogService', 'crudFormService', 'crudButtonsService', 'continuousAdd']
  *
  * Created by mike on 12/30/2016.
  */
@@ -25,7 +25,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
     protected crudFormService: CrudFormService<T>;
 
     @Input()
-    protected crudPanelButtonsService: CrudPanelButtonsService<T>;
+    protected crudButtonsService: CrudFormButtonsService<T>;
 
     @Input()
     protected continuousAdd: boolean = false;
@@ -50,9 +50,9 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
         {
             throw new Error( "crudFormService has not been set by Input value" );
         }
-        if ( !this.crudPanelButtonsService )
+        if ( !this.crudButtonsService )
         {
-            throw new Error( "crudPanelButtonsService has not been set by Input value" );
+            throw new Error( "crudButtonsService has not been set by Input value" );
         }
         this.subscribeToCrudDialogServiceEvents();
     }
@@ -67,8 +67,8 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
         this.crudDialogService.subscribeToCrudOperationChangeEvent().subscribe(
             (crudOperation: CrudOperation) => this.crudOperationChanged( crudOperation ) );
         this.crudDialogService.subscribeToModelObjectChangedEvent().subscribe( ( modelObject: T) => this.modelObjectChanged( modelObject ));
-        this.crudPanelButtonsService.subscribeToAddButtonClickedEvent().subscribe( ( modelObject ) => this.onAddButtonClicked( modelObject ) )
-        this.crudPanelButtonsService.subscribeToHandleDeleteButtonClickedEvent().subscribe( ( modelObject ) => this.onDeleteButtonClicked( modelObject ) )
+        this.crudButtonsService.subscribeToAddButtonClickedEvent().subscribe( ( modelObject ) => this.onAddButtonClicked( modelObject ) )
+        this.crudButtonsService.subscribeToHandleDeleteButtonClickedEvent().subscribe( ( modelObject ) => this.onDeleteButtonClicked( modelObject ) )
     }
 
     /**

@@ -7,9 +7,9 @@ import { CrudTableComponent } from "../common/crud-table.component";
 import { PortfolioStockCrudService } from "../../service/portfolio-stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockDialogService } from "./portfolio-stock-dialog.service";
-import { PortfolioStockPanelButtonsService } from "./portfolio-stock-panel-buttons.service";
 import { PortfolioStockTableButtonsService } from "./portfolio-stock-table-buttons.service";
 import { PortfolioStockFormService } from "./portfolio-stock-form.service";
+import { PortfolioStockDialogButtonsService } from "./portfolio-stock-dialog-buttons.service";
 
 /**
  * This component lists all of the stocks for a portfolio
@@ -30,13 +30,18 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
                  protected portfolioStockFactory: PortfolioStockFactory,
                  protected portfolioStockCrudService: PortfolioStockCrudService,
                  protected portfolioStockFormService: PortfolioStockFormService,
-                 protected portfolioStockPanelButtonsService: PortfolioStockPanelButtonsService,
+                 protected portfolioStockPanelButtonsService: PortfolioStockDialogButtonsService,
                  protected portfolioStockDialogService: PortfolioStockDialogService,
                  protected portfolioStockTableButtonsService: PortfolioStockTableButtonsService,
                  protected session: SessionService )
     {
-        super( toaster, portfolioStockFactory, portfolioStockCrudService, portfolioStockPanelButtonsService,
-               portfolioStockDialogService, portfolioStockTableButtonsService );
+        super( toaster,
+               portfolioStockFactory,
+               portfolioStockCrudService,
+               portfolioStockFormService,
+               portfolioStockPanelButtonsService,
+               portfolioStockDialogService,
+               portfolioStockTableButtonsService );
     }
 
     private getAddButtonText(): string

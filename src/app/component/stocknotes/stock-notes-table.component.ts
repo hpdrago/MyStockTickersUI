@@ -6,7 +6,7 @@ import { CrudTableComponent } from "../common/crud-table.component";
 import { StockNoteCrudService } from "../../service/stock-note-crud.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockNotesDialogService } from "./stock-notes-dialog.service";
-import { StockNotesPanelButtonsService } from "./stock-notes-panel-buttons.service";
+import { StockNotesDialogButtonsService } from "./stock-notes-dialog-buttons.service";
 import { StockNotesTableButtonsService } from "./stock-notes-table-buttons.service";
 import { StockNotesFormService } from "./stock-notes-form.service";
 import {StockNoteCount} from "../../model/class/stock-note-count";
@@ -30,13 +30,18 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNote>
                protected stockNoteFactory: StockNoteFactory,
                protected stockNoteCrudService: StockNoteCrudService,
                protected stockNotesFormService: StockNotesFormService,
-               protected stockNotesPanelButtonsService: StockNotesPanelButtonsService,
+               protected stockNotesDialogButtonsService: StockNotesDialogButtonsService,
                protected stockNotesDialogService: StockNotesDialogService,
                protected stockNotesTableButtonsService: StockNotesTableButtonsService,
                protected session: SessionService )
   {
-    super( toaster, stockNoteFactory, stockNoteCrudService, stockNotesPanelButtonsService,
-           stockNotesDialogService, stockNotesTableButtonsService );
+    super( toaster,
+           stockNoteFactory,
+           stockNoteCrudService,
+           stockNotesFormService,
+           stockNotesDialogButtonsService,
+           stockNotesDialogService,
+           stockNotesTableButtonsService );
   }
 
   private getAddButtonText(): string

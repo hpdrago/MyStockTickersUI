@@ -7,9 +7,10 @@ import { StockFactory } from "../../model/factory/stock.factory";
 import { StockCrudService } from "../../service/stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockFormService } from "./stock-form.service";
-import { StockPanelButtonsService } from "./stock-panel-buttons.service";
+import { StockDialogButtonsService } from "./stock-dialog-buttons.service";
 import { StockTableButtonsService } from "./stock-table-buttons.service";
 import { StockDialogService } from "./stock-dialog.service";
+import { showWarningOnce } from "tslint/lib/error";
 
 /**
  * This component lists the all of the stocks in the database.
@@ -32,12 +33,17 @@ export class StockTableComponent extends CrudTableComponent<Stock>
                  protected stockFactory: StockFactory,
                  protected stockCrudService: StockCrudService,
                  protected stockFormService: StockFormService,
-                 protected stockPanelButtonsService: StockPanelButtonsService,
+                 protected stockDialogButtonsService: StockDialogButtonsService,
                  protected stockDialogService: StockDialogService,
                  protected stockTableButtonsService: StockTableButtonsService )
     {
-        super( toaster, stockFactory, stockCrudService, stockPanelButtonsService,
-               stockDialogService, stockTableButtonsService );
+        super( toaster,
+               stockFactory,
+               stockCrudService,
+               stockFormService,
+               stockDialogButtonsService,
+               stockDialogService,
+               stockTableButtonsService );
     }
 
     /**

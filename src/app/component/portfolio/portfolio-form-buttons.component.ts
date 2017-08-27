@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { CrudPanelButtonsComponent } from "../common/crud-panel-buttons.component";
+import { CrudFormButtonsComponent } from "../common/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/class/portfolio";
 import { PortfolioFactory } from "../../model/factory/portfolio.factory";
@@ -12,11 +12,11 @@ import { SessionService } from "../../service/session.service";
  * Created by mike on 12/31/2016.
  */
 @Component({
-    selector: 'portfolio-panel-buttons',
-    templateUrl: '../common/crud-panel-buttons.component.html',
-    inputs: ['crudFormService', 'crudPanelButtonsService', 'crudDialogService']
+    selector: 'portfolio-dialog-buttons',
+    templateUrl: '../common/crud-form-buttons.component".html',
+    inputs: ['crudFormService', 'crudButtonsService', 'crudDialogService']
 })
-export class PortfolioPanelButtonsComponent extends CrudPanelButtonsComponent<Portfolio>
+export class PortfolioFormButtonsComponent extends CrudFormButtonsComponent<Portfolio>
 {
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,

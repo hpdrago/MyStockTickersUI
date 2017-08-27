@@ -1,6 +1,6 @@
 import { PortfolioStock } from "../../model/class/portfolio-stock";
 import { Component, Input } from "@angular/core";
-import { CrudPanelButtonsComponent } from "../common/crud-panel-buttons.component";
+import { CrudFormButtonsComponent } from "../common/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockCrudService } from "../../service/portfolio-stock-crud.service";
 import { Portfolio } from "../../model/class/portfolio";
@@ -10,11 +10,11 @@ import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.facto
  * Created by mike on 12/31/2016.
  */
 @Component({
-    selector: 'portfolio-stock-panel-buttons',
-    templateUrl: '../common/crud-panel-buttons.component.html',
-    inputs: ['portfolio', 'crudFormService', 'crudPanelButtonsService', 'curdPanelButtonsService']
+    selector:    'portfolio-stock-form-buttons',
+    templateUrl: '../common/crud-form-buttons.component".html',
+    inputs:      ['portfolio', 'crudFormService', 'crudButtonsService', 'curdPanelButtonsService']
 })
-export class PortfolioStockPanelButtonsComponent extends CrudPanelButtonsComponent<PortfolioStock>
+export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent<PortfolioStock>
 {
     @Input()
     private portfolio: Portfolio;

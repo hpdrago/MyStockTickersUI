@@ -9,7 +9,7 @@ import { ToastsManager } from "ng2-toastr";
 @Component({
     selector: 'portfolio-dialog',
     templateUrl: './portfolio-dialog.component.html',
-    inputs: ['crudDialogService', 'crudFormService', 'crudPanelButtonsService']
+    inputs: ['crudDialogService', 'crudFormService', 'crudButtonsService']
 })
 export class PortfolioDialogComponent extends CrudDialogComponent<Portfolio>
 {

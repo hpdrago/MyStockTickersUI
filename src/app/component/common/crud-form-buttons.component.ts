@@ -5,18 +5,18 @@ import { CrudOperation } from "./crud-operation";
 import { CrudFormService } from "./crud-form.service";
 import { CrudRestService } from "../../service/crud-rest.serivce";
 import { ToastsManager } from "ng2-toastr";
-import { CrudPanelButtonsService } from "./crud-panel-buttons.service";
+import { CrudFormButtonsService } from "./crud-form-buttons.service";
 import { CrudDialogService } from "./crud-dialog.service";
 import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 
 /**
  * This class manages the set of buttons for a model object dialog.
  *                                                                             *** OPTIONAL ***
- * inputs: ['crudFormService', 'crudPanelButtonsService', 'modelObjectFactory, 'crudPanelDialogService']
+ * inputs: ['crudFormService', 'crudButtonsService', 'modelObjectFactory, 'crudPanelDialogService']
  *
  * Created by mike on 12/31/2016.
  */
-export abstract class CrudPanelButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
+export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
     /**
      * Used to receive state information from the form
@@ -28,7 +28,7 @@ export abstract class CrudPanelButtonsComponent<T extends ModelObject<T>> extend
      * Used to send event information to subscribers
      */
     @Input()
-    protected crudPanelButtonsService: CrudPanelButtonsService<T>;
+    protected crudPanelButtonsService: CrudFormButtonsService<T>;
 
     /**
      * Optional input if the panel should display the close button for a dialog
@@ -76,7 +76,7 @@ export abstract class CrudPanelButtonsComponent<T extends ModelObject<T>> extend
         }
         if ( !this.crudPanelButtonsService )
         {
-            throw new Error( "crudPanelButtonsService has not been set by Input value" );
+            throw new Error( "crudButtonsService has not been set by Input value" );
         }
         this.subscribeToCrudFormServiceEvents();
     }

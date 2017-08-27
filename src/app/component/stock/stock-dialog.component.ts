@@ -13,7 +13,7 @@ import { Stock } from "../../model/class/stock";
 ({
     selector:    'stock-dialog',
     templateUrl: './stock-dialog.component.html',
-    inputs:      ['crudDialogService', 'crudFormService', 'crudPanelButtonsService']
+    inputs:      ['crudDialogService', 'crudFormService', 'crudButtonsService']
 })
 export class StockDialogComponent extends CrudDialogComponent<Stock>
 {

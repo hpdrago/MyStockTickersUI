@@ -19,7 +19,7 @@ import { Subject, Observable } from "rxjs";
  *
  * Created by mike on 12/17/2016.
  */
-export abstract class CrudPanelButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
+export abstract class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
     protected addButtonClickedSubject: Subject<T> = new Subject<T>();
     protected deleteButtonClickedSubject: Subject<T> = new Subject<T>();

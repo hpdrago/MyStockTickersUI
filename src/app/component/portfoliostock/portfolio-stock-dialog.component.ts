@@ -16,7 +16,7 @@ import { Portfolio } from "../../model/class/portfolio";
 ({
     selector:    'portfolio-stock-dialog',
     templateUrl: './portfolio-stock-dialog.component.html',
-    inputs:      ['portfolio', 'crudDialogService', 'crudFormService', 'crudPanelButtonsService']
+    inputs:      ['portfolio', 'crudDialogService', 'crudFormService', 'crudButtonsService']
 })
 export class PortfolioStockDialogComponent extends CrudDialogComponent<PortfolioStock>
 {
