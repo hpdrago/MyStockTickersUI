@@ -13,10 +13,10 @@ import { SessionService } from "../../service/session.service";
  */
 @Component({
     selector:    'stock-notes-form-buttons',
-    templateUrl: '../common/crud-form-buttons.component".html',
+    templateUrl: '../common/crud-form-buttons.component.html',
     inputs:      ['crudFormService', 'crudButtonsService', 'crudDialogService']
 })
-export class StockNotesFormButtonsService extends CrudFormButtonsComponent<StockNote>
+export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<StockNote>
 {
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,

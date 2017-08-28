@@ -13,7 +13,7 @@ import { SessionService } from "../../service/session.service";
  */
 @Component({
     selector: 'portfolio-dialog-buttons',
-    templateUrl: '../common/crud-form-buttons.component".html',
+    templateUrl: '../common/crud-form-buttons.component.html',
     inputs: ['crudFormService', 'crudButtonsService', 'crudDialogService']
 })
 export class PortfolioFormButtonsComponent extends CrudFormButtonsComponent<Portfolio>

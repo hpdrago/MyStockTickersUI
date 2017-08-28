@@ -11,7 +11,7 @@ import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.facto
  */
 @Component({
     selector:    'portfolio-stock-form-buttons',
-    templateUrl: '../common/crud-form-buttons.component".html',
+    templateUrl: '../common/crud-form-buttons.component.html',
     inputs:      ['portfolio', 'crudFormService', 'crudButtonsService', 'curdPanelButtonsService']
 })
 export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent<PortfolioStock>

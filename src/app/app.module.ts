@@ -63,10 +63,7 @@ import { PortfolioCrudService } from "./service/portfolio-crud.service";
 import { PortfolioFactory } from "./model/factory/portfolio.factory";
 import { StockSectorCrudService } from "./service/stock-sector-crud.service";
 import { StockAutoCompleteComponent } from "./component/common/stock-autocomplete.component";
-import { PortfolioStockFormButtonsComponent } from "./component/portfoliostock/portfolio-stock-panel-buttons.component";
-import { StockFormButtonsComponent } from "./component/stock/stock-dialog-buttons.component";
 import { StockDialogButtonsService } from "./component/stock/stock-dialog-buttons.service";
-import { PortfolioDialogButtonsService } from "./component/portfolio/portfolio-dialog-buttons.service";
 import { PortfolioStockDialogButtonsService } from "./component/portfoliostock/portfolio-stock-dialog-buttons.service";
 import { StockTableButtonsService } from "./component/stock/stock-table-buttons.service";
 import { StockTableButtonsComponent } from "./component/stock/stock-table-buttons.component";
@@ -81,7 +78,6 @@ import { PortfolioFormService } from "./component/portfolio/portfolio-form.servi
 import { PortfolioDialogComponent } from "./component/portfolio/portfolio-dialog.component";
 import { PortfolioFormComponent } from "./component/portfolio/portfolio-form.component";
 import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
-import { PortfolioDialogButtonsComponent } from "./component/portfolio/portfolio-dialog-buttons.component";
 import { PortfolioTableButtonsComponent } from "./component/portfolio/portfolio-table-buttons.component";
 import { PortfolioDialogService } from "./component/portfolio/portfolio-dialog.service";
 import { StockSectorFactory } from "./model/factory/stock-sector.factory";
@@ -89,7 +85,6 @@ import {StockNotesDialogComponent} from "./component/stocknotes/stock-notes-dial
 import {StockNotesTableComponent} from "./component/stocknotes/stock-notes-table.component";
 import {StockNotesTableButtonsComponent} from "./component/stocknotes/stock-notes-table-buttons.component";
 import {StockNotesFormComponent} from "./component/stocknotes/stock-notes-form.component";
-import {StockNotesDialogButtonsComponent} from "./component/stocknotes/stock-notes-dialog-buttons.component";
 import {StockNoteCrudService} from "./service/stock-note-crud.service";
 import {StockNoteFactory} from "./model/factory/stock-note.factory";
 import {StockNotesFormService} from "./component/stocknotes/stock-notes-form.service";
@@ -97,7 +92,11 @@ import {StockNotesTableButtonsService} from "./component/stocknotes/stock-notes-
 import {StockNotesDialogButtonsService} from "./component/stocknotes/stock-notes-dialog-buttons.service";
 import {StockNotesDialogService} from "./component/stocknotes/stock-notes-dialog.service";
 import {StockNoteCountFactory} from "./model/factory/stock-note-count.factory";
-import { StockNotesPanelComponent } from "./component/stocknotes/stock-notes-panel.component";
+import { StockFormButtonsComponent } from "./component/stock/stock-form-buttons.component";
+import { PortfolioStockFormButtonsComponent } from "./component/portfoliostock/portfolio-stock-form-buttons.component";
+import { PortfolioFormButtonsComponent } from "./component/portfolio/portfolio-form-buttons.component";
+import { StockNotesFormButtonsComponent } from "./component/stocknotes/stock-notes-form-buttons.component";
+import { PortfolioFormButtonsService } from "./component/portfolio/portfolio-form-buttons.service";
 
 @NgModule({
     imports:
@@ -144,7 +143,7 @@ import { StockNotesPanelComponent } from "./component/stocknotes/stock-notes-pan
         PortfolioTableComponent,
         PortfolioFormComponent,
         PortfolioDialogComponent,
-        PortfolioDialogButtonsComponent,
+        PortfolioFormButtonsComponent,
         PortfolioTableButtonsComponent,
 
         PortfolioStockTableComponent,
@@ -157,8 +156,7 @@ import { StockNotesPanelComponent } from "./component/stocknotes/stock-notes-pan
         StockNotesTableButtonsComponent,
         StockNotesFormComponent,
         StockNotesDialogComponent,
-        StockNotesPanelComponent,
-        StockNotesDialogButtonsComponent,
+        StockNotesFormButtonsComponent,
 
         DashboardComponent,
         UppercaseDirective,
@@ -184,7 +182,7 @@ import { StockNotesPanelComponent } from "./component/stocknotes/stock-notes-pan
         PortfolioFormService,
         PortfolioDialogService,
         PortfolioTableButtonsService,
-        PortfolioDialogButtonsService,
+        PortfolioFormButtonsService,
         PortfolioStockDialogService,
         PortfolioFactory,
 

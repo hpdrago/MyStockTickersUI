@@ -12,7 +12,7 @@ import { StockFactory } from "../../model/factory/stock.factory";
  */
 @Component({
     selector:    'stock-form-buttons',
-    templateUrl: '../common/crud-form-buttons.component".html',
+    templateUrl: '../common/crud-form-buttons.component.html',
     inputs:      ['crudFormService', 'crudButtonsService', 'crudDialogService']
 })
 export class StockFormButtonsComponent extends CrudFormButtonsComponent<Stock>
