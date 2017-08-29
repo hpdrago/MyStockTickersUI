@@ -6,9 +6,11 @@ import { Stock } from "../../model/class/stock";
 import { CrudFormComponent } from "../common/crud-form.component";
 import { StockSectorList } from "../../model/class/stock-sectors.list";
 import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
-import { StockCrudService } from "../../service/stock-crud.service";
 import { StockSectorCrudService } from "../../service/stock-sector-crud.service";
 import { ToastsManager } from "ng2-toastr";
+import { PortfolioStockCrudService } from "../../service/portfolio-stock-crud.service";
+import { PortfolioStockFormService } from "./portfolio-stock-form.service";
+import { StockCrudService } from "../../service/stock-crud.service";
 
 /**
  * Created by mike on 11/16/2016.
@@ -30,10 +32,11 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
     constructor( protected toaster: ToastsManager,
                  protected formBuilder: FormBuilder,
                  protected stockCrudService: StockCrudService,
-                 protected stockSectorService: StockSectorCrudService,
-                 protected portfolioStockFactory: PortfolioStockFactory )
+                 protected portfolioStockFactory: PortfolioStockFactory,
+                 protected portfolioStockFormService: PortfolioStockFormService,
+                 protected stockSectorService: StockSectorCrudService )
     {
-        super( toaster, portfolioStockFactory );
+        super( toaster, portfolioStockFactory, portfolioStockFormService );
     }
 
     /**

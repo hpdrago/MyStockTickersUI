@@ -4,6 +4,9 @@ import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/class/stock";
 import { StockCrudService } from "../../service/stock-crud.service";
 import { StockFactory } from "../../model/factory/stock.factory";
+import { StockFormService } from "./stock-form.service";
+import { StockFormButtonsService } from "./stock-form-buttons.service";
+import { StockDialogService } from "./stock-dialog.service";
 
 /**
  * Button panel component for the Stock dialog.
@@ -12,16 +15,22 @@ import { StockFactory } from "../../model/factory/stock.factory";
  */
 @Component({
     selector:    'stock-form-buttons',
-    templateUrl: '../common/crud-form-buttons.component.html',
-    inputs:      ['crudFormService', 'crudButtonsService', 'crudDialogService']
+    templateUrl: '../common/crud-form-buttons.component.html'
 })
 export class StockFormButtonsComponent extends CrudFormButtonsComponent<Stock>
 {
     constructor( protected toaster: ToastsManager,
                  protected stockFactory: StockFactory,
-                 protected stockCrudService: StockCrudService )
+                 protected stockCrudService: StockCrudService,
+                 protected stockFormService: StockFormService,
+                 protected stockFormButtonsService: StockFormButtonsService,
+                 protected stockDialogService: StockDialogService )
     {
-        super( toaster, stockFactory, stockCrudService );
+        super( toaster, stockFactory, stockCrudService, stockFormService, stockFormButtonsService, stockDialogService );
+        if ( !this.toaster )
+        {
+            throw new Error( "modelObjectFactory argument cannot be null" );
+        }
     }
 
     /**

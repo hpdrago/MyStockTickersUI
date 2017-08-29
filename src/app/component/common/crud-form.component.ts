@@ -17,9 +17,6 @@ import { ToastsManager } from "ng2-toastr";
  */
 export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCrudComponent<T> implements OnInit
 {
-    @Input()
-    protected crudFormService: CrudFormService<T>;
-
     /**
      * The formGroup is the Dynamic Form object
      */
@@ -29,9 +26,18 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      * C O N S T R U C T O R
      */
     constructor( protected toaster: ToastsManager,
-                 protected modelObjectFactory: ModelObjectFactory<T> )
+                 protected modelObjectFactory: ModelObjectFactory<T>,
+                 protected crudFormService: CrudFormService<T> )
     {
         super( toaster );
+        if ( !this.modelObjectFactory )
+        {
+            throw new Error( "modelObjectFactory argument cannot be null" );
+        }
+        if ( !this.crudFormService )
+        {
+            throw new Error( "crudFormService argument cannot be null" );
+        }
     }
 
     /**
@@ -40,14 +46,12 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     public ngOnInit()
     {
         this.logger.debug( "ngOnInit.begin" );
-        if ( !this.crudFormService )
-        {
-            throw new Error( "crudFormService has not been set by Input value" );
-        }
         this.modelObject = this.modelObjectFactory.newModelObject();
         this.formGroup = this.createCrudForm();
         this.subscribeToFormChanges();
         this.subscribeToCrudFormServiceEvents();
+        // Tell everyone that we are done
+        this.crudFormService.sendComponentInitializedEvent();
         this.logger.debug( "ngOnInit.end" );
     }
 

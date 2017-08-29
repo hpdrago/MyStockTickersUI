@@ -5,6 +5,6 @@ import { CrudFormButtonsService } from "../common/crud-form-buttons.service";
  * Created by mike on 8/15/2017.
  */
 @Injectable()
-export class StockNotesDialogButtonsService extends CrudFormButtonsService<StockNote>
+export class StockNotesFormButtonsService extends CrudFormButtonsService<StockNote>
 {
 }

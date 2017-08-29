@@ -1,34 +1,32 @@
 import { ModelObject } from "../../model/class/modelobject";
 import { BaseCrudComponent } from "./base-crud.component";
-import { Input, OnInit } from "@angular/core";
 import { CrudTableButtonsService } from "./crud-table-buttons.service";
 import { ToastsManager } from "ng2-toastr";
 
 /**
  * This is the base component class for the buttons on all CRUD enabled tables
  *
- * inputs: ['crudTableButtonsService']
- *
  * Created by mike on 1/2/2017.
  */
 export class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
-    @Input()
-    protected crudTableButtonsService: CrudTableButtonsService<T>;
-
-    constructor( protected toaster: ToastsManager )
+    constructor( protected toaster: ToastsManager,
+                 protected crudTableButtonsService: CrudTableButtonsService<T> )
     {
         super( toaster );
+        if ( !this.crudTableButtonsService )
+        {
+            throw new Error( "crudTableButtonsService parameter cannot be null" );
+        }
     }
 
     public ngOnInit()
     {
-        if ( !this.crudTableButtonsService )
-        {
-            throw new Error( "crudTableButtonsService has not been set by Input value" );
-        }
+        this.log( "ngOnInit" );
         this.crudTableButtonsService.subscribeToModelObjectChangedEvent().subscribe( ( modelObject: T) => this.modelObjectChanged( modelObject ) );
+        this.crudTableButtonsService.sendComponentInitializedEvent();
     }
+
     /**
      * Returns the default Add button label
      * @return {string}

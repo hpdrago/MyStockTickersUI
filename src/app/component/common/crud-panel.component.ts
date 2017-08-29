@@ -11,8 +11,6 @@ import { CrudFormButtonsService } from "./crud-form-buttons.service";
  *
  * @param <T> Read Model Type and Search Criteria
  *
- * inputs: ['crudButtonsService', 'crudDialogService']
- *
  * Created by mike on 11/27/2016.
  */
 export abstract class CrudPanelComponent<T extends ModelObject<T>>
@@ -20,22 +18,17 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     implements OnInit
 {
     /**
-     * The CRUD Panel Service provides message and information passing between the panel and the parent container
-     */
-    @Input()
-    protected crudButtonsService: CrudFormButtonsService<T>;
-
-    /**
-     * The CRUD Form Service provides message and information passing between the form and the parent panel
-     */
-    @Input()
-    protected crudFormService: CrudFormService<T>;
-
-
-    /**
      * C O N S T R U C T O R
      */
-    constructor( protected toaster: ToastsManager )
+    constructor( protected toaster: ToastsManager,
+                 /**
+                  * The CRUD Panel Service provides message and information passing between the panel and the parent container
+                  */
+                 protected crudFormButtonsService: CrudFormButtonsService<T>,
+                 /**
+                  * The CRUD Form Service provides message and information passing between the form and the parent panel
+                  */
+                 protected crudFormService: CrudFormService<T> )
     {
         super( toaster );
     }
@@ -45,9 +38,9 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      */
     public ngOnInit()
     {
-        if ( !this.crudButtonsService )
+        if ( !this.crudFormButtonsService )
         {
-            throw new Error( "crudButtonsService has not been set by Input value" );
+            throw new Error( "crudFormButtonsService has not been set by Input value" );
         }
         if ( !this.crudFormService )
         {
@@ -63,9 +56,9 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     private subscribeToCrudPanelServiceEvents(): void
     {
         this.debug( "subscribeToCrudPanelServiceEvents.begin" );
-        this.crudButtonsService.subscribeToModelObjectChangedEvent().subscribe( ( modelObject: T ) =>
+        this.crudFormButtonsService.subscribeToModelObjectChangedEvent().subscribe( ( modelObject: T ) =>
                                                                         this.modelObjectChanged( modelObject ) );
-        this.crudButtonsService.subscribeToCrudOperationChangeEvent().subscribe( ( crudOperation: CrudOperation ) =>
+        this.crudFormButtonsService.subscribeToCrudOperationChangeEvent().subscribe( ( crudOperation: CrudOperation ) =>
                                                                           this.crudOperationChanged( crudOperation ) );
         this.debug( "subscribeToCrudPanelServiceEvents.end" );
     }

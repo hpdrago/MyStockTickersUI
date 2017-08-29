@@ -22,6 +22,10 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     constructor( protected toaster: ToastsManager )
     {
         super( toaster );
+        if ( !this.toaster )
+        {
+            throw new Error( "toaster argument cannot be null" );
+        }
     }
 
    /**

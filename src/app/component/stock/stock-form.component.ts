@@ -5,6 +5,7 @@ import { CrudOperation } from "../common/crud-operation";
 import { CrudFormComponent } from "../common/crud-form.component";
 import { StockFactory } from "../../model/factory/stock.factory";
 import { ToastsManager } from "ng2-toastr";
+import { StockFormService } from "./stock-form.service";
 
 /**
  * Created by mike on 10/8/2016.
@@ -12,16 +13,16 @@ import { ToastsManager } from "ng2-toastr";
 @Component(
 {
     selector:    'stock-form',
-    templateUrl: './stock-form.component.html',
-    inputs: ['crudFormService']
+    templateUrl: './stock-form.component.html'
 })
 export class StockFormComponent extends CrudFormComponent<Stock>
 {
     constructor( protected toaster: ToastsManager,
                  private formBuilder: FormBuilder,
-                 protected stockFactory: StockFactory )
+                 protected stockFactory: StockFactory,
+                 protected stockFormService: StockFormService )
     {
-        super( toaster, stockFactory );
+        super( toaster, stockFactory, stockFormService );
     }
 
     /**

@@ -6,7 +6,7 @@ import { CrudTableComponent } from "../common/crud-table.component";
 import { StockNoteCrudService } from "../../service/stock-note-crud.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockNotesDialogService } from "./stock-notes-dialog.service";
-import { StockNotesDialogButtonsService } from "./stock-notes-dialog-buttons.service";
+import { StockNotesFormButtonsService } from "./stock-notes-form-buttons.service";
 import { StockNotesTableButtonsService } from "./stock-notes-table-buttons.service";
 import { StockNotesFormService } from "./stock-notes-form.service";
 import {StockNoteCount} from "../../model/class/stock-note-count";
@@ -30,7 +30,7 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNote>
                protected stockNoteFactory: StockNoteFactory,
                protected stockNoteCrudService: StockNoteCrudService,
                protected stockNotesFormService: StockNotesFormService,
-               protected stockNotesDialogButtonsService: StockNotesDialogButtonsService,
+               protected stockNotesDialogButtonsService: StockNotesFormButtonsService,
                protected stockNotesDialogService: StockNotesDialogService,
                protected stockNotesTableButtonsService: StockNotesTableButtonsService,
                protected session: SessionService )

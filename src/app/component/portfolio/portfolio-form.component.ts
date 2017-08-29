@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms"
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioFactory } from "../../model/factory/portfolio.factory";
+import { PortfolioFormService } from "./portfolio-form.service";
 
 /**
  * This is the Portfolio Form Component class.
@@ -12,16 +13,16 @@ import { PortfolioFactory } from "../../model/factory/portfolio.factory";
  */
 @Component({
     selector: 'portfolio-form',
-    templateUrl: './portfolio-form.component.html',
-    inputs: ['crudFormService']
+    templateUrl: './portfolio-form.component.html'
 })
 export class PortfolioFormComponent extends CrudFormComponent<Portfolio>
 {
     constructor( protected toaster: ToastsManager,
                  private formBuilder: FormBuilder,
-                 protected portfolioFactory: PortfolioFactory )
+                 protected portfolioFactory: PortfolioFactory,
+                 protected portfolioFormService: PortfolioFormService )
     {
-        super( toaster, portfolioFactory );
+        super( toaster, portfolioFactory, portfolioFormService );
     }
 
     protected createCrudForm(): FormGroup

@@ -1,10 +1,11 @@
 import { Component, Input } from "@angular/core";
 import { PortfolioStock } from "../../model/class/portfolio-stock";
-import { PortfolioStockCrudService } from "../../service/portfolio-stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
 import { CrudDialogComponent } from "../common/crud-dialog.component";
 import { PortfolioStockDialogService } from "./portfolio-stock-dialog.service";
 import { Portfolio } from "../../model/class/portfolio";
+import { PortfolioStockFormService } from "./portfolio-stock-form.service";
+import { PortfolioStockFormButtonsService } from "./portfolio-stock-form-buttons.service";
 
 /**
  * This class manages the modal dialog that contains the Portfolio Stock
@@ -16,16 +17,19 @@ import { Portfolio } from "../../model/class/portfolio";
 ({
     selector:    'portfolio-stock-dialog',
     templateUrl: './portfolio-stock-dialog.component.html',
-    inputs:      ['portfolio', 'crudDialogService', 'crudFormService', 'crudButtonsService']
+    inputs:      ['portfolio']
 })
 export class PortfolioStockDialogComponent extends CrudDialogComponent<PortfolioStock>
 {
     @Input()
     private portfolio: Portfolio;
 
-    constructor( protected toaster: ToastsManager )
+    constructor( protected toaster: ToastsManager,
+                 protected portfolioStockDialogService: PortfolioStockDialogService,
+                 protected portfolioStockFormService: PortfolioStockFormService,
+                 protected portfolioStockFormButtonsService: PortfolioStockFormButtonsService )
     {
-        super( toaster );
+        super( toaster, portfolioStockDialogService, portfolioStockFormService, portfolioStockFormButtonsService, false );
     }
 
     /**

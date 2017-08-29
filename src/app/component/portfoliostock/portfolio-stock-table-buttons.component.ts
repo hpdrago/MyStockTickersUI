@@ -3,6 +3,7 @@ import { Stock } from "../../model/class/stock";
 import { Component, Input } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/class/portfolio";
+import { StockTableButtonsService } from "../stock/stock-table-buttons.service";
 
 /**
  * Created by mike on 1/2/2017.
@@ -11,16 +12,17 @@ import { Portfolio } from "../../model/class/portfolio";
     selector: 'portfolio-stock-table-buttons',
     templateUrl: '../common/crud-table-buttons.component.html',
     styleUrls: ['./portfolio-stock-table-buttons.component.css'],
-    inputs: ['portfolio','crudTableButtonsService']
+    inputs: ['portfolio']
 })
 export class PortfolioStockTableButtonsComponent extends CrudTableButtonsComponent<Stock>
 {
     @Input()
     private portfolio: Portfolio;
 
-    constructor( protected toaster: ToastsManager )
+    constructor( protected toaster: ToastsManager,
+                 protected stockTableButtonsService: StockTableButtonsService )
     {
-        super( toaster );
+        super( toaster, stockTableButtonsService );
     }
 
     /**

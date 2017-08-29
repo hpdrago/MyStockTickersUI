@@ -7,7 +7,7 @@ import { StockFactory } from "../../model/factory/stock.factory";
 import { StockCrudService } from "../../service/stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockFormService } from "./stock-form.service";
-import { StockDialogButtonsService } from "./stock-dialog-buttons.service";
+import { StockFormButtonsService } from "./stock-form-buttons.service";
 import { StockTableButtonsService } from "./stock-table-buttons.service";
 import { StockDialogService } from "./stock-dialog.service";
 import { showWarningOnce } from "tslint/lib/error";
@@ -33,7 +33,7 @@ export class StockTableComponent extends CrudTableComponent<Stock>
                  protected stockFactory: StockFactory,
                  protected stockCrudService: StockCrudService,
                  protected stockFormService: StockFormService,
-                 protected stockDialogButtonsService: StockDialogButtonsService,
+                 protected stockFormButtonsService: StockFormButtonsService,
                  protected stockDialogService: StockDialogService,
                  protected stockTableButtonsService: StockTableButtonsService )
     {
@@ -41,7 +41,7 @@ export class StockTableComponent extends CrudTableComponent<Stock>
                stockFactory,
                stockCrudService,
                stockFormService,
-               stockDialogButtonsService,
+               stockFormButtonsService,
                stockDialogService,
                stockTableButtonsService );
     }
@@ -52,7 +52,7 @@ export class StockTableComponent extends CrudTableComponent<Stock>
      */
     protected lazyLoadData( event: LazyLoadEvent ) : void
     {
-        this.logger.log( 'lazyLoadData ' + JSON.stringify( event ) );
+        this.log( 'lazyLoadData ' + JSON.stringify( event ) );
         this.stockCrudService
             .getStocksPage( event.first, event.rows )
             .subscribe( stocksPage =>
@@ -74,7 +74,7 @@ export class StockTableComponent extends CrudTableComponent<Stock>
      */
     private getStockCompaniesLike( searchString: string )
     {
-        this.logger.log( 'getStockCompaniesLike ' + searchString );
+        this.log( 'getStockCompaniesLike ' + searchString );
         this.stockCrudService
             .getStockCompaniesLike( searchString )
             .subscribe( stocksPage =>
@@ -95,18 +95,18 @@ export class StockTableComponent extends CrudTableComponent<Stock>
      */
     private setStocksPage( stocksPage: PaginationPage<Stock> ): void
     {
-        this.logger.log( "setStocksPage" );
+        this.log( "setStocksPage" );
         //this.logger.log( JSON.stringify( stocksPage ).valueOf() );
         //this.stocksPage = stocksPage;
         this.rows = this.stockFactory.newModelObjectArray( stocksPage.content );
         for ( var stock of this.rows )
         {
-            this.logger.log( "setStockPage.stock: " + JSON.stringify( stock ) );
+            //this.logger.log( "setStockPage.stock: " + JSON.stringify( stock ) );
             stock.isUserEntered();
         }
         this.totalRows = stocksPage.totalElements;
-        this.logger.log( 'setStocksPage: length: ' + stocksPage.content.length );
-        this.logger.log( 'setStocksPage: totalElements: ' + stocksPage.totalElements );
+        this.log( 'setStocksPage: length: ' + stocksPage.content.length );
+        this.log( 'setStocksPage: totalElements: ' + stocksPage.totalElements );
     }
 
     /*****************************************************************
@@ -114,7 +114,7 @@ export class StockTableComponent extends CrudTableComponent<Stock>
      *****************************************************************/
     private onCompanyNameSearch( event )
     {
-        this.logger.log( 'onCompanyNameSearch ' + this.companyNameSearch );
+        this.log( 'onCompanyNameSearch ' + this.companyNameSearch );
         if ( this.companyNameSearch && this.companyNameSearch.length > 0 )
         {
             this.getStockCompaniesLike( this.companyNameSearch );
@@ -132,7 +132,7 @@ export class StockTableComponent extends CrudTableComponent<Stock>
      */
     private onJumpToStock( stock: Stock )
     {
-        this.logger.log( 'onJumpToStock()'  );
+        this.log( 'onJumpToStock()'  );
         this.getStockCompaniesLike( stock.tickerSymbol );
     }
 }

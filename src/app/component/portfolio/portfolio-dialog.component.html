@@ -10,12 +10,10 @@
               [minHeight]="isCrudDeleteOperation() ? 275 : 175"
               [resizable]="false"
               [(visible)]="displayDialog">
-        <portfolio-form [crudFormService]="crudFormService">
+        <portfolio-form>
         </portfolio-form>
         <p-footer>
-            <portfolio-dialog-buttons [crudFormService]="crudFormService"
-                                      [crudButtonsService]="crudButtonsService"
-                                      [crudDialogService]="crudDialogService">
+            <portfolio-dialog-buttons>
             </portfolio-dialog-buttons>
         </p-footer>
     </p-dialog>

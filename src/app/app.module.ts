@@ -63,8 +63,8 @@ import { PortfolioCrudService } from "./service/portfolio-crud.service";
 import { PortfolioFactory } from "./model/factory/portfolio.factory";
 import { StockSectorCrudService } from "./service/stock-sector-crud.service";
 import { StockAutoCompleteComponent } from "./component/common/stock-autocomplete.component";
-import { StockDialogButtonsService } from "./component/stock/stock-dialog-buttons.service";
-import { PortfolioStockDialogButtonsService } from "./component/portfoliostock/portfolio-stock-dialog-buttons.service";
+import { StockFormButtonsService } from "./component/stock/stock-form-buttons.service";
+import { PortfolioStockFormButtonsService } from "./component/portfoliostock/portfolio-stock-form-buttons.service";
 import { StockTableButtonsService } from "./component/stock/stock-table-buttons.service";
 import { StockTableButtonsComponent } from "./component/stock/stock-table-buttons.component";
 import { StockDialogService } from "./component/stock/stock-dialog.service";
@@ -89,7 +89,7 @@ import {StockNoteCrudService} from "./service/stock-note-crud.service";
 import {StockNoteFactory} from "./model/factory/stock-note.factory";
 import {StockNotesFormService} from "./component/stocknotes/stock-notes-form.service";
 import {StockNotesTableButtonsService} from "./component/stocknotes/stock-notes-table-buttons.service";
-import {StockNotesDialogButtonsService} from "./component/stocknotes/stock-notes-dialog-buttons.service";
+import {StockNotesFormButtonsService} from "./component/stocknotes/stock-notes-form-buttons.service";
 import {StockNotesDialogService} from "./component/stocknotes/stock-notes-dialog.service";
 import {StockNoteCountFactory} from "./model/factory/stock-note-count.factory";
 import { StockFormButtonsComponent } from "./component/stock/stock-form-buttons.component";
@@ -172,7 +172,7 @@ import { PortfolioFormButtonsService } from "./component/portfolio/portfolio-for
         StockCrudService,
         StockSectorCrudService,
         StockFormService,
-        StockDialogButtonsService,
+        StockFormButtonsService,
         StockTableButtonsService,
         StockExchangeService,
         StockDialogService,
@@ -189,14 +189,14 @@ import { PortfolioFormButtonsService } from "./component/portfolio/portfolio-for
         PortfolioStockCrudService,
         PortfolioStockFormService,
         PortfolioStockTableButtonsService,
-        PortfolioStockDialogButtonsService,
+        PortfolioStockFormButtonsService,
         PortfolioStockDialogService,
         PortfolioStockFactory,
 
         StockNoteCrudService,
         StockNotesFormService,
         StockNotesTableButtonsService,
-        StockNotesDialogButtonsService,
+        StockNotesFormButtonsService,
         StockNotesDialogService,
         StockNoteFactory,
         StockNoteCountFactory,

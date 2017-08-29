@@ -72,14 +72,11 @@
             totalPages : {{stocksPage.totalPages}}
             itemsPerPage: {{stocksPage.itemsPerPage}}-->
             <br/>
-            <stock-table-buttons [crudTableButtonsService]="stockTableButtonsService">
+            <stock-table-buttons>
             </stock-table-buttons>
             <br/>
         </p-panel>
     </div>
+    <stock-dialog>
+    </stock-dialog>
 </div>
-<stock-dialog [crudDialogService]="stockDialogService"
-              [crudButtonsService]="stockDialogButtonsService"
-              [crudFormService]="stockFormService">
-</stock-dialog>
-

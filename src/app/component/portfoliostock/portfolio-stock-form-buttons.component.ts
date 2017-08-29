@@ -5,6 +5,9 @@ import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockCrudService } from "../../service/portfolio-stock-crud.service";
 import { Portfolio } from "../../model/class/portfolio";
 import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
+import { PortfolioStockFormService } from "./portfolio-stock-form.service";
+import { PortfolioStockDialogService } from "./portfolio-stock-dialog.service";
+import { PortfolioStockFormButtonsService } from "./portfolio-stock-form-buttons.service";
 
 /**
  * Created by mike on 12/31/2016.
@@ -12,7 +15,7 @@ import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.facto
 @Component({
     selector:    'portfolio-stock-form-buttons',
     templateUrl: '../common/crud-form-buttons.component.html',
-    inputs:      ['portfolio', 'crudFormService', 'crudButtonsService', 'curdPanelButtonsService']
+    inputs:      ['portfolio']
 })
 export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent<PortfolioStock>
 {
@@ -21,9 +24,13 @@ export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent
 
     constructor( protected toaster: ToastsManager,
                  protected portfolioStockFactory: PortfolioStockFactory,
-                 protected portfolioStockCrudService: PortfolioStockCrudService )
+                 protected portfolioStockCrudService: PortfolioStockCrudService,
+                 protected portfolioStockFormService: PortfolioStockFormService,
+                 protected portfolioStockFormButtonsService: PortfolioStockFormButtonsService,
+                 protected portfolioStockDialService: PortfolioStockDialogService )
     {
-        super( toaster, portfolioStockFactory, portfolioStockCrudService );
+        super( toaster, portfolioStockFactory, portfolioStockCrudService, portfolioStockFormService,
+               portfolioStockFormButtonsService, portfolioStockDialService );
     }
 
     /**

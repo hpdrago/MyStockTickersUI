@@ -11,14 +11,11 @@
                          [resizable]="false"
                          [(visible)]="displayDialog">
 
-        <portfolio-stock-form [crudFormService]="crudFormService">
+        <portfolio-stock-form>
         </portfolio-stock-form>
 
         <footer>
-            <portfolio-stock-form-buttons [portfolio]="portfolio"
-                                          [crudFormService]="crudFormService"
-                                          [crudButtonsService]="crudButtonsService"
-                                          [crudDialogService]="crudDialogService">
+            <portfolio-stock-form-buttons [portfolio]="portfolio">
             </portfolio-stock-form-buttons>
         </footer>
     </p-dialog>

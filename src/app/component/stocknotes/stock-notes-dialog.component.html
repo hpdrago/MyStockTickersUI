@@ -11,13 +11,11 @@
               [resizable]="false"
               [(visible)]="displayDialog">
             <div>
-                <stock-notes-form [crudFormService]="crudFormService">
+                <stock-notes-form>
                 </stock-notes-form>
             </div>
             <p-footer>
-                <stock-notes-form-buttons [crudFormService]="stockNotesFormService"
-                                          [crudButtonsService]="stockNotesPanelButtonsService"
-                                          [crudDialogService]="stockNotesDialogService">
+                <stock-notes-form-buttons>
                 </stock-notes-form-buttons>
             </p-footer>
     </p-dialog>

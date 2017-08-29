@@ -5,8 +5,6 @@ import { Subject, Observable } from "rxjs";
 /**
  * This class handles the default behaviour for the buttons used in a CRUD enabled table.
  *
- * inputs: ['crudDialogService', 'crudTableButtonsService']
- *
  * Created by mike on 1/2/2017.
  */
 export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>

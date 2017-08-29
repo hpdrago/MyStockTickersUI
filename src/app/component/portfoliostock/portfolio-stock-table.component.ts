@@ -9,7 +9,7 @@ import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockDialogService } from "./portfolio-stock-dialog.service";
 import { PortfolioStockTableButtonsService } from "./portfolio-stock-table-buttons.service";
 import { PortfolioStockFormService } from "./portfolio-stock-form.service";
-import { PortfolioStockDialogButtonsService } from "./portfolio-stock-dialog-buttons.service";
+import { PortfolioStockFormButtonsService } from "./portfolio-stock-form-buttons.service";
 
 /**
  * This component lists all of the stocks for a portfolio
@@ -30,7 +30,7 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
                  protected portfolioStockFactory: PortfolioStockFactory,
                  protected portfolioStockCrudService: PortfolioStockCrudService,
                  protected portfolioStockFormService: PortfolioStockFormService,
-                 protected portfolioStockPanelButtonsService: PortfolioStockDialogButtonsService,
+                 protected portfolioStockPanelButtonsService: PortfolioStockFormButtonsService,
                  protected portfolioStockDialogService: PortfolioStockDialogService,
                  protected portfolioStockTableButtonsService: PortfolioStockTableButtonsService,
                  protected session: SessionService )

@@ -2,6 +2,7 @@ import { CrudTableButtonsComponent } from "../common/crud-table-buttons.componen
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/class/portfolio";
+import { PortfolioTableButtonsService } from "./portfolio-table-buttons.service";
 
 /**
  * Created by mike on 1/2/2017.
@@ -9,14 +10,14 @@ import { Portfolio } from "../../model/class/portfolio";
 @Component({
     selector: 'portfolio-table-buttons',
     styleUrls: ['./portfolio-table-buttons.component.css'],
-    templateUrl: '../common/crud-table-buttons.component.html',
-    inputs: ['crudTableButtonsService']
+    templateUrl: '../common/crud-table-buttons.component.html'
 })
 export class PortfolioTableButtonsComponent extends CrudTableButtonsComponent<Portfolio>
 {
-    constructor( protected toaster: ToastsManager )
+    constructor( protected toaster: ToastsManager,
+                 protected portfolioTableButtonsService: PortfolioTableButtonsService )
     {
-        super( toaster );
+        super( toaster, portfolioTableButtonsService );
     }
 
     protected getAddButtonLabel(): string

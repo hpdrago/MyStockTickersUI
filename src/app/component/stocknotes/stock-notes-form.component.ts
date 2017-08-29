@@ -5,6 +5,7 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockNoteFactory } from "../../model/factory/stock-note.factory";
 import { Stock } from "../../model/class/stock";
+import { StockNotesFormService } from "./stock-notes-form.service";
 
 /**
  * This is the Stock Note Form Component class.
@@ -13,16 +14,16 @@ import { Stock } from "../../model/class/stock";
  */
 @Component( {
                 selector: 'stock-notes-form',
-                templateUrl: './stock-notes-form.component.html',
-                inputs: ['crudFormService']
+                templateUrl: './stock-notes-form.component.html'
             } )
 export class StockNotesFormComponent extends CrudFormComponent<StockNote>
 {
     constructor( protected toaster: ToastsManager,
                  private formBuilder: FormBuilder,
-                 protected stockNotesFactory: StockNoteFactory )
+                 protected stockNotesFactory: StockNoteFactory,
+                 protected stockNotesFormService: StockNotesFormService )
     {
-        super( toaster, stockNotesFactory );
+        super( toaster, stockNotesFactory, stockNotesFormService );
     }
 
     protected createCrudForm(): FormGroup

@@ -16,12 +16,9 @@
           <p-column field="notes" header="Notes" [sortable]="true"></p-column>
         </p-dataTable>
         <br/>
-        <stock-notes-table-buttons [crudTableButtonsService]="stockNotesTableButtonsService">
+        <stock-notes-table-buttons>
         </stock-notes-table-buttons>
     </div>
 </p-panel>
-<stock-notes-dialog
-  [crudFormService]="stockNotesFormService"
-  [crudButtonsService]="stockNotesPanelButtonsService"
-  [crudDialogService]="stockNotesDialogService">
+<stock-notes-dialog>
 </stock-notes-dialog>

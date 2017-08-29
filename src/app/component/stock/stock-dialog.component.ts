@@ -2,6 +2,9 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudDialogComponent } from "../common/crud-dialog.component";
 import { Stock } from "../../model/class/stock";
+import { StockFormService } from "./stock-form.service";
+import { StockFormButtonsService } from "./stock-form-buttons.service";
+import { StockDialogService } from "./stock-dialog.service";
 
 /**
  * This class manages the modal dialog that contains the Stock
@@ -12,14 +15,16 @@ import { Stock } from "../../model/class/stock";
 @Component
 ({
     selector:    'stock-dialog',
-    templateUrl: './stock-dialog.component.html',
-    inputs:      ['crudDialogService', 'crudFormService', 'crudButtonsService']
+    templateUrl: './stock-dialog.component.html'
 })
 export class StockDialogComponent extends CrudDialogComponent<Stock>
 {
-    constructor( protected toaster: ToastsManager )
+    constructor( protected toaster: ToastsManager,
+                 protected stockDialogService: StockDialogService,
+                 protected stockFormService: StockFormService,
+                 protected stockFormButtonsService: StockFormButtonsService )
     {
-        super( toaster );
+        super( toaster, stockDialogService, stockFormService, stockFormButtonsService, false );
     }
 
     /**

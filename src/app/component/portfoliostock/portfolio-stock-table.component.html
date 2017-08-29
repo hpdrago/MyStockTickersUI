@@ -20,14 +20,9 @@
     <p-column field="profitTakingPrice" header="PT Price" [sortable]="true"></p-column>
     <p-column field="profitTakingShares" header="PT Shares" [sortable]="true"></p-column>
     <footer>
-        <portfolio-stock-table-buttons [portfolio]="portfolio"
-                                       [crudTableButtonsService]="portfolioStockTableButtonsService">
+        <portfolio-stock-table-buttons [portfolio]="portfolio">
         </portfolio-stock-table-buttons>
     </footer>
 </p-dataTable>
-<portfolio-stock-dialog
-    [portfolio]="portfolio"
-    [crudFormService]="portfolioStockFormService"
-    [crudButtonsService]="portfolioStockPanelButtonsService"
-    [crudDialogService]="portfolioStockDialogService">
+<portfolio-stock-dialog [portfolio]="portfolio">
 </portfolio-stock-dialog>

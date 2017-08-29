@@ -10,13 +10,11 @@
                      [minHeight]="200"
                      [resizable]="false"
                      [(visible)]="displayDialog">
-    <stock-form [crudFormService]="crudFormService">
-    </stock-form>
-    <footer>
-        <stock-form-buttons [crudFormService]="crudFormService"
-                            [crudButtonsService]="crudButtonsService"
-                            [crudDialogService]="crudDialogService">
-        </stock-form-buttons>
-    </footer>
+        <stock-form>
+        </stock-form>
+        <p-footer>
+            <stock-form-buttons>
+            </stock-form-buttons>
+        </p-footer>
     </p-dialog>
 </div>

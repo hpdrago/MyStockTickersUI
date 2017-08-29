@@ -1,6 +1,5 @@
 import { BaseCrudComponent } from "./base-crud.component";
 import { ModelObject } from "../../model/class/modelobject";
-import { Input } from "@angular/core";
 import { CrudOperation } from "./crud-operation";
 import { CrudFormService } from "./crud-form.service";
 import { CrudRestService } from "../../service/crud-rest.serivce";
@@ -11,36 +10,51 @@ import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 
 /**
  * This class manages the set of buttons for a model object dialog.
- *                                                                             *** OPTIONAL ***
- * inputs: ['crudFormService', 'crudButtonsService', 'modelObjectFactory, 'crudPanelDialogService']
  *
  * Created by mike on 12/31/2016.
  */
 export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
-    /**
-     * Used to receive state information from the form
-     */
-    @Input()
-    protected crudFormService: CrudFormService<T>;
-
-    /**
-     * Used to send event information to subscribers
-     */
-    @Input()
-    protected crudPanelButtonsService: CrudFormButtonsService<T>;
-
-    /**
-     * Optional input if the panel should display the close button for a dialog
-     */
-    @Input()
-    protected crudDialogService: CrudDialogService<T>;
-
     constructor( protected toaster: ToastsManager,
                  protected modelObjectFactory: ModelObjectFactory<T>,
-                 protected crudRestService: CrudRestService<T> )
+                 /**
+                  * Used to perform CRUD REST services
+                  */
+                 protected crudRestService: CrudRestService<T>,
+                 /**
+                  * Used to receive state information from the form
+                  */
+                 protected crudFormService: CrudFormService<T>,
+                 /**
+                  * Used to send event information to subscribers
+                  */
+                 protected crudFormButtonsService: CrudFormButtonsService<T>,
+                 /**
+                  * Optional input if the panel should display the close button for a dialog
+                  */
+                 protected crudDialogService ?: CrudDialogService<T> )
     {
         super( toaster );
+        if ( !this.modelObjectFactory )
+        {
+            throw new Error( "modelObjectFactory argument cannot be null" );
+        }
+        if ( !this.crudRestService )
+        {
+            throw new Error( "crudRestService argument cannot be null" );
+        }
+        if ( !this.crudFormService )
+        {
+            throw new Error( "crudFormService argument cannot be null" );
+        }
+        if ( !this.modelObjectFactory )
+        {
+            throw new Error( "modelObjectFactory argument cannot be null" );
+        }
+        if ( !this.crudFormButtonsService )
+        {
+            throw new Error( "crudFormButtonsService argument cannot be null" );
+        }
     }
 
     /**
@@ -66,19 +80,9 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     public ngOnInit()
     {
-        if ( !this.crudFormService )
-        {
-            throw new Error( "crudFormService has not been set by Input value" );
-        }
-        if ( !this.modelObjectFactory )
-        {
-            throw new Error( "modelObjectFactory has not been set by Input value" );
-        }
-        if ( !this.crudPanelButtonsService )
-        {
-            throw new Error( "crudButtonsService has not been set by Input value" );
-        }
         this.subscribeToCrudFormServiceEvents();
+        // Tell everyone that we are done
+        this.crudFormButtonsService.sendComponentInitializedEvent();
     }
 
     /**
@@ -269,7 +273,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                             this.logger.log( methodName + " saved successful.  modelObject; " +
                                              JSON.stringify( this.modelObject ));
                             this.crudFormService.sendFormResetEvent();
-                            this.crudPanelButtonsService.sendSaveButtonClickedEvent( updatedModelObject );
+                            this.crudFormButtonsService.sendSaveButtonClickedEvent( updatedModelObject );
                         },
                         err => this.reportRestError( err )
             );
@@ -289,7 +293,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                             this.logger.log( methodName + " add successful.  modelObject: " +
                                              JSON.stringify( this.modelObject ) );
                             this.crudFormService.sendFormResetEvent();
-                            this.crudPanelButtonsService.sendAddButtonClickedEvent( newModelObject );
+                            this.crudFormButtonsService.sendAddButtonClickedEvent( newModelObject );
                         },
                         err =>
                         {
@@ -302,7 +306,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                             if ( exception.isDuplicateKeyExists() )
                             {
                                 this.logger.log( methodName + " duplicateKeyExists" );
-                                this.crudPanelButtonsService.sendNavigateToModelObjectEvent( this.modelObject );
+                                this.crudFormButtonsService.sendNavigateToModelObjectEvent( this.modelObject );
                             }
                         }
             );
@@ -321,7 +325,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                         {
                             this.logger.log( methodName + " delete successful" );
                             this.crudFormService.sendFormResetEvent();
-                            this.crudPanelButtonsService.sendDeleteButtonClickedEvent( this.modelObject );
+                            this.crudFormButtonsService.sendDeleteButtonClickedEvent( this.modelObject );
                         },
                         err =>
                         {

@@ -15,7 +15,7 @@
         </div>
         <div class="ui-grid-row">
             <div class="ui-grid-col-12">
-                <portfolio-table-buttons [crudTableButtonsService]="portfolioTableButtonsService">
+                <portfolio-table-buttons>
                 </portfolio-table-buttons>
             </div>
         </div>
@@ -29,8 +29,6 @@
     <!--
     Add Portfolio Dialog
     -->
-    <portfolio-dialog [crudDialogService]="portfolioDialogService"
-                      [crudFormService]="portfolioFormService"
-                      [crudButtonsService]="portfolioDialogButtonsService">
+    <portfolio-dialog>
     </portfolio-dialog>
 </p-panel>

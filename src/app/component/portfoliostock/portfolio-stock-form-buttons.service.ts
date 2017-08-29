@@ -5,6 +5,6 @@ import { CrudFormButtonsService } from "../common/crud-form-buttons.service";
  *
  * Created by mike on 12/18/2016.
  */
-export class PortfolioStockDialogButtonsService extends CrudFormButtonsService<PortfolioStock>
+export class PortfolioStockFormButtonsService extends CrudFormButtonsService<PortfolioStock>
 {
 }

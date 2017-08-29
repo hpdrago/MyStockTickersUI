@@ -13,6 +13,7 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     protected modelObjectChangedSubject: Subject<T> = new Subject<T>();
     protected crudOperationChangedSubject: Subject<CrudOperation> = new Subject<CrudOperation>();
     protected crudOperationErrorSubject: Subject<string> = new Subject<string>();
+    protected componentInitializedSubject: Subject<void> = new Subject<void>();
 
     constructor()
     {
@@ -79,6 +80,27 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     {
         this.debug( "sendCrudOperationChangedEvent " + crudOperation );
         this.tickThenRun( () => this.crudOperationChangedSubject.next( crudOperation ) );
+    }
+
+    /**
+     * The method will be called to notify any listeners that the component initialization has completed.
+     */
+    public sendComponentInitializedEvent()
+    {
+        this.logger.debug( "sendComponentInitialized" );
+        this.tickThenRun( () => this.componentInitializedSubject.next() );
+    }
+
+    /**
+     * The {@code CrudDialog or CrudPanel} will call this method and register to the Observable
+     * to be notified when the form has completed it's initialization.
+     *
+     * @return {Observable<void>}
+     */
+    public subscribeToComponentInitializedEvent(): Observable<void>
+    {
+        this.logger.debug( "subscribeToComponentInitializedEvent" );
+        return this.componentInitializedSubject.asObservable();
     }
 
     protected tickThenRun( fn: () => any )
