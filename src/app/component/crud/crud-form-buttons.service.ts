@@ -1,6 +1,8 @@
 import { BaseCrudComponentService } from "./base-crud-component.service";
 import { ModelObject } from "../../model/class/modelobject";
 import { Subject, Observable } from "rxjs";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 
 /**
  * This class defines the publish/subscribe (observer pattern) methods from communication
@@ -21,11 +23,21 @@ import { Subject, Observable } from "rxjs";
  */
 export abstract class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
-    protected addButtonClickedSubject: Subject<T> = new Subject<T>();
-    protected deleteButtonClickedSubject: Subject<T> = new Subject<T>();
-    protected saveButtonClickedSubject: Subject<T> = new Subject<T>();
-    protected resetButtonClickedSubject: Subject<void> = new Subject<void>();
-    protected navigateToModelObjectSubject: Subject<T> = new Subject<T>();
+    private addButtonClickedSubject: BehaviorSubject<T>;
+    private deleteButtonClickedSubject: BehaviorSubject<T>;
+    private saveButtonClickedSubject: BehaviorSubject<T>;
+    private resetButtonClickedSubject: Subject<void>;
+    private navigateToModelObjectSubject: BehaviorSubject<T>;
+
+    constructor( protected modelObjectFactory: ModelObjectFactory<T> )
+    {
+        super( modelObjectFactory );
+        this. addButtonClickedSubject = new BehaviorSubject<T>( this.modelObjectFactory.newModelObject() );
+        this. deleteButtonClickedSubject = new BehaviorSubject<T>( this.modelObjectFactory.newModelObject() );
+        this. saveButtonClickedSubject = new BehaviorSubject<T>( this.modelObjectFactory.newModelObject() );
+        this. resetButtonClickedSubject = new Subject<void>();
+        this. navigateToModelObjectSubject = new BehaviorSubject<T>( this.modelObjectFactory.newModelObject() );
+    }
 
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the
@@ -53,12 +65,11 @@ export abstract class CrudFormButtonsService<T extends ModelObject<T>> extends B
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Add
      * button is clicked on the panel.
-     * @return {Observable<T>}
      */
-    public subscribeToAddButtonClickedEvent(): Observable<T>
+    public subscribeToAddButtonClickedEvent( fn: ( T ) => any )
     {
         this.log( "subscribed to addButtonClicked" );
-        return this.addButtonClickedSubject.asObservable();
+        this.addButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -76,10 +87,10 @@ export abstract class CrudFormButtonsService<T extends ModelObject<T>> extends B
      * button is clicked on the panel.
      * @return {Observable<T>}
      */
-    public subscribeToHandleDeleteButtonClickedEvent(): Observable<T>
+    public subscribeToHandleDeleteButtonClickedEvent( fn: ( T ) => any )
     {
         this.log( "subscribed to deleteButtonClicked" );
-        return this.deleteButtonClickedSubject.asObservable();
+        this.deleteButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -95,12 +106,11 @@ export abstract class CrudFormButtonsService<T extends ModelObject<T>> extends B
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Save
      * button is clicked on the panel.
-     * @return {Observable<void>}
      */
-    public subscribeToSaveButtonClickedEvent(): Observable<T>
+    public subscribeToSaveButtonClickedEvent( fn: ( T ) => any )
     {
         this.log( "subscribed to saveButtonClicked" );
-        return this.saveButtonClickedSubject.asObservable();
+        this.saveButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -118,10 +128,10 @@ export abstract class CrudFormButtonsService<T extends ModelObject<T>> extends B
      * button is clicked on the panel.
      * @return {Observable<void>}
      */
-    public registerToResetButtonClickedEvent(): Observable<void>
+    public registerToResetButtonClickedEvent( fn: () => any )
     {
         this.log( "subscribed to resetButtonClicked" );
-        return this.resetButtonClickedSubject.asObservable();
+        this.resetButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**

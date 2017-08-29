@@ -1,7 +1,7 @@
-import { CrudTableButtonsComponent } from "../common/crud-table-buttons.component";
+import { CrudTableButtonsComponent } from "../crud/crud-table-buttons.component";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockNote } from "../../model/class/stock-note";
+import { StockNotes } from "../../model/class/stock-notes";
 import { StockNotesTableButtonsService } from "./stock-notes-table-buttons.service";
 
 /**
@@ -10,9 +10,9 @@ import { StockNotesTableButtonsService } from "./stock-notes-table-buttons.servi
 @Component({
     selector: 'stock-notes-table-buttons',
     styleUrls: ['./stock-notes-table-buttons.component.css'],
-    templateUrl: '../common/crud-table-buttons.component.html'
+    templateUrl: '../crud/crud-table-buttons.component.html'
 })
-export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<StockNote>
+export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<StockNotes>
 {
     constructor( protected toaster: ToastsManager,
                  protected stockNotesTableButtonsService: StockNotesTableButtonsService )

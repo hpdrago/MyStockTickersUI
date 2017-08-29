@@ -95,7 +95,7 @@ export class StockSectorList extends ModelObject<StockSectorList>
         return undefined;
     }
 
-    public equals( modelObject: StockSectorList )
+    public isEqualPrimaryKey( modelObject: StockSectorList )
     {
         return true;
     }

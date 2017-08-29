@@ -3,7 +3,7 @@ import { PortfolioStock } from "../../model/class/portfolio-stock";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { SelectItem } from "primeng/components/common/api";
 import { Stock } from "../../model/class/stock";
-import { CrudFormComponent } from "../common/crud-form.component";
+import { CrudFormComponent } from "../crud/crud-form.component";
 import { StockSectorList } from "../../model/class/stock-sectors.list";
 import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
 import { StockSectorCrudService } from "../../service/stock-sector-crud.service";

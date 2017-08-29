@@ -4,6 +4,7 @@ import { Injectable } from "@angular/core";
 import { BaseCrudComponentService } from "./base-crud-component.service";
 import { DisplayDialogRequestSubjectInfo } from "./display-dialog-request-subject-info";
 import { CrudOperation } from "./crud-operation";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 /**
  * This service defines the Observables for interacting with a CRUD dialog.
@@ -16,7 +17,7 @@ import { CrudOperation } from "./crud-operation";
 @Injectable()
 export abstract class CrudDialogService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
-    protected displayDialogRequestSubject: Subject<DisplayDialogRequestSubjectInfo> = new Subject<DisplayDialogRequestSubjectInfo>();
+    protected displayDialogRequestSubject: BehaviorSubject<DisplayDialogRequestSubjectInfo> = new BehaviorSubject<DisplayDialogRequestSubjectInfo>( null );
     protected closeButtonClickedSubject: Subject<void> = new Subject<void>();
 
     /**
@@ -33,12 +34,11 @@ export abstract class CrudDialogService<T extends ModelObject<T>> extends BaseCr
 
     /**
      * Handle the request to display the dialog
-     * @return {Observable<DisplayDialogRequestSubjectInfo<T>>}
      */
-    public subscribeToDisplayDialogRequestEvent(): Observable<DisplayDialogRequestSubjectInfo>
+    public subscribeToDisplayDialogRequestEvent( fn: ( DisplayDialogRequestSubjectInfo ) => any )
     {
         this.log( "subscribeToDisplayDialogRequestEvent" );
-        return this.displayDialogRequestSubject.asObservable();
+        this.displayDialogRequestSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -54,12 +54,11 @@ export abstract class CrudDialogService<T extends ModelObject<T>> extends BaseCr
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the close
      * button is clicked on the panel.
-     * @return {Observable<void>}
      */
-    public subscribeToCloseButtonClickedEvent(): Observable<void>
+    public subscribeToCloseButtonClickedEvent( fn: () => any )
     {
         this.log( "subscribeToCloseButtonClickedEvent" );
-        return this.closeButtonClickedSubject.asObservable();
+        this.closeButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**

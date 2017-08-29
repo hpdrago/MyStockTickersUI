@@ -14,10 +14,24 @@ export abstract class ModelObject<T>
     public abstract clone(): T;
 
     /**
-     * Determines if two model objects are the equal.
+     * Determines if two model object primary keys are the equal.
      * @param modelObject
      */
-    public abstract equals( modelObject: T );
+    public abstract isEqualPrimaryKey( modelObject: T ): boolean;
+
+    /**
+     * Compares the two object's properties.
+     * @param obj1
+     * @param obj2
+     * @returns {boolean}True if all properties are equal, false otherwise.
+     */
+    public isEqualProperties( otherModelObject: T ): boolean
+    {
+        return Object.keys( this ).every( function( prop )
+        {
+            return otherModelObject.hasOwnProperty( prop );
+        });
+    }
 
     /**
      * Copies the JSON properties from {@code src} to {@code dest}
@@ -31,4 +45,5 @@ export abstract class ModelObject<T>
             dest[property] = src[property];
         }
     }
+
 }

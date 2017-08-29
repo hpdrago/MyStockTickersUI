@@ -1,4 +1,4 @@
-import { CrudTableButtonsComponent } from "../common/crud-table-buttons.component";
+import { CrudTableButtonsComponent } from "../crud/crud-table-buttons.component";
 import { Stock } from "../../model/class/stock";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
@@ -10,7 +10,7 @@ import { StockTableButtonsService } from "./stock-table-buttons.service";
  */
 @Component({
     selector: 'stock-table-buttons',
-    templateUrl: '../common/crud-table-buttons.component.html'
+    templateUrl: '../crud/crud-table-buttons.component.html'
 })
 export class StockTableButtonsComponent extends CrudTableButtonsComponent<Stock>
 {

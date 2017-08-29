@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
 import { PortfolioStock } from "../../model/class/portfolio-stock";
 import { ToastsManager } from "ng2-toastr";
-import { CrudDialogComponent } from "../common/crud-dialog.component";
+import { CrudDialogComponent } from "../crud/crud-dialog.component";
 import { PortfolioStockDialogService } from "./portfolio-stock-dialog.service";
 import { Portfolio } from "../../model/class/portfolio";
 import { PortfolioStockFormService } from "./portfolio-stock-form.service";

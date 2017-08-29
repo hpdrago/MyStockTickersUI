@@ -3,7 +3,7 @@ import { SessionService } from "../../service/session.service";
 import { Portfolio } from "../../model/class/portfolio";
 import { MenuItem } from "primeng/primeng";
 import { PortfolioCrudService } from "../../service/portfolio-crud.service";
-import { CrudTableComponent } from "../common/crud-table.component";
+import { CrudTableComponent } from "../crud/crud-table.component";
 import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioDialogService } from "./portfolio-dialog.service";

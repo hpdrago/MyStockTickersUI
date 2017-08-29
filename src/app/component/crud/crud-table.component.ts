@@ -32,7 +32,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                  protected crudTableButtonsService?: CrudTableButtonsService<T> )
     {
         super( toaster );
-        console.log( "crudFormButtonsService " + JSON.stringify( crudFormButtonsService ) );
         if ( !this.modelObjectFactory )
         {
             throw new Error( "modelObjectFactory argument cannot be null" );
@@ -72,12 +71,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudFormButtonEvents()
     {
-        this.crudFormButtonsService.subscribeToSaveButtonClickedEvent().subscribe(
-            ( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) );
-        this.crudFormButtonsService.subscribeToAddButtonClickedEvent().subscribe(
-            ( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) );
-        this.crudFormButtonsService.subscribeToHandleDeleteButtonClickedEvent().subscribe(
-            ( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) );
+        this.crudFormButtonsService.subscribeToSaveButtonClickedEvent(( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) );
+        this.crudFormButtonsService.subscribeToAddButtonClickedEvent(( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) );
+        this.crudFormButtonsService.subscribeToHandleDeleteButtonClickedEvent(( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) );
     }
 
     /**
@@ -85,9 +81,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudTableButtonEvents()
     {
-        this.crudTableButtonsService.subscribeToAddButtonClickedEvent().subscribe( () => this.showDialogToAdd() );
-        this.crudTableButtonsService.subscribteToEditButtonClickedEvent().subscribe( () => this.showDialogToEdit( this.modelObject ) );
-        this.crudTableButtonsService.subscribeToDeleteButtonClickedEvent().subscribe( () => this.showDialogToDelete( this.modelObject ) );
+        this.crudTableButtonsService.subscribeToAddButtonClickedEvent(() => this.showDialogToAdd() );
+        this.crudTableButtonsService.subscribeToEditButtonClickedEvent( () => this.showDialogToEdit( this.modelObject ) );
+        this.crudTableButtonsService.subscribeToDeleteButtonClickedEvent(() => this.showDialogToDelete( this.modelObject ) );
     }
 
     /**
@@ -235,12 +231,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected indexOf( targetModelObject : T ): number
     {
-        for ( var i = 0; i < this.rows.length; i++ )
+        if ( targetModelObject )
         {
-            var modelObject = this.rows[i];
-            if ( targetModelObject.equals( modelObject ))
+            for ( var i = 0; i < this.rows.length; i++ )
             {
-                return i;
+                var modelObject = this.rows[i];
+                if ( targetModelObject.isEqualPrimaryKey( modelObject ) )
+                {
+                    return i;
+                }
             }
         }
         return -1;

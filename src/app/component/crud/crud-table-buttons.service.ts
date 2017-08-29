@@ -1,6 +1,8 @@
 import { ModelObject } from "../../model/class/modelobject";
 import { BaseCrudComponentService } from "./base-crud-component.service";
 import { Subject, Observable } from "rxjs";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 
 /**
  * This class handles the default behaviour for the buttons used in a CRUD enabled table.
@@ -9,19 +11,26 @@ import { Subject, Observable } from "rxjs";
  */
 export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
-    protected addButtonClickedSubject: Subject<void> = new Subject<void>();
-    protected deleteButtonClickedSubject: Subject<T> = new Subject<T>();
-    protected editButtonClickedSubject: Subject<T> = new Subject<T>();
+    private addButtonClickedSubject: Subject<void>;
+    private deleteButtonClickedSubject: Subject<T>;
+    private editButtonClickedSubject: Subject<T>;
+
+    constructor( protected modelObjectFactory: ModelObjectFactory<T> )
+    {
+        super( modelObjectFactory );
+        this.addButtonClickedSubject = new Subject<void>();
+        this.deleteButtonClickedSubject = new BehaviorSubject<T>( this.modelObjectFactory.newModelObject() );
+        this.editButtonClickedSubject = new BehaviorSubject<T>( this.modelObjectFactory.newModelObject() );
+    }
 
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Add
      * button is clicked on the panel.
-     * @return {Observable<void>}
      */
-    public subscribeToAddButtonClickedEvent(): Observable<void>
+    public subscribeToAddButtonClickedEvent( fn: () => any )
     {
         this.log( "subscribeToAddButtonClickedEvent" );
-        return this.addButtonClickedSubject.asObservable();
+        this.addButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -36,12 +45,11 @@ export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudC
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Delete
      * button is clicked on the panel.
-     * @return {Observable<void>}
      */
-    public subscribeToDeleteButtonClickedEvent(): Observable<T>
+    public subscribeToDeleteButtonClickedEvent( fn: ( T ) => any )
     {
         this.log( "subscribeToDeleteButtonClickedEvent" );
-        return this.deleteButtonClickedSubject.asObservable();
+        this.deleteButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -56,12 +64,11 @@ export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudC
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Edit
      * button is clicked on the panel.
-     * @return {Observable<void>}
      */
-    public subscribteToEditButtonClickedEvent(): Observable<T>
+    public subscribeToEditButtonClickedEvent( fn: ( T ) => any )
     {
         this.log( "subscribteToEditButtonClickedEvent" );
-        return this.editButtonClickedSubject.asObservable();
+        this.editButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**

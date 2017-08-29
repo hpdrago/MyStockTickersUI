@@ -16,7 +16,7 @@ export class Portfolio extends ModelObject<Portfolio>
         return newPortfolio;
     }
 
-    public equals( modelObject: Portfolio )
+    public isEqualPrimaryKey( modelObject: Portfolio )
     {
         var isEqual = false;
         if ( modelObject )

@@ -1,4 +1,4 @@
-import { BaseComponent } from "./base.component";
+import { BaseComponent } from "../common/base.component";
 import { CrudOperation } from "./crud-operation";
 import { ModelObject } from "../../model/class/modelobject";
 import { ToastsManager } from "ng2-toastr";

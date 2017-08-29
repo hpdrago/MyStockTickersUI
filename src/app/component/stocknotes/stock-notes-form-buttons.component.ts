@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
-import { CrudFormButtonsComponent } from "../common/crud-form-buttons.component";
+import { CrudFormButtonsComponent } from "../crud/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
-import { StockNote } from "../../model/class/stock-note";
-import { StockNoteFactory } from "../../model/factory/stock-note.factory";
+import { StockNotes } from "../../model/class/stock-notes";
+import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 import { StockNoteCrudService } from "../../service/stock-note-crud.service";
 import { SessionService } from "../../service/session.service";
 import { StockNotesFormService } from "./stock-notes-form.service";
@@ -16,14 +16,14 @@ import { StockNotesDialogService } from "./stock-notes-dialog.service";
  */
 @Component({
     selector:    'stock-notes-form-buttons',
-    templateUrl: '../common/crud-form-buttons.component.html',
+    templateUrl: '../crud/crud-form-buttons.component.html',
     inputs:      ['crudFormService', 'crudFormButtonsService', 'crudDialogService']
 })
-export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<StockNote>
+export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<StockNotes>
 {
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,
-                 protected stockNotesFactory: StockNoteFactory,
+                 protected stockNotesFactory: StockNotesFactory,
                  protected stockNotesCrudService: StockNoteCrudService,
                  protected stockNotesFormService: StockNotesFormService,
                  protected stockNotesFormButtonsService: StockNotesFormButtonsService,

@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
 import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
 import { Stock } from "../../model/class/stock";
-import { CrudOperation } from "../common/crud-operation";
-import { CrudFormComponent } from "../common/crud-form.component";
+import { CrudOperation } from "../crud/crud-operation";
+import { CrudFormComponent } from "../crud/crud-form.component";
 import { StockFactory } from "../../model/factory/stock.factory";
 import { ToastsManager } from "ng2-toastr";
 import { StockFormService } from "./stock-form.service";

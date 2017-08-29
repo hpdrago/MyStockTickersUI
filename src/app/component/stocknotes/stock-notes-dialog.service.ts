@@ -1,14 +1,19 @@
-import { CrudDialogService } from "../common/crud-dialog.service";
-import { StockNote } from "../../model/class/stock-note";
+import { CrudDialogService } from "../crud/crud-dialog.service";
+import { StockNotes } from "../../model/class/stock-notes";
 import { Injectable } from "@angular/core";
+import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 
 /**
  * This class inherits from the {@code CrudDialogService} class to implement a specific service
- * for {@code StockNote}.
+ * for {@code StockNotes}.
  *
  * Created by mike on 8/15/2017.
  */
 @Injectable()
-export class StockNotesDialogService extends CrudDialogService<StockNote>
+export class StockNotesDialogService extends CrudDialogService<StockNotes>
 {
+    constructor( protected stockNotesFactory: StockNotesFactory )
+    {
+        super( stockNotesFactory );
+    }
 }

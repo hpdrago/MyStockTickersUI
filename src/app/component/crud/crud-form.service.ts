@@ -1,7 +1,8 @@
-import { Observable, Subject } from "rxjs";
-import { ApplicationRef } from "@angular/core";
+import { Subject } from "rxjs";
 import { BaseCrudComponentService } from "./base-crud-component.service";
 import { ModelObject } from "../../model/class/modelobject";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 /**
  * This service provides communication from the CrudFormComponent's parent aka CrudPanelComponent
  * to the CrudFormComponent.
@@ -15,14 +16,14 @@ import { ModelObject } from "../../model/class/modelobject";
  */
 export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
-    protected formDirtySubject: Subject<boolean> = new Subject<boolean>();
-    protected formTouchedSubject: Subject<boolean> = new Subject<boolean>();
-    protected formValidSubject: Subject<boolean> = new Subject<boolean>();
-    protected formResetSubject: Subject<void> = new Subject<void>();
+    private formDirtySubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false );
+    private formTouchedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false );
+    private formValidSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false );
+    private formResetSubject: Subject<void> = new Subject<void>();
 
-    constructor()
+    constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
-        super();
+        super( modelObjectFactory );
     }
 
     /*
@@ -32,48 +33,41 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
     /**
      * The {@code CrudFormForm} will call this method and register to the Observable
      * and perform the necessary work to resetForm the form
-     *
-     * @return {Observable<void>}
      */
-    public subscribeToFormResetEvent(): Observable<void>
+    public subscribeToFormResetEvent( fn: () => any )
     {
-        this.logger.debug( "handleReset" );
-        return this.formResetSubject.asObservable();
+        this.logger.debug( "subscribeToFormResetEvent" );
+        this.formResetSubject.asObservable().subscribe( fn );
     }
 
     /**
      * The {@code CrudFormPanel} will call this method to register for
      * dirty status changes of the form.
-     *
-     * @return {Observable<boolean>}
      */
-    public subscribeToFormDirtyEvent(): Observable<boolean>
+    public subscribeToFormDirtyEvent( fn: ( boolean ) => any )
     {
         this.logger.debug( "subscribeToFormDirtyEvent" );
-        return this.formDirtySubject.asObservable();
+        this.formDirtySubject.asObservable().subscribe( fn );
     }
 
     /**
      * The {@code CrudFormPanel} will call this method to be notified on changes to the
      * touched status.
-     *
-     * @return {Observable<boolean>}
      */
-    public subscribeToFormTouchedEvent(): Observable<boolean>
+    public subscribeToFormTouchedEvent( fn: ( boolean ) => any )
     {
         this.logger.debug( "subscribeToFormTouchedEvent" );
-        return this.formTouchedSubject.asObservable();
+        return this.formTouchedSubject.asObservable().subscribe( fn );
     }
 
     /**
      * The {@code CrudFormPanel} will call this method to be notified when there are changes to the
      * form's valid status.
-     * @return {Observable<boolean>}
      */
-    public subscribeToFormValidEvent(): Observable<boolean>
+    public subscribeToFormValidEvent( fn: ( boolean ) => any )
     {
         this.logger.debug( "subscribeToFormValidEvent" );
-        return this.formValidSubject.asObservable();
+        return this.formValidSubject.asObservable().subscribe( fn );
     }
 
     /*

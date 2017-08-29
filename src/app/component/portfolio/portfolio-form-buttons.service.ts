@@ -1,10 +1,15 @@
 import { Portfolio } from "../../model/class/portfolio";
 import { Injectable } from "@angular/core";
-import { CrudFormButtonsService } from "../common/crud-form-buttons.service";
+import { CrudFormButtonsService } from "../crud/crud-form-buttons.service";
+import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 /**
  * Created by mike on 12/18/2016.
  */
 @Injectable()
 export class PortfolioFormButtonsService extends CrudFormButtonsService<Portfolio>
 {
+    constructor( protected portfolioFactory: PortfolioFactory )
+    {
+        super( portfolioFactory );
+    }
 }

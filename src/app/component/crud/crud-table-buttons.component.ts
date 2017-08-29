@@ -23,7 +23,7 @@ export class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCru
     public ngOnInit()
     {
         this.log( "ngOnInit" );
-        this.crudTableButtonsService.subscribeToModelObjectChangedEvent().subscribe( ( modelObject: T) => this.modelObjectChanged( modelObject ) );
+        this.crudTableButtonsService.subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) );
         this.crudTableButtonsService.sendComponentInitializedEvent();
     }
 

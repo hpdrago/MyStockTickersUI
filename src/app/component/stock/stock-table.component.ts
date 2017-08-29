@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { Stock } from "../../model/class/stock";
 import { PaginationPage } from "../../common/pagination";
 import { LazyLoadEvent } from "primeng/components/common/api";
-import { CrudTableComponent } from "../common/crud-table.component";
+import { CrudTableComponent } from "../crud/crud-table.component";
 import { StockFactory } from "../../model/factory/stock.factory";
 import { StockCrudService } from "../../service/stock-crud.service";
 import { ToastsManager } from "ng2-toastr";

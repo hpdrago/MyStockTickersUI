@@ -1,6 +1,7 @@
-import { CrudFormService } from "../common/crud-form.service";
+import { CrudFormService } from "../crud/crud-form.service";
 import { Stock } from "../../model/class/stock";
 import { Injectable, ApplicationRef } from "@angular/core";
+import { StockFactory } from "../../model/factory/stock.factory";
 
 /**
  * Created by mike on 12/14/2016.
@@ -8,9 +9,9 @@ import { Injectable, ApplicationRef } from "@angular/core";
 @Injectable()
 export class StockFormService extends CrudFormService<Stock>
 {
-    constructor()
+    constructor( protected stockFactory: StockFactory )
     {
-        super();
+        super( stockFactory );
     }
 }
 

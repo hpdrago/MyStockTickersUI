@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { CrudFormButtonsComponent } from "../common/crud-form-buttons.component";
+import { CrudFormButtonsComponent } from "../crud/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/class/stock";
 import { StockCrudService } from "../../service/stock-crud.service";
@@ -15,7 +15,7 @@ import { StockDialogService } from "./stock-dialog.service";
  */
 @Component({
     selector:    'stock-form-buttons',
-    templateUrl: '../common/crud-form-buttons.component.html'
+    templateUrl: '../crud/crud-form-buttons.component.html'
 })
 export class StockFormButtonsComponent extends CrudFormButtonsComponent<Stock>
 {

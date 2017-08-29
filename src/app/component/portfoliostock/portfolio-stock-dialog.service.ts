@@ -1,6 +1,7 @@
-import { CrudDialogService } from "../common/crud-dialog.service";
+import { CrudDialogService } from "../crud/crud-dialog.service";
 import { PortfolioStock } from "../../model/class/portfolio-stock";
 import { Injectable } from "@angular/core";
+import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
 /**
  * This class inherits from the {@code CrudDialogService} class to implement a specific service
  * for {@code PortfolioStock}.
@@ -10,4 +11,8 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class PortfolioStockDialogService extends CrudDialogService<PortfolioStock>
 {
+    constructor( protected portfolioStockFactory: PortfolioStockFactory )
+    {
+        super( portfolioStockFactory );
+    }
 }

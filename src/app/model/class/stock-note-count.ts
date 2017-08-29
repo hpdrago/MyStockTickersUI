@@ -20,7 +20,7 @@ export class StockNoteCount extends ModelObject<StockNoteCount>
         return newStockNote;
     }
 
-    public equals( modelObject: StockNoteCount )
+    public isEqualPrimaryKey( modelObject: StockNoteCount )
     {
         var isEqual = false;
         if ( modelObject )

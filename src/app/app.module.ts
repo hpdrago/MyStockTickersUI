@@ -86,7 +86,7 @@ import {StockNotesTableComponent} from "./component/stocknotes/stock-notes-table
 import {StockNotesTableButtonsComponent} from "./component/stocknotes/stock-notes-table-buttons.component";
 import {StockNotesFormComponent} from "./component/stocknotes/stock-notes-form.component";
 import {StockNoteCrudService} from "./service/stock-note-crud.service";
-import {StockNoteFactory} from "./model/factory/stock-note.factory";
+import {StockNotesFactory} from "./model/factory/stock-notes.factory";
 import {StockNotesFormService} from "./component/stocknotes/stock-notes-form.service";
 import {StockNotesTableButtonsService} from "./component/stocknotes/stock-notes-table-buttons.service";
 import {StockNotesFormButtonsService} from "./component/stocknotes/stock-notes-form-buttons.service";
@@ -198,7 +198,7 @@ import { PortfolioFormButtonsService } from "./component/portfolio/portfolio-for
         StockNotesTableButtonsService,
         StockNotesFormButtonsService,
         StockNotesDialogService,
-        StockNoteFactory,
+        StockNotesFactory,
         StockNoteCountFactory,
 
         StockSectorFactory,

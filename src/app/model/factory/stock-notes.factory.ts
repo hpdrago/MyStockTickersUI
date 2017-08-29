@@ -1,21 +1,21 @@
 import { ModelObjectFactory } from "./model-object.factory";
-import { StockNote } from "../class/stock-note";
+import { StockNotes } from "../class/stock-notes";
 import { Injectable } from "@angular/core";
 
 /**
- * This is the StockNote model object factory
+ * This is the StockNotes model object factory
  * Created by mike on 12/13/2016.
  */
 @Injectable()
-export class StockNoteFactory extends ModelObjectFactory<StockNote>
+export class StockNotesFactory extends ModelObjectFactory<StockNotes>
 {
     /**
-     * Create a new StockNote instance
-     * @returns {StockNote}
+     * Create a new StockNotes instance
+     * @returns {StockNotes}
      */
-    newModelObject(): StockNote
+    newModelObject(): StockNotes
     {
-        var stockNote = new StockNote();
+        var stockNote = new StockNotes();
         stockNote.id = 0;
         stockNote.customerId = 0;
         stockNote.tickerSymbol = '';

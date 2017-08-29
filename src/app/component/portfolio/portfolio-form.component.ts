@@ -1,4 +1,4 @@
-import { CrudFormComponent } from "../common/crud-form.component";
+import { CrudFormComponent } from "../crud/crud-form.component";
 import { Portfolio } from "../../model/class/portfolio";
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Component } from "@angular/core";

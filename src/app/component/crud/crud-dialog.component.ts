@@ -44,8 +44,8 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
     {
         this.log( "ngOnInit.begin" );
         this.subscribeToCrudDialogServiceEvents();
-        this.crudFormService.subscribeToComponentInitializedEvent().subscribe( ()=> this.formInitialized() );
-        this.crudFormButtonsService.subscribeToComponentInitializedEvent().subscribe( ()=> this.formButtonsInitialized() );
+        this.crudFormService.subscribeToComponentInitializedEvent( ()=> this.formInitialized() );
+        this.crudFormButtonsService.subscribeToComponentInitializedEvent( ()=> this.formButtonsInitialized() );
         // Tell everyone that we are done
         this.crudDialogService.sendComponentInitializedEvent();
         this.log( "ngOnInit.end" );
@@ -72,7 +72,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
     {
         this.debug( "formButtonsInitialized sending model object and crud operation to form buttons" );
         this.crudFormButtonsService.sendCrudOperationChangedEvent( this.crudOperation );
-        this.crudFormButtonsService.sendModelObjectChangedEvent( this.modelObject );
+        this.crudFormButtonsService.sendModelObjectChangedEvent( this.modelObject,   );
     }
 
     /**
@@ -81,13 +81,12 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
     protected subscribeToCrudDialogServiceEvents()
     {
         this.log( "subscribeToCrudDialogServiceEvents.begin" );
-        this.crudDialogService.subscribeToCloseButtonClickedEvent().subscribe( () => this.onCloseButtonClick() );
-        this.crudDialogService.subscribeToDisplayDialogRequestEvent().subscribe( ( subjectInfo: DisplayDialogRequestSubjectInfo ) => this.setDisplayDialog( subjectInfo ) );
-        this.crudDialogService.subscribeToCrudOperationChangeEvent().subscribe(
-            (crudOperation: CrudOperation) => this.crudOperationChanged( crudOperation ) );
-        this.crudDialogService.subscribeToModelObjectChangedEvent().subscribe( ( modelObject: T) => this.modelObjectChanged( modelObject ));
-        this.crudFormButtonsService.subscribeToAddButtonClickedEvent().subscribe( ( modelObject ) => this.onAddButtonClicked( modelObject ) )
-        this.crudFormButtonsService.subscribeToHandleDeleteButtonClickedEvent().subscribe( ( modelObject ) => this.onDeleteButtonClicked( modelObject ) )
+        this.crudDialogService.subscribeToCloseButtonClickedEvent(() => this.onCloseButtonClick() );
+        this.crudDialogService.subscribeToDisplayDialogRequestEvent(( subjectInfo: DisplayDialogRequestSubjectInfo ) => this.setDisplayDialog( subjectInfo ) );
+        this.crudDialogService.subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) );
+        this.crudDialogService.subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) );
+        this.crudFormButtonsService.subscribeToAddButtonClickedEvent( ( modelObject ) => this.onAddButtonClicked( modelObject ) )
+        this.crudFormButtonsService.subscribeToHandleDeleteButtonClickedEvent(( modelObject ) => this.onDeleteButtonClicked( modelObject ) )
         this.log( "subscribeToCrudDialogServiceEvents.end" );
     }
 

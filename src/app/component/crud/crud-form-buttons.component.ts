@@ -91,12 +91,12 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     private subscribeToCrudFormServiceEvents(): void
     {
         this.debug( "subscribeToCrudFormServiceEvents.begin" );
-        this.crudFormService.subscribeToFormDirtyEvent().subscribe( ( dirty: boolean ) => this.onFormDirty( dirty ) );
-        this.crudFormService.subscribeToFormTouchedEvent().subscribe( ( touched: boolean ) => this.onFormTouched( touched ) );
-        this.crudFormService.subscribeToFormValidEvent().subscribe( ( valid: boolean ) => this.onFormValid( valid ) );
-        this.crudFormService.subscribeToCrudOperationChangeEvent().subscribe( ( crudOperation: CrudOperation) =>
+        this.crudFormService.subscribeToFormDirtyEvent(( dirty: boolean ) => this.onFormDirty( dirty ) );
+        this.crudFormService.subscribeToFormTouchedEvent(( touched: boolean ) => this.onFormTouched( touched ) );
+        this.crudFormService.subscribeToFormValidEvent(( valid: boolean ) => this.onFormValid( valid ) );
+        this.crudFormService.subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) =>
                                                                          this.crudOperationChanged( crudOperation ) );
-        this.crudFormService.subscribeToModelObjectChangedEvent().subscribe( ( modelObject: T) =>
+        this.crudFormService.subscribeToModelObjectChangedEvent(( modelObject: T ) =>
                                                                          this.modelObjectChanged( modelObject ) );
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }

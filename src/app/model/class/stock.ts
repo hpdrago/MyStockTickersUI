@@ -47,7 +47,7 @@ export class Stock extends ModelObject<Stock>
         return new Stock( this.tickerSymbol, this.companyName, this.lastPrice, this.exchange, this.createdBy, this.userEntered );
     }
 
-    public equals( modelObject: Stock )
+    public isEqualPrimaryKey( modelObject: Stock )
     {
         var isEqual = false;
         if ( modelObject )

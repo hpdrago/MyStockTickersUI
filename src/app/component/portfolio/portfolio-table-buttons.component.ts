@@ -1,4 +1,4 @@
-import { CrudTableButtonsComponent } from "../common/crud-table-buttons.component";
+import { CrudTableButtonsComponent } from "../crud/crud-table-buttons.component";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/class/portfolio";
@@ -10,7 +10,7 @@ import { PortfolioTableButtonsService } from "./portfolio-table-buttons.service"
 @Component({
     selector: 'portfolio-table-buttons',
     styleUrls: ['./portfolio-table-buttons.component.css'],
-    templateUrl: '../common/crud-table-buttons.component.html'
+    templateUrl: '../crud/crud-table-buttons.component.html'
 })
 export class PortfolioTableButtonsComponent extends CrudTableButtonsComponent<Portfolio>
 {

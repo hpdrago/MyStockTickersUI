@@ -3,7 +3,7 @@ import { ModelObject } from "./modelobject";
  * Defines a single portfolio for a customer
  * Created by mike on 10/23/2016.
  */
-export class StockNote extends ModelObject<StockNote>
+export class StockNotes extends ModelObject<StockNotes>
 {
     public id: number;
     public customerId: number;
@@ -14,14 +14,14 @@ export class StockNote extends ModelObject<StockNote>
     public publicInd: boolean;
     public bullOrBear: string;
 
-    public clone(): StockNote
+    public clone(): StockNotes
     {
-        var newStockNote = new StockNote();
+        var newStockNote = new StockNotes();
         this.copyProperties( this, newStockNote );
         return newStockNote;
     }
 
-    public equals( modelObject: StockNote )
+    public isEqualPrimaryKey( modelObject: StockNotes )
     {
         var isEqual = false;
         if ( modelObject )

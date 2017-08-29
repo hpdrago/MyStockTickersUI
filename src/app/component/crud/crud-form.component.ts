@@ -93,10 +93,10 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected subscribeToCrudFormServiceEvents()
     {
         this.logger.debug( "subscribeToCrudFormServiceEvents.begin" );
-        this.crudFormService.subscribeToFormResetEvent().subscribe( () => this.resetForm() );
-        this.crudFormService.subscribeToCrudOperationChangeEvent().subscribe( ( crudOperation: CrudOperation ) =>
-                                                                         this.crudOperationChanged( crudOperation ) )
-        this.crudFormService.subscribeToModelObjectChangedEvent().subscribe( ( modelObject: T ) =>
+        this.crudFormService.subscribeToFormResetEvent( () => this.resetForm() );
+        this.crudFormService.subscribeToCrudOperationChangeEvent( ( crudOperation: CrudOperation ) =>
+                                                                         this.crudOperationChanged( crudOperation ) );
+        this.crudFormService.subscribeToModelObjectChangedEvent( ( modelObject: T ) =>
                                                                        this.modelObjectChanged( modelObject ) );
         this.logger.debug( "subscribeToCrudFormServiceEvents.end" );
     }

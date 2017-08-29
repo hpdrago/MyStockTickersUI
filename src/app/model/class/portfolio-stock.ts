@@ -29,7 +29,7 @@ export class PortfolioStock extends ModelObject<PortfolioStock>
         return undefined;
     }
 
-    public equals( modelObject: PortfolioStock )
+    public isEqualPrimaryKey( modelObject: PortfolioStock )
     {
         var isEqual = false;
         if ( modelObject )
