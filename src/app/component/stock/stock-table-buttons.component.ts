@@ -1,5 +1,5 @@
-import { CrudTableButtonsComponent } from "../crud/crud-table-buttons.component";
-import { Stock } from "../../model/class/stock";
+import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
+import { Stock } from "../../model/entity/stock";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { SessionService } from "../../service/session.service";
@@ -10,7 +10,8 @@ import { StockTableButtonsService } from "./stock-table-buttons.service";
  */
 @Component({
     selector: 'stock-table-buttons',
-    templateUrl: '../crud/crud-table-buttons.component.html'
+    styleUrls: ['../crud/table/crud-table-buttons.component.css'],
+    templateUrl: '../crud/table/crud-table-buttons.component.html'
 })
 export class StockTableButtonsComponent extends CrudTableButtonsComponent<Stock>
 {

@@ -1,7 +1,7 @@
-import { Stock } from "../class/stock";
+import { Stock } from "../entity/stock";
 import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
-import { StockSectorList } from "../class/stock-sectors.list";
+import { StockSectorList } from "../entity/stock-sectors.list";
 
 /**
  * This class provides all StockSector CRUD REST Services

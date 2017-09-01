@@ -1,5 +1,5 @@
-import { Stock } from "../../model/class/stock";
-import { CrudFormButtonsService } from "../crud/crud-form-buttons.service";
+import { Stock } from "../../model/entity/stock";
+import { CrudFormButtonsService } from "../crud/form/crud-form-buttons.service";
 import { StockFactory } from "../../model/factory/stock.factory";
 import { Injectable } from "@angular/core";
 

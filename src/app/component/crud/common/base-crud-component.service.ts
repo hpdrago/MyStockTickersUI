@@ -1,9 +1,9 @@
 import { Subject, Observable } from "rxjs";
 import { CrudOperation } from "./crud-operation";
-import { ModelObject } from "../../model/class/modelobject";
-import { BaseClass } from "../../common/base-class";
+import { ModelObject } from "../../../model/entity/modelobject";
+import { BaseClass } from "../../../common/base-class";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { ModelObjectFactory } from "../../model/factory/model-object.factory";
+import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 /**
  * This class services as a base abstract class for CRUD based component services to provide common methods
  * and properties.

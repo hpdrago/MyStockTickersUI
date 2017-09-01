@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { PortfolioStock } from "../../model/class/portfolio-stock";
+import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { SelectItem } from "primeng/components/common/api";
-import { Stock } from "../../model/class/stock";
-import { CrudFormComponent } from "../crud/crud-form.component";
-import { StockSectorList } from "../../model/class/stock-sectors.list";
+import { Stock } from "../../model/entity/stock";
+import { CrudFormComponent } from "../crud/form/crud-form.component";
+import { StockSectorList } from "../../model/entity/stock-sectors.list";
 import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
 import { StockSectorCrudService } from "../../service/stock-sector-crud.service";
 import { ToastsManager } from "ng2-toastr";
@@ -18,8 +18,7 @@ import { StockCrudService } from "../../service/stock-crud.service";
 @Component(
 {
     selector:    'portfolio-stock-form',
-    templateUrl: './portfolio-stock-form.component.html',
-    inputs:      ['portfolioStockFormService']
+    templateUrl: './portfolio-stock-form.component.html'
 })
 export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStock> implements OnInit
 {
@@ -181,7 +180,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
                this.formGroup.controls['companyName'].dirty;
     }
 
-    protected primaryKeyFields(): Array<string>
+    protected readOnlyFields(): Array<string>
     {
         return ['tickerSymbol'];
     }

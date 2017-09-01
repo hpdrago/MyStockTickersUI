@@ -1,4 +1,4 @@
-import { StockSectorList } from "../model/class/stock-sectors.list";
+import { StockSectorList } from "../model/entity/stock-sectors.list";
 import { Observable } from "rxjs";
 import { CrudRestService } from "./crud-rest.serivce";
 import { Http } from "@angular/http";

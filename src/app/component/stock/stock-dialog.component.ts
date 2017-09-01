@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { CrudDialogComponent } from "../crud/crud-dialog.component";
-import { Stock } from "../../model/class/stock";
+import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
+import { Stock } from "../../model/entity/stock";
 import { StockFormService } from "./stock-form.service";
 import { StockFormButtonsService } from "./stock-form-buttons.service";
 import { StockDialogService } from "./stock-dialog.service";

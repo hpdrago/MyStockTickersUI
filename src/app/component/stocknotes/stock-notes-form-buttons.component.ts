@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
-import { CrudFormButtonsComponent } from "../crud/crud-form-buttons.component";
+import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
-import { StockNotes } from "../../model/class/stock-notes";
+import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 import { StockNoteCrudService } from "../../service/stock-note-crud.service";
 import { SessionService } from "../../service/session.service";
@@ -16,8 +16,7 @@ import { StockNotesDialogService } from "./stock-notes-dialog.service";
  */
 @Component({
     selector:    'stock-notes-form-buttons',
-    templateUrl: '../crud/crud-form-buttons.component.html',
-    inputs:      ['crudFormService', 'crudFormButtonsService', 'crudDialogService']
+    templateUrl: '../crud/form/crud-form-buttons.component.html'
 })
 export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<StockNotes>
 {
@@ -33,12 +32,6 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
                stockNotesDialogService );
     }
 
-    protected onAddButtonClick(): void
-    {
-        this.modelObject.customerId = this.session.getLoggedInUserId();
-        super.onAddButtonClick();
-    }
-
     /**
      * Defines the message to display to the user in the dialog when deleting the model object
      */
@@ -50,8 +43,8 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
     /**
      * @return {undefined}
      */
-    public getDeleteKey(): string
+    public getDeleteKeyword(): string
     {
-        return undefined;
+        return 'tickerSymbol'
     }
 }

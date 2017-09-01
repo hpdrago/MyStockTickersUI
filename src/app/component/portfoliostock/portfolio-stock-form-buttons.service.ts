@@ -1,5 +1,5 @@
-import { PortfolioStock } from "../../model/class/portfolio-stock";
-import { CrudFormButtonsService } from "../crud/crud-form-buttons.service";
+import { PortfolioStock } from "../../model/entity/portfolio-stock";
+import { CrudFormButtonsService } from "../crud/form/crud-form-buttons.service";
 import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
 import { Injectable } from "@angular/core";
 /**

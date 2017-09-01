@@ -1,9 +1,9 @@
 import { Subject, Observable } from "rxjs";
-import { ModelObject } from "../../model/class/modelobject";
+import { ModelObject } from "../../../model/entity/modelobject";
 import { Injectable } from "@angular/core";
-import { BaseCrudComponentService } from "./base-crud-component.service";
+import { BaseCrudComponentService } from "../common/base-crud-component.service";
 import { DisplayDialogRequestSubjectInfo } from "./display-dialog-request-subject-info";
-import { CrudOperation } from "./crud-operation";
+import { CrudOperation } from "../common/crud-operation";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 /**

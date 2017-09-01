@@ -1,9 +1,9 @@
-import { PortfolioStock } from "../../model/class/portfolio-stock";
+import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { Component, Input } from "@angular/core";
-import { CrudFormButtonsComponent } from "../crud/crud-form-buttons.component";
+import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockCrudService } from "../../service/portfolio-stock-crud.service";
-import { Portfolio } from "../../model/class/portfolio";
+import { Portfolio } from "../../model/entity/portfolio";
 import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
 import { PortfolioStockFormService } from "./portfolio-stock-form.service";
 import { PortfolioStockDialogService } from "./portfolio-stock-dialog.service";
@@ -14,7 +14,7 @@ import { PortfolioStockFormButtonsService } from "./portfolio-stock-form-buttons
  */
 @Component({
     selector:    'portfolio-stock-form-buttons',
-    templateUrl: '../crud/crud-form-buttons.component.html',
+    templateUrl: '../crud/form/crud-form-buttons.component.html',
     inputs:      ['portfolio']
 })
 export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent<PortfolioStock>
@@ -46,7 +46,7 @@ export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent
      * Display the Ticker Symbol to confirm delete
      * @return {string}
      */
-    public getDeleteKey(): string
+    public getDeleteKeyword(): string
     {
         return this.modelObject.tickerSymbol;
     }

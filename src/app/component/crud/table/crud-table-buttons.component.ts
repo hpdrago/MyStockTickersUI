@@ -1,5 +1,5 @@
-import { ModelObject } from "../../model/class/modelobject";
-import { BaseCrudComponent } from "./base-crud.component";
+import { ModelObject } from "../../../model/entity/modelobject";
+import { BaseCrudComponent } from "../common/base-crud.component";
 import { CrudTableButtonsService } from "./crud-table-buttons.service";
 import { ToastsManager } from "ng2-toastr";
 
@@ -62,7 +62,7 @@ export class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCru
     protected onAddButtonClick(): void
     {
         this.logger.debug( "onAddButtonClick" );
-        this.crudTableButtonsService.sendAddButtonClickedEvent();
+        this.crudTableButtonsService.sendAddButtonClickedEvent( this.modelObject );
     }
 
     /**

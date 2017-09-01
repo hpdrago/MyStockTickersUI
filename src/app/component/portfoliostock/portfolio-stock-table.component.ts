@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
-import { Portfolio } from "../../model/class/portfolio";
-import { PortfolioStock } from "../../model/class/portfolio-stock";
+import { Portfolio } from "../../model/entity/portfolio";
+import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { SessionService } from "../../service/session.service";
 import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
-import { CrudTableComponent } from "../crud/crud-table.component";
+import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { PortfolioStockCrudService } from "../../service/portfolio-stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockDialogService } from "./portfolio-stock-dialog.service";

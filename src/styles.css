@@ -128,6 +128,9 @@ body {
     background-color: #1F2021;
 }
 
+.ui-rating-star {
+    color: gold;
+}
 
 .bgcolor4D4D4D {
     color: white;

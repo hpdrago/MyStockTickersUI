@@ -1,8 +1,8 @@
-import { BaseCrudComponentService } from "./base-crud-component.service";
-import { ModelObject } from "../../model/class/modelobject";
+import { BaseCrudComponentService } from "../common/base-crud-component.service";
+import { ModelObject } from "../../../model/entity/modelobject";
 import { Subject, Observable } from "rxjs";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { ModelObjectFactory } from "../../model/factory/model-object.factory";
+import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 
 /**
  * This class defines the publish/subscribe (observer pattern) methods from communication

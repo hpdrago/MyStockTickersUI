@@ -1,8 +1,8 @@
 import { Subject } from "rxjs";
-import { BaseCrudComponentService } from "./base-crud-component.service";
-import { ModelObject } from "../../model/class/modelobject";
+import { BaseCrudComponentService } from "../common/base-crud-component.service";
+import { ModelObject } from "../../../model/entity/modelobject";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { ModelObjectFactory } from "../../model/factory/model-object.factory";
+import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 /**
  * This service provides communication from the CrudFormComponent's parent aka CrudPanelComponent
  * to the CrudFormComponent.

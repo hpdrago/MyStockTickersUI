@@ -1,5 +1,5 @@
 import { ModelObjectFactory } from "./model-object.factory";
-import { StockNotes } from "../class/stock-notes";
+import { StockNotes } from "../entity/stock-notes";
 import { Injectable } from "@angular/core";
 
 /**
@@ -22,8 +22,10 @@ export class StockNotesFactory extends ModelObjectFactory<StockNotes>
         stockNote.notes = '';
         stockNote.notesSourceId = 0;
         stockNote.noteRating = 0;
-        stockNote.publicInd = false
-        stockNote.bullOrBear = 'N' // Neutral
+        stockNote.publicInd = false;
+        stockNote.bullOrBear = 0;
+        stockNote.noteRating = 0;
+        stockNote.notesDate = new Date();
         return stockNote;
     }
 }

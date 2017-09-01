@@ -1,5 +1,5 @@
-import { CrudDialogComponent } from "../crud/crud-dialog.component";
-import { Portfolio } from "../../model/class/portfolio";
+import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
+import { Portfolio } from "../../model/entity/portfolio";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioDialogService } from "./portfolio-dialog.service";
@@ -11,8 +11,7 @@ import { PortfolioFormButtonsService } from "./portfolio-form-buttons.service";
  */
 @Component({
     selector: 'portfolio-dialog',
-    templateUrl: './portfolio-dialog.component.html',
-    inputs: ['crudDialogService', 'crudFormService', 'crudFormButtonsService']
+    templateUrl: './portfolio-dialog.component.html'
 })
 export class PortfolioDialogComponent extends CrudDialogComponent<Portfolio>
 {

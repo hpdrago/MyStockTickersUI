@@ -1,8 +1,8 @@
-import { CrudTableButtonsComponent } from "../crud/crud-table-buttons.component";
-import { Stock } from "../../model/class/stock";
+import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
+import { Stock } from "../../model/entity/stock";
 import { Component, Input } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { Portfolio } from "../../model/class/portfolio";
+import { Portfolio } from "../../model/entity/portfolio";
 import { StockTableButtonsService } from "../stock/stock-table-buttons.service";
 
 /**
@@ -10,7 +10,7 @@ import { StockTableButtonsService } from "../stock/stock-table-buttons.service";
  */
 @Component({
     selector: 'portfolio-stock-table-buttons',
-    templateUrl: '../crud/crud-table-buttons.component.html',
+    templateUrl: '../crud/table/crud-table-buttons.component.html',
     styleUrls: ['./portfolio-stock-table-buttons.component.css'],
     inputs: ['portfolio']
 })

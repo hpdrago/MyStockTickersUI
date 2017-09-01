@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
-import { CrudFormButtonsComponent } from "../crud/crud-form-buttons.component";
+import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
-import { Portfolio } from "../../model/class/portfolio";
+import { Portfolio } from "../../model/entity/portfolio";
 import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 import { PortfolioCrudService } from "../../service/portfolio-crud.service";
 import { SessionService } from "../../service/session.service";
@@ -16,7 +16,7 @@ import { PortfolioDialogService } from "./portfolio-dialog.service";
  */
 @Component({
     selector: 'portfolio-dialog-buttons',
-    templateUrl: '../crud/crud-form-buttons.component.html'
+    templateUrl: '../crud/form/crud-form-buttons.component.html'
 })
 export class PortfolioFormButtonsComponent extends CrudFormButtonsComponent<Portfolio>
 {
@@ -51,7 +51,7 @@ export class PortfolioFormButtonsComponent extends CrudFormButtonsComponent<Port
     /**
      * @return {undefined}
      */
-    public getDeleteKey(): string
+    public getDeleteKeyword(): string
     {
         return undefined;
     }

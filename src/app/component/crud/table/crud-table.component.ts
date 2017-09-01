@@ -1,15 +1,15 @@
-import { CrudOperation } from "./crud-operation";
-import { ModelObject } from "../../model/class/modelobject";
-import { ModelObjectFactory } from "../../model/factory/model-object.factory";
-import { BaseCrudComponent } from "./base-crud.component";
+import { CrudOperation } from "../common/crud-operation";
+import { ModelObject } from "../../../model/entity/modelobject";
+import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
+import { BaseCrudComponent } from "../common/base-crud.component";
 import { OnInit } from "@angular/core";
-import { CrudRestService } from "../../service/crud-rest.serivce";
+import { CrudRestService } from "../../../service/crud-rest.serivce";
 import { ToastsManager } from "ng2-toastr";
-import { CrudDialogService } from "./crud-dialog.service";
-import { CrudFormButtonsService } from "./crud-form-buttons.service";
+import { CrudDialogService } from "../dialog/crud-dialog.service";
+import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
 import { CrudTableButtonsService } from "./crud-table-buttons.service";
-import { CrudModelObjectEditMode } from "./crud-model-object-edit-mode";
-import { CrudFormService } from "./crud-form.service";
+import { CrudModelObjectEditMode } from "../common/crud-model-object-edit-mode";
+import { CrudFormService } from "../form/crud-form.service";
 
 /**
  * This is the base class for CRUD enabled tables.
@@ -81,20 +81,20 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudTableButtonEvents()
     {
-        this.crudTableButtonsService.subscribeToAddButtonClickedEvent(() => this.showDialogToAdd() );
-        this.crudTableButtonsService.subscribeToEditButtonClickedEvent( () => this.showDialogToEdit( this.modelObject ) );
-        this.crudTableButtonsService.subscribeToDeleteButtonClickedEvent(() => this.showDialogToDelete( this.modelObject ) );
+        this.crudTableButtonsService.subscribeToAddButtonClickedEvent(( modelObject: T ) => this.showDialogToAdd( modelObject ) );
+        this.crudTableButtonsService.subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showDialogToEdit( modelObject ) );
+        this.crudTableButtonsService.subscribeToDeleteButtonClickedEvent(( modelObject: T ) => this.showDialogToDelete( modelObject ) );
     }
 
     /**
      * This method is called when the user clicks on the add button.
      * A dialog will be displayed to allow the user to add a new model object.
      */
-    protected showDialogToAdd()
+    protected showDialogToAdd( modelObject: T )
     {
         this.logger.debug( "showDialogToAdd" );
         this.crudOperation = CrudOperation.CREATE;
-        this.modelObject = this.modelObjectFactory.newModelObject();
+        this.modelObject = modelObject;
         this.displayModelObject();
     }
 

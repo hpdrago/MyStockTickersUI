@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { StockNotes } from "../model/class/stock-notes";
+import { StockNotes } from "../model/entity/stock-notes";
 import { Http } from "@angular/http";
 import { SessionService } from "./session.service";
 import { AppConfigurationService } from "./app-configuration.service";

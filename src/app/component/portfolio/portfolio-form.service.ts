@@ -1,5 +1,5 @@
-import { CrudFormService } from "../crud/crud-form.service";
-import { Portfolio } from "../../model/class/portfolio";
+import { CrudFormService } from "../crud/form/crud-form.service";
+import { Portfolio } from "../../model/entity/portfolio";
 import { Injectable } from "@angular/core";
 import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 

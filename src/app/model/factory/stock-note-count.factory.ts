@@ -1,6 +1,6 @@
 import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
-import { StockNoteCount } from "../class/stock-note-count";
+import { StockNoteCount } from "../entity/stock-note-count";
 
 /**
  * This is the StockNoteCount model object factory

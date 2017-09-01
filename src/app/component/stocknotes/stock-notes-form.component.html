@@ -2,30 +2,75 @@
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-4">
+                <div class="crud-form-label ui-grid-col-3">
                     <label class="crud-form" for="tickerSymbol">Ticker:</label>
                 </div>
-                <div class="ui-grid-col-8">
+                <div class="ui-grid-col-9">
                     <stock-autocomplete id="tickerSymbol"
+                                        [(ngModel)]="modelObject.tickerSymbol"
                                         [formGroup]="formGroup"
+                                        formControlName="tickerSymbol"
                                         (stockSelected)="onStockSelected( $event )">
                     </stock-autocomplete>
                 </div>
             </div>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-4">
-                    <label class="crud-form" for="stockNotes">Notes:</label>
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="notes">Notes:</label>
                 </div>
-                <div class="ui-grid-col-8">
-                    <textarea id="stockNotes"
+                <div class="ui-grid-col-9">
+                    <textarea id="notes"
                               class="crud-form"
-                              formControlName="tickerSymbol"
+                              formControlName="notes"
                               placeholder="Required"
+                              autoresize="false"
+                              rows="5"
+                              columns="70"
                               pInputTextarea
-                              autoResize="autoResize"
                               required
-                              [(ngModel)]="notes">
+                              [(ngModel)]="modelObject.notes">
                     </textarea>
+                </div>
+            </div>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="noteRating">Rating:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-rating id="noteRating"
+                              class="crud-form"
+                              formControlName="noteRating"
+                              [stars]="5"
+                              [(ngModel)]="modelObject.noteRating">
+                    </p-rating>
+                </div>
+            </div>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="bullOrBear">Bull or Bear:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-selectButton id="bullOrBear"
+                                    class="crud-form"
+                                    formControlName="bullOrBear"
+                                    [options]="bullOrBearOptions"
+                                    [(ngModel)]="modelObject.bullOrBear">
+                    </p-selectButton>
+                </div>
+            </div>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="noteDate">Date:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-calendar id="noteDate"
+                                class="crud-form"
+                                formControlName="noteDate"
+                                dateFormat="mm/dd/yy"
+                                [showIcon]="true"
+                                [inputStyle]="{'width':'100px'}"
+                                [(ngModel)]="modelObject.notesDate">
+                    </p-calendar>
                 </div>
             </div>
         </div>

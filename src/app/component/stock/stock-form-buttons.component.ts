@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
-import { CrudFormButtonsComponent } from "../crud/crud-form-buttons.component";
+import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
-import { Stock } from "../../model/class/stock";
+import { Stock } from "../../model/entity/stock";
 import { StockCrudService } from "../../service/stock-crud.service";
 import { StockFactory } from "../../model/factory/stock.factory";
 import { StockFormService } from "./stock-form.service";
@@ -15,7 +15,7 @@ import { StockDialogService } from "./stock-dialog.service";
  */
 @Component({
     selector:    'stock-form-buttons',
-    templateUrl: '../crud/crud-form-buttons.component.html'
+    templateUrl: '../crud/form/crud-form-buttons.component.html'
 })
 export class StockFormButtonsComponent extends CrudFormButtonsComponent<Stock>
 {
@@ -37,7 +37,7 @@ export class StockFormButtonsComponent extends CrudFormButtonsComponent<Stock>
      * Display the Ticker Symbol to confirm delete
      * @return {string}
      */
-    public getDeleteKey(): string
+    public getDeleteKeyword(): string
     {
         return this.modelObject.tickerSymbol;
     }

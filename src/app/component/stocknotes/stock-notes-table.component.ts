@@ -1,15 +1,15 @@
 import { Component } from "@angular/core";
-import { StockNotes } from "../../model/class/stock-notes";
+import { StockNotes } from "../../model/entity/stock-notes";
 import { SessionService } from "../../service/session.service";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
-import { CrudTableComponent } from "../crud/crud-table.component";
+import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { StockNoteCrudService } from "../../service/stock-note-crud.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockNotesDialogService } from "./stock-notes-dialog.service";
 import { StockNotesFormButtonsService } from "./stock-notes-form-buttons.service";
 import { StockNotesTableButtonsService } from "./stock-notes-table-buttons.service";
 import { StockNotesFormService } from "./stock-notes-form.service";
-import { StockNoteCount } from "../../model/class/stock-note-count";
+import { StockNoteCount } from "../../model/entity/stock-note-count";
 
 /**
  * This component lists all of the stocks for a stockNote
@@ -19,6 +19,7 @@ import { StockNoteCount } from "../../model/class/stock-note-count";
 @Component(
     {
         selector: 'stock-notes-table',
+        styleUrls: ['../crud/table/crud-table.component.css'],
         templateUrl: './stock-notes-table.component.html'
     } )
 export class StockNotesTableComponent extends CrudTableComponent<StockNotes>

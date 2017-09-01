@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Portfolio } from "../model/class/portfolio";
+import { Portfolio } from "../model/entity/portfolio";
 import { Http } from "@angular/http";
 import { SessionService } from "./session.service";
 import { AppConfigurationService } from "./app-configuration.service";

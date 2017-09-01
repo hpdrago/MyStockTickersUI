@@ -1,17 +1,16 @@
 import { Input, OnInit } from "@angular/core";
-import { FormGroup } from "@angular/forms";
-import { ValidationService } from "../../service/validation-service";
-import { CrudOperation } from "./crud-operation";
-import { BaseCrudComponent } from "./base-crud.component";
+import { FormControl, FormGroup } from "@angular/forms";
+import { ValidationService } from "../../../service/validation-service";
+import { CrudOperation } from "../common/crud-operation";
+import { BaseCrudComponent } from "../common/base-crud.component";
 import { CrudFormService } from "./crud-form.service";
-import { ModelObjectFactory } from "../../model/factory/model-object.factory";
-import { ModelObject } from "../../model/class/modelobject";
+import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
+import { ModelObject } from "../../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
+import { isNullOrUndefined } from "util";
 
 /**
  * This class contains the common functionality for a form for a CRUD model object.
- *
- * inputs: ['crudFormService']
  *
  * Created by mike on 12/4/2016.
  */
@@ -107,10 +106,12 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected abstract createCrudForm(): FormGroup;
 
     /**
-     * This method identifies the primary key fields of <T>.
-     * The primary key fields are used to determine if fields should be enabled/disabled
+     * Identify visual fields that should be read only
      */
-    protected abstract primaryKeyFields(): Array<string>;
+    protected readOnlyFields(): Array<string>
+    {
+        return [];
+    }
 
     /**
      * This method is called whenever the crudOperation changes.
@@ -130,8 +131,59 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected modelObjectChanged( modelObject: T ): any
     {
+        /*
+         * Clear the form fields of any previous model object.
+         */
+        this.formGroup.reset();
         super.modelObjectChanged( modelObject );
         this.enableDisableInputs();
+        if ( modelObject )
+        {
+            this.setFormValues( modelObject );
+        }
+    }
+
+    /**
+     * Extract the model object properties and attempt to set the form values based on the name of the model
+     * object property
+     * @param {T} modelObject
+     */
+    protected setFormValues( modelObject: T )
+    {
+        this.debug( "setFormValues: " + JSON.stringify( modelObject ));
+        for ( var property in this.modelObject )
+        {
+            if ( !isNullOrUndefined( this.formGroup.controls[property] ) &&
+                 this.formGroup.controls[property] instanceof FormControl )
+            {
+                this.setFormValue( property, modelObject[property] );
+            }
+        }
+    }
+
+    /**
+     * Sets a single form control value
+     * @param {string} fieldName
+     * @param fieldValue
+     */
+    protected setFormValue( fieldName: string, fieldValue: any )
+    {
+        this.debug( "setFormValue fieldName: " + fieldName + " fieldValue: " + fieldValue );
+        (<FormControl>this.formGroup.controls[fieldName]).setValue( fieldValue );
+    }
+
+    protected isControl( controlName: string ): boolean
+    {
+        var returnValue = false;
+        for ( let fieldName in this.formGroup.controls )
+        {
+            if ( controlName === fieldName )
+            {
+                returnValue = true;
+                break;
+            }
+        }
+        return returnValue;
     }
 
     /**
@@ -152,33 +204,30 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onFormChange( formData: any )
     {
         var methodName = "onFormChange";
-        this.debug( "onFormChange.begin " + JSON.stringify( formData ) );
-        if ( 0 )
+        //this.debug( "onFormChange.begin " + JSON.stringify( formData ) );
+        this.emitFormDirtyChange();
+        this.emitFormValidChange();
+        //this.modelObjectChange.emit( this.modelObject );
+        if ( !this.formGroup.valid )
         {
-            this.emitFormDirtyChange();
-            this.emitFormValidChange();
-            //this.modelObjectChange.emit( this.modelObject );
-            if ( !this.formGroup.valid )
+            //this.debug( "Form is not valid" );
+            for ( let propertyName in this.formGroup.errors )
             {
-                this.debug( "Form is not valid" );
-                for ( let propertyName in this.formGroup.errors )
+                if ( this.formGroup.errors.hasOwnProperty( propertyName ) &&
+                     this.formGroup.touched )
                 {
-                    if ( this.formGroup.errors.hasOwnProperty( propertyName ) &&
-                        this.formGroup.touched )
-                    {
-                        var errorMessage = ValidationService.getValidatorErrorMessage( propertyName,
-                                                                                       this.formGroup.errors[propertyName] );
-                        this.debug( methodName + " error: " + errorMessage );
-                        return errorMessage;
-                    }
+                    var errorMessage = ValidationService.getValidatorErrorMessage( propertyName,
+                                                                                   this.formGroup.errors[propertyName] );
+                    this.log( methodName + " error: " + errorMessage );
+                    return errorMessage;
                 }
             }
-            else
-            {
-                //this.debug( "Form IS valid" );
-            }
         }
-        this.debug( methodName + ".end" );
+        else
+        {
+            //this.debug( "Form IS valid" );
+        }
+        //this.debug( methodName + ".end" );
     }
 
     /**
@@ -306,7 +355,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected isPrimaryKeyField( fieldName: string )
     {
         var found = false;
-        for ( var name of this.primaryKeyFields() )
+        for ( var name of this.readOnlyFields() )
         {
             if ( name === fieldName )
             {

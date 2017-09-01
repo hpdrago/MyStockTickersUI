@@ -1,12 +1,12 @@
-import { BaseCrudComponent } from "./base-crud.component";
-import { ModelObject } from "../../model/class/modelobject";
-import { CrudOperation } from "./crud-operation";
+import { BaseCrudComponent } from "../common/base-crud.component";
+import { ModelObject } from "../../../model/entity/modelobject";
+import { CrudOperation } from "../common/crud-operation";
 import { CrudFormService } from "./crud-form.service";
-import { CrudRestService } from "../../service/crud-rest.serivce";
+import { CrudRestService } from "../../../service/crud-rest.serivce";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsService } from "./crud-form-buttons.service";
-import { CrudDialogService } from "./crud-dialog.service";
-import { ModelObjectFactory } from "../../model/factory/model-object.factory";
+import { CrudDialogService } from "../dialog/crud-dialog.service";
+import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 
 /**
  * This class manages the set of buttons for a model object dialog.
@@ -99,6 +99,19 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.crudFormService.subscribeToModelObjectChangedEvent(( modelObject: T ) =>
                                                                          this.modelObjectChanged( modelObject ) );
         this.debug( "subscribeToCrudFormServiceEvents.end" );
+    }
+
+    protected crudOperationChanged( crudOperation: CrudOperation )
+    {
+        super.crudOperationChanged( crudOperation );
+        this.debug( "isFormValid: " + this.formValidFlag );
+        this.debug( "isSaveButtonDisabled: " + this.isSaveButtonDisabled() );
+        this.debug( "isDeleteButtonDisabled: " + this.isDeleteButtonDisabled() );
+        this.debug( "isAddButtonDisabled: " + this.isAddButtonDisabled() );
+
+        this.debug( "isShowSaveButton: " + this.isShowSaveButton() );
+        this.debug( "isShowAddButton: " + this.isShowAddButton() );
+        this.debug( "isShowDeleteButton: " + this.isShowDeleteButton() );
     }
 
     /**
@@ -401,13 +414,13 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     public getDeleteMessage(): string
     {
-        return "Are you sure you want to delete this " + this.getDeleteKey() + "?";
+        return "Are you sure you want to delete this " + this.getDeleteKeyword() + "?";
     }
 
     /**
      * Defines the model object identifier string to display to the user in the dialog when deleting the model object.
      * This method is called by {@code getDeleteMessage} to produce a meaningful confirm delete message.
      */
-    public abstract getDeleteKey(): string;
+    public abstract getDeleteKeyword(): string;
 
 }

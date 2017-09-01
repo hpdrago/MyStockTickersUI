@@ -1,5 +1,5 @@
-import { CrudDialogService } from "../crud/crud-dialog.service";
-import { StockNotes } from "../../model/class/stock-notes";
+import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
+import { StockNotes } from "../../model/entity/stock-notes";
 import { Injectable } from "@angular/core";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 

@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
 import { Validators, FormBuilder, FormGroup, FormControl } from "@angular/forms";
-import { Stock } from "../../model/class/stock";
-import { CrudOperation } from "../crud/crud-operation";
-import { CrudFormComponent } from "../crud/crud-form.component";
+import { Stock } from "../../model/entity/stock";
+import { CrudOperation } from "../crud/common/crud-operation";
+import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { StockFactory } from "../../model/factory/stock.factory";
 import { ToastsManager } from "ng2-toastr";
 import { StockFormService } from "./stock-form.service";
@@ -97,7 +97,7 @@ export class StockFormComponent extends CrudFormComponent<Stock>
      * @return {[string]}
      * @override
      */
-    protected primaryKeyFields(): Array<string>
+    protected readOnlyFields(): Array<string>
     {
         return ['tickerSymbol'];
     }

@@ -1,5 +1,5 @@
-import { CrudFormService } from "../crud/crud-form.service";
-import { Stock } from "../../model/class/stock";
+import { CrudFormService } from "../crud/form/crud-form.service";
+import { Stock } from "../../model/entity/stock";
 import { Injectable, ApplicationRef } from "@angular/core";
 import { StockFactory } from "../../model/factory/stock.factory";
 

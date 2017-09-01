@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {ToastsManager} from "ng2-toastr";
 import {SessionService} from "../../service/session.service";
-import {StockNoteCount} from "../../model/class/stock-note-count";
+import {StockNoteCount} from "../../model/entity/stock-note-count";
 import {BaseComponent} from "../common/base.component";
 import {StockNotesTableComponent} from "./stock-notes-table.component";
 import {StockNoteCountService} from "../../service/stock-note-count.service";
@@ -14,7 +14,7 @@ import {StockNoteCountService} from "../../service/stock-note-count.service";
 @Component(
 {
     selector: 'stock-note-counts',
-    templateUrl: './stock.note.count-table.component.html'
+    templateUrl: './stock.notes.count-table.component.html'
 })
 export class StockNoteCountTableComponent extends BaseComponent implements OnInit
 {

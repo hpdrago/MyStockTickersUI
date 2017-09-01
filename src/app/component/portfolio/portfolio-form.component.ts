@@ -1,5 +1,5 @@
-import { CrudFormComponent } from "../crud/crud-form.component";
-import { Portfolio } from "../../model/class/portfolio";
+import { CrudFormComponent } from "../crud/form/crud-form.component";
+import { Portfolio } from "../../model/entity/portfolio";
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
@@ -34,7 +34,7 @@ export class PortfolioFormComponent extends CrudFormComponent<Portfolio>
         return portfolioForm;
     }
 
-    protected primaryKeyFields(): Array<string>
+    protected readOnlyFields(): Array<string>
     {
         return ['portfolioName'];
     }

@@ -1,4 +1,4 @@
-.stockNotes-div
+.crud-div
 {
     float: left;
     display: inline-block;
@@ -14,7 +14,7 @@
     border-style: solid;
 }
 
-#stockNotes-list
+#crud-list
 {
 }
 

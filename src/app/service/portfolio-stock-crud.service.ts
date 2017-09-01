@@ -1,5 +1,5 @@
 
-import { PortfolioStock } from "../model/class/portfolio-stock";
+import { PortfolioStock } from "../model/entity/portfolio-stock";
 import { AppConfigurationService } from "./app-configuration.service";
 import { SessionService } from "./session.service";
 import { Injectable } from "@angular/core";

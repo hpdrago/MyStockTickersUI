@@ -1,6 +1,6 @@
 
 import {ReadRestService} from "./read-rest.service";
-import {StockNoteCount} from "../model/class/stock-note-count";
+import {StockNoteCount} from "../model/entity/stock-note-count";
 import {Http} from "@angular/http";
 import {SessionService} from "./session.service";
 import {AppConfigurationService} from "./app-configuration.service";

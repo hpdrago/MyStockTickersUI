@@ -1,5 +1,5 @@
-import { CrudOperation } from "./crud-operation";
-import { ModelObject } from "../../model/class/modelobject";
+import { CrudOperation } from "../common/crud-operation";
+import { ModelObject } from "../../../model/entity/modelobject";
 
 /**
  * This class contains a modelObject and the crud operation that will be sent to the CRUD dialog so that it knows

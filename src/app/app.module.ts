@@ -1,4 +1,3 @@
-///<reference path="service/stock-note-crud.service.ts"/>
 /**
  * Created by mike on 9/16/2016.
  */
@@ -28,7 +27,9 @@ import {
     SelectButtonModule,
     ConfirmDialogModule,
     ConfirmationService,
-    InputTextareaModule
+    InputTextareaModule,
+    RatingModule,
+    CalendarModule
 } from "primeng/primeng";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
 import { AutoCompleteModule } from "primeng/components/autocomplete/autocomplete";
@@ -125,9 +126,11 @@ import { PortfolioFormButtonsService } from "./component/portfolio/portfolio-for
         MenubarModule,
         TieredMenuModule,
         ConfirmDialogModule,
-        ToastModule.forRoot(),
-        InputTextareaModule
+        InputTextareaModule,
+        RatingModule,
+        CalendarModule,
         // Third Party modules
+        ToastModule.forRoot()
     ],
     declarations:
     [

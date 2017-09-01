@@ -9,10 +9,13 @@ export class StockNotes extends ModelObject<StockNotes>
     public customerId: number;
     public tickerSymbol: string;
     public notes: string;
+    public notesDate: Date;
     public notesSourceId: number;
     public noteRating: number;
     public publicInd: boolean;
-    public bullOrBear: string;
+    public bullOrBear: number;
+    public dateCreated: Date;
+    public dateModified: Date;
 
     public clone(): StockNotes
     {

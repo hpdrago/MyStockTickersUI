@@ -1,10 +1,10 @@
-import { ModelObject } from "../../model/class/modelobject";
+import { ModelObject } from "../../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
 import { CrudDialogService } from "./crud-dialog.service";
-import { CrudOperation } from "./crud-operation";
-import { CrudFormService } from "./crud-form.service";
-import { CrudFormButtonsService } from "./crud-form-buttons.service";
-import { BaseCrudComponent } from "./base-crud.component";
+import { CrudOperation } from "../common/crud-operation";
+import { CrudFormService } from "../form/crud-form.service";
+import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
+import { BaseCrudComponent } from "../common/base-crud.component";
 import { DisplayDialogRequestSubjectInfo } from "./display-dialog-request-subject-info";
 
 /**
@@ -97,10 +97,20 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
      */
     protected setDisplayDialog( subjectInfo: DisplayDialogRequestSubjectInfo ): void
     {
-        this.debug( "setDisplayDialog " + JSON.stringify( subjectInfo ) );
+        this.debug( "setDisplayDialog.begin " + JSON.stringify( subjectInfo ) );
         this.setModelObject( subjectInfo.modelObject );
         this.setCrudOperation( subjectInfo.crudOperation );
+        /*
+         * Tell the buttons and form of the changes
+         */
+        this.debug( "Sending events to Form" );
+        this.crudFormService.sendCrudOperationChangedEvent( subjectInfo.crudOperation );
+        this.crudFormService.sendModelObjectChangedEvent( subjectInfo.modelObject );
+        this.debug( "Sending events to Form Buttons" );
+        this.crudFormButtonsService.sendCrudOperationChangedEvent( subjectInfo.crudOperation );
+        this.crudFormButtonsService.sendModelObjectChangedEvent( subjectInfo.modelObject );
         this.displayDialog = true;
+        this.debug( "setDisplayDialog.end" );
     }
 
     /**

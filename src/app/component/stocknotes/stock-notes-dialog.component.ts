@@ -1,7 +1,7 @@
-import { CrudDialogComponent } from "../crud/crud-dialog.component";
+import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockNotes } from "../../model/class/stock-notes";
+import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesDialogService } from "./stock-notes-dialog.service";
 import { StockNotesFormService } from "./stock-notes-form.service";
 import { StockNotesFormButtonsService } from "./stock-notes-form-buttons.service";
@@ -11,8 +11,7 @@ import { StockNotesFormButtonsService } from "./stock-notes-form-buttons.service
  */
 @Component({
     selector: 'stock-notes-dialog',
-    templateUrl: './stock-notes-dialog.component.html',
-    inputs: ['crudDialogService', 'crudFormService', 'crudFormButtonsService', 'continuousAdd']
+    templateUrl: './stock-notes-dialog.component.html'
 })
 export class StockNotesDialogComponent extends CrudDialogComponent<StockNotes>
 {

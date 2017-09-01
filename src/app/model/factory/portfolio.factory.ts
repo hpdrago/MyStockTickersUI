@@ -1,6 +1,6 @@
-import { PortfolioStock } from "../class/portfolio-stock";
+import { PortfolioStock } from "../entity/portfolio-stock";
 import { ModelObjectFactory } from "./model-object.factory";
-import { Portfolio } from "../class/portfolio";
+import { Portfolio } from "../entity/portfolio";
 import { Injectable } from "@angular/core";
 
 /**

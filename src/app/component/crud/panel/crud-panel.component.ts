@@ -1,10 +1,10 @@
 import { Input, OnInit } from "@angular/core";
-import { CrudOperation } from "./crud-operation";
-import { BaseCrudComponent } from "./base-crud.component";
-import { CrudFormService } from "./crud-form.service";
-import { ModelObject } from "../../model/class/modelobject";
+import { CrudOperation } from "../common/crud-operation";
+import { BaseCrudComponent } from "../common/base-crud.component";
+import { CrudFormService } from "../form/crud-form.service";
+import { ModelObject } from "../../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
-import { CrudFormButtonsService } from "./crud-form-buttons.service";
+import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
 
 /**
  * This is a Panel class that contains a CRUD Form component {@code CrudFormComponent}
