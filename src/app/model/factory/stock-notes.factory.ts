@@ -18,13 +18,12 @@ export class StockNotesFactory extends ModelObjectFactory<StockNotes>
         var stockNote = new StockNotes();
         stockNote.id = 0;
         stockNote.customerId = 0;
-        stockNote.tickerSymbol = '';
         stockNote.notes = '';
         stockNote.notesSourceId = 0;
-        stockNote.noteRating = 0;
+        stockNote.notesRating = 0;
         stockNote.publicInd = false;
         stockNote.bullOrBear = 0;
-        stockNote.noteRating = 0;
+        stockNote.notesRating = 0;
         stockNote.notesDate = new Date();
         return stockNote;
     }

@@ -2,24 +2,24 @@ import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.comp
 import { Stock } from "../../model/entity/stock";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { SessionService } from "../../service/session.service";
-import { StockTableButtonsService } from "./stock-table-buttons.service";
+import { SessionService } from "../../service/crud/session.service";
+import { StockCrudServiceContainer } from "./stock-crud-service-container";
 
 /**
  * Created by mike on 1/2/2017.
  */
 @Component({
-    selector: 'stock-table-buttons',
-    styleUrls: ['../crud/table/crud-table-buttons.component.css'],
+    selector:    'stock-table-buttons',
+    styleUrls:   ['../crud/table/crud-table-buttons.component.css'],
     templateUrl: '../crud/table/crud-table-buttons.component.html'
 })
 export class StockTableButtonsComponent extends CrudTableButtonsComponent<Stock>
 {
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
-                 protected stockTableButtonsService: StockTableButtonsService )
+                 private stockCrudServiceContainer: StockCrudServiceContainer )
     {
-        super( toaster, stockTableButtonsService );
+        super( toaster, stockCrudServiceContainer );
     }
 
     /**

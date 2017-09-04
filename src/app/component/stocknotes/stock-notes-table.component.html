@@ -10,14 +10,14 @@
                      [rows]="25"
                      (onRowDblclick)="onRowDoubleClick($event)"
                      [responsive]="true">
-
-          <header>{{title}}</header>
-          <p-column field="tickerSymbol" header="Ticker" [sortable]="true"></p-column>
-          <p-column field="notes" header="Notes" [sortable]="true"></p-column>
+            <p-header>{{title}}</p-header>
+            <p-column field="tickerSymbol" header="Ticker" [sortable]="true"></p-column>
+            <p-column field="notes" header="Notes" [sortable]="true"></p-column>
+            <p-footer>
+                <stock-notes-table-buttons>
+                </stock-notes-table-buttons>
+            </p-footer>
         </p-dataTable>
-        <br/>
-        <stock-notes-table-buttons>
-        </stock-notes-table-buttons>
     </div>
 </p-panel>
 <stock-notes-dialog>

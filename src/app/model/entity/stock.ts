@@ -38,15 +38,6 @@ export class Stock extends ModelObject<Stock>
         return this.userEntered;
     }
 
-    /**
-     * Create a new copy of the stock
-     * @returns {Stock}
-     */
-    public clone(): Stock
-    {
-        return new Stock( this.tickerSymbol, this.companyName, this.lastPrice, this.exchange, this.createdBy, this.userEntered );
-    }
-
     public isEqualPrimaryKey( modelObject: Stock )
     {
         var isEqual = false;

@@ -1,5 +1,5 @@
-import { PortfolioStock } from "../model/entity/portfolio-stock";
-import { Portfolio } from "../model/entity/portfolio";
+import { PortfolioStock } from "../entity/portfolio-stock";
+import { Portfolio } from "../entity/portfolio";
 
 /**
  * Created by mike on 12/3/2016.

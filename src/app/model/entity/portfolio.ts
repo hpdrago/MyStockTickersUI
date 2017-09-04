@@ -9,13 +9,6 @@ export class Portfolio extends ModelObject<Portfolio>
     public customerId: number;
     public name: string;
 
-    public clone(): Portfolio
-    {
-        var newPortfolio = new Portfolio();
-        this.copyProperties( this, newPortfolio );
-        return newPortfolio;
-    }
-
     public isEqualPrimaryKey( modelObject: Portfolio )
     {
         var isEqual = false;

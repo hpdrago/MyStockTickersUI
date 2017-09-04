@@ -1,20 +1,22 @@
 
 import {ReadRestService} from "./read-rest.service";
-import {StockNoteCount} from "../model/entity/stock-note-count";
 import {Http} from "@angular/http";
 import {SessionService} from "./session.service";
-import {AppConfigurationService} from "./app-configuration.service";
-import {StockNoteCountFactory} from "../model/factory/stock-note-count.factory";
+import {AppConfigurationService} from "../app-configuration.service";
+import {StockNotesCountFactory} from "../../model/factory/stock-note-count.factory";
 import {Observable} from "rxjs/Observable";
+import { Injectable } from "@angular/core";
+import { StockNoteCount } from "../../model/entity/stock-note-count";
 
-export class StockNoteCountService extends ReadRestService<StockNoteCount>
+@Injectable()
+export class StockNotesCountService extends ReadRestService<StockNoteCount>
 {
   private stockNoteCountsUrlPath = "/stockNoteCounts/"
 
   constructor( protected http: Http,
                protected sessionService: SessionService,
                protected appConfigurationService: AppConfigurationService,
-               protected modelObjectFactory: StockNoteCountFactory )
+               protected modelObjectFactory: StockNotesCountFactory )
   {
     super( http, sessionService, appConfigurationService, modelObjectFactory );
   }

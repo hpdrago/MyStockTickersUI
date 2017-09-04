@@ -21,7 +21,7 @@ import { ModelObjectFactory } from "../../../model/factory/model-object.factory"
  *
  * Created by mike on 12/17/2016.
  */
-export abstract class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
+export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
     private addButtonClickedSubject: BehaviorSubject<T>;
     private deleteButtonClickedSubject: BehaviorSubject<T>;

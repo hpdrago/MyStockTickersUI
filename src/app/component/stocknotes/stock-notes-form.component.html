@@ -1,19 +1,42 @@
 <div *ngIf="modelObject">
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+            <!--
+            SEARCH
+            -->
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="tickerSymbol">Ticker:</label>
+                    <label class="crud-form" for="stockSearch">Search:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <stock-autocomplete id="tickerSymbol"
-                                        [(ngModel)]="modelObject.tickerSymbol"
+                    <stock-autocomplete id="stockSearch"
+                                        [(ngModel)]="stockSearch"
                                         [formGroup]="formGroup"
-                                        formControlName="tickerSymbol"
+                                        formControlName="stockSearch"
                                         (stockSelected)="onStockSelected( $event )">
                     </stock-autocomplete>
                 </div>
             </div>
+            <!--
+            Ticker Symbols
+            -->
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="tickerSymbols">Stocks:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input id="tickerSymbols"
+                           type="text"
+                           pInputText
+                           required
+                           placeholder="Comma delimited ticker symbols"
+                           formControlName="tickerSymbols"
+                           [(ngModel)]="tickerSymbols">
+                </div>
+            </div>
+            <!--
+            NOTES
+            -->
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
                     <label class="crud-form" for="notes">Notes:</label>
@@ -41,7 +64,7 @@
                               class="crud-form"
                               formControlName="noteRating"
                               [stars]="5"
-                              [(ngModel)]="modelObject.noteRating">
+                              [(ngModel)]="modelObject.notesRating">
                     </p-rating>
                 </div>
             </div>
@@ -75,4 +98,4 @@
             </div>
         </div>
     </form>
-
+</div>

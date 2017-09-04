@@ -1,14 +1,13 @@
 import { Http, Response } from "@angular/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Rx";
-import "../rxjs-operators";
-import { Stock } from "../model/entity/stock";
-import { PaginationPage } from "../common/pagination";
-import { PaginationURL } from "../common/pagination-url";
+import { PaginationPage } from "../../common/pagination";
+import { PaginationURL } from "../../common/pagination-url";
 import { SessionService } from "./session.service";
 import { PagingRestCRUDService } from "./paging-rest-crud.service";
-import { AppConfigurationService } from "./app-configuration.service";
-import { StockFactory } from "../model/factory/stock.factory";
+import { AppConfigurationService } from "./../app-configuration.service";
+import { StockFactory } from "../../model/factory/stock.factory";
+import { Stock } from "../../model/entity/stock";
 
 /**
  * This class provides all of the REST communication services for Stocks.

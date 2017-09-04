@@ -14,33 +14,6 @@ div.crud-panel-delete-message
     margin-left: 20px;
 }
 
-/**
- * The div that contains all of the buttons for the panel
- */
-div.crud-panel-buttons
-{
-    text-align: center;
-}
-
-/**
- * The div that contains a single button
- */
-div.crud-panel-button
-{
-    display: inline-block;
-    width: 110px;
-    height: 35px;
-}
-
-/**
- * Settings for the button contained within the div.crud-panel-button
- */
-.crud-panel-button
-{
-    font-size: 1.25em;
-    margin-right: 10px;
-}
-
 .crud-table-button
 {
     font-size: 1.25em;

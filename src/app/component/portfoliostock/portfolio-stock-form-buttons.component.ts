@@ -2,12 +2,8 @@ import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { Component, Input } from "@angular/core";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
-import { PortfolioStockCrudService } from "../../service/portfolio-stock-crud.service";
 import { Portfolio } from "../../model/entity/portfolio";
-import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
-import { PortfolioStockFormService } from "./portfolio-stock-form.service";
-import { PortfolioStockDialogService } from "./portfolio-stock-dialog.service";
-import { PortfolioStockFormButtonsService } from "./portfolio-stock-form-buttons.service";
+import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-service-container";
 
 /**
  * Created by mike on 12/31/2016.
@@ -23,14 +19,9 @@ export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent
     private portfolio: Portfolio;
 
     constructor( protected toaster: ToastsManager,
-                 protected portfolioStockFactory: PortfolioStockFactory,
-                 protected portfolioStockCrudService: PortfolioStockCrudService,
-                 protected portfolioStockFormService: PortfolioStockFormService,
-                 protected portfolioStockFormButtonsService: PortfolioStockFormButtonsService,
-                 protected portfolioStockDialService: PortfolioStockDialogService )
+                 protected portfolioStockCrudServiceContainer: PortfolioStockCrudServiceContainer )
     {
-        super( toaster, portfolioStockFactory, portfolioStockCrudService, portfolioStockFormService,
-               portfolioStockFormButtonsService, portfolioStockDialService );
+        super( toaster, portfolioStockCrudServiceContainer );
     }
 
     /**

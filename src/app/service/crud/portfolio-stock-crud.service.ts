@@ -1,12 +1,12 @@
 
-import { PortfolioStock } from "../model/entity/portfolio-stock";
-import { AppConfigurationService } from "./app-configuration.service";
 import { SessionService } from "./session.service";
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
 import { Observable } from "rxjs";
-import { PortfolioStockFactory } from "../model/factory/portfolio-stock.factory";
+import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
 import { CrudRestService } from "./crud-rest.serivce";
+import { PortfolioStock } from "../../model/entity/portfolio-stock";
+import { AppConfigurationService } from "../app-configuration.service";
 
 /**
  * This service manages REST communication for PortfolioStocks.

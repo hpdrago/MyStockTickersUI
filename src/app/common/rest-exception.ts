@@ -29,6 +29,8 @@ export class RestException
     private path: string;
     private message: string;
     private status: number;
+    private error: string;
+    private ok: boolean;
     private url: string;
 
     constructor( exception: any )
@@ -37,15 +39,25 @@ export class RestException
          * Convert the exception from JSON to a string, remove some of the extra characters
          * and then convert it back into an object and grab the individual values.
          */
-        var exceptionObject = JSON.parse( JSON.stringify( exception )
+        var exceptionObject = exception;
+
+         /*
+            JSON.parse( JSON.stringify( exception )
                                               .replace( /\\/g, "" )
                                               .replace( /"{"/g, "{\"" )
-                                              .replace( /"}"/g, "\"}" ) );
-        this.exception = exceptionObject._body.exception;
-        this.path = exceptionObject._body.path;
-        this.message = exceptionObject._body.message;
+                                              .replace( /"}"/g, "\"}" ) ); */
         this.status = exceptionObject.status;
         this.url = exceptionObject.url;
+        this.ok = exceptionObject.ok;
+        /*
+         * parse the body and extract the values
+         */
+        var bodyText = exceptionObject._body;
+        var bodyObject = JSON.parse( bodyText );
+        this.exception = bodyObject.exception;
+        this.path = bodyObject.path;
+        this.message = bodyObject.message;
+        this.error = bodyObject.error;
     }
 
     /**
@@ -57,12 +69,16 @@ export class RestException
         return this.status == 409 // CONFLICT;
     }
 
-    /**
-     * Returns the exception message
-     * @returns {string}
-     */
     public getMessage(): string
     {
         return this.message;
+        /*
+        return this.message.replace( /\\/g, "" )
+                           .replace( /"{"/g, "{\"" )
+                           .replace( /"}"/g, "\"}" );*/
     }
+
+    public getStatus(): number { return this.status; }
+    public getError(): string { return this.error; }
+    public getException(): string { return this.exception; }
 }

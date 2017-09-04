@@ -1,15 +1,16 @@
-import { Input, OnInit } from "@angular/core";
-import { CrudOperation } from "../common/crud-operation";
-import { BaseCrudComponent } from "../common/base-crud.component";
-import { CrudFormService } from "../form/crud-form.service";
-import { ModelObject } from "../../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
-import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
+import { CrudServiceContainer } from "../common/crud-service-container";
+import { ModelObject } from "../../../model/entity/modelobject";
+import { BaseCrudComponent } from "../common/base-crud.component";
+import { OnInit } from "@angular/core";
+import { CrudOperation } from "../common/crud-operation";
 
 /**
  * This is a Panel class that contains a CRUD Form component {@code CrudFormComponent}
  *
  * @param <T> Read Model Type and Search Criteria
+ *
+ * inputs: ['crudButtonsService', 'crudDialogService']
  *
  * Created by mike on 11/27/2016.
  */
@@ -17,18 +18,13 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     extends BaseCrudComponent<T>
     implements OnInit
 {
+
+
     /**
      * C O N S T R U C T O R
      */
     constructor( protected toaster: ToastsManager,
-                 /**
-                  * The CRUD Panel Service provides message and information passing between the panel and the parent container
-                  */
-                 protected crudFormButtonsService: CrudFormButtonsService<T>,
-                 /**
-                  * The CRUD Form Service provides message and information passing between the form and the parent panel
-                  */
-                 protected crudFormService: CrudFormService<T> )
+                 protected crudServiceContainer: CrudServiceContainer<T> )
     {
         super( toaster );
     }
@@ -38,11 +34,11 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      */
     public ngOnInit()
     {
-        if ( !this.crudFormButtonsService )
+        if ( !this.crudServiceContainer.crudFormButtonsService )
         {
-            throw new Error( "crudFormButtonsService has not been set by Input value" );
+            throw new Error( "crudButtonsService has not been set by Input value" );
         }
-        if ( !this.crudFormService )
+        if ( !this.crudServiceContainer.crudFormService )
         {
             throw new Error( "crudFormService has not been set by Input value" );
         }
@@ -56,10 +52,12 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     private subscribeToCrudPanelServiceEvents(): void
     {
         this.debug( "subscribeToCrudPanelServiceEvents.begin" );
-        this.crudFormButtonsService.subscribeToModelObjectChangedEvent(( modelObject: T ) =>
-                                                                        this.modelObjectChanged( modelObject ) );
-        this.crudFormButtonsService.subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) =>
-                                                                          this.crudOperationChanged( crudOperation ) );
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) );
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .subscribeToCrudOperationChangeEvent( ( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) );
         this.debug( "subscribeToCrudPanelServiceEvents.end" );
     }
 
@@ -72,7 +70,9 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
         /**
          * Subscribe to error notifications from child components
          */
-        this.crudFormService.subscribeToCrudOperationError(( errorMessage: string ) => this.reportRestError( errorMessage ));
+        this.crudServiceContainer
+            .crudFormService
+            .subscribeToCrudOperationError(( errorMessage: string ) => this.reportRestError( errorMessage ));
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 
@@ -84,7 +84,9 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     protected modelObjectChanged( modelObject: T ): void
     {
         super.modelObjectChanged( modelObject );
-        this.crudFormService.sendModelObjectChangedEvent( this.modelObject );
+        this.crudServiceContainer
+            .crudFormService
+            .sendModelObjectChangedEvent( this.modelObject );
     }
 
     /**
@@ -95,7 +97,9 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     protected crudOperationChanged( crudOperation: CrudOperation ): void
     {
         super.crudOperationChanged( crudOperation );
-        this.crudFormService.sendCrudOperationChangedEvent( this.crudOperation );
+        this.crudServiceContainer
+            .crudFormService
+            .sendCrudOperationChangedEvent( this.crudOperation );
     }
 
     protected onSubmit(): void

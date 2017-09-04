@@ -2,12 +2,8 @@ import { Component } from "@angular/core";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
-import { PortfolioFactory } from "../../model/factory/portfolio.factory";
-import { PortfolioCrudService } from "../../service/portfolio-crud.service";
-import { SessionService } from "../../service/session.service";
-import { PortfolioFormService } from "./portfolio-form.service";
-import { PortfolioFormButtonsService } from "./portfolio-form-buttons.service";
-import { PortfolioDialogService } from "./portfolio-dialog.service";
+import { SessionService } from "../../service/crud/session.service";
+import { PortfolioCrudServiceContainer } from "./porfolio-crud-service-container";
 
 /**
  * Button panel component for the Portfolio dialog.
@@ -15,21 +11,16 @@ import { PortfolioDialogService } from "./portfolio-dialog.service";
  * Created by mike on 12/31/2016.
  */
 @Component({
-    selector: 'portfolio-dialog-buttons',
+    selector:    'portfolio-form-buttons',
     templateUrl: '../crud/form/crud-form-buttons.component.html'
 })
 export class PortfolioFormButtonsComponent extends CrudFormButtonsComponent<Portfolio>
 {
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,
-                 protected portfolioFactory: PortfolioFactory,
-                 protected portfolioCrudService: PortfolioCrudService,
-                 protected portfolioFormService: PortfolioFormService,
-                 protected portfolioFormButtonsService: PortfolioFormButtonsService,
-                 protected portfolioDialogService:  PortfolioDialogService )
+                 protected portfolioCrudServiceContainer: PortfolioCrudServiceContainer )
     {
-        super( toaster, portfolioFactory, portfolioCrudService, portfolioFormService, portfolioFormButtonsService,
-               portfolioDialogService );
+        super( toaster, portfolioCrudServiceContainer );
     }
 
     protected onAddButtonClick(): void

@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Portfolio } from "../model/entity/portfolio";
 import { Http } from "@angular/http";
 import { SessionService } from "./session.service";
-import { AppConfigurationService } from "./app-configuration.service";
+import { AppConfigurationService } from "../app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
-import { PortfolioFactory } from "../model/factory/portfolio.factory";
+import { PortfolioFactory } from "../../model/factory/portfolio.factory";
+import { Portfolio } from "../../model/entity/portfolio";
 
 /**
  * This class provides all CRUD REST services.

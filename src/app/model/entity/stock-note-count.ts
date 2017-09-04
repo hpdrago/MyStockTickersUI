@@ -9,17 +9,6 @@ export class StockNoteCount extends ModelObject<StockNoteCount>
     public tickerSymbol: string;
     public noteCount: number;
 
-  /**
-   * Make a copy of this instance
-   * @returns {StockNoteCount}
-   */
-  public clone(): StockNoteCount
-    {
-        var newStockNote = new StockNoteCount();
-        this.copyProperties( this, newStockNote );
-        return newStockNote;
-    }
-
     public isEqualPrimaryKey( modelObject: StockNoteCount )
     {
         var isEqual = false;

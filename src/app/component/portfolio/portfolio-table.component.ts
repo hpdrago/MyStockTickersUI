@@ -1,16 +1,11 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { SessionService } from "../../service/session.service";
+import { SessionService } from "../../service/crud/session.service";
 import { Portfolio } from "../../model/entity/portfolio";
 import { MenuItem } from "primeng/primeng";
-import { PortfolioCrudService } from "../../service/portfolio-crud.service";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
-import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 import { ToastsManager } from "ng2-toastr";
-import { PortfolioDialogService } from "./portfolio-dialog.service";
-import { PortfolioTableButtonsService } from "./portfolio-table-buttons.service";
-import { PortfolioFormService } from "./portfolio-form.service";
 import { PortfolioStockTableComponent } from "../portfoliostock/portfolio-stock-table.component";
-import { PortfolioFormButtonsService } from "./portfolio-form-buttons.service";
+import { PortfolioCrudServiceContainer } from "./porfolio-crud-service-container";
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -32,20 +27,9 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
 
     constructor( protected toaster: ToastsManager,
                  protected session: SessionService,
-                 protected portfolioFactory: PortfolioFactory,
-                 protected portfolioCrudService: PortfolioCrudService,
-                 protected portfolioFormService: PortfolioFormService,
-                 protected portfolioFormButtonsService: PortfolioFormButtonsService,
-                 protected portfolioDialogService: PortfolioDialogService,
-                 protected portfolioTableButtonsService: PortfolioTableButtonsService )
+                 protected portfolioCrudServiceContainer: PortfolioCrudServiceContainer )
     {
-        super( toaster,
-               portfolioFactory,
-               portfolioCrudService,
-               portfolioFormService,
-               portfolioFormButtonsService,
-               portfolioDialogService,
-               portfolioTableButtonsService );
+        super( toaster, portfolioCrudServiceContainer );
     }
 
     /**
@@ -81,7 +65,8 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
      */
     protected loadTable()
     {
-        this.portfolioCrudService
+        this.portfolioCrudServiceContainer
+            .portfolioCrudService
             .getCustomerPortfolios( this.session.getLoggedInUserId() )
             .subscribe( portfolios =>
             {

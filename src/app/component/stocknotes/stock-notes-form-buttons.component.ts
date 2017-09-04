@@ -1,13 +1,9 @@
 import { Component } from "@angular/core";
-import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
+import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
+import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
+import { SessionService } from "../../service/crud/session.service";
 import { StockNotes } from "../../model/entity/stock-notes";
-import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
-import { StockNoteCrudService } from "../../service/stock-note-crud.service";
-import { SessionService } from "../../service/session.service";
-import { StockNotesFormService } from "./stock-notes-form.service";
-import { StockNotesFormButtonsService } from "./stock-notes-form-buttons.service";
-import { StockNotesDialogService } from "./stock-notes-dialog.service";
 
 /**
  * Button panel component for the StockNotes dialog.
@@ -16,20 +12,22 @@ import { StockNotesDialogService } from "./stock-notes-dialog.service";
  */
 @Component({
     selector:    'stock-notes-form-buttons',
-    templateUrl: '../crud/form/crud-form-buttons.component.html'
+    templateUrl: '../crud/form/crud-form-buttons.component.html',
+    styleUrls: ['../crud/form/crud-form-buttons.component.css']
 })
 export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<StockNotes>
 {
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,
-                 protected stockNotesFactory: StockNotesFactory,
-                 protected stockNotesCrudService: StockNoteCrudService,
-                 protected stockNotesFormService: StockNotesFormService,
-                 protected stockNotesFormButtonsService: StockNotesFormButtonsService,
-                 protected stockNotesDialogService: StockNotesDialogService )
+                 private stockNotesServiceContainer: StockNotesCrudServiceContainer )
     {
-        super( toaster, stockNotesFactory, stockNotesCrudService, stockNotesFormService, stockNotesFormButtonsService,
-               stockNotesDialogService );
+        super( toaster, stockNotesServiceContainer );
+    }
+
+    protected onAddButtonClick(): void
+    {
+        this.modelObject.customerId = this.session.getLoggedInUserId();
+        super.onAddButtonClick();
     }
 
     /**

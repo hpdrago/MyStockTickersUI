@@ -1,12 +1,11 @@
-import { CrudFormComponent } from "../crud/form/crud-form.component";
-import { StockNotes } from "../../model/entity/stock-notes";
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 import { Stock } from "../../model/entity/stock";
-import { StockNotesFormService } from "./stock-notes-form.service";
+import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { SelectItem } from "primeng/primeng";
+import { StockNotes } from "../../model/entity/stock-notes";
+import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 
 /**
  * This is the Stock Note Form Component class.
@@ -20,14 +19,24 @@ import { SelectItem } from "primeng/primeng";
 export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
 {
     private bullOrBearOptions: SelectItem[];
+    /**
+     * The stock is returned via an event when the user searches for a ticker symbol or company
+     */
     private stock: Stock;
+    /**
+     * Comma delimited list of ticker symbols
+     */
+    private tickerSymbols: string;
+    /**
+     * The string the user enters the ticker symbols or company name to search for
+     */
+    private stockSearch: string;
 
     constructor( protected toaster: ToastsManager,
                  private formBuilder: FormBuilder,
-                 protected stockNotesFactory: StockNotesFactory,
-                 protected stockNotesFormService: StockNotesFormService )
+                 private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {
-        super( toaster, stockNotesFactory, stockNotesFormService );
+        super( toaster, stockNotesCrudServiceContainer );
         this.bullOrBearOptions = [];
         this.bullOrBearOptions.push( {label: 'Bull', value: 1} );
         this.bullOrBearOptions.push( {label: 'Bear', value: 2} );
@@ -39,10 +48,11 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.debug( "createCrudForm" );
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
-                'tickerSymbol': new FormControl( this.modelObject.tickerSymbol, Validators.required ),
+                'stockSearch': new FormControl( this.stockSearch ),
+                'tickerSymbols': new FormControl( this.tickerSymbols, Validators.required ),
                 'notes': new FormControl( this.modelObject.notes, Validators.required ),
                 'noteDate': new FormControl( this.modelObject.notesDate, Validators.required  ),
-                'noteRating': new FormControl( this.modelObject.noteRating ),
+                'noteRating': new FormControl( this.modelObject.notesRating ),
                 'bullOrBear': new FormControl( this.modelObject.bullOrBear )
             } );
         return stockNoteForm;
@@ -64,9 +74,19 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     public onStockSelected( stock: Stock )
     {
-        this.debug( "onStockSelected tickerSymbol: " + this.modelObject.tickerSymbol );
         this.debug( "onStockSelected: " + JSON.stringify( stock ) );
+        if ( !this.tickerSymbols )
+        {
+            this.tickerSymbols = '';
+        }
+        if ( this.tickerSymbols.length > 0 )
+        {
+            this.tickerSymbols += ', '
+        }
+        this.tickerSymbols += stock.tickerSymbol;
         this.stock = stock;
-        //(<FormControl>this.formGroup.controls['tickerSymbol']).setValue( stock.tickerSymbol );
+        this.stockSearch = '';
+        //this.modelObject.setStocks( this.stockSearch );
+        (<FormControl>this.formGroup.controls['stockSearch']).setValue( '' );
     }
 }

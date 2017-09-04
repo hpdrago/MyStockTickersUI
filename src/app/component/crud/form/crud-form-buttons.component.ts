@@ -1,12 +1,8 @@
 import { BaseCrudComponent } from "../common/base-crud.component";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { CrudOperation } from "../common/crud-operation";
-import { CrudFormService } from "./crud-form.service";
-import { CrudRestService } from "../../../service/crud-rest.serivce";
 import { ToastsManager } from "ng2-toastr";
-import { CrudFormButtonsService } from "./crud-form-buttons.service";
-import { CrudDialogService } from "../dialog/crud-dialog.service";
-import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
+import { CrudServiceContainer } from "../common/crud-service-container";
 
 /**
  * This class manages the set of buttons for a model object dialog.
@@ -16,42 +12,26 @@ import { ModelObjectFactory } from "../../../model/factory/model-object.factory"
 export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
     constructor( protected toaster: ToastsManager,
-                 protected modelObjectFactory: ModelObjectFactory<T>,
-                 /**
-                  * Used to perform CRUD REST services
-                  */
-                 protected crudRestService: CrudRestService<T>,
-                 /**
-                  * Used to receive state information from the form
-                  */
-                 protected crudFormService: CrudFormService<T>,
-                 /**
-                  * Used to send event information to subscribers
-                  */
-                 protected crudFormButtonsService: CrudFormButtonsService<T>,
-                 /**
-                  * Optional input if the panel should display the close button for a dialog
-                  */
-                 protected crudDialogService ?: CrudDialogService<T> )
+                 protected crudServiceContainer: CrudServiceContainer<T> )
     {
         super( toaster );
-        if ( !this.modelObjectFactory )
+        if ( !this.crudServiceContainer.modelObjectFactory )
         {
             throw new Error( "modelObjectFactory argument cannot be null" );
         }
-        if ( !this.crudRestService )
+        if ( !this.crudServiceContainer.crudRestService )
         {
             throw new Error( "crudRestService argument cannot be null" );
         }
-        if ( !this.crudFormService )
+        if ( !this.crudServiceContainer.crudFormService )
         {
             throw new Error( "crudFormService argument cannot be null" );
         }
-        if ( !this.modelObjectFactory )
+        if ( !this.crudServiceContainer.modelObjectFactory )
         {
             throw new Error( "modelObjectFactory argument cannot be null" );
         }
-        if ( !this.crudFormButtonsService )
+        if ( !this.crudServiceContainer.crudFormButtonsService )
         {
             throw new Error( "crudFormButtonsService argument cannot be null" );
         }
@@ -82,7 +62,9 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         this.subscribeToCrudFormServiceEvents();
         // Tell everyone that we are done
-        this.crudFormButtonsService.sendComponentInitializedEvent();
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .sendComponentInitializedEvent();
     }
 
     /**
@@ -91,13 +73,21 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     private subscribeToCrudFormServiceEvents(): void
     {
         this.debug( "subscribeToCrudFormServiceEvents.begin" );
-        this.crudFormService.subscribeToFormDirtyEvent(( dirty: boolean ) => this.onFormDirty( dirty ) );
-        this.crudFormService.subscribeToFormTouchedEvent(( touched: boolean ) => this.onFormTouched( touched ) );
-        this.crudFormService.subscribeToFormValidEvent(( valid: boolean ) => this.onFormValid( valid ) );
-        this.crudFormService.subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) =>
-                                                                         this.crudOperationChanged( crudOperation ) );
-        this.crudFormService.subscribeToModelObjectChangedEvent(( modelObject: T ) =>
-                                                                         this.modelObjectChanged( modelObject ) );
+        this.crudServiceContainer
+            .crudFormService
+            .subscribeToFormDirtyEvent(( dirty: boolean ) => this.onFormDirty( dirty ) );
+        this.crudServiceContainer
+            .crudFormService
+            .subscribeToFormTouchedEvent(( touched: boolean ) => this.onFormTouched( touched ) );
+        this.crudServiceContainer
+            .crudFormService
+            .subscribeToFormValidEvent(( valid: boolean ) => this.onFormValid( valid ) );
+        this.crudServiceContainer
+            .crudFormService
+            .subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) );
+        this.crudServiceContainer
+            .crudFormService
+            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) );
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 
@@ -250,7 +240,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected enableDisableButtons(): void
     {
-        this.debug( "enableDisableButtons: formValid: " + this.formValidFlag + " formDirty: " + this.formDirtyFlag );
+        //this.debug( "enableDisableButtons: formValid: " + this.formValidFlag + " formDirty: " + this.formDirtyFlag );
     }
 
     /**
@@ -260,7 +250,9 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected isModelObjectReadOnly( modelObject: T ): boolean
     {
-        return this.crudRestService.isModelObjectReadOnly( modelObject );
+        return this.crudServiceContainer
+                   .crudRestService
+                   .isModelObjectReadOnly( modelObject );
     }
 
     /**
@@ -268,7 +260,9 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected onResetButtonClick(): void
     {
-        this.crudFormService.sendFormResetEvent();
+        this.crudServiceContainer
+            .crudFormService
+            .sendFormResetEvent();
     }
 
     /**
@@ -279,14 +273,20 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         var methodName = "onSaveButtonClick";
         this.logger.log( methodName + " " + JSON.stringify( this.modelObject ));
         //this.crudRestService.updateModelObject( this.modelObjectFactory.newModelObjectFromJSON( this.modelObject ))
-        this.crudRestService.updateModelObject( this.modelObject )
+        this.crudServiceContainer
+            .crudRestService
+            .updateModelObject( this.modelObject )
             .subscribe( ( updatedModelObject: T ) =>
                         {
                             this.modelObject = updatedModelObject;
                             this.logger.log( methodName + " saved successful.  modelObject; " +
                                              JSON.stringify( this.modelObject ));
-                            this.crudFormService.sendFormResetEvent();
-                            this.crudFormButtonsService.sendSaveButtonClickedEvent( updatedModelObject );
+                            this.crudServiceContainer
+                                .crudFormService
+                                .sendFormResetEvent();
+                            this.crudServiceContainer
+                                .crudFormButtonsService
+                                .sendSaveButtonClickedEvent( updatedModelObject );
                         },
                         err => this.reportRestError( err )
             );
@@ -299,14 +299,18 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "onAddButtonClick";
         this.logger.log( methodName + " " + JSON.stringify( this.modelObject ));
-        this.crudRestService.createModelObject( this.modelObject )
+        this.crudServiceContainer
+            .crudRestService.createModelObject( this.modelObject )
             .subscribe( ( newModelObject: T ) =>
                         {
                             this.modelObject = newModelObject;
                             this.logger.log( methodName + " add successful.  modelObject: " +
                                              JSON.stringify( this.modelObject ) );
-                            this.crudFormService.sendFormResetEvent();
-                            this.crudFormButtonsService.sendAddButtonClickedEvent( newModelObject );
+                            this.crudServiceContainer
+                                .crudFormService.sendFormResetEvent();
+                            this.crudServiceContainer
+                                .crudFormButtonsService
+                                .sendAddButtonClickedEvent( newModelObject );
                         },
                         err =>
                         {
@@ -319,7 +323,9 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                             if ( exception.isDuplicateKeyExists() )
                             {
                                 this.logger.log( methodName + " duplicateKeyExists" );
-                                this.crudFormButtonsService.sendNavigateToModelObjectEvent( this.modelObject );
+                                this.crudServiceContainer
+                                    .crudFormButtonsService
+                                    .sendNavigateToModelObjectEvent( this.modelObject );
                             }
                         }
             );
@@ -332,13 +338,18 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "onDeleteButtonClick";
         this.logger.log( methodName + " " + JSON.stringify( this.modelObject ));
-        this.crudRestService
+        this.crudServiceContainer
+            .crudRestService
             .deleteModelObject( this.modelObject )
             .subscribe( () =>
                         {
                             this.logger.log( methodName + " delete successful" );
-                            this.crudFormService.sendFormResetEvent();
-                            this.crudFormButtonsService.sendDeleteButtonClickedEvent( this.modelObject );
+                            this.crudServiceContainer
+                                .crudFormService
+                                .sendFormResetEvent();
+                            this.crudServiceContainer
+                                .crudFormButtonsService
+                                .sendDeleteButtonClickedEvent( this.modelObject );
                         },
                         err =>
                         {
@@ -353,7 +364,9 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected onCloseButtonClick(): void
     {
-        this.crudDialogService.sendCloseButtonClickedEvent();
+        this.crudServiceContainer
+            .crudDialogService
+            .sendCloseButtonClickedEvent();
     }
 
     /**

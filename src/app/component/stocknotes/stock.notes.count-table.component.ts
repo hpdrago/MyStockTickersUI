@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {ToastsManager} from "ng2-toastr";
-import {SessionService} from "../../service/session.service";
 import {StockNoteCount} from "../../model/entity/stock-note-count";
 import {BaseComponent} from "../common/base.component";
 import {StockNotesTableComponent} from "./stock-notes-table.component";
-import {StockNoteCountService} from "../../service/stock-note-count.service";
+import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
+import { SessionService } from "../../service/crud/session.service";
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -13,10 +13,10 @@ import {StockNoteCountService} from "../../service/stock-note-count.service";
  */
 @Component(
 {
-    selector: 'stock-note-counts',
-    templateUrl: './stock.notes.count-table.component.html'
+    selector:    'stock-note-counts',
+    templateUrl: './stocks.note.count-table.component.html'
 })
-export class StockNoteCountTableComponent extends BaseComponent implements OnInit
+export class StockNotesCountTableComponent extends BaseComponent implements OnInit
 {
     @ViewChild(StockNotesTableComponent)
     private stockNotesTableComponent: StockNotesTableComponent;
@@ -25,8 +25,8 @@ export class StockNoteCountTableComponent extends BaseComponent implements OnIni
     private stockNoteCounts: Array<StockNoteCount>
 
     constructor( protected toaster: ToastsManager,
-                 protected session: SessionService,
-                 protected stockNoteCountService: StockNoteCountService )
+                 private session: SessionService,
+                 private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {
         super( toaster )
     }
@@ -60,11 +60,12 @@ export class StockNoteCountTableComponent extends BaseComponent implements OnIni
      */
     protected loadTable()
     {
-        this.stockNoteCountService
+        this.stockNotesCrudServiceContainer
+            .stockNoteCountService
             .getStockNoteCounts( this.session.getLoggedInUserId() )
             .subscribe( stockNoteCounts =>
             {
-                this.stockNoteCounts= stockNoteCounts
+                this.stockNoteCounts = stockNoteCounts
                 this.logger.log( "loadTable: " + JSON.stringify( this.stockNoteCounts));
                 this.logger.log( "loadTable length: " + this.stockNoteCounts.length );
                 this.logger.log( "loadTable[0]: " + JSON.stringify( this.stockNoteCounts[0] ));

@@ -1,32 +1,39 @@
+import { ToastsManager } from "ng2-toastr";
+import { CrudServiceContainer } from "../common/crud-service-container";
+import { Component } from "@angular/core";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { BaseCrudComponent } from "../common/base-crud.component";
-import { CrudTableButtonsService } from "./crud-table-buttons.service";
-import { ToastsManager } from "ng2-toastr";
 
 /**
  * This is the base component class for the buttons on all CRUD enabled tables
  *
+ * inputs: ['crudTableButtonsService']
+ *
  * Created by mike on 1/2/2017.
  */
-export class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
+@Component({
+               selector:    'crud-table-buttons',
+               styleUrls:   ['./crud-table-buttons.component.css'],
+               templateUrl: './crud-table-buttons.component.html'
+           })
+export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
     constructor( protected toaster: ToastsManager,
-                 protected crudTableButtonsService: CrudTableButtonsService<T> )
+                 protected crudServiceContainer: CrudServiceContainer<T> )
     {
         super( toaster );
-        if ( !this.crudTableButtonsService )
-        {
-            throw new Error( "crudTableButtonsService parameter cannot be null" );
-        }
     }
 
     public ngOnInit()
     {
-        this.log( "ngOnInit" );
-        this.crudTableButtonsService.subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) );
-        this.crudTableButtonsService.sendComponentInitializedEvent();
+        if ( !this.crudServiceContainer.crudTableButtonsService )
+        {
+            throw new Error( "crudTableButtonsService has not been set by Input value" );
+        }
+        this.crudServiceContainer
+            .crudTableButtonsService
+            .subscribeToModelObjectChangedEvent(( modelObject: T) => this.modelObjectChanged( modelObject ) );
     }
-
     /**
      * Returns the default Add button label
      * @return {string}
@@ -62,7 +69,9 @@ export class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCru
     protected onAddButtonClick(): void
     {
         this.logger.debug( "onAddButtonClick" );
-        this.crudTableButtonsService.sendAddButtonClickedEvent( this.modelObject );
+        this.crudServiceContainer
+            .crudTableButtonsService
+            .sendAddButtonClickedEvent( this.modelObject );
     }
 
     /**
@@ -100,7 +109,8 @@ export class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCru
     protected onDeleteButtonClick(): void
     {
         this.logger.debug( "onDeleteButtonClick" );
-        this.crudTableButtonsService.sendDeleteButtonClickedEvent( this.modelObject );
+        this.crudServiceContainer
+            .crudTableButtonsService.sendDeleteButtonClickedEvent( this.modelObject );
     }
 
     /**

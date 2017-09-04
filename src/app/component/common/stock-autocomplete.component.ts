@@ -1,7 +1,7 @@
 import { Component, Input, EventEmitter, Output, forwardRef } from "@angular/core";
 import { PaginationPage } from "../../common/pagination";
-import { StockCrudService } from "../../service/stock-crud.service";
-import { BaseComponent } from "./base.component";
+import { StockCrudService } from "../../service/crud/stock-crud.service";
+import { BaseComponent } from "../common/base.component";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR } from "@angular/forms";

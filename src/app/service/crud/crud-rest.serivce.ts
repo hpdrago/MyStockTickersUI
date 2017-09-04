@@ -1,10 +1,10 @@
 import { Observable } from "rxjs";
 import { Response, Headers, RequestOptions, Http } from "@angular/http";
 import { SessionService } from "./session.service";
-import { AppConfigurationService } from "./app-configuration.service";
-import { ModelObject } from "../model/entity/modelobject";
-import { ModelObjectFactory } from "../model/factory/model-object.factory";
 import { ReadRestService } from "./read-rest.service";
+import { ModelObject } from "../../model/entity/modelobject";
+import { AppConfigurationService } from "../app-configuration.service";
+import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 
 /**
  * Generic Service class for REST CRUD methods

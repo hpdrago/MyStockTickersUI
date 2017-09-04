@@ -5,12 +5,10 @@ import { SelectItem } from "primeng/components/common/api";
 import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { StockSectorList } from "../../model/entity/stock-sectors.list";
-import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
-import { StockSectorCrudService } from "../../service/stock-sector-crud.service";
+import { StockSectorCrudService } from "../../service/crud/stock-sector-crud.service";
 import { ToastsManager } from "ng2-toastr";
-import { PortfolioStockCrudService } from "../../service/portfolio-stock-crud.service";
-import { PortfolioStockFormService } from "./portfolio-stock-form.service";
-import { StockCrudService } from "../../service/stock-crud.service";
+import { StockCrudServiceContainer } from "../stock/stock-crud-service-container";
+import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-service-container";
 
 /**
  * Created by mike on 11/16/2016.
@@ -30,12 +28,11 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
 
     constructor( protected toaster: ToastsManager,
                  protected formBuilder: FormBuilder,
-                 protected stockCrudService: StockCrudService,
-                 protected portfolioStockFactory: PortfolioStockFactory,
-                 protected portfolioStockFormService: PortfolioStockFormService,
-                 protected stockSectorService: StockSectorCrudService )
+                 protected stockSectorService: StockSectorCrudService,
+                 protected stockCrudServiceContainer: StockCrudServiceContainer,
+                 protected portfolioStockCrudServiceContainer: PortfolioStockCrudServiceContainer )
     {
-        super( toaster, portfolioStockFactory, portfolioStockFormService );
+        super( toaster, portfolioStockCrudServiceContainer );
     }
 
     /**
@@ -76,7 +73,8 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
          */
         if ( !this.selectedStock || this.selectedStock.tickerSymbol != this.getTickerSymbolFormValue() )
         {
-            this.stockCrudService.getStock( this.getTickerSymbolFormValue() )
+            this.stockCrudServiceContainer
+                .stockCrudService.getStock( this.getTickerSymbolFormValue() )
                 .subscribe( (stock) =>
                             {
                                 this.logger.log( methodName + " found: " + stock.tickerSymbol );

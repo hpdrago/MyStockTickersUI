@@ -1,12 +1,10 @@
-import { ModelObject } from "../../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
-import { CrudDialogService } from "./crud-dialog.service";
-import { CrudOperation } from "../common/crud-operation";
-import { CrudFormService } from "../form/crud-form.service";
-import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
+import { Input } from "@angular/core";
+import { CrudServiceContainer } from "../common/crud-service-container";
 import { BaseCrudComponent } from "../common/base-crud.component";
+import { ModelObject } from "../../../model/entity/modelobject";
 import { DisplayDialogRequestSubjectInfo } from "./display-dialog-request-subject-info";
-
+import { CrudOperation } from "../common/crud-operation";
 /**
  * This is the base class for Modal dialogs that provide CRUD operations on a model object.
  *
@@ -14,40 +12,46 @@ import { DisplayDialogRequestSubjectInfo } from "./display-dialog-request-subjec
  */
 export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
+    @Input()
+    protected continuousAdd: boolean = false;
+
     /**
      * Controls the visibility of the dialog
      */
     protected displayDialog: boolean;
 
     constructor( protected toaster: ToastsManager,
-                 protected crudDialogService: CrudDialogService<T>,
-                 protected crudFormService: CrudFormService<T>,
-                 protected crudFormButtonsService: CrudFormButtonsService<T>,
-                 protected continuousAdd ?: boolean )
+                 protected crudServiceContainer: CrudServiceContainer<T> )
     {
         super( toaster );
-        if ( !this.crudDialogService )
-        {
-            throw new Error( "crudDialogService argument cannot be null" );
-        }
-        if ( !this.crudFormService )
-        {
-            throw new Error( "crudFormService argument cannot be null" );
-        }
-        if ( !this.crudFormButtonsService )
-        {
-            throw new Error( "crudFormButtonsService argument cannot be null" );
-        }
     }
 
     public ngOnInit()
     {
         this.log( "ngOnInit.begin" );
+        if ( !this.crudServiceContainer.crudDialogService )
+        {
+            throw new Error( "crudDialogService argument cannot be null" );
+        }
+        if ( !this.crudServiceContainer.crudFormService )
+        {
+            throw new Error( "crudFormService argument cannot be null" );
+        }
+        if ( !this.crudServiceContainer.crudFormButtonsService )
+        {
+            throw new Error( "crudButtonsService argument cannot be null" );
+        }
         this.subscribeToCrudDialogServiceEvents();
-        this.crudFormService.subscribeToComponentInitializedEvent( ()=> this.formInitialized() );
-        this.crudFormButtonsService.subscribeToComponentInitializedEvent( ()=> this.formButtonsInitialized() );
+        this.crudServiceContainer
+            .crudFormService
+            .subscribeToComponentInitializedEvent( ()=> this.formInitialized() );
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .subscribeToComponentInitializedEvent( ()=> this.formButtonsInitialized() );
         // Tell everyone that we are done
-        this.crudDialogService.sendComponentInitializedEvent();
+        this.crudServiceContainer
+            .crudDialogService
+            .sendComponentInitializedEvent();
         this.log( "ngOnInit.end" );
     }
 
@@ -59,8 +63,12 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
     private formInitialized()
     {
         this.debug( "formInitialized sending model object and crud operation to form" );
-        this.crudFormService.sendCrudOperationChangedEvent( this.crudOperation );
-        this.crudFormService.sendModelObjectChangedEvent( this.modelObject );
+        this.crudServiceContainer
+            .crudFormService
+            .sendCrudOperationChangedEvent( this.crudOperation );
+        this.crudServiceContainer
+            .crudFormService
+            .sendModelObjectChangedEvent( this.modelObject );
     }
 
     /**
@@ -71,8 +79,12 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
     private formButtonsInitialized()
     {
         this.debug( "formButtonsInitialized sending model object and crud operation to form buttons" );
-        this.crudFormButtonsService.sendCrudOperationChangedEvent( this.crudOperation );
-        this.crudFormButtonsService.sendModelObjectChangedEvent( this.modelObject,   );
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .sendCrudOperationChangedEvent( this.crudOperation );
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .sendModelObjectChangedEvent( this.modelObject,   );
     }
 
     /**
@@ -81,12 +93,24 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
     protected subscribeToCrudDialogServiceEvents()
     {
         this.log( "subscribeToCrudDialogServiceEvents.begin" );
-        this.crudDialogService.subscribeToCloseButtonClickedEvent(() => this.onCloseButtonClick() );
-        this.crudDialogService.subscribeToDisplayDialogRequestEvent(( subjectInfo: DisplayDialogRequestSubjectInfo ) => this.setDisplayDialog( subjectInfo ) );
-        this.crudDialogService.subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) );
-        this.crudDialogService.subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) );
-        this.crudFormButtonsService.subscribeToAddButtonClickedEvent( ( modelObject ) => this.onAddButtonClicked( modelObject ) )
-        this.crudFormButtonsService.subscribeToHandleDeleteButtonClickedEvent(( modelObject ) => this.onDeleteButtonClicked( modelObject ) )
+        this.crudServiceContainer
+            .crudDialogService
+            .subscribeToCloseButtonClickedEvent(() => this.onCloseButtonClick() );
+        this.crudServiceContainer
+            .crudDialogService
+            .subscribeToDisplayDialogRequestEvent(( subjectInfo: DisplayDialogRequestSubjectInfo ) => this.setDisplayDialog( subjectInfo ) );
+        this.crudServiceContainer
+            .crudDialogService
+            .subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) );
+        this.crudServiceContainer
+            .crudDialogService
+            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) );
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .subscribeToAddButtonClickedEvent( ( modelObject ) => this.onAddButtonClicked( modelObject ) )
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .subscribeToHandleDeleteButtonClickedEvent(( modelObject ) => this.onDeleteButtonClicked( modelObject ) )
         this.log( "subscribeToCrudDialogServiceEvents.end" );
     }
 
@@ -104,11 +128,19 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
          * Tell the buttons and form of the changes
          */
         this.debug( "Sending events to Form" );
-        this.crudFormService.sendCrudOperationChangedEvent( subjectInfo.crudOperation );
-        this.crudFormService.sendModelObjectChangedEvent( subjectInfo.modelObject );
+        this.crudServiceContainer
+            .crudFormService
+            .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
+        this.crudServiceContainer
+            .crudFormService
+            .sendModelObjectChangedEvent( subjectInfo.modelObject );
         this.debug( "Sending events to Form Buttons" );
-        this.crudFormButtonsService.sendCrudOperationChangedEvent( subjectInfo.crudOperation );
-        this.crudFormButtonsService.sendModelObjectChangedEvent( subjectInfo.modelObject );
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .sendModelObjectChangedEvent( subjectInfo.modelObject );
         this.displayDialog = true;
         this.debug( "setDisplayDialog.end" );
     }

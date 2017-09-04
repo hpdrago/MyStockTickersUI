@@ -1,28 +1,27 @@
-import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
-import { Stock } from "../../model/entity/stock";
 import { Component, Input } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
-import { StockTableButtonsService } from "../stock/stock-table-buttons.service";
+import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-service-container";
+import { PortfolioStock } from "../../model/entity/portfolio-stock";
+import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
 
 /**
  * Created by mike on 1/2/2017.
  */
 @Component({
-    selector: 'portfolio-stock-table-buttons',
+    selector:    'portfolio-stock-table-buttons',
     templateUrl: '../crud/table/crud-table-buttons.component.html',
-    styleUrls: ['./portfolio-stock-table-buttons.component.css'],
-    inputs: ['portfolio']
+    styleUrls:   ['../crud/table/crud-table-buttons.component.css']
 })
-export class PortfolioStockTableButtonsComponent extends CrudTableButtonsComponent<Stock>
+export class PortfolioStockTableButtonsComponent extends CrudTableButtonsComponent<PortfolioStock>
 {
     @Input()
     private portfolio: Portfolio;
 
     constructor( protected toaster: ToastsManager,
-                 protected stockTableButtonsService: StockTableButtonsService )
+                 private portfolioStockCrudServiceContainer: PortfolioStockCrudServiceContainer )
     {
-        super( toaster, stockTableButtonsService );
+        super( toaster, portfolioStockCrudServiceContainer );
     }
 
     /**
@@ -48,14 +47,5 @@ export class PortfolioStockTableButtonsComponent extends CrudTableButtonsCompone
         return "Delete Stock"
     }
 
-    protected getAddButtonClass(): string
-    {
-        return "portfolio-stock-table-button";
-    }
-
-    protected getDeleteButtonClass(): string
-    {
-        return "portfolio-stock-table-button";
-    }
 }
 

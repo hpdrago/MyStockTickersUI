@@ -9,11 +9,6 @@ export abstract class ModelObject<T>
     public updatedBy: number;
 
     /**
-     * Duplicates a ModelObject
-     */
-    public abstract clone(): T;
-
-    /**
      * Determines if two model object primary keys are the equal.
      * @param modelObject
      */
@@ -31,19 +26,6 @@ export abstract class ModelObject<T>
         {
             return otherModelObject.hasOwnProperty( prop );
         });
-    }
-
-    /**
-     * Copies the JSON properties from {@code src} to {@code dest}
-     * @param src
-     * @param dest
-     */
-    protected copyProperties( src: T,  dest: T )
-    {
-        for ( var property in src )
-        {
-            dest[property] = src[property];
-        }
     }
 
 }

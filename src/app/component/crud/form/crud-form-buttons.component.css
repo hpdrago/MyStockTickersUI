@@ -1,0 +1,19 @@
+button.crud-form-button
+{
+    display: block;
+    width: 100%;
+    height: 35px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/**
+ * The div that contains a single button
+ */
+div.crud-form-button
+{
+    display: inline-block;
+    width: 150px;
+    height: 35px;
+}
+

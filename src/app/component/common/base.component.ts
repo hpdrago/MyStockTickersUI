@@ -46,24 +46,35 @@ export abstract class BaseComponent extends BaseClass implements OnChanges
      */
     protected reportRestError( rawJsonError ): RestException
     {
-        var exception: RestException;
+        var restException: RestException;
         this.log( "reportRestError: " + JSON.stringify( rawJsonError ) );
         if ( rawJsonError.status )
         {
-            exception = new RestException( rawJsonError );
-            var errorMessage = exception.getMessage()
-            if ( exception.isDuplicateKeyExists() )
+            restException = new RestException( rawJsonError );
+            var message = restException.getMessage();
+            var status = restException.getStatus();
+            var error = restException.getError();
+            var exception = restException.getException();
+            this.debug( "message: " + message );
+            this.debug( "status: " + status );
+            this.debug( "error: " + error );
+            this.debug( "exception: " + exception );
+            if ( restException.isDuplicateKeyExists() )
             {
-                errorMessage = this.getDuplicateKeyErrorMessage();
+                message = this.getDuplicateKeyErrorMessage();
             }
-            this.showError( errorMessage );
+            else
+            {
+                message = `Error ${status} - ${error} - ${exception} - ${message}`;
+            }
+            this.showError( message );
         }
         else
         {
             this.log( "reportRestError: rawJsonError data does not have a status value" );
             this.showError( rawJsonError );
         }
-        return exception;
+        return restException;
     }
 
     /**

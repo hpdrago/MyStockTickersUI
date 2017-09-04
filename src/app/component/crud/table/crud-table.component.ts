@@ -1,15 +1,16 @@
-import { CrudOperation } from "../common/crud-operation";
+/**
+ * This is the base class for CRUD enabled tables.
+ *
+ * Created by mike on 12/8/2016.
+ */
+
 import { ModelObject } from "../../../model/entity/modelobject";
-import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { BaseCrudComponent } from "../common/base-crud.component";
 import { OnInit } from "@angular/core";
-import { CrudRestService } from "../../../service/crud-rest.serivce";
 import { ToastsManager } from "ng2-toastr";
-import { CrudDialogService } from "../dialog/crud-dialog.service";
-import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
-import { CrudTableButtonsService } from "./crud-table-buttons.service";
 import { CrudModelObjectEditMode } from "../common/crud-model-object-edit-mode";
-import { CrudFormService } from "../form/crud-form.service";
+import { CrudServiceContainer } from "../common/crud-service-container";
+import { CrudOperation } from "../common/crud-operation";
 
 /**
  * This is the base class for CRUD enabled tables.
@@ -24,27 +25,22 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected selectedModelObject: T;
 
     constructor( protected toaster: ToastsManager,
-                 protected modelObjectFactory: ModelObjectFactory<T>,
-                 protected crudRestService: CrudRestService<T>,
-                 protected crudFormService: CrudFormService<T>,
-                 protected crudFormButtonsService: CrudFormButtonsService<T>,
-                 protected crudDialogService?: CrudDialogService<T>,
-                 protected crudTableButtonsService?: CrudTableButtonsService<T> )
+                 protected crudServiceContainer: CrudServiceContainer<T> )
     {
         super( toaster );
-        if ( !this.modelObjectFactory )
+        if ( !this.crudServiceContainer.modelObjectFactory )
         {
             throw new Error( "modelObjectFactory argument cannot be null" );
         }
-        if ( !this.crudRestService )
+        if ( !this.crudServiceContainer.crudRestService )
         {
             throw new Error( "crudRestService argument cannot be null" );
         }
-        if ( !this.crudFormService )
+        if ( !this.crudServiceContainer.crudFormService )
         {
             throw new Error( "crudFormService argument cannot be null" );
         }
-        if ( !this.crudFormButtonsService )
+        if ( !this.crudServiceContainer.crudFormButtonsService )
         {
             throw new Error( "crudFormButtonsService argument cannot be null" );
         }
@@ -71,9 +67,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudFormButtonEvents()
     {
-        this.crudFormButtonsService.subscribeToSaveButtonClickedEvent(( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) );
-        this.crudFormButtonsService.subscribeToAddButtonClickedEvent(( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) );
-        this.crudFormButtonsService.subscribeToHandleDeleteButtonClickedEvent(( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) );
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .subscribeToSaveButtonClickedEvent(( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) );
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .subscribeToAddButtonClickedEvent(( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) );
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .subscribeToHandleDeleteButtonClickedEvent(( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) );
     }
 
     /**
@@ -81,9 +83,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudTableButtonEvents()
     {
-        this.crudTableButtonsService.subscribeToAddButtonClickedEvent(( modelObject: T ) => this.showDialogToAdd( modelObject ) );
-        this.crudTableButtonsService.subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showDialogToEdit( modelObject ) );
-        this.crudTableButtonsService.subscribeToDeleteButtonClickedEvent(( modelObject: T ) => this.showDialogToDelete( modelObject ) );
+        this.crudServiceContainer
+            .crudTableButtonsService.subscribeToAddButtonClickedEvent(( modelObject: T ) => this.showDialogToAdd( modelObject ) );
+        this.crudServiceContainer
+            .crudTableButtonsService.subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showDialogToEdit( modelObject ) );
+        this.crudServiceContainer
+            .crudTableButtonsService.subscribeToDeleteButtonClickedEvent(( modelObject: T ) => this.showDialogToDelete( modelObject ) );
     }
 
     /**
@@ -135,12 +140,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
          */
         if ( this.modelObjectEditMode == CrudModelObjectEditMode.PANEL )
         {
-            this.crudFormButtonsService.sendCrudOperationChangedEvent( this.crudOperation );
-            this.crudFormButtonsService.sendModelObjectChangedEvent( this.modelObject );
+            this.crudServiceContainer.crudFormButtonsService.sendCrudOperationChangedEvent( this.crudOperation );
+            this.crudServiceContainer.crudFormButtonsService.sendModelObjectChangedEvent( this.modelObject );
         }
         else
         {
-            this.crudDialogService.sendDisplayDialogRequestEvent( this.modelObject, this.crudOperation );
+            this.crudServiceContainer.crudDialogService.sendDisplayDialogRequestEvent( this.modelObject, this.crudOperation );
             //this.crudDialogService.sendCrudOperationChangedEvent( this.crudOperation );
             //this.crudDialogService.sendModelObjectChangedEvent( this.modelObject );
         }
@@ -203,7 +208,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
          * because: this.modelObject <> this.selectedModelObject
          */
         this.selectedModelObject = event.data;
-        this.setModelObject( this.modelObjectFactory.newModelObjectFromObject( event.data ) );
+        this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObjectFromObject( event.data ) );
         /*
          * If a panel is used to display the selected contents, then notify the panel
          */
@@ -221,7 +226,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         var methodName = "onRowDoubleClick";
         this.logger.log( methodName + " " + JSON.stringify( event ) );
-        this.setModelObject( this.modelObjectFactory.newModelObjectFromObject( event.data ) );
+        this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObjectFromObject( event.data ) );
         this.showDialogToEdit( this.modelObject );
     }
 
@@ -254,6 +259,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         //super.setModelObject( this.modelObjectFactory.newModelObjectFromJSON( modelObject ));
         super.setModelObject( modelObject );
-        this.crudTableButtonsService.sendModelObjectChangedEvent( modelObject );
+        this.crudServiceContainer
+            .crudTableButtonsService
+            .sendModelObjectChangedEvent( modelObject );
     }
 }

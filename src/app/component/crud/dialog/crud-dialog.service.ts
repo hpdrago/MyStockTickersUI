@@ -1,4 +1,4 @@
-import { Subject, Observable } from "rxjs";
+import { Subject } from "rxjs";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { Injectable } from "@angular/core";
 import { BaseCrudComponentService } from "../common/base-crud-component.service";
@@ -14,8 +14,7 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
  *  - DisplayDialogRequest
  * Created by mike on 12/30/2016.
  */
-@Injectable()
-export abstract class CrudDialogService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
+export class CrudDialogService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
     protected displayDialogRequestSubject: BehaviorSubject<DisplayDialogRequestSubjectInfo> = new BehaviorSubject<DisplayDialogRequestSubjectInfo>( null );
     protected closeButtonClickedSubject: Subject<void> = new Subject<void>();

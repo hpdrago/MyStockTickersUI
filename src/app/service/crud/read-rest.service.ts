@@ -1,10 +1,10 @@
-import { BaseService } from "./base-service";
-import { ModelObject } from "../model/entity/modelobject";
 import { SessionService } from "./session.service";
-import { AppConfigurationService } from "./app-configuration.service";
-import { ModelObjectFactory } from "../model/factory/model-object.factory";
+import { AppConfigurationService } from "../app-configuration.service";
+import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 import { Observable } from "rxjs/Observable";
 import { Http, Response } from "@angular/http";
+import { ModelObject } from "../../model/entity/modelobject";
+import { BaseService } from "../base-service";
 
 /**
  * Generic class for reading model objects from the database.  Provides a method to read a single entity or a list

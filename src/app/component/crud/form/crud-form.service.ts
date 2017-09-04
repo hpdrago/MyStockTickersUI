@@ -14,7 +14,7 @@ import { ModelObjectFactory } from "../../../model/factory/model-object.factory"
  *
  * Created by mike on 12/10/2016.
  */
-export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
+export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
     private formDirtySubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false );
     private formTouchedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false );
@@ -36,7 +36,7 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      */
     public subscribeToFormResetEvent( fn: () => any )
     {
-        this.logger.debug( "subscribeToFormResetEvent" );
+        this.debug( "subscribeToFormResetEvent" );
         this.formResetSubject.asObservable().subscribe( fn );
     }
 
@@ -46,7 +46,7 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      */
     public subscribeToFormDirtyEvent( fn: ( boolean ) => any )
     {
-        this.logger.debug( "subscribeToFormDirtyEvent" );
+        this.debug( "subscribeToFormDirtyEvent" );
         this.formDirtySubject.asObservable().subscribe( fn );
     }
 
@@ -56,7 +56,7 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      */
     public subscribeToFormTouchedEvent( fn: ( boolean ) => any )
     {
-        this.logger.debug( "subscribeToFormTouchedEvent" );
+        this.debug( "subscribeToFormTouchedEvent" );
         return this.formTouchedSubject.asObservable().subscribe( fn );
     }
 
@@ -66,7 +66,7 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      */
     public subscribeToFormValidEvent( fn: ( boolean ) => any )
     {
-        this.logger.debug( "subscribeToFormValidEvent" );
+        this.debug( "subscribeToFormValidEvent" );
         return this.formValidSubject.asObservable().subscribe( fn );
     }
 
@@ -79,7 +79,7 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      */
     public sendFormResetEvent()
     {
-        this.logger.debug( "sendFormResetEvent" );
+        //this.debug( "sendFormResetEvent" );
         this.tickThenRun( () => this.formResetSubject.next() );
     }
 
@@ -91,7 +91,7 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      */
     public sendFormDirtyEvent( dirty: boolean )
     {
-        this.logger.debug( "sendFormDirtyEvent " + dirty );
+        //this.debug( "sendFormDirtyEvent " + dirty );
         this.tickThenRun( () => this.formDirtySubject.next( dirty ) );
     }
 
@@ -102,7 +102,7 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      */
     public sendFormTouchedEvent( touched: boolean )
     {
-        this.logger.debug( "sendFormTouchedEvent " + touched );
+        //this.debug( "sendFormTouchedEvent " + touched );
         this.tickThenRun( () => this.formTouchedSubject.next( touched ) );
     }
 
@@ -112,7 +112,7 @@ export abstract class CrudFormService<T extends ModelObject<T>> extends BaseCrud
      */
     public sendFormValidEvent( valid: boolean )
     {
-        this.logger.debug( "sendFormValidEvent " + valid );
+        //this.debug( "sendFormValidEvent " + valid );
         this.tickThenRun( () => this.formValidSubject.next( valid ) );
     }
 

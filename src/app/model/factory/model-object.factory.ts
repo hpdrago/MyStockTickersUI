@@ -4,6 +4,8 @@
  *
  * Created by mike on 12/13/2016.
  */
+import { destroyPlatform } from "@angular/core";
+
 export abstract class ModelObjectFactory<T>
 {
     /**
@@ -54,4 +56,30 @@ export abstract class ModelObjectFactory<T>
      * Subclasses override this method to create a new object with default values.
      */
     public abstract newModelObject(): T;
+
+    /**
+     * Creates a clone of src
+     * @param {T} src
+     * @return {T}
+     */
+    public clone( src: T ): T
+    {
+        var dest: T = this.newModelObject();
+        this.copyProperties( src,  dest );
+        return dest;
+    }
+
+    /**
+     * Copies the JSON properties from {@code src} to {@code dest}
+     * @param src
+     * @param dest
+     */
+    public copyProperties( src: T,  dest: T )
+    {
+        for ( var property in src )
+        {
+            dest[property] = src[property];
+        }
+    }
+
 }

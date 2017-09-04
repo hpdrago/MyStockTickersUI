@@ -1,32 +1,31 @@
-import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
+import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
+import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
 import { StockNotes } from "../../model/entity/stock-notes";
-import { StockNotesTableButtonsService } from "./stock-notes-table-buttons.service";
-import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 
 /**
  * Created by mike on 8/15/2017.
  */
 @Component({
-    selector: 'stock-notes-table-buttons',
-    styleUrls: ['../crud/table/crud-table-buttons.component.css'],
+    selector:    'stock-notes-table-buttons',
+    styleUrls:   ['../crud/table/crud-table-buttons.component.css'],
     templateUrl: '../crud/table/crud-table-buttons.component.html'
 })
 export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<StockNotes>
 {
     constructor( protected toaster: ToastsManager,
-                 protected stockNotesTableButtonsService: StockNotesTableButtonsService,
-                 protected modelObjectFactory: StockNotesFactory )
+                 protected stockNotesServiceContainer: StockNotesCrudServiceContainer )
     {
-        super( toaster, stockNotesTableButtonsService );
+        super( toaster, stockNotesServiceContainer );
     }
 
 
     protected onAddButtonClick(): void
     {
-        this.setModelObject( this.modelObjectFactory.newModelObject() );
-        this.modelObject.noteRating = 3;
+        this.setModelObject( this.stockNotesServiceContainer
+                                 .modelObjectFactory.newModelObject() );
+        this.modelObject.notesRating = 3;
         this.modelObject.bullOrBear = 1;
         super.onAddButtonClick();
     }

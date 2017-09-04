@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { AppConfigurationService } from "./app-configuration.service";
-import { BaseService } from "./base-service";
+import { AppConfigurationService } from "../app-configuration.service";
+import { BaseService } from "../base-service";
 
 /**
  * Created by mike on 10/22/2016.

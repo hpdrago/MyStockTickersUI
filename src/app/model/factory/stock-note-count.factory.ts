@@ -7,7 +7,7 @@ import { StockNoteCount } from "../entity/stock-note-count";
  * Created by mike on 12/13/2016.
  */
 @Injectable()
-export class StockNoteCountFactory extends ModelObjectFactory<StockNoteCount>
+export class StockNotesCountFactory extends ModelObjectFactory<StockNoteCount>
 {
     /**
      * Create a new StockNoteCount instance
