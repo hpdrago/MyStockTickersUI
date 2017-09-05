@@ -27,6 +27,7 @@ export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<S
                                  .modelObjectFactory.newModelObject() );
         this.modelObject.notesRating = 3;
         this.modelObject.bullOrBear = 1;
+        this.modelObject.notesDate = new Date( Date.now() );
         super.onAddButtonClick();
     }
 

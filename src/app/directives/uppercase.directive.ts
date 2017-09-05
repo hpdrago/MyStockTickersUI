@@ -4,7 +4,7 @@
  * Created by mike on 10/15/2016.
  */
 
-import { Directive, Input, Output, EventEmitter } from "@angular/core";
+import { Directive, Output, EventEmitter } from "@angular/core";
 
 @Directive({
    selector: '[ngModel][uppercase]',

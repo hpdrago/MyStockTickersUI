@@ -133,7 +133,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     propagateChange = (_: any) => {};
     registerOnChange( fn: any ): void
     {
-        //this.propagateChange = fn;
+        this.propagateChange = fn;
     }
 
     registerOnTouched( fn: any ): void {}

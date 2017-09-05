@@ -48,9 +48,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
 
     public ngOnInit()
     {
+        this.debug( "ngOnInit.begin" );
         this.subscribeToCrudFormButtonEvents();
         this.subscribeToCrudTableButtonEvents();
         this.loadTable();
+        this.debug( "ngOnInit.end" );
     }
 
     /**

@@ -51,10 +51,10 @@ export abstract class BaseComponent extends BaseClass implements OnChanges
         if ( rawJsonError.status )
         {
             restException = new RestException( rawJsonError );
-            var message = restException.getMessage();
-            var status = restException.getStatus();
-            var error = restException.getError();
-            var exception = restException.getException();
+            var message = restException.message;
+            var status = restException.status;
+            var error = restException.error;
+            var exception = restException.exception;
             this.debug( "message: " + message );
             this.debug( "status: " + status );
             this.debug( "error: " + error );
@@ -62,6 +62,11 @@ export abstract class BaseComponent extends BaseClass implements OnChanges
             if ( restException.isDuplicateKeyExists() )
             {
                 message = this.getDuplicateKeyErrorMessage();
+            }
+            else if ( exception == null )
+            {
+                var statusText = restException.statusText;
+                message = `Error ${status} - ${statusText}`;
             }
             else
             {

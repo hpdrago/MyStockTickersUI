@@ -5,6 +5,9 @@ import { StockNotesCountService } from "../../service/crud/stock-notes-count.ser
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 
+/**
+ * This is the service container for the StockNotes entity.
+ */
 @Injectable()
 export class StockNotesCrudServiceContainer extends CrudServiceContainer<StockNotes>
 {

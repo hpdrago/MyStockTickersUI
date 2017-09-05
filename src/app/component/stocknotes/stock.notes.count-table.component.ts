@@ -1,10 +1,11 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {ToastsManager} from "ng2-toastr";
 import {StockNoteCount} from "../../model/entity/stock-note-count";
-import {BaseComponent} from "../common/base.component";
 import {StockNotesTableComponent} from "./stock-notes-table.component";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { SessionService } from "../../service/crud/session.service";
+import { CrudTableComponent } from "../crud/table/crud-table.component";
+import { StockNotes } from "../../model/entity/stock-notes";
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -16,19 +17,18 @@ import { SessionService } from "../../service/crud/session.service";
     selector:    'stock-note-counts',
     templateUrl: './stocks.note.count-table.component.html'
 })
-export class StockNotesCountTableComponent extends BaseComponent implements OnInit
+export class StockNotesCountTableComponent extends CrudTableComponent<StockNotes>
 {
     @ViewChild(StockNotesTableComponent)
     private stockNotesTableComponent: StockNotesTableComponent;
 
-    private modelObject: StockNoteCount;
     private stockNoteCounts: Array<StockNoteCount>
 
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,
                  private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {
-        super( toaster )
+        super( toaster, stockNotesCrudServiceContainer );
     }
 
     /**
@@ -47,12 +47,7 @@ export class StockNotesCountTableComponent extends BaseComponent implements OnIn
     protected onRowSelect( stockNoteCount: StockNoteCount ): void
     {
         this.logger.log( 'onRowSelect ' + JSON.stringify( stockNoteCount ));
-        this.stockNotesTableComponent.loadStockNotes( stockNoteCount );
-    }
-
-    private isSelectedStockNoteCount( stockNoteCount: StockNoteCount )
-    {
-        return this.modelObject != null && this.modelObject.tickerSymbol === stockNoteCount.tickerSymbol;
+        this.stockNotesTableComponent.loadStockNotesForStock( stockNoteCount );
     }
 
     /**

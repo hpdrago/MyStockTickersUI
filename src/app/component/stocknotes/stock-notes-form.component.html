@@ -13,6 +13,7 @@
                                         [(ngModel)]="stockSearch"
                                         [formGroup]="formGroup"
                                         formControlName="stockSearch"
+                                        uppercase
                                         (stockSelected)="onStockSelected( $event )">
                     </stock-autocomplete>
                 </div>

@@ -25,13 +25,14 @@
  */
 export class RestException
 {
-    private exception: string;
-    private path: string;
-    private message: string;
-    private status: number;
-    private error: string;
-    private ok: boolean;
-    private url: string;
+    private _exception: string;
+    private _path: string;
+    private _message: string;
+    private _status: number;
+    private _statusText: string;
+    private _error: string;
+    private _ok: boolean;
+    private _url: string;
 
     constructor( exception: any )
     {
@@ -46,18 +47,26 @@ export class RestException
                                               .replace( /\\/g, "" )
                                               .replace( /"{"/g, "{\"" )
                                               .replace( /"}"/g, "\"}" ) ); */
-        this.status = exceptionObject.status;
-        this.url = exceptionObject.url;
-        this.ok = exceptionObject.ok;
+        this._status = exceptionObject.status;
+        this._url = exceptionObject.url;
+        this._ok = exceptionObject.ok;
         /*
          * parse the body and extract the values
          */
         var bodyText = exceptionObject._body;
-        var bodyObject = JSON.parse( bodyText );
-        this.exception = bodyObject.exception;
-        this.path = bodyObject.path;
-        this.message = bodyObject.message;
-        this.error = bodyObject.error;
+        try
+        {
+            var bodyObject = JSON.parse( bodyText );
+            this._exception = bodyObject.exception;
+            this._path = bodyObject.path;
+            this._message = bodyObject.message;
+            this._error = bodyObject.error;
+            this._statusText = bodyObject.statusText;
+        }
+        catch( Error )
+        {
+           // ignore for now
+        }
     }
 
     /**
@@ -66,19 +75,12 @@ export class RestException
      */
     public isDuplicateKeyExists(): boolean
     {
-        return this.status == 409 // CONFLICT;
+        return this._status == 409 // CONFLICT;
     }
 
-    public getMessage(): string
-    {
-        return this.message;
-        /*
-        return this.message.replace( /\\/g, "" )
-                           .replace( /"{"/g, "{\"" )
-                           .replace( /"}"/g, "\"}" );*/
-    }
-
-    public getStatus(): number { return this.status; }
-    public getError(): string { return this.error; }
-    public getException(): string { return this.exception; }
+    get message(): string { return this._message; }
+    get status(): number { return this._status; }
+    get statusText(): string { return this._statusText; }
+    get error(): string { return this._error; }
+    get exception(): string { return this._exception; }
 }

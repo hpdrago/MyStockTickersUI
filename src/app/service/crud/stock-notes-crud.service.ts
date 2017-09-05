@@ -38,7 +38,6 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
     {
         modelObject.dateCreated = null;
         modelObject.dateModified = null;
-        modelObject.notesDate = null;
         return super.createModelObject( modelObject );
     }
 
@@ -80,20 +79,16 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
     }
 
     /**
-     * Get a list of the stockNotes for the customer by customer id
+     * Get a list of the stockNotes for the customer
      * @param customerId
-     * @param tickerSymbol
      * @returns {Observable<R>}
      */
-    public getStockNotes( customerId: number, tickerSymbol: string ): Observable<Array<StockNotes>>
+    public getStockNotes( customerId: number ): Observable<Array<StockNotes>>
     {
         let methodName = "getStockNotes";
-        this.logger.debug( `${methodName} customerId: ${customerId} tickerSymbol: ${tickerSymbol}`);
+        this.logger.debug( `${methodName} customerId: ${customerId}`);
         var stockNote: StockNotes = new StockNotes();
         stockNote.customerId = customerId;
-        //stockNote.tickerSymbol = tickerSymbol;
         return super.getModelObjectList( stockNote );
     }
-
-
 }
