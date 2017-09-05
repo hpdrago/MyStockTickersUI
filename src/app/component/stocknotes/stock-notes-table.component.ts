@@ -38,6 +38,8 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
     private loadStockNotes()
     {
         this.debug( "loadStockNotes.begin" );
+        this.modelObject = this.stockNotesServiceContainer.stockNoteFactory.newModelObject();
+        this.modelObject.customerId = this.session.getLoggedInUserId();
         this.stockNotesServiceContainer
             .stockNoteCrudService
             .getStockNotes( this.session.getLoggedInUserId() )

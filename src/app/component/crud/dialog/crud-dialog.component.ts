@@ -5,6 +5,7 @@ import { BaseCrudComponent } from "../common/base-crud.component";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { DisplayDialogRequestSubjectInfo } from "./display-dialog-request-subject-info";
 import { CrudOperation } from "../common/crud-operation";
+import { isNullOrUndefined } from "util";
 /**
  * This is the base class for Modal dialogs that provide CRUD operations on a model object.
  *
@@ -122,27 +123,30 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
     protected setDisplayDialog( subjectInfo: DisplayDialogRequestSubjectInfo ): void
     {
         this.debug( "setDisplayDialog.begin " + JSON.stringify( subjectInfo ) );
-        this.setModelObject( subjectInfo.modelObject );
-        this.setCrudOperation( subjectInfo.crudOperation );
-        /*
-         * Tell the buttons and form of the changes
-         */
-        this.debug( "Sending events to Form" );
-        this.crudServiceContainer
-            .crudFormService
-            .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
-        this.crudServiceContainer
-            .crudFormService
-            .sendModelObjectChangedEvent( subjectInfo.modelObject );
-        this.debug( "Sending events to Form Buttons" );
-        this.crudServiceContainer
-            .crudFormButtonsService
-            .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
-        this.crudServiceContainer
-            .crudFormButtonsService
-            .sendModelObjectChangedEvent( subjectInfo.modelObject );
-        this.displayDialog = true;
-        this.debug( "setDisplayDialog.end" );
+        if ( !isNullOrUndefined( this.modelObject ) )
+        {
+            this.setModelObject( subjectInfo.modelObject );
+            this.setCrudOperation( subjectInfo.crudOperation );
+            /*
+             * Tell the buttons and form of the changes
+             */
+            this.debug( "Sending events to Form" );
+            this.crudServiceContainer
+                .crudFormService
+                .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
+            this.crudServiceContainer
+                .crudFormService
+                .sendModelObjectChangedEvent( subjectInfo.modelObject );
+            this.debug( "Sending events to Form Buttons" );
+            this.crudServiceContainer
+                .crudFormButtonsService
+                .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
+            this.crudServiceContainer
+                .crudFormButtonsService
+                .sendModelObjectChangedEvent( subjectInfo.modelObject );
+            this.displayDialog = true;
+            this.debug( "setDisplayDialog.end" );
+        }
     }
 
     /**
@@ -151,8 +155,11 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
      */
     protected onCloseButtonClick(): void
     {
-        this.debug( "onCloseButtonClick" );
-        this.displayDialog = false;
+        if ( !isNullOrUndefined( this.modelObject ) )
+        {
+            this.debug( "onCloseButtonClick" );
+            this.displayDialog = false;
+        }
     }
 
     /**
@@ -163,16 +170,22 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
     protected onAddButtonClicked( modelObject: T )
     {
         this.debug( "onAddButtonClick " + JSON.stringify( modelObject ) );
-        if ( !this.isContinuousAdd() )
+        if ( !isNullOrUndefined( this.modelObject ) )
         {
-            this.onCloseButtonClick();
+            if ( !this.isContinuousAdd() )
+            {
+                this.onCloseButtonClick();
+            }
         }
     }
 
     private onDeleteButtonClicked( modelObject: T )
     {
         this.debug( "onDeleteButtonClick " + JSON.stringify( modelObject ) );
-        this.displayDialog = false;
+        if ( !isNullOrUndefined( this.modelObject ) )
+        {
+            this.displayDialog = false;
+        }
     }
 
     /**

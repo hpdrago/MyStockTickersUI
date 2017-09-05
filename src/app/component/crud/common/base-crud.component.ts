@@ -2,6 +2,7 @@ import { BaseComponent } from "../../common/base.component";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
 import { CrudOperation } from "./crud-operation";
+import { isNullOrUndefined } from "util";
 /**
  * This class is the base class for all CRUD components
  *
@@ -70,8 +71,11 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected modelObjectChanged( modelObject: T )
    {
-      this.log( "modelObjectChanged " + JSON.stringify( modelObject ));
-      this.modelObject = modelObject;
+       if ( !isNullOrUndefined( this.modelObject ) )
+       {
+           this.log( "modelObjectChanged " + JSON.stringify( modelObject ) );
+           this.modelObject = modelObject;
+       }
    }
 
     /**

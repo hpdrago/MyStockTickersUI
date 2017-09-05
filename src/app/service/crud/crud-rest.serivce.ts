@@ -5,6 +5,7 @@ import { ReadRestService } from "./read-rest.service";
 import { ModelObject } from "../../model/entity/modelobject";
 import { AppConfigurationService } from "../app-configuration.service";
 import { ModelObjectFactory } from "../../model/factory/model-object.factory";
+import { isNullOrUndefined } from "util";
 
 /**
  * Generic Service class for REST CRUD methods
@@ -53,15 +54,23 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
         var methodName = "createModelObject";
         modelObject.createdBy = this.sessionService.getLoggedInUserId();
         var bodyString = JSON.stringify( modelObject ); // Stringify payload
-        this.logger.log( methodName + " modelObject: " + bodyString );
+        this.log( methodName + " modelObject: " + bodyString );
+        if ( isNullOrUndefined( modelObject ) )
+        {
+            throw new ReferenceError( "modelObject is null or undefined" );
+        }
         var headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
         var options = new RequestOptions( { headers: headers } ); // Create a request option
         var url = this.getCreateModelObjectUrl( this.appConfigurationService.getBaseUrl(), modelObject );
-        this.logger.log( methodName + " url: " + url );
+        if ( isNullOrUndefined( url ) )
+        {
+            throw new ReferenceError( "url is null or undefined" );
+        }
+        this.log( methodName + " url: " + url );
         return this.http.post( url, bodyString, options ) // ...using post request
                         .map( ( res: Response ) =>
                         {
-                            this.logger.log( methodName + " received: " + JSON.stringify( res.json() ) );
+                            this.log( methodName + " received: " + JSON.stringify( res.json() ) );
                             return this.modelObjectFactory.newModelObjectFromObject( res.json() );
                         } ) // ...and calling .json() on the response to return data
                         .catch( ( error: any ) => Observable.throw( error || 'Server error' ) ); //...errors if any
@@ -78,16 +87,24 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
         var methodName = "updateModelObject";
         var bodyString = JSON.stringify( modelObject ); // Stringify payload
         modelObject.updatedBy = this.sessionService.getLoggedInUserId();
-        this.logger.log( methodName + " modelObject: " + bodyString );
+        this.log( methodName + " modelObject: " + bodyString );
+        if ( isNullOrUndefined( modelObject ) )
+        {
+            throw new ReferenceError( "modelObject is null or undefined" );
+        }
         var headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
         var options = new RequestOptions( { headers: headers } ); // Create a request option
         var url =  this.getUpdateModelObjectUrl( this.appConfigurationService.getBaseUrl(), modelObject );
-        this.logger.log( methodName + " url: " + url );
+        this.log( methodName + " url: " + url );
+        if ( isNullOrUndefined( url ) )
+        {
+            throw new ReferenceError( "url is null or undefined" );
+        }
 
         return this.http.put( url, bodyString, options ) // ...using put request
                         .map( ( res: Response ) =>
                         {
-                            this.logger.log( methodName + " received: " + JSON.stringify( res.json() ));
+                            this.log( methodName + " received: " + JSON.stringify( res.json() ));
                             return this.modelObjectFactory.newModelObjectFromObject( res.json() );
                         } ) // ...and calling .json() on the response to return data
                         .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ); //...errors if any
@@ -102,13 +119,21 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
     public deleteModelObject( modelObject: T ): Observable<void>
     {
         var methodName = "deleteModelObject";
-        this.logger.log( methodName + " modelObject: " + JSON.stringify( modelObject ) );
+        this.log( methodName + " modelObject: " + JSON.stringify( modelObject ) );
+        if ( isNullOrUndefined( modelObject ) )
+        {
+            throw new ReferenceError( "modelObject is null or undefined" );
+        }
         var url = this.getDeleteModelObjectUrl( this.appConfigurationService.getBaseUrl(), modelObject );
-        this.logger.log( methodName + " url: " + url ) ;
+        this.log( methodName + " url: " + url ) ;
+        if ( isNullOrUndefined( url ) )
+        {
+            throw new ReferenceError( "url is null or undefined" );
+        }
         return this.http.delete( url ) // ...using delete request
                         .map( ( res: Response ) =>
                               {
-                                  this.logger.debug( methodName + " res: "+ JSON.stringify( res ));
+                                  this.debug( methodName + " res: "+ JSON.stringify( res ));
                                   if ( !res.ok )
                                   {
                                       throw Observable.throw( "Delete was not OK" );

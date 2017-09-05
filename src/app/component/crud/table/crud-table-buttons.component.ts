@@ -3,6 +3,7 @@ import { CrudServiceContainer } from "../common/crud-service-container";
 import { Component } from "@angular/core";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { BaseCrudComponent } from "../common/base-crud.component";
+import { isNullOrUndefined } from "util";
 
 /**
  * This is the base component class for the buttons on all CRUD enabled tables
@@ -69,9 +70,12 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     protected onAddButtonClick(): void
     {
         this.logger.debug( "onAddButtonClick" );
-        this.crudServiceContainer
-            .crudTableButtonsService
-            .sendAddButtonClickedEvent( this.modelObject );
+        if ( !isNullOrUndefined( this.modelObject ) )
+        {
+            this.crudServiceContainer
+                .crudTableButtonsService
+                .sendAddButtonClickedEvent( this.modelObject );
+        }
     }
 
     /**
@@ -109,8 +113,11 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     protected onDeleteButtonClick(): void
     {
         this.logger.debug( "onDeleteButtonClick" );
-        this.crudServiceContainer
-            .crudTableButtonsService.sendDeleteButtonClickedEvent( this.modelObject );
+        if ( !isNullOrUndefined( this.modelObject ) )
+        {
+            this.crudServiceContainer
+                .crudTableButtonsService.sendDeleteButtonClickedEvent( this.modelObject );
+        }
     }
 
     /**

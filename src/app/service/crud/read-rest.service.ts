@@ -5,6 +5,7 @@ import { Observable } from "rxjs/Observable";
 import { Http, Response } from "@angular/http";
 import { ModelObject } from "../../model/entity/modelobject";
 import { BaseService } from "../base-service";
+import { isNullOrUndefined } from "util";
 
 /**
  * Generic class for reading model objects from the database.  Provides a method to read a single entity or a list
@@ -43,13 +44,21 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     public getModelObject( modelObject: T ): Observable<T>
     {
         var methodName = "getModelObject";
-        this.logger.log( methodName + " query for: " + JSON.stringify( modelObject ) );
+        this.log( methodName + " query for: " + JSON.stringify( modelObject ) );
+        if ( isNullOrUndefined( modelObject ) )
+        {
+            throw new ReferenceError( "modelObject is null or undefined" );
+        }
         var url = this.getReadModelObjectUrl( this.appConfigurationService.getBaseUrl(), modelObject );
-        this.logger.log( methodName + " url: " + url );
+        this.log( methodName + " url: " + url );
+        if ( isNullOrUndefined( url ) )
+        {
+            throw new ReferenceError( "url is null or undefined" );
+        }
         return this.http
                    .get( url ) // ...using put request
                    .map( ( response: Response ) => {
-                       this.logger.log( methodName + " received: " + JSON.stringify( response.json() ) )
+                       this.log( methodName + " received: " + JSON.stringify( response.json() ) )
                        return this.modelObjectFactory.newModelObjectFromObject( response.json() );
                    } ) // ...and calling .json() on the response to return data
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) );
@@ -63,13 +72,21 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     public getModelObjectList( modelObject: T ): Observable<Array<T>>
     {
         var methodName = "getModelObjectList";
-        this.logger.log( methodName + " modelObject: " + JSON.stringify( modelObject ) );
+        this.log( methodName + " modelObject: " + JSON.stringify( modelObject ) );
+        if ( isNullOrUndefined( modelObject ) )
+        {
+            throw new ReferenceError( "modelObject is null or undefined" );
+        }
         var url: string = this.getReadModelObjectListUrl( this.appConfigurationService.getBaseUrl(), modelObject );
-        this.logger.log( methodName + " url: " + url );
+        this.log( methodName + " url: " + url );
+        if ( isNullOrUndefined( url ) )
+        {
+            throw new ReferenceError( "url is null or undefined" );
+        }
         return this.http
                    .get( url )
                    .map( ( response: Response ) => {
-                       this.logger.log( methodName + " received response" );
+                       this.log( methodName + " received response" );
                        return this.modelObjectFactory.newModelObjectArray( response.json() )
                    } )
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) );

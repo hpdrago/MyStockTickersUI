@@ -20,7 +20,7 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super();
-        this.modelObjectChangedSubject = new BehaviorSubject<T>( this.modelObjectFactory.newModelObject() );
+        this.modelObjectChangedSubject = new BehaviorSubject<T>( null );
         this.crudOperationChangedSubject = new BehaviorSubject<CrudOperation>( CrudOperation.NONE );
         this.crudOperationErrorSubject = new BehaviorSubject<string>( "" );
         this.componentInitializedSubject = new Subject<void>();

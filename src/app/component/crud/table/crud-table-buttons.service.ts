@@ -17,9 +17,9 @@ export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudC
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super( modelObjectFactory );
-        this.addButtonClickedSubject = new BehaviorSubject<T>( this.modelObjectFactory.newModelObject() );
-        this.deleteButtonClickedSubject = new BehaviorSubject<T>( this.modelObjectFactory.newModelObject() );
-        this.editButtonClickedSubject = new BehaviorSubject<T>( this.modelObjectFactory.newModelObject() );
+        this.addButtonClickedSubject = new BehaviorSubject<T>( null );
+        this.deleteButtonClickedSubject = new BehaviorSubject<T>( null );
+        this.editButtonClickedSubject = new BehaviorSubject<T>( null );
     }
 
     /**

@@ -5,14 +5,13 @@
  */
 import { Logger } from "../common/logger";
 import { LoggerFactory } from "../common/logger-factory";
+import { BaseClass } from "../common/base-class";
 
-export abstract class BaseService
+export abstract class BaseService extends BaseClass
 {
-    protected logger: Logger;
-
     constructor()
     {
-        this.logger = LoggerFactory.getLogger( (<any>this).constructor.name );
+        super();
     }
 
     protected reportError( error ): string
