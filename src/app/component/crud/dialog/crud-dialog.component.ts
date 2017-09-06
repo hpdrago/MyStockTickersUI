@@ -123,7 +123,11 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
     protected setDisplayDialog( subjectInfo: DisplayDialogRequestSubjectInfo ): void
     {
         this.debug( "setDisplayDialog.begin " + JSON.stringify( subjectInfo ) );
-        if ( !isNullOrUndefined( this.modelObject ) )
+        if ( isNullOrUndefined( subjectInfo.modelObject ) )
+        {
+            this.debug( "setDisplayDialog model objects is null or not defined" );
+        }
+        else
         {
             this.setModelObject( subjectInfo.modelObject );
             this.setCrudOperation( subjectInfo.crudOperation );
@@ -145,8 +149,8 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
                 .crudFormButtonsService
                 .sendModelObjectChangedEvent( subjectInfo.modelObject );
             this.displayDialog = true;
-            this.debug( "setDisplayDialog.end" );
         }
+        this.debug( "setDisplayDialog.end" );
     }
 
     /**

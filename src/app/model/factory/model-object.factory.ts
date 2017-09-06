@@ -4,10 +4,20 @@
  *
  * Created by mike on 12/13/2016.
  */
-import { destroyPlatform } from "@angular/core";
 
 export abstract class ModelObjectFactory<T>
 {
+    /**
+     * Converts a JSON string into a TypeScript object
+     * @param object
+     * @return {T}
+     */
+    public newModelObjectFromJSON( jsonString: string ): T
+    {
+        var modelObject: T = JSON.parse( jsonString );
+        return modelObject;
+    }
+
     /**
      * Converts an array of Javascript object into an array of ModelObjects of type <T>
      * @param jsArray
@@ -25,31 +35,32 @@ export abstract class ModelObjectFactory<T>
     }
 
     /**
-     * Converts a JSON string into a TypeScript object
-     * @param object
+     * Converts a JS object into a TypeScript object
+     * @param srcModelObject
      * @return {T}
      */
-    public newModelObjectFromJSON( jsonString: string ): T
+    public newModelObjectFromObject( srcModelObject: T ): T
     {
-        var modelObject: T = JSON.parse( jsonString );
-        return modelObject;
+        //console.log( "newModelObjectFromObject " + JSON.stringify( object ) );
+        var destModelObject = this.newModelObject();
+        for ( var property in srcModelObject )
+        {
+            this.setModelObjectProperty( property, srcModelObject, destModelObject );
+        }
+        //console.log( "newModelObjectFromObject " + JSON.stringify( modelObject ) );
+        return destModelObject;
     }
 
     /**
-     * Converts a JS object into a TypeScript object
-     * @param object
-     * @return {T}
+     * This method is called for each property of an object to provide sub class factories to perform any conversion
+     * operations from one type to another.
+     * @param property
+     * @param {T} srcModelObject
+     * @param {T} destModelObject
      */
-    public newModelObjectFromObject( object: T ): T
+    protected setModelObjectProperty( property: string, srcModelObject: T, destModelObject: T )
     {
-        //console.log( "newModelObjectFromObject " + JSON.stringify( object ) );
-        var modelObject = this.newModelObject();
-        for ( var property in object )
-        {
-            modelObject[property] = object[property];
-        }
-        //console.log( "newModelObjectFromObject " + JSON.stringify( modelObject ) );
-        return modelObject;
+        destModelObject[property] = srcModelObject[property];
     }
 
     /**

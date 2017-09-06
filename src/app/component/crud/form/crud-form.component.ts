@@ -143,6 +143,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         {
             this.setFormValues( modelObject );
         }
+        this.crudServiceContainer
+            .crudFormService
+            .sendFormLogStateRequest();
     }
 
     /**

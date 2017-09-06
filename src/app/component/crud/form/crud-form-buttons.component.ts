@@ -60,7 +60,9 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     public ngOnInit()
     {
+        this.log( "ngOnInit.begin" );
         this.subscribeToCrudFormServiceEvents();
+        this.log( "ngOnInit.end" );
         // Tell everyone that we are done
         this.crudServiceContainer
             .crudFormButtonsService
@@ -88,17 +90,27 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.crudServiceContainer
             .crudFormService
             .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) );
+        this.crudServiceContainer
+            .crudFormService
+            .subscribeToFormLogStateRequest( () => this.logState() ) ;
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 
     protected crudOperationChanged( crudOperation: CrudOperation )
     {
         super.crudOperationChanged( crudOperation );
+        this.logState();
+    }
+
+    /**
+     * This method will log the state of the buttons and form validity
+     */
+    private logState()
+    {
         this.debug( "isFormValid: " + this.formValidFlag );
         this.debug( "isSaveButtonDisabled: " + this.isSaveButtonDisabled() );
         this.debug( "isDeleteButtonDisabled: " + this.isDeleteButtonDisabled() );
         this.debug( "isAddButtonDisabled: " + this.isAddButtonDisabled() );
-
         this.debug( "isShowSaveButton: " + this.isShowSaveButton() );
         this.debug( "isShowAddButton: " + this.isShowAddButton() );
         this.debug( "isShowDeleteButton: " + this.isShowDeleteButton() );

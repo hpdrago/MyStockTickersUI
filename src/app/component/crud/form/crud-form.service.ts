@@ -4,11 +4,11 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 /**
- * This service provides communication from the CrudFormComponent's parent aka CrudPanelComponent
+ * This service provides communication from the CrudFormComponent's parent aka CrudFormComponent
  * to the CrudFormComponent.
  *
  * The methods contained herein return {@code Observable} so the form can implement the necessary
- * logic to fulfill the request from the CrudPanelComponent.
+ * logic to fulfill the request from the CrudFormComponent.
  *
  * @param T The model object type
  *
@@ -20,6 +20,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     private formTouchedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false );
     private formValidSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false );
     private formResetSubject: Subject<void> = new Subject<void>();
+    private formLogStateRequest: Subject<void> = new Subject<void>();
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
@@ -41,7 +42,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     }
 
     /**
-     * The {@code CrudFormPanel} will call this method to register for
+     * The {@code CrudFormForm} will call this method to register for
      * dirty status changes of the form.
      */
     public subscribeToFormDirtyEvent( fn: ( boolean ) => any )
@@ -51,7 +52,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     }
 
     /**
-     * The {@code CrudFormPanel} will call this method to be notified on changes to the
+     * The {@code CrudFormForm} will call this method to be notified on changes to the
      * touched status.
      */
     public subscribeToFormTouchedEvent( fn: ( boolean ) => any )
@@ -61,7 +62,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     }
 
     /**
-     * The {@code CrudFormPanel} will call this method to be notified when there are changes to the
+     * The {@code CrudFormForm} will call this method to be notified when there are changes to the
      * form's valid status.
      */
     public subscribeToFormValidEvent( fn: ( boolean ) => any )
@@ -70,12 +71,22 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
         return this.formValidSubject.asObservable().subscribe( fn );
     }
 
+    /**
+     * The {@code CrudForm} will call this method and register to the Observable
+     * and perform the necessary work to display the form state
+     */
+    public subscribeToFormLogStateRequest( fn: () => any )
+    {
+        this.debug( "subscribeToFormLogState" );
+        this.formLogStateRequest.asObservable().subscribe( fn );
+    }
+
     /*
      * N O T I F I E R   M E T H O D S
      */
 
     /**
-     * The form container [@code CrudFormPanelComponent) will call this method when to notify the form to resetForm.
+     * The form container [@code CrudFormFormComponent) will call this method when to notify the form to resetForm.
      */
     public sendFormResetEvent()
     {
@@ -116,4 +127,12 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
         this.tickThenRun( () => this.formValidSubject.next( valid ) );
     }
 
+    /**
+     * The {@code CrudFromComponent} will call this method to notify the form when the valid status has changed.
+     */
+    public sendFormLogStateRequest()
+    {
+        //this.debug( "sendFormValidEvent " + valid );
+        this.tickThenRun( () => this.formLogStateRequest.next() );
+    }
 }

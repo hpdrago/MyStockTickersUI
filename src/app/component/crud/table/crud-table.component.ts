@@ -99,9 +99,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected showDialogToAdd( modelObject: T )
     {
-        this.logger.debug( "showDialogToAdd" );
+        this.debug( "showDialogToAdd" );
         this.crudOperation = CrudOperation.CREATE;
-        this.modelObject = modelObject;
+        this.setModelObject( modelObject );
         this.displayModelObject();
     }
 
@@ -112,9 +112,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected showDialogToEdit( modelObject: T )
     {
-        this.logger.debug( "showDialogToEdit" );
+        this.debug( "showDialogToEdit" );
         this.crudOperation = CrudOperation.UPDATE;
-        this.modelObject = modelObject;
+        this.setModelObject( modelObject );
         this.displayModelObject();
     }
 
@@ -124,9 +124,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected showDialogToDelete( modelObject: T )
     {
-        this.logger.debug( "showDialogToDelete" );
+        this.debug( "showDialogToDelete" );
         this.crudOperation = CrudOperation.DELETE;
-        this.modelObject = modelObject;
+        this.setModelObject( modelObject );
         this.displayModelObject();
     }
 
@@ -136,6 +136,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     private displayModelObject()
     {
+        this.log( "displayModelObject " + JSON.stringify( this.modelObject ));
         /*
          * Notify the panel of the changes
          * If a panel is used to display the selected contents, then notify the panel
@@ -161,7 +162,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onUserModifiedModelObject( modelObject: T ): void
     {
-        this.logger.log( 'onUserModifiedModelObject ' + JSON.stringify( modelObject ) );
+        this.log( 'onUserModifiedModelObject ' + JSON.stringify( modelObject ) );
         var index = this.indexOf( modelObject );
         if ( index == -1 )
         {
@@ -179,7 +180,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onUserCreatedModelObject( modelObject: T ): void
     {
-        this.logger.log( 'onUserCreatedModelObject ' + JSON.stringify( modelObject ) );
+        this.log( 'onUserCreatedModelObject ' + JSON.stringify( modelObject ) );
         this.rows.push( modelObject );
         this.setModelObject( modelObject );
     }
@@ -189,7 +190,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onUserDeletedModelObject( modelObject: T ): void
     {
-        this.logger.log( 'onUserDeletedModelObject' + JSON.stringify( modelObject ) );
+        this.log( 'onUserDeletedModelObject' + JSON.stringify( modelObject ) );
         var index = this.indexOf( modelObject );
         if ( index != -1 )
         {
@@ -204,7 +205,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onRowSelect( event ): void
     {
-        this.logger.log( "onRowSelect " + JSON.stringify( event ) );
+        this.log( "onRowSelect " + JSON.stringify( event ) );
         /*
          * Need to save the actual data value so that the table selection persists.
          * because: this.modelObject <> this.selectedModelObject
@@ -227,7 +228,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onRowDoubleClick( event ): void
     {
         var methodName = "onRowDoubleClick";
-        this.logger.log( methodName + " " + JSON.stringify( event ) );
+        this.log( methodName + " " + JSON.stringify( event ) );
         this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObjectFromObject( event.data ) );
         this.showDialogToEdit( this.modelObject );
     }

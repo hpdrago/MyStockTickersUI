@@ -71,11 +71,8 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected modelObjectChanged( modelObject: T )
    {
-       if ( !isNullOrUndefined( this.modelObject ) )
-       {
-           this.log( "modelObjectChanged " + JSON.stringify( modelObject ) );
-           this.modelObject = modelObject;
-       }
+       this.log( "modelObjectChanged " + JSON.stringify( modelObject ) );
+       this.modelObject = modelObject;
    }
 
     /**

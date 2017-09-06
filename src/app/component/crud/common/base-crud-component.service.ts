@@ -75,7 +75,7 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     public sendModelObjectChangedEvent( modelObject: T )
     {
         this.debug( "sendModelObjectChangedEvent " + JSON.stringify( modelObject ) + " to " +
-            this.modelObjectChangedSubject.observers.length + " ob" );
+            this.modelObjectChangedSubject.observers.length + " observers" );
         this.tickThenRun( () => this.modelObjectChangedSubject.next( modelObject ) );
     }
 

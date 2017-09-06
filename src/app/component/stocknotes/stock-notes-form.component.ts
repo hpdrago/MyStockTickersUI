@@ -58,16 +58,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         return stockNoteForm;
     }
 
-
-   /* protected setFormValue( fieldName: string, fieldValue: any ): any
-    {
-        if ( fieldName === 'bullOrBear')
-        {
-
-        }
-        return super.setFormValue( fieldName, fieldValue );
-    }*/
-
     /**
      * This method is called when the user selects a stock using the stock/company search input
      * @param stock
