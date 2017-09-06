@@ -31,13 +31,6 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
     protected loadTable()
     {
         this.log( "loadTable.begin" );
-        this.loadStockNotes();
-        this.log( "loadTable.end" );
-    }
-
-    private loadStockNotes()
-    {
-        this.debug( "loadStockNotes.begin" );
         this.modelObject = this.stockNotesServiceContainer.stockNoteFactory.newModelObject();
         this.modelObject.customerId = this.session.getLoggedInUserId();
         this.stockNotesServiceContainer
@@ -59,6 +52,7 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
                         {
                             this.reportRestError( error );
                         } );
+        this.log( "loadTable.end" );
     }
 
     /**

@@ -89,4 +89,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         //this.modelObject.setStocks( this.stockSearch );
         (<FormControl>this.formGroup.controls['stockSearch']).setValue( '' );
     }
+
+
 }

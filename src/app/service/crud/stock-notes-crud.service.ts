@@ -7,6 +7,7 @@ import { CrudRestService } from "./crud-rest.serivce";
 import { StockNotesCountFactory } from "../../model/factory/stock-note-count.factory";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
+import { isNullOrUndefined } from "util";
 
 /**
  * This class provides all CRUD REST services for Stock Notes.
@@ -87,6 +88,10 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
     {
         let methodName = "getStockNotes";
         this.logger.debug( `${methodName} customerId: ${customerId}`);
+        if ( isNullOrUndefined( customerId ) || customerId == 0 )
+        {
+            throw new ReferenceError( "customerId is not value" );
+        }
         var stockNote: StockNotes = new StockNotes();
         stockNote.customerId = customerId;
         return super.getModelObjectList( stockNote );

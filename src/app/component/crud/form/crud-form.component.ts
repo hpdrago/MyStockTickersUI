@@ -208,7 +208,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onFormChange( formData: any )
     {
         var methodName = "onFormChange";
-        //this.debug( "onFormChange.begin " + JSON.stringify( formData ) );
+        this.debug( "onFormChange.begin " + JSON.stringify( formData ) );
         this.emitFormDirtyChange();
         this.emitFormValidChange();
         //this.modelObjectChange.emit( this.modelObject );
