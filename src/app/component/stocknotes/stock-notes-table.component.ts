@@ -36,11 +36,14 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
         this.stockNotesServiceContainer
             .stockNoteCrudService
             .getStockNotes( this.session.getLoggedInUserId() )
-            .subscribe( ( stocks: StockNotes[] ) =>
+            .subscribe( ( stockNotes: StockNotes[] ) =>
                         {
-                            if ( stocks.length > 0 )
+                            if ( stockNotes.length > 0 )
                             {
-                                this.rows = stocks;
+                                /*
+                                 * Expand the rows by creating new StockNote entries for each stock of the stock note
+                                 */
+                                this.rows = this.expandRows( stockNotes );
                             }
                             else
                             {
@@ -53,6 +56,40 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
                             this.reportRestError( error );
                         } );
         this.log( "loadTable.end" );
+    }
+
+    /**
+     * Expands the stockNoteList into individual StockNote entries for each stock of the original StockNote.
+     * @param {StockNotes[]} stockNoteList
+     * @returns {StockNotes[]}
+     */
+    private expandRows( stockNoteList: StockNotes[] ): StockNotes[]
+    {
+        this.log( "expandedRows.begin stock notes: " + stockNoteList.length );
+        var expandedRows: StockNotes[] = [];
+        for ( let stockNotes of stockNoteList )
+        {
+            if ( stockNotes.stockNotesStocks.length > 1 )
+            {
+                for ( let stockNotesStock of stockNotes.stockNotesStocks )
+                {
+                    var expandedStockNotes: StockNotes = this.stockNotesServiceContainer
+                                                             .stockNoteFactory
+                                                             .newModelObjectFromObject( stockNotes )
+                    expandedStockNotes.tickerSymbol = stockNotesStock.tickerSymbol;
+                    expandedStockNotes.stockPrice = stockNotesStock.stockPrice;
+                    expandedRows.push( expandedStockNotes );
+                }
+            }
+            else
+            {
+                stockNotes.tickerSymbol = stockNotes.stockNotesStocks[0].tickerSymbol;
+                stockNotes.stockPrice = stockNotes.stockNotesStocks[0].stockPrice;
+                expandedRows.push( stockNotes );
+            }
+        }
+        this.log( "expandedRows.end row count = " + expandedRows.length );
+        return expandedRows;
     }
 
     /**

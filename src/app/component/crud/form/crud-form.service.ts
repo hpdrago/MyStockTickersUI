@@ -20,7 +20,8 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     private formTouchedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false );
     private formValidSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false );
     private formResetSubject: Subject<void> = new Subject<void>();
-    private formLogStateRequest: Subject<void> = new Subject<void>();
+    private formLogStateSubject: Subject<void> = new Subject<void>();
+    private formPrepareToSaveSubject: Subject<void> = new Subject<void>();
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
@@ -78,9 +79,18 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     public subscribeToFormLogStateRequest( fn: () => any )
     {
         this.debug( "subscribeToFormLogState" );
-        this.formLogStateRequest.asObservable().subscribe( fn );
+        this.formLogStateSubject.asObservable().subscribe( fn );
     }
 
+    /**
+     * The {@code CrudFormComponent} will call this method to register to be notified that the user has clicked on
+     * the save or add button.  This allows the form to perform any final processing on the modelObject before its saved.
+     */
+    public subscribeToFormPrepareToSaveEvent( fn: () => any )
+    {
+        this.debug( "subscribeToFormPrepareToSaveEvent" );
+        this.formPrepareToSaveSubject.asObservable().subscribe( fn );
+    }
     /*
      * N O T I F I E R   M E T H O D S
      */
@@ -118,7 +128,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     }
 
     /**
-     * The {@code CrudFromComponent} will call this method to notify the panel when the valid status has changed.
+     * The {@code CrudFormComponent} will call this method to notify the panel when the valid status has changed.
      * @param valid
      */
     public sendFormValidEvent( valid: boolean )
@@ -128,11 +138,21 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     }
 
     /**
-     * The {@code CrudFromComponent} will call this method to notify the form when the valid status has changed.
+     * The {@code CrudFormComponent} will call this method to notify the form when the valid status has changed.
      */
     public sendFormLogStateRequest()
     {
         //this.debug( "sendFormValidEvent " + valid );
-        this.tickThenRun( () => this.formLogStateRequest.next() );
+        this.tickThenRun( () => this.formLogStateSubject.next() );
+    }
+
+    /**
+     * The {@code CrudFormButtonsComponent} will call this method to notify the form when the user has requested to
+     * save the current model object.
+     */
+    public sendFormPrepareToSaveEvent()
+    {
+        //this.debug( "sendFormValidEvent " + valid );
+        this.tickThenRun( () => this.formPrepareToSaveSubject.next() );
     }
 }

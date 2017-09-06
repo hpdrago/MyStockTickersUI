@@ -99,6 +99,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.crudServiceContainer
             .crudFormService
             .subscribeToModelObjectChangedEvent( ( modelObject: T ) => this.modelObjectChanged( modelObject ) );
+        this.crudServiceContainer
+            .crudFormService
+            .subscribeToFormPrepareToSaveEvent( () => this.prepareToSave() );
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 
@@ -113,6 +116,14 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected readOnlyFields(): Array<string>
     {
         return [];
+    }
+
+    /**
+     * This method is called when the user clicks on the save button to allow the form to perform any final processing
+     * to prepare the model object before it is sent to the backend to be saved.
+     */
+    protected prepareToSave()
+    {
     }
 
     /**

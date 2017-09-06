@@ -7,7 +7,7 @@ import { Component } from "@angular/core";
 @Component(
 {
     selector: 'menu-bar',
-    templateUrl: './menu-bar.component.html'
+    template: `<p-tabMenu [model]="menuItems"></p-tabMenu>`
 })
 export class MenuBarComponent
 {
@@ -22,10 +22,10 @@ export class MenuBarComponent
     {
         this.menuItems =
             [
-                { label: 'Dashboard', icon: 'fa-chart', routerLink: ['/dashboard'] },
-                { label: 'Stock Notes', icon: 'fa-chart', routerLink: ['/stockNotes'] },
-                { label: 'Portfolios', icon: 'fa-chart', routerLink: ['/portfolios'] },
-                { label: 'Stocks', icon: 'fa-chart', routerLink: ['/stocks'] }
+                { label: 'Dashboard', icon: 'fa-area-chart', url: '/dashboard' },
+                { label: 'Stock Notes', icon: 'fa-sticky-note', url: '/stockNotes' },
+                { label: 'Portfolios', icon: 'fa-briefcase', url: '/portfolios' },
+                { label: 'Stocks', icon: 'fa-dollar', url: '/stocks' }
             ]
     }
 }

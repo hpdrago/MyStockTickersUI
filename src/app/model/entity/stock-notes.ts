@@ -19,6 +19,20 @@ export class StockNotes extends ModelObject<StockNotes>
     public stockNotesStocks: Array<StockNotesStock> = [];
 
     /**
+     * A StockNote entity contains a list of stocks each with a ticker symbol and a price.
+     * When displaying stock notes in the table, the stock notes are expanded so that there is a single row
+     * for each stock of the stock note.  The following variables are the values to be displayed in the table row for each stock
+     * of the stock note.
+     */
+    private _tickerSymbol: string;
+    private _stockPrice: number;
+
+    get tickerSymbol(): string { return this._tickerSymbol; }
+    set tickerSymbol( tickerSymbol: string ) { this._tickerSymbol = tickerSymbol; }
+    get stockPrice(): number { return this._stockPrice; }
+    set stockPrice( stockPrice: number ) { this._stockPrice = stockPrice; }
+
+    /**
      * Creates a comma delimited list of ticker symbols from the stockNotesStock array
      * @return {string}
      */

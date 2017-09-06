@@ -7,7 +7,9 @@
     <div class="crud-form-buttons">
         <div class="crud-form-button" *ngIf="isShowSaveButton()">
             <button class="crud-form-button" pButton
+                    [ngClass]="{'disabled': isSaveButtonDisabled()}"
                     type="button"
+                    pButton
                     (click)="onSaveButtonClick()"
                     label=" {{getSaveButtonLabel()}}"
                     icon="fa-save"
@@ -16,6 +18,7 @@
         </div>
         <div class="crud-form-button" *ngIf="isShowAddButton()">
             <button class="crud-form-button"
+                    [ngClass]="{'disabled': isAddButtonDisabled()}"
                     pButton
                     type="button"
                     (click)="onAddButtonClick()"
@@ -26,6 +29,7 @@
         </div>
         <div class="crud-form-button" *ngIf="isShowDeleteButton()">
             <button class="crud-form-button"
+                    [ngClass]="{'disabled': isDeleteButtonDisabled()}"
                     pButton
                     type="button"
                     (click)="onDeleteButtonClick()"

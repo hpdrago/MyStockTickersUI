@@ -6,6 +6,7 @@ import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { SelectItem } from "primeng/primeng";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
+import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 
 /**
  * This is the Stock Note Form Component class.
@@ -14,6 +15,7 @@ import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-conta
  */
 @Component( {
                 selector: 'stock-notes-form',
+                styleUrls: ['../crud/form/crud-form.component.css'],
                 templateUrl: './stock-notes-form.component.html'
             } )
 export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
@@ -80,5 +82,23 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         (<FormControl>this.formGroup.controls['stockSearch']).setValue( '' );
     }
 
-
+    /**
+     * This method is called when the user is saving the form and before the REST call is made to save the model object.
+     */
+    protected prepareToSave()
+    {
+        this.debug( "prepareToSave.begin " + this.modelObject );
+        /*
+         * The ticker symbols should be separated by commas.
+         * Each ticker symbol is pushed into the stocks array of the StockNotes model object
+         */
+        var stocks = this.tickerSymbols.split( "," );
+        for ( let stock of stocks )
+        {
+            var stockNoteStock: StockNotesStock = new StockNotesStock();
+            stockNoteStock.tickerSymbol = stock.trim();
+            this.modelObject.stockNotesStocks.push( stockNoteStock );
+        }
+        this.debug( "prepareToSave.end " + this.modelObject );
+    }
 }

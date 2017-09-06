@@ -10,9 +10,9 @@
                      [rows]="25"
                      (onRowDblclick)="onRowDoubleClick($event)"
                      [responsive]="true">
-            <p-header>{{title}}</p-header>
             <p-column field="notesDate" header="Date" [sortable]="true"></p-column>
-            <p-column field="stocks" header="Stocks" [sortable]="true"></p-column>
+            <p-column field="tickerSymbol" header="Ticker" [sortable]="true"></p-column>
+            <p-column field="stockPrice" header="Price @ Date" [sortable]="true"></p-column>
             <p-column field="notes" header="Notes" [sortable]="true"></p-column>
             <p-footer>
                 <stock-notes-table-buttons>

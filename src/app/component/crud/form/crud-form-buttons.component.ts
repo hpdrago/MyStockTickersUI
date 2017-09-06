@@ -284,7 +284,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "onSaveButtonClick";
         this.logger.log( methodName + " " + JSON.stringify( this.modelObject ));
-        //this.crudRestService.updateModelObject( this.modelObjectFactory.newModelObjectFromJSON( this.modelObject ))
+        this.crudServiceContainer.crudFormService.sendFormPrepareToSaveEvent();
         this.crudServiceContainer
             .crudRestService
             .updateModelObject( this.modelObject )
@@ -311,6 +311,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "onAddButtonClick";
         this.logger.log( methodName + " " + JSON.stringify( this.modelObject ));
+        this.crudServiceContainer.crudFormService.sendFormPrepareToSaveEvent();
         this.crudServiceContainer
             .crudRestService.createModelObject( this.modelObject )
             .subscribe( ( newModelObject: T ) =>
