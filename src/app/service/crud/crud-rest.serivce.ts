@@ -47,7 +47,8 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
      * Creates the model object via REST.
      * Override {@code getCreateModelObjectUrl( modelObject )} to get the correct REST URL
      * @param modelObject
-     * @returns {Observable<T>}
+     * @returns {Observable<T>} The new instance of the model object returned from the server after inserted into the
+     * database which will include any updated information including identity column values.
      */
     public createModelObject( modelObject: T ): Observable<T>
     {
@@ -71,7 +72,8 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                         .map( ( res: Response ) =>
                         {
                             this.log( methodName + " received: " + JSON.stringify( res.json() ) );
-                            return this.modelObjectFactory.newModelObjectFromObject( res.json() );
+                            var newModelObject: T =  this.modelObjectFactory.newModelObjectFromObject( res.json() );
+                            this.log( methodName + " newModelObject: " + JSON.stringify( newModelObject ));
                         } ) // ...and calling .json() on the response to return data
                         .catch( ( error: any ) => Observable.throw( error || 'Server error' ) ); //...errors if any
     }

@@ -16,7 +16,7 @@ export class StockNotes extends ModelObject<StockNotes>
     public bullOrBear: number;
     public dateCreated: Date;
     public dateModified: Date;
-    public stockNotesStocks: Array<StockNotesStock> = [];
+    public stocks: Array<StockNotesStock> = [];
 
     /**
      * A StockNote entity contains a list of stocks each with a ticker symbol and a price.
@@ -39,7 +39,7 @@ export class StockNotes extends ModelObject<StockNotes>
     public getTickerSymbolString(): string
     {
         var tickerSymbols = "";
-        for ( let stockNoteStock of this.stockNotesStocks )
+        for ( let stockNoteStock of this.stocks )
         {
             if ( tickerSymbols.length > 0 )
             {

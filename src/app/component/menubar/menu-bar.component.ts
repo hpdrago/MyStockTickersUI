@@ -22,10 +22,10 @@ export class MenuBarComponent
     {
         this.menuItems =
             [
-                { label: 'Dashboard', icon: 'fa-area-chart', url: '/dashboard' },
-                { label: 'Stock Notes', icon: 'fa-sticky-note', url: '/stockNotes' },
-                { label: 'Portfolios', icon: 'fa-briefcase', url: '/portfolios' },
-                { label: 'Stocks', icon: 'fa-dollar', url: '/stocks' }
+                { label: 'Dashboard', icon: 'fa-area-chart', routerLink: ['/dashboard'] },
+                { label: 'Stock Notes', icon: 'fa-sticky-note', routerLink: ['/stockNotes'] },
+                { label: 'Portfolios', icon: 'fa-briefcase', routerLink: ['/portfolios'] },
+                { label: 'Stocks', icon: 'fa-chart', routerLink: ['/stocks'] }
             ]
     }
 }

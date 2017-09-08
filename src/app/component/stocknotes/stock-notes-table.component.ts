@@ -5,6 +5,7 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { StockNoteCount } from "../../model/entity/stock-note-count";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
+import { isNullOrUndefined } from "util";
 
 /**
  * This component lists all of the stocks for a stockNote
@@ -65,13 +66,13 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
      */
     private expandRows( stockNoteList: StockNotes[] ): StockNotes[]
     {
-        this.log( "expandedRows.begin stock notes: " + stockNoteList.length );
+        this.log( "expandedRows.begin stock notes: " + stockNoteList.length + " " + JSON.stringify( stockNoteList ) );
         var expandedRows: StockNotes[] = [];
         for ( let stockNotes of stockNoteList )
         {
-            if ( stockNotes.stockNotesStocks.length > 1 )
+            if ( stockNotes.stocks.length > 1 )
             {
-                for ( let stockNotesStock of stockNotes.stockNotesStocks )
+                for ( let stockNotesStock of stockNotes.stocks )
                 {
                     var expandedStockNotes: StockNotes = this.stockNotesServiceContainer
                                                              .stockNoteFactory
@@ -83,8 +84,8 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
             }
             else
             {
-                stockNotes.tickerSymbol = stockNotes.stockNotesStocks[0].tickerSymbol;
-                stockNotes.stockPrice = stockNotes.stockNotesStocks[0].stockPrice;
+                stockNotes.tickerSymbol = stockNotes.stocks[0].tickerSymbol;
+                stockNotes.stockPrice = stockNotes.stocks[0].stockPrice;
                 expandedRows.push( stockNotes );
             }
         }

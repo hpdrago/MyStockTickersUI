@@ -4,6 +4,7 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { SessionService } from "../../service/crud/session.service";
 import { StockCrudServiceContainer } from "./stock-crud-service-container";
+import { isNullOrUndefined } from "util";
 
 /**
  * Created by mike on 1/2/2017.
@@ -31,7 +32,7 @@ export class StockTableButtonsComponent extends CrudTableButtonsComponent<Stock>
     {
         //this.logger.debug( "isDeleteButtonDisabled " + JSON.stringify( this.modelObject ) );
         var disabled = true;
-        if ( this.modelObject != null &&
+        if ( !isNullOrUndefined( this.modelObject ) &&
              this.modelObject.userEntered &&
              this.sessionService.getLoggedInUserId() == this.modelObject.createdBy )
         {

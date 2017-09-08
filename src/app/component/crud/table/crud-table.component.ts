@@ -11,6 +11,7 @@ import { ToastsManager } from "ng2-toastr";
 import { CrudModelObjectEditMode } from "../common/crud-model-object-edit-mode";
 import { CrudServiceContainer } from "../common/crud-service-container";
 import { CrudOperation } from "../common/crud-operation";
+import { isNullOrUndefined } from "util";
 
 /**
  * This is the base class for CRUD enabled tables.
@@ -163,14 +164,18 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onUserModifiedModelObject( modelObject: T ): void
     {
         this.log( 'onUserModifiedModelObject ' + JSON.stringify( modelObject ) );
-        var index = this.indexOf( modelObject );
-        if ( index == -1 )
+        this.setModelObject( modelObject );
+        if ( !isNullOrUndefined( this.modelObject ) )
         {
-            this.rows.push( modelObject );
-        }
-        else
-        {
-            this.rows[index] = modelObject;
+            var index = this.indexOf( modelObject );
+            if ( index == -1 )
+            {
+                this.rows.push( modelObject );
+            }
+            else
+            {
+                this.rows[index] = modelObject;
+            }
         }
         this.setModelObject( modelObject );
     }
@@ -181,8 +186,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onUserCreatedModelObject( modelObject: T ): void
     {
         this.log( 'onUserCreatedModelObject ' + JSON.stringify( modelObject ) );
-        this.rows.push( modelObject );
         this.setModelObject( modelObject );
+        if ( !isNullOrUndefined( this.modelObject ))
+        {
+            this.rows.push( modelObject );
+            this.setModelObject( modelObject );
+        }
     }
 
     /**
@@ -191,11 +200,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onUserDeletedModelObject( modelObject: T ): void
     {
         this.log( 'onUserDeletedModelObject' + JSON.stringify( modelObject ) );
-        var index = this.indexOf( modelObject );
-        if ( index != -1 )
+        this.setModelObject( modelObject );
+        if ( !isNullOrUndefined( this.modelObject ))
         {
-            this.rows.splice( index,  1 );
-            this.setModelObject( null );
+            var index = this.indexOf( modelObject );
+            if ( index != -1 )
+            {
+                this.rows.splice( index, 1 );
+                this.setModelObject( null );
+            }
         }
     }
 
@@ -260,7 +273,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected setModelObject( modelObject: T ): void
     {
-        //super.setModelObject( this.modelObjectFactory.newModelObjectFromJSON( modelObject ));
         super.setModelObject( modelObject );
         this.crudServiceContainer
             .crudTableButtonsService

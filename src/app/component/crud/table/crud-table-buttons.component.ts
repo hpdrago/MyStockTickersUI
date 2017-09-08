@@ -27,6 +27,7 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
 
     public ngOnInit()
     {
+        this.log( "ngOnInit.begin" );
         if ( !this.crudServiceContainer.crudTableButtonsService )
         {
             throw new Error( "crudTableButtonsService has not been set by Input value" );
@@ -34,7 +35,9 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
         this.crudServiceContainer
             .crudTableButtonsService
             .subscribeToModelObjectChangedEvent(( modelObject: T) => this.modelObjectChanged( modelObject ) );
+        this.log( "ngOnInit.end" );
     }
+
     /**
      * Returns the default Add button label
      * @return {string}
@@ -103,7 +106,7 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
      */
     protected isDeleteButtonDisabled(): boolean
     {
-        return this.modelObject == null;
+        return isNullOrUndefined( this.modelObject );
     }
 
     /**

@@ -68,18 +68,6 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
     }
 
     /**
-     * Add a stockNote for a customer
-     * @param stockNote
-     * @returns {Observable<StockNotes>}
-     */
-    public addStockNote( stockNote: StockNotes ): Observable<any>
-    {
-        let methodName = "addStockNote";
-        this.logger.debug( `${methodName} stockNote: ${stockNote}`);
-        return super.createModelObject( stockNote );
-    }
-
-    /**
      * Get a list of the stockNotes for the customer
      * @param customerId
      * @returns {Observable<R>}

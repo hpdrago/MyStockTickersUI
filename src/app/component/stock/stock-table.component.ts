@@ -88,8 +88,7 @@ export class StockTableComponent extends CrudTableComponent<Stock>
                         .newModelObjectArray( stocksPage.content );
         for ( var stock of this.rows )
         {
-            //this.logger.log( "setStockPage.stock: " + JSON.stringify( stock ) );
-            stock.isUserEntered();
+            this.logger.log( "setStockPage.stock: " + JSON.stringify( stock ) );
         }
         this.totalRows = stocksPage.totalElements;
         this.logger.log( 'setStocksPage: length: ' + stocksPage.content.length );

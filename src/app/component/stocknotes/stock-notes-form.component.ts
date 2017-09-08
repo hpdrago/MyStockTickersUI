@@ -97,7 +97,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         {
             var stockNoteStock: StockNotesStock = new StockNotesStock();
             stockNoteStock.tickerSymbol = stock.trim();
-            this.modelObject.stockNotesStocks.push( stockNoteStock );
+            this.modelObject.stocks.push( stockNoteStock );
         }
         this.debug( "prepareToSave.end " + this.modelObject );
     }

@@ -283,22 +283,22 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected onSaveButtonClick(): void
     {
         var methodName = "onSaveButtonClick";
-        this.logger.log( methodName + " " + JSON.stringify( this.modelObject ));
+        this.log( methodName + " " + JSON.stringify( this.modelObject ));
         this.crudServiceContainer.crudFormService.sendFormPrepareToSaveEvent();
         this.crudServiceContainer
             .crudRestService
             .updateModelObject( this.modelObject )
             .subscribe( ( updatedModelObject: T ) =>
                         {
-                            this.modelObject = updatedModelObject;
-                            this.logger.log( methodName + " saved successful.  modelObject; " +
+                            this.setModelObject( updatedModelObject );
+                            this.log( methodName + " saved successful.  modelObject; " +
                                              JSON.stringify( this.modelObject ));
                             this.crudServiceContainer
                                 .crudFormService
                                 .sendFormResetEvent();
                             this.crudServiceContainer
                                 .crudFormButtonsService
-                                .sendSaveButtonClickedEvent( updatedModelObject );
+                                .sendSaveButtonClickedEvent( this.modelObject );
                         },
                         err => this.reportRestError( err )
             );
@@ -310,14 +310,14 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected onAddButtonClick(): void
     {
         var methodName = "onAddButtonClick";
-        this.logger.log( methodName + " " + JSON.stringify( this.modelObject ));
+        this.log( methodName + " " + JSON.stringify( this.modelObject ));
         this.crudServiceContainer.crudFormService.sendFormPrepareToSaveEvent();
         this.crudServiceContainer
             .crudRestService.createModelObject( this.modelObject )
             .subscribe( ( newModelObject: T ) =>
                         {
                             this.modelObject = newModelObject;
-                            this.logger.log( methodName + " add successful.  modelObject: " +
+                            this.log( methodName + " add successful.  modelObject: " +
                                              JSON.stringify( this.modelObject ) );
                             this.crudServiceContainer
                                 .crudFormService.sendFormResetEvent();
@@ -327,15 +327,15 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                         },
                         err =>
                         {
-                            this.logger.log( methodName + " err: " + err );
+                            this.log( methodName + " err: " + err );
                             var exception = this.reportRestError( err );
-                            this.logger.log( methodName + " exception: " + JSON.stringify( exception ));
+                            this.log( methodName + " exception: " + JSON.stringify( exception ));
                             /*
                              *  If we get a duplicate key, tell the stock table to jump to that stock
                              */
                             if ( exception.isDuplicateKeyExists() )
                             {
-                                this.logger.log( methodName + " duplicateKeyExists" );
+                                this.log( methodName + " duplicateKeyExists" );
                                 this.crudServiceContainer
                                     .crudFormButtonsService
                                     .sendNavigateToModelObjectEvent( this.modelObject );
@@ -350,13 +350,13 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected onDeleteButtonClick(): void
     {
         var methodName = "onDeleteButtonClick";
-        this.logger.log( methodName + " " + JSON.stringify( this.modelObject ));
+        this.log( methodName + " " + JSON.stringify( this.modelObject ));
         this.crudServiceContainer
             .crudRestService
             .deleteModelObject( this.modelObject )
             .subscribe( () =>
                         {
-                            this.logger.log( methodName + " delete successful" );
+                            this.log( methodName + " delete successful" );
                             this.crudServiceContainer
                                 .crudFormService
                                 .sendFormResetEvent();
