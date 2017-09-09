@@ -5,7 +5,7 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { StockNoteCount } from "../../model/entity/stock-note-count";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
-import { isNullOrUndefined } from "util";
+import { DatePipe } from "@angular/common";
 
 /**
  * This component lists all of the stocks for a stockNote
@@ -15,7 +15,7 @@ import { isNullOrUndefined } from "util";
 @Component(
     {
         selector: 'stock-notes-table',
-        styleUrls: ['../crud/table/crud-table-buttons.component.css'],
+        styleUrls: ['./stock-notes-table.component.css'],
         templateUrl: './stock-notes-table.component.html'
     } )
 export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
@@ -29,6 +29,9 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
         super( toaster, stockNotesServiceContainer );
     }
 
+    /**
+     * This method is called automatically by the base class
+     */
     protected loadTable()
     {
         this.log( "loadTable.begin" );

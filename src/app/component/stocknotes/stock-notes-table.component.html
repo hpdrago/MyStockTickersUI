@@ -1,5 +1,5 @@
-<p-panel header="Stock Notes">
-    <div>
+<p-panel id="stockNotesPanelDiv" header="Stock Notes">
+    <div id="stockNotesTableDiv">
         <p-dataTable [value]="rows"
                      selectionMode="single"
                      [(selection)]="selectedModelObject"
@@ -10,10 +10,32 @@
                      [rows]="25"
                      (onRowDblclick)="onRowDoubleClick($event)"
                      [responsive]="true">
-            <p-column field="notesDate" header="Date" [sortable]="true"></p-column>
-            <p-column field="tickerSymbol" header="Ticker" [sortable]="true"></p-column>
-            <p-column field="stockPrice" header="Price @ Date" [sortable]="true"></p-column>
-            <p-column field="notes" header="Notes" [sortable]="true"></p-column>
+            <p-column id="notesDateColumn"
+                      field="notesDate"
+                      header="Date"
+                      [style]="{'width':'120px'}"
+                      [sortable]="true">
+                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                    {{stockNotes[col.field] | date: 'short' }}
+                </ng-template>
+            </p-column>
+            <p-column id="tickerSymbolColumn"
+                      field="tickerSymbol"
+                      header="Ticker"
+                      [style]="{'width':'80px'}"
+                      [sortable]="true">
+            </p-column>
+            <p-column id="stockPriceColumn"
+                      field="stockPrice"
+                      header="Price @ Date"
+                      [style]="{'width':'80px','text-align':'right'}"
+                      [sortable]="true">
+            </p-column>
+            <p-column id="notesColumn"
+                      field="notes"
+                      header="Notes"
+                      [sortable]="true">
+            </p-column>
             <p-footer>
                 <stock-notes-table-buttons>
                 </stock-notes-table-buttons>

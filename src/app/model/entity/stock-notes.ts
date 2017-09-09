@@ -9,7 +9,6 @@ export class StockNotes extends ModelObject<StockNotes>
     public id: number;
     public customerId: number;
     public notes: string;
-    public notesDate: Date;
     public notesSourceId: number;
     public notesRating: number;
     public publicInd: boolean;
@@ -17,6 +16,7 @@ export class StockNotes extends ModelObject<StockNotes>
     public dateCreated: Date;
     public dateModified: Date;
     public stocks: Array<StockNotesStock> = [];
+    private _notesDate: Date;
 
     /**
      * A StockNote entity contains a list of stocks each with a ticker symbol and a price.
@@ -31,6 +31,8 @@ export class StockNotes extends ModelObject<StockNotes>
     set tickerSymbol( tickerSymbol: string ) { this._tickerSymbol = tickerSymbol; }
     get stockPrice(): number { return this._stockPrice; }
     set stockPrice( stockPrice: number ) { this._stockPrice = stockPrice; }
+    set notesDate( notesDate: Date ) { this._notesDate = notesDate }
+    get notesDate(): Date { return this._notesDate }
 
     /**
      * Creates a comma delimited list of ticker symbols from the stockNotesStock array

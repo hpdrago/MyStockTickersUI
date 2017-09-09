@@ -10,4 +10,10 @@ div.crud-table-button
     height: 35px;
 }
 
+button.disabled
+{
+    opacity:.35;
+    filter:Alpha(Opacity=35);
+    cursor:default !important;
+}
 

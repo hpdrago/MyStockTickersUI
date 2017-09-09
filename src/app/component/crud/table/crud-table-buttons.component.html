@@ -1,6 +1,7 @@
 <div style="text-align: center">
     <div class="crud-table-button {{getAddButtonClass()}}" *ngIf="isShowAddButton()">
         <button class="{{getAddButtonClass()}}"
+                [ngClass]="{'disabled': isAddButtonDisabled()}"
                 pButton type="button"
                 (click)="onAddButtonClick()"
                 label="{{getAddButtonLabel()}}"
@@ -10,6 +11,7 @@
     </div>
     <div class="crud-table-button {{getDeleteButtonClass()}}" *ngIf="isShowDeleteButton()">
         <button class="{{getAddButtonClass()}}"
+                [ngClass]="{'disabled': isDeleteButtonDisabled()}"
                 pButton type="button"
                 (click)="onDeleteButtonClick()"
                 label="{{getDeleteButtonLabel()}}"
