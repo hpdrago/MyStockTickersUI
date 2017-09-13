@@ -6,7 +6,7 @@
             -->
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="stockSearch">Search:</label>
+                    <label class="crud-form" for="stockSearch">Stock Search:</label>
                 </div>
                 <div class="ui-grid-col-9">
                     <stock-autocomplete id="stockSearch"
@@ -44,8 +44,9 @@
                     <label class="crud-form" for="notes">Notes:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <textarea id="notes"
+                    <p-editor id="notes"
                               class="crud-form"
+                              [style]="{'height':'320px'}"
                               formControlName="notes"
                               placeholder="Required"
                               autoresize="false"
@@ -54,7 +55,18 @@
                               pInputTextarea
                               required
                               [(ngModel)]="modelObject.notes">
-                    </textarea>
+                        <p-header>
+                            <span class="ql-format-group">
+                                <span title="Bold" class="ql-format-button ql-bold"></span>
+                                <span class="ql-format-separator"></span>
+                                <span title="Italic" class="ql-format-button ql-italic"></span>
+                                <span class="ql-format-separator"></span>
+                                <span title="Underline" class="ql-format-button ql-underline"></span>
+                                <span class="ql-format-separator"></span>
+                                <span title="Strikethrough" class="ql-format-button ql-strike"></span>
+                            </span>
+                        </p-header>
+                    </p-editor>
                 </div>
             </div>
             <div class="crud-form ui-grid-row">
