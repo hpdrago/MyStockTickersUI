@@ -30,7 +30,8 @@ import {
     ConfirmationService,
     InputTextareaModule,
     RatingModule,
-    CalendarModule
+    CalendarModule,
+    EditorModule
 } from "primeng/primeng";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
 import { AutoCompleteModule } from "primeng/components/autocomplete/autocomplete";
@@ -39,7 +40,10 @@ import { FieldsetModule } from "primeng/components/fieldset/fieldset";
 /**
  * Third party imports
  */
-import {ToastModule, ToastOptions, ToastsManager} from "ng2-toastr/ng2-toastr";
+import { ToastModule,
+         ToastOptions,
+         ToastsManager } from "ng2-toastr/ng2-toastr";
+
 /**
  * Application Imports
  */
@@ -88,6 +92,8 @@ import { StockNotesCrudService } from "./service/crud/stock-notes-crud.service";
 import { StockNotesFactory } from "./model/factory/stock-notes.factory";
 import { StockNotesCountService } from "./service/crud/stock-notes-count.service";
 import { StockNotesCountFactory } from "./model/factory/stock-note-count.factory";
+import { StockNotesSourceService } from "./service/crud/stock-notes-source.service";
+import { StockNotesSourceFactory } from "./model/factory/stock-notes-source.factory";
 
 @NgModule({
     imports:
@@ -119,6 +125,7 @@ import { StockNotesCountFactory } from "./model/factory/stock-note-count.factory
         InputTextareaModule,
         RatingModule,
         CalendarModule,
+        EditorModule,
         // Third Party modules
         ToastModule.forRoot()
     ],
@@ -183,6 +190,9 @@ import { StockNotesCountFactory } from "./model/factory/stock-note-count.factory
 
         StockNotesCountService,
         StockNotesCountFactory,
+
+        StockNotesSourceService,
+        StockNotesSourceFactory,
 
         SessionService,
         ConfirmationService,

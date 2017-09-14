@@ -44,9 +44,8 @@
                     <label class="crud-form" for="notes">Notes:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <p-editor id="notes"
+                    <textarea id="notes"
                               class="crud-form"
-                              [style]="{'height':'320px'}"
                               formControlName="notes"
                               placeholder="Required"
                               autoresize="false"
@@ -55,33 +54,48 @@
                               pInputTextarea
                               required
                               [(ngModel)]="modelObject.notes">
-                        <p-header>
-                            <span class="ql-format-group">
-                                <span title="Bold" class="ql-format-button ql-bold"></span>
-                                <span class="ql-format-separator"></span>
-                                <span title="Italic" class="ql-format-button ql-italic"></span>
-                                <span class="ql-format-separator"></span>
-                                <span title="Underline" class="ql-format-button ql-underline"></span>
-                                <span class="ql-format-separator"></span>
-                                <span title="Strikethrough" class="ql-format-button ql-strike"></span>
-                            </span>
-                        </p-header>
-                    </p-editor>
+                    </textarea>
                 </div>
             </div>
+            <!--
+            SOURCE
+            -->
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="noteRating">Rating:</label>
+                    <label class="crud-form" for="notesSource">Source:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <p-rating id="noteRating"
+                    <p-dropdown id="notesSource"
+                                class="crud-form"
+                                [options]="sources"
+                                formControlName="notesSource"
+                                [(ngModel)]="modelObject.notesSourceId"
+                                (onChange)="sourcesOnChange($event)"
+                                [style]="{'width':'150px'}"
+                                editable="true"
+                                placeholder="Select a source">
+                    </p-dropdown>
+                </div>
+            </div>
+            <!--
+            RATING
+            -->
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="notesRating">Rating:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-rating id="notesRating"
                               class="crud-form"
-                              formControlName="noteRating"
+                              formControlName="notesRating"
                               [stars]="5"
                               [(ngModel)]="modelObject.notesRating">
                     </p-rating>
                 </div>
             </div>
+            <!--
+            BULL OR BEAR
+            -->
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
                     <label class="crud-form" for="bullOrBear">Bull or Bear:</label>
@@ -95,14 +109,17 @@
                     </p-selectButton>
                 </div>
             </div>
+            <!--
+            DATE
+            -->
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="noteDate">Date:</label>
+                    <label class="crud-form" for="notesDate">Date:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <p-calendar id="noteDate"
+                    <p-calendar id="notesDate"
                                 class="crud-form"
-                                formControlName="noteDate"
+                                formControlName="notesDate"
                                 dateFormat="mm/dd/yy"
                                 [showIcon]="true"
                                 [inputStyle]="{'width':'100px'}"

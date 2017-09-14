@@ -4,6 +4,7 @@ import { StockNotesCrudService } from "../../service/crud/stock-notes-crud.servi
 import { StockNotesCountService } from "../../service/crud/stock-notes-count.service";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
+import { StockNotesSourceService } from "../../service/crud/stock-notes-source.service";
 
 /**
  * This is the service container for the StockNotes entity.
@@ -13,7 +14,8 @@ export class StockNotesCrudServiceContainer extends CrudServiceContainer<StockNo
 {
     constructor( private _stockNoteFactory: StockNotesFactory,
                  private _stockNoteCrudService: StockNotesCrudService,
-                 private _stockNoteCountService: StockNotesCountService )
+                 private _stockNoteCountService: StockNotesCountService,
+                 private _stockNoteSourceService: StockNotesSourceService )
     {
         super( _stockNoteFactory, _stockNoteCrudService )
     }
@@ -29,4 +31,8 @@ export class StockNotesCrudServiceContainer extends CrudServiceContainer<StockNo
     get stockNoteCountService(): StockNotesCountService { return this._stockNoteCountService; }
 
     set stockNoteCountService( value: StockNotesCountService ) { this._stockNoteCountService = value; }
+
+    get stockNoteSourceService(): StockNotesSourceService { return this._stockNoteSourceService; }
+
+    set stockNoteSourceService( value: StockNotesSourceService ) { this._stockNoteSourceService = value; }
 }

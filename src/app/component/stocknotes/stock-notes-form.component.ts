@@ -7,6 +7,8 @@ import { SelectItem } from "primeng/primeng";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { StockNotesStock } from "../../model/entity/stock-notes-stock";
+import { SessionService } from "../../service/crud/session.service";
+import { StockNotesSourceList } from "./stock-notes-source-list";
 
 /**
  * This is the Stock Note Form Component class.
@@ -15,11 +17,15 @@ import { StockNotesStock } from "../../model/entity/stock-notes-stock";
  */
 @Component( {
                 selector: 'stock-notes-form',
-                styleUrls: ['../crud/form/crud-form.component.css'],
+                styleUrls: ['../crud/form/crud-form.component.css',
+                            '../../../../node_modules/quill/dist/quill.core.css',
+                            '../../../../node_modules/quill/dist/quill.snow.css'],
                 templateUrl: './stock-notes-form.component.html'
             } )
 export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
 {
+    private sources: SelectItem[] = [];
+
     private bullOrBearOptions: SelectItem[];
     /**
      * The stock is returned via an event when the user searches for a ticker symbol or company
@@ -35,6 +41,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     private stockSearch: string;
 
     constructor( protected toaster: ToastsManager,
+                 protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {
@@ -43,19 +50,33 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.bullOrBearOptions.push( {label: 'Bull', value: 1} );
         this.bullOrBearOptions.push( {label: 'Bear', value: 2} );
         this.bullOrBearOptions.push( {label: 'Neutral', value: 0} );
+        /*
+         * Get the stock note sources for the logged in user and populate the sources SelectItems
+         */
+        this.stockNotesCrudServiceContainer.stockNoteSourceService
+                                           .getStockNoteSources( this.sessionService.getLoggedInUserId() )
+                                           .subscribe((stockNotesSources: StockNotesSourceList) =>
+                                                       {
+                                                           this.sources = stockNotesSources.toSelectItems()
+                                                       });
     }
 
+    /**
+     * Creates and identifies the fields for the FormGroup instance for the stock notes form.
+     * @return {FormGroup}
+     */
     protected createCrudForm(): FormGroup
     {
         this.debug( "createCrudForm" );
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
-                'stockSearch': new FormControl( this.stockSearch ),
+                'stockSearch':   new FormControl( this.stockSearch ),
                 'tickerSymbols': new FormControl( this.tickerSymbols, Validators.required ),
-                'notes': new FormControl( this.modelObject.notes, Validators.required ),
-                'noteDate': new FormControl( this.modelObject.notesDate, Validators.required  ),
-                'noteRating': new FormControl( this.modelObject.notesRating ),
-                'bullOrBear': new FormControl( this.modelObject.bullOrBear )
+                'notes':         new FormControl( this.modelObject.notes, Validators.required ),
+                'notesDate':     new FormControl( this.modelObject.notesDate, Validators.required  ),
+                'notesSource':   new FormControl( this.modelObject.notesSourceId ),
+                'notesRating':   new FormControl( this.modelObject.notesRating ),
+                'bullOrBear':    new FormControl( this.modelObject.bullOrBear )
             } );
         return stockNoteForm;
     }
@@ -101,4 +122,11 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         }
         this.debug( "prepareToSave.end " + this.modelObject );
     }
+
+    private sourcesOnChange( event: Event )
+    {
+        this.debug( "sourcesOnChange: " + JSON.stringify( event ));
+
+    }
+
 }
