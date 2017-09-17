@@ -14,7 +14,7 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class StockNotesSourceService extends CrudRestService<StockNotesSource>
 {
-    private stockNotesSourceUrl = "stockNotesSources";
+    private stockNotesSourceUrl = "stockNotesSource";
 
     constructor( protected http: Http,
                  protected sessionService: SessionService,
@@ -67,12 +67,21 @@ export class StockNotesSourceService extends CrudRestService<StockNotesSource>
         return Observable.create( observer =>
                                   {
                                       super.getModelObjectList( modelObject )
-                                          .subscribe( stockNotesSourcesArray =>
+                                           .subscribe( stockNotesSourcesArray =>
                                                       {
+                                                          this.log( methodName + " received response" );
                                                           var stockNotesSourceList: StockNotesSourceList = new StockNotesSourceList(
                                                               stockNotesSourcesArray );
                                                           observer.next( stockNotesSourceList );
                                                           observer.complete();
+                                                      },
+                                                       /*
+                                                        * Catch exceptions and report error back to observer
+                                                        */
+                                                      error =>
+                                                      {
+                                                          this.log( methodName + " received error" );
+                                                          observer.error( error );
                                                       });
                                   });
     }
