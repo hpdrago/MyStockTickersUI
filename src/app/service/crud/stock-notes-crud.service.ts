@@ -44,7 +44,7 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
 
     protected getCreateModelObjectUrl( baseUrl: string, stockNotes: StockNotes ): string
     {
-        return baseUrl + `${this.urlPath}/${stockNotes.customerId}`;
+        return baseUrl + `${this.urlPath}`;
     }
 
     protected getReadModelObjectUrl( baseUrl: string, stockNotes: StockNotes ): string
