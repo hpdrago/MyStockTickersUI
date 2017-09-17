@@ -58,6 +58,10 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                                            .subscribe((stockNotesSources: StockNotesSourceList) =>
                                                        {
                                                            this.sources = stockNotesSources.toSelectItems()
+                                                       },
+                                                       error =>
+                                                       {
+                                                           this.reportRestError( error );
                                                        });
     }
 
@@ -123,10 +127,17 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.debug( "prepareToSave.end " + this.modelObject );
     }
 
-    private sourcesOnChange( event: Event )
+    /**
+     * This method is called whenever the notes source changes.  When the user types in a new source, each keystroke
+     * will cause a call to this method.  Since we get the source id from the drop down list as the value, we need to
+     * capture the name of any new source that the user types in so we assign that value here to the modelObject.
+     *
+     * @param event
+     */
+    protected sourcesOnChange( event )
     {
         this.debug( "sourcesOnChange: " + JSON.stringify( event ));
-
+        this.modelObject.notesSourceName = event.value;
     }
 
 }
