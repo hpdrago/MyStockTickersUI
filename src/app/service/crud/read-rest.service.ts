@@ -57,8 +57,9 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         }
         return this.http
                    .get( url ) // ...using put request
-                   .map( ( response: Response ) => {
-                       this.log( methodName + " received: " + JSON.stringify( response.json() ) )
+                   .map( ( response: Response ) =>
+                   {
+                       this.log( methodName + " received: " + response.json() )
                        return this.modelObjectFactory.newModelObjectFromObject( response.json() );
                    } ) // ...and calling .json() on the response to return data
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) );
@@ -85,12 +86,11 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         }
         return this.http
                    .get( url )
-                   .map( ( response: Response ) => {
+                   .map( ( response: Response ) =>
+                   {
                        this.log( methodName + " received response" );
                        return this.modelObjectFactory.newModelObjectArray( response.json() )
-                   } )
+                   })
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) );
     }
-
-
 }
