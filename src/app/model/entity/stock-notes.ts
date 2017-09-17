@@ -1,6 +1,5 @@
 import { ModelObject } from "./modelobject";
 import { StockNotesStock } from "./stock-notes-stock";
-import { JsonProperty } from "json-typescript-mapper";
 /**
  * Defines a single portfolio for a customer
  * Created by mike on 10/23/2016.
@@ -9,13 +8,9 @@ export class StockNotes extends ModelObject<StockNotes>
 {
     public id: number;
     public customerId: number;
-    @JsonProperty( 'notes' )
     private _notes: string;
-    @JsonProperty( 'notesDate' )
     private _notesDate: Date;
-    @JsonProperty( 'notesSourceName' )
     private _notesSourceName: string;
-    @JsonProperty( 'notesSourceId' )
     private _notesSourceId: number;
     public notesRating: number;
     public publicInd: boolean;
