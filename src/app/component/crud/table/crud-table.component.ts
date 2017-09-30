@@ -170,11 +170,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             var index = this.indexOf( modelObject );
             if ( index == -1 )
             {
-                this.rows.push( modelObject );
+                this.addModelObjectToTableRows( this.modelObject );
             }
             else
             {
-                this.rows[index] = modelObject;
+                this.updateModelObjectTableRow( index, modelObject )
             }
         }
         this.setModelObject( modelObject );
@@ -189,9 +189,37 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.setModelObject( modelObject );
         if ( !isNullOrUndefined( this.modelObject ))
         {
-            this.rows.push( modelObject );
-            this.setModelObject( modelObject );
+            this.addModelObjectToTableRows( this.modelObject );
         }
+        this.selectedModelObject = modelObject;
+    }
+
+    /**
+     * This method is called when a model object is added to the table.  This happens when a user adds a new
+     * entry to the table.
+     * @param {T} modelObject The model object to be added to the table.
+     */
+    protected addModelObjectToTableRows( modelObject: T )
+    {
+        /*
+         * A new array must be created to trigger a change event
+         */
+        this.rows = [modelObject, ...this.rows];
+    }
+
+    /**
+     * This method is called when a user updates the model object and the table needs to be updated to reflect the
+     * user's changes.
+     * @param {number} index
+     * @param {T} modelObject
+     */
+    protected updateModelObjectTableRow( index: number, modelObject: T )
+    {
+        this.rows[index] = modelObject;
+        /*
+         * A new array must be created to trigger a change event
+         */
+        this.rows = [...this.rows]
     }
 
     /**
@@ -206,7 +234,10 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             var index = this.indexOf( modelObject );
             if ( index != -1 )
             {
-                this.rows.splice( index, 1 );
+                /*
+                 * A new array must be created to trigger a change event
+                 */
+                this.rows = this.rows.slice( index+1 ).concat( this.rows.slice( 0,index ));
                 this.setModelObject( null );
             }
         }

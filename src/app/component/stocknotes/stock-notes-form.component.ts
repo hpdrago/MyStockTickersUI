@@ -9,6 +9,8 @@ import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-conta
 import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { SessionService } from "../../service/crud/session.service";
 import { StockNotesSourceList } from "./stock-notes-source-list";
+import { isNullOrUndefined } from "util";
+import { isNumeric } from "rxjs/util/isNumeric";
 
 /**
  * This is the Stock Note Form Component class.
@@ -112,7 +114,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected prepareToSave()
     {
-        this.debug( "prepareToSave.begin " + this.modelObject );
+        this.debug( "prepareToSave.begin " + JSON.stringify( this.modelObject ));
         /*
          * The ticker symbols should be separated by commas.
          * Each ticker symbol is pushed into the stocks array of the StockNotes model object
@@ -123,6 +125,17 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             var stockNoteStock: StockNotesStock = new StockNotesStock();
             stockNoteStock.tickerSymbol = stock.trim();
             this.modelObject.stocks.push( stockNoteStock );
+        }
+
+        /*
+         * When a new source is added, what the user types in goes into the notesSourceId which is a numeric field, the
+         * value also goes into the notesSourceName field by the sourcesOnChange event.  We need to make notesSourceId
+         * to be numeric so that it can be sent to the backend without JSON parsing errors
+         */
+        this.log( "isNumeric: " + isNumeric( this.modelObject.notesSourceId ));
+        if ( !isNumeric( this.modelObject.notesSourceId ) )
+        {
+            this.modelObject.notesSourceId = 0;
         }
         this.debug( "prepareToSave.end " + this.modelObject );
     }

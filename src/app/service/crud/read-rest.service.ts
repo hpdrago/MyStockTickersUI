@@ -35,6 +35,18 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     protected abstract getReadModelObjectListUrl( baseUrl: string, modelObject: T ): string;
 
     /**
+     * Serializes the object from a TypeScript object to a JSON object
+     * @param {T} modelObject
+     * @return {string} JSON
+     */
+    protected serialize( modelObject: T ): string
+    {
+        //var json: string = serialize( modelObject );
+        var json: string = JSON.stringify( modelObject );
+        return json;
+    }
+
+    /**
      * Retrieves the model object via REST.
      * Override {@code getReadModelObjectUrl( modelObject )} to get the correct REST URL
      * @param modelObject null, or instance of a modelObject that will be passed to the URL generation method to
@@ -44,7 +56,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     public getModelObject( modelObject: T ): Observable<T>
     {
         var methodName = "getModelObject";
-        this.log( methodName + " query for: " + JSON.stringify( modelObject ) );
+        this.log( methodName + " query for: " + this.serialize( modelObject ) );
         if ( isNullOrUndefined( modelObject ) )
         {
             throw new ReferenceError( "modelObject is null or undefined" );
@@ -73,7 +85,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     public getModelObjectList( modelObject: T ): Observable<Array<T>>
     {
         var methodName = "getModelObjectList";
-        this.log( methodName + " modelObject: " + JSON.stringify( modelObject ) );
+        this.log( methodName + " modelObject: " + this.serialize( modelObject ) );
         if ( isNullOrUndefined( modelObject ) )
         {
             throw new ReferenceError( "modelObject is null or undefined" );

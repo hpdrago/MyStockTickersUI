@@ -73,9 +73,9 @@ import { PortfolioFormComponent } from "./component/portfolio/portfolio-form.com
 import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
 import { PortfolioTableButtonsComponent } from "./component/portfolio/portfolio-table-buttons.component";
 import { StockSectorFactory } from "./model/factory/stock-sector.factory";
-import {StockNotesDialogComponent} from "./component/stocknotes/stock-notes-dialog.component";
-import {StockNotesTableComponent} from "./component/stocknotes/stock-notes-table.component";
-import {StockNotesFormComponent} from "./component/stocknotes/stock-notes-form.component";
+import { StockNotesDialogComponent } from "./component/stocknotes/stock-notes-dialog.component";
+import { StockNotesTableComponent } from "./component/stocknotes/stock-notes-table.component";
+import { StockNotesFormComponent } from "./component/stocknotes/stock-notes-form.component";
 import { StockFormButtonsComponent } from "./component/stock/stock-form-buttons.component";
 import { PortfolioStockFormButtonsComponent } from "./component/portfoliostock/portfolio-stock-form-buttons.component";
 import { PortfolioFormButtonsComponent } from "./component/portfolio/portfolio-form-buttons.component";
@@ -94,6 +94,7 @@ import { StockNotesCountService } from "./service/crud/stock-notes-count.service
 import { StockNotesCountFactory } from "./model/factory/stock-note-count.factory";
 import { StockNotesSourceService } from "./service/crud/stock-notes-source.service";
 import { StockNotesSourceFactory } from "./model/factory/stock-notes-source.factory";
+import { JsonProperty, serialize } from 'json-typescript-mapper';
 
 @NgModule({
     imports:

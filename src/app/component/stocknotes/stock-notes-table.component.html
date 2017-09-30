@@ -16,7 +16,7 @@
                       [style]="{'width':'120px'}"
                       [sortable]="true">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    {{stockNotes[col.field] | date: 'short' }}
+                    {{stockNotes[col.field] | date: 'shortDate' }}
                 </ng-template>
             </p-column>
             <p-column id="tickerSymbolColumn"

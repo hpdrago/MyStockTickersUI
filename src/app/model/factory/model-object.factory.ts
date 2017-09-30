@@ -4,6 +4,7 @@
  *
  * Created by mike on 12/13/2016.
  */
+import {deserialize} from 'json-typescript-mapper';
 
 export abstract class ModelObjectFactory<T>
 {
@@ -41,13 +42,13 @@ export abstract class ModelObjectFactory<T>
      */
     public newModelObjectFromObject( srcModelObject: T ): T
     {
-        //console.log( "newModelObjectFromObject " + JSON.stringify( object ) );
+        //console.log( "newModelObjectFromJSON " + JSON.stringify( object ) );
         var destModelObject = this.newModelObject();
         for ( var property in srcModelObject )
         {
             this.setModelObjectProperty( property, srcModelObject, destModelObject );
         }
-        //console.log( "newModelObjectFromObject " + JSON.stringify( modelObject ) );
+        //console.log( "newModelObjectFromJSON " + JSON.stringify( modelObject ) );
         return destModelObject;
     }
 

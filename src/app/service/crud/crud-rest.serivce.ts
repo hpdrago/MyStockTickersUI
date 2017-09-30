@@ -54,7 +54,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
     {
         var methodName = "createModelObject";
         modelObject.createdBy = this.sessionService.getLoggedInUserId();
-        var bodyString = JSON.stringify( modelObject ); // Stringify payload
+        var bodyString = this.serialize( modelObject ); // Stringify payload
         this.log( methodName + " modelObject: " + bodyString );
         if ( isNullOrUndefined( modelObject ) )
         {
@@ -73,7 +73,8 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                         {
                             this.log( methodName + " received: " + JSON.stringify( res.json() ) );
                             var newModelObject: T =  this.modelObjectFactory.newModelObjectFromObject( res.json() );
-                            this.log( methodName + " newModelObject: " + JSON.stringify( newModelObject ));
+                            this.log( methodName + " newModelObject: " + this.serialize( newModelObject ));
+                            return newModelObject;
                         } ) // ...and calling .json() on the response to return data
                         .catch( ( error: any ) => Observable.throw( error || 'Server error' ) ); //...errors if any
     }
