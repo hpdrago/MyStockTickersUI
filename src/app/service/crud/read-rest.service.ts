@@ -74,7 +74,8 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                        this.log( methodName + " received: " + response.json() )
                        return this.modelObjectFactory.newModelObjectFromObject( response.json() );
                    } ) // ...and calling .json() on the response to return data
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) );
+                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+                   .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
     /**
@@ -103,6 +104,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                        this.log( methodName + " received response" );
                        return this.modelObjectFactory.newModelObjectArray( response.json() )
                    })
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) );
+                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+                   .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 }

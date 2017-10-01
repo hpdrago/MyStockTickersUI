@@ -142,7 +142,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      * @param modelObject
      * @override
      */
-    protected modelObjectChanged( modelObject: T ): any
+    protected modelObjectChanged( modelObject: T )
     {
         /*
          * Clear the form fields of any previous model object.

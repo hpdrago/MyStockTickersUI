@@ -111,6 +111,9 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
             .subscribeToAddButtonClickedEvent( ( modelObject ) => this.onAddButtonClicked( modelObject ) )
         this.crudServiceContainer
             .crudFormButtonsService
+            .subscribeToSaveButtonClickedEvent( ( modelObject ) => this.onSaveButtonClicked( modelObject ) )
+        this.crudServiceContainer
+            .crudFormButtonsService
             .subscribeToHandleDeleteButtonClickedEvent(( modelObject ) => this.onDeleteButtonClicked( modelObject ) )
         this.log( "subscribeToCrudDialogServiceEvents.end" );
     }
@@ -123,32 +126,35 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
     protected setDisplayDialog( subjectInfo: DisplayDialogRequestSubjectInfo ): void
     {
         this.debug( "setDisplayDialog.begin " + JSON.stringify( subjectInfo ) );
-        if ( isNullOrUndefined( subjectInfo.modelObject ) )
+        if ( !isNullOrUndefined( subjectInfo ) )
         {
-            this.debug( "setDisplayDialog model objects is null or not defined" );
-        }
-        else
-        {
-            this.setModelObject( subjectInfo.modelObject );
-            this.setCrudOperation( subjectInfo.crudOperation );
-            /*
-             * Tell the buttons and form of the changes
-             */
-            this.debug( "Sending events to Form" );
-            this.crudServiceContainer
-                .crudFormService
-                .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
-            this.crudServiceContainer
-                .crudFormService
-                .sendModelObjectChangedEvent( subjectInfo.modelObject );
-            this.debug( "Sending events to Form Buttons" );
-            this.crudServiceContainer
-                .crudFormButtonsService
-                .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
-            this.crudServiceContainer
-                .crudFormButtonsService
-                .sendModelObjectChangedEvent( subjectInfo.modelObject );
-            this.displayDialog = true;
+            if ( isNullOrUndefined( subjectInfo.modelObject ) )
+            {
+                this.debug( "setDisplayDialog model objects is null or not defined" );
+            }
+            else
+            {
+                this.setModelObject( subjectInfo.modelObject );
+                this.setCrudOperation( subjectInfo.crudOperation );
+                /*
+                 * Tell the buttons and form of the changes
+                 */
+                this.debug( "Sending events to Form" );
+                this.crudServiceContainer
+                    .crudFormService
+                    .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
+                this.crudServiceContainer
+                    .crudFormService
+                    .sendModelObjectChangedEvent( subjectInfo.modelObject );
+                this.debug( "Sending events to Form Buttons" );
+                this.crudServiceContainer
+                    .crudFormButtonsService
+                    .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
+                this.crudServiceContainer
+                    .crudFormButtonsService
+                    .sendModelObjectChangedEvent( subjectInfo.modelObject );
+                this.displayDialog = true;
+            }
         }
         this.debug( "setDisplayDialog.end" );
     }
@@ -180,6 +186,15 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
             {
                 this.onCloseButtonClick();
             }
+        }
+    }
+
+    private onSaveButtonClicked( modelObject: any )
+    {
+        this.debug( "onSaveButtonClick " + JSON.stringify( modelObject ) );
+        if ( !isNullOrUndefined( this.modelObject ) )
+        {
+            this.onCloseButtonClick();
         }
     }
 

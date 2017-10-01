@@ -29,24 +29,6 @@ export class StockNotes extends ModelObject<StockNotes>
     public tickerSymbol: string;
     public stockPrice: number;
 
-    /**
-     * Creates a comma delimited list of ticker symbols from the stockNotesStock array
-     * @return {string}
-     */
-    public getTickerSymbolString(): string
-    {
-        var tickerSymbols = "";
-        for ( let stockNoteStock of this.stocks )
-        {
-            if ( tickerSymbols.length > 0 )
-            {
-                tickerSymbols += ', '
-            }
-            tickerSymbols += stockNoteStock.tickerSymbol;
-        }
-        return tickerSymbols;
-    }
-
     public isEqualPrimaryKey( modelObject: StockNotes )
     {
         var isEqual = false;
@@ -55,5 +37,24 @@ export class StockNotes extends ModelObject<StockNotes>
             isEqual = this.id === modelObject.id;
         }
         return isEqual;
+    }
+
+    /**
+     * Returns a comma delimeted string of the ticker symbols
+     * @return {string}
+     */
+    public getTickerSymbols(): string
+    {
+        var tickerSymbols = '';
+        this.stocks
+            .forEach( stockNotesStock =>
+             {
+                 if ( tickerSymbols.length > 0 )
+                 {
+                     tickerSymbols += ', ';
+                 }
+                 tickerSymbols += stockNotesStock.tickerSymbol;
+             } );
+        return tickerSymbols;
     }
 }

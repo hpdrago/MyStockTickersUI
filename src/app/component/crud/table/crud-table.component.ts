@@ -15,12 +15,20 @@ import { isNullOrUndefined } from "util";
 
 /**
  * This is the base class for CRUD enabled tables.
+ * <T> Defines the model object that is displayed within the table.
  *
  * Created by mike on 12/8/2016.
  */
 export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseCrudComponent<T> implements OnInit
 {
+    /**
+     * Defines how a model object is presented to the user either by a dialog or a panel.
+     */
     protected modelObjectEditMode: CrudModelObjectEditMode = CrudModelObjectEditMode.DIALOG;
+    /**
+     * The list of model objects displayed.
+     * @type {Array}
+     */
     protected rows: Array<T> = [];
     protected totalRows: number;
     protected selectedModelObject: T;
@@ -47,6 +55,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         }
     }
 
+    /**
+     * Initialize the table, subscribe to form and button events, and call the loadTable method
+     */
     public ngOnInit()
     {
         this.debug( "ngOnInit.begin" );
@@ -87,11 +98,14 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected subscribeToCrudTableButtonEvents()
     {
         this.crudServiceContainer
-            .crudTableButtonsService.subscribeToAddButtonClickedEvent(( modelObject: T ) => this.showDialogToAdd( modelObject ) );
+            .crudTableButtonsService
+            .subscribeToAddButtonClickedEvent(( modelObject: T ) => this.showDialogToAdd( modelObject ) );
         this.crudServiceContainer
-            .crudTableButtonsService.subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showDialogToEdit( modelObject ) );
+            .crudTableButtonsService
+            .subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showDialogToEdit( modelObject ) );
         this.crudServiceContainer
-            .crudTableButtonsService.subscribeToDeleteButtonClickedEvent(( modelObject: T ) => this.showDialogToDelete( modelObject ) );
+            .crudTableButtonsService
+            .subscribeToDeleteButtonClickedEvent(( modelObject: T ) => this.showDialogToDelete( modelObject ) );
     }
 
     /**
@@ -100,10 +114,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected showDialogToAdd( modelObject: T )
     {
-        this.debug( "showDialogToAdd" );
-        this.crudOperation = CrudOperation.CREATE;
-        this.setModelObject( modelObject );
-        this.displayModelObject();
+        if ( !isNullOrUndefined( modelObject ) )
+        {
+            this.debug( "showDialogToAdd" );
+            this.crudOperation = CrudOperation.CREATE;
+            this.setModelObject( modelObject );
+            this.displayModelObject();
+        }
     }
 
     /**
@@ -113,10 +130,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected showDialogToEdit( modelObject: T )
     {
-        this.debug( "showDialogToEdit" );
-        this.crudOperation = CrudOperation.UPDATE;
-        this.setModelObject( modelObject );
-        this.displayModelObject();
+        if ( !isNullOrUndefined( modelObject ) )
+        {
+            this.debug( "showDialogToEdit" );
+            this.crudOperation = CrudOperation.UPDATE;
+            this.setModelObject( modelObject );
+            this.displayModelObject();
+        }
     }
 
     /**
@@ -125,17 +145,20 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected showDialogToDelete( modelObject: T )
     {
-        this.debug( "showDialogToDelete" );
-        this.crudOperation = CrudOperation.DELETE;
-        this.setModelObject( modelObject );
-        this.displayModelObject();
+        if ( !isNullOrUndefined( modelObject ) )
+        {
+            this.debug( "showDialogToDelete" );
+            this.crudOperation = CrudOperation.DELETE;
+            this.setModelObject( modelObject );
+            this.displayModelObject();
+        }
     }
 
     /**
      * Base on whether the model object is displayed in a form on a panel or a dialog,
      * it will perform the necessary work to display the model object to the user.
      */
-    private displayModelObject()
+    protected displayModelObject()
     {
         this.log( "displayModelObject " + JSON.stringify( this.modelObject ));
         /*
@@ -174,7 +197,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             }
             else
             {
-                this.updateModelObjectTableRow( index, modelObject )
+                this.updateModelObjectTableRow( index, modelObject );
             }
         }
         this.setModelObject( modelObject );

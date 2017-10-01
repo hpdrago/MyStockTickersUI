@@ -87,6 +87,12 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         return stockNoteForm;
     }
 
+    protected modelObjectChanged( stockNotes: StockNotes )
+    {
+        super.modelObjectChanged( stockNotes );
+        this.tickerSymbols = stockNotes.getTickerSymbols();
+    }
+
     /**
      * This method is called when the user selects a stock using the stock/company search input
      * @param stock
@@ -120,6 +126,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
          * Each ticker symbol is pushed into the stocks array of the StockNotes model object
          */
         var stocks = this.tickerSymbols.split( "," );
+        this.modelObject.stocks = [];
         for ( let stock of stocks )
         {
             var stockNoteStock: StockNotesStock = new StockNotesStock();

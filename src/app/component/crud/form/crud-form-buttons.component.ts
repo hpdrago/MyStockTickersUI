@@ -3,6 +3,7 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { CrudOperation } from "../common/crud-operation";
 import { ToastsManager } from "ng2-toastr";
 import { CrudServiceContainer } from "../common/crud-service-container";
+import { Observable } from "rxjs/Observable";
 
 /**
  * This class manages the set of buttons for a model object dialog.
@@ -285,23 +286,24 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         var methodName = "onSaveButtonClick";
         this.log( methodName + " " + JSON.stringify( this.modelObject ));
         this.crudServiceContainer.crudFormService.sendFormPrepareToSaveEvent();
-        this.crudServiceContainer
-            .crudRestService
-            .updateModelObject( this.modelObject )
-            .subscribe( ( updatedModelObject: T ) =>
-                        {
-                            this.setModelObject( updatedModelObject );
-                            this.log( methodName + " saved successful.  modelObject; " +
-                                             JSON.stringify( this.modelObject ));
-                            this.crudServiceContainer
-                                .crudFormService
-                                .sendFormResetEvent();
-                            this.crudServiceContainer
-                                .crudFormButtonsService
-                                .sendSaveButtonClickedEvent( this.modelObject );
-                        },
-                        err => this.reportRestError( err )
+        var observable: Observable<T> = this.crudServiceContainer
+                                            .crudRestService
+                                            .updateModelObject( this.modelObject );
+        observable.subscribe( ( updatedModelObject: T ) =>
+                   {
+                       this.setModelObject( updatedModelObject );
+                       this.log( methodName + " saved successful.  modelObject; " +
+                                        JSON.stringify( this.modelObject ));
+                       this.crudServiceContainer
+                           .crudFormService
+                           .sendFormResetEvent();
+                       this.crudServiceContainer
+                           .crudFormButtonsService
+                           .sendSaveButtonClickedEvent( this.modelObject );
+                   },
+                   err => this.reportRestError( err )
             );
+        this.busyIndicator = observable.subscribe();
     }
 
     /**
@@ -312,36 +314,38 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         var methodName = "onAddButtonClick";
         this.log( methodName + " " + JSON.stringify( this.modelObject ));
         this.crudServiceContainer.crudFormService.sendFormPrepareToSaveEvent();
-        this.crudServiceContainer
-            .crudRestService.createModelObject( this.modelObject )
-            .subscribe( ( newModelObject: T ) =>
-                        {
-                            this.modelObject = newModelObject;
-                            this.log( methodName + " add successful.  modelObject: " +
-                                             JSON.stringify( this.modelObject ) );
-                            this.crudServiceContainer
-                                .crudFormService.sendFormResetEvent();
-                            this.crudServiceContainer
-                                .crudFormButtonsService
-                                .sendAddButtonClickedEvent( newModelObject );
-                        },
-                        err =>
-                        {
-                            this.log( methodName + " err: " + err );
-                            var exception = this.reportRestError( err );
-                            this.log( methodName + " exception: " + JSON.stringify( exception ));
-                            /*
-                             *  If we get a duplicate key, tell the stock table to jump to that stock
-                             */
-                            if ( exception.isDuplicateKeyExists() )
-                            {
-                                this.log( methodName + " duplicateKeyExists" );
-                                this.crudServiceContainer
-                                    .crudFormButtonsService
-                                    .sendNavigateToModelObjectEvent( this.modelObject );
-                            }
-                        }
+        var observable: Observable<T> = this.crudServiceContainer
+                                            .crudRestService
+                                            .createModelObject( this.modelObject );
+        observable.subscribe( ( newModelObject: T ) =>
+                   {
+                       this.modelObject = newModelObject;
+                       this.log( methodName + " add successful.  modelObject: " +
+                                        JSON.stringify( this.modelObject ) );
+                       this.crudServiceContainer
+                           .crudFormService.sendFormResetEvent();
+                       this.crudServiceContainer
+                           .crudFormButtonsService
+                           .sendAddButtonClickedEvent( newModelObject );
+                   },
+                   err =>
+                   {
+                       this.log( methodName + " err: " + err );
+                       var exception = this.reportRestError( err );
+                       this.log( methodName + " exception: " + JSON.stringify( exception ));
+                       /*
+                        *  If we get a duplicate key, tell the stock table to jump to that stock
+                        */
+                       if ( exception.isDuplicateKeyExists() )
+                       {
+                           this.log( methodName + " duplicateKeyExists" );
+                           this.crudServiceContainer
+                               .crudFormButtonsService
+                               .sendNavigateToModelObjectEvent( this.modelObject );
+                       }
+                   }
             );
+        this.busyIndicator = observable.subscribe();
     }
 
     /**
@@ -351,24 +355,25 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "onDeleteButtonClick";
         this.log( methodName + " " + JSON.stringify( this.modelObject ));
-        this.crudServiceContainer
-            .crudRestService
-            .deleteModelObject( this.modelObject )
-            .subscribe( () =>
-                        {
-                            this.log( methodName + " delete successful" );
-                            this.crudServiceContainer
-                                .crudFormService
-                                .sendFormResetEvent();
-                            this.crudServiceContainer
-                                .crudFormButtonsService
-                                .sendDeleteButtonClickedEvent( this.modelObject );
-                        },
-                        err =>
-                        {
-                            this.reportRestError( err );
-                        }
+        var observable: Observable<void> = this.crudServiceContainer
+                                               .crudRestService
+                                               .deleteModelObject( this.modelObject );
+        observable.subscribe( () =>
+                   {
+                       this.log( methodName + " delete successful" );
+                       this.crudServiceContainer
+                           .crudFormService
+                           .sendFormResetEvent();
+                       this.crudServiceContainer
+                           .crudFormButtonsService
+                           .sendDeleteButtonClickedEvent( this.modelObject );
+                   },
+                   err =>
+                   {
+                       this.reportRestError( err );
+                   }
             );
+        this.busyIndicator = observable.subscribe();
     }
 
     /**

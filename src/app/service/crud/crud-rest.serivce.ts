@@ -76,7 +76,8 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                             this.log( methodName + " newModelObject: " + this.serialize( newModelObject ));
                             return newModelObject;
                         } ) // ...and calling .json() on the response to return data
-                        .catch( ( error: any ) => Observable.throw( error || 'Server error' ) ); //...errors if any
+                        .catch( ( error: any ) => Observable.throw( error || 'Server error' ) )//...errors if any
+                        .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
     /**
@@ -110,7 +111,8 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                             this.log( methodName + " received: " + JSON.stringify( res.json() ));
                             return this.modelObjectFactory.newModelObjectFromObject( res.json() );
                         } ) // ...and calling .json() on the response to return data
-                        .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ); //...errors if any
+                        .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ) //...errors if any
+                        .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
     /**
@@ -143,7 +145,8 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                                   }
                                   return;
                               } ) // ...and calling .json() on the response to return data
-                        .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ); //...errors if any
+                        .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ) //...errors if any
+                        .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
     /**

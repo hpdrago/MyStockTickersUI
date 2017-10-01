@@ -2,7 +2,7 @@ import { BaseComponent } from "../../common/base.component";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
 import { CrudOperation } from "./crud-operation";
-import { isNullOrUndefined } from "util";
+import { Subscription } from "rxjs/Subscription";
 /**
  * This class is the base class for all CRUD components
  *
@@ -14,6 +14,8 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      * Identifies the type of CRUD action
      */
     protected crudOperation: CrudOperation;
+
+    protected busyIndicator: Subscription;
 
     /**
      * The object that contains the form's data
