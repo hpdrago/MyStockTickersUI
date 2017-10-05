@@ -13,9 +13,25 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     /**
      * Identifies the type of CRUD action
      */
-    protected crudOperation: CrudOperation;
+    protected crudOperation: CrudOperation = CrudOperation.NONE;
+    private displayProgressBar: boolean = false;
 
-    protected busyIndicator: Subscription;
+    private _busyIndicator: Subscription;
+    get busyIndicator():Subscription
+    {
+        return this._busyIndicator;
+    }
+    set busyIndicator( busyIndicator: Subscription)
+    {
+        this.debug( "busyIndicator setting displayProgressBar to true");
+        this._busyIndicator = busyIndicator;
+        this.displayProgressBar = true;
+        this._busyIndicator.add( ()=>
+        {
+            this.debug( "busyIndicator setting displayProgressBar to false" );
+            this.displayProgressBar = false
+        })
+    }
 
     /**
      * The object that contains the form's data

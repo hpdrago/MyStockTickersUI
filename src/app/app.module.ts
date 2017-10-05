@@ -13,6 +13,11 @@ import { HttpModule } from "@angular/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 /**
+ *  Angular Material
+ */
+import {MatProgressBarModule} from '@angular/material';
+
+/**
  * PrimeNG
  */
 import {
@@ -107,6 +112,8 @@ import {BusyModule} from 'angular2-busy';
         routing,
         HttpModule,
         BrowserAnimationsModule,
+        // Angular Material modules
+        MatProgressBarModule,
         // PrimeNG modules
         DropdownModule,
         InputMaskModule,

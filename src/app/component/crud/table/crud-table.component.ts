@@ -53,6 +53,10 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         {
             throw new Error( "crudFormButtonsService argument cannot be null" );
         }
+        if ( !this.crudServiceContainer.crudTableService )
+        {
+            throw new Error( "crudTableService argument cannot be null" );
+        }
     }
 
     /**
@@ -278,6 +282,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
          * because: this.modelObject <> this.selectedModelObject
          */
         this.selectedModelObject = event.data;
+        this.crudServiceContainer
+            .crudTableService
+            .sendTableSelectionChangeEvent( [this.selectedModelObject] );
         this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObjectFromObject( event.data ) );
         /*
          * If a panel is used to display the selected contents, then notify the panel
@@ -286,6 +293,19 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         {
             this.showDialogToEdit( this.modelObject );
         }
+    }
+
+    /**
+     * This method is called when the user unselects the rows
+     * @param event
+     */
+    protected onRowUnSelect( event ): void
+    {
+        this.log( "onRowUnSelect " + JSON.stringify( event ) );
+        this.selectedModelObject = event.data;
+        this.crudServiceContainer
+            .crudTableService
+            .sendTableSelectionChangeEvent( null );
     }
 
     /**

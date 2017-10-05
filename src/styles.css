@@ -3,6 +3,7 @@
 
 /*@import "jquery-style/jquery-ui.css";*/
 @import "primng-afterdark-theme.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 /* My customizations of PrimeNG afterdark theme */
 

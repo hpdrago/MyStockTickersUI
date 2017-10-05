@@ -19,10 +19,39 @@ import { isNullOrUndefined } from "util";
            })
 export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
+    protected modelObjects: [T];
+
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
         super( toaster );
+        this.subscribeToCrudTableEvents()
+    }
+
+    /**
+     * Subscribe to table row selection events
+     */
+    private subscribeToCrudTableEvents()
+    {
+        /*
+         * We need to know when the table selections change so that we can enable/disable buttons
+         */
+        this.crudServiceContainer.crudTableService
+            .subscribeToTableSelectionChangeEvent( (modelObjects: [T] ) =>
+                                                   {
+                                                       this.handleTableSelectionChangeEvent( modelObjects );
+                                                   });
+
+    }
+
+    /**
+     * This method is called when the number of model objects that were selected changes.
+     * @param {[T]} selectedModelObjects
+     */
+    private handleTableSelectionChangeEvent( selectedModelObjects: [T] )
+    {
+        this.debug( "handleTableSelectionChangeEvent modelObject count: " + (selectedModelObjects == null ? 0 : selectedModelObjects.length ));
+        this.modelObjects = selectedModelObjects;
     }
 
     public ngOnInit()
@@ -106,7 +135,7 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
      */
     protected isDeleteButtonDisabled(): boolean
     {
-        return isNullOrUndefined( this.modelObject );
+        return isNullOrUndefined( this.modelObjects ) || this.modelObjects.length == 0;
     }
 
     /**

@@ -4,6 +4,7 @@
                      selectionMode="single"
                      [(selection)]="selectedModelObject"
                      (onRowSelect)="onRowSelect($event)"
+                     (onRowUnselect)="onRowUnselect($event)"
                      [paginator]="true"
                      [pageLinks]="3"
                      [rowsPerPageOptions]="[20,30,40]"

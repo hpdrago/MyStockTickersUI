@@ -105,7 +105,7 @@ export abstract class BaseComponent extends BaseClass implements OnChanges
      * @param message
      * @return {Promise<Toast>}
      */
-    protected showError( message: string ): Promise<Toast>
+    protected showError( message: string )//: Promise<Toast>
     {
         return this.toaster.error( message );
     }
@@ -115,7 +115,7 @@ export abstract class BaseComponent extends BaseClass implements OnChanges
      * @param message
      * @return {Promise<Toast>}
      */
-    protected showWarning( message: string ): Promise<Toast>
+    protected showWarning( message: string )//: Promise<Toast>
     {
         return this.toaster.warning( message );
     }
@@ -125,7 +125,7 @@ export abstract class BaseComponent extends BaseClass implements OnChanges
      * @param message
      * @return {Promise<Toast>}
      */
-    protected showInfo( message: string ) : Promise<Toast>
+    protected showInfo( message: string )// : Promise<Toast>
     {
         return this.toaster.info( message );
     }
