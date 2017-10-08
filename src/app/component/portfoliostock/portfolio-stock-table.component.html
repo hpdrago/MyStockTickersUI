@@ -1,28 +1,30 @@
-<p-dataTable [value]="rows"
-             selectionMode="single"
-             [(selection)]="selectedModelObject"
-             (onRowSelect)="onRowSelect($event)"
-             [paginator]="true"
-             [pageLinks]="3"
-             [rowsPerPageOptions]="[20,30,40]"
-             [rows]="25"
-             (onRowDblclick)="onRowDoubleClick($event)"
-             [responsive]="true">
+<p-panel header="Portfolio Stocks">
+    <p-dataTable [value]="rows"
+                 selectionMode="single"
+                 [(selection)]="modelObject"
+                 (onRowSelect)="onRowSelect($event)"
+                 [paginator]="true"
+                 [pageLinks]="3"
+                 [rowsPerPageOptions]="[20,30,40]"
+                 [rows]="25"
+                 (onRowDblclick)="onRowDoubleClick($event)"
+                 [responsive]="true">
 
-    <header>{{title}}</header>
-    <p-column field="tickerSymbol" header="Ticker" [sortable]="true"></p-column>
-    <p-column field="numberOfShares" header="Shares" [sortable]="true"></p-column>
-    <p-column field="coastBasis" header="Cost Basis" [sortable]="true"></p-column>
-    <p-column field="realizedGain" header="Gains" [sortable]="true"></p-column>
-    <p-column field="realizedLoss" header="Loss" [sortable]="true"></p-column>
-    <p-column field="stopLossPrice" header="SL Price" [sortable]="true"></p-column>
-    <p-column field="stopLossShares" header="SL Shares" [sortable]="true"></p-column>
-    <p-column field="profitTakingPrice" header="PT Price" [sortable]="true"></p-column>
-    <p-column field="profitTakingShares" header="PT Shares" [sortable]="true"></p-column>
-    <footer>
-        <portfolio-stock-table-buttons [portfolio]="portfolio">
-        </portfolio-stock-table-buttons>
-    </footer>
-</p-dataTable>
-<portfolio-stock-dialog [portfolio]="portfolio">
-</portfolio-stock-dialog>
+        <header>{{title}}</header>
+        <p-column field="tickerSymbol" header="Ticker" [sortable]="true"></p-column>
+        <p-column field="numberOfShares" header="Shares" [sortable]="true"></p-column>
+        <p-column field="coastBasis" header="Cost Basis" [sortable]="true"></p-column>
+        <p-column field="realizedGain" header="Gains" [sortable]="true"></p-column>
+        <p-column field="realizedLoss" header="Loss" [sortable]="true"></p-column>
+        <p-column field="stopLossPrice" header="SL Price" [sortable]="true"></p-column>
+        <p-column field="stopLossShares" header="SL Shares" [sortable]="true"></p-column>
+        <p-column field="profitTakingPrice" header="PT Price" [sortable]="true"></p-column>
+        <p-column field="profitTakingShares" header="PT Shares" [sortable]="true"></p-column>
+        <p-footer>
+            <portfolio-stock-table-buttons [portfolio]="portfolio">
+            </portfolio-stock-table-buttons>
+        </p-footer>
+    </p-dataTable>
+    <portfolio-stock-dialog [portfolio]="portfolio">
+    </portfolio-stock-dialog>
+</p-panel>

@@ -8,22 +8,30 @@ import { ModelObjectFactory } from "../../../model/factory/model-object.factory"
  */
 export class CrudTableService <T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
-    private tableSelectionChangedSubject: Subject<[T]> = new Subject();
+    private tableSelectionChangedSubject: Subject<T> = new Subject();
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super( modelObjectFactory );
     }
 
+    /**
+     * Subscribe to get notified when the user has selected a table row
+     * @param {(T) => any} fn
+     */
     public subscribeToTableSelectionChangeEvent( fn: ( T ) => any )
     {
         this.log( "subscribeToTableSelectionChangeEvent" );
         this.tableSelectionChangedSubject.asObservable().subscribe( fn );
     }
 
-    public sendTableSelectionChangeEvent( modelObjects: [T] )
+    /**
+     * This method will notify all subscribers that the user has selected a row in the table
+     * @param {T} modelObject
+     */
+    public sendTableSelectionChangeEvent( modelObject: T )
     {
-        this.log( "sendTableSelectionChangeEvent" + JSON.stringify( modelObjects ) );
-        this.tickThenRun( () => this.tableSelectionChangedSubject.next( modelObjects ) );
+        this.log( "sendTableSelectionChangeEvent" + JSON.stringify( modelObject ) );
+        this.tickThenRun( () => this.tableSelectionChangedSubject.next( modelObject ) );
     }
 }

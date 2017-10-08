@@ -31,7 +31,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected rows: Array<T> = [];
     protected totalRows: number;
-    protected selectedModelObject: T;
 
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
@@ -103,7 +102,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         this.crudServiceContainer
             .crudTableButtonsService
-            .subscribeToAddButtonClickedEvent(( modelObject: T ) => this.showDialogToAdd( modelObject ) );
+            .subscribeToAddButtonClickedEvent(( modelObject: T ) => this.showDialogToAdd() );
         this.crudServiceContainer
             .crudTableButtonsService
             .subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showDialogToEdit( modelObject ) );
@@ -113,18 +112,36 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     }
 
     /**
+     * Creates a new model object by calling the model object factory to create the model object.
+     * This method is called when the user has clicked the add button.
+     * @return {T}
+     */
+    protected newModelObject(): T
+    {
+        return this.crudServiceContainer.modelObjectFactory.newModelObject();
+    }
+
+    /**
+     * Converts an event object into a model object.  The event object is just a JSON structure not a full class object
+     * instance.
+     * @param event
+     * @return {T}
+     */
+    protected newModelObjectFromEvent( event ): T
+    {
+        return this.crudServiceContainer.modelObjectFactory.newModelObjectFromObject( event.data );
+    }
+
+    /**
      * This method is called when the user clicks on the add button.
      * A dialog will be displayed to allow the user to add a new model object.
      */
-    protected showDialogToAdd( modelObject: T )
+    protected showDialogToAdd()
     {
-        if ( !isNullOrUndefined( modelObject ) )
-        {
-            this.debug( "showDialogToAdd" );
-            this.crudOperation = CrudOperation.CREATE;
-            this.setModelObject( modelObject );
-            this.displayModelObject();
-        }
+        this.debug( "showDialogToAdd" );
+        this.crudOperation = CrudOperation.CREATE;
+        this.setModelObject( this.newModelObject() );
+        this.displayModelObject();
     }
 
     /**
@@ -134,6 +151,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected showDialogToEdit( modelObject: T )
     {
+        this.debug( "showDialogToEdit " + JSON.stringify( modelObject ));
         if ( !isNullOrUndefined( modelObject ) )
         {
             this.debug( "showDialogToEdit" );
@@ -149,6 +167,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected showDialogToDelete( modelObject: T )
     {
+        this.debug( "showDialogToDelete " + JSON.stringify( modelObject ));
         if ( !isNullOrUndefined( modelObject ) )
         {
             this.debug( "showDialogToDelete" );
@@ -164,7 +183,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected displayModelObject()
     {
-        this.log( "displayModelObject " + JSON.stringify( this.modelObject ));
+        this.debug( "displayModelObject " + JSON.stringify( this.modelObject ));
         /*
          * Notify the panel of the changes
          * If a panel is used to display the selected contents, then notify the panel
@@ -190,7 +209,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onUserModifiedModelObject( modelObject: T ): void
     {
-        this.log( 'onUserModifiedModelObject ' + JSON.stringify( modelObject ) );
+        this.debug( 'onUserModifiedModelObject ' + JSON.stringify( modelObject ) );
         this.setModelObject( modelObject );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
@@ -212,13 +231,21 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onUserCreatedModelObject( modelObject: T ): void
     {
-        this.log( 'onUserCreatedModelObject ' + JSON.stringify( modelObject ) );
+        this.debug( 'onUserCreatedModelObject ' + JSON.stringify( modelObject ) );
         this.setModelObject( modelObject );
         if ( !isNullOrUndefined( this.modelObject ))
         {
             this.addModelObjectToTableRows( this.modelObject );
         }
-        this.selectedModelObject = modelObject;
+    }
+
+    /**
+     * Adds rows to the table
+     * @param {T[]} newRows
+     */
+    protected addRows( newRows: T[] )
+    {
+        this.rows = [...newRows, ...this.rows];
     }
 
     /**
@@ -254,7 +281,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onUserDeletedModelObject( modelObject: T ): void
     {
-        this.log( 'onUserDeletedModelObject' + JSON.stringify( modelObject ) );
+        this.debug( 'onUserDeletedModelObject' + JSON.stringify( modelObject ) );
         this.setModelObject( modelObject );
         if ( !isNullOrUndefined( this.modelObject ))
         {
@@ -276,16 +303,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onRowSelect( event ): void
     {
-        this.log( "onRowSelect " + JSON.stringify( event ) );
-        /*
-         * Need to save the actual data value so that the table selection persists.
-         * because: this.modelObject <> this.selectedModelObject
-         */
-        this.selectedModelObject = event.data;
+        this.debug( "onRowSelect " + JSON.stringify( event ) );
+        this.setModelObject( this.newModelObjectFromEvent( event ));
         this.crudServiceContainer
             .crudTableService
-            .sendTableSelectionChangeEvent( [this.selectedModelObject] );
-        this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObjectFromObject( event.data ) );
+            .sendTableSelectionChangeEvent( this.modelObject );
         /*
          * If a panel is used to display the selected contents, then notify the panel
          */
@@ -301,8 +323,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onRowUnSelect( event ): void
     {
-        this.log( "onRowUnSelect " + JSON.stringify( event ) );
-        this.selectedModelObject = event.data;
+        this.debug( "onRowUnSelect " + JSON.stringify( event ) );
+        this.setModelObject( this.newModelObjectFromEvent( event ) );
         this.crudServiceContainer
             .crudTableService
             .sendTableSelectionChangeEvent( null );
@@ -315,8 +337,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onRowDoubleClick( event ): void
     {
         var methodName = "onRowDoubleClick";
-        this.log( methodName + " " + JSON.stringify( event ) );
-        this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObjectFromObject( event.data ) );
+        this.debug( methodName + " " + JSON.stringify( event ) );
+        this.setModelObject( this.newModelObjectFromEvent( event ) );
         this.showDialogToEdit( this.modelObject );
     }
 

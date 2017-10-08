@@ -49,7 +49,6 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
      */
     protected onRowSelect( portfolio: Portfolio ): void
     {
-        this.selectedModelObject = portfolio;
         this.setModelObject( portfolio );
         this.logger.log( 'onRowSelect ' + JSON.stringify( this.modelObject ));
         this.portfolioStocksComponent.loadPortfolio( this.modelObject );

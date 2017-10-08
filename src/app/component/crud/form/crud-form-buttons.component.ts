@@ -108,6 +108,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     private logState()
     {
+        /*
         this.debug( "isFormValid: " + this.formValidFlag );
         this.debug( "isSaveButtonDisabled: " + this.isSaveButtonDisabled() );
         this.debug( "isDeleteButtonDisabled: " + this.isDeleteButtonDisabled() );
@@ -115,6 +116,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.debug( "isShowSaveButton: " + this.isShowSaveButton() );
         this.debug( "isShowAddButton: " + this.isShowAddButton() );
         this.debug( "isShowDeleteButton: " + this.isShowDeleteButton() );
+        */
     }
 
     /**

@@ -167,7 +167,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected setFormValues( modelObject: T )
     {
-        this.debug( "setFormValues: " + JSON.stringify( modelObject ));
+        //this.debug( "setFormValues: " + JSON.stringify( modelObject ));
         for ( var property in this.modelObject )
         {
             if ( !isNullOrUndefined( this.formGroup.controls[property] ) &&
@@ -185,7 +185,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected setFormValue( fieldName: string, fieldValue: any )
     {
-        this.debug( "setFormValue fieldName: " + fieldName + " fieldValue: " + fieldValue );
+        //this.debug( "setFormValue fieldName: " + fieldName + " fieldValue: " + fieldValue );
         (<FormControl>this.formGroup.controls[fieldName]).setValue( fieldValue );
     }
 
@@ -308,7 +308,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected disableInputs(): void
     {
-        this.debug( "disableInputs" );
+        //this.debug( "disableInputs" );
         if ( this.formGroup )
         {
             for ( let fieldName in this.formGroup.controls )
@@ -325,8 +325,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected disableField( fieldName: string )
     {
-        this.debug( "formGroup.disableField " + fieldName );
-        //this.formGroup.disable( fieldName );
+        //this.debug( "formGroup.disableField " + fieldName );
         this.formGroup.controls[fieldName].disable();
     }
 
@@ -335,7 +334,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected enableInputs(): void
     {
-        this.debug( "enableInputs" );
+        //this.debug( "enableInputs" );
         if ( this.crudOperation != CrudOperation.NONE &&
              this.crudOperation != CrudOperation.DELETE )
         {
@@ -361,12 +360,12 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         if ( doEnable )
         {
             this.formGroup.controls[fieldName].enable();
-            this.debug( "formGroup.enableField enable: " + fieldName );
+            //this.debug( "formGroup.enableField enable: " + fieldName );
         }
         else
         {
             this.formGroup.controls[fieldName].disable();
-            this.debug( "formGroup.enableField disable: " + fieldName );
+            //this.debug( "formGroup.enableField disable: " + fieldName );
         }
     }
 

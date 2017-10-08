@@ -9,7 +9,7 @@ import { PortfolioCrudServiceContainer } from "./porfolio-crud-service-container
  */
 @Component({
     selector:    'portfolio-table-buttons',
-    styleUrls:   ['./portfolio-table-buttons.component.css'],
+    styleUrls:   ['../crud/table/crud-table-buttons.component.css', './portfolio-table-buttons.component.css'],
     templateUrl: '../crud/table/crud-table-buttons.component.html'
 })
 export class PortfolioTableButtonsComponent extends CrudTableButtonsComponent<Portfolio>

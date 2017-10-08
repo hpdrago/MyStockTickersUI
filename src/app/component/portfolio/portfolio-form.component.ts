@@ -12,6 +12,7 @@ import { PortfolioCrudServiceContainer } from "./porfolio-crud-service-container
  */
 @Component({
     selector: 'portfolio-form',
+    styleUrls: ['../crud/form/crud-form.component.css'],
     templateUrl: './portfolio-form.component.html'
 })
 export class PortfolioFormComponent extends CrudFormComponent<Portfolio>

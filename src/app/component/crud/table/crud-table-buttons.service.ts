@@ -2,6 +2,7 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { BaseCrudComponentService } from "../common/base-crud-component.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
+import { Subject } from "rxjs/Subject";
 
 /**
  * This class handles the default behaviour for the buttons used in a CRUD enabled table.
@@ -10,14 +11,13 @@ import { ModelObjectFactory } from "../../../model/factory/model-object.factory"
  */
 export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
-    private addButtonClickedSubject: BehaviorSubject<T>;
+    private addButtonClickedSubject: Subject<any> = new Subject();
     private deleteButtonClickedSubject: BehaviorSubject<T>;
     private editButtonClickedSubject: BehaviorSubject<T>;
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super( modelObjectFactory );
-        this.addButtonClickedSubject = new BehaviorSubject<T>( null );
         this.deleteButtonClickedSubject = new BehaviorSubject<T>( null );
         this.editButtonClickedSubject = new BehaviorSubject<T>( null );
     }
@@ -35,10 +35,10 @@ export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudC
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the Add button.
      */
-    public sendAddButtonClickedEvent( modelObject: T )
+    public sendAddButtonClickedEvent()
     {
-        this.log( "sendAddButtonClickedEvent " + JSON.stringify( modelObject ) );
-        this.tickThenRun( () => this.addButtonClickedSubject.next( modelObject ) );
+        this.log( "sendAddButtonClickedEvent " );
+        this.tickThenRun( () => this.addButtonClickedSubject.next() );
     }
 
     /**

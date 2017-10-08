@@ -11,6 +11,7 @@ import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-servi
 @Component({
     selector:    'portfolio-stock-form-buttons',
     templateUrl: '../crud/form/crud-form-buttons.component.html',
+    styleUrls:   ['../crud/form/crud-form-buttons.component.css'],
     inputs:      ['portfolio']
 })
 export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent<PortfolioStock>

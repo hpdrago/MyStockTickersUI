@@ -122,6 +122,9 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                         });
     }
 
+    /*
+     * The following methods are needed to send the stock information to the component -- [(ngModel)]
+     */
     writeValue( obj: any ): void
     {
         if ( !isNullOrUndefined( obj ) )

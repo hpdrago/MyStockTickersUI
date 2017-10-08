@@ -32,14 +32,26 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
         super( toaster, stockNotesServiceContainer );
     }
 
+    protected newModelObjectFromEvent( event ): StockNotes
+    {
+        var stockNotes: StockNotes = super.newModelObjectFromEvent( event );
+        stockNotes.customerId = this.session.getLoggedInUserId();
+        return stockNotes;
+    }
+
+    protected newModelObject(): StockNotes
+    {
+        var stockNotes: StockNotes = super.newModelObject();
+        stockNotes.customerId = this.session.getLoggedInUserId();
+        return stockNotes;
+    }
+
     /**
      * This method is called automatically by the base class
      */
     protected loadTable()
     {
         this.log( "loadTable.begin" );
-        this.modelObject = this.stockNotesServiceContainer.stockNoteFactory.newModelObject();
-        this.modelObject.customerId = this.session.getLoggedInUserId();
         this.stockNotesServiceContainer
             .stockNoteCrudService
             .getStockNotes( this.session.getLoggedInUserId() )
@@ -63,6 +75,17 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
                             this.reportRestError( error );
                         } );
         this.log( "loadTable.end" );
+    }
+
+    /**
+     * This method is called when a model object is added to the table.  This happens when a user adds a new
+     * entry to the table.
+     * @param {T} modelObject The model object to be added to the table.
+     */
+    protected addModelObjectToTableRows( modelObject: StockNotes )
+    {
+        var stockNotes: StockNotes[] = this.expandRows( [modelObject] );
+        this.addRows( stockNotes );
     }
 
     /**

@@ -16,14 +16,15 @@ import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-servi
 @Component(
 {
     selector:    'portfolio-stock-form',
-    templateUrl: './portfolio-stock-form.component.html'
+    templateUrl: './portfolio-stock-form.component.html',
+    styleUrls: ['../crud/form/crud-form.component.css']
 })
 export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStock> implements OnInit
 {
     private stockSectorMap: StockSectorList = new StockSectorList();
     private stockSubSectors: SelectItem[];
     private stockSectors: SelectItem[];
-    private dataLoaded: boolean = false;
+    private dataLoaded: boolean = true;
     private selectedStock: Stock;
 
     constructor( protected toaster: ToastsManager,
@@ -41,7 +42,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
     public ngOnInit()
     {
         super.ngOnInit();
-        this.loadStockSectorMap();
+        //this.loadStockSectorMap();
     }
 
     /**
