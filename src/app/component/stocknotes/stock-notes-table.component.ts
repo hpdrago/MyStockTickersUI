@@ -123,10 +123,8 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
     {
         if ( !isNullOrUndefined( stockNotes ) )
         {
-            this.debug( "showDialogToEdit" );
+            this.debug( "showDialogToEdit: " + JSON.stringify( stockNotes ));
             this.crudOperation = CrudOperation.UPDATE;
-            var stocks: StockNotesStock[] = this.getStocksForStockNote( this.modelObject.id );
-            stockNotes.stocks = stocks;
             this.setModelObject( stockNotes );
             this.displayModelObject();
         }
@@ -157,25 +155,6 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
     private removeStockNotes( stockNotesId: number )
     {
         this.rows = this.rows.filter( stockNotes => stockNotes.id != stockNotesId );
-    }
-
-    /**
-     * Finds all of the stocks for the {@code stockNoteId}
-     * @param {number} stockNoteId
-     * @return {Array<string>}
-     */
-    private getStocksForStockNote( stockNotesId: number ) : Array<StockNotesStock>
-    {
-        var stocks: StockNotesStock[] = [];
-        for ( let stockNotes of this.rows )
-        {
-            if ( stockNotes.id == stockNotesId )
-            {
-                stocks.push( stockNotes.stocks[0] );
-            }
-        }
-        this.log( "getStocksForStockNote return: " + stocks );
-        return stocks;
     }
 
     /**

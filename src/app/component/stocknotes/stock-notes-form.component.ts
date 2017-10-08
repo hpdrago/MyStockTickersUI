@@ -87,10 +87,17 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         return stockNoteForm;
     }
 
-    protected modelObjectChanged( stockNotes: StockNotes )
+    /**
+     * Override this method to set the local editable form field {@code tickerSymbols}
+     * @param {StockNotes} modelObject
+     */
+    protected setFormValues( modelObject: StockNotes )
     {
-        super.modelObjectChanged( stockNotes );
-        this.tickerSymbols = stockNotes.getTickerSymbols();
+        this.debug( "setFromValues modelObject: " + JSON.stringify( modelObject ));
+        this.tickerSymbols = modelObject.getTickerSymbols();
+        this.debug( "setFormValues tickerSymbols: " + this.tickerSymbols );
+        super.setFormValues( modelObject );
+        this.setFormValue( 'tickerSymbols', this.tickerSymbols );
     }
 
     /**
@@ -156,7 +163,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected sourcesOnChange( event )
     {
-        this.debug( "sourcesOnChange: " + JSON.stringify( event ));
+        //this.debug( "sourcesOnChange: " + JSON.stringify( event ));
         this.modelObject.notesSourceName = event.value;
     }
 

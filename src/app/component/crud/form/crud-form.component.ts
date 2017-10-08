@@ -144,6 +144,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected modelObjectChanged( modelObject: T )
     {
+        this.debug( "modelObjectChanged " + JSON.stringify( this.modelObject ));
         /*
          * Clear the form fields of any previous model object.
          */
