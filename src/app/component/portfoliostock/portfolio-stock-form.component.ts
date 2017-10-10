@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
 import { SelectItem } from "primeng/components/common/api";
@@ -9,6 +9,7 @@ import { StockSectorCrudService } from "../../service/crud/stock-sector-crud.ser
 import { ToastsManager } from "ng2-toastr";
 import { StockCrudServiceContainer } from "../stock/stock-crud-service-container";
 import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-service-container";
+import { Portfolio } from "../../model/entity/portfolio";
 
 /**
  * Created by mike on 11/16/2016.
@@ -21,6 +22,8 @@ import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-servi
 })
 export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStock> implements OnInit
 {
+    @Input()
+    private portfolio: Portfolio;
     private stockSectorMap: StockSectorList = new StockSectorList();
     private stockSubSectors: SelectItem[];
     private stockSectors: SelectItem[];
@@ -34,6 +37,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
                  protected portfolioStockCrudServiceContainer: PortfolioStockCrudServiceContainer )
     {
         super( toaster, portfolioStockCrudServiceContainer );
+        this.continuousAdd = true;
     }
 
     /**

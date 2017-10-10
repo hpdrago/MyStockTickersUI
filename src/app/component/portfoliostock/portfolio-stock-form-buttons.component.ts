@@ -4,6 +4,7 @@ import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.compone
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
 import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-service-container";
+import { isNullOrUndefined } from "util";
 
 /**
  * Created by mike on 12/31/2016.
@@ -30,6 +31,10 @@ export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent
      */
     protected onAddButtonClick(): void
     {
+        if ( isNullOrUndefined( this.portfolio ))
+        {
+            throw new ReferenceError( "this.portfolio is null or undefined" );
+        }
         this.modelObject.portfolioId = this.portfolio.id;
         super.onAddButtonClick();
     }

@@ -24,6 +24,7 @@ import { ModelObjectFactory } from "../../../model/factory/model-object.factory"
 export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
     private addButtonClickedSubject: BehaviorSubject<T>;
+    private addAndContinueButtonClickedSubject: BehaviorSubject<T>;
     private deleteButtonClickedSubject: BehaviorSubject<T>;
     private saveButtonClickedSubject: BehaviorSubject<T>;
     private resetButtonClickedSubject: Subject<void>;
@@ -33,6 +34,7 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     {
         super( modelObjectFactory );
         this.addButtonClickedSubject = new BehaviorSubject<T>( null );
+        this.addAndContinueButtonClickedSubject = new BehaviorSubject<T>( null );
         this.deleteButtonClickedSubject = new BehaviorSubject<T>( null );
         this.saveButtonClickedSubject = new BehaviorSubject<T>( null );
         this.resetButtonClickedSubject = new Subject<void>();
@@ -60,6 +62,26 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     {
         this.log( "sendNavigateToModelObjectEvent" );
         this.tickThenRun( () => this.navigateToModelObjectSubject.next( modelObject ) );
+    }
+
+    /**
+     * The {@code CrudTableComponent} will call this method to register to receive notification when the Add and continue
+     * button is clicked on the panel.
+     */
+    public subscribeToContinuousAddButtonClickedEvent( fn: ( T ) => any )
+    {
+        this.log( "subscribed to addAndContinueButtonClicked" );
+        this.addAndContinueButtonClickedSubject.asObservable().subscribe( fn );
+    }
+
+    /**
+     * The {@code CrudPanelComponent will call this method when the user clicks the Add and continue button.
+     * @param modelObject
+     */
+    public sendContinuousAddButtonClickedEvent( modelObject: T )
+    {
+        this.log( "sendContinuousAddButtonClickedEvent" );
+        this.tickThenRun( () => this.addAndContinueButtonClickedSubject.next( modelObject ) );
     }
 
     /**

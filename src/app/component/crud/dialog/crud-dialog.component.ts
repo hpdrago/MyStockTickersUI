@@ -13,9 +13,6 @@ import { isNullOrUndefined } from "util";
  */
 export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
-    @Input()
-    protected continuousAdd: boolean = false;
-
     /**
      * Controls the visibility of the dialog
      */
@@ -111,6 +108,9 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
             .subscribeToAddButtonClickedEvent( ( modelObject ) => this.onAddButtonClicked( modelObject ) )
         this.crudServiceContainer
             .crudFormButtonsService
+            .subscribeToContinuousAddButtonClickedEvent(( modelObject ) => this.onContinuousAddButtonClicked( modelObject ) )
+        this.crudServiceContainer
+            .crudFormButtonsService
             .subscribeToSaveButtonClickedEvent( ( modelObject ) => this.onSaveButtonClicked( modelObject ) )
         this.crudServiceContainer
             .crudFormButtonsService
@@ -182,10 +182,21 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
         this.debug( "onAddButtonClick " + JSON.stringify( modelObject ) );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
-            if ( !this.isContinuousAdd() )
-            {
-                this.onCloseButtonClick();
-            }
+            this.onCloseButtonClick();
+        }
+    }
+
+    /**
+     * This method is called when the Add and continue button (labeled "Save & Add another") is clicked.
+     *
+     * @param modelObject
+     */
+    protected onContinuousAddButtonClicked( modelObject: T )
+    {
+        this.debug( "onContinuousAddButtonClicked " + JSON.stringify( modelObject ) );
+        if ( !isNullOrUndefined( this.modelObject ) )
+        {
+            this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
         }
     }
 
@@ -205,15 +216,6 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
         {
             this.displayDialog = false;
         }
-    }
-
-    /**
-     * Determines if the form is reset and the user is allowed to continuously add model objects.
-     * @return {boolean} if false, the dialog is closed after the model object has been added.
-     */
-    protected isContinuousAdd()
-    {
-        return this.continuousAdd;
     }
 
     /**

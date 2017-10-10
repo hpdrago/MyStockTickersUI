@@ -27,6 +27,17 @@
                     [disabled]="isAddButtonDisabled()">
             </button>
         </div>
+        <div class="crud-form-button" *ngIf="isShowContinuousAddButton()">
+            <button class="crud-form-button"
+                    [ngClass]="{'disabled': isContinuousAddButtonDisabled()}"
+                    pButton
+                    type="button"
+                    (click)="onContinuousAddButtonClick()"
+                    label=" {{getContinuousAddButtonLabel()}}"
+                    icon="fa-save"
+                    [disabled]="isContinuousAddButtonDisabled()">
+            </button>
+        </div>
         <div class="crud-form-button" *ngIf="isShowDeleteButton()">
             <button class="crud-form-button"
                     [ngClass]="{'disabled': isDeleteButtonDisabled()}"

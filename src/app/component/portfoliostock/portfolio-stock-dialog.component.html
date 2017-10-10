@@ -1,5 +1,5 @@
 <div *ngIf="modelObject">
-    <p-dialog header="Portfolio Stock Detail"
+    <p-dialog header="Portfolio - {{portfolio.name}}"
                          [modal]="true"
                          [closable]="false"
                          [closeOnEscape]="false"
@@ -11,7 +11,7 @@
                          [resizable]="false"
                          [(visible)]="displayDialog">
 
-        <portfolio-stock-form>
+        <portfolio-stock-form [portfolio]="portfolio">
         </portfolio-stock-form>
 
         <p-footer>

@@ -1,4 +1,4 @@
-import { OnInit } from "@angular/core";
+import { Input, OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ValidationService } from "../../../service/validation-service";
 import { CrudOperation } from "../common/crud-operation";
@@ -19,6 +19,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      * The formGroup is the Dynamic Form object
      */
     protected formGroup: FormGroup;
+    protected continuousAdd: boolean = false;
 
     /**
      * C O N S T R U C T O R
@@ -210,9 +211,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     {
         this.debug( "resetForm" );
         this.formGroup.reset();
-        this.modelObject = this.crudServiceContainer
-                               .modelObjectFactory
-                               .newModelObject();
+        this.setModelObject( this.crudServiceContainer
+                                 .modelObjectFactory
+                                 .newModelObject() );
     }
 
     /**

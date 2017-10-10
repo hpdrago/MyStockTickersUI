@@ -13,7 +13,8 @@ import { Observable } from "rxjs/Observable";
 export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
     constructor( protected toaster: ToastsManager,
-                 protected crudServiceContainer: CrudServiceContainer<T> )
+                 protected crudServiceContainer: CrudServiceContainer<T>,
+                 protected showContinuousAddButton: boolean )
     {
         super( toaster );
         if ( !this.crudServiceContainer.modelObjectFactory )
@@ -61,9 +62,9 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     public ngOnInit()
     {
-        this.log( "ngOnInit.begin" );
+        this.debug( "ngOnInit.begin" );
         this.subscribeToCrudFormServiceEvents();
-        this.log( "ngOnInit.end" );
+        this.debug( "ngOnInit.end" );
         // Tell everyone that we are done
         this.crudServiceContainer
             .crudFormButtonsService
@@ -156,6 +157,24 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     }
 
     /**
+     * Determines if the Add Button should be shown
+     * @returns {boolean}
+     */
+    protected isShowContinuousAddButton(): boolean
+    {
+        return this.crudOperation == CrudOperation.CREATE && this.showContinuousAddButton;
+    }
+
+    /**
+     * Determines if the Add and continue Button should be shown
+     * @returns {boolean}
+     */
+    protected isShowAddAndContinueButton(): boolean
+    {
+        return this.crudOperation == CrudOperation.CREATE;
+    }
+
+    /**
      * Determines if the Close Button should be shown
      * @returns {boolean}
      */
@@ -174,6 +193,22 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         //this.debug( `isAddButtonDisabled crudOperation: ${this.crudOperation} isReadOnly: ${this.isModelObjectReadOnly( this.modelObject)} formDirty: ${this.formDirtyFlag}`);
         var disabled = true;
         if ( this.crudOperation == CrudOperation.CREATE )
+        {
+            disabled = !this.formValidFlag;
+        }
+        return disabled;
+    }
+
+    /**
+     * Determines if the Continuous Add button is disabled.
+     * @returns {boolean} true if adding a model object and the input data is valid,
+     *                    false otherwise
+     */
+    protected isContinuousAddButtonDisabled()
+    {
+        //this.debug( `isAddButtonDisabled crudOperation: ${this.crudOperation} isReadOnly: ${this.isModelObjectReadOnly( this.modelObject)} formDirty: ${this.formDirtyFlag}`);
+        var disabled = true;
+        if ( this.crudOperation == CrudOperation.CREATE && this.showContinuousAddButton )
         {
             disabled = !this.formValidFlag;
         }
@@ -286,7 +321,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected onSaveButtonClick(): void
     {
         var methodName = "onSaveButtonClick";
-        this.log( methodName + " " + JSON.stringify( this.modelObject ));
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
         this.crudServiceContainer.crudFormService.sendFormPrepareToSaveEvent();
         var observable: Observable<T> = this.crudServiceContainer
                                             .crudRestService
@@ -295,7 +330,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                                {
                                    this.showInfo( "Save Successful!")
                                    this.setModelObject( updatedModelObject );
-                                   this.log( methodName + " saved successful.  modelObject; " +
+                                   this.debug( methodName + " saved successful.  modelObject; " +
                                                     JSON.stringify( this.modelObject ));
                                    this.crudServiceContainer
                                        .crudFormService
@@ -310,12 +345,47 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     }
 
     /**
+     * This method is called when the Continuous Add button is clicked.
+     */
+    protected onContinuousAddButtonClick(): void
+    {
+        var methodName = "onContinuousAddButtonClicked";
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
+        this.performAddButtonWork( ( modelObject: T ) =>
+                                   {
+                                       this.crudServiceContainer
+                                           .crudFormService.sendFormResetEvent();
+                                       this.crudServiceContainer
+                                           .crudFormButtonsService
+                                           .sendContinuousAddButtonClickedEvent( modelObject );
+                                   });
+    }
+
+    /**
      * This method is called when the Add button is clicked.
      */
     protected onAddButtonClick(): void
     {
-        var methodName = "onAddButtonClick";
-        this.log( methodName + " " + JSON.stringify( this.modelObject ));
+        var methodName = "onAddButtonClicked";
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
+        this.performAddButtonWork( ( modelObject: T ) =>
+                                   {
+                                       this.crudServiceContainer
+                                           .crudFormService.sendFormResetEvent();
+                                       this.crudServiceContainer
+                                           .crudFormButtonsService
+                                           .sendAddButtonClickedEvent( modelObject );
+                                   });
+    }
+
+    /**
+     * This method is called when the Add button is clicked.
+     * @param notifySuccess - Callback to perform the work after the modelObject has been saved.
+     */
+    private performAddButtonWork( notifySuccess: ( modelObject: T ) => any ): void
+    {
+        var methodName = "performAddButtonWork";
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
         this.crudServiceContainer.crudFormService.sendFormPrepareToSaveEvent();
         var observable: Observable<T> = this.crudServiceContainer
                                             .crudRestService
@@ -324,25 +394,21 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                    {
                        this.showInfo( "Save successful!")
                        this.modelObject = newModelObject;
-                       this.log( methodName + " add successful.  modelObject: " +
+                       this.debug( methodName + " add successful.  modelObject: " +
                                         JSON.stringify( this.modelObject ) );
-                       this.crudServiceContainer
-                           .crudFormService.sendFormResetEvent();
-                       this.crudServiceContainer
-                           .crudFormButtonsService
-                           .sendAddButtonClickedEvent( newModelObject );
+                       notifySuccess( this.modelObject );
                    },
                    err =>
                    {
-                       this.log( methodName + " err: " + err );
+                       this.debug( methodName + " err: " + err );
                        var exception = this.reportRestError( err );
-                       this.log( methodName + " exception: " + JSON.stringify( exception ));
+                       this.debug( methodName + " exception: " + JSON.stringify( exception ));
                        /*
                         *  If we get a duplicate key, tell the stock table to jump to that stock
                         */
                        if ( exception.isDuplicateKeyExists() )
                        {
-                           this.log( methodName + " duplicateKeyExists" );
+                           this.debug( methodName + " duplicateKeyExists" );
                            this.crudServiceContainer
                                .crudFormButtonsService
                                .sendNavigateToModelObjectEvent( this.modelObject );
@@ -358,13 +424,13 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected onDeleteButtonClick(): void
     {
         var methodName = "onDeleteButtonClick";
-        this.log( methodName + " " + JSON.stringify( this.modelObject ));
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
         var observable: Observable<void> = this.crudServiceContainer
                                                .crudRestService
                                                .deleteModelObject( this.modelObject );
         observable.subscribe( () =>
                    {
-                       this.log( methodName + " delete successful" );
+                       this.debug( methodName + " delete successful" );
                        this.showInfo( "Delete successful!")
                        this.crudServiceContainer
                            .crudFormService
@@ -400,6 +466,16 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected getAddButtonLabel(): string
     {
         return "Save";
+    }
+
+    /**
+     * Returns the label for the Continuous Add button.  Defaults to Save as the Save and Add button are never shown at
+     * the same time but have different functionality.
+     * @return {string}
+     */
+    protected getContinuousAddButtonLabel(): string
+    {
+        return "Save & Add Another";
     }
 
     /**
