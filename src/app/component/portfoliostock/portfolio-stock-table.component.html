@@ -13,13 +13,14 @@
         <header>{{title}}</header>
         <p-column field="tickerSymbol" header="Ticker" [sortable]="true"></p-column>
         <p-column field="numberOfShares" header="Shares" styleClass="text-right" [sortable]="true"></p-column>
-        <p-column field="coastBasis" header="Cost Basis" [sortable]="true"></p-column>
-        <p-column field="realizedGain" header="Gains" [sortable]="true"></p-column>
-        <p-column field="realizedLoss" header="Loss" [sortable]="true"></p-column>
-        <p-column field="stopLossPrice" header="SL Price" [sortable]="true"></p-column>
-        <p-column field="stopLossShares" header="SL Shares" [sortable]="true"></p-column>
-        <p-column field="profitTakingPrice" header="PT Price" [sortable]="true"></p-column>
-        <p-column field="profitTakingShares" header="PT Shares" [sortable]="true"></p-column>
+        <p-column field="lastPrice" header="Last Price" styleClass="text-right" [sortable]="true"></p-column>
+        <p-column field="costBasis" header="Cost Basis" styleClass="text-right" [sortable]="true"></p-column>
+        <p-column field="realizedGain" header="Gains" styleClass="text-right" [sortable]="true"></p-column>
+        <p-column field="realizedLoss" header="Loss" styleClass="text-right" [sortable]="true"></p-column>
+        <p-column field="stopLossPrice" header="SL Price" styleClass="text-right" [sortable]="true"></p-column>
+        <p-column field="stopLossShares" header="SL Shares" styleClass="text-right" [sortable]="true"></p-column>
+        <p-column field="profitTakingPrice" header="PT Price" styleClass="text-right" [sortable]="true"></p-column>
+        <p-column field="profitTakingShares" header="PT Shares" styleClass="text-right" [sortable]="true"></p-column>
         <p-footer>
             <portfolio-stock-table-buttons [portfolio]="portfolio">
             </portfolio-stock-table-buttons>

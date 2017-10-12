@@ -23,7 +23,7 @@ export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent
     constructor( protected toaster: ToastsManager,
                  protected portfolioStockCrudServiceContainer: PortfolioStockCrudServiceContainer )
     {
-        super( toaster, portfolioStockCrudServiceContainer );
+        super( toaster, portfolioStockCrudServiceContainer, true );
     }
 
     /**

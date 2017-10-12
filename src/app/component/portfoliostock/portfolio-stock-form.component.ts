@@ -10,6 +10,7 @@ import { ToastsManager } from "ng2-toastr";
 import { StockCrudServiceContainer } from "../stock/stock-crud-service-container";
 import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-service-container";
 import { Portfolio } from "../../model/entity/portfolio";
+import { isNullOrUndefined } from "util";
 
 /**
  * Created by mike on 11/16/2016.
@@ -55,7 +56,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      */
     private onStockSelected( stock )
     {
-        this.logger.debug( "onStockSelected: " + JSON.stringify( stock ));
+        this.debug( "onStockSelected: " + JSON.stringify( stock ));
         this.selectedStock = stock;
         this.modelObject.lastPrice = stock.lastPrice;
         this.modelObject.tickerSymbol = stock.tickerSymbol;
@@ -71,18 +72,19 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
     private onTickerSymbolLostFocus(): void
     {
         var methodName = "onTickerSymbolLostFocus";
-        this.logger.debug( methodName + " selectedStock: " + JSON.stringify( this.selectedStock ) );
+        this.debug( methodName + " selectedStock: " + JSON.stringify( this.selectedStock ) );
         /*
          * It's possible that the ticker symbol does not exist in the database so load it after the user has
          * pressed the tab key
          */
-        if ( !this.selectedStock || this.selectedStock.tickerSymbol != this.getTickerSymbolFormValue() )
+        if ( (!this.selectedStock || this.selectedStock.tickerSymbol != this.getTickerSymbolFormValue()) &&
+              !isNullOrUndefined( this.getTickerSymbolFormValue() ))
         {
             this.stockCrudServiceContainer
                 .stockCrudService.getStock( this.getTickerSymbolFormValue() )
                 .subscribe( (stock) =>
                             {
-                                this.logger.log( methodName + " found: " + stock.tickerSymbol );
+                                this.debug( methodName + " found: " + stock.tickerSymbol );
                                 this.onStockSelected( stock );
                             },
                             error =>
@@ -133,10 +135,10 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
             .getStockSectors()
             .subscribe( ( data ) =>
                         {
-                            this.logger.debug( 'stock sector data: ' + JSON.stringify( data ) );
+                            this.debug( 'stock sector data: ' + JSON.stringify( data ) );
                             this.stockSectorMap.load( data );
                             this.stockSectors = this.stockSectorMap.getSectorSelectItems();
-                            this.logger.debug( 'stockSectors: ' + JSON.stringify( this.stockSectors ) );
+                            this.debug( 'stockSectors: ' + JSON.stringify( this.stockSectors ) );
                             this.dataLoaded = true;
                         },
                         error =>
@@ -153,9 +155,9 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      */
     public onStockSectorChange( event )
     {
-        this.logger.log( "onStockSectorChange: " + JSON.stringify( event.value ));
+        this.debug( "onStockSectorChange: " + JSON.stringify( event.value ));
         this.stockSubSectors = this.stockSectorMap.getSubSectors( event.value.name );
-        this.logger.log( "onStockSectorChange: " + JSON.stringify( this.stockSubSectors ));
+        this.debug( "onStockSectorChange: " + JSON.stringify( this.stockSubSectors ));
     }
 
     public onMenuSelect( sector, subSector ): void

@@ -14,7 +14,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
 {
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T>,
-                 protected showContinuousAddButton: boolean )
+                 protected showContinuousAddButton: boolean = false )
     {
         super( toaster );
         if ( !this.crudServiceContainer.modelObjectFactory )
@@ -475,7 +475,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected getContinuousAddButtonLabel(): string
     {
-        return "Save & Add Another";
+        return "Save & Add"
     }
 
     /**
