@@ -127,7 +127,7 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
                 stocksNotesList.push( expandedStockNotes );
             }
         }
-        else
+        else if ( stockNotes.stocks.length == 1 )
         {
             stockNotes.tickerSymbol = stockNotes.stocks[0].tickerSymbol;
             stockNotes.stockPrice = stockNotes.stocks[0].stockPrice;
