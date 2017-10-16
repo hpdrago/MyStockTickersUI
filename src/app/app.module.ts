@@ -38,6 +38,7 @@ import {
     CalendarModule,
     EditorModule
 } from "primeng/primeng";
+import { CurrencyMaskModule } from "ng2-currency-mask";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
 import { AutoCompleteModule } from "primeng/components/autocomplete/autocomplete";
 import { InputMaskModule } from "primeng/components/inputmask/inputmask";
@@ -101,6 +102,19 @@ import { StockNotesSourceService } from "./service/crud/stock-notes-source.servi
 import { StockNotesSourceFactory } from "./model/factory/stock-notes-source.factory";
 import {BusyModule} from 'angular2-busy';
 
+import { CURRENCY_MASK_CONFIG, CurrencyMaskConfig } from "ng2-currency-mask/src/currency-mask.config";
+
+export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+    align: "left",
+    allowNegative: false,
+    allowZero: true,
+    decimal: ".",
+    precision: 2,
+    prefix: "$ ",
+    suffix: "",
+    thousands: ","
+};
+
 @NgModule({
     imports:
     [
@@ -134,6 +148,7 @@ import {BusyModule} from 'angular2-busy';
         RatingModule,
         CalendarModule,
         EditorModule,
+        CurrencyMaskModule,
         // Third Party modules,
         BusyModule,
         ToastModule.forRoot()
@@ -207,7 +222,8 @@ import {BusyModule} from 'angular2-busy';
         ConfirmationService,
         AppConfigurationService,
         ToastOptions,
-        ToastsManager
+        ToastsManager,
+        { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }
     ]
 })
 export class AppModule {}

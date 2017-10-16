@@ -7,7 +7,10 @@
                         <div class="portfolio-div"
                              [class.ui-state-active]="isSelectedPortfolio(portfolio)"
                              (click)="onRowSelect(portfolio)">
-                             {{portfolio.name}}
+                            {{portfolio.name}}<BR>
+                            Realized GL: {{portfolio.realizedGL}}
+                            UnRealized GL: {{portfolio.unrealizedGL}}
+                            Market Value: {{portfolio.marketValue}}
                         </div>
                     </div>
                 </div>

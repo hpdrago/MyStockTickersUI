@@ -190,12 +190,18 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
          */
         if ( this.modelObjectEditMode == CrudModelObjectEditMode.PANEL )
         {
-            this.crudServiceContainer.crudFormButtonsService.sendCrudOperationChangedEvent( this.crudOperation );
-            this.crudServiceContainer.crudFormButtonsService.sendModelObjectChangedEvent( this.modelObject );
+            this.crudServiceContainer
+                .crudFormButtonsService
+                .sendCrudOperationChangedEvent( this.crudOperation );
+            this.crudServiceContainer
+                .crudFormButtonsService
+                .sendModelObjectChangedEvent( this.modelObject );
         }
         else
         {
-            this.crudServiceContainer.crudDialogService.sendDisplayDialogRequestEvent( this.modelObject, this.crudOperation );
+            this.crudServiceContainer
+                .crudDialogService
+                .sendDisplayDialogRequestEvent( this.modelObject, this.crudOperation );
             //this.crudDialogService.sendCrudOperationChangedEvent( this.crudOperation );
             //this.crudDialogService.sendModelObjectChangedEvent( this.modelObject );
         }
@@ -222,6 +228,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             {
                 this.updateModelObjectTableRow( index, modelObject );
             }
+            this.crudServiceContainer
+                .crudTableService
+                .sendTableContentChangeEvent();
+            this.crudServiceContainer
+                .crudTableService
+                .sendTableRowUpdatedChangeEvent( this.modelObject );
         }
         this.setModelObject( modelObject );
     }
@@ -236,6 +248,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         if ( !isNullOrUndefined( this.modelObject ))
         {
             this.addModelObjectToTableRows( this.modelObject );
+            this.crudServiceContainer
+                .crudTableService
+                .sendTableContentChangeEvent();
+            this.crudServiceContainer
+                .crudTableService
+                .sendTableRowAddedChangeEvent( this.modelObject );
         }
     }
 
@@ -269,6 +287,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected updateModelObjectTableRow( index: number, modelObject: T )
     {
+        this.debug( 'updateModelObjectTableRow' + JSON.stringify( modelObject ) );
         this.rows[index] = modelObject;
         /*
          * A new array must be created to trigger a change event
@@ -294,6 +313,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                 this.rows = this.rows.slice( index+1 ).concat( this.rows.slice( 0,index ));
                 this.setModelObject( null );
             }
+            this.crudServiceContainer
+                .crudTableService
+                .sendTableContentChangeEvent();
+            this.crudServiceContainer
+                .crudTableService
+                .sendTableRowDeletedChangeEvent( this.modelObject );
         }
     }
 

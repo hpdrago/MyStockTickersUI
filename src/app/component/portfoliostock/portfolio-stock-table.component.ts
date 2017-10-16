@@ -5,6 +5,8 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-service-container";
 import { SessionService } from "../../service/crud/session.service";
+import { Subject } from "rxjs/Subject";
+import { Observable } from "rxjs/Observable";
 
 /**
  * This component lists all of the stocks for a portfolio
@@ -32,6 +34,20 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
     {
         return `Add Stock to ${this.portfolio.name} Portfolio`;
     }
+
+    /**
+     * Receive a notification when the content of the table changes which includes: updates, adds and deletes.
+     * @param observer
+     * @return {any}
+     */
+    public registerForPortfolioStockChanges( observer )
+    {
+        return this.portfolioStockCrudServiceContainer
+                   .crudTableService
+                   .subscribeToTableContentChangeEvent( observer );
+    }
+
+
 
     /**
      * Load the stocks of the portfolio

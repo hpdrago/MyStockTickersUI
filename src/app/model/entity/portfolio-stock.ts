@@ -13,12 +13,12 @@ export class PortfolioStock extends ModelObject<PortfolioStock>
     public tickerSymbol: string;
     public companyName: string;
     public numberOfShares: number;
-    public costBasis: number;
+    public averageUnitCost: number;
     public lastPrice: number;
     public sector: string;
     public subSector: string;
-    public realizedGain: number;
-    public realizedLoss: number;
+    public realizedGains: number;
+    public realizedLosses: number;
     public stopLossPrice: number;
     public stopLossShares: number;
     public profitTakingPrice: number;

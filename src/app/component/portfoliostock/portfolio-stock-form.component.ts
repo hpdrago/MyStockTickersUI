@@ -19,7 +19,8 @@ import { isNullOrUndefined } from "util";
 {
     selector:    'portfolio-stock-form',
     templateUrl: './portfolio-stock-form.component.html',
-    styleUrls: ['../crud/form/crud-form.component.css']
+    styleUrls: ['../crud/form/crud-form.component.css',
+                './portfolio-stock-form.component.css']
 })
 export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStock> implements OnInit
 {
@@ -112,12 +113,12 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
             'tickerSymbol':       new FormControl( '', Validators.required ),
             'companyName':        '',
             'numberOfShares':     '',
-            'costBasis':          '',
+            'averageUnitCost':    '',
             'lastPrice':          '',
             'sector':             '',
             'subSector':          '',
-            'realizedGain':       '',
-            'realizedLoss':       '',
+            'realizedGains':      '',
+            'realizedLosses':     '',
             'stopLossPrice':      '',
             'stopLossShares':     '',
             'profitTakingPrice':  '',

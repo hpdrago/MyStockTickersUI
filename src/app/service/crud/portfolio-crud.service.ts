@@ -27,12 +27,12 @@ export class PortfolioCrudService extends CrudRestService<Portfolio>
 
     protected getCreateModelObjectUrl( baseUrl: string, portfolio: Portfolio ): string
     {
-        return baseUrl + `/customer/${portfolio.customerId}/portfolio`;
+        return baseUrl + this.urlPath + `/customer/${portfolio.customerId}`;
     }
 
     protected getReadModelObjectUrl( baseUrl: string, portfolio: Portfolio ): string
     {
-        return baseUrl + this.urlPath;
+        return baseUrl + this.urlPath + `/portfolio/${portfolio.id}`;
     }
 
     protected getReadModelObjectListUrl( baseUrl: string, portfolio: Portfolio ): string

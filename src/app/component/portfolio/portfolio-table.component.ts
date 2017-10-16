@@ -39,6 +39,27 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
     {
         super.ngOnInit();
         this.loadTable();
+        this.portfolioStocksComponent
+            .registerForPortfolioStockChanges( () => this.loadPortfolio() );
+    }
+
+    private loadPortfolio()
+    {
+        this.debug( "loadPortfolio " );
+        this.portfolioCrudServiceContainer
+            .portfolioCrudService
+            .getModelObject( this.modelObject )
+            .subscribe( (portfolio) =>
+                        {
+                            this.debug( "loadPortfolio received" );
+                            this.setModelObject( portfolio );
+                            var index: number = this.indexOf( portfolio );
+                            this.updateModelObjectTableRow( index, portfolio );
+                        },
+                        error =>
+                        {
+                            this.reportRestError( error );
+                        });
     }
 
     /**
@@ -98,5 +119,4 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
          { label: 'Stock Table', icon: 'fa-chart', routerLink: ['/stocks'] }
          ]*/
     }
-
 }

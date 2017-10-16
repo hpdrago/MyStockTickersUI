@@ -56,13 +56,13 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     public getModelObject( modelObject: T ): Observable<T>
     {
         var methodName = "getModelObject";
-        this.log( methodName + " query for: " + this.serialize( modelObject ) );
+        this.debug( methodName + " query for: " + JSON.stringify( modelObject ) );
         if ( isNullOrUndefined( modelObject ) )
         {
             throw new ReferenceError( "modelObject is null or undefined" );
         }
         var url = this.getReadModelObjectUrl( this.appConfigurationService.getBaseUrl(), modelObject );
-        this.log( methodName + " url: " + url );
+        this.debug( methodName + " url: " + url );
         if ( isNullOrUndefined( url ) )
         {
             throw new ReferenceError( "url is null or undefined" );
@@ -71,7 +71,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                    .get( url ) // ...using put request
                    .map( ( response: Response ) =>
                    {
-                       this.log( methodName + " received: " + response.json() )
+                       this.debug( methodName + " received: " + JSON.stringify( response.json() ))
                        return this.modelObjectFactory.newModelObjectFromObject( response.json() );
                    } ) // ...and calling .json() on the response to return data
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
@@ -86,13 +86,13 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     public getModelObjectList( modelObject: T ): Observable<Array<T>>
     {
         var methodName = "getModelObjectList";
-        this.log( methodName + " modelObject: " + this.serialize( modelObject ) );
+        this.debug( methodName + " modelObject: " + this.serialize( modelObject ) );
         if ( isNullOrUndefined( modelObject ) )
         {
             throw new ReferenceError( "modelObject is null or undefined" );
         }
         var url: string = this.getReadModelObjectListUrl( this.appConfigurationService.getBaseUrl(), modelObject );
-        this.log( methodName + " url: " + url );
+        this.debug( methodName + " url: " + url );
         if ( isNullOrUndefined( url ) )
         {
             throw new ReferenceError( "url is null or undefined" );
@@ -101,7 +101,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                    .get( url )
                    .map( ( response: Response ) =>
                    {
-                       this.log( methodName + " received response" );
+                       this.debug( methodName + " received response" );
                        return this.modelObjectFactory.newModelObjectArray( response.json() )
                    })
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )

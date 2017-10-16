@@ -20,12 +20,12 @@ export class PortfolioStockFactory extends ModelObjectFactory<PortfolioStock>
         portfolioStock.tickerSymbol = '';
         portfolioStock.companyName = '';
         portfolioStock.numberOfShares = 0;
-        portfolioStock.costBasis = 0;
+        portfolioStock.averageUnitCost = 0;
         portfolioStock.lastPrice = 0;
         portfolioStock.sector = '';
         portfolioStock.subSector = '';
-        portfolioStock.realizedGain = 0;
-        portfolioStock.realizedLoss = 0;
+        portfolioStock.realizedGains = 0;
+        portfolioStock.realizedLosses = 0;
         portfolioStock.stopLossPrice = 0;
         portfolioStock.stopLossShares = 0;
         portfolioStock.profitTakingPrice = 0;
