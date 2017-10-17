@@ -26,9 +26,9 @@ import { isNumeric } from "rxjs/util/isNumeric";
             } )
 export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
 {
-    private sources: SelectItem[] = [];
-
+    private sourceItems: SelectItem[] = [];
     private bullOrBearOptions: SelectItem[];
+    private actionTakenOptions: SelectItem[];
     /**
      * The stock is returned via an event when the user searches for a ticker symbol or company
      */
@@ -47,11 +47,16 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                  private formBuilder: FormBuilder,
                  private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {
-        super( toaster, stockNotesCrudServiceContainer );
+        super( toaster, stockNotesCrudServiceContainer );jjj
         this.bullOrBearOptions = [];
         this.bullOrBearOptions.push( {label: 'Bull', value: 1} );
         this.bullOrBearOptions.push( {label: 'Bear', value: 2} );
         this.bullOrBearOptions.push( {label: 'Neutral', value: 0} );
+
+        this.actionTakenOptions = [];
+        this.actionTakenOptions.push( {label: 'None', value: 'NONE' });
+        this.actionTakenOptions.push( {label: 'BUY', value: 'BUY' });
+        this.actionTakenOptions.push( {label: 'SELL', value: 'SELL' });
         /*
          * Get the stock note sources for the logged in user and populate the sources SelectItems
          */
@@ -59,7 +64,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                                            .getStockNoteSources( this.sessionService.getLoggedInUserId() )
                                            .subscribe((stockNotesSources: StockNotesSourceList) =>
                                                        {
-                                                           this.sources = stockNotesSources.toSelectItems()
+                                                           this.sourceItems = stockNotesSources.toSelectItems()
                                                        },
                                                        error =>
                                                        {
@@ -76,13 +81,15 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.debug( "createCrudForm" );
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
-                'stockSearch':   new FormControl( this.stockSearch ),
-                'tickerSymbols': new FormControl( this.tickerSymbols, Validators.required ),
-                'notes':         new FormControl( this.modelObject.notes, Validators.required ),
-                'notesDate':     new FormControl( this.modelObject.notesDate, Validators.required  ),
-                'notesSource':   new FormControl( this.modelObject.notesSourceId ),
-                'notesRating':   new FormControl( this.modelObject.notesRating ),
-                'bullOrBear':    new FormControl( this.modelObject.bullOrBear )
+                'stockSearch':        new FormControl( this.stockSearch ),
+                'tickerSymbols':      new FormControl( this.tickerSymbols, Validators.required ),
+                'notes':              new FormControl( this.modelObject.notes, Validators.required ),
+                'notesDate':          new FormControl( this.modelObject.notesDate, Validators.required  ),
+                'notesSource':        new FormControl( this.modelObject.notesSourceId ),
+                'notesRating':        new FormControl( this.modelObject.notesRating ),
+                'bullOrBear':         new FormControl( this.modelObject.bullOrBear ),
+                'actionTaken':        new FormControl( this.modelObject.actionTaken ),
+                'actionTakenShares':  new FormControl( this.modelObject.actionTakenShares )
             } );
         return stockNoteForm;
     }

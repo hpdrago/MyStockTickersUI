@@ -3,67 +3,60 @@
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
             <!----------------------------------------------------------------------------------------------------------
-            SEARCH
+            TICKER SYMBOL
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="stockSearch">Stock Search:</label>
+                    <label class="crud-form" for="tickerSymbol">Ticker Symbol:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <stock-autocomplete id="stockSearch"
-                                        [(ngModel)]="stockSearch"
+                    <stock-autocomplete id="tickerSymbol"
+                                        [(ngModel)]="tickerSymbol"
                                         [formGroup]="formGroup"
-                                        formControlName="stockSearch"
+                                        formControlName="tickerSymbol"
                                         uppercase
                                         (stockSelected)="onStockSelected( $event )">
                     </stock-autocomplete>
                 </div>
             </div>
+            <div [hidden]="formGroup.controls['tickerSymbol'].valid" class="ui-grid-row">
+                <div class="ui-message ui-messages-error ui-corner-all" *ngIf="isTickerSymbolInvalid()">
+                    <i class="fa fa-close"></i>
+                    Ticker Symbol is required
+                </div>
+            </div>
 
             <!----------------------------------------------------------------------------------------------------------
-            TICKER SYMBOLS
+            COMPANY NAME
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="tickerSymbols">Stocks:</label>
+                    <label class="crud-form" for="companyNameColumn">Company:</label>
+                </div>
+                <div id="companyNameColumn" class="ui-grid-col-9">
+                    {{modelObject.companyName}}
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            COMMENTS
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="comments">Comments:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <input id="tickerSymbols"
+                    <input id="comments"
                            type="text"
                            pInputText
-                           required
-                           uppercase
-                           placeholder="Comma delimited ticker symbols"
-                           formControlName="tickerSymbols"
-                           [(ngModel)]="tickerSymbols">
+                           formControlName="comments"
+                           [(ngModel)]="modelObject.comments">
                 </div>
             </div>
 
-            <!----------------------------------------------------------------------------------------------------------
-            NOTES
-            ------------------------------------------------------------------------------------------------------------>
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="notes">Notes:</label>
-                </div>
-                <div class="ui-grid-col-9">
-                    <textarea id="notes"
-                              class="crud-form"
-                              formControlName="notes"
-                              placeholder="Required"
-                              autoresize="false"
-                              rows="5"
-                              columns="70"
-                              pInputTextarea
-                              required
-                              [(ngModel)]="modelObject.notes">
-                    </textarea>
-                </div>
-            </div>
-
-            <!----------------------------------------------------------------------------------------------------------
+            <!--
             SOURCE
-            ------------------------------------------------------------------------------------------------------------>
+            -->
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
                     <label class="crud-form" for="notesSource">Source:</label>
@@ -82,10 +75,9 @@
                     </p-dropdown>
                 </div>
             </div>
-
-            <!----------------------------------------------------------------------------------------------------------
+            <!--
             RATING
-            ------------------------------------------------------------------------------------------------------------>
+            -->
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
                     <label class="crud-form" for="notesRating">Rating:</label>
@@ -99,10 +91,9 @@
                     </p-rating>
                 </div>
             </div>
-
-            <!----------------------------------------------------------------------------------------------------------
+            <!--
             BULL OR BEAR
-            ------------------------------------------------------------------------------------------------------------>
+            -->
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
                     <label class="crud-form" for="bullOrBear">Bull or Bear:</label>
@@ -116,50 +107,9 @@
                     </p-selectButton>
                 </div>
             </div>
-
-            <!----------------------------------------------------------------------------------------------------------
-            ACTION TAKEN
-            ------------------------------------------------------------------------------------------------------------>
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="actionTaken">Action Taken?:</label>
-                </div>
-                <div class="ui-grid-col-9">
-                    <p-selectButton id="actionTaken"
-                                    class="crud-form"
-                                    formControlName="actionTaken"
-                                    [options]="actionTakenOptions"
-                                    [(ngModel)]="modelObject.actionTaken">
-                    </p-selectButton>
-                </div>
-            </div>
-
-            <!----------------------------------------------------------------------------------------------------------
-            ACTION TAKEN SHARES
-            ------------------------------------------------------------------------------------------------------------>
-            <div *ngIf="modelObject.actionTaken == 'BUY' || modelObject.actionTaken == 'SELL'">
-                <div class="ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-3">
-                        <label class="crud-form" for="actionTakenShares">Action Taken Shares:</label>
-                    </div>
-                    <div class="ui-grid-col-9">
-                        <p-inputMask
-                            id="actionTakenShares"
-                            class="crud-form"
-                            formControlName="actionTakenShares"
-                            [(ngModel)]="modelObject.actionTakenShares"
-                            [style]="{'width':'60px'}"
-                            maxLength="6"
-                            placeholder=""
-                            mask="9?99999">
-                        </p-inputMask>
-                    </div>
-                </div>
-            </div>
-
-            <!----------------------------------------------------------------------------------------------------------
+            <!--
             DATE
-            ------------------------------------------------------------------------------------------------------------>
+            -->
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
                     <label class="crud-form" for="notesDate">Date:</label>

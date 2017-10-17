@@ -36,7 +36,8 @@ import {
     InputTextareaModule,
     RatingModule,
     CalendarModule,
-    EditorModule
+    EditorModule,
+    SliderModule
 } from "primeng/primeng";
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
@@ -103,6 +104,11 @@ import { StockNotesSourceFactory } from "./model/factory/stock-notes-source.fact
 import {BusyModule} from 'angular2-busy';
 
 import { CURRENCY_MASK_CONFIG, CurrencyMaskConfig } from "ng2-currency-mask/src/currency-mask.config";
+import { StockSummaryTableComponent } from "./component/stocksummary/stock-summary-table.component";
+import { StockSummaryFormComponent } from "./component/stocksummary/stock-summary-form.component";
+import { StockSummaryTableButtonsComponent } from "./component/stocksummary/stock-summary-table-buttons.component";
+import { StockSummaryFormButtonsComponent } from "./component/stocksummary/stock-summary-form-buttons.component";
+import { StockSummaryDialogComponent } from "./component/stocksummary/stock-summary-dialog.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -148,6 +154,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         RatingModule,
         CalendarModule,
         EditorModule,
+        SliderModule,
         CurrencyMaskModule,
         // Third Party modules,
         BusyModule,
@@ -181,6 +188,12 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         StockNotesDialogComponent,
         StockNotesTableButtonsComponent,
         StockNotesFormButtonsComponent,
+
+        StockSummaryTableComponent,
+        StockSummaryFormComponent,
+        StockSummaryDialogComponent,
+        StockSummaryTableButtonsComponent,
+        StockSummaryFormButtonsComponent,
 
         DashboardComponent,
         UppercaseDirective,

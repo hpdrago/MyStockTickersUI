@@ -16,6 +16,8 @@ export class StockNotes extends ModelObject<StockNotes>
     public notesRating: number;
     public publicInd: boolean;
     public bullOrBear: number;
+    public actionTaken: string;
+    public actionTakenShares: number;
     public dateCreated: Date;
     public dateModified: Date;
     public stocks: Array<StockNotesStock> = [];

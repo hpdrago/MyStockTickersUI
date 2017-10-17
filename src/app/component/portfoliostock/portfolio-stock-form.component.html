@@ -7,6 +7,9 @@
             <p-tabPanel header="Main">
                 <fieldset>
                     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+                        <!----------------------------------------------------------------------------------------------------------
+                        STOCK SEARCH
+                        ------------------------------------------------------------------------------------------------------------>
                         <div *ngIf="isCrudInsertOperation()" class="ui-grid-row">
                             <div class="ui-grid-col-3">
                             </div>
@@ -31,6 +34,9 @@
                             </div>
                         </div>
 
+                        <!----------------------------------------------------------------------------------------------------------
+                        TICKER SYMBOL
+                        ------------------------------------------------------------------------------------------------------------>
                         <div class="ui-grid-row crud-form">
                             <div class="crud-form-label ui-grid-col-3">
                                 <label class="crud-form" for="tickerSymbolColumn">Ticker Symbol:</label>
@@ -47,6 +53,9 @@
                             </div>
                         </div>
 
+                        <!----------------------------------------------------------------------------------------------------------
+                        COMPANY NAME
+                        ------------------------------------------------------------------------------------------------------------>
                         <div class="crud-form ui-grid-row">
                             <div class="crud-form-label ui-grid-col-3">
                                 <label class="crud-form" for="companyNameColumn">Company:</label>
@@ -56,6 +65,9 @@
                             </div>
                         </div>
 
+                        <!----------------------------------------------------------------------------------------------------------
+                        LAST PRICE
+                        ------------------------------------------------------------------------------------------------------------>
                         <div class="ui-grid-row">
                             <div class="crud-form-label ui-grid-col-3">
                                 <label class="crud-form" for="lastPriceColumn">Last Price:</label>
@@ -65,6 +77,9 @@
                             </div>
                         </div>
 
+                        <!----------------------------------------------------------------------------------------------------------
+                        NUMBER OF SHARES
+                        ------------------------------------------------------------------------------------------------------------>
                         <div class="ui-grid-row">
                             <div class="crud-form-label ui-grid-col-3">
                                 <label class="crud-form" for="numberOfShares">Shares:</label>
@@ -83,6 +98,9 @@
                             </div>
                         </div>
 
+                        <!----------------------------------------------------------------------------------------------------------
+                        AVG UNIT COST
+                        ------------------------------------------------------------------------------------------------------------>
                         <div class="ui-grid-row">
                             <div class="crud-form-label ui-grid-col-3">
                                 <label class="crud-form" for="averageUnitCostColumn">Avg Unit Cost:</label>
@@ -95,6 +113,10 @@
                                     placeholder="$"/>
                             </div>
                         </div>
+
+                        <!----------------------------------------------------------------------------------------------------------
+                        REALIZED GAINS
+                        ------------------------------------------------------------------------------------------------------------>
                         <div class="ui-grid-row">
                             <div class="crud-form-label ui-grid-col-3">
                                 <label class="crud-form" for="realizedGains">Realized Gains:</label>
@@ -114,6 +136,9 @@
                             </div>
                         </div>
 
+                        <!----------------------------------------------------------------------------------------------------------
+                        REALIZED LOSSES
+                        ------------------------------------------------------------------------------------------------------------>
                         <div class="ui-grid-row">
                             <div class="crud-form-label ui-grid-col-3">
                                 <label class="crud-form" for="realizeLosses">Realized Losses:</label>
@@ -182,6 +207,9 @@
                             those that are not.
                         </div>
                     </div>
+                    <!----------------------------------------------------------------------------------------------------------
+                    STOP LOSS PRICE
+                    ------------------------------------------------------------------------------------------------------------>
                     <div class="ui-grid-row">
                         <div class="crud-form-label ui-grid-col-4">
                             <label class="crud-form" for="stopLossPrice">Stop Loss Price:</label>
@@ -200,6 +228,9 @@
                         </div>
                     </div>
 
+                    <!----------------------------------------------------------------------------------------------------------
+                    STOP LOSS SHARES
+                    ------------------------------------------------------------------------------------------------------------>
                     <div class="ui-grid-row">
                         <div class="crud-form-label ui-grid-col-4">
                             <label class="crud-form" for="stopLossShares">Stop Loss Shares:</label>
@@ -218,6 +249,9 @@
                         </div>
                     </div>
 
+                    <!----------------------------------------------------------------------------------------------------------
+                    PROFIT TAKING PRICE
+                    ------------------------------------------------------------------------------------------------------------>
                     <div class="ui-grid-row">
                         <div class="crud-form-label ui-grid-col-4">
                             <label class="crud-form" for="profitTakingPrice">Profit Taking Price:</label>
@@ -236,6 +270,9 @@
                         </div>
                     </div>
 
+                    <!----------------------------------------------------------------------------------------------------------
+                    PROFIT TAKING SHARES
+                    ------------------------------------------------------------------------------------------------------------>
                     <div class="ui-grid-row">
                         <div class="crud-form-label ui-grid-col-4">
                             <label class="crud-form" for="profitTakingShares">Profit Taking Shares:</label>

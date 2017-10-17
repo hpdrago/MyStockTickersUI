@@ -1,0 +1,21 @@
+<div *ngIf="modelObject">
+    <p-dialog header="Stock Summary"
+              [modal]="true"
+              [closable]="false"
+              [closeOnEscape]="false"
+              [responsive]="true"
+              [width]="600"
+              [height]="400"
+              [resizable]="false"
+              [contentStyle]="{'overflow':'visible'}"
+              [(visible)]="displayDialog">
+            <div>
+                <stock-summary-form>
+                </stock-summary-form>
+            </div>
+            <p-footer>
+                <stock-summary-form-buttons>
+                </stock-summary-form-buttons>
+            </p-footer>
+    </p-dialog>
+</div>
