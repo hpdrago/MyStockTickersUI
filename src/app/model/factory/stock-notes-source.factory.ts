@@ -1,6 +1,7 @@
 import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
 import { StockNotesSource } from "../entity/stock-notes-source";
+import { SessionService } from "../../service/crud/session.service";
 
 /**
  * This is the StockNotesSource model object factory
@@ -9,6 +10,11 @@ import { StockNotesSource } from "../entity/stock-notes-source";
 @Injectable()
 export class StockNotesSourceFactory extends ModelObjectFactory<StockNotesSource>
 {
+    constructor( protected session: SessionService )
+    {
+        super();
+    }
+
     /**
      * Create a new StockNoteSources instance
      * @returns {StockNoteSources}
@@ -17,7 +23,7 @@ export class StockNotesSourceFactory extends ModelObjectFactory<StockNotesSource
     {
         var stockNoteSource = new StockNotesSource();
         stockNoteSource.id = 0;
-        stockNoteSource.customerId = 0;
+        stockNoteSource.customerId = this.session.getLoggedInUserId();
         stockNoteSource.name = '';
         return stockNoteSource;
     }

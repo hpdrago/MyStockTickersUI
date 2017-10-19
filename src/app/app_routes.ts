@@ -8,6 +8,7 @@ import { StockFormComponent } from './component/stock/stock-form.component';
 import { PortfolioStockFormComponent } from "./component/portfoliostock/portfolio-stock-form.component";
 import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
 import {StockNotesTableComponent} from "./component/stocknotes/stock-notes-table.component";
+import { StockSummaryTableComponent } from "./component/stocksummary/stock-summary-table.component";
 
 const routes: Routes = [
     {
@@ -21,6 +22,10 @@ const routes: Routes = [
     {
         path: 'stockNotes',
         component: StockNotesTableComponent,
+    },
+    {
+        path: 'stockSummary',
+        component: StockSummaryTableComponent,
     },
     {
         path: 'stocks',

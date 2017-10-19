@@ -2,6 +2,7 @@ import { ModelObjectFactory } from "./model-object.factory";
 import { StockNotes } from "../entity/stock-notes";
 import { Injectable } from "@angular/core";
 import { stringDistance } from "codelyzer/util/utils";
+import { SessionService } from "../../service/crud/session.service";
 
 /**
  * This is the StockNotes model object factory
@@ -10,6 +11,11 @@ import { stringDistance } from "codelyzer/util/utils";
 @Injectable()
 export class StockNotesFactory extends ModelObjectFactory<StockNotes>
 {
+    constructor( protected session: SessionService )
+    {
+        super();
+    }
+
     /**
      * Create a new StockNotes instance
      * @returns {StockNotes}
@@ -18,7 +24,7 @@ export class StockNotesFactory extends ModelObjectFactory<StockNotes>
     {
         var stockNote = new StockNotes();
         stockNote.id = 0;
-        stockNote.customerId = 0;
+        stockNote.customerId = this.session.getLoggedInUserId();
         stockNote.notes = '';
         stockNote.notesSourceId = 0;
         stockNote.notesRating = 0;

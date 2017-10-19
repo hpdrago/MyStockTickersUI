@@ -2,6 +2,7 @@ import { PortfolioStock } from "../entity/portfolio-stock";
 import { ModelObjectFactory } from "./model-object.factory";
 import { Portfolio } from "../entity/portfolio";
 import { Injectable } from "@angular/core";
+import { SessionService } from "../../service/crud/session.service";
 
 /**
  * This is the Portfolio model object factory
@@ -10,6 +11,11 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class PortfolioFactory extends ModelObjectFactory<Portfolio>
 {
+    constructor( protected session: SessionService )
+    {
+        super();
+    }
+
     /**
      * Create a new PortfolioStock instance
      * @returns {PortfolioStock}
@@ -18,7 +24,7 @@ export class PortfolioFactory extends ModelObjectFactory<Portfolio>
     {
         var portfolio= new Portfolio();
         portfolio.id = 0;
-        portfolio.customerId = 0;
+        portfolio.customerId = this.session.getLoggedInUserId();
         portfolio.name = '';
         return portfolio;
     }

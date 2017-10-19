@@ -12,9 +12,11 @@ export class StockSummary extends ModelObject<StockSummary>
     public tickerSymbol: string;
     public companyName: string;
     public comments: string;
+    public analystStrongBuyCount: number;
     public analystBuyCount: number;
-    public analystSellCount: number;
     public analystHoldCount: number;
+    public analystUnderPerformCount: number;
+    public analystSellCount: number;
     public nextCatalystDate: Date;
     public nextCatalystDesc: string;
     public avgAnalystPriceTarget: number;

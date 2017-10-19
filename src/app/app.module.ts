@@ -109,6 +109,9 @@ import { StockSummaryFormComponent } from "./component/stocksummary/stock-summar
 import { StockSummaryTableButtonsComponent } from "./component/stocksummary/stock-summary-table-buttons.component";
 import { StockSummaryFormButtonsComponent } from "./component/stocksummary/stock-summary-form-buttons.component";
 import { StockSummaryDialogComponent } from "./component/stocksummary/stock-summary-dialog.component";
+import { StockSummaryCrudService } from "./service/crud/stock-summary-crud.service";
+import { StockSummaryCrudServiceContainer } from "./component/stocksummary/stock-summary-crud-service-container";
+import { StockSummaryFactory } from "./model/factory/stock-summary.factory";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -230,6 +233,10 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
 
         StockNotesSourceService,
         StockNotesSourceFactory,
+
+        StockSummaryCrudService,
+        StockSummaryCrudServiceContainer,
+        StockSummaryFactory,
 
         SessionService,
         ConfirmationService,

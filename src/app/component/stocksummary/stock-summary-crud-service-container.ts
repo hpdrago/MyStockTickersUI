@@ -10,18 +10,18 @@ import { StockSummaryFactory } from "../../model/factory/stock-summary.factory";
 @Injectable()
 export class StockSummaryCrudServiceContainer extends CrudServiceContainer<StockSummary>
 {
-    constructor( private _stockNoteFactory: StockSummaryFactory,
-                 private _stockNoteCrudService: StockSummaryCrudService )
+    constructor( private _stockSummaryFactory: StockSummaryFactory,
+                 private _stockSummaryCrudService: StockSummaryCrudService )
     {
-        super( _stockNoteFactory, _stockNoteCrudService )
+        super( _stockSummaryFactory, _stockSummaryCrudService )
     }
 
-    get stockNoteFactory(): StockSummaryFactory { return this._stockNoteFactory; }
+    get stockSummaryFactory(): StockSummaryFactory { return this._stockSummaryFactory; }
 
-    set stockNoteFactory( value: StockSummaryFactory ) { this._stockNoteFactory = value; }
+    set stockSummaryFactory( value: StockSummaryFactory ) { this._stockSummaryFactory = value; }
 
-    get stockNoteCrudService(): StockSummaryCrudService { return this._stockNoteCrudService; }
+    get stockSummaryCrudService(): StockSummaryCrudService { return this._stockSummaryCrudService; }
 
-    set stockNoteCrudService( value: StockSummaryCrudService ) { this._stockNoteCrudService = value; }
+    set stockSummaryCrudService( value: StockSummaryCrudService ) { this._stockSummaryCrudService = value; }
 
 }

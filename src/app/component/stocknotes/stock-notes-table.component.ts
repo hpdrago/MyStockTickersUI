@@ -23,27 +23,13 @@ import { isNullOrUndefined } from "util";
     } )
 export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
 {
-    private title: string = 'StockNotes';
+    private title: string = 'Stock Notes';
 
     constructor( protected toaster: ToastsManager,
                  protected stockNotesServiceContainer: StockNotesCrudServiceContainer,
                  protected session: SessionService )
     {
         super( toaster, stockNotesServiceContainer );
-    }
-
-    protected newModelObjectFromEvent( event ): StockNotes
-    {
-        var stockNotes: StockNotes = super.newModelObjectFromEvent( event );
-        stockNotes.customerId = this.session.getLoggedInUserId();
-        return stockNotes;
-    }
-
-    protected newModelObject(): StockNotes
-    {
-        var stockNotes: StockNotes = super.newModelObject();
-        stockNotes.customerId = this.session.getLoggedInUserId();
-        return stockNotes;
     }
 
     /**

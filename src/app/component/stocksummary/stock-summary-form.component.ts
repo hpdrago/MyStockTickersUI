@@ -14,7 +14,8 @@ import { SessionService } from "../../service/crud/session.service";
  */
 @Component( {
                 selector: 'stock-summary-form',
-                styleUrls: ['../crud/form/crud-form.component.css'],
+                styleUrls: ['../crud/form/crud-form.component.css',
+                            './stock-summary-form.component.css'],
                 templateUrl: './stock-summary-form.component.html'
             } )
 export class StockSummaryFormComponent extends CrudFormComponent<StockSummary>
@@ -25,12 +26,6 @@ export class StockSummaryFormComponent extends CrudFormComponent<StockSummary>
                  private stockSummaryCrudServiceContainer: StockSummaryCrudServiceContainer )
     {
         super( toaster, stockSummaryCrudServiceContainer );
-    }
-
-    public ngOnInit(): any
-    {
-        super.ngOnInit();
-        this.modelObject.customerId = this.sessionService.getLoggedInUserId();
     }
 
     /**

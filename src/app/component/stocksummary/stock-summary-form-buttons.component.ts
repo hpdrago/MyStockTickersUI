@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockSummaryCrudServiceContainer } from "./stock-summary-crud-service-container";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
-import { SessionService } from "../../service/crud/session.service";
 import { StockSummary } from "../../model/entity/stock-summary";
 
 /**
@@ -18,16 +17,9 @@ import { StockSummary } from "../../model/entity/stock-summary";
 export class StockSummaryFormButtonsComponent extends CrudFormButtonsComponent<StockSummary>
 {
     constructor( protected toaster: ToastsManager,
-                 private session: SessionService,
                  private stockNotesServiceContainer: StockSummaryCrudServiceContainer )
     {
         super( toaster, stockNotesServiceContainer );
-    }
-
-    protected onAddButtonClick(): void
-    {
-        this.modelObject.customerId = this.session.getLoggedInUserId();
-        super.onAddButtonClick();
     }
 
     /**
@@ -35,7 +27,7 @@ export class StockSummaryFormButtonsComponent extends CrudFormButtonsComponent<S
      */
     public getDeleteMessage(): string
     {
-        return 'Are you sure you want to delete this note?';
+        return 'Are you sure you want to delete?';
     }
 
     /**
@@ -43,6 +35,6 @@ export class StockSummaryFormButtonsComponent extends CrudFormButtonsComponent<S
      */
     public getDeleteKeyword(): string
     {
-        return 'tickerSymbol'
+        return 'Stock Summary'
     }
 }

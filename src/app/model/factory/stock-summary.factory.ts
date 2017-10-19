@@ -1,14 +1,22 @@
 
 import { ModelObjectFactory } from "./model-object.factory";
 import { StockSummary } from "../entity/stock-summary";
+import { SessionService } from "../../service/crud/session.service";
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class StockSummaryFactory extends ModelObjectFactory<StockSummary>
 {
+    constructor( protected session: SessionService )
+    {
+        super();
+    }
+
     public newModelObject(): StockSummary
     {
         var stockSummary: StockSummary = new StockSummary();
         stockSummary.id = 0;
-        stockSummary.customerId = 0;
+        stockSummary.customerId = this.session.getLoggedInUserId();
         stockSummary.tickerSymbol = '';
         stockSummary.companyName = '';
         stockSummary.comments = '';

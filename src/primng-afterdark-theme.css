@@ -452,3 +452,17 @@ p-selectbutton.ng-dirty.ng-invalid .ui-button,
 p-togglebutton.ng-dirty.ng-invalid .ui-button {
     border-bottom-color: #cc6666;
 }
+
+.ui-slider-horizontal {
+    height: 2.0em;
+}
+
+.ui-slider .ui-slider-handle {
+    position: absolute;
+    width: 1.2em;
+    height: 2.1em;
+    cursor: default;
+    -ms-touch-action: none;
+    touch-action: none;
+    z-index: 1;
+}

@@ -1,11 +1,11 @@
 
-#stockNotesPanelDiv
+#stockSummaryPanelDiv
 {
-    width:50%;
+    width:100%;
     float: left;
 }
 
-#stockNotesTableDiv
+#stockSummaryTableDiv
 {
     width:100%;
     float: left;

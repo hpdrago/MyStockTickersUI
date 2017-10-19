@@ -45,12 +45,12 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
 
     /**
      * This method is called when the number of model objects that were selected changes.
-     * @param {[T]} selectedModelObjects
+     * @param {[T]} modelObjects
      */
-    private handleTableSelectionChangeEvent( selectedModelObject: T )
+    private handleTableSelectionChangeEvent( modelObject: T )
     {
-        this.debug( "handleTableSelectionChangeEvent modelObject: " + JSON.stringify( selectedModelObject ));
-        this.modelObject = selectedModelObject;
+        this.debug( "handleTableSelectionChangeEvent modelObject: " + JSON.stringify( modelObject ));
+        this.modelObject = modelObject;
     }
 
     public ngOnInit()

@@ -47,7 +47,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                  private formBuilder: FormBuilder,
                  private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {
-        super( toaster, stockNotesCrudServiceContainer );jjj
+        super( toaster, stockNotesCrudServiceContainer );
         this.bullOrBearOptions = [];
         this.bullOrBearOptions.push( {label: 'Bull', value: 1} );
         this.bullOrBearOptions.push( {label: 'Bear', value: 2} );

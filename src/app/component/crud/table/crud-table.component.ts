@@ -66,6 +66,10 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( "ngOnInit.begin" );
         this.subscribeToCrudFormButtonEvents();
         this.subscribeToCrudTableButtonEvents();
+        /*
+         * Create a new object instance as it will most likely be nulled by subscribing to events
+         */
+        this.modelObject = this.crudServiceContainer.modelObjectFactory.newModelObject();
         this.loadTable();
         this.debug( "ngOnInit.end" );
     }

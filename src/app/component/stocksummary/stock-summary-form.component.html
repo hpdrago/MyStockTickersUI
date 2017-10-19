@@ -54,125 +54,145 @@
                 </div>
             </div>
 
-            <p-fieldset legend="Analyst">
-                <!----------------------------------------------------------------------------------------------------------
-                ANALYST BUY
-                ------------------------------------------------------------------------------------------------------------>
-                <div class="crud-form ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-3">
-                        <label class="crud-form" for="analystBuyCount">BUY: {{modelObject.analystBuyCount/10}}</label>
-                    </div>
-                    <div class="ui-grid-col-9">
-                        <p-slider id="analystBuyCount"
-                                  class="crud-form"
-                                  formControlName="analystBuyCount"
-                                  [(ngModel)]="modelObject.analystBuyCount"
-                                  [style]="{'width':'225px'}"
-                                  [step]="10"
-                                  [animate]="true">
-                        </p-slider>
-                    </div>
+            <!----------------------------------------------------------------------------------------------------------
+            ANALYST SENTIMENT
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form">Analyst Sentiment</label>
                 </div>
-                <!----------------------------------------------------------------------------------------------------------
-                ANALYST SELL
-                ------------------------------------------------------------------------------------------------------------>
-                <div class="crud-form ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-3">
-                        <label class="crud-form" for="analystSellCount">SELL: {{modelObject.analystSellCount/10}}</label>
-                    </div>
-                    <div class="ui-grid-col-9">
-                        <p-slider id="analystSellCount"
-                                  class="crud-form"
-                                  formControlName="analystSellCount"
-                                  [(ngModel)]="modelObject.analystSellCount"
-                                  [style]="{'width':'225px'}"
-                                  [step]="10"
-                                  [animate]="true">
-                        </p-slider>
-                    </div>
+            </div>
+            <!----------------------------------------------------------------------------------------------------------
+            ANALYST BUY
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="analystBuyCount">Buy:</label>
                 </div>
-                <!----------------------------------------------------------------------------------------------------------
-                ANALYST HOLD
-                ------------------------------------------------------------------------------------------------------------>
-                <div class="crud-form ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-3">
-                        <label class="crud-form" for="analystHoldCount">HOLD: {{modelObject.analystHoldCount/10}}</label>
-                    </div>
-                    <div class="ui-grid-col-9">
-                        <p-slider id="analystHoldCount"
-                                  class="crud-form"
-                                  formControlName="analystHoldCount"
-                                  [(ngModel)]="modelObject.analystHoldCount"
-                                  [style]="{'width':'225px'}"
-                                  [step]="10"
-                                  [animate]="true">
-                        </p-slider>
-                    </div>
+                <div class="ui-grid-col-9">
+                    <p-inputMask
+                        id="analystBuyCount"
+                        class="crud-form"
+                        formControlName="analystBuyCount"
+                        [(ngModel)]="modelObject.analystBuyCount"
+                        [style]="{'float':'left','width':'20px'}"
+                        maxLength="1"
+                        placeholder=""
+                        mask="9?9">
+                    </p-inputMask>
+                    <p-slider id="analystBuyCountSlider"
+                              class="crud-form slider"
+                              styleClass="input-width"
+                              formControlName="analystBuyCount"
+                              [(ngModel)]="modelObject.analystBuyCount"
+                              [min]="0"
+                              [max]="9"
+                              [step]="1"
+                              [animate]="true">
+                    </p-slider>
                 </div>
+            </div>
 
-                <!----------------------------------------------------------------------------------------------------------
-                HIGH Analyst Price Target
-                ------------------------------------------------------------------------------------------------------------>
-                <div class="ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-4">
-                        <label class="crud-form" for="highAnalystPriceTarget">High Price Target:</label>
-                    </div>
-                    <div class="ui-grid-col-8">
-                        <p-inputMask
-                            id="highAnalystPriceTarget"
-                            class="crud-form"
-                            formControlName="profitTakingPrice"
-                            [(ngModel)]="modelObject.highAnalystPriceTarget"
-                            [style]="{'width':'70px'}"
-                            maxLength="6"
-                            placeholder="$"
-                            mask="$9?99999">
-                        </p-inputMask>
-                    </div>
+            <!----------------------------------------------------------------------------------------------------------
+            ANALYST HOLD
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="analystHoldCount">Hold: {{modelObject.analystHoldCount/10}}</label>
                 </div>
+                <div class="ui-grid-col-9">
+                    <p-slider id="analystHoldCount"
+                              class="crud-form"
+                              formControlName="analystHoldCount"
+                              [(ngModel)]="modelObject.analystHoldCount"
+                              [style]="{'width':'225px','float':'left','align':'center','margin-left':'10px'}"
+                              [step]="10"
+                              [animate]="true">
+                    </p-slider>
+                </div>
+            </div>
 
-                <!----------------------------------------------------------------------------------------------------------
-                AVERAGE Analyst Price Target
-                ------------------------------------------------------------------------------------------------------------>
-                <div class="ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-4">
-                        <label class="crud-form" for="avgAnalystPriceTarget">Avg Price Target:</label>
-                    </div>
-                    <div class="ui-grid-col-8">
-                        <p-inputMask
-                            id="avgAnalystPriceTarget"
-                            class="crud-form"
-                            formControlName="profitTakingPrice"
-                            [(ngModel)]="modelObject.avgAnalystPriceTarget"
-                            [style]="{'width':'70px'}"
-                            maxLength="6"
-                            placeholder="$"
-                            mask="$9?99999">
-                        </p-inputMask>
-                    </div>
+            <!----------------------------------------------------------------------------------------------------------
+            ANALYST SELL
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="analystSellCount">Sell: {{modelObject.analystSellCount/10}}</label>
                 </div>
+                <div class="ui-grid-col-9">
+                    <p-slider id="analystSellCount"
+                              class="crud-form"
+                              formControlName="analystSellCount"
+                              [(ngModel)]="modelObject.analystSellCount"
+                              [style]="{'width':'225px'}"
+                              [step]="10"
+                              [animate]="true">
+                    </p-slider>
+                </div>
+            </div>
 
-                <!----------------------------------------------------------------------------------------------------------
-                LOW Analyst Price Target
-                ------------------------------------------------------------------------------------------------------------>
-                <div class="ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-4">
-                        <label class="crud-form" for="lowAnalystPriceTarget">Avg Price Target:</label>
-                    </div>
-                    <div class="ui-grid-col-8">
-                        <p-inputMask
-                            id="lowAnalystPriceTarget"
-                            class="crud-form"
-                            formControlName="profitTakingPrice"
-                            [(ngModel)]="modelObject.lowAnalystPriceTarget"
-                            [style]="{'width':'70px'}"
-                            maxLength="6"
-                            placeholder="$"
-                            mask="$9?99999">
-                        </p-inputMask>
-                    </div>
+            <!----------------------------------------------------------------------------------------------------------
+            HIGH Analyst Price Target
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="highAnalystPriceTarget">High Price Target:</label>
                 </div>
-            </p-fieldset>
+                <div class="ui-grid-col-9">
+                    <p-inputMask
+                        id="highAnalystPriceTarget"
+                        class="crud-form"
+                        formControlName="highAnalystPriceTarget"
+                        [(ngModel)]="modelObject.highAnalystPriceTarget"
+                        [style]="{'width':'70px'}"
+                        maxLength="6"
+                        placeholder="$"
+                        mask="$9?99999">
+                    </p-inputMask>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            AVERAGE Analyst Price Target
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="avgAnalystPriceTarget">Avg Price Target:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-inputMask
+                        id="avgAnalystPriceTarget"
+                        class="crud-form"
+                        formControlName="avgAnalystPriceTarget"
+                        [(ngModel)]="modelObject.avgAnalystPriceTarget"
+                        [style]="{'width':'70px'}"
+                        maxLength="6"
+                        placeholder="$"
+                        mask="$9?99999">
+                    </p-inputMask>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            LOW Analyst Price Target
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="lowAnalystPriceTarget">Low Price Target:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-inputMask
+                        id="lowAnalystPriceTarget"
+                        class="crud-form"
+                        formControlName="lowAnalystPriceTarget"
+                        [(ngModel)]="modelObject.lowAnalystPriceTarget"
+                        [style]="{'width':'70px'}"
+                        maxLength="6"
+                        placeholder="$"
+                        mask="$9?99999">
+                    </p-inputMask>
+                </div>
+            </div>
 
             <!----------------------------------------------------------------------------------------------------------
             NEXT CATALYST DATE
@@ -198,46 +218,35 @@
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="nextCatalystComments">Next Catalyst Comments:</label>
+                    <label class="crud-form" for="nextCatalystDesc">Next Catalyst Description:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <input id="nextCatalystComments"
+                    <input id="nextCatalystDesc"
                            type="text"
                            pInputText
-                           formControlName="nextCatalystComments"
-                           [(ngModel)]="modelObject.nextCatalystComments">
+                           formControlName="nextCatalystDesc"
+                           [(ngModel)]="modelObject.nextCatalystDesc">
                 </div>
             </div>
-            <!--
-            RATING
-            -->
-            <div class="crud-form ui-grid-row">
+
+            <!----------------------------------------------------------------------------------------------------------
+            BUY SHARES BELOW PRICE
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="notesRating">Rating:</label>
+                    <label class="crud-form" for="buySharesBelow">Buy Shares Below:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <p-rating id="notesRating"
-                              class="crud-form"
-                              formControlName="notesRating"
-                              [stars]="5"
-                              [(ngModel)]="modelObject.notesRating">
-                    </p-rating>
-                </div>
-            </div>
-            <!--
-            BULL OR BEAR
-            -->
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="bullOrBear">Bull or Bear:</label>
-                </div>
-                <div class="ui-grid-col-9">
-                    <p-selectButton id="bullOrBear"
-                                    class="crud-form"
-                                    formControlName="bullOrBear"
-                                    [options]="bullOrBearOptions"
-                                    [(ngModel)]="modelObject.bullOrBear">
-                    </p-selectButton>
+                    <p-inputMask
+                        id="buySharesBelow"
+                        class="crud-form"
+                        formControlName="buySharesBelow"
+                        [(ngModel)]="modelObject.buySharesBelow"
+                        [style]="{'width':'70px'}"
+                        maxLength="6"
+                        placeholder="$"
+                        mask="$9?99999">
+                    </p-inputMask>
                 </div>
             </div>
         </div>

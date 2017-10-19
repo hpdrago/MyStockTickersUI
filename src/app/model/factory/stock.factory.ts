@@ -1,6 +1,7 @@
 import { Stock } from "../entity/stock";
 import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
+import { SessionService } from "../../service/crud/session.service";
 
 /**
  * This class provides Stock factory methods.
@@ -10,6 +11,11 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class StockFactory extends ModelObjectFactory<Stock>
 {
+    constructor( protected session: SessionService )
+    {
+        super();
+    }
+
     /**
      * Create a new Stock instance
      * @returns {Stock}

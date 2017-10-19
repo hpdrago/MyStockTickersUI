@@ -4,8 +4,6 @@
  *
  * Created by mike on 12/13/2016.
  */
-import {deserialize} from 'json-typescript-mapper';
-
 export abstract class ModelObjectFactory<T>
 {
     /**

@@ -21,24 +21,14 @@ export class StockSummaryTableButtonsComponent extends CrudTableButtonsComponent
     }
 
 
-    protected onAddButtonClick(): void
-    {
-        this.setModelObject( this.stockNotesServiceContainer
-                                 .modelObjectFactory.newModelObject() );
-        this.modelObject.notesRating = 3;
-        this.modelObject.bullOrBear = 1;
-        this.modelObject.notesDate = new Date( Date.now() );
-        super.onAddButtonClick();
-    }
-
     protected getAddButtonLabel(): string
     {
-        return "Add Note";
+        return "Add Summary";
     }
 
     protected getDeleteButtonLabel(): string
     {
-        return "Delete Note";
+        return "Delete Summary";
     }
 
 }

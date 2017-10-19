@@ -2,7 +2,7 @@
     <div id="stockNotesTableDiv">
         <p-dataTable [value]="rows"
                      selectionMode="single"
-                     [(selection)]="selectedModelObject"
+                     [(selection)]="modelObject"
                      (onRowSelect)="onRowSelect($event)"
                      (onRowUnselect)="onRowUnSelect($event)"
                      [paginator]="true"
@@ -14,7 +14,7 @@
             <p-column id="notesDateColumn"
                       field="notesDate"
                       header="Date"
-                      [style]="{'width':'120px'}"
+                      [style]="{'width':'80px'}"
                       [sortable]="true">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
                     {{stockNotes[col.field] | date: 'shortDate' }}
@@ -29,6 +29,18 @@
             <p-column id="stockPriceColumn"
                       field="stockPrice"
                       header="Price @ Date"
+                      [style]="{'width':'80px','text-align':'right'}"
+                      [sortable]="true">
+            </p-column>
+            <p-column id="actionTakenColumn"
+                      field="actionTaken"
+                      header="Action Taken"
+                      [style]="{'width':'80px'}"
+                      [sortable]="true">
+            </p-column>
+            <p-column id="actionTakenSharesColumn"
+                      field="actionTakenShares"
+                      header="Action Shares"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="true">
             </p-column>

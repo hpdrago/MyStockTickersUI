@@ -88,14 +88,4 @@ export class PortfolioStockCrudService extends CrudRestService<PortfolioStock>
         return super.getModelObjectList( portfolioStock );
     }
 
-    /**
-     * Create a new PortfolioStock
-     * @param modelObject
-     * @return {Observable<PortfolioStock>}
-     */
-    public createModelObject( modelObject: PortfolioStock ): Observable<PortfolioStock>
-    {
-        modelObject.customerId = this.sessionService.getLoggedInUserId();
-        return super.createModelObject( modelObject );
-    }
 }
