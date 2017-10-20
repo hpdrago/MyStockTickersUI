@@ -20,9 +20,11 @@ export class StockSummaryFactory extends ModelObjectFactory<StockSummary>
         stockSummary.tickerSymbol = '';
         stockSummary.companyName = '';
         stockSummary.comments = '';
+        stockSummary.analystStrongBuyCount = 0;
         stockSummary.analystBuyCount = 0;
-        stockSummary.analystSellCount = 0;
         stockSummary.analystHoldCount = 0;
+        stockSummary.analystUnderPerformCount = 0;
+        stockSummary.analystSellCount = 0;
         stockSummary.nextCatalystDate = null;
         stockSummary.nextCatalystDesc = '';
         stockSummary.avgAnalystPriceTarget = 0;

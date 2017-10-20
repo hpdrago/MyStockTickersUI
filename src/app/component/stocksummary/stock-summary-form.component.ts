@@ -37,17 +37,19 @@ export class StockSummaryFormComponent extends CrudFormComponent<StockSummary>
         this.debug( "createCrudForm" );
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
-                'tickerSymbol': new FormControl( this.modelObject.tickerSymbol, Validators.required ),
-                'comments': new FormControl( this.modelObject.comments ),
-                'analystBuyCount': new FormControl( this.modelObject.analystBuyCount ),
-                'analystSellCount': new FormControl( this.modelObject.analystSellCount ),
-                'analystHoldCount': new FormControl( this.modelObject.analystHoldCount ),
-                'nextCatalystDate': new FormControl( this.modelObject.nextCatalystDate ),
-                'nextCatalystDesc': new FormControl( this.modelObject.nextCatalystDesc ),
-                'avgAnalystPriceTarget': new FormControl( this.modelObject.avgAnalystPriceTarget ),
-                'lowAnalystPriceTarget': new FormControl( this.modelObject.lowAnalystPriceTarget ),
-                'highAnalystPriceTarget': new FormControl( this.modelObject.highAnalystPriceTarget ),
-                'buySharesBelow': new FormControl( this.modelObject.comments ),
+                'tickerSymbol':             new FormControl( this.modelObject.tickerSymbol, Validators.required ),
+                'comments':                 new FormControl( this.modelObject.comments ),
+                'analystStrongBuyCount':    new FormControl( this.modelObject.analystStrongBuyCount ),
+                'analystBuyCount':          new FormControl( this.modelObject.analystBuyCount ),
+                'analystHoldCount':         new FormControl( this.modelObject.analystHoldCount ),
+                'analystUnderPerformCount': new FormControl( this.modelObject.analystUnderPerformCount ),
+                'analystSellCount':         new FormControl( this.modelObject.analystSellCount ),
+                'nextCatalystDate':         new FormControl( this.modelObject.nextCatalystDate ),
+                'nextCatalystDesc':         new FormControl( this.modelObject.nextCatalystDesc ),
+                'avgAnalystPriceTarget':    new FormControl( this.modelObject.avgAnalystPriceTarget ),
+                'lowAnalystPriceTarget':    new FormControl( this.modelObject.lowAnalystPriceTarget ),
+                'highAnalystPriceTarget':   new FormControl( this.modelObject.highAnalystPriceTarget ),
+                'buySharesBelow':           new FormControl( this.modelObject.buySharesBelow ),
             } );
         return stockNoteForm;
     }
@@ -61,6 +63,7 @@ export class StockSummaryFormComponent extends CrudFormComponent<StockSummary>
         this.debug( "onStockSelected: " + JSON.stringify( stock ) );
         this.modelObject.companyName = stock.companyName;
         this.modelObject.lastPrice = stock.lastPrice;
+        this.modelObject.tickerSymbol = stock.tickerSymbol;
     }
 
     /**

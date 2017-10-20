@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
  *  Angular Material
  */
 import {MatProgressBarModule} from '@angular/material';
+import {MatSliderModule} from '@angular/material';
 
 /**
  * PrimeNG
@@ -137,6 +138,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         BrowserAnimationsModule,
         // Angular Material modules
         MatProgressBarModule,
+        MatSliderModule,
         // PrimeNG modules
         DropdownModule,
         InputMaskModule,

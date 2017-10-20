@@ -42,7 +42,7 @@ export class StockSummaryCrudService extends CrudRestService<StockSummary>
 
     protected getUpdateModelObjectUrl( baseUrl: string, stockSummary: StockSummary ): string
     {
-        return baseUrl + this.urlPath + `/${stockSummary.id}`;
+        return baseUrl + this.urlPath;
     }
 
     protected getDeleteModelObjectUrl( baseUrl: string, stockSummary: StockSummary ): string

@@ -55,15 +55,50 @@
             </div>
 
             <!----------------------------------------------------------------------------------------------------------
-            ANALYST SENTIMENT
+            ANALYST STRONG BUY COUNT
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form">Analyst Sentiment</label>
+                    <label class="crud-form" for="analystStrongBuyCount">Strong Buy:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-inputMask
+                        id="analystStrongBuyCount"
+                        class="crud-form"
+                        formControlName="analystStrongBuyCount"
+                        [(ngModel)]="modelObject.analystStrongBuyCount"
+                        [style]="{'float':'left','width':'20px'}"
+                        maxLength="1"
+                        placeholder=""
+                        mask="9?9">
+                    </p-inputMask>
+                    <p-slider id="analystStrongBuyCountSlider"
+                              class="crud-form slider"
+                              styleClass="input-width"
+                              formControlName="analystStrongBuyCount"
+                              [(ngModel)]="modelObject.analystStrongBuyCount"
+                              [min]="0"
+                              [max]="9"
+                              [step]="1"
+                              [animate]="true">
+                    </p-slider>
+                    <!--
+                    <mat-slider id="analystBuyCount"
+                                class="crud-form"
+                                formControlName="analystBuyCount"
+                                [(ngModel)]="modelObject.analystBuyCount"
+                                thumbLabel="true"
+                                displayValue="true"
+                                [min]="0"
+                                [max]="9"
+                                [step]="1"
+                                [tickInterval]="1">
+                    </mat-slider> -->
                 </div>
             </div>
+
             <!----------------------------------------------------------------------------------------------------------
-            ANALYST BUY
+            ANALYST BUY COUNT
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
@@ -98,15 +133,58 @@
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="analystHoldCount">Hold: {{modelObject.analystHoldCount/10}}</label>
+                    <label class="crud-form" for="analystHoldCount">Hold:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <p-slider id="analystHoldCount"
-                              class="crud-form"
+                    <p-inputMask
+                        id="analystHoldCount"
+                        class="crud-form"
+                        formControlName="analystHoldCount"
+                        [(ngModel)]="modelObject.analystHoldCount"
+                        [style]="{'float':'left','width':'20px'}"
+                        maxLength="1"
+                        placeholder=""
+                        mask="9?9">
+                    </p-inputMask>
+                    <p-slider id="analystHoldCountSlider"
+                              class="crud-form slider"
+                              styleClass="input-width"
                               formControlName="analystHoldCount"
                               [(ngModel)]="modelObject.analystHoldCount"
-                              [style]="{'width':'225px','float':'left','align':'center','margin-left':'10px'}"
-                              [step]="10"
+                              [min]="0"
+                              [max]="9"
+                              [step]="1"
+                              [animate]="true">
+                    </p-slider>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            ANALYST UNDER PERFORM
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="analystUnderPerformCount">Under Perform:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-inputMask
+                        id="analystUnderPerformCount"
+                        class="crud-form"
+                        formControlName="analystUnderPerformCount"
+                        [(ngModel)]="modelObject.analystUnderPerformCount"
+                        [style]="{'float':'left','width':'20px'}"
+                        maxLength="1"
+                        placeholder=""
+                        mask="9?9">
+                    </p-inputMask>
+                    <p-slider id="analystUnderPerformCountSlider"
+                              class="crud-form slider"
+                              styleClass="input-width"
+                              formControlName="analystUnderPerformCount"
+                              [(ngModel)]="modelObject.analystUnderPerformCount"
+                              [min]="0"
+                              [max]="9"
+                              [step]="1"
                               [animate]="true">
                     </p-slider>
                 </div>
@@ -117,15 +195,27 @@
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="analystSellCount">Sell: {{modelObject.analystSellCount/10}}</label>
+                    <label class="crud-form" for="analystSellCount">Sell:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <p-slider id="analystSellCount"
-                              class="crud-form"
+                    <p-inputMask
+                        id="analystSellCount"
+                        class="crud-form"
+                        formControlName="analystSellCount"
+                        [(ngModel)]="modelObject.analystSellCount"
+                        [style]="{'float':'left','width':'20px'}"
+                        maxLength="1"
+                        placeholder=""
+                        mask="9?9">
+                    </p-inputMask>
+                    <p-slider id="analystSellCountSlider"
+                              class="crud-form slider"
+                              styleClass="input-width"
                               formControlName="analystSellCount"
                               [(ngModel)]="modelObject.analystSellCount"
-                              [style]="{'width':'225px'}"
-                              [step]="10"
+                              [min]="0"
+                              [max]="9"
+                              [step]="1"
                               [animate]="true">
                     </p-slider>
                 </div>
