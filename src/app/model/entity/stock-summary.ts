@@ -17,11 +17,13 @@ export class StockSummary extends ModelObject<StockSummary>
     public analystHoldCount: number;
     public analystUnderPerformCount: number;
     public analystSellCount: number;
+    public analystSentimentDate: Date;
     public nextCatalystDate: Date;
     public nextCatalystDesc: string;
     public avgAnalystPriceTarget: number;
     public lowAnalystPriceTarget: number;
     public highAnalystPriceTarget: number;
+    public analystPriceDate: Date;
     public buySharesBelow: number;
     public lastPrice: number;
     public lastPriceChange: Date;

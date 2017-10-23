@@ -1,4 +1,7 @@
-<p-panel id="stockNotesPanelDiv" header="Stock Summaries">
+<p-panel id="stockNotesPanelDiv" header="Stock Analytics">
+    <div>
+        PT = Price Target
+    </div>
     <div id="stockNotesTableDiv">
         <p-dataTable [value]="rows"
                      selectionMode="single"
@@ -11,53 +14,146 @@
                      [rows]="25"
                      (onRowDblclick)="onRowDoubleClick($event)"
                      [responsive]="true">
+            <!----------------------------------------------------------------------------------------------------------
+            TICKER SYMBOL
+            ------------------------------------------------------------------------------------------------------------>
             <p-column id="tickerSymbol"
                       field="tickerSymbol"
                       header="Ticker"
                       [style]="{'width':'80px'}"
                       [sortable]="true">
             </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            AVG UPSIDE PERCENTAGE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="avgUpsidePercent"
+                      field="avgUpsidePercent"
+                      header="Avg Upside %"
+                      [style]="{'width':'80px','text-align':'right'}"
+                      [sortable]="true">
+            </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            COMPANY NAME
+            ------------------------------------------------------------------------------------------------------------>
+            <!--
             <p-column id="companyName"
                       field="companyName"
                       header="Company Name"
                       [style]="{'width':'150px'}"
                       [sortable]="false">
-            </p-column>
+            </p-column> -->
+            <!----------------------------------------------------------------------------------------------------------
+            COMMENTS
+            ------------------------------------------------------------------------------------------------------------>
             <p-column id="comments"
                       field="comments"
                       header="Comments"
                       [style]="{'width':'150px'}"
                       [sortable]="false">
             </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            ANALYST BUY COUNT
+            ------------------------------------------------------------------------------------------------------------>
             <p-column id=""
                       field="analystByCount"
                       header="Analyst BSH"
                       [style]="{'width':'120px'}"
                       [sortable]="true">
                 <ng-template let-col let-stockSummary="rowData" pTemplate="body">
-                    {{ 'B: ' + stockSummary['analystBuyCount'] +
-                       'S: ' + stockSummary['analystSellCount'] +
-                       'H: ' + stockSummary['analystHoldCount']}}
+                    <span class="strongBuy">       {{stockSummary['analystStrongBuyCount']}}</span><!--
+                    --><span class="buy">          {{stockSummary['analystBuyCount']}}</span><!--
+                    --><span class="hold">         {{stockSummary['analystHoldCount']}}</span><!--
+                    --><span class="underPerform"> {{stockSummary['analystUnderPerformCount']}}</span><!--
+                    --><span class="sell">         {{stockSummary['analystSellCount']}}</span>
                 </ng-template>
             </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            ANALYST SENTIMENT DATE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="analystSentimentDate"
+                      field="analystSentimentDate"
+                      header="Sentiment Entered"
+                      [style]="{'width':'80px'}"
+                      [sortable]="true">
+                <ng-template let-col let-stockSummary="rowData" pTemplate="body">
+                    {{stockSummary[col.field] | date: 'shortDate' }}
+                </ng-template>
+            </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            HIGH ANALYST PRICE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="highAnalystPrice"
+                      field="highAnalystPrice"
+                      header="High Analyst PT"
+                      [style]="{'width':'80px','text-align':'right'}"
+                      [sortable]="false">
+                <ng-template let-col let-stockSummary="rowData" pTemplate="body">
+                    {{stockSummary[col.field] | currency: 'USD' : true }}
+                </ng-template>
+            </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            AVG ANALYST PRICE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="avgAnalystPrice"
+                      field="avgAnalystPrice"
+                      header="Avg Analyst PT"
+                      [style]="{'width':'80px','text-align':'right'}"
+                      [sortable]="false">
+                <ng-template let-col let-stockSummary="rowData" pTemplate="body">
+                    {{stockSummary[col.field] | currency: 'USD' : true }}
+                </ng-template>
+            </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            LOW ANALYST PRICE
+            ------------------------------------------------------------------------------------------------------------>
             <p-column id="lowAnalystPrice"
                       field="lowAnalystPrice"
                       header="Low Analyst PT"
                       [style]="{'width':'80px','text-align':'right'}"
-                      [sortable]="true">
+                      [sortable]="false">
+                <ng-template let-col let-stockSummary="rowData" pTemplate="body">
+                    {{stockSummary[col.field] | currency: 'USD' : true }}
+                </ng-template>
             </p-column>
-            <p-column id="avgAnalystPrice"
-                      field="avgAnalystPrice"
-                      header="Low Analyst PT"
+            <!----------------------------------------------------------------------------------------------------------
+            LAST PRICE CHANGE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="analystPriceDate"
+                      field="analystPriceDate"
+                      header="PT Entered"
+                      [style]="{'width':'80px'}"
+                      [sortable]="true">
+                <ng-template let-col let-stockSummary="rowData" pTemplate="body">
+                    {{stockSummary[col.field] | date: 'shortDate' }}
+                </ng-template>
+            </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            LAST PRICE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="lastPrice"
+                      field="lastPrice"
+                      header="Last Price"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="true">
+                <ng-template let-col let-stockSummary="rowData" pTemplate="body">
+                    {{stockSummary[col.field] | currency: 'USD' : true }}
+                </ng-template>
             </p-column>
-            <p-column id="highAnalystPrice"
-                      field="highAnalystPrice"
-                      header="Low Analyst PT"
+            <!----------------------------------------------------------------------------------------------------------
+            LAST PRICE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="buySharesBelow"
+                      field="buySharesBelow"
+                      header="Buy Below Price"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="true">
+                <ng-template let-col let-stockSummary="rowData" pTemplate="body">
+                    {{stockSummary[col.field] | currency: 'USD' : true }}
+                </ng-template>
             </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            NEXT CATALYST DATE
+            ------------------------------------------------------------------------------------------------------------>
             <p-column id="nextCatalystDate"
                       field="nextCatalystDate"
                       header="Next Catalyst"
@@ -67,31 +163,13 @@
                     {{stockSummary[col.field] | date: 'shortDate' }}
                 </ng-template>
             </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            NEXT CATALYST DESCRIPTION
+            ------------------------------------------------------------------------------------------------------------>
             <p-column id="nextCatalystDesc"
                       field="nextCatalystDesc"
                       header="Catalyst Description"
                       [sortable]="false">
-            </p-column>
-            <p-column id="lastPrice"
-                      field="lastPrice"
-                      header="Last Price"
-                      [style]="{'width':'80px','text-align':'right'}"
-                      [sortable]="true">
-            </p-column>
-            <p-column id="lastPriceDate"
-                      field="lastPriceDate"
-                      header="Price Change"
-                      [style]="{'width':'80px'}"
-                      [sortable]="true">
-                <ng-template let-col let-stockSummary="rowData" pTemplate="body">
-                    {{stockSummary[col.field] | date: 'shortDate' }}
-                </ng-template>
-            </p-column>
-            <p-column id="avgUpsidePercent"
-                      field="avgUpsidePercent"
-                      header="Avg Upside %"
-                      [style]="{'width':'80px','text-align':'right'}"
-                      [sortable]="true">
             </p-column>
 
             <p-footer>

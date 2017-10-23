@@ -168,7 +168,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected setFormValues( modelObject: T )
     {
-        //this.debug( "setFormValues: " + JSON.stringify( modelObject ));
+        this.debug( "setFormValues: " + JSON.stringify( modelObject ));
         for ( var property in this.modelObject )
         {
             if ( !isNullOrUndefined( this.formGroup.controls[property] ) &&

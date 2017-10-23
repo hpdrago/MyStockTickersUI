@@ -11,7 +11,7 @@
                 </div>
                 <div class="ui-grid-col-9">
                     <stock-autocomplete id="tickerSymbol"
-                                        [(ngModel)]="tickerSymbol"
+                                        [(ngModel)]="modelObject.tickerSymbol"
                                         [formGroup]="formGroup"
                                         formControlName="tickerSymbol"
                                         uppercase
@@ -229,16 +229,12 @@
                     <label class="crud-form" for="highAnalystPriceTarget">High Price Target:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <p-inputMask
-                        id="highAnalystPriceTarget"
-                        class="crud-form"
-                        formControlName="highAnalystPriceTarget"
-                        [(ngModel)]="modelObject.highAnalystPriceTarget"
-                        [style]="{'width':'70px'}"
-                        maxLength="6"
-                        placeholder="$"
-                        mask="$9?99999">
-                    </p-inputMask>
+                    <input currencyMask
+                           id="highAnalystPriceTarget"
+                           formControlName="highAnalystPriceTarget"
+                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
+                           [(ngModel)]="modelObject.highAnalystPriceTarget"
+                           placeholder="$"/>
                 </div>
             </div>
 
@@ -250,16 +246,12 @@
                     <label class="crud-form" for="avgAnalystPriceTarget">Avg Price Target:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <p-inputMask
-                        id="avgAnalystPriceTarget"
-                        class="crud-form"
-                        formControlName="avgAnalystPriceTarget"
-                        [(ngModel)]="modelObject.avgAnalystPriceTarget"
-                        [style]="{'width':'70px'}"
-                        maxLength="6"
-                        placeholder="$"
-                        mask="$9?99999">
-                    </p-inputMask>
+                    <input currencyMask
+                           id="avgAnalystPriceTarget"
+                           formControlName="avgAnalystPriceTarget"
+                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
+                           [(ngModel)]="modelObject.avgAnalystPriceTarget"
+                           placeholder="$"/>
                 </div>
             </div>
 
@@ -271,16 +263,12 @@
                     <label class="crud-form" for="lowAnalystPriceTarget">Low Price Target:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <p-inputMask
-                        id="lowAnalystPriceTarget"
-                        class="crud-form"
-                        formControlName="lowAnalystPriceTarget"
-                        [(ngModel)]="modelObject.lowAnalystPriceTarget"
-                        [style]="{'width':'70px'}"
-                        maxLength="6"
-                        placeholder="$"
-                        mask="$9?99999">
-                    </p-inputMask>
+                    <input currencyMask
+                           id="lowAnalystPriceTarget"
+                           formControlName="lowAnalystPriceTarget"
+                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
+                           [(ngModel)]="modelObject.lowAnalystPriceTarget"
+                           placeholder="$"/>
                 </div>
             </div>
 
@@ -295,7 +283,7 @@
                     <p-calendar id="nextCatalystDate"
                                 class="crud-form"
                                 formControlName="nextCatalystDate"
-                                dateFormat="mm/dd/yy"
+                                dateFormat="yy-mm-dd"
                                 [showIcon]="true"
                                 [inputStyle]="{'width':'100px'}"
                                 [(ngModel)]="modelObject.nextCatalystDate">
@@ -327,16 +315,12 @@
                     <label class="crud-form" for="buySharesBelow">Buy Shares Below:</label>
                 </div>
                 <div class="ui-grid-col-9">
-                    <p-inputMask
-                        id="buySharesBelow"
-                        class="crud-form"
-                        formControlName="buySharesBelow"
-                        [(ngModel)]="modelObject.buySharesBelow"
-                        [style]="{'width':'70px'}"
-                        maxLength="6"
-                        placeholder="$"
-                        mask="$9?99999">
-                    </p-inputMask>
+                    <input currencyMask
+                           id="buySharesBelow"
+                           formControlName="buySharesBelow"
+                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
+                           [(ngModel)]="modelObject.buySharesBelow"
+                           placeholder="$"/>
                 </div>
             </div>
         </div>

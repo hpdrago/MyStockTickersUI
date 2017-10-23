@@ -40,6 +40,7 @@ export class StockSummaryTableComponent extends CrudTableComponent<StockSummary>
                                  * Expand the rows by creating new StockSummary entries for each stock of the stock note
                                  */
                                 this.rows = stockSummaryList;
+                                this.debug( JSON.stringify( this.rows ));
                             }
                             else
                             {

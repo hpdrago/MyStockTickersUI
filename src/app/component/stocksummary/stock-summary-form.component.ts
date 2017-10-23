@@ -34,7 +34,7 @@ export class StockSummaryFormComponent extends CrudFormComponent<StockSummary>
      */
     protected createCrudForm(): FormGroup
     {
-        this.debug( "createCrudForm" );
+        this.debug( "createCrudForm " );
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
                 'tickerSymbol':             new FormControl( this.modelObject.tickerSymbol, Validators.required ),

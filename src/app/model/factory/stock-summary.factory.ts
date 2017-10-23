@@ -25,6 +25,7 @@ export class StockSummaryFactory extends ModelObjectFactory<StockSummary>
         stockSummary.analystHoldCount = 0;
         stockSummary.analystUnderPerformCount = 0;
         stockSummary.analystSellCount = 0;
+        stockSummary.lastAnalystPriceDate = null;
         stockSummary.nextCatalystDate = null;
         stockSummary.nextCatalystDesc = '';
         stockSummary.avgAnalystPriceTarget = 0;

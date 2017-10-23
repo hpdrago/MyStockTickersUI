@@ -1,4 +1,45 @@
+span.strongBuy
+{
+    background: darkgreen;
+    width: 20px;
+    text-align: center;
+    display: inline-block;
+}
 
+span.buy
+{
+    background: green;
+    width: 20px;
+    text-align: center;
+    display: inline-block;
+}
+
+span.hold
+{
+    background: yellow;
+    color: black;
+    width: 20px;
+    text-align: center;
+    display: inline-block;
+}
+
+span.underPerform
+{
+    background: red;
+    width: 20px;
+    text-align: center;
+    display: inline-block;
+}
+
+span.sell
+{
+    background: darkred;
+    width: 20px;
+    text-align: center;
+    display: inline-block;
+}
+
+/*
 #stockSummaryPanelDiv
 {
     width:100%;
@@ -38,4 +79,4 @@
 {
     float: right;
 }
-
+*/
