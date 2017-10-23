@@ -5,7 +5,7 @@ import { ModelObject } from "./modelobject";
  *
  * Created 10/17/2017
  */
-export class StockSummary extends ModelObject<StockSummary>
+export class StockAnalytics extends ModelObject<StockAnalytics>
 {
     public id: number;
     public customerId: number;
@@ -18,8 +18,6 @@ export class StockSummary extends ModelObject<StockSummary>
     public analystUnderPerformCount: number;
     public analystSellCount: number;
     public analystSentimentDate: Date;
-    public nextCatalystDate: Date;
-    public nextCatalystDesc: string;
     public avgAnalystPriceTarget: number;
     public lowAnalystPriceTarget: number;
     public highAnalystPriceTarget: number;
@@ -28,8 +26,10 @@ export class StockSummary extends ModelObject<StockSummary>
     public lastPrice: number;
     public lastPriceChange: Date;
     public avgUpsidePercent: number;
+    public createDate: Date;
+    public updateDate: Date;
 
-    public isEqualPrimaryKey( modelObject: StockSummary ): boolean
+    public isEqualPrimaryKey( modelObject: StockAnalytics ): boolean
     {
         return modelObject.id === this.id;
     }

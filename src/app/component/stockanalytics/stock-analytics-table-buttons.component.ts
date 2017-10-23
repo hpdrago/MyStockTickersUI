@@ -1,21 +1,21 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockSummaryCrudServiceContainer } from "./stock-summary-crud-service-container";
+import { StockAnalyticsCrudServiceContainer } from "./stock-analytics-crud-service-container";
 import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
-import { StockSummary } from "../../model/entity/stock-summary";
+import { StockAnalytics } from "../../model/entity/stock-analytics";
 
 /**
  * Created by mike on 8/15/2017.
  */
 @Component({
-    selector:    'stock-summary-table-buttons',
+    selector:    'stock-analytics-table-buttons',
     styleUrls:   ['../crud/table/crud-table-buttons.component.css'],
     templateUrl: '../crud/table/crud-table-buttons.component.html'
 })
-export class StockSummaryTableButtonsComponent extends CrudTableButtonsComponent<StockSummary>
+export class StockAnalyticsTableButtonsComponent extends CrudTableButtonsComponent<StockAnalytics>
 {
     constructor( protected toaster: ToastsManager,
-                 protected stockNotesServiceContainer: StockSummaryCrudServiceContainer )
+                 protected stockNotesServiceContainer: StockAnalyticsCrudServiceContainer )
     {
         super( toaster, stockNotesServiceContainer );
     }
@@ -23,12 +23,12 @@ export class StockSummaryTableButtonsComponent extends CrudTableButtonsComponent
 
     protected getAddButtonLabel(): string
     {
-        return "Add Summary";
+        return "Add Analytics";
     }
 
     protected getDeleteButtonLabel(): string
     {
-        return "Delete Summary";
+        return "Delete Analytics";
     }
 
 }

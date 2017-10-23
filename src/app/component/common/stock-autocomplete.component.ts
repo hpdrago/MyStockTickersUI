@@ -4,7 +4,7 @@ import { StockCrudService } from "../../service/crud/stock-crud.service";
 import { BaseComponent } from "../common/base.component";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
-import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { isNullOrUndefined } from "util";
 /**
  * This component is a text input that finds stocks based on the incremental search of the input

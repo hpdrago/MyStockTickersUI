@@ -17,7 +17,7 @@
                       [style]="{'width':'80px'}"
                       [sortable]="true">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    {{stockNotes[col.field] | date: 'shortDate' }}
+                    {{stockNotes[col.field] | date: 'y-MM-dd' }}
                 </ng-template>
             </p-column>
             <p-column id="tickerSymbolColumn"
@@ -31,6 +31,9 @@
                       header="Price @ Date"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="true">
+                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                    ${{stockNotes[col.field]}}
+                </ng-template>
             </p-column>
             <p-column id="actionTakenColumn"
                       field="actionTaken"
@@ -46,8 +49,10 @@
             </p-column>
             <p-column id="notesColumn"
                       field="notes"
-                      header="Notes"
-                      [sortable]="true">
+                      header="Notes">
+                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                    <span>{{stockNotes[col.field]}}</span>
+                </ng-template>
             </p-column>
             <p-footer>
                 <stock-notes-table-buttons>

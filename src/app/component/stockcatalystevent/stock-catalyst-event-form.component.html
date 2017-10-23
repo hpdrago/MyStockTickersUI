@@ -1,0 +1,91 @@
+<div *ngIf="modelObject">
+    <div [ngBusy]="busyIndicator"></div>
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
+        <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+            <!----------------------------------------------------------------------------------------------------------
+            TICKER SYMBOL
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="tickerSymbol">Ticker Symbol:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <stock-autocomplete id="tickerSymbol"
+                                        [(ngModel)]="modelObject.tickerSymbol"
+                                        [formGroup]="formGroup"
+                                        formControlName="tickerSymbol"
+                                        uppercase
+                                        (stockSelected)="onStockSelected( $event )">
+                    </stock-autocomplete>
+                </div>
+            </div>
+            <div [hidden]="formGroup.controls['tickerSymbol'].valid" class="ui-grid-row">
+                <div class="ui-message ui-messages-error ui-corner-all" *ngIf="isTickerSymbolInvalid()">
+                    <i class="fa fa-close"></i>
+                    Ticker Symbol is required
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            COMPANY NAME
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="companyNameColumn">Company:</label>
+                </div>
+                <div id="companyNameColumn" class="ui-grid-col-9">
+                    {{modelObject.companyName}}
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            CATALYST DATE
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="catalystDate">Catalyst Date:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-calendar id="catalystDate"
+                                class="crud-form"
+                                formControlName="catalystDate"
+                                dateFormat="yy-mm-dd"
+                                [required]="true"
+                                [showIcon]="true"
+                                [inputStyle]="{'width':'100px'}"
+                                [(ngModel)]="modelObject.catalystDate">
+                    </p-calendar>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            CATALYST DESCRIPTION
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="catalystDesc">Catalyst Description:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <input id="catalystDesc"
+                           type="text"
+                           maxlength="60"
+                           pInputText
+                           required
+                           formControlName="catalystDesc"
+                           [(ngModel)]="modelObject.catalystDesc">
+                </div>
+            </div>
+        </div>
+        <!--
+        <div *ngIf="displayProgressBar">
+            <md-progress-bar mode="indeterminate"></md-progress-bar>
+        </div>
+        <div *ngIf="displayProgressBar == true">
+            <h1>Progress XXX</h1>
+        </div>
+        <div *ngIf="!displayProgressBar">
+            <h1>Progress BAR</h1>
+        </div>
+        -->
+    </form>
+</div>

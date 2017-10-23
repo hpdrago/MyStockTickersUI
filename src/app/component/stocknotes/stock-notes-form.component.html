@@ -47,6 +47,17 @@
                     <label class="crud-form" for="notes">Notes:</label>
                 </div>
                 <div class="ui-grid-col-9">
+                    <p-editor id="notes"
+                              name="basic"
+                              [style]="{'height':'220px'}"
+                              styleClass="editor-dimensions"
+                              class="crud-form"
+                              formControlName="notes"
+                              maxlength="4000"
+                              required
+                              [(ngModel)]="modelObject.notes">
+                    </p-editor>
+                    <!--
                     <textarea id="notes"
                               class="crud-form"
                               formControlName="notes"
@@ -54,10 +65,11 @@
                               autoresize="false"
                               rows="5"
                               columns="70"
+                              maxlength="4000"
                               pInputTextarea
                               required
                               [(ngModel)]="modelObject.notes">
-                    </textarea>
+                    </textarea> -->
                 </div>
             </div>
 
@@ -129,6 +141,7 @@
                                     class="crud-form"
                                     formControlName="actionTaken"
                                     [options]="actionTakenOptions"
+                                    (onChange)="onActionTakenChange($event)"
                                     [(ngModel)]="modelObject.actionTaken">
                     </p-selectButton>
                 </div>
@@ -150,7 +163,6 @@
                         [style]="{'width':'60px'}"
                         maxLength="6"
                         placeholder=""
-                        [disabled]="modelObject.actionTaken == 'NONE'"
                         mask="9?99999">
                     </p-inputMask>
                 </div>

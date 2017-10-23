@@ -105,14 +105,22 @@ import { StockNotesSourceFactory } from "./model/factory/stock-notes-source.fact
 import {BusyModule} from 'angular2-busy';
 
 import { CURRENCY_MASK_CONFIG, CurrencyMaskConfig } from "ng2-currency-mask/src/currency-mask.config";
-import { StockSummaryTableComponent } from "./component/stocksummary/stock-summary-table.component";
-import { StockSummaryFormComponent } from "./component/stocksummary/stock-summary-form.component";
-import { StockSummaryTableButtonsComponent } from "./component/stocksummary/stock-summary-table-buttons.component";
-import { StockSummaryFormButtonsComponent } from "./component/stocksummary/stock-summary-form-buttons.component";
-import { StockSummaryDialogComponent } from "./component/stocksummary/stock-summary-dialog.component";
-import { StockSummaryCrudService } from "./service/crud/stock-summary-crud.service";
-import { StockSummaryCrudServiceContainer } from "./component/stocksummary/stock-summary-crud-service-container";
-import { StockSummaryFactory } from "./model/factory/stock-summary.factory";
+import { StockAnalyticsTableComponent } from "./component/stockanalytics/stock-analytics-table.component";
+import { StockAnalyticsFormComponent } from "./component/stockanalytics/stock-analytics-form.component";
+import { StockAnalyticsTableButtonsComponent } from "./component/stockanalytics/stock-analytics-table-buttons.component";
+import { StockAnalyticsFormButtonsComponent } from "./component/stockanalytics/stock-analytics-form-buttons.component";
+import { StockAnalyticsDialogComponent } from "./component/stockanalytics/stock-analytics-dialog.component";
+import { StockAnalyticsCrudService } from "./service/crud/stock-analytics-crud.service";
+import { StockAnalyticsCrudServiceContainer } from "./component/stockanalytics/stock-analytics-crud-service-container";
+import { StockAnalyticsFactory } from "./model/factory/stock-analytics.factory";
+import { StockCatalystEventFactory } from "./model/factory/stock-catalyst-event.factory";
+import { StockCatalystEventCrudServiceContainer } from "./component/stockcatalystevent/stock-catalyst-event-crud-service-container";
+import { StockCatalystEventCrudService } from "./service/crud/stock-catalyst-event-crud.service";
+import { StockCatalystEventDialogComponent } from "./component/stockcatalystevent/stock-catalyst-event-dialog.component";
+import { StockCatalystEventTableComponent } from "./component/stockcatalystevent/stock-catalyst-event-table.component";
+import { StockCatalystEventTableButtonsComponent } from "./component/stockcatalystevent/stock-catalyst-event-table-buttons.component";
+import { StockCatalystEventFormButtonsComponent } from "./component/stockcatalystevent/stock-catalyst-event-form-buttons.component";
+import { StockCatalystEventFormComponent } from "./component/stockcatalystevent/stock-catalyst-event-form.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -194,11 +202,17 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         StockNotesTableButtonsComponent,
         StockNotesFormButtonsComponent,
 
-        StockSummaryTableComponent,
-        StockSummaryFormComponent,
-        StockSummaryDialogComponent,
-        StockSummaryTableButtonsComponent,
-        StockSummaryFormButtonsComponent,
+        StockAnalyticsTableComponent,
+        StockAnalyticsFormComponent,
+        StockAnalyticsDialogComponent,
+        StockAnalyticsTableButtonsComponent,
+        StockAnalyticsFormButtonsComponent,
+
+        StockCatalystEventTableComponent,
+        StockCatalystEventFormComponent,
+        StockCatalystEventDialogComponent,
+        StockCatalystEventTableButtonsComponent,
+        StockCatalystEventFormButtonsComponent,
 
         DashboardComponent,
         UppercaseDirective,
@@ -236,13 +250,18 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         StockNotesSourceService,
         StockNotesSourceFactory,
 
-        StockSummaryCrudService,
-        StockSummaryCrudServiceContainer,
-        StockSummaryFactory,
+        StockAnalyticsCrudService,
+        StockAnalyticsCrudServiceContainer,
+        StockAnalyticsFactory,
+
+        StockCatalystEventCrudService,
+        StockCatalystEventCrudServiceContainer,
+        StockCatalystEventFactory,
 
         SessionService,
         ConfirmationService,
         AppConfigurationService,
+
         ToastOptions,
         ToastsManager,
         { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }

@@ -11,7 +11,8 @@
                 <input id="tickerSymbol"
                        formControlName="tickerSymbol"
                        placeholder="Required"
-                       size="5"
+                       maxlength="5"
+                       required
                        type="text"
                        pInputText required uppercase
                        [(ngModel)]="modelObject.tickerSymbol"/>
@@ -37,7 +38,7 @@
                 <input id="companyName"
                        formControlName="companyName"
                        placeholder="Required"
-                       size="30"
+                       maxlength="30"
                        type="text"
                        pInputText required
                        [(ngModel)]="modelObject.companyName"/>

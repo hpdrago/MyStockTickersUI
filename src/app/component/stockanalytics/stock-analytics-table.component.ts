@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
-import { StockSummary } from "../../model/entity/stock-summary";
+import { StockAnalytics } from "../../model/entity/stock-analytics";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
-import { StockSummaryCrudServiceContainer } from "./stock-summary-crud-service-container";
+import { StockAnalyticsCrudServiceContainer } from "./stock-analytics-crud-service-container";
 
 /**
  * This component lists all stock notes
@@ -11,16 +11,16 @@ import { StockSummaryCrudServiceContainer } from "./stock-summary-crud-service-c
  */
 @Component(
     {
-        selector: 'stock-summary-table',
-        styleUrls: ['./stock-summary-table.component.css'],
-        templateUrl: './stock-summary-table.component.html'
+        selector: 'stock-analytics-table',
+        styleUrls: ['./stock-analytics-table.component.css'],
+        templateUrl: './stock-analytics-table.component.html'
     } )
-export class StockSummaryTableComponent extends CrudTableComponent<StockSummary>
+export class StockAnalyticsTableComponent extends CrudTableComponent<StockAnalytics>
 {
     constructor( protected toaster: ToastsManager,
-                 protected StockSummaryServiceContainer: StockSummaryCrudServiceContainer )
+                 protected StockAnalyticsServiceContainer: StockAnalyticsCrudServiceContainer )
     {
-        super( toaster, StockSummaryServiceContainer );
+        super( toaster, StockAnalyticsServiceContainer );
     }
 
     /**
@@ -29,24 +29,24 @@ export class StockSummaryTableComponent extends CrudTableComponent<StockSummary>
     protected loadTable()
     {
         this.log( "loadTable.begin" );
-        this.StockSummaryServiceContainer
-            .stockSummaryCrudService
+        this.StockAnalyticsServiceContainer
+            .stockAnalyticsCrudService
             .getModelObjectList( this.modelObject )
-            .subscribe( ( stockSummaryList: StockSummary[] ) =>
+            .subscribe( ( stockAnalyticsList: StockAnalytics[] ) =>
                         {
-                            if ( stockSummaryList.length > 0 )
+                            if ( stockAnalyticsList.length > 0 )
                             {
                                 /*
-                                 * Expand the rows by creating new StockSummary entries for each stock of the stock note
+                                 * Expand the rows by creating new StockAnalytics entries for each stock of the stock note
                                  */
-                                this.rows = stockSummaryList;
+                                this.rows = stockAnalyticsList;
                                 this.debug( JSON.stringify( this.rows ));
                             }
                             else
                             {
                                 this.rows = [];
                             }
-                            this.debug( "loadStockSummary.end" );
+                            this.debug( "loadStockAnalytics.end" );
                         },
                         error =>
                         {

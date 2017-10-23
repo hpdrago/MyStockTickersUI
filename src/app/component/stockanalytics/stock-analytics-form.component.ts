@@ -3,29 +3,29 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
-import { StockSummary } from "../../model/entity/stock-summary";
-import { StockSummaryCrudServiceContainer } from "./stock-summary-crud-service-container";
+import { StockAnalytics } from "../../model/entity/stock-analytics";
+import { StockAnalyticsCrudServiceContainer } from "./stock-analytics-crud-service-container";
 import { SessionService } from "../../service/crud/session.service";
 
 /**
- * This is the Stock Summary Form Component class.
+ * This is the Stock Analytics Form Component class.
  *
  * Created by mike on 10/17/2017.
  */
 @Component( {
-                selector: 'stock-summary-form',
+                selector: 'stock-analytics-form',
                 styleUrls: ['../crud/form/crud-form.component.css',
-                            './stock-summary-form.component.css'],
-                templateUrl: './stock-summary-form.component.html'
+                            './stock-analytics-form.component.css'],
+                templateUrl: './stock-analytics-form.component.html'
             } )
-export class StockSummaryFormComponent extends CrudFormComponent<StockSummary>
+export class StockAnalyticsFormComponent extends CrudFormComponent<StockAnalytics>
 {
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
-                 private stockSummaryCrudServiceContainer: StockSummaryCrudServiceContainer )
+                 private stockAnalyticsCrudServiceContainer: StockAnalyticsCrudServiceContainer )
     {
-        super( toaster, stockSummaryCrudServiceContainer );
+        super( toaster, stockAnalyticsCrudServiceContainer );
     }
 
     /**
@@ -44,8 +44,6 @@ export class StockSummaryFormComponent extends CrudFormComponent<StockSummary>
                 'analystHoldCount':         new FormControl( this.modelObject.analystHoldCount ),
                 'analystUnderPerformCount': new FormControl( this.modelObject.analystUnderPerformCount ),
                 'analystSellCount':         new FormControl( this.modelObject.analystSellCount ),
-                'nextCatalystDate':         new FormControl( this.modelObject.nextCatalystDate ),
-                'nextCatalystDesc':         new FormControl( this.modelObject.nextCatalystDesc ),
                 'avgAnalystPriceTarget':    new FormControl( this.modelObject.avgAnalystPriceTarget ),
                 'lowAnalystPriceTarget':    new FormControl( this.modelObject.lowAnalystPriceTarget ),
                 'highAnalystPriceTarget':   new FormControl( this.modelObject.highAnalystPriceTarget ),

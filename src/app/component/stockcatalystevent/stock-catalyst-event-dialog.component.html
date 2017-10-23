@@ -1,21 +1,21 @@
 <div *ngIf="modelObject">
-    <p-dialog header="Stock Summary"
+    <p-dialog header="Stock Catalyst Event"
               [modal]="true"
               [closable]="false"
               [closeOnEscape]="false"
               [responsive]="true"
               [width]="600"
-              [height]="600"
+              [height]="250"
               [resizable]="false"
               [contentStyle]="{'overflow':'visible'}"
               [(visible)]="displayDialog">
             <div>
-                <stock-summary-form>
-                </stock-summary-form>
+                <stock-catalyst-event-form>
+                </stock-catalyst-event-form>
             </div>
             <p-footer>
-                <stock-summary-form-buttons>
-                </stock-summary-form-buttons>
+                <stock-catalyst-event-form-buttons>
+                </stock-catalyst-event-form-buttons>
             </p-footer>
     </p-dialog>
 </div>

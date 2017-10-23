@@ -9,7 +9,6 @@ import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-conta
 import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { SessionService } from "../../service/crud/session.service";
 import { StockNotesSourceList } from "./stock-notes-source-list";
-import { isNullOrUndefined } from "util";
 import { isNumeric } from "rxjs/util/isNumeric";
 
 /**
@@ -20,8 +19,7 @@ import { isNumeric } from "rxjs/util/isNumeric";
 @Component( {
                 selector: 'stock-notes-form',
                 styleUrls: ['../crud/form/crud-form.component.css',
-                            '../../../../node_modules/quill/dist/quill.core.css',
-                            '../../../../node_modules/quill/dist/quill.snow.css'],
+                            './stock-notes-form.component.css'],
                 templateUrl: './stock-notes-form.component.html'
             } )
 export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
@@ -174,4 +172,15 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.modelObject.notesSourceName = event.value;
     }
 
+    protected onActionTakenChange( $event: Event )
+    {
+        if ( this.modelObject.actionTaken == 'None' )
+        {
+            this.disableField( 'actionTakenShares' );
+        }
+        else
+        {
+            this.enableField( 'actionTakenShares' );
+        }
+    }
 }

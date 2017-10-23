@@ -1,23 +1,23 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockSummaryCrudServiceContainer } from "./stock-summary-crud-service-container";
+import { StockAnalyticsCrudServiceContainer } from "./stock-analytics-crud-service-container";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
-import { StockSummary } from "../../model/entity/stock-summary";
+import { StockAnalytics } from "../../model/entity/stock-analytics";
 
 /**
- * Button panel component for the StockSummary dialog.
+ * Button panel component for the StockAnalytics dialog.
  *
  * Created by mike on 8/15/2017.
  */
 @Component({
-    selector:    'stock-summary-form-buttons',
+    selector:    'stock-analytics-form-buttons',
     templateUrl: '../crud/form/crud-form-buttons.component.html',
     styleUrls: ['../crud/form/crud-form-buttons.component.css']
 })
-export class StockSummaryFormButtonsComponent extends CrudFormButtonsComponent<StockSummary>
+export class StockAnalyticsFormButtonsComponent extends CrudFormButtonsComponent<StockAnalytics>
 {
     constructor( protected toaster: ToastsManager,
-                 private stockNotesServiceContainer: StockSummaryCrudServiceContainer )
+                 private stockNotesServiceContainer: StockAnalyticsCrudServiceContainer )
     {
         super( toaster, stockNotesServiceContainer );
     }
@@ -35,6 +35,6 @@ export class StockSummaryFormButtonsComponent extends CrudFormButtonsComponent<S
      */
     public getDeleteKeyword(): string
     {
-        return 'Stock Summary'
+        return 'Stock Analytics'
     }
 }
