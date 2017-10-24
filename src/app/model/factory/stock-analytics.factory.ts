@@ -30,7 +30,6 @@ export class StockAnalyticsFactory extends ModelObjectFactory<StockAnalytics>
         stockAnalytics.lowAnalystPriceTarget = 0;
         stockAnalytics.highAnalystPriceTarget = 0;
         stockAnalytics.analystPriceDate = null;
-        stockAnalytics.buySharesBelow = 0;
         stockAnalytics.lastPrice = 0;
         stockAnalytics.lastPriceChange = null;
         stockAnalytics.avgUpsidePercent = 0;

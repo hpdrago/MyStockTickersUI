@@ -75,11 +75,54 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     }
 
     /**
+     * This method is called when the refresh button is clicked.
+     * By default, it simply calls the {@code loadTable} method.
+     */
+    protected refreshTable()
+    {
+        this.debug( "refreshTable.begin" );
+        this.loadTable();
+        this.debug( "refreshTable.end" );
+    }
+
+    /**
      * This method is called from {@code ngOnInit} and can be overridden by subclasses to load the table with the
      * model objects.
      */
     protected loadTable()
     {
+        this.debug( "loadTable.begin" );
+        this.crudServiceContainer
+            .crudRestService
+            .getModelObjectList( this.modelObject )
+            .subscribe( ( modelObjects: T[] ) =>
+                        {
+                            this.onTableLoad( modelObjects );
+                            this.debug( "loadTable.end" );
+                        },
+                        error =>
+                        {
+                            this.reportRestError( error );
+                        } );
+    }
+
+    /**
+     * This method is called after the modelObjects have been retrieved from the database
+     * @param {T[]} modelObjects
+     */
+    protected onTableLoad( modelObjects: T[] )
+    {
+        this.debug( "onTableLoad.begin" );
+        if ( modelObjects.length > 0 )
+        {
+            this.rows = modelObjects;
+            //this.debug( JSON.stringify( this.rows ));
+        }
+        else
+        {
+            this.rows = [];
+        }
+        this.debug( "onTableLoad.end" );
     }
 
     /**
@@ -113,6 +156,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.crudServiceContainer
             .crudTableButtonsService
             .subscribeToDeleteButtonClickedEvent(( modelObject: T ) => this.showDialogToDelete( modelObject ) );
+        this.crudServiceContainer
+            .crudTableButtonsService
+            .subscribeToRefreshButtonClickedEvent(( modelObject: T ) => this.refreshTable() );
     }
 
     /**

@@ -14,8 +14,8 @@ import { StockAnalytics } from "../../model/entity/stock-analytics";
 export class StockAnalyticsDialogComponent extends CrudDialogComponent<StockAnalytics>
 {
     constructor( protected toaster: ToastsManager,
-                 private stockNotesCrudServiceContainer: StockAnalyticsCrudServiceContainer )
+                 private stockAnalyticsCrudServiceContainer: StockAnalyticsCrudServiceContainer )
     {
-        super( toaster, stockNotesCrudServiceContainer );
+        super( toaster, stockAnalyticsCrudServiceContainer );
     }
 }

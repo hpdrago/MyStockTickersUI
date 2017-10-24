@@ -121,6 +121,14 @@ import { StockCatalystEventTableComponent } from "./component/stockcatalystevent
 import { StockCatalystEventTableButtonsComponent } from "./component/stockcatalystevent/stock-catalyst-event-table-buttons.component";
 import { StockCatalystEventFormButtonsComponent } from "./component/stockcatalystevent/stock-catalyst-event-form-buttons.component";
 import { StockCatalystEventFormComponent } from "./component/stockcatalystevent/stock-catalyst-event-form.component";
+import { StockToBuyDialogComponent } from "./component/stocktobuy/stock-to-buy-dialog.component";
+import { StockToBuyTableComponent } from "./component/stocktobuy/stock-to-buy-table.component";
+import { StockToBuyFormComponent } from "./component/stocktobuy/stock-to-buy-form.component";
+import { StockToBuyTableButtonsComponent } from "./component/stocktobuy/stock-to-buy-table-buttons.component";
+import { StockToBuyFormButtonsComponent } from "./component/stocktobuy/stock-to-buy-form-buttons.component";
+import { StockToBuyFactory } from "./model/factory/stock-to-buy.factory";
+import { StockToBuyCrudServiceContainer } from "./component/stocktobuy/stock-to-buy-crud-service-container";
+import { StockToBuyCrudService } from "./service/crud/stock-to-buy-crud.service";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -214,6 +222,12 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         StockCatalystEventTableButtonsComponent,
         StockCatalystEventFormButtonsComponent,
 
+        StockToBuyTableComponent,
+        StockToBuyFormComponent,
+        StockToBuyDialogComponent,
+        StockToBuyTableButtonsComponent,
+        StockToBuyFormButtonsComponent,
+
         DashboardComponent,
         UppercaseDirective,
         StockAutoCompleteComponent
@@ -257,6 +271,10 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         StockCatalystEventCrudService,
         StockCatalystEventCrudServiceContainer,
         StockCatalystEventFactory,
+
+        StockToBuyCrudService,
+        StockToBuyCrudServiceContainer,
+        StockToBuyFactory,
 
         SessionService,
         ConfirmationService,

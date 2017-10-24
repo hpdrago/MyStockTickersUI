@@ -14,8 +14,8 @@ import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 export class StockCatalystEventDialogComponent extends CrudDialogComponent<StockCatalystEvent>
 {
     constructor( protected toaster: ToastsManager,
-                 private stockNotesCrudServiceContainer: StockCatalystEventCrudServiceContainer )
+                 private stockCatalystEventCrudServiceContainer: StockCatalystEventCrudServiceContainer )
     {
-        super( toaster, stockNotesCrudServiceContainer );
+        super( toaster, stockCatalystEventCrudServiceContainer );
     }
 }

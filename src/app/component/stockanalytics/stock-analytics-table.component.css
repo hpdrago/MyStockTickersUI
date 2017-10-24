@@ -1,7 +1,7 @@
 span.strongBuy
 {
     background: darkgreen;
-    width: 20px;
+    width: 20%;
     text-align: center;
     display: inline-block;
 }
@@ -9,7 +9,7 @@ span.strongBuy
 span.buy
 {
     background: green;
-    width: 20px;
+    width: 20%;
     text-align: center;
     display: inline-block;
 }
@@ -18,7 +18,7 @@ span.hold
 {
     background: yellow;
     color: black;
-    width: 20px;
+    width: 20%;
     text-align: center;
     display: inline-block;
 }
@@ -26,7 +26,7 @@ span.hold
 span.underPerform
 {
     background: red;
-    width: 20px;
+    width: 20%;
     text-align: center;
     display: inline-block;
 }
@@ -34,7 +34,7 @@ span.underPerform
 span.sell
 {
     background: darkred;
-    width: 20px;
+    width: 20%;
     text-align: center;
     display: inline-block;
 }

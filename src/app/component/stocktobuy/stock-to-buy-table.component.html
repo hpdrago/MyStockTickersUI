@@ -1,5 +1,5 @@
-<p-panel id="stockCatalystEventPanelDiv" header="Stock Catalyst Events">
-    <div id="stockCatalystEventTableDiv">
+<p-panel id="stockToBuyPanelDiv" header="Stock ToBuy">
+    <div id="stockToBuyTableDiv">
         <p-dataTable [value]="rows"
                      selectionMode="single"
                      [(selection)]="modelObject"
@@ -30,32 +30,45 @@
                       [sortable]="false">
             </p-column>
             <!----------------------------------------------------------------------------------------------------------
-            CATALYST DATE
+            BUY SHARES BELOW
             ------------------------------------------------------------------------------------------------------------>
-            <p-column id="catalystDate"
-                      field="catalystDate"
-                      header="Date"
-                      [style]="{'width':'80px'}"
+            <p-column id="buySharesBelow"
+                      field="buySharesBelow"
+                      header="Buy Below Price"
+                      [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="true">
-                <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
-                    {{stockCatalystEvent[col.field] | date: 'y-MM-dd' }}
+                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                    {{stockToBuy[col.field] | currency: 'USD' : true }}
                 </ng-template>
             </p-column>
             <!----------------------------------------------------------------------------------------------------------
-            CATALYST DESCRIPTION
+            LAST PRICE
             ------------------------------------------------------------------------------------------------------------>
-            <p-column id="catalystDesc"
-                      field="catalystDesc"
-                      header="Description"
+            <p-column id="lastPrice"
+                      field="lastPrice"
+                      header="Last Price"
+                      [style]="{'width':'80px','text-align':'right'}"
+                      [sortable]="true">
+                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                    {{stockToBuy[col.field] | currency: 'USD' : true }}
+                </ng-template>
+            </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            COMMENTS
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="comments"
+                      field="comments"
+                      header="Comments"
+                      [style]="{'width':'150px'}"
                       [sortable]="false">
             </p-column>
 
             <p-footer>
-                <stock-catalyst-event-table-buttons>
-                </stock-catalyst-event-table-buttons>
+                <stock-to-buy-table-buttons>
+                </stock-to-buy-table-buttons>
             </p-footer>
         </p-dataTable>
     </div>
 </p-panel>
-<stock-catalyst-event-dialog>
-</stock-catalyst-event-dialog>
+<stock-to-buy-dialog>
+</stock-to-buy-dialog>

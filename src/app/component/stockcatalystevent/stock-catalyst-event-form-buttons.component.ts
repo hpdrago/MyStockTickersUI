@@ -17,9 +17,9 @@ import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 export class StockCatalystEventFormButtonsComponent extends CrudFormButtonsComponent<StockCatalystEvent>
 {
     constructor( protected toaster: ToastsManager,
-                 private stockNotesServiceContainer: StockCatalystEventCrudServiceContainer )
+                 private stockCatalystEventServiceContainer: StockCatalystEventCrudServiceContainer )
     {
-        super( toaster, stockNotesServiceContainer );
+        super( toaster, stockCatalystEventServiceContainer );
     }
 
     /**

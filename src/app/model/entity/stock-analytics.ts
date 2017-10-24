@@ -22,7 +22,6 @@ export class StockAnalytics extends ModelObject<StockAnalytics>
     public lowAnalystPriceTarget: number;
     public highAnalystPriceTarget: number;
     public analystPriceDate: Date;
-    public buySharesBelow: number;
     public lastPrice: number;
     public lastPriceChange: Date;
     public avgUpsidePercent: number;

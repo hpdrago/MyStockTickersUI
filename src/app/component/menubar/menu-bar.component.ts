@@ -23,6 +23,7 @@ export class MenuBarComponent
         this.menuItems =
             [
                 { label: 'Dashboard', icon: 'fa-area-chart', routerLink: ['/dashboard'] },
+                { label: 'Stocks To Buy', icon: 'fa-tasks', routerLink: ['/stocksToBuy'] },
                 { label: 'Stock Analytics', icon: 'fa-tasks', routerLink: ['/stockAnalytics'] },
                 { label: 'Stock Catalyst Events', icon: 'fa-tasks', routerLink: ['/stockCatalystEvents'] },
                 { label: 'Stock Notes', icon: 'fa-sticky-note', routerLink: ['/stockNotes'] },

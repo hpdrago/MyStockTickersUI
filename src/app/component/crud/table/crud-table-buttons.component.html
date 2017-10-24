@@ -19,4 +19,14 @@
                 [disabled]="isDeleteButtonDisabled()">
         </button>
     </div>
+    <div class="crud-table-button {{getRefreshButtonClass()}}" *ngIf="isShowRefreshButton()">
+        <button class="{{getAddButtonClass()}}"
+                [ngClass]="{'disabled': isRefreshButtonDisabled()}"
+                pButton type="button"
+                (click)="onRefreshButtonClick()"
+                label="{{getRefreshButtonLabel()}}"
+                icon="{{getRefreshButtonIcon()}}"
+                [disabled]="isRefreshButtonDisabled()">
+        </button>
+    </div>
 </div>

@@ -23,36 +23,4 @@ export class StockAnalyticsTableComponent extends CrudTableComponent<StockAnalyt
         super( toaster, StockAnalyticsServiceContainer );
     }
 
-    /**
-     * This method is called automatically by the base class
-     */
-    protected loadTable()
-    {
-        this.log( "loadTable.begin" );
-        this.StockAnalyticsServiceContainer
-            .stockAnalyticsCrudService
-            .getModelObjectList( this.modelObject )
-            .subscribe( ( stockAnalyticsList: StockAnalytics[] ) =>
-                        {
-                            if ( stockAnalyticsList.length > 0 )
-                            {
-                                /*
-                                 * Expand the rows by creating new StockAnalytics entries for each stock of the stock note
-                                 */
-                                this.rows = stockAnalyticsList;
-                                this.debug( JSON.stringify( this.rows ));
-                            }
-                            else
-                            {
-                                this.rows = [];
-                            }
-                            this.debug( "loadStockAnalytics.end" );
-                        },
-                        error =>
-                        {
-                            this.reportRestError( error );
-                        } );
-        this.log( "loadTable.end" );
-    }
-
 }

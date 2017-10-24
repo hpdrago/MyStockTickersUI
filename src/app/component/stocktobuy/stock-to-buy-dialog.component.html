@@ -1,0 +1,21 @@
+<div *ngIf="modelObject">
+    <p-dialog header="Stock ToBuy"
+              [modal]="true"
+              [closable]="false"
+              [closeOnEscape]="false"
+              [responsive]="true"
+              [width]="600"
+              [height]="250"
+              [resizable]="false"
+              [contentStyle]="{'overflow':'visible'}"
+              [(visible)]="displayDialog">
+            <div>
+                <stock-to-buy-form>
+                </stock-to-buy-form>
+            </div>
+            <p-footer>
+                <stock-to-buy-form-buttons>
+                </stock-to-buy-form-buttons>
+            </p-footer>
+    </p-dialog>
+</div>

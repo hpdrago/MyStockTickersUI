@@ -1,8 +1,8 @@
-<p-panel id="stockNotesPanelDiv" header="Stock Analytics">
+<p-panel id="stockAnalyticsPanelDiv" header="Stock Analytics">
     <div>
         PT = Price Target
     </div>
-    <div id="stockNotesTableDiv">
+    <div id="stockAnalyticsTableDiv">
         <p-dataTable [value]="rows"
                      selectionMode="single"
                      [(selection)]="modelObject"
@@ -28,9 +28,12 @@
             ------------------------------------------------------------------------------------------------------------>
             <p-column id="avgUpsidePercent"
                       field="avgUpsidePercent"
-                      header="Avg Upside %"
+                      header="Avg Upside"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="true">
+                <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">
+                    {{stockAnalytics[col.field] | percent:'1.2-2' }}
+                </ng-template>
             </p-column>
             <!----------------------------------------------------------------------------------------------------------
             COMPANY NAME
@@ -72,11 +75,11 @@
             ------------------------------------------------------------------------------------------------------------>
             <p-column id="analystSentimentDate"
                       field="analystSentimentDate"
-                      header="Sentiment Entered"
+                      header="Sentiment Date"
                       [style]="{'width':'80px'}"
                       [sortable]="true">
                 <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">
-                    {{stockAnalytics[col.field] | date: 'shortDate' }}
+                    {{stockAnalytics[col.field] | date: 'y-MM-dd' }}
                 </ng-template>
             </p-column>
             <!----------------------------------------------------------------------------------------------------------
@@ -120,11 +123,11 @@
             ------------------------------------------------------------------------------------------------------------>
             <p-column id="analystPriceDate"
                       field="analystPriceDate"
-                      header="PT Entered"
+                      header="PT Date"
                       [style]="{'width':'80px'}"
                       [sortable]="true">
                 <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">
-                    {{stockAnalytics[col.field] | date: 'shortDate' }}
+                    {{stockAnalytics[col.field] | date: 'y-MM-dd' }}
                 </ng-template>
             </p-column>
             <!----------------------------------------------------------------------------------------------------------
@@ -133,18 +136,6 @@
             <p-column id="lastPrice"
                       field="lastPrice"
                       header="Last Price"
-                      [style]="{'width':'80px','text-align':'right'}"
-                      [sortable]="true">
-                <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">
-                    {{stockAnalytics[col.field] | currency: 'USD' : true }}
-                </ng-template>
-            </p-column>
-            <!----------------------------------------------------------------------------------------------------------
-            LAST PRICE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="buySharesBelow"
-                      field="buySharesBelow"
-                      header="Buy Below Price"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="true">
                 <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">

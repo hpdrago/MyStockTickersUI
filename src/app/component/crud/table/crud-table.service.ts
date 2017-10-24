@@ -2,7 +2,6 @@ import { BaseCrudComponentService } from "../common/base-crud-component.service"
 import { ModelObject } from "../../../model/entity/modelobject";
 import { Subject } from "rxjs/Subject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 /**
  * This class defines the CRUD table subjects that can be subscribe to and the methods that trigger the events.

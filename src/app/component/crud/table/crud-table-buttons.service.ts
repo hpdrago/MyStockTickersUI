@@ -11,6 +11,7 @@ import { Subject } from "rxjs/Subject";
  */
 export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
+    private refreshButtonClickedSubject: Subject<any> = new Subject();
     private addButtonClickedSubject: Subject<any> = new Subject();
     private deleteButtonClickedSubject: BehaviorSubject<T>;
     private editButtonClickedSubject: BehaviorSubject<T>;
@@ -20,6 +21,25 @@ export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudC
         super( modelObjectFactory );
         this.deleteButtonClickedSubject = new BehaviorSubject<T>( null );
         this.editButtonClickedSubject = new BehaviorSubject<T>( null );
+    }
+
+    /**
+     * The {@code CrudTableComponent} will call this method to register to receive notification when the Refresh
+     * button is clicked on the panel.
+     */
+    public subscribeToRefreshButtonClickedEvent( fn: ( T ) => any )
+    {
+        this.log( "subscribeToRefreshButtonClickedEvent" );
+        this.refreshButtonClickedSubject.asObservable().subscribe( fn );
+    }
+
+    /**
+     * The {@code CrudPanelComponent will call this method when the user clicks the Refresh button.
+     */
+    public sendRefreshButtonClickedEvent()
+    {
+        this.log( "sendRefreshButtonClickedEvent " );
+        this.tickThenRun( () => this.refreshButtonClickedSubject.next() );
     }
 
     /**
@@ -66,7 +86,7 @@ export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudC
      */
     public subscribeToEditButtonClickedEvent( fn: ( T ) => any )
     {
-        this.log( "subscribteToEditButtonClickedEvent" );
+        this.log( "subscribeToEditButtonClickedEvent" );
         this.editButtonClickedSubject.asObservable().subscribe( fn );
     }
 

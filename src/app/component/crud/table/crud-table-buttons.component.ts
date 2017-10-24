@@ -53,6 +53,9 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
         this.modelObject = modelObject;
     }
 
+    /**
+     * Component initialization
+     */
     public ngOnInit()
     {
         this.debug( "ngOnInit.begin" );
@@ -64,6 +67,34 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
             .crudTableButtonsService
             .subscribeToModelObjectChangedEvent(( modelObject: T) => this.modelObjectChanged( modelObject ) );
         this.debug( "ngOnInit.end" );
+    }
+
+    /**
+     * Returns the default Refresh button label
+     * @return {string}
+     */
+    protected getRefreshButtonLabel(): string
+    {
+        return "Refresh";
+    }
+
+    /**
+     * Determines if the Refresh button should be shown.
+     * @return {boolean} true by default
+     */
+    protected isShowRefreshButton(): boolean
+    {
+        return true;
+    }
+
+    /**
+     * Determines if the Refresh button should be disabled.
+     * It should be disabled when no portfolio is selected
+     * @returns {boolean}
+     */
+    protected isRefreshButtonDisabled(): boolean
+    {
+        return false;
     }
 
     /**
@@ -95,18 +126,6 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     }
 
     /**
-     * This method is called when the Add button is clicked.
-     * It will notify the button service that the button was clicked.
-     */
-    protected onAddButtonClick(): void
-    {
-        this.debug( "onAddButtonClick " );
-        this.crudServiceContainer
-            .crudTableButtonsService
-            .sendAddButtonClickedEvent();
-    }
-
-    /**
      * Returns the default Delete button label
      * @return {string}
      */
@@ -135,6 +154,18 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     }
 
     /**
+     * This method is called when the Add button is clicked.
+     * It will notify the button service that the button was clicked.
+     */
+    protected onAddButtonClick(): void
+    {
+        this.debug( "onAddButtonClick " );
+        this.crudServiceContainer
+            .crudTableButtonsService
+            .sendAddButtonClickedEvent();
+    }
+
+    /**
      * This method is called when the Delete button is clicked.
      * It will notify the button service that the button was clicked.
      */
@@ -146,6 +177,18 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
             this.crudServiceContainer
                 .crudTableButtonsService.sendDeleteButtonClickedEvent( this.modelObject );
         }
+    }
+
+    /**
+     * This method is called when the Refresh button is clicked.
+     * It will notify the button service that the button was clicked.
+     */
+    protected onRefreshButtonClick(): void
+    {
+        this.debug( "onRefreshButtonClick " );
+        this.crudServiceContainer
+            .crudTableButtonsService
+            .sendRefreshButtonClickedEvent();
     }
 
     /**
@@ -167,6 +210,15 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     }
 
     /**
+     * Defines the CSS class for the Delete button
+     * @return {string}
+     */
+    protected getRefreshButtonClass(): string
+    {
+        return "crud-table-button";
+    }
+
+    /**
      * Defines the icon to be used for the Add button
      * @return {string} defaults to fa-plus
      */
@@ -182,5 +234,14 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     protected getDeleteButtonIcon(): string
     {
         return "fa-trash";
+    }
+
+    /**
+     * Defines the icon to be used for the Refresh button
+     * @return {string} defaults to fa-trash
+     */
+    protected getRefreshButtonIcon(): string
+    {
+        return "fa-refresh";
     }
 }

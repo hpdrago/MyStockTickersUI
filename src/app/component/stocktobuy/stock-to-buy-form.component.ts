@@ -3,29 +3,28 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
-import { StockAnalytics } from "../../model/entity/stock-analytics";
-import { StockAnalyticsCrudServiceContainer } from "./stock-analytics-crud-service-container";
+import { StockToBuy } from "../../model/entity/stock-to-buy";
+import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
 import { SessionService } from "../../service/crud/session.service";
 
 /**
- * This is the Stock Analytics Form Component class.
+ * This is the Stock ToBuy Form Component class.
  *
  * Created by mike on 10/17/2017.
  */
 @Component( {
-                selector: 'stock-analytics-form',
-                styleUrls: ['../crud/form/crud-form.component.css',
-                            './stock-analytics-form.component.css'],
-                templateUrl: './stock-analytics-form.component.html'
+                selector: 'stock-to-buy-form',
+                styleUrls: ['../crud/form/crud-form.component.css'],
+                templateUrl: './stock-to-buy-form.component.html'
             } )
-export class StockAnalyticsFormComponent extends CrudFormComponent<StockAnalytics>
+export class StockToBuyFormComponent extends CrudFormComponent<StockToBuy>
 {
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
-                 private stockAnalyticsCrudServiceContainer: StockAnalyticsCrudServiceContainer )
+                 private stockToBuyCrudServiceContainer: StockToBuyCrudServiceContainer )
     {
-        super( toaster, stockAnalyticsCrudServiceContainer );
+        super( toaster, stockToBuyCrudServiceContainer );
     }
 
     /**
@@ -39,14 +38,7 @@ export class StockAnalyticsFormComponent extends CrudFormComponent<StockAnalytic
             {
                 'tickerSymbol':             new FormControl( this.modelObject.tickerSymbol, Validators.required ),
                 'comments':                 new FormControl( this.modelObject.comments ),
-                'analystStrongBuyCount':    new FormControl( this.modelObject.analystStrongBuyCount ),
-                'analystBuyCount':          new FormControl( this.modelObject.analystBuyCount ),
-                'analystHoldCount':         new FormControl( this.modelObject.analystHoldCount ),
-                'analystUnderPerformCount': new FormControl( this.modelObject.analystUnderPerformCount ),
-                'analystSellCount':         new FormControl( this.modelObject.analystSellCount ),
-                'avgAnalystPriceTarget':    new FormControl( this.modelObject.avgAnalystPriceTarget ),
-                'lowAnalystPriceTarget':    new FormControl( this.modelObject.lowAnalystPriceTarget ),
-                'highAnalystPriceTarget':   new FormControl( this.modelObject.highAnalystPriceTarget )
+                'buySharesBelow':           new FormControl( this.modelObject.buySharesBelow ),
             } );
         return stockNoteForm;
     }
