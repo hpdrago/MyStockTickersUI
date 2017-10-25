@@ -10,6 +10,8 @@ import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { SessionService } from "../../service/crud/session.service";
 import { StockNotesSourceList } from "./stock-notes-source-list";
 import { isNumeric } from "rxjs/util/isNumeric";
+import { CrudOperation } from "../crud/common/crud-operation";
+import { isNullOrUndefined } from "util";
 
 /**
  * This is the Stock Note Form Component class.
@@ -46,28 +48,49 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                  private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {
         super( toaster, stockNotesCrudServiceContainer );
+    }
+
+    /**
+     * Component initialization method
+     */
+    public ngOnInit()
+    {
+        this.log( 'ngOnInit.begin' );
+        super.ngOnInit();
         this.bullOrBearOptions = [];
         this.bullOrBearOptions.push( {label: 'Bull', value: 1} );
         this.bullOrBearOptions.push( {label: 'Bear', value: 2} );
         this.bullOrBearOptions.push( {label: 'Neutral', value: 0} );
 
         this.actionTakenOptions = [];
-        this.actionTakenOptions.push( {label: 'None', value: 'NONE' });
+        this.actionTakenOptions.push( {label: 'NONE', value: 'NONE' });
         this.actionTakenOptions.push( {label: 'BUY', value: 'BUY' });
         this.actionTakenOptions.push( {label: 'SELL', value: 'SELL' });
         /*
          * Get the stock note sources for the logged in user and populate the sources SelectItems
          */
+        this.loadSources();
+        this.enableDisableFields();
+        this.log( 'ngOnInit.end' );
+    }
+
+    /**
+     * This method will get the user's note source values from the database
+     */
+    private loadSources()
+    {
+        this.log( 'loadSources' );
         this.stockNotesCrudServiceContainer.stockNoteSourceService
-                                           .getStockNoteSources( this.sessionService.getLoggedInUserId() )
-                                           .subscribe((stockNotesSources: StockNotesSourceList) =>
-                                                       {
-                                                           this.sourceItems = stockNotesSources.toSelectItems()
-                                                       },
-                                                       error =>
-                                                       {
-                                                           this.reportRestError( error );
-                                                       });
+            .getStockNoteSources( this.sessionService.getLoggedInUserId() )
+            .subscribe( ( stockNotesSources: StockNotesSourceList ) =>
+                        {
+                            this.sourceItems = stockNotesSources.toSelectItems()
+                            this.log( 'loadSources ' + JSON.stringify( this.sourceItems ) );
+                        },
+                        error =>
+                        {
+                            this.reportRestError( error );
+                        } );
     }
 
     /**
@@ -103,6 +126,11 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.debug( "setFormValues tickerSymbols: " + this.tickerSymbols );
         super.setFormValues( modelObject );
         this.setFormValue( 'tickerSymbols', this.tickerSymbols );
+        if ( this.crudOperation = CrudOperation.CREATE )
+        {
+            this.modelObject.actionTaken = "NONE";
+            this.modelObject.actionTakenShares = 0;
+        }
     }
 
     /**
@@ -166,21 +194,35 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      *
      * @param event
      */
-    protected sourcesOnChange( event )
+    private sourcesOnChange( event )
     {
         //this.debug( "sourcesOnChange: " + JSON.stringify( event ));
         this.modelObject.notesSourceName = event.value;
     }
 
-    protected onActionTakenChange( $event: Event )
+    /**
+     * This method is called when the user changes the action taken drop down list box value.
+     * @param event
+     */
+    private onActionTakenChange( event )
     {
-        if ( this.modelObject.actionTaken == 'None' )
+        this.log( 'onActionTakenChange event: ' + JSON.stringify( event ))
+        this.enableDisableFields()
+    }
+
+    private enableDisableFields()
+    {
+        this.log( 'enableDisableFields modelObject: ' + JSON.stringify( this.modelObject ))
+        if ( !isNullOrUndefined( this.modelObject ))
         {
-            this.disableField( 'actionTakenShares' );
-        }
-        else
-        {
-            this.enableField( 'actionTakenShares' );
+            if ( this.modelObject.actionTaken == 'NONE' )
+            {
+                this.disableField( 'actionTakenShares' );
+            }
+            else
+            {
+                this.enableField( 'actionTakenShares' );
+            }
         }
     }
 }

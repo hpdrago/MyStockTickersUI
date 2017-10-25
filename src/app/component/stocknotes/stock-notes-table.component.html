@@ -28,7 +28,7 @@
             </p-column>
             <p-column id="stockPriceColumn"
                       field="stockPrice"
-                      header="Price @ Date"
+                      header="Price when entered"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="true">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
@@ -51,7 +51,10 @@
                       field="notes"
                       header="Notes">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <span>{{stockNotes[col.field]}}</span>
+                    <div *ngIf="urlMap.get( stockNotes.tickerSymbol ) == null " >{{stockNotes[col.field]}}</div>
+                    <div *ngIf="urlMap.get( stockNotes.tickerSymbol ) != null " >
+                        <a href="{{urlMap.get( stockNotes.tickerSymbol )}}" target="_blank">{{urlMap.get( stockNotes.tickerSymbol )}}</a>
+                    </div>
                 </ng-template>
             </p-column>
             <p-footer>

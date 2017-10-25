@@ -24,12 +24,6 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
         super( toaster, stockNotesServiceContainer );
     }
 
-    protected onAddButtonClick(): void
-    {
-        this.modelObject.customerId = this.session.getLoggedInUserId();
-        super.onAddButtonClick();
-    }
-
     /**
      * Defines the message to display to the user in the dialog when deleting the model object
      */
@@ -43,6 +37,6 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
      */
     public getDeleteKeyword(): string
     {
-        return 'tickerSymbol'
+        return 'Stock Note'
     }
 }

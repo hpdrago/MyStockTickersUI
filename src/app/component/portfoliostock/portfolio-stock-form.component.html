@@ -73,7 +73,7 @@
                                 <label class="crud-form" for="lastPriceColumn">Last Price:</label>
                             </div>
                             <div id="lastPriceColumn" class="ui-grid-col-3">
-                                {{modelObject.lastPrice}}
+                                {{modelObject.lastPrice | currency:'USD': true}}
                             </div>
                         </div>
 

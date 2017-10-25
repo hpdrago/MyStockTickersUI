@@ -17,24 +17,38 @@
             <p-column id="tickerSymbol"
                       field="tickerSymbol"
                       header="Ticker"
-                      [style]="{'width':'80px'}"
+                      [style]="{'width':'20px'}"
                       [sortable]="true">
             </p-column>
             <!----------------------------------------------------------------------------------------------------------
             COMPANY NAME
             ------------------------------------------------------------------------------------------------------------>
+            <!--
             <p-column id="companyName"
                       field="companyName"
                       header="Company Name"
                       [style]="{'width':'150px'}"
                       [sortable]="false">
             </p-column>
+            -->
             <!----------------------------------------------------------------------------------------------------------
             BUY SHARES BELOW
             ------------------------------------------------------------------------------------------------------------>
             <p-column id="buySharesBelow"
                       field="buySharesBelow"
                       header="Buy Below Price"
+                      [style]="{'width':'80px','text-align':'right'}"
+                      [sortable]="true">
+                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                    {{stockToBuy[col.field] | currency: 'USD' : true }}
+                </ng-template>
+            </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            STOCK PRICE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="stockPrice"
+                      field="stockPrice"
+                      header="Price When Entered"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="true">
                 <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
