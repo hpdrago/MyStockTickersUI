@@ -5,7 +5,7 @@
     <div id="stockAnalyticsTableDiv">
         <p-dataTable [value]="rows"
                      selectionMode="single"
-                     [(selection)]="modelObject"
+                     [(selection)]="selectedModelObject"
                      (onRowSelect)="onRowSelect($event)"
                      (onRowUnselect)="onRowUnSelect($event)"
                      [paginator]="true"

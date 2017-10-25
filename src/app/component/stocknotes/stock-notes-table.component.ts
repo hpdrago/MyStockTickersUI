@@ -33,34 +33,24 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
     }
 
     /**
-     * This method is called automatically by the base class
+     * This method is called after stockNotes are loaded from the database.
+     * Once loaded, the stockNotes are expanded, one row per ticker symbol, into the table.
+     * @param {StockNotes[]} stockNotes
+     * @return {any}
      */
-    protected loadTable()
+    protected onTableLoad( stockNotes: StockNotes[] ): any
     {
-        this.log( "loadTable.begin" );
-        this.stockNotesServiceContainer
-            .stockNoteCrudService
-            .getStockNotes( this.session.getLoggedInUserId() )
-            .subscribe( ( stockNotes: StockNotes[] ) =>
-                        {
-                            if ( stockNotes.length > 0 )
-                            {
-                                /*
-                                 * Expand the rows by creating new StockNote entries for each stock of the stock note
-                                 */
-                                this.rows = this.expandRows( stockNotes );
-                            }
-                            else
-                            {
-                                this.rows = [];
-                            }
-                            this.debug( "loadStockNotes.end" );
-                        },
-                        error =>
-                        {
-                            this.reportRestError( error );
-                        } );
-        this.log( "loadTable.end" );
+        if ( stockNotes.length > 0 )
+        {
+            /*
+             * Expand the rows by creating new StockNote entries for each stock of the stock note
+             */
+            this.rows = this.expandRows( stockNotes );
+        }
+        else
+        {
+            this.rows = [];
+        }
     }
 
     /**
@@ -158,11 +148,27 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
     }
 
     /**
+     * This method is called when a user deletes a stockNote.  Since rows in this table are expanded, one per stock symbol,
+     * this method must remove the extra rows, if any, from the table for the stockNoteId.
+     * @param {StockNotes} stockNotes
+     */
+    protected onUserDeletedModelObject( stockNotes: StockNotes ): void
+    {
+        this.log( 'onUserDeletedModelObject ' + JSON.stringify( stockNotes ) );
+        if ( !isNullOrUndefined( this.modelObject ))
+        {
+            super.onUserDeletedModelObject( stockNotes );
+            this.removeStockNotes( stockNotes.id );
+        }
+    }
+
+    /**
      * Removes the stock notes entries from the {@code rows} array for the {@param stockNotesId}
      * @param {number} stockNotesId
      */
     private removeStockNotes( stockNotesId: number )
     {
+        this.log( 'removeStockNotes ' + stockNotesId );
         this.rows = this.rows.filter( stockNotes => stockNotes.id != stockNotesId );
     }
 

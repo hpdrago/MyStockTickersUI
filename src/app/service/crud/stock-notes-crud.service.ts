@@ -66,22 +66,4 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
     {
         return baseUrl + this.urlPath + `/${stockNotes.id}`;
     }
-
-    /**
-     * Get a list of the stockNotes for the customer
-     * @param customerId
-     * @returns {Observable<R>}
-     */
-    public getStockNotes( customerId: number ): Observable<Array<StockNotes>>
-    {
-        let methodName = "getStockNotes";
-        this.logger.debug( `${methodName} customerId: ${customerId}`);
-        if ( isNullOrUndefined( customerId ) || customerId == 0 )
-        {
-            throw new ReferenceError( "customerId is not value" );
-        }
-        var stockNote: StockNotes = new StockNotes();
-        stockNote.customerId = customerId;
-        return super.getModelObjectList( stockNote );
-    }
 }

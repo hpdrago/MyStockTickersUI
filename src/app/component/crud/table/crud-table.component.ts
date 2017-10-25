@@ -31,6 +31,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected rows: Array<T> = [];
     protected totalRows: number;
+    /**
+     * This is a reference to the object in the table that is selected.  It is not the same object as the model object
+     * and this variable must be separate from this.modelObject.
+     */
+    protected selectedModelObject: T;
 
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
@@ -81,7 +86,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected refreshTable()
     {
         this.debug( "refreshTable.begin" );
+        /*
+         * Need to clear out any values for the model object or the table might be filtered based on its contents
+         */
+        this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
+        this.selectedModelObject = null;
         this.loadTable();
+        this.crudServiceContainer
+            .crudTableService
+            .sendTableSelectionChangeEvent( this.selectedModelObject );
         this.debug( "refreshTable.end" );
     }
 
@@ -269,6 +282,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.setModelObject( modelObject );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
+            this.selectedModelObject = modelObject;
             var index = this.indexOf( modelObject );
             if ( index == -1 )
             {
@@ -379,6 +393,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onRowSelect( event ): void
     {
         this.debug( "onRowSelect " + JSON.stringify( event ) );
+        this.selectedModelObject = event.data;
         this.setModelObject( this.newModelObjectFromEvent( event ));
         this.crudServiceContainer
             .crudTableService

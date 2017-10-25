@@ -5,6 +5,7 @@ import { ModelObject } from "./modelobject";
  */
 export class Stock extends ModelObject<Stock>
 {
+    public static readonly TICKER_SYMBOL_LEN = 10;
     public tickerSymbol: string;
     public companyName: string;
     public lastPrice: number;

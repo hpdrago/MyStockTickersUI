@@ -7,6 +7,7 @@ import { ModelObject } from "./modelobject";
  */
 export class StockToBuy extends ModelObject<StockToBuy>
 {
+    public static readonly COMMENTS_LEN = 10;
     public id: number;
     public customerId: number;
     public tickerSymbol: string;
