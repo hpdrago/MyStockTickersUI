@@ -36,9 +36,10 @@ export class StockToBuyFormComponent extends CrudFormComponent<StockToBuy>
         this.debug( "createCrudForm " );
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
-                'tickerSymbol':             new FormControl( this.modelObject.tickerSymbol, Validators.required ),
-                'comments':                 new FormControl( this.modelObject.comments ),
-                'buySharesBelow':           new FormControl( this.modelObject.buySharesBelow ),
+                'tickerSymbol':    new FormControl( this.modelObject.tickerSymbol, Validators.required ),
+                'comments':        new FormControl( this.modelObject.comments, Validators.required ),
+                'buySharesBelow':  new FormControl( this.modelObject.buySharesBelow ),
+                'tags':            new FormControl( this.modelObject.tags )
             } );
         return stockNoteForm;
     }

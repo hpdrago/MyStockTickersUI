@@ -1,11 +1,12 @@
 import { ModelObject } from "./modelobject";
 import { StockNotesStock } from "./stock-notes-stock";
+import { StockNoteContainer } from "../../common/stock-note-container";
 
 /**
  * Defines a single portfolio for a customer
  * Created by mike on 10/23/2016.
  */
-export class StockNotes extends ModelObject<StockNotes>
+export class StockNotes extends ModelObject<StockNotes> implements StockNoteContainer
 {
     public id: number;
     public customerId: number;
@@ -30,6 +31,24 @@ export class StockNotes extends ModelObject<StockNotes>
      */
     public tickerSymbol: string;
     public stockPrice: number;
+
+    /**
+     * Get the notes
+     * @returns {string}
+     */
+    public getNotes(): string
+    {
+        return this.notes;
+    }
+
+    /**
+     * Get the ticker symbol
+     * @returns {string}
+     */
+    public getTickerSymbol(): string
+    {
+        return this.tickerSymbol;
+    }
 
     public isEqualPrimaryKey( modelObject: StockNotes )
     {

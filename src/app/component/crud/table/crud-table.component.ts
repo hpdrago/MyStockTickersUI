@@ -37,6 +37,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected selectedModelObject: T;
 
+    /**
+     * This is true when the table is loading and false otherwise.
+     * @type {boolean}
+     */
+    protected loading: boolean = false;
+
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
@@ -104,6 +110,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected loadTable()
     {
+        this.loading = true;
         this.debug( "loadTable.begin" );
         this.crudServiceContainer
             .crudRestService
@@ -112,10 +119,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                         {
                             this.onTableLoad( modelObjects );
                             this.debug( "loadTable.end" );
+                            this.loading = false;
                         },
                         error =>
                         {
                             this.reportRestError( error );
+                            this.loading = false;
                         } );
     }
 

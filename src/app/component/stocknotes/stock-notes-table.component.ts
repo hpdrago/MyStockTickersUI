@@ -9,6 +9,7 @@ import { DatePipe } from "@angular/common";
 import { CrudOperation } from "../crud/common/crud-operation";
 import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { isNullOrUndefined } from "util";
+import { StockUrlMap } from "../../common/stock-url-map";
 
 /**
  * This component lists all stock notes
@@ -24,7 +25,7 @@ import { isNullOrUndefined } from "util";
 export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
 {
     private title: string = 'Stock Notes';
-    private urlMap: Map<string,string> = new Map();
+    private urlMap: StockUrlMap = new StockUrlMap();
 
     constructor( protected toaster: ToastsManager,
                  protected stockNotesServiceContainer: StockNotesCrudServiceContainer,
@@ -47,7 +48,7 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
              * Expand the rows by creating new StockNote entries for each stock of the stock note
              */
             this.rows = this.expandRows( stockNotes );
-            this.extractURLsFromNotes( this.rows );
+            this.urlMap.extractURLsFromNotes( this.rows );
         }
         else
         {
@@ -172,68 +173,6 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
     {
         this.log( 'removeStockNotes ' + stockNotesId );
         this.rows = this.rows.filter( stockNotes => stockNotes.id != stockNotesId );
-    }
-
-    /**
-     * Extracts the urls from the notes and populates the urlMap with urls that were found
-     * @param {StockNotes[]} stockNotes
-     */
-    private extractURLsFromNotes( stockNotes: StockNotes[] )
-    {
-        this.urlMap = new Map();
-        for ( let stockNote of stockNotes )
-        {
-            var url: string = this.getURL( stockNote.notes );
-            if ( !isNullOrUndefined( url ) )
-            {
-                //this.log( 'extractURLsFromNotes ticker: ' + stockNote.tickerSymbol + ' url: ' + url );
-                this.urlMap.set( stockNote.tickerSymbol, url );
-            }
-        }
-    }
-
-    /**
-     * This method will attempt to extract a URL from the note text so that the table can display a url link
-     * in the notes column
-     * @param {string} stockNotes
-     * @returns {string}
-     */
-    private getURL( stockNotes: string ): string
-    {
-        var returnValue = null;
-        this.log( stockNotes );
-        /*
-         * Look for links that were created in the editor
-         */
-        var startPos = stockNotes.indexOf( '\<p\>\<a href="' );
-        //this.log( '1 startPos: ' + startPos );
-        if ( startPos != -1 )
-        {
-            var url = stockNotes.substring( startPos + 12 );
-            //this.log( 'url: ' + url );
-            endPos = url.indexOf( '\"' );
-            //this.log( '2 endPos: ' + startPos );
-            if ( endPos != -1 )
-            {
-                url = url.substring( startPos, endPos );
-                //this.log( '3 url: ' + url );
-                returnValue = url;
-            }
-        }
-        else
-        {
-            startPos = stockNotes.indexOf( 'http' );
-            //this.log( '4 startPos: ' + startPos );
-            if ( startPos != -1 )
-            {
-                var endPos = stockNotes.indexOf( '\<\/p\>');
-                //this.log( '5 endPos: ' + startPos );
-                var url = stockNotes.substring( startPos, endPos );
-                //this.log( '6 url: ' + url );
-                returnValue = url;
-            }
-        }
-        return returnValue;
     }
 
     /**

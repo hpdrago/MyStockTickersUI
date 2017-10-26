@@ -38,7 +38,8 @@ import {
     RatingModule,
     CalendarModule,
     EditorModule,
-    SliderModule
+    SliderModule,
+    ChipsModule
 } from "primeng/primeng";
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
@@ -177,6 +178,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         EditorModule,
         SliderModule,
         CurrencyMaskModule,
+        ChipsModule,
         // Third Party modules,
         BusyModule,
         ToastModule.forRoot()

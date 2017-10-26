@@ -51,9 +51,9 @@
                       field="notes"
                       header="Notes">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <div *ngIf="urlMap.get( stockNotes.tickerSymbol ) == null " >{{stockNotes[col.field]}}</div>
-                    <div *ngIf="urlMap.get( stockNotes.tickerSymbol ) != null " >
-                        <a href="{{urlMap.get( stockNotes.tickerSymbol )}}" target="_blank">{{urlMap.get( stockNotes.tickerSymbol )}}</a>
+                    <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) == null " >{{stockNotes[col.field]}}</div>
+                    <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) != null " >
+                        <a href="{{urlMap.getURL( stockNotes.tickerSymbol )}}" target="_blank">{{urlMap.getURL( stockNotes.tickerSymbol )}}</a>
                     </div>
                 </ng-template>
             </p-column>

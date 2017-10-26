@@ -1,11 +1,13 @@
 import { ModelObject } from "./modelobject";
+import { StockNoteContainer } from "../../common/stock-note-container";
+import { TagList } from "../../common/tag_list";
 
 /**
- * This entity contains the elements for the stock summary
+ * This entity contains the elements for the stock to buy
  *
  * Created 10/17/2017
  */
-export class StockToBuy extends ModelObject<StockToBuy>
+export class StockToBuy extends ModelObject<StockToBuy> implements StockNoteContainer
 {
     public static readonly COMMENTS_LEN = 10;
     public id: number;
@@ -18,6 +20,17 @@ export class StockToBuy extends ModelObject<StockToBuy>
     public lastPriceChange: Date;
     public createDate: Date;
     public updateDate: Date;
+    public tags: TagList;
+
+    public getNotes(): string
+    {
+        return this.comments;
+    }
+
+    public getTickerSymbol(): string
+    {
+        return this.tickerSymbol;
+    }
 
     public isEqualPrimaryKey( modelObject: StockToBuy ): boolean
     {
