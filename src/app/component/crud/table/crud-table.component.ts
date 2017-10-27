@@ -138,7 +138,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         if ( modelObjects.length > 0 )
         {
             this.rows = modelObjects;
-            //this.debug( JSON.stringify( this.rows ));
+            this.debug( "loaded " + this.rows.length + " rows" );
         }
         else
         {

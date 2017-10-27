@@ -39,4 +39,31 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
     {
         return 'Stock Note'
     }
+
+    /**
+     * This method is called when the Add button (might be labeled 'Save') is clicked.
+     * Special logic is needed for stock notes because the user can specify multiple stocks when creating a new note.
+     * A separate stock note, containing the same core information, will be created for each stock.
+     */
+    protected onAddButtonClick()
+    {
+        this.log( "onAddButtonClick.override " + JSON.stringify( this.modelObject ));
+        this.sendFormPrepareToSaveEvent();
+        for ( var stockNotesStock of this.modelObject.stocks )
+        {
+            this.modelObject.tickerSymbol = stockNotesStock.tickerSymbol;
+            this.log( "onAddButtonClick.override" + JSON.stringify( this.modelObject ));
+            super.onAddButtonClick();
+        }
+    }
+
+    /**
+     * This method is called to get the message to display to the user that the mdoel object was saved successfully.
+     * @param {T} modelObject
+     * @returns {string}
+     */
+    protected getSaveSuccessFulMessage( stockNotes: StockNotes )
+    {
+        return "Save Successful for " + stockNotes.tickerSymbol;
+    }
 }

@@ -6,6 +6,7 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { DisplayDialogRequestSubjectInfo } from "./display-dialog-request-subject-info";
 import { CrudOperation } from "../common/crud-operation";
 import { isNullOrUndefined } from "util";
+import { CloseButtonEvent } from "../common/close-button-event";
 /**
  * This is the base class for Modal dialogs that provide CRUD operations on a model object.
  *
@@ -93,7 +94,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
         this.log( "subscribeToCrudDialogServiceEvents.begin" );
         this.crudServiceContainer
             .crudDialogService
-            .subscribeToCloseButtonClickedEvent(() => this.onCloseButtonClick() );
+            .subscribeToCloseButtonClickedEvent(( event: CloseButtonEvent ) => this.onCloseButtonClick( event ) );
         this.crudServiceContainer
             .crudDialogService
             .subscribeToDisplayDialogRequestEvent(( subjectInfo: DisplayDialogRequestSubjectInfo ) => this.setDisplayDialog( subjectInfo ) );
@@ -163,11 +164,11 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
      * This method is called when the Close button is clicked.
      * It will close the dialog and emit a {@code closeButtonClick} event
      */
-    protected onCloseButtonClick(): void
+    protected onCloseButtonClick( event: CloseButtonEvent ): void
     {
         if ( !isNullOrUndefined( this.modelObject ) )
         {
-            this.debug( "onCloseButtonClick" );
+            this.debug( "onCloseButtonClick " + JSON.stringify( event ) );
             this.displayDialog = false;
         }
     }
@@ -182,7 +183,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
         this.debug( "onAddButtonClick " + JSON.stringify( modelObject ) );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
-            this.onCloseButtonClick();
+            this.onCloseButtonClick( CloseButtonEvent.ADD_BUTTON );
         }
     }
 
@@ -200,15 +201,23 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
         }
     }
 
+    /**
+     * This method is called when the save button is clicked.  All observers of this event will be notified.
+     * @param modelObject
+     */
     private onSaveButtonClicked( modelObject: any )
     {
         this.debug( "onSaveButtonClick " + JSON.stringify( modelObject ) );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
-            this.onCloseButtonClick();
+            this.onCloseButtonClick( CloseButtonEvent.SAVE_BUTTON );
         }
     }
 
+    /**
+     * This method is called when the delete button is clicked.  All observers of this event will be notified.
+     * @param modelObject
+     */
     private onDeleteButtonClicked( modelObject: T )
     {
         this.debug( "onDeleteButtonClick " + JSON.stringify( modelObject ) );

@@ -33,6 +33,16 @@
             </p-column>
             -->
             <!----------------------------------------------------------------------------------------------------------
+            BUY BUTTON
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="buyButton"
+                      header="Record Buy"
+                      [style]="{'width':'30px'}">
+                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                    <button pButton type="button" (click)="onBuyButtonClick( stockToBuy )" label="Record Buy"></button>
+                </ng-template>
+            </p-column>
+            <!----------------------------------------------------------------------------------------------------------
             BUY SHARES BELOW
             ------------------------------------------------------------------------------------------------------------>
             <p-column id="buySharesBelow"
@@ -40,9 +50,12 @@
                       header="Buy Below Price"
                       [style]="{'width':'10px','text-align':'right'}">
                 <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                    <span [ngClass]="{'buy': stockToBuy && stockToBuy['lastPrice'] < stockToBuy[col.field]}">
+                    <div class="buy" *ngIf="stockToBuy && stockToBuy['lastPrice'] < stockToBuy[col.field]">
                         {{stockToBuy[col.field] | currency: 'USD' : true }}
-                    </span>
+                    </div>
+                    <div class="wait" *ngIf="stockToBuy && stockToBuy['lastPrice'] >= stockToBuy[col.field]">
+                        {{stockToBuy[col.field] | currency: 'USD' : true }}
+                    </div>
                 </ng-template>
             </p-column>
             <!----------------------------------------------------------------------------------------------------------
@@ -73,7 +86,7 @@
             <p-column id="createDate"
                       field="createDate"
                       header="Date Created"
-                      [style]="{'width':'20px','text-align':'right'}"
+                      [style]="{'width':'20px'}"
                       [sortable]="true">
                 <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
                     {{stockToBuy[col.field] | date: 'y-MM-dd' }}
@@ -115,3 +128,5 @@
 </p-panel>
 <stock-to-buy-dialog>
 </stock-to-buy-dialog>
+<stock-notes-dialog>
+</stock-notes-dialog>

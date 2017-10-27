@@ -6,6 +6,7 @@ import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-conta
 import { SessionService } from "../../service/crud/session.service";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { StockNotes } from "../../model/entity/stock-notes";
+import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -47,7 +48,12 @@ export class StockNotesCountTableComponent extends CrudTableComponent<StockNotes
     protected onRowSelect( stockNoteCount: StockNoteCount ): void
     {
         this.logger.log( 'onRowSelect ' + JSON.stringify( stockNoteCount ));
-        this.stockNotesTableComponent.loadStockNotesForStock( stockNoteCount );
+        //this.stockNotesTableComponent.loadStockNotesForStock( stockNoteCount );
+    }
+
+    private getActionTaken( actionTaken: number )
+    {
+        return StockNotesActionTaken.getName( actionTaken );
     }
 
     /**

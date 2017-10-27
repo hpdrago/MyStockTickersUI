@@ -1,10 +1,12 @@
-span.buy
+.buy
 {
     color: white;
     background: green;
+    display: block;
 }
-span.wait
+.wait
 {
     color: white;
     background: red;
+    display: block;
 }

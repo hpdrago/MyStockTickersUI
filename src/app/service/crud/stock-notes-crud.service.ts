@@ -7,7 +7,6 @@ import { CrudRestService } from "./crud-rest.serivce";
 import { StockNotesCountFactory } from "../../model/factory/stock-note-count.factory";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
-import { isNullOrUndefined } from "util";
 
 /**
  * This class provides all CRUD REST services for Stock Notes.
@@ -26,20 +25,6 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
                   protected stockNoteCountFactory: StockNotesCountFactory )
     {
         super( http, sessionService, appConfigurationService, stockNotesFactory );
-    }
-
-    /**
-     * Override to null the date fields as dates originate from the server and we would have to convert the date to
-     * a standard format.
-     *
-     * @param {StockNotes} modelObject
-     * @return {Observable<StockNotes>}
-     */
-    public createModelObject( modelObject: StockNotes ): Observable<StockNotes>
-    {
-        modelObject.dateCreated = null;
-        modelObject.dateModified = null;
-        return super.createModelObject( modelObject );
     }
 
     protected getCreateModelObjectUrl( baseUrl: string, stockNotes: StockNotes ): string

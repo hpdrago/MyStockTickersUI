@@ -10,6 +10,7 @@ export class StockNotes extends ModelObject<StockNotes> implements StockNoteCont
 {
     public id: number;
     public customerId: number;
+    public tickerSymbol: string;
     public notes: string;
     public notesDate: Date;
     public notesSourceName: string;
@@ -17,20 +18,13 @@ export class StockNotes extends ModelObject<StockNotes> implements StockNoteCont
     public notesRating: number;
     public publicInd: boolean;
     public bullOrBear: number;
-    public actionTaken: string;
+    public actionTaken: number;
     public actionTakenShares: number;
+    public actionTakenPrice: number;
     public dateCreated: Date;
     public dateModified: Date;
+    public stockPriceWhenCreated: number;
     public stocks: Array<StockNotesStock> = [];
-
-    /**
-     * A StockNote entity contains a list of stocks each with a ticker symbol and a price.
-     * When displaying stock notes in the table, the stock notes are expanded so that there is a single row
-     * for each stock of the stock note.  The following variables are the values to be displayed in the table row for each stock
-     * of the stock note.
-     */
-    public tickerSymbol: string;
-    public stockPrice: number;
 
     /**
      * Get the notes

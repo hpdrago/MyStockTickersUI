@@ -4,6 +4,8 @@ import { CrudOperation } from "../common/crud-operation";
 import { ToastsManager } from "ng2-toastr";
 import { CrudServiceContainer } from "../common/crud-service-container";
 import { Observable } from "rxjs/Observable";
+import { CloseButtonEvent } from "../common/close-button-event";
+import { isNullOrUndefined } from "util";
 
 /**
  * This class manages the set of buttons for a model object dialog.
@@ -58,6 +60,12 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected formTouchedFlag: boolean;
 
     /**
+     * Have to declare CloseButtonEvent for this context.
+     * @type {CloseButtonEvent}
+     */
+    protected CloseButtonEvent = CloseButtonEvent;
+
+    /**
      * Initialize the class
      */
     public ngOnInit()
@@ -69,6 +77,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.crudServiceContainer
             .crudFormButtonsService
             .sendComponentInitializedEvent();
+        this.debug( "ngOnInit.end" );
     }
 
     /**
@@ -321,27 +330,59 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected onSaveButtonClick(): void
     {
         var methodName = "onSaveButtonClick";
-        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
-        this.crudServiceContainer.crudFormService.sendFormPrepareToSaveEvent();
+        this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
+        this.sendFormPrepareToSaveEvent();
+        this.performSaveButtonWork();
+        this.debug( methodName + ".end" );
+    }
+
+    /**
+     * This method performs the REST web service calls and handles the success or failure of the request.
+     * @param {string} methodName
+     */
+    protected performSaveButtonWork( )
+    {
+        var methodName = "performSaveButtonWork";
+        this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
         var observable: Observable<T> = this.crudServiceContainer
                                             .crudRestService
                                             .updateModelObject( this.modelObject );
         observable.subscribe( ( updatedModelObject: T ) =>
-                               {
-                                   this.showInfo( "Save Successful!")
-                                   this.setModelObject( updatedModelObject );
-                                   this.debug( methodName + " saved successful.  modelObject; " +
-                                                    JSON.stringify( this.modelObject ));
-                                   this.crudServiceContainer
-                                       .crudFormService
-                                       .sendFormResetEvent();
-                                   this.crudServiceContainer
-                                       .crudFormButtonsService
-                                       .sendSaveButtonClickedEvent( this.modelObject );
-                               },
-                               err => this.reportRestError( err )
-            );
+                              {
+                                  this.showInfo( this.getSaveSuccessFulMessage( updatedModelObject ) );
+                                  this.setModelObject( updatedModelObject );
+                                  this.debug( methodName + " saved successful.  modelObject; " +
+                                      JSON.stringify( this.modelObject ) );
+                                  this.notifySaveButtonSuccessful();
+                              },
+                              err => this.reportRestError( err )
+        );
         this.busyIndicator = observable.subscribe();
+        this.debug( methodName + ".end" );
+    }
+
+    /**
+     * Sends the necessary notifications that the save button work completed successfully.
+     */
+    protected notifySaveButtonSuccessful()
+    {
+        this.crudServiceContainer
+            .crudFormService
+            .sendFormResetEvent();
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .sendSaveButtonClickedEvent( this.modelObject );
+    }
+
+    /**
+     * This method is called to get the message to display to the user that the mdoel object was saved successfully.
+     * This method can be overridden to customize the message.  The default is to display "Save Successful!"
+     * @param {T} modelObject
+     * @returns {string}
+     */
+    protected getSaveSuccessFulMessage( modelObject: T )
+    {
+        return "Save Successful!";
     }
 
     /**
@@ -367,36 +408,49 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected onAddButtonClick(): void
     {
         var methodName = "onAddButtonClicked";
-        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
-        this.performAddButtonWork( ( modelObject: T ) =>
-                                   {
-                                       this.crudServiceContainer
-                                           .crudFormService.sendFormResetEvent();
-                                       this.crudServiceContainer
-                                           .crudFormButtonsService
-                                           .sendAddButtonClickedEvent( modelObject );
-                                   });
+        this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
+        this.sendFormPrepareToSaveEvent();
+        this.performAddButtonWork();
+        this.debug( methodName + ".end " + JSON.stringify( this.modelObject ));
+    }
+
+    /**
+     * Sends a notification to the form to perform any necessary work before the model object is saved.
+     */
+    protected sendFormPrepareToSaveEvent()
+    {
+        this.crudServiceContainer.crudFormService.sendFormPrepareToSaveEvent();
     }
 
     /**
      * This method is called when the Add button is clicked.
-     * @param notifySuccess - Callback to perform the work after the modelObject has been saved.
+     * @param notifySuccess - Callback to perform the work after the modelObject has been saved.  If null, the
+     * notifyAddButtonWorkSuccessful method is called.
      */
-    private performAddButtonWork( notifySuccess: ( modelObject: T ) => any ): void
+    protected performAddButtonWork( notifySuccess?: ( modelObject: T ) => any ): void
     {
         var methodName = "performAddButtonWork";
         this.debug( methodName + " " + JSON.stringify( this.modelObject ));
-        this.crudServiceContainer.crudFormService.sendFormPrepareToSaveEvent();
         var observable: Observable<T> = this.crudServiceContainer
                                             .crudRestService
                                             .createModelObject( this.modelObject );
         observable.subscribe( ( newModelObject: T ) =>
                    {
-                       this.showInfo( "Save successful!")
+                       this.showInfo( this.getSaveSuccessFulMessage( newModelObject ));
                        this.modelObject = newModelObject;
                        this.debug( methodName + " add successful.  modelObject: " +
                                         JSON.stringify( this.modelObject ) );
-                       notifySuccess( this.modelObject );
+                       /*
+                        * Check to see if there is a custom notifySuccess method passed in
+                        */
+                       if ( isNullOrUndefined( notifySuccess ))
+                       {
+                           this.notifyAddButtonWorkSuccessful();
+                       }
+                       else
+                       {
+                           notifySuccess( this.modelObject );
+                       }
                    },
                    err =>
                    {
@@ -419,6 +473,18 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     }
 
     /**
+     * Sends the necessary add button successful notifications
+     */
+    protected notifyAddButtonWorkSuccessful()
+    {
+        this.crudServiceContainer
+            .crudFormService.sendFormResetEvent();
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .sendAddButtonClickedEvent( this.modelObject );
+    }
+
+    /**
      * This method is called when the delete button is clicked
      */
     protected onDeleteButtonClick(): void
@@ -431,13 +497,8 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         observable.subscribe( () =>
                    {
                        this.debug( methodName + " delete successful" );
-                       this.showInfo( "Delete successful!")
-                       this.crudServiceContainer
-                           .crudFormService
-                           .sendFormResetEvent();
-                       this.crudServiceContainer
-                           .crudFormButtonsService
-                           .sendDeleteButtonClickedEvent( this.modelObject );
+                       this.showInfo( this.getDeleteSuccessfulMessage() )
+                       this.notifyDeleteButtonWorkSuccessful();
                    },
                    err =>
                    {
@@ -448,14 +509,36 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     }
 
     /**
+     * Defines the message to show when a delete was successful.  Override this method to change the message.
+     * @returns {string}
+     */
+    protected getDeleteSuccessfulMessage()
+    {
+        return "Delete successful!";
+    }
+
+    /**
+     * Performs the necessary notifications that the delete button work completed successfully.
+     */
+    protected notifyDeleteButtonWorkSuccessful()
+    {
+        this.crudServiceContainer
+            .crudFormService
+            .sendFormResetEvent();
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .sendDeleteButtonClickedEvent( this.modelObject );
+    }
+
+    /**
      * This method is called when the user clicks the Close button.  The dialog service is used to send the close
      * message.
      */
-    protected onCloseButtonClick(): void
+    protected onCloseButtonClick( event: CloseButtonEvent ): void
     {
         this.crudServiceContainer
             .crudDialogService
-            .sendCloseButtonClickedEvent();
+            .sendCloseButtonClickedEvent( event );
     }
 
     /**

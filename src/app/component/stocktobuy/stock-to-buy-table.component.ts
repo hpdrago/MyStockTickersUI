@@ -5,6 +5,13 @@ import { ToastsManager } from "ng2-toastr";
 import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
 import { StockUrlMap } from "../../common/stock-url-map";
 import { isNullOrUndefined } from "util";
+import { StockNotesCrudServiceContainer } from "../stocknotes/stock-notes-crud-service-container";
+import { StockNotes } from "../../model/entity/stock-notes";
+import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
+import { StockNotesSentiment } from "../common/stock-notes-sentiment";
+import { CrudOperation } from "../crud/common/crud-operation";
+import { StockNotesStock } from "../../model/entity/stock-notes-stock";
+import { CloseButtonEvent } from "../crud/common/close-button-event";
 
 /**
  * This component lists all stock notes
@@ -21,9 +28,10 @@ export class StockToBuyTableComponent extends CrudTableComponent<StockToBuy>
 {
     private urlMap: StockUrlMap = new StockUrlMap();
     constructor( protected toaster: ToastsManager,
-                 protected StockToBuyServiceContainer: StockToBuyCrudServiceContainer )
+                 protected stockToBuyServiceContainer: StockToBuyCrudServiceContainer,
+                 protected stockNotesServiceContainer: StockNotesCrudServiceContainer )
     {
-        super( toaster, StockToBuyServiceContainer );
+        super( toaster, stockToBuyServiceContainer );
     }
 
     /**
@@ -37,23 +45,35 @@ export class StockToBuyTableComponent extends CrudTableComponent<StockToBuy>
         return super.onTableLoad( modelObjects );
     }
 
-
-    private getRowStyleClass( rowData: [StockToBuy], rowIndex: number ): string
+    private onBuyButtonClick( stockToBuy: StockToBuy )
     {
-        if ( isNullOrUndefined( rowData ))
-        {
-            return "";
-        }
-        else
-        {
-            if ( rowData[rowIndex].buySharesBelow < rowData[rowIndex].lastPrice )
-            {
-                return 'buy';
-            }
-            else
-            {
-                return 'wait';
-            }
-        }
+        var methodName: string = 'onBuyButtonClick ';
+        this.log( methodName + " " + JSON.stringify( stockToBuy ));
+        var stockNotes: StockNotes = this.stockNotesServiceContainer.modelObjectFactory.newModelObject();
+        stockNotes.tickerSymbol = stockToBuy.tickerSymbol;
+        stockNotes.notes = stockToBuy.comments;
+        stockNotes.actionTaken = StockNotesActionTaken.BUY;
+        stockNotes.bullOrBear = StockNotesSentiment.BULL;
+        var stockNoteStock: StockNotesStock = new StockNotesStock();
+        stockNoteStock.tickerSymbol = stockNotes.tickerSymbol;
+        stockNoteStock.stockPrice = stockToBuy.lastPrice;
+        stockNoteStock.customerId = stockToBuy.customerId;
+        stockNotes.stocks = [stockNoteStock];
+        this.stockNotesServiceContainer
+            .crudDialogService
+            .sendDisplayDialogRequestEvent( stockNotes, CrudOperation.CREATE );
+        this.stockNotesServiceContainer
+            .crudDialogService
+            .subscribeToCloseButtonClickedEvent( ( event: CloseButtonEvent ) =>
+                                                     {
+                                                         this.log( methodName + " stock notes closed button clicked event: " + event );
+                                                         if ( event != CloseButtonEvent.CANCEL_BUTTON )
+                                                         {
+                                                             this.stockToBuyServiceContainer
+                                                                 .crudTableButtonsService
+                                                                 .sendDeleteButtonClickedEvent( stockToBuy );
+                                                         }
+                                                     })
     }
+
 }

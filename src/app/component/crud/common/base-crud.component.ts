@@ -127,7 +127,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      * Returns true if the current {@code crudOperation} value is CREATE
      * @return {boolean}
      */
-    protected isCrudInsertOperation(): boolean
+    protected isCrudCreateOperation(): boolean
     {
         return this.crudOperation == CrudOperation.CREATE;
     }

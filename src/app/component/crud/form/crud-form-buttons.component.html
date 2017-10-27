@@ -53,7 +53,7 @@
             <button class="crud-form-button"
                     pButton
                     type="button"
-                    (click)="onCloseButtonClick()"
+                    (click)="onCloseButtonClick( CloseButtonEvent.CANCEL_BUTTON )"
                     label=" Cancel"
                     icon="fa-close"
                     [disabled]="isCloseButtonDisabled()">

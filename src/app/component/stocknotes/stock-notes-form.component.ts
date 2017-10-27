@@ -12,6 +12,8 @@ import { StockNotesSourceList } from "./stock-notes-source-list";
 import { isNumeric } from "rxjs/util/isNumeric";
 import { CrudOperation } from "../crud/common/crud-operation";
 import { isNullOrUndefined } from "util";
+import { StockNotesSentiment } from "../common/stock-notes-sentiment";
+import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
 
 /**
  * This is the Stock Note Form Component class.
@@ -29,6 +31,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     private sourceItems: SelectItem[] = [];
     private bullOrBearOptions: SelectItem[];
     private actionTakenOptions: SelectItem[];
+
     /**
      * The stock is returned via an event when the user searches for a ticker symbol or company
      */
@@ -58,14 +61,14 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.log( 'ngOnInit.begin' );
         super.ngOnInit();
         this.bullOrBearOptions = [];
-        this.bullOrBearOptions.push( {label: 'Bull', value: 1} );
-        this.bullOrBearOptions.push( {label: 'Bear', value: 2} );
-        this.bullOrBearOptions.push( {label: 'Neutral', value: 0} );
+        this.bullOrBearOptions.push( {label: 'BULL', value: StockNotesSentiment.BULL } );
+        this.bullOrBearOptions.push( {label: 'BEAR', value: StockNotesSentiment.BEAR } );
+        this.bullOrBearOptions.push( {label: 'NEUTRAL', value: StockNotesSentiment.NEUTRAL } );
 
         this.actionTakenOptions = [];
-        this.actionTakenOptions.push( {label: 'NONE', value: 'NONE' });
-        this.actionTakenOptions.push( {label: 'BUY', value: 'BUY' });
-        this.actionTakenOptions.push( {label: 'SELL', value: 'SELL' });
+        this.actionTakenOptions.push( {label: 'NONE', value: StockNotesActionTaken.NONE });
+        this.actionTakenOptions.push( {label: 'BUY', value: StockNotesActionTaken.BUY });
+        this.actionTakenOptions.push( {label: 'SELL', value: StockNotesActionTaken.SELL });
         /*
          * Get the stock note sources for the logged in user and populate the sources SelectItems
          */
@@ -99,7 +102,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected createCrudForm(): FormGroup
     {
-        this.debug( "createCrudForm" );
+        this.log( "createCrudForm" );
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
                 'stockSearch':        new FormControl( this.stockSearch ),
@@ -110,7 +113,8 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                 'notesRating':        new FormControl( this.modelObject.notesRating ),
                 'bullOrBear':         new FormControl( this.modelObject.bullOrBear ),
                 'actionTaken':        new FormControl( this.modelObject.actionTaken ),
-                'actionTakenShares':  new FormControl( this.modelObject.actionTakenShares )
+                'actionTakenShares':  new FormControl( this.modelObject.actionTakenShares ),
+                'actionTakenPrice':   new FormControl( this.modelObject.actionTakenPrice )
             } );
         return stockNoteForm;
     }
@@ -121,15 +125,21 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected setFormValues( modelObject: StockNotes )
     {
-        this.debug( "setFromValues modelObject: " + JSON.stringify( modelObject ));
+        this.log( "setFromValues modelObject: " + JSON.stringify( modelObject ));
         this.tickerSymbols = modelObject.getTickerSymbols();
-        this.debug( "setFormValues tickerSymbols: " + this.tickerSymbols );
+        this.log( "setFormValues tickerSymbols: " + this.tickerSymbols );
         super.setFormValues( modelObject );
         this.setFormValue( 'tickerSymbols', this.tickerSymbols );
-        if ( this.crudOperation = CrudOperation.CREATE )
+        if ( this.crudOperation == CrudOperation.CREATE )
         {
-            this.modelObject.actionTaken = "NONE";
-            this.modelObject.actionTakenShares = 0;
+            if ( isNullOrUndefined( this.modelObject.actionTaken ))
+            {
+                this.modelObject.actionTaken = StockNotesActionTaken.NONE;
+            }
+            if ( isNullOrUndefined( this.modelObject.actionTakenShares ))
+            {
+                this.modelObject.actionTakenShares = 0;
+            }
         }
     }
 
@@ -139,7 +149,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     public onStockSelected( stock: Stock )
     {
-        this.debug( "onStockSelected: " + JSON.stringify( stock ) );
+        this.log( "onStockSelected: " + JSON.stringify( stock ) );
         if ( !this.tickerSymbols )
         {
             this.tickerSymbols = '';
@@ -151,7 +161,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.tickerSymbols += stock.tickerSymbol;
         this.stock = stock;
         this.stockSearch = '';
-        //this.modelObject.setStocks( this.stockSearch );
+        this.modelObject.stockPriceWhenCreated = stock.lastPrice;
         (<FormControl>this.formGroup.controls['stockSearch']).setValue( '' );
     }
 
@@ -160,7 +170,8 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected prepareToSave()
     {
-        this.debug( "prepareToSave.begin " + JSON.stringify( this.modelObject ));
+        this.log( "prepareToSave.begin " + JSON.stringify( this.modelObject ));
+        this.log( "prepareToSave tickerSymbols " + this.tickerSymbols );
         /*
          * The ticker symbols should be separated by commas.
          * Each ticker symbol is pushed into the stocks array of the StockNotes model object
@@ -184,7 +195,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         {
             this.modelObject.notesSourceId = 0;
         }
-        this.debug( "prepareToSave.end " + this.modelObject );
+        this.log( "prepareToSave.end " + JSON.stringify( this.modelObject ));
     }
 
     /**
@@ -196,7 +207,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     private sourcesOnChange( event )
     {
-        //this.debug( "sourcesOnChange: " + JSON.stringify( event ));
+        //this.log( "sourcesOnChange: " + JSON.stringify( event ));
         this.modelObject.notesSourceName = event.value;
     }
 
@@ -215,7 +226,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.log( 'enableDisableFields modelObject: ' + JSON.stringify( this.modelObject ))
         if ( !isNullOrUndefined( this.modelObject ))
         {
-            if ( this.modelObject.actionTaken == 'NONE' )
+            if ( this.modelObject.actionTaken == StockNotesActionTaken.NONE )
             {
                 this.disableField( 'actionTakenShares' );
             }

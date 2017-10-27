@@ -25,7 +25,7 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
      */
     public subscribeToTableSelectionChangeEvent( fn: ( T ) => any )
     {
-        this.log( "subscribeToTableSelectionChangeEvent" );
+        this.debug( "subscribeToTableSelectionChangeEvent" );
         this.tableSelectionChangedSubject.asObservable().subscribe( fn );
     }
 
@@ -35,7 +35,7 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
      */
     public sendTableSelectionChangeEvent( modelObject: T )
     {
-        this.log( "sendTableSelectionChangeEvent" + JSON.stringify( modelObject ) );
+        this.debug( "sendTableSelectionChangeEvent " + JSON.stringify( modelObject ) );
         this.tickThenRun( () => this.tableSelectionChangedSubject.next( modelObject ) );
     }
 
@@ -45,7 +45,7 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
      */
     public subscribeToTableContentChangeEvent( fn: () => any )
     {
-        this.log( "subscribeToTableContentChangeEvent" );
+        this.debug( "subscribeToTableContentChangeEvent" );
         this.tableContentChangedSubject.asObservable().subscribe( fn );
     }
 
@@ -55,7 +55,7 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
      */
     public sendTableContentChangeEvent()
     {
-        this.log( "sendTableContentChangeEvent" );
+        this.debug( "sendTableContentChangeEvent" );
         this.tickThenRun( () => this.tableContentChangedSubject.next() );
     }
 
@@ -65,7 +65,7 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
      */
     public subscribeToTableRowAddedChangeEvent( fn: ( T ) => any )
     {
-        this.log( "subscribeToTableRowAddedChangeEvent" );
+        this.debug( "subscribeToTableRowAddedChangeEvent" );
         this.tableRowAddedSubject.asObservable().subscribe( fn );
     }
 
@@ -75,7 +75,7 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
      */
     public sendTableRowAddedChangeEvent( modelObject: T )
     {
-        this.log( "sendTableRowAddedChangeEvent" + JSON.stringify( modelObject ) );
+        this.debug( "sendTableRowAddedChangeEvent " + JSON.stringify( modelObject ) );
         this.tickThenRun( () => this.tableRowAddedSubject.next( modelObject ) );
     }
 
@@ -85,7 +85,7 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
      */
     public subscribeToTableRowDeletedChangeEvent( fn: ( T ) => any )
     {
-        this.log( "subscribeToTableRowDeletedChangeEvent" );
+        this.debug( "subscribeToTableRowDeletedChangeEvent" );
         this.tableRowDeletedSubject.asObservable().subscribe( fn );
     }
 
@@ -95,7 +95,7 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
      */
     public sendTableRowDeletedChangeEvent( modelObject: T )
     {
-        this.log( "sendTableRowDeletedChangeEvent" + JSON.stringify( modelObject ) );
+        this.debug( "sendTableRowDeletedChangeEvent " + JSON.stringify( modelObject ) );
         this.tickThenRun( () => this.tableRowDeletedSubject.next( modelObject ) );
     }
 
@@ -105,7 +105,7 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
      */
     public subscribeToTableRowUpdatedChangeEvent( fn: ( T ) => any )
     {
-        this.log( "subscribeToTableRowUpdatedChangeEvent" );
+        this.debug( "subscribeToTableRowUpdatedChangeEvent" );
         this.tableRowUpdatedSubject.asObservable().subscribe( fn );
     }
 
@@ -115,7 +115,7 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
      */
     public sendTableRowUpdatedChangeEvent( modelObject: T )
     {
-        this.log( "sendTableRowUpdatedChangeEvent" + JSON.stringify( modelObject ) );
+        this.debug( "sendTableRowUpdatedChangeEvent " + JSON.stringify( modelObject ) );
         this.tickThenRun( () => this.tableRowUpdatedSubject.next( modelObject ) );
     }
 }
