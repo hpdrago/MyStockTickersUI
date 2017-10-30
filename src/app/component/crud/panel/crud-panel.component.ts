@@ -52,12 +52,12 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     private subscribeToCrudPanelServiceEvents(): void
     {
         this.debug( "subscribeToCrudPanelServiceEvents.begin" );
-        this.crudServiceContainer
+        this.addSubscription( this.crudServiceContainer
             .crudFormButtonsService
-            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) );
-        this.crudServiceContainer
+            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) ));
+        this.addSubscription( this.crudServiceContainer
             .crudFormButtonsService
-            .subscribeToCrudOperationChangeEvent( ( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) );
+            .subscribeToCrudOperationChangeEvent( ( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) ));
         this.debug( "subscribeToCrudPanelServiceEvents.end" );
     }
 
@@ -70,9 +70,10 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
         /**
          * Subscribe to error notifications from child components
          */
-        this.crudServiceContainer
+        this.addSubscription(
+            this.crudServiceContainer
             .crudFormService
-            .subscribeToCrudOperationError(( errorMessage: string ) => this.reportRestError( errorMessage ));
+            .subscribeToCrudOperationError(( errorMessage: string ) => this.reportRestError( errorMessage )));
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 

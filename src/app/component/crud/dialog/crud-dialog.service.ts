@@ -5,7 +5,8 @@ import { BaseCrudComponentService } from "../common/base-crud-component.service"
 import { DisplayDialogRequestSubjectInfo } from "./display-dialog-request-subject-info";
 import { CrudOperation } from "../common/crud-operation";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { CloseButtonEvent } from "../common/close-button-event";
+import { DialogCloseEventType } from "../common/close-button-event";
+import { Subscription } from "rxjs/Subscription";
 
 /**
  * This service defines the Observables for interacting with a CRUD dialog.
@@ -18,7 +19,7 @@ import { CloseButtonEvent } from "../common/close-button-event";
 export class CrudDialogService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
     protected displayDialogRequestSubject: BehaviorSubject<DisplayDialogRequestSubjectInfo> = new BehaviorSubject<DisplayDialogRequestSubjectInfo>( null );
-    protected closeButtonClickedSubject: Subject<CloseButtonEvent> = new Subject<CloseButtonEvent>();
+    protected closeButtonClickedSubject: Subject<DialogCloseEventType> = new Subject<DialogCloseEventType>();
 
     /**
      * This method must be implemented to return an instance of a DisplayDialogRequestSubjectInfo that contains
@@ -35,10 +36,10 @@ export class CrudDialogService<T extends ModelObject<T>> extends BaseCrudCompone
     /**
      * Handle the request to display the dialog
      */
-    public subscribeToDisplayDialogRequestEvent( fn: ( DisplayDialogRequestSubjectInfo ) => any )
+    public subscribeToDisplayDialogRequestEvent( fn: ( DisplayDialogRequestSubjectInfo ) => any ): Subscription
     {
         this.debug( "subscribeToDisplayDialogRequestEvent" );
-        this.displayDialogRequestSubject.asObservable().subscribe( fn );
+        return this.displayDialogRequestSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -54,20 +55,22 @@ export class CrudDialogService<T extends ModelObject<T>> extends BaseCrudCompone
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the close
      * button is clicked on the panel.
+     * @return Subscription
      */
-    public subscribeToCloseButtonClickedEvent( fn: ( event: CloseButtonEvent ) => any )
+    public subscribeToCloseButtonClickedEvent( fn: ( event: DialogCloseEventType ) => any ): Subscription
     {
-        this.debug( "subscribeToCloseButtonClickedEvent" );
-        this.closeButtonClickedSubject.asObservable().subscribe( fn );
+        var subscription: Subscription = this.closeButtonClickedSubject.asObservable().subscribe( fn );
+        this.debug( "subscribeToCloseButtonClickedEvent subscribers: " + this.closeButtonClickedSubject.observers.length );
+        return subscription;
     }
 
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the close button.
      */
-    public sendCloseButtonClickedEvent( event: CloseButtonEvent )
+    public sendCloseButtonClickedEvent( event: DialogCloseEventType )
     {
-        this.debug( "sendCloseButtonClickedEvent" );
+        this.debug( "sendCloseButtonClickedEvent " + DialogCloseEventType.getName( event ) + " subscribers: "
+            + this.closeButtonClickedSubject.observers.length );
         this.tickThenRun( () => this.closeButtonClickedSubject.next( event ) );
     }
-
 }

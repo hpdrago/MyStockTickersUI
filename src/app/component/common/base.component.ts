@@ -1,14 +1,16 @@
-import { OnChanges, SimpleChange } from "@angular/core";
+import { OnChanges, OnDestroy, SimpleChange } from "@angular/core";
 import { RestException } from "../../common/rest-exception";
 import { ToastsManager, Toast } from "ng2-toastr";
 import { BaseClass } from "../../common/base-class";
+import { Subscription } from "rxjs/Subscription";
 
 /**
  * This is the base class for all application components to contain common methods, services, and data
  * Created by mike on 11/27/2016.
  */
-export abstract class BaseComponent extends BaseClass implements OnChanges
+export abstract class BaseComponent extends BaseClass implements OnChanges, OnDestroy
 {
+    private subscriptions: Subscription[] = [];
     constructor( protected toaster: ToastsManager )
     {
         super();
@@ -29,6 +31,36 @@ export abstract class BaseComponent extends BaseClass implements OnChanges
         }
     }
 
+    /**
+     * This method is called when the instance is destroyed
+     */
+    public ngOnDestroy(): void
+    {
+        this.debug( "ngOnDestroy" );
+        this.unSubscribeAll();
+    }
+
+    /**
+     * Unsubscribes from all registered subscriptions
+     */
+    protected unSubscribeAll()
+    {
+        this.debug( "unsubscribeAll" );
+        for ( var subscription of this.subscriptions )
+        {
+            subscription.unsubscribe();
+        }
+    }
+
+    /**
+     * Adds {@code subscription} to a list of Subscriptions.
+     * All registered subscriptions will be unsubscribed when the instance is destroyed.
+     * @param {Subscription} subscription
+     */
+    protected addSubscription( subscription: Subscription )
+    {
+        this.subscriptions.push( subscription );
+    }
     /**
      * This method is called by {@code ngOnChanges} for each property that has changed.
      * @param property The name of the property that has changed.

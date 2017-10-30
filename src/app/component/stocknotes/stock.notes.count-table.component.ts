@@ -51,7 +51,7 @@ export class StockNotesCountTableComponent extends CrudTableComponent<StockNotes
         //this.stockNotesTableComponent.loadStockNotesForStock( stockNoteCount );
     }
 
-    private getActionTaken( actionTaken: number )
+    private getActionTaken( actionTaken: string )
     {
         return StockNotesActionTaken.getName( actionTaken );
     }

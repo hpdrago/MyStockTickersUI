@@ -3,6 +3,7 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { Subject, Observable } from "rxjs";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
+import { Subscription } from "rxjs/Subscription";
 
 /**
  * This class defines the publish/subscribe (observer pattern) methods from communication
@@ -45,12 +46,13 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
      * The {@code CrudTableComponent} will call this method to register to receive notification when the
      * {@code CrudPanelComponent} inform the table component to scroll to a particular model object.
      * @param modelObject
-     * @return {Observable<T>}
+     * @return {Subscription}
      */
-    public subscribeToNavigateToModelObjectEvent( modelObject: T ): Observable<T>
+    public subscribeToNavigateToModelObjectEvent( modelObject: T ): Subscription
     {
-        this.log( "subscribed to navigateToModelObject" );
-        return this.navigateToModelObjectSubject.asObservable();
+        this.debug( "subscribed to navigateToModelObject" );
+        var observable: Observable<T> = this.navigateToModelObjectSubject.asObservable();
+        return observable.subscribe();
     }
 
     /**
@@ -60,7 +62,7 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
      */
     public sendNavigateToModelObjectEvent( modelObject: T )
     {
-        this.log( "sendNavigateToModelObjectEvent" );
+        this.debug( "sendNavigateToModelObjectEvent" );
         this.tickThenRun( () => this.navigateToModelObjectSubject.next( modelObject ) );
     }
 
@@ -68,10 +70,10 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Add and continue
      * button is clicked on the panel.
      */
-    public subscribeToContinuousAddButtonClickedEvent( fn: ( T ) => any )
+    public subscribeToContinuousAddButtonClickedEvent( fn: ( T ) => any ): Subscription
     {
-        this.log( "subscribed to addAndContinueButtonClicked" );
-        this.addAndContinueButtonClickedSubject.asObservable().subscribe( fn );
+        this.debug( "subscribed to addAndContinueButtonClicked" );
+        return this.addAndContinueButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -80,7 +82,7 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
      */
     public sendContinuousAddButtonClickedEvent( modelObject: T )
     {
-        this.log( "sendContinuousAddButtonClickedEvent" );
+        this.debug( "sendContinuousAddButtonClickedEvent" );
         this.tickThenRun( () => this.addAndContinueButtonClickedSubject.next( modelObject ) );
     }
 
@@ -88,10 +90,10 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Add
      * button is clicked on the panel.
      */
-    public subscribeToAddButtonClickedEvent( fn: ( T ) => any )
+    public subscribeToAddButtonClickedEvent( fn: ( T ) => any ): Subscription
     {
-        this.log( "subscribed to addButtonClicked" );
-        this.addButtonClickedSubject.asObservable().subscribe( fn );
+        this.debug( "subscribed to addButtonClicked" );
+        return this.addButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -100,19 +102,19 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
      */
     public sendAddButtonClickedEvent( modelObject: T )
     {
-        this.log( "sendAddButtonClickedEvent" );
+        this.debug( "sendAddButtonClickedEvent" );
         this.tickThenRun( () => this.addButtonClickedSubject.next( modelObject ) );
     }
 
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Delete
      * button is clicked on the panel.
-     * @return {Observable<T>}
+     * @return {Subscription}
      */
-    public subscribeToHandleDeleteButtonClickedEvent( fn: ( T ) => any )
+    public subscribeToHandleDeleteButtonClickedEvent( fn: ( T ) => any ): Subscription
     {
-        this.log( "subscribed to deleteButtonClicked" );
-        this.deleteButtonClickedSubject.asObservable().subscribe( fn );
+        this.debug( "subscribed to deleteButtonClicked" );
+        return this.deleteButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -121,18 +123,19 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
      */
     public sendDeleteButtonClickedEvent( modelObject: T )
     {
-        this.log( "sendDeleteButtonClickedEvent" );
+        this.debug( "sendDeleteButtonClickedEvent" );
         this.tickThenRun( () => this.deleteButtonClickedSubject.next( modelObject ) );
     }
 
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Save
      * button is clicked on the panel.
+     * @return Subscription
      */
-    public subscribeToSaveButtonClickedEvent( fn: ( T ) => any )
+    public subscribeToSaveButtonClickedEvent( fn: ( T ) => any ): Subscription
     {
-        this.log( "subscribed to saveButtonClicked" );
-        this.saveButtonClickedSubject.asObservable().subscribe( fn );
+        this.debug( "subscribed to saveButtonClicked" );
+        return this.saveButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -141,19 +144,19 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
      */
     public sendSaveButtonClickedEvent( modelObject: T )
     {
-        this.log( "sendSaveButtonClickedEvent" );
+        this.debug( "sendSaveButtonClickedEvent" );
         this.tickThenRun( () => this.saveButtonClickedSubject.next( modelObject ) );
     }
 
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Reset
      * button is clicked on the panel.
-     * @return {Observable<void>}
+     * @return {Subscription}
      */
-    public registerToResetButtonClickedEvent( fn: () => any )
+    public registerToResetButtonClickedEvent( fn: () => any ): Subscription
     {
-        this.log( "subscribed to resetButtonClicked" );
-        this.resetButtonClickedSubject.asObservable().subscribe( fn );
+        this.debug( "subscribed to resetButtonClicked" );
+        return this.resetButtonClickedSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -161,7 +164,7 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
      */
     public sendResetButtonClickedEvent()
     {
-        this.log( "sendResetButtonClickedEvent" );
+        this.debug( "sendResetButtonClickedEvent" );
         this.tickThenRun( () => this.resetButtonClickedSubject.next() );
     }
 }

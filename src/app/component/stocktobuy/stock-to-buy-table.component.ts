@@ -11,7 +11,7 @@ import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
 import { StockNotesSentiment } from "../common/stock-notes-sentiment";
 import { CrudOperation } from "../crud/common/crud-operation";
 import { StockNotesStock } from "../../model/entity/stock-notes-stock";
-import { CloseButtonEvent } from "../crud/common/close-button-event";
+import { DialogCloseEventType } from "../crud/common/close-button-event";
 
 /**
  * This component displays a list of Stocks to buy.
@@ -60,9 +60,11 @@ export class StockToBuyTableComponent extends CrudTableComponent<StockToBuy>
     }
 
     /**
-     * This method is called when the user clicks the Record Buy button.
-     * The user will be presented to create a stock note to record the necessary information for the purchase.
-     * The stock to buy will also be marked as completed.
+     * This method is called when the user clicks the "Record Buy" button in the table.
+     * The buy information contained within the StockToBuy for that row clicked will be converted to a StockNotes
+     * instances so that a note can be created to document the purchase of a stock.
+     * The stock notes dialog will display to allow the user to enter note information and if the note is created
+     * then the user will be prompted to delete the stock to buy entry if they want.
      * @param {StockToBuy} stockToBuy
      */
     private onBuyButtonClick( stockToBuy: StockToBuy )
@@ -82,21 +84,28 @@ export class StockToBuyTableComponent extends CrudTableComponent<StockToBuy>
         stockNoteStock.stockPrice = stockToBuy.lastPrice;
         stockNoteStock.customerId = stockToBuy.customerId;
         stockNotes.stocks = [stockNoteStock];
+        /*
+         * Register to get notified when the user closes the stock notes dialog to determine if the user should
+         * be prompted to delete the stock to buy entry.
+         */
+        this.stockNotesServiceContainer
+            .crudDialogService
+            .subscribeToCloseButtonClickedEvent( ( event: DialogCloseEventType ) =>
+                                                 {
+                                                     this.log( methodName + " stock notes closed button clicked event: " + event );
+                                                     if ( event != DialogCloseEventType.CANCEL_BUTTON )
+                                                     {
+                                                         this.stockToBuyServiceContainer
+                                                             .crudTableButtonsService
+                                                             .sendDeleteButtonClickedEvent( stockToBuy );
+                                                     }
+                                                 })
+        /*
+         * Display the stock notes dialog.
+         */
         this.stockNotesServiceContainer
             .crudDialogService
             .sendDisplayDialogRequestEvent( stockNotes, CrudOperation.CREATE );
-        this.stockNotesServiceContainer
-            .crudDialogService
-            .subscribeToCloseButtonClickedEvent( ( event: CloseButtonEvent ) =>
-                                                     {
-                                                         this.log( methodName + " stock notes closed button clicked event: " + event );
-                                                         if ( event != CloseButtonEvent.CANCEL_BUTTON )
-                                                         {
-                                                             this.stockToBuyServiceContainer
-                                                                 .crudTableButtonsService
-                                                                 .sendDeleteButtonClickedEvent( stockToBuy );
-                                                         }
-                                                     })
     }
 
 }

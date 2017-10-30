@@ -153,15 +153,18 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudFormButtonEvents(): void
     {
-        this.crudServiceContainer
+        this.addSubscription(
+            this.crudServiceContainer
             .crudFormButtonsService
-            .subscribeToSaveButtonClickedEvent(( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) );
-        this.crudServiceContainer
+            .subscribeToSaveButtonClickedEvent(( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) ));
+        this.addSubscription(
+            this.crudServiceContainer
             .crudFormButtonsService
-            .subscribeToAddButtonClickedEvent(( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) );
-        this.crudServiceContainer
+            .subscribeToAddButtonClickedEvent(( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) ));
+        this.addSubscription(
+            this.crudServiceContainer
             .crudFormButtonsService
-            .subscribeToHandleDeleteButtonClickedEvent(( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) );
+            .subscribeToHandleDeleteButtonClickedEvent(( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) ));
     }
 
     /**
@@ -169,18 +172,21 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudTableButtonEvents(): void
     {
-        this.crudServiceContainer
+        this.addSubscription(
+            this.crudServiceContainer
             .crudTableButtonsService
-            .subscribeToAddButtonClickedEvent(( modelObject: T ) => this.showDialogToAdd() );
-        this.crudServiceContainer
+            .subscribeToAddButtonClickedEvent(( modelObject: T ) => this.showDialogToAdd() ));
+        this.addSubscription(
+            this.crudServiceContainer
             .crudTableButtonsService
-            .subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showDialogToEdit( modelObject ) );
-        this.crudServiceContainer
+            .subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showDialogToEdit( modelObject ) ));
+        this.addSubscription(
+            this.crudServiceContainer
             .crudTableButtonsService
-            .subscribeToDeleteButtonClickedEvent(( modelObject: T ) => this.showDialogToDelete( modelObject ) );
-        this.crudServiceContainer
+            .subscribeToDeleteButtonClickedEvent(( modelObject: T ) => this.showDialogToDelete( modelObject ) ));
+        this.addSubscription( this.crudServiceContainer
             .crudTableButtonsService
-            .subscribeToRefreshButtonClickedEvent(( modelObject: T ) => this.refreshTable() );
+            .subscribeToRefreshButtonClickedEvent(( modelObject: T ) => this.refreshTable() ));
     }
 
     /**

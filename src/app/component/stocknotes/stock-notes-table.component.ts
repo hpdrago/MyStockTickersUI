@@ -48,7 +48,7 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
         super.onTableLoad( stockNotes );
     }
 
-    private getActionTaken( actionTaken: number )
+    private getActionTaken( actionTaken: string )
     {
         this.log( 'getActionTaken: ' + actionTaken );
         return StockNotesActionTaken.getName( actionTaken );

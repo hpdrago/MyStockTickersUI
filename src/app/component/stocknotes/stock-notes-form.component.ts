@@ -14,6 +14,7 @@ import { CrudOperation } from "../crud/common/crud-operation";
 import { isNullOrUndefined } from "util";
 import { StockNotesSentiment } from "../common/stock-notes-sentiment";
 import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
+import { StockCrudService } from "../../service/crud/stock-crud.service";
 
 /**
  * This is the Stock Note Form Component class.
@@ -39,15 +40,16 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     /**
      * Comma delimited list of ticker symbols
      */
-    private tickerSymbols: string;
+    private tickerSymbols: string = "";
     /**
      * The string the user enters the ticker symbols or company name to search for
      */
-    private stockSearch: string;
+    private stockSearch: string = "";
 
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
+                 private stockService: StockCrudService,
                  private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {
         super( toaster, stockNotesCrudServiceContainer );
@@ -144,14 +146,11 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected setFormValues( modelObject: StockNotes )
     {
-        this.log( "setFromValues modelObject: " + JSON.stringify( modelObject ));
-        if ( this.isCrudCreateOperation() )
-        {
-            this.tickerSymbols = modelObject.getTickerSymbols();
-            this.log( "setFormValues tickerSymbols: " + this.tickerSymbols );
-            this.setFormValue( 'tickerSymbols', this.tickerSymbols );
-        }
-        super.setFormValues( modelObject );
+        var methodName = "setFormValues";
+        this.log( methodName + " modelObject: " + JSON.stringify( modelObject ));
+        this.tickerSymbols = modelObject.getTickerSymbols();
+        this.log( methodName + " tickerSymbols: " + this.tickerSymbols );
+        this.setFormValue( 'tickerSymbols', this.tickerSymbols );
         if ( this.crudOperation == CrudOperation.CREATE )
         {
             if ( isNullOrUndefined( this.modelObject.actionTaken ))
@@ -162,7 +161,23 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             {
                 this.modelObject.actionTakenShares = 0;
             }
+            if ( !isNullOrUndefined( this.modelObject.tickerSymbol ))
+            {
+                this.stockService
+                    .getStock( this.modelObject.tickerSymbol )
+                    .subscribe( (stock) =>
+                                {
+                                    this.log( methodName + " found: " + stock.tickerSymbol );
+                                    this.modelObject.stockPriceWhenCreated = stock.lastPrice;
+                                },
+                                error =>
+                                {
+                                    this.resetForm();
+                                    this.reportRestError( error );
+                                });
+            }
         }
+        super.setFormValues( modelObject );
     }
 
     /**

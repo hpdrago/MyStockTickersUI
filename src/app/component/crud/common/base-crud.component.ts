@@ -3,6 +3,7 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
 import { CrudOperation } from "./crud-operation";
 import { Subscription } from "rxjs/Subscription";
+import { OnDestroy } from "@angular/core";
 /**
  * This class is the base class for all CRUD components
  *
@@ -15,24 +16,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
     protected crudOperation: CrudOperation = CrudOperation.NONE;
     private displayProgressBar: boolean = false;
-
     private _busyIndicator: Subscription;
-    get busyIndicator():Subscription
-    {
-        return this._busyIndicator;
-    }
-    set busyIndicator( busyIndicator: Subscription)
-    {
-        this.debug( "busyIndicator setting displayProgressBar to true");
-        this._busyIndicator = busyIndicator;
-        this.displayProgressBar = true;
-        this._busyIndicator.add( ()=>
-        {
-            this.debug( "busyIndicator setting displayProgressBar to false" );
-            this.displayProgressBar = false
-        })
-    }
-
     /**
      * The object that contains the form's data
      */
@@ -46,6 +30,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
             throw new Error( "toaster argument cannot be null" );
         }
     }
+
 
    /**
     * This method is called by the super class whenever an @Input() property changes.
@@ -149,4 +134,21 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     {
         return this.crudOperation == CrudOperation.DELETE;
     }
+
+    get busyIndicator():Subscription
+    {
+        return this._busyIndicator;
+    }
+    set busyIndicator( busyIndicator: Subscription)
+    {
+        this.debug( "busyIndicator setting displayProgressBar to true");
+        this._busyIndicator = busyIndicator;
+        this.displayProgressBar = true;
+        this._busyIndicator.add( ()=>
+                                 {
+                                     this.debug( "busyIndicator setting displayProgressBar to false" );
+                                     this.displayProgressBar = false
+                                 })
+    }
+
 }

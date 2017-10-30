@@ -139,5 +139,4 @@ export class StockCrudService extends PagingRestCRUDService<Stock>
         //this.logger.log( "isModelObjectReadOnly = " + readOnly + " " + JSON.stringify( stock ));
         return readOnly;
     }
-
 }

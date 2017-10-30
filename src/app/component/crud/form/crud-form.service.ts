@@ -3,6 +3,7 @@ import { BaseCrudComponentService } from "../common/base-crud-component.service"
 import { ModelObject } from "../../../model/entity/modelobject";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
+import { Subscription } from "rxjs/Subscription";
 /**
  * This service provides communication from the CrudFormComponent's parent aka CrudFormComponent
  * to the CrudFormComponent.
@@ -36,27 +37,27 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
      * The {@code CrudFormForm} will call this method and register to the Observable
      * and perform the necessary work to resetForm the form
      */
-    public subscribeToFormResetEvent( fn: () => any )
+    public subscribeToFormResetEvent( fn: () => any ): Subscription
     {
         this.debug( "subscribeToFormResetEvent" );
-        this.formResetSubject.asObservable().subscribe( fn );
+        return this.formResetSubject.asObservable().subscribe( fn );
     }
 
     /**
      * The {@code CrudFormForm} will call this method to register for
      * dirty status changes of the form.
      */
-    public subscribeToFormDirtyEvent( fn: ( boolean ) => any )
+    public subscribeToFormDirtyEvent( fn: ( boolean ) => any ): Subscription
     {
         this.debug( "subscribeToFormDirtyEvent" );
-        this.formDirtySubject.asObservable().subscribe( fn );
+        return this.formDirtySubject.asObservable().subscribe( fn );
     }
 
     /**
      * The {@code CrudFormForm} will call this method to be notified on changes to the
      * touched status.
      */
-    public subscribeToFormTouchedEvent( fn: ( boolean ) => any )
+    public subscribeToFormTouchedEvent( fn: ( boolean ) => any ): Subscription
     {
         this.debug( "subscribeToFormTouchedEvent" );
         return this.formTouchedSubject.asObservable().subscribe( fn );
@@ -66,7 +67,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
      * The {@code CrudFormForm} will call this method to be notified when there are changes to the
      * form's valid status.
      */
-    public subscribeToFormValidEvent( fn: ( boolean ) => any )
+    public subscribeToFormValidEvent( fn: ( boolean ) => any ): Subscription
     {
         this.debug( "subscribeToFormValidEvent" );
         return this.formValidSubject.asObservable().subscribe( fn );
@@ -76,20 +77,20 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
      * The {@code CrudForm} will call this method and register to the Observable
      * and perform the necessary work to display the form state
      */
-    public subscribeToFormLogStateRequest( fn: () => any )
+    public subscribeToFormLogStateRequest( fn: () => any ): Subscription
     {
         this.debug( "subscribeToFormLogState" );
-        this.formLogStateSubject.asObservable().subscribe( fn );
+        return this.formLogStateSubject.asObservable().subscribe( fn );
     }
 
     /**
      * The {@code CrudFormComponent} will call this method to register to be notified that the user has clicked on
      * the save or add button.  This allows the form to perform any final processing on the modelObject before its saved.
      */
-    public subscribeToFormPrepareToSaveEvent( fn: () => any )
+    public subscribeToFormPrepareToSaveEvent( fn: () => any ): Subscription
     {
         this.debug( "subscribeToFormPrepareToSaveEvent" );
-        this.formPrepareToSaveSubject.asObservable().subscribe( fn );
+        return this.formPrepareToSaveSubject.asObservable().subscribe( fn );
     }
     /*
      * N O T I F I E R   M E T H O D S

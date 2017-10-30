@@ -20,6 +20,7 @@ export class StockToBuy extends ModelObject<StockToBuy> implements StockNoteCont
     public lastPriceChange: Date;
     public stockPriceWhenCreated: number;
     public percentChange: number;
+    public completed: boolean;
     public buyAfterDate: Date;
     public createDate: Date;
     public updateDate: Date;

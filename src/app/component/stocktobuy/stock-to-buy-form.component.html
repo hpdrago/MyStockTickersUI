@@ -6,10 +6,10 @@
             TICKER SYMBOL
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="tickerSymbol">Ticker Symbol:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-10">
                     <stock-autocomplete id="tickerSymbol"
                                         [(ngModel)]="modelObject.tickerSymbol"
                                         [formGroup]="formGroup"
@@ -30,10 +30,10 @@
             COMPANY NAME
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="companyNameColumn">Company:</label>
                 </div>
-                <div id="companyNameColumn" class="ui-grid-col-9">
+                <div id="companyNameColumn" class="ui-grid-col-10">
                     {{modelObject.companyName}}
                 </div>
             </div>
@@ -42,10 +42,10 @@
             LAST PRICE
             ------------------------------------------------------------------------------------------------------------>
             <div class="ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="lastPriceColumn">Last Price:</label>
                 </div>
-                <div id="lastPriceColumn" class="ui-grid-col-3">
+                <div id="lastPriceColumn" class="ui-grid-col-2">
                     {{modelObject.lastPrice | currency:'USD': true}}
                 </div>
             </div>
@@ -54,10 +54,10 @@
             COMMENTS
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="comments">Comments:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-10">
                     <textarea id="comments"
                               maxlength="StockToBuy.COMMENTS_LEN"
                               formControlName="comments"
@@ -80,10 +80,10 @@
             BUY SHARES UP TO PRICE
             ------------------------------------------------------------------------------------------------------------>
             <div class="ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="buySharesUpToPrice">Buy Shares Up To Price:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-10">
                     <input currencyMask
                            id="buySharesUpToPrice"
                            formControlName="buySharesUpToPrice"
@@ -115,10 +115,10 @@
             TAGS
             ------------------------------------------------------------------------------------------------------------>
             <div class="ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="tags">Tags:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-10">
                     <p-chips id="tags"
                              name="basic"
                              placeholder="type and press enter"

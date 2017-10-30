@@ -35,6 +35,7 @@ import {
     ConfirmDialogModule,
     ConfirmationService,
     InputTextareaModule,
+    CheckboxModule,
     RatingModule,
     CalendarModule,
     EditorModule,

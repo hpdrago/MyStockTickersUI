@@ -4,6 +4,8 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { BaseClass } from "../../../common/base-class";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
+import { Subscription } from "rxjs/Subscription";
+import { subscriptionLogsToBeFn } from "rxjs/testing/TestScheduler";
 /**
  * This class services as a base abstract class for CRUD based component services to provide common methods
  * and properties.
@@ -30,31 +32,34 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
      * This method is used to register for events when the errors occur during CRUD operations.
      * This parent panel that contains CRUD components, should register for these events and
      * property report the error to the user.
+     * @return Subscription
      */
-    public subscribeToCrudOperationError( fn: ( string ) => any )
+    public subscribeToCrudOperationError( fn: ( string ) => any ): Subscription
     {
         this.debug( "subscribeToCrudOperationError" );
-        this.crudOperationErrorSubject.asObservable().subscribe( fn );
+        return this.crudOperationErrorSubject.asObservable().subscribe( fn );
     }
 
     /**
      * This method is used to register for events when the {@code ModelObject} instance has changed
+     * @return Subscription
      */
-    public subscribeToModelObjectChangedEvent( fn: ( ModelObject ) => any ): Observable<T>
+    public subscribeToModelObjectChangedEvent( fn: ( ModelObject ) => any ): Subscription
     {
         var observable: Observable<T> = this.modelObjectChangedSubject.asObservable();
-        observable.subscribe( fn );
+        var subscription: Subscription = observable.subscribe( fn );
         this.debug( "subscribeToModelObjectChangedEvent " + this.modelObjectChangedSubject.observers.length + " observers" );
-        return observable;
+        return subscription;
     }
 
     /**
      * This method is used by an observer to be notified as result of a change to the crud operation.
+     * @return Subscription instance
      */
-    public subscribeToCrudOperationChangeEvent( fn: ( CrudOperation ) => any )
+    public subscribeToCrudOperationChangeEvent( fn: ( CrudOperation ) => any ): Subscription
     {
         this.debug( "subscribeToCrudOperationChangeEvent" );
-        this.crudOperationChangedSubject.asObservable().subscribe( fn );
+        return this.crudOperationChangedSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -95,19 +100,19 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
      */
     public sendComponentInitializedEvent()
     {
-        this.logger.debug( "sendComponentInitialized" );
+        this.debug( "sendComponentInitialized" );
         this.tickThenRun( () => this.componentInitializedSubject.next() );
     }
 
     /**
      * The {@code CrudDialog or CrudPanel} will call this method and register to the Observable
      * to be notified when the form has completed it's initialization.
-     *
+     * @return Subscription instance
      */
-    public subscribeToComponentInitializedEvent( fn: () => any )
+    public subscribeToComponentInitializedEvent( fn: () => any ): Subscription
     {
-        this.logger.debug( "subscribeToComponentInitializedEvent" );
-        this.componentInitializedSubject.asObservable().subscribe( fn );
+        this.debug( "subscribeToComponentInitializedEvent" );
+        return this.componentInitializedSubject.asObservable().subscribe( fn );
     }
 
     protected tickThenRun( fn: () => any )

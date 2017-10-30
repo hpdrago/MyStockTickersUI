@@ -4,7 +4,7 @@ import { CrudOperation } from "../common/crud-operation";
 import { ToastsManager } from "ng2-toastr";
 import { CrudServiceContainer } from "../common/crud-service-container";
 import { Observable } from "rxjs/Observable";
-import { CloseButtonEvent } from "../common/close-button-event";
+import { DialogCloseEventType } from "../common/close-button-event";
 import { isNullOrUndefined } from "util";
 
 /**
@@ -60,10 +60,10 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected formTouchedFlag: boolean;
 
     /**
-     * Have to declare CloseButtonEvent for this context.
+     * Have to declare DialogCloseEventType for this context.
      * @type {CloseButtonEvent}
      */
-    protected CloseButtonEvent = CloseButtonEvent;
+    protected CloseButtonEvent = DialogCloseEventType;
 
     /**
      * Initialize the class
@@ -319,6 +319,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected onResetButtonClick(): void
     {
+        this.debug( "onResetButtonClick" );
         this.crudServiceContainer
             .crudFormService
             .sendFormResetEvent();
@@ -366,6 +367,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected notifySaveButtonSuccessful()
     {
+        this.debug( "notifySaveButtonSuccessful" );
         this.crudServiceContainer
             .crudFormService
             .sendFormResetEvent();
@@ -419,6 +421,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected sendFormPrepareToSaveEvent()
     {
+        this.debug( "sendFormPrepareToSaveEvent" );
         this.crudServiceContainer.crudFormService.sendFormPrepareToSaveEvent();
     }
 
@@ -477,6 +480,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected notifyAddButtonWorkSuccessful()
     {
+        this.debug( "notifyAddButtonWorkSuccessful" );
         this.crudServiceContainer
             .crudFormService.sendFormResetEvent();
         this.crudServiceContainer
@@ -502,6 +506,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                    },
                    err =>
                    {
+                       this.debug( methodName + " delete failed" );
                        this.reportRestError( err );
                    }
             );
@@ -522,6 +527,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected notifyDeleteButtonWorkSuccessful()
     {
+        this.debug( "notifyDeleteButtonWorkSuccessful" );
         this.crudServiceContainer
             .crudFormService
             .sendFormResetEvent();
@@ -534,8 +540,9 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      * This method is called when the user clicks the Close button.  The dialog service is used to send the close
      * message.
      */
-    protected onCloseButtonClick( event: CloseButtonEvent ): void
+    protected onCloseButtonClick( event: DialogCloseEventType ): void
     {
+        this.debug( "onCloseButtonClick " + DialogCloseEventType.getName( event ) );
         this.crudServiceContainer
             .crudDialogService
             .sendCloseButtonClickedEvent( event );

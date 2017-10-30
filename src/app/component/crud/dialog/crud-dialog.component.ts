@@ -1,12 +1,11 @@
 import { ToastsManager } from "ng2-toastr";
-import { Input } from "@angular/core";
 import { CrudServiceContainer } from "../common/crud-service-container";
 import { BaseCrudComponent } from "../common/base-crud.component";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { DisplayDialogRequestSubjectInfo } from "./display-dialog-request-subject-info";
 import { CrudOperation } from "../common/crud-operation";
 import { isNullOrUndefined } from "util";
-import { CloseButtonEvent } from "../common/close-button-event";
+import { DialogCloseEventType } from "../common/close-button-event";
 /**
  * This is the base class for Modal dialogs that provide CRUD operations on a model object.
  *
@@ -92,30 +91,37 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
     protected subscribeToCrudDialogServiceEvents()
     {
         this.log( "subscribeToCrudDialogServiceEvents.begin" );
-        this.crudServiceContainer
+        this.addSubscription(
+            this.crudServiceContainer
             .crudDialogService
-            .subscribeToCloseButtonClickedEvent(( event: CloseButtonEvent ) => this.onCloseButtonClick( event ) );
-        this.crudServiceContainer
+            .subscribeToCloseButtonClickedEvent(( event: DialogCloseEventType ) => this.onCloseButtonClick( event ) ));
+        this.addSubscription(
+            this.crudServiceContainer
             .crudDialogService
-            .subscribeToDisplayDialogRequestEvent(( subjectInfo: DisplayDialogRequestSubjectInfo ) => this.setDisplayDialog( subjectInfo ) );
-        this.crudServiceContainer
+            .subscribeToDisplayDialogRequestEvent(( subjectInfo: DisplayDialogRequestSubjectInfo ) => this.setDisplayDialog( subjectInfo ) ));
+        this.addSubscription( this.crudServiceContainer
             .crudDialogService
-            .subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) );
-        this.crudServiceContainer
+            .subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) ));
+        this.addSubscription(
+            this.crudServiceContainer
             .crudDialogService
-            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) );
-        this.crudServiceContainer
+            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) ));
+        this.addSubscription(
+            this.crudServiceContainer
             .crudFormButtonsService
-            .subscribeToAddButtonClickedEvent( ( modelObject ) => this.onAddButtonClicked( modelObject ) )
-        this.crudServiceContainer
+            .subscribeToAddButtonClickedEvent( ( modelObject ) => this.onAddButtonClicked( modelObject ) ));
+        this.addSubscription(
+            this.crudServiceContainer
             .crudFormButtonsService
-            .subscribeToContinuousAddButtonClickedEvent(( modelObject ) => this.onContinuousAddButtonClicked( modelObject ) )
-        this.crudServiceContainer
+            .subscribeToContinuousAddButtonClickedEvent(( modelObject ) => this.onContinuousAddButtonClicked( modelObject ) ));
+        this.addSubscription(
+            this.crudServiceContainer
             .crudFormButtonsService
-            .subscribeToSaveButtonClickedEvent( ( modelObject ) => this.onSaveButtonClicked( modelObject ) )
-        this.crudServiceContainer
+            .subscribeToSaveButtonClickedEvent( ( modelObject ) => this.onSaveButtonClicked( modelObject ) ));
+        this.addSubscription(
+            this.crudServiceContainer
             .crudFormButtonsService
-            .subscribeToHandleDeleteButtonClickedEvent(( modelObject ) => this.onDeleteButtonClicked( modelObject ) )
+            .subscribeToHandleDeleteButtonClickedEvent(( modelObject ) => this.onDeleteButtonClicked( modelObject ) ));
         this.log( "subscribeToCrudDialogServiceEvents.end" );
     }
 
@@ -164,7 +170,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
      * This method is called when the Close button is clicked.
      * It will close the dialog and emit a {@code closeButtonClick} event
      */
-    protected onCloseButtonClick( event: CloseButtonEvent ): void
+    protected onCloseButtonClick( event: DialogCloseEventType ): void
     {
         if ( !isNullOrUndefined( this.modelObject ) )
         {
@@ -183,7 +189,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
         this.debug( "onAddButtonClick " + JSON.stringify( modelObject ) );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
-            this.onCloseButtonClick( CloseButtonEvent.ADD_BUTTON );
+            this.onCloseButtonClick( DialogCloseEventType.ADD_BUTTON );
         }
     }
 
@@ -210,7 +216,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
         this.debug( "onSaveButtonClick " + JSON.stringify( modelObject ) );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
-            this.onCloseButtonClick( CloseButtonEvent.SAVE_BUTTON );
+            this.onCloseButtonClick( DialogCloseEventType.SAVE_BUTTON );
         }
     }
 
