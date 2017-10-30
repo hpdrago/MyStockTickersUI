@@ -21,9 +21,11 @@ export class StockNotes extends ModelObject<StockNotes> implements StockNoteCont
     public actionTaken: number;
     public actionTakenShares: number;
     public actionTakenPrice: number;
+    public stockPriceWhenCreated: number;
+    public lastPrice: number;
+    public percentChange: number;
     public dateCreated: Date;
     public dateModified: Date;
-    public stockPriceWhenCreated: number;
     public stocks: Array<StockNotesStock> = [];
 
     /**

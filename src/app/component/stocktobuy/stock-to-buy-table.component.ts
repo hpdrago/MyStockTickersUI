@@ -14,9 +14,9 @@ import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { CloseButtonEvent } from "../crud/common/close-button-event";
 
 /**
- * This component lists all stock notes
+ * This component displays a list of Stocks to buy.
  *
- * Created by mike on 10/30/2016.
+ * Created by mike on 10/24/2017.
  */
 @Component(
     {
@@ -45,10 +45,33 @@ export class StockToBuyTableComponent extends CrudTableComponent<StockToBuy>
         return super.onTableLoad( modelObjects );
     }
 
+    /**
+     * Determines if the stockToBuy.buyAfterDate is > the current date
+     * @param {StockToBuy} stockToBuy
+     * @returns {boolean}
+     */
+    private isAfterBuyAfterDate( stockToBuy: StockToBuy )
+    {
+        if ( isNullOrUndefined( stockToBuy.buyAfterDate ) )
+            return true;
+        let today: Date = new Date();
+        let buyAfterDate: Date = new Date( stockToBuy.buyAfterDate );
+        return buyAfterDate.getTime() > today.getTime();
+    }
+
+    /**
+     * This method is called when the user clicks the Record Buy button.
+     * The user will be presented to create a stock note to record the necessary information for the purchase.
+     * The stock to buy will also be marked as completed.
+     * @param {StockToBuy} stockToBuy
+     */
     private onBuyButtonClick( stockToBuy: StockToBuy )
     {
         var methodName: string = 'onBuyButtonClick ';
         this.log( methodName + " " + JSON.stringify( stockToBuy ));
+        /*
+         * Convert the StockToBuy information into a StockNote instance so that the user can record the buy
+         */
         var stockNotes: StockNotes = this.stockNotesServiceContainer.modelObjectFactory.newModelObject();
         stockNotes.tickerSymbol = stockToBuy.tickerSymbol;
         stockNotes.notes = stockToBuy.comments;

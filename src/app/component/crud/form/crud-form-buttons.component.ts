@@ -574,7 +574,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      * Returns the label for the Delete button.
      * @return {string}
      */
-    protected getDeleteButtonLabel(): string
+    protected getDeleteButtonLabel( modelObject: T ): string
     {
         return "Confirm";
     }
@@ -607,7 +607,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     /**
      * Defines the message to display to the user in the dialog when deleting the model object
      */
-    public getDeleteMessage(): string
+    public getDeleteMessage( modelObject: T ): string
     {
         return "Are you sure you want to delete this " + this.getDeleteKeyword() + "?";
     }

@@ -3,6 +3,7 @@ import { ToastsManager } from "ng2-toastr";
 import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
+import { StockNotes } from "../../model/entity/stock-notes";
 
 /**
  * Button panel component for the StockToBuy dialog.
@@ -25,9 +26,9 @@ export class StockToBuyFormButtonsComponent extends CrudFormButtonsComponent<Sto
     /**
      * Defines the message to display to the user in the dialog when deleting the model object
      */
-    public getDeleteMessage(): string
+    public getDeleteMessage( stockToBuy: StockToBuy ): string
     {
-        return 'Are you sure you want to delete?';
+        return 'Are you sure you want to delete ' + stockToBuy.tickerSymbol + "?";
     }
 
     /**
@@ -35,6 +36,16 @@ export class StockToBuyFormButtonsComponent extends CrudFormButtonsComponent<Sto
      */
     public getDeleteKeyword(): string
     {
-        return 'Stock ToBuy'
+        return 'Stock To Buy'
+    }
+
+    /**
+     * This method is called to get the message to display to the user that the mdoel object was saved successfully.
+     * @param {T} modelObject
+     * @returns {string}
+     */
+    protected getSaveSuccessFulMessage( stockToBuy: StockToBuy )
+    {
+        return "Save Successful for " + stockToBuy.tickerSymbol;
     }
 }

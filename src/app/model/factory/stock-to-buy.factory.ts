@@ -20,7 +20,7 @@ export class StockToBuyFactory extends ModelObjectFactory<StockToBuy>
         stockToBuy.tickerSymbol = '';
         stockToBuy.companyName = '';
         stockToBuy.comments = '';
-        stockToBuy.buySharesBelow = 0;
+        stockToBuy.buySharesUpToPrice = 0;
         stockToBuy.lastPrice = 0;
         stockToBuy.lastPriceChange = null;
         return stockToBuy;

@@ -1,4 +1,4 @@
-<p-panel id="stockToBuyPanelDiv" header="Stock ToBuy">
+<p-panel id="stockToBuyPanelDiv" header="Stocks To Buy">
     <div id="stockToBuyTableDiv">
         <p-dataTable [value]="rows"
                      selectionMode="single"
@@ -12,6 +12,7 @@
                      [loading]="loading"
                      (onRowDblclick)="onRowDoubleClick($event)"
                      [responsive]="true">
+
             <!----------------------------------------------------------------------------------------------------------
             TICKER SYMBOL
             ------------------------------------------------------------------------------------------------------------>
@@ -21,6 +22,7 @@
                       [style]="{'width':'10px'}"
                       [sortable]="true">
             </p-column>
+
             <!----------------------------------------------------------------------------------------------------------
             COMPANY NAME
             ------------------------------------------------------------------------------------------------------------>
@@ -32,8 +34,9 @@
                       [sortable]="false">
             </p-column>
             -->
+
             <!----------------------------------------------------------------------------------------------------------
-            BUY BUTTON
+            ACTIONS
             ------------------------------------------------------------------------------------------------------------>
             <p-column id="buyButton"
                       header="Record Buy"
@@ -42,12 +45,49 @@
                     <button pButton type="button" (click)="onBuyButtonClick( stockToBuy )" label="Record Buy"></button>
                 </ng-template>
             </p-column>
+
             <!----------------------------------------------------------------------------------------------------------
-            BUY SHARES BELOW
+            STOCK PRICE WHEN CREATED
             ------------------------------------------------------------------------------------------------------------>
-            <p-column id="buySharesBelow"
-                      field="buySharesBelow"
-                      header="Buy Below Price"
+            <p-column id="stockPriceWhenCreated"
+                      field="stockPriceWhenCreated"
+                      header="Price When Created"
+                      [style]="{'width':'10px','text-align':'right'}">
+                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                    {{stockToBuy[col.field] | currency: 'USD' : true }}
+                </ng-template>
+            </p-column>
+
+            <!----------------------------------------------------------------------------------------------------------
+            LAST PRICE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="lastPrice"
+                      field="lastPrice"
+                      header="Last Price"
+                      [style]="{'width':'10px','text-align':'right'}">
+                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                    {{stockToBuy[col.field] | currency: 'USD' : true }}
+                </ng-template>
+            </p-column>
+
+            <!----------------------------------------------------------------------------------------------------------
+            PERCENT OF CHANGE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="percentChange"
+                      field="percentChange"
+                      header="% Change"
+                      [style]="{'width':'10px','text-align':'right'}">
+                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                    {{stockToBuy[col.field] | percent: '1.2-2' }}
+                </ng-template>
+            </p-column>
+
+            <!----------------------------------------------------------------------------------------------------------
+            BUY SHARES UP TO PRICE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="buySharesUpToPrice"
+                      field="buySharesUpToPrice"
+                      header="Buy Up To"
                       [style]="{'width':'10px','text-align':'right'}">
                 <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
                     <div class="buy" *ngIf="stockToBuy && stockToBuy['lastPrice'] < stockToBuy[col.field]">
@@ -58,26 +98,22 @@
                     </div>
                 </ng-template>
             </p-column>
+
             <!----------------------------------------------------------------------------------------------------------
-            STOCK PRICE
+            BUY SHARES AFTER DATE
             ------------------------------------------------------------------------------------------------------------>
-            <p-column id="stockPrice"
-                      field="stockPrice"
-                      header="Price When Entered"
-                      [style]="{'width':'10px','text-align':'right'}">
+            <p-column id="buyAfterDate"
+                      field="buyAfterDate"
+                      header="Buy After Date"
+                      [style]="{'width':'20px'}"
+                      [sortable]="true">
                 <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                    {{stockToBuy[col.field] | currency: 'USD' : true }}
-                </ng-template>
-            </p-column>
-            <!----------------------------------------------------------------------------------------------------------
-            LAST PRICE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="lastPrice"
-                      field="lastPrice"
-                      header="Last Price"
-                      [style]="{'width':'10px','text-align':'right'}">
-                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                    {{stockToBuy[col.field] | currency: 'USD' : true }}
+                    <div class="buy" *ngIf="stockToBuy && isAfterBuyAfterDate( stockToBuy )">
+                        {{stockToBuy[col.field] | date: 'y-MM-dd' }}
+                    </div>
+                    <div class="wait" *ngIf="stockToBuy && !isAfterBuyAfterDate( stockToBuy )">
+                        {{stockToBuy[col.field] | date: 'y-MM-dd' }}
+                    </div>
                 </ng-template>
             </p-column>
             <!----------------------------------------------------------------------------------------------------------

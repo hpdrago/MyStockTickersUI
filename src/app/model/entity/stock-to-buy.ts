@@ -15,9 +15,12 @@ export class StockToBuy extends ModelObject<StockToBuy> implements StockNoteCont
     public tickerSymbol: string;
     public companyName: string;
     public comments: string;
-    public buySharesBelow: number;
+    public buySharesUpToPrice: number;
     public lastPrice: number;
     public lastPriceChange: Date;
+    public stockPriceWhenCreated: number;
+    public percentChange: number;
+    public buyAfterDate: Date;
     public createDate: Date;
     public updateDate: Date;
     public tags: TagList;

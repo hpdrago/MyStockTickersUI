@@ -7,17 +7,6 @@
 export abstract class ModelObjectFactory<T>
 {
     /**
-     * Converts a JSON string into a TypeScript object
-     * @param object
-     * @return {T}
-     */
-    public newModelObjectFromJSON( jsonString: string ): T
-    {
-        var modelObject: T = JSON.parse( jsonString );
-        return modelObject;
-    }
-
-    /**
      * Converts an array of Javascript object into an array of ModelObjects of type <T>
      * @param jsArray
      * @return {Array<T>}
@@ -27,7 +16,7 @@ export abstract class ModelObjectFactory<T>
         var tsObjects: Array<T> = [];
         for ( var jsObject of jsonArray )
         {
-            var tsObject = this.newModelObjectFromObject( jsObject ) ;
+            var tsObject = this.newModelObjectFromJSON( jsObject ) ;
             tsObjects.push( tsObject );
         }
         return tsObjects;
@@ -38,7 +27,7 @@ export abstract class ModelObjectFactory<T>
      * @param srcModelObject
      * @return {T}
      */
-    public newModelObjectFromObject( srcModelObject: T ): T
+    public newModelObjectFromJSON( srcModelObject: T ): T
     {
         //console.log( "newModelObjectFromJSON " + JSON.stringify( object ) );
         var destModelObject = this.newModelObject();

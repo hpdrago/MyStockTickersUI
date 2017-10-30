@@ -77,28 +77,46 @@
             </div>
 
             <!----------------------------------------------------------------------------------------------------------
-            BUY SHARES BELOW PRICE
+            BUY SHARES UP TO PRICE
             ------------------------------------------------------------------------------------------------------------>
             <div class="ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="buySharesBelow">Buy Shares Below:</label>
+                    <label class="crud-form" for="buySharesUpToPrice">Buy Shares Up To Price:</label>
                 </div>
                 <div class="ui-grid-col-9">
                     <input currencyMask
-                           id="buySharesBelow"
-                           formControlName="buySharesBelow"
+                           id="buySharesUpToPrice"
+                           formControlName="buySharesUpToPrice"
                            class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
-                           [(ngModel)]="modelObject.buySharesBelow"
+                           [(ngModel)]="modelObject.buySharesUpToPrice"
                            placeholder="$"/>
                 </div>
             </div>
 
             <!----------------------------------------------------------------------------------------------------------
+            BUY SHARES AFTER DATE
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="notesDate">Buy Shares After:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-calendar id="notesDate"
+                                class="crud-form"
+                                formControlName="buyAfterDate"
+                                dateFormat="mm/dd/yy"
+                                [showIcon]="true"
+                                [inputStyle]="{'width':'100px'}"
+                                [(ngModel)]="modelObject.buyAfterDate">
+                    </p-calendar>
+                </div>
+            </div>
+            <!----------------------------------------------------------------------------------------------------------
             TAGS
             ------------------------------------------------------------------------------------------------------------>
             <div class="ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="buySharesBelow">Tags:</label>
+                    <label class="crud-form" for="tags">Tags:</label>
                 </div>
                 <div class="ui-grid-col-9">
                     <p-chips id="tags"

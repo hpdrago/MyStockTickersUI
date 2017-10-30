@@ -12,6 +12,9 @@
                      [loading]="loading"
                      (onRowDblclick)="onRowDoubleClick($event)"
                      [responsive]="true">
+            <!----------------------------------------------------------------------------------------------------------
+            NOTES DATE
+            ------------------------------------------------------------------------------------------------------------>
             <p-column id="notesDateColumn"
                       field="notesDate"
                       header="Date"
@@ -21,21 +24,56 @@
                     {{stockNotes[col.field] | date: 'y-MM-dd' }}
                 </ng-template>
             </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            TICKER SYMBOL
+            ------------------------------------------------------------------------------------------------------------>
             <p-column id="tickerSymbolColumn"
                       field="tickerSymbol"
                       header="Ticker"
                       [style]="{'width':'80px'}"
                       [sortable]="true">
             </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            STOCK PRICE
+            ------------------------------------------------------------------------------------------------------------>
             <p-column id="stockPriceColumn"
                       field="stockPriceWhenCreated"
-                      header="Price when entered"
-                      [style]="{'width':'80px','text-align':'right'}"
-                      [sortable]="true">
+                      header="Price When Entered"
+                      [style]="{'width':'80px','text-align':'right'}">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
                     {{stockNotes[col.field] | currency: 'USD': true }}
                 </ng-template>
             </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            LAST PRICE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="lastPrice"
+                      field="lastPrice"
+                      header="Last Price"
+                      [style]="{'width':'80px','text-align':'right'}">
+                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                    {{stockNotes[col.field] | currency: 'USD': true }}
+                </ng-template>
+            </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            PERCENT OF CHANGE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="percentChange"
+                      field="percentChange"
+                      header="% Change Since Entered"
+                      [style]="{'width':'80px','text-align':'right'}">
+                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                    <div class="positiveGain" *ngIf="stockNotes && stockNotes[col.field] >= 0.0">
+                        {{stockNotes[col.field] | percent: '1.2-2' }}
+                    </div>
+                    <div class="negativeGain" *ngIf="stockNotes && stockNotes[col.field] < 0.0">
+                        {{stockNotes[col.field] | percent: '1.2-2' }}
+                    </div>
+                </ng-template>
+            </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            ACTION TAKEN
+            ------------------------------------------------------------------------------------------------------------>
             <p-column id="actionTakenColumn"
                       field="actionTaken"
                       header="Action Taken"
@@ -45,12 +83,18 @@
                     {{getActionTaken( stockNotes[col.field] )}}
                 </ng-template>
             </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            ACTION TAKEN SHARES
+            ------------------------------------------------------------------------------------------------------------>
             <p-column id="actionTakenSharesColumn"
                       field="actionTakenShares"
                       header="Action Shares"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="true">
             </p-column>
+            <!----------------------------------------------------------------------------------------------------------
+            NOTES
+            ------------------------------------------------------------------------------------------------------------>
             <p-column id="notesColumn"
                       field="notes"
                       header="Notes">

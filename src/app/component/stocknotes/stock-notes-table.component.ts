@@ -25,7 +25,6 @@ import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
     } )
 export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
 {
-    private title: string = 'Stock Notes';
     private urlMap: StockUrlMap = new StockUrlMap();
 
     constructor( protected toaster: ToastsManager,
@@ -35,13 +34,15 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
         super( toaster, stockNotesServiceContainer );
     }
 
+
+
     /**
      * This method is called after stockNotes are loaded from the database.
      * Once loaded, the stockNotes are expanded, one row per ticker symbol, into the table.
      * @param {StockNotes[]} stockNotes
      * @return {any}
      */
-    protected onTableLoad( stockNotes: StockNotes[] ): any
+    protected onTableLoad( stockNotes: StockNotes[] )
     {
         this.urlMap.extractURLsFromNotes( stockNotes );
         super.onTableLoad( stockNotes );
@@ -49,6 +50,7 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
 
     private getActionTaken( actionTaken: number )
     {
+        this.log( 'getActionTaken: ' + actionTaken );
         return StockNotesActionTaken.getName( actionTaken );
     }
 }

@@ -72,7 +72,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                    .map( ( response: Response ) =>
                    {
                        this.debug( methodName + " received: " + JSON.stringify( response.json() ))
-                       return this.modelObjectFactory.newModelObjectFromObject( response.json() );
+                       return this.modelObjectFactory.newModelObjectFromJSON( response.json() );
                    } ) // ...and calling .json() on the response to return data
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
                    .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer

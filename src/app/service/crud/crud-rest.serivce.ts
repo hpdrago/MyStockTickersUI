@@ -72,7 +72,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                         .map( ( res: Response ) =>
                         {
                             this.log( methodName + " received: " + JSON.stringify( res.json() ) );
-                            var newModelObject: T =  this.modelObjectFactory.newModelObjectFromObject( res.json() );
+                            var newModelObject: T =  this.modelObjectFactory.newModelObjectFromJSON( res.json() );
                             this.log( methodName + " newModelObject: " + this.serialize( newModelObject ));
                             return newModelObject;
                         } ) // ...and calling .json() on the response to return data
@@ -109,7 +109,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                         .map( ( res: Response ) =>
                         {
                             this.log( methodName + " received: " + JSON.stringify( res.json() ));
-                            return this.modelObjectFactory.newModelObjectFromObject( res.json() );
+                            return this.modelObjectFactory.newModelObjectFromJSON( res.json() );
                         } ) // ...and calling .json() on the response to return data
                         .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ) //...errors if any
                         .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer

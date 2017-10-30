@@ -9,11 +9,20 @@ export enum StockNotesActionTaken
 }
 export namespace StockNotesActionTaken
 {
-    export function getName( action: string ): string
+    export function getName( action: any ): string
     {
-        var returnValue = 'ERROR ' + action;
+        let returnValue = 'ERROR ' + action;
         switch( action )
         {
+            case 0:
+                returnValue = 'NONE';
+                break;
+            case 1:
+                returnValue = 'BUY';
+                break;
+            case 2:
+                returnValue = 'SELL';
+                break;
             case '0':
                 returnValue = 'NONE';
                 break;
