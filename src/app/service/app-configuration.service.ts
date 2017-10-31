@@ -7,6 +7,7 @@ import { Injectable } from "@angular/core";
 export class AppConfigurationService
 {
     private ADMIN_USER_ID = 1;
+    //private baseURL = "https://localhost:8443";
     private baseURL = "http://localhost:8080";
 
     /**
