@@ -1,25 +1,25 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockAnalyticsCrudServiceContainer } from "./stock-analytics-crud-service-container";
+import { StockAnalystConsensusCrudServiceContainer } from "./stock-analyst-consensus-crud-service-container";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
-import { StockAnalytics } from "../../model/entity/stock-analytics";
+import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 
 /**
- * Button panel component for the StockAnalytics dialog.
+ * Button panel component for the StockAnalystConsensus dialog.
  *
  * Created by mike on 8/15/2017.
  */
 @Component({
-    selector:    'stock-analytics-form-buttons',
+    selector:    'stock-analyst-consensus-form-buttons',
     templateUrl: '../crud/form/crud-form-buttons.component.html',
     styleUrls: ['../crud/form/crud-form-buttons.component.css']
 })
-export class StockAnalyticsFormButtonsComponent extends CrudFormButtonsComponent<StockAnalytics>
+export class StockAnalystConsensusFormButtonsComponent extends CrudFormButtonsComponent<StockAnalystConsensus>
 {
     constructor( protected toaster: ToastsManager,
-                 private stockAnalyticsServiceContainer: StockAnalyticsCrudServiceContainer )
+                 private stockAnalystConsensusServiceContainer: StockAnalystConsensusCrudServiceContainer )
     {
-        super( toaster, stockAnalyticsServiceContainer );
+        super( toaster, stockAnalystConsensusServiceContainer );
     }
 
     /**
@@ -35,6 +35,6 @@ export class StockAnalyticsFormButtonsComponent extends CrudFormButtonsComponent
      */
     public getDeleteKeyword(): string
     {
-        return 'Stock Analytics'
+        return 'Stock AnalystConsensus'
     }
 }

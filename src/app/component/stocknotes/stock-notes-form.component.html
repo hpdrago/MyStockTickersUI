@@ -1,22 +1,27 @@
 <div *ngIf="modelObject">
     <div [ngBusy]="busyIndicator"></div>
     <div *ngIf="isCrudCreateOperation()" class="crud-form ui-grid-row">
-        <div class="crud-form-label ui-grid-col-3">
+        <div class="crud-form-label ui-grid-col-2">
         </div>
-        <div class="ui-grid-col-9">
+        <div class="ui-grid-col-10">
             When specifying multiple stocks, the note information will be duplicated for each stock
         </div>
     </div>
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+            <div *ngIf="isCrudCreateOperation(); then createDiv else modifyDiv" class="crud-form ui-grid-row">
+            </div>
             <!----------------------------------------------------------------------------------------------------------
-            SEARCH
+            IF CREATING NOTES
             ------------------------------------------------------------------------------------------------------------>
-            <div *ngIf="isCrudCreateOperation()" class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+            <ng-template #createDiv>
+                <!----------------------------------------------------------------------------------------------------------
+                SEARCH
+                ------------------------------------------------------------------------------------------------------------>
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="stockSearch">Stock Search:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-10">
                     <stock-autocomplete id="stockSearch"
                                         [(ngModel)]="stockSearch"
                                         [formGroup]="formGroup"
@@ -25,38 +30,60 @@
                                         (stockSelected)="onStockSelected( $event )">
                     </stock-autocomplete>
                 </div>
-            </div>
+
+                <!----------------------------------------------------------------------------------------------------------
+                TICKER SYMBOLS
+                ------------------------------------------------------------------------------------------------------------>
+                <div class="crud-form ui-grid-row">
+                    <div class="crud-form-label ui-grid-col-2">
+                        <label class="crud-form" for="tickerSymbols">Stocks:</label>
+                    </div>
+                    <div class="ui-grid-col-10">
+                        <input id="tickerSymbols"
+                               type="text"
+                               pInputText
+                               required
+                               uppercase
+                               placeholder="Comma delimited ticker symbols"
+                               formControlName="tickerSymbols"
+                               [(ngModel)]="tickerSymbols">
+                    </div>
+                </div>
+            </ng-template>
 
             <!----------------------------------------------------------------------------------------------------------
-            TICKER SYMBOLS
+            IF MODIFYING/DELETING NOTES
             ------------------------------------------------------------------------------------------------------------>
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="tickerSymbols">Stocks:</label>
+            <ng-template #modifyDiv>
+                <!----------------------------------------------------------------------------------------------------------
+                TICKER SYMBOL
+                ------------------------------------------------------------------------------------------------------------>
+                <div class="crud-form ui-grid-row">
+                    <div class="crud-form-label ui-grid-col-2">
+                        <label class="crud-form" for="tickerSymbols">Stock:</label>
+                    </div>
+                    <div class="ui-grid-col-2">
+                        <input id="tickerSymbol"
+                               type="text"
+                               pInputText
+                               required
+                               uppercase
+                               formControlName="tickerSymbol"
+                               [(ngModel)]="modelObject.tickerSymbol">
+                    </div>
                 </div>
-                <div class="ui-grid-col-9">
-                    <input id="tickerSymbols"
-                           type="text"
-                           pInputText
-                           required
-                           uppercase
-                           placeholder="Comma delimited ticker symbols"
-                           formControlName="tickerSymbols"
-                           [(ngModel)]="tickerSymbols">
-                </div>
-            </div>
-
+            </ng-template>
             <!----------------------------------------------------------------------------------------------------------
             LAST PRICE
             ------------------------------------------------------------------------------------------------------------>
             <div class="ui-grid-row">
-                <div *ngIf="isCrudCreateOperation()" class="crud-form-label ui-grid-col-3">
+                <div *ngIf="isCrudCreateOperation()" class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="lastPriceColumn">Last Price:</label>
                 </div>
-                <div *ngIf="!isCrudCreateOperation()" class="crud-form-label ui-grid-col-3">
+                <div *ngIf="!isCrudCreateOperation()" class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="lastPriceColumn">Price when note created:</label>
                 </div>
-                <div id="lastPriceColumn" class="ui-grid-col-3">
+                <div id="lastPriceColumn" class="ui-grid-col-2">
                     {{modelObject.stockPriceWhenCreated | currency:'USD': true}}
                 </div>
             </div>
@@ -65,10 +92,10 @@
             NOTES
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="notes">Notes:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-10">
                     <p-editor id="notes"
                               name="basic"
                               [style]="{'height':'220px'}"
@@ -99,10 +126,10 @@
             SOURCE
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="notesSource">Source:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-10">
                     <p-dropdown id="notesSource"
                                 class="crud-form"
                                 [options]="sourceItems"
@@ -121,10 +148,10 @@
             RATING
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="notesRating">Rating:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-10">
                     <p-rating id="notesRating"
                               class="crud-form"
                               formControlName="notesRating"
@@ -138,10 +165,10 @@
             BULL OR BEAR
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="bullOrBear">Bull or Bear:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-10">
                     <p-selectButton id="bullOrBear"
                                     class="crud-form"
                                     formControlName="bullOrBear"
@@ -155,10 +182,10 @@
             ACTION TAKEN
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="actionTaken">Action Taken?:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-10">
                     <p-selectButton id="actionTaken"
                                     class="crud-form"
                                     formControlName="actionTaken"
@@ -173,17 +200,17 @@
             ACTION TAKEN SHARES
             ------------------------------------------------------------------------------------------------------------>
             <div class="ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="actionTakenShares">Action Taken Shares:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-2">
                     <p-inputMask
                         id="actionTakenShares"
-                        [ngClass]="{'ui-state-disabled': modelObject.actionTaken == 'NONE'}"
+                        [ngClass]="{'ui-state-disabled': modelObject.actionTaken == 0,
+                                    'ui-state-default': modelObject.actionTaken != 0 }"
                         class="crud-form"
                         formControlName="actionTakenShares"
                         [(ngModel)]="modelObject.actionTakenShares"
-                        [style]="{'width':'60px'}"
                         maxLength="6"
                         placeholder=""
                         mask="9?99999">
@@ -195,14 +222,16 @@
             ACTION TAKEN PRICE
             ------------------------------------------------------------------------------------------------------------>
             <div class="ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="actionTakenPrice">Action Taken Price:</label>
                 </div>
-                <div id="actionTakenPrice" class="ui-grid-col-9">
+                <div id="actionTakenPrice" class="ui-grid-col-2">
                     <input currencyMask
                            [style]="{'width':'60px'}"
+                           class="crud-form ui-inputtext ui-widget ui-widget-content ui-corner-all ui-state-filled"
+                           [ngClass]="{'ui-state-disabled': modelObject.actionTaken == 0,
+                                       'ui-state-default': modelObject.actionTaken != 0 }"
                            formControlName="actionTakenPrice"
-                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
                            [(ngModel)]="modelObject.actionTakenPrice"
                            placeholder="$"/>
                 </div>
@@ -211,16 +240,16 @@
             DATE
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="notesDate">Date:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-10">
                     <p-calendar id="notesDate"
                                 class="crud-form"
+                                [inputStyle]="{'width':'100px'}"
                                 formControlName="notesDate"
                                 dateFormat="mm/dd/yy"
                                 [showIcon]="true"
-                                [inputStyle]="{'width':'100px'}"
                                 [(ngModel)]="modelObject.notesDate">
                     </p-calendar>
                 </div>

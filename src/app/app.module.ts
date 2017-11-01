@@ -106,14 +106,14 @@ import { StockNotesSourceFactory } from "./model/factory/stock-notes-source.fact
 import {BusyModule} from 'angular2-busy';
 
 import { CURRENCY_MASK_CONFIG, CurrencyMaskConfig } from "ng2-currency-mask/src/currency-mask.config";
-import { StockAnalyticsTableComponent } from "./component/stockanalytics/stock-analytics-table.component";
-import { StockAnalyticsFormComponent } from "./component/stockanalytics/stock-analytics-form.component";
-import { StockAnalyticsTableButtonsComponent } from "./component/stockanalytics/stock-analytics-table-buttons.component";
-import { StockAnalyticsFormButtonsComponent } from "./component/stockanalytics/stock-analytics-form-buttons.component";
-import { StockAnalyticsDialogComponent } from "./component/stockanalytics/stock-analytics-dialog.component";
-import { StockAnalyticsCrudService } from "./service/crud/stock-analytics-crud.service";
-import { StockAnalyticsCrudServiceContainer } from "./component/stockanalytics/stock-analytics-crud-service-container";
-import { StockAnalyticsFactory } from "./model/factory/stock-analytics.factory";
+import { StockAnalystConsensusTableComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-table.component";
+import { StockAnalystConsensusFormComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-form.component";
+import { StockAnalystConsensusTableButtonsComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-table-buttons.component";
+import { StockAnalystConsensusFormButtonsComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-form-buttons.component";
+import { StockAnalystConsensusDialogComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-dialog.component";
+import { StockAnalystConsensusCrudService } from "./service/crud/stock-analyst-consensus-crud.service";
+import { StockAnalystConsensusCrudServiceContainer } from "./component/stockanalystconsensus/stock-analyst-consensus-crud-service-container";
+import { StockAnalystConsensusFactory } from "./model/factory/stock-analyst-consensus.factory";
 import { StockCatalystEventFactory } from "./model/factory/stock-catalyst-event.factory";
 import { StockCatalystEventCrudServiceContainer } from "./component/stockcatalystevent/stock-catalyst-event-crud-service-container";
 import { StockCatalystEventCrudService } from "./service/crud/stock-catalyst-event-crud.service";
@@ -212,11 +212,11 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         StockNotesTableButtonsComponent,
         StockNotesFormButtonsComponent,
 
-        StockAnalyticsTableComponent,
-        StockAnalyticsFormComponent,
-        StockAnalyticsDialogComponent,
-        StockAnalyticsTableButtonsComponent,
-        StockAnalyticsFormButtonsComponent,
+        StockAnalystConsensusTableComponent,
+        StockAnalystConsensusFormComponent,
+        StockAnalystConsensusDialogComponent,
+        StockAnalystConsensusTableButtonsComponent,
+        StockAnalystConsensusFormButtonsComponent,
 
         StockCatalystEventTableComponent,
         StockCatalystEventFormComponent,
@@ -266,9 +266,9 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         StockNotesSourceService,
         StockNotesSourceFactory,
 
-        StockAnalyticsCrudService,
-        StockAnalyticsCrudServiceContainer,
-        StockAnalyticsFactory,
+        StockAnalystConsensusCrudService,
+        StockAnalystConsensusCrudServiceContainer,
+        StockAnalystConsensusFactory,
 
         StockCatalystEventCrudService,
         StockCatalystEventCrudServiceContainer,

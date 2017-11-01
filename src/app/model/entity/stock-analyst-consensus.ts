@@ -5,7 +5,7 @@ import { ModelObject } from "./modelobject";
  *
  * Created 10/17/2017
  */
-export class StockAnalytics extends ModelObject<StockAnalytics>
+export class StockAnalystConsensus extends ModelObject<StockAnalystConsensus>
 {
     public id: number;
     public customerId: number;
@@ -28,7 +28,7 @@ export class StockAnalytics extends ModelObject<StockAnalytics>
     public createDate: Date;
     public updateDate: Date;
 
-    public isEqualPrimaryKey( modelObject: StockAnalytics ): boolean
+    public isEqualPrimaryKey( modelObject: StockAnalystConsensus ): boolean
     {
         return modelObject.id === this.id;
     }

@@ -103,19 +103,38 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     protected createCrudForm(): FormGroup
     {
         this.log( "createCrudForm" );
-        var stockNoteForm: FormGroup = this.formBuilder.group(
-            {
-                'stockSearch':        new FormControl( this.stockSearch ),
-                'tickerSymbols':      new FormControl( this.tickerSymbols, Validators.required ),
-                'notes':              new FormControl( this.modelObject.notes, Validators.required ),
-                'notesDate':          new FormControl( this.modelObject.notesDate, Validators.required  ),
-                'notesSource':        new FormControl( this.modelObject.notesSourceId ),
-                'notesRating':        new FormControl( this.modelObject.notesRating ),
-                'bullOrBear':         new FormControl( this.modelObject.bullOrBear ),
-                'actionTaken':        new FormControl( this.modelObject.actionTaken ),
-                'actionTakenShares':  new FormControl( this.modelObject.actionTakenShares ),
-                'actionTakenPrice':   new FormControl( this.modelObject.actionTakenPrice )
-            } );
+        var stockNoteForm: FormGroup;
+        if ( this.isCrudCreateOperation() )
+        {
+            stockNoteForm = this.formBuilder.group(
+                {
+                    'stockSearch':       new FormControl( this.stockSearch ),
+                    'tickerSymbols':     new FormControl( this.tickerSymbols, Validators.required ),
+                    'notes':             new FormControl( this.modelObject.notes, Validators.required ),
+                    'notesDate':         new FormControl( this.modelObject.notesDate, Validators.required ),
+                    'notesSource':       new FormControl( this.modelObject.notesSourceId ),
+                    'notesRating':       new FormControl( this.modelObject.notesRating ),
+                    'bullOrBear':        new FormControl( this.modelObject.bullOrBear ),
+                    'actionTaken':       new FormControl( this.modelObject.actionTaken ),
+                    'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
+                    'actionTakenPrice':  new FormControl( this.modelObject.actionTakenPrice )
+                } );
+        }
+        else
+        {
+            stockNoteForm = this.formBuilder.group(
+                {
+                    'tickerSymbol':      new FormControl( this.modelObject.tickerSymbol, Validators.required ),
+                    'notes':             new FormControl( this.modelObject.notes, Validators.required ),
+                    'notesDate':         new FormControl( this.modelObject.notesDate, Validators.required ),
+                    'notesSource':       new FormControl( this.modelObject.notesSourceId ),
+                    'notesRating':       new FormControl( this.modelObject.notesRating ),
+                    'bullOrBear':        new FormControl( this.modelObject.bullOrBear ),
+                    'actionTaken':       new FormControl( this.modelObject.actionTaken ),
+                    'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
+                    'actionTakenPrice':  new FormControl( this.modelObject.actionTakenPrice )
+                } );
+        }
         return stockNoteForm;
     }
 
@@ -126,10 +145,13 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     protected setFormValues( modelObject: StockNotes )
     {
         this.log( "setFromValues modelObject: " + JSON.stringify( modelObject ));
-        this.tickerSymbols = modelObject.getTickerSymbols();
-        this.log( "setFormValues tickerSymbols: " + this.tickerSymbols );
+        if ( this.isCrudCreateOperation() )
+        {
+            this.tickerSymbols = modelObject.getTickerSymbols();
+            this.log( "setFormValues tickerSymbols: " + this.tickerSymbols );
+            this.setFormValue( 'tickerSymbols', this.tickerSymbols );
+        }
         super.setFormValues( modelObject );
-        this.setFormValue( 'tickerSymbols', this.tickerSymbols );
         if ( this.crudOperation == CrudOperation.CREATE )
         {
             if ( isNullOrUndefined( this.modelObject.actionTaken ))
@@ -171,18 +193,21 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     protected prepareToSave()
     {
         this.log( "prepareToSave.begin " + JSON.stringify( this.modelObject ));
-        this.log( "prepareToSave tickerSymbols " + this.tickerSymbols );
-        /*
-         * The ticker symbols should be separated by commas.
-         * Each ticker symbol is pushed into the stocks array of the StockNotes model object
-         */
-        var stocks = this.tickerSymbols.split( "," );
-        this.modelObject.stocks = [];
-        for ( let stock of stocks )
+        if ( this.isCrudCreateOperation() )
         {
-            var stockNoteStock: StockNotesStock = new StockNotesStock();
-            stockNoteStock.tickerSymbol = stock.trim();
-            this.modelObject.stocks.push( stockNoteStock );
+            this.log( "prepareToSave tickerSymbols " + this.tickerSymbols );
+            /*
+             * The ticker symbols should be separated by commas.
+             * Each ticker symbol is pushed into the stocks array of the StockNotes model object
+             */
+            var stocks = this.tickerSymbols.split( "," );
+            this.modelObject.stocks = [];
+            for ( let stock of stocks )
+            {
+                var stockNoteStock: StockNotesStock = new StockNotesStock();
+                stockNoteStock.tickerSymbol = stock.trim();
+                this.modelObject.stocks.push( stockNoteStock );
+            }
         }
 
         /*

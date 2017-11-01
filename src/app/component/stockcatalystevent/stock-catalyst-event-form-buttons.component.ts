@@ -5,7 +5,7 @@ import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.compone
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 
 /**
- * Button panel component for the StockAnalytics dialog.
+ * Button panel component for the StockAnalystConsensus dialog.
  *
  * Created by mike on 8/15/2017.
  */

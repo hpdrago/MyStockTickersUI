@@ -3,7 +3,7 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
-import { StockAnalytics } from "../../model/entity/stock-analytics";
+import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { StockCatalystEventCrudServiceContainer } from "./stock-catalyst-event-crud-service-container";
 import { SessionService } from "../../service/crud/session.service";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";

@@ -1,8 +1,8 @@
-<p-panel id="stockAnalyticsPanelDiv" header="Stock Analytics">
+<p-panel id="stockAnalystConsensusPanelDiv" header="Stock AnalystConsensus">
     <div>
         PT = Price Target
     </div>
-    <div id="stockAnalyticsTableDiv">
+    <div id="stockAnalystConsensusTableDiv">
         <p-dataTable [value]="rows"
                      selectionMode="single"
                      [(selection)]="selectedModelObject"
@@ -34,8 +34,8 @@
                       header="Avg Upside"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="true">
-                <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">
-                    {{stockAnalytics[col.field] | percent:'1.2-2' }}
+                <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                    {{stockAnalystConsensus[col.field] | percent:'1.2-2' }}
                 </ng-template>
             </p-column>
 
@@ -67,12 +67,12 @@
                       field="analystByCount"
                       header="Analyst BSH"
                       [style]="{'width':'120px'}">
-                <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">
-                    <span class="strongBuy">       {{stockAnalytics['analystStrongBuyCount']}}</span><!--
-                    --><span class="buy">          {{stockAnalytics['analystBuyCount']}}</span><!--
-                    --><span class="hold">         {{stockAnalytics['analystHoldCount']}}</span><!--
-                    --><span class="underPerform"> {{stockAnalytics['analystUnderPerformCount']}}</span><!--
-                    --><span class="sell">         {{stockAnalytics['analystSellCount']}}</span>
+                <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                    <span class="strongBuy">       {{stockAnalystConsensus['analystStrongBuyCount']}}</span><!--
+                    --><span class="buy">          {{stockAnalystConsensus['analystBuyCount']}}</span><!--
+                    --><span class="hold">         {{stockAnalystConsensus['analystHoldCount']}}</span><!--
+                    --><span class="underPerform"> {{stockAnalystConsensus['analystUnderPerformCount']}}</span><!--
+                    --><span class="sell">         {{stockAnalystConsensus['analystSellCount']}}</span>
                 </ng-template>
             </p-column>
 
@@ -84,8 +84,8 @@
                       header="Sentiment Date"
                       [style]="{'width':'80px'}"
                       [sortable]="true">
-                <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">
-                    {{stockAnalytics[col.field] | date: 'y-MM-dd' }}
+                <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                    {{stockAnalystConsensus[col.field] | date: 'y-MM-dd' }}
                 </ng-template>
             </p-column>
 
@@ -97,8 +97,8 @@
                       header="High Analyst PT"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="false">
-                <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">
-                    {{stockAnalytics[col.field] | currency: 'USD' : true }}
+                <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                    {{stockAnalystConsensus[col.field] | currency: 'USD' : true }}
                 </ng-template>
             </p-column>
 
@@ -110,8 +110,8 @@
                       header="Avg Analyst PT"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="false">
-                <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">
-                    {{stockAnalytics[col.field] | currency: 'USD' : true }}
+                <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                    {{stockAnalystConsensus[col.field] | currency: 'USD' : true }}
                 </ng-template>
             </p-column>
 
@@ -123,8 +123,8 @@
                       header="Low Analyst PT"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="false">
-                <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">
-                    {{stockAnalytics[col.field] | currency: 'USD' : true }}
+                <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                    {{stockAnalystConsensus[col.field] | currency: 'USD' : true }}
                 </ng-template>
             </p-column>
 
@@ -136,8 +136,8 @@
                       header="Last Price"
                       [style]="{'width':'80px','text-align':'right'}"
                       [sortable]="true">
-                <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">
-                    {{stockAnalytics[col.field] | currency: 'USD' : true }}
+                <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                    {{stockAnalystConsensus[col.field] | currency: 'USD' : true }}
                 </ng-template>
             </p-column>
 
@@ -148,17 +148,17 @@
                       field="analystPriceDate"
                       header="PT Date"
                       [style]="{'width':'80px'}">
-                <ng-template let-col let-stockAnalytics="rowData" pTemplate="body">
-                    {{stockAnalytics[col.field] | date: 'y-MM-dd' }}
+                <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                    {{stockAnalystConsensus[col.field] | date: 'y-MM-dd' }}
                 </ng-template>
             </p-column>
 
             <p-footer>
-                <stock-analytics-table-buttons>
-                </stock-analytics-table-buttons>
+                <stock-analyst-consensus-table-buttons>
+                </stock-analyst-consensus-table-buttons>
             </p-footer>
         </p-dataTable>
     </div>
 </p-panel>
-<stock-analytics-dialog>
-</stock-analytics-dialog>
+<stock-analyst-consensus-dialog>
+</stock-analyst-consensus-dialog>

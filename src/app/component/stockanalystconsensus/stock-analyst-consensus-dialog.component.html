@@ -1,5 +1,5 @@
 <div *ngIf="modelObject">
-    <p-dialog header="Stock Analytics"
+    <p-dialog header="Stock AnalystConsensus"
               [modal]="true"
               [closable]="false"
               [closeOnEscape]="false"
@@ -10,12 +10,12 @@
               [contentStyle]="{'overflow':'visible'}"
               [(visible)]="displayDialog">
             <div>
-                <stock-analytics-form>
-                </stock-analytics-form>
+                <stock-analyst-consensus-form>
+                </stock-analyst-consensus-form>
             </div>
             <p-footer>
-                <stock-analytics-form-buttons>
-                </stock-analytics-form-buttons>
+                <stock-analyst-consensus-form-buttons>
+                </stock-analyst-consensus-form-buttons>
             </p-footer>
     </p-dialog>
 </div>

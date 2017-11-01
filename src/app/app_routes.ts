@@ -9,7 +9,7 @@ import { PortfolioStockFormComponent } from "./component/portfoliostock/portfoli
 import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
 import {StockNotesTableComponent} from "./component/stocknotes/stock-notes-table.component";
 import { StockCatalystEventTableComponent } from "./component/stockcatalystevent/stock-catalyst-event-table.component";
-import { StockAnalyticsTableComponent } from "./component/stockanalytics/stock-analytics-table.component";
+import { StockAnalystConsensusTableComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-table.component";
 import { StockToBuyTableComponent } from "./component/stocktobuy/stock-to-buy-table.component";
 
 const routes: Routes = [
@@ -30,8 +30,8 @@ const routes: Routes = [
         component: StockCatalystEventTableComponent,
     },
     {
-        path: 'stockAnalytics',
-        component: StockAnalyticsTableComponent,
+        path: 'stockAnalystConsensus',
+        component: StockAnalystConsensusTableComponent,
     },
     {
         path: 'stocksToBuy',

@@ -3,29 +3,29 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
-import { StockAnalytics } from "../../model/entity/stock-analytics";
-import { StockAnalyticsCrudServiceContainer } from "./stock-analytics-crud-service-container";
+import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
+import { StockAnalystConsensusCrudServiceContainer } from "./stock-analyst-consensus-crud-service-container";
 import { SessionService } from "../../service/crud/session.service";
 
 /**
- * This is the Stock Analytics Form Component class.
+ * This is the Stock AnalystConsensus Form Component class.
  *
  * Created by mike on 10/17/2017.
  */
 @Component( {
-                selector: 'stock-analytics-form',
+                selector: 'stock-analyst-consensus-form',
                 styleUrls: ['../crud/form/crud-form.component.css',
-                            './stock-analytics-form.component.css'],
-                templateUrl: './stock-analytics-form.component.html'
+                            './stock-analyst-consensus-form.component.css'],
+                templateUrl: './stock-analyst-consensus-form.component.html'
             } )
-export class StockAnalyticsFormComponent extends CrudFormComponent<StockAnalytics>
+export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockAnalystConsensus>
 {
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
-                 private stockAnalyticsCrudServiceContainer: StockAnalyticsCrudServiceContainer )
+                 private stockAnalystConsensusCrudServiceContainer: StockAnalystConsensusCrudServiceContainer )
     {
-        super( toaster, stockAnalyticsCrudServiceContainer );
+        super( toaster, stockAnalystConsensusCrudServiceContainer );
     }
 
     /**
