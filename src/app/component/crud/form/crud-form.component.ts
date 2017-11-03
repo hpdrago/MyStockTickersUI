@@ -103,6 +103,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.crudServiceContainer
             .crudFormService
             .subscribeToFormPrepareToSaveEvent( () => this.prepareToSave() );
+        this.crudServiceContainer
+            .crudFormService
+            .subscribeToFormModelObjectVersionUpdateEvent( ( modelObject: T ) => this.modelObjectVersionUpdate( modelObject ) );
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 
@@ -413,5 +416,10 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         }
         //this.debug( "isModelObjectReadOnly " + isReadOnly );
         return isReadOnly;
+    }
+
+    protected modelObjectVersionUpdate( modelObject: T )
+    {
+        this.debug( "modelObjectVersionUpdate " + JSON.stringify( this.modelObject ) );
     }
 }
