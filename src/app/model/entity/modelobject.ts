@@ -5,6 +5,7 @@
  */
 export abstract class ModelObject<T>
 {
+    public version: number;
     public createdBy: number;
     public updatedBy: number;
 
@@ -20,7 +21,7 @@ export abstract class ModelObject<T>
      * @param obj2
      * @returns {boolean}True if all properties are equal, false otherwise.
      */
-    public isEqualProperties( otherModelObject: T ): boolean
+    public isEqualProperties( otherModelObject: ModelObject<T> ): boolean
     {
         return Object.keys( this ).every( function( prop )
         {
@@ -28,4 +29,13 @@ export abstract class ModelObject<T>
         });
     }
 
+    /**
+     * Determines if the this model object and the other model object are of the same database version.
+     * @param {T} otherModelObject
+     * @returns {boolean}
+     */
+    public isDifferentVersion( otherModelObject: ModelObject<T> ): boolean
+    {
+        return this.version != otherModelObject.version;
+    }
 }
