@@ -256,6 +256,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected displayModelObject(): void
     {
         this.debug( "displayModelObject " + JSON.stringify( this.modelObject ));
+        this.checkModelObjectVersion();
         /*
          * Notify the panel of the changes
          * If a panel is used to display the selected contents, then notify the panel
@@ -277,6 +278,42 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             //this.crudDialogService.sendCrudOperationChangedEvent( this.crudOperation );
             //this.crudDialogService.sendModelObjectChangedEvent( this.modelObject );
         }
+    }
+
+    /**
+     * Need to make sure that the model object that the user wants to update is the most current version.
+     * Get the current model object and determine if they are different.  If so, then update the table
+     * and update the form.
+     *
+     * This is an asynchronous call.
+     */
+    protected checkModelObjectVersion()
+    {
+        this.crudServiceContainer.crudRestService
+            .getModelObject( this.modelObject )
+            .subscribe( modelObject =>
+                        {
+                            this.log( "Checking model object version: " + JSON.stringify( modelObject ) );
+                            if ( this.modelObject.isDifferentVersion( modelObject ) )
+                            {
+                                this.log( "The version is different. Updating table and form" );
+                                let index = this.indexOf( modelObject );
+                                /*
+                                 * Update the table
+                                 */
+                                this.updateModelObjectTableRow( index, modelObject );
+                                /*
+                                 * notify the form of the change.
+                                 */
+                                this.crudServiceContainer
+                                    .crudFormService
+                                    .sendFormModelObjectVersionUpdateEvent( modelObject );
+                            }
+                        },
+                        error =>
+                        {
+                            this.reportRestError( error );
+                        } );
     }
 
     /**

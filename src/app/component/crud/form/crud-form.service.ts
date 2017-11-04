@@ -22,6 +22,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     private formResetSubject: Subject<void> = new Subject<void>();
     private formLogStateSubject: Subject<void> = new Subject<void>();
     private formPrepareToSaveSubject: Subject<void> = new Subject<void>();
+    private formModelObjectVersionUpdateSubject: Subject<T> = new Subject<T>();
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
@@ -91,6 +92,19 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
         this.debug( "subscribeToFormPrepareToSaveEvent" );
         this.formPrepareToSaveSubject.asObservable().subscribe( fn );
     }
+
+    /**
+     * The {@code CrudFormComponent} will call this method to register to be notified that while the form was initializing,
+     * the model object that the form was initially showing was a prior version and a new version of the model object is
+     * provided for the form to update its components.
+     * @param {(modelObject: T) => any} fn
+     */
+    public subscribeToFormModelObjectVersionUpdateEvent( fn: ( modelObject: T ) => any )
+    {
+        this.debug( "subscribeToFormModelObjectVersionUpdateEvent" );
+        this.formModelObjectVersionUpdateSubject.asObservable().subscribe( fn );
+    }
+
     /*
      * N O T I F I E R   M E T H O D S
      */
@@ -142,7 +156,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
      */
     public sendFormLogStateRequest()
     {
-        //this.debug( "sendFormValidEvent " + valid );
+        //this.debug( "sendFormLogStateRequest" + valid );
         this.tickThenRun( () => this.formLogStateSubject.next() );
     }
 
@@ -152,7 +166,18 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
      */
     public sendFormPrepareToSaveEvent()
     {
-        //this.debug( "sendFormValidEvent " + valid );
+        //this.debug( "sendFormPrepareToSaveEvent" + valid );
         this.tickThenRun( () => this.formPrepareToSaveSubject.next() );
+    }
+
+    /**
+     * The {@code CrudFormButtonsComponent} will call this method to notify the form when the user has requested to
+     * save the current model object.
+     * @param modelObject The new model object version
+     */
+    public sendFormModelObjectVersionUpdateEvent( modelObject: T )
+    {
+        //this.debug( "sendFormModelObjectVersionUpdateEvent: " + JSON.stringIfy( modelObject ) );
+        this.tickThenRun( () => this.formModelObjectVersionUpdateSubject.next( modelObject ) );
     }
 }
