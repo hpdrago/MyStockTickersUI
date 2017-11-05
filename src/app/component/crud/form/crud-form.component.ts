@@ -107,7 +107,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
             this.crudServiceContainer
             .crudFormService
             .subscribeToFormPrepareToSaveEvent( () => this.prepareToSave() ));
-            .subscribeToFormPrepareToSaveEvent( () => this.prepareToSave() );
         this.crudServiceContainer
             .crudFormService
             .subscribeToFormModelObjectVersionUpdateEvent( ( modelObject: T ) => this.modelObjectVersionUpdate( modelObject ) );

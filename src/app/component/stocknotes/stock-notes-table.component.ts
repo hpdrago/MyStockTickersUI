@@ -11,6 +11,7 @@ import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { isNullOrUndefined } from "util";
 import { StockUrlMap } from "../../common/stock-url-map";
 import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
+import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
 
 /**
  * This component lists all stock notes
@@ -23,7 +24,7 @@ import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
         styleUrls: ['./stock-notes-table.component.css'],
         templateUrl: './stock-notes-table.component.html'
     } )
-export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
+export class StockNotesTableComponent extends StockQuoteModelObjectTableComponent<StockNotes>
 {
     private urlMap: StockUrlMap = new StockUrlMap();
 
@@ -50,7 +51,7 @@ export class StockNotesTableComponent extends CrudTableComponent<StockNotes>
 
     private getActionTaken( actionTaken: string )
     {
-        this.log( 'getActionTaken: ' + actionTaken );
+        //this.log( 'getActionTaken: ' + actionTaken );
         return StockNotesActionTaken.getName( actionTaken );
     }
 }

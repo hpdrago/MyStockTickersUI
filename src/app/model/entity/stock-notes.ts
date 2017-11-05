@@ -1,12 +1,13 @@
 import { ModelObject } from "./modelobject";
 import { StockNotesStock } from "./stock-notes-stock";
 import { StockNoteContainer } from "../../common/stock-note-container";
+import { StockQuoteModelObject } from "./stock-quote-modelobject";
 
 /**
  * Defines a single portfolio for a customer
  * Created by mike on 10/23/2016.
  */
-export class StockNotes extends ModelObject<StockNotes> implements StockNoteContainer
+export class StockNotes extends StockQuoteModelObject<StockNotes> implements StockNoteContainer
 {
     public id: number;
     public customerId: number;
@@ -24,8 +25,6 @@ export class StockNotes extends ModelObject<StockNotes> implements StockNoteCont
     public stockPriceWhenCreated: number;
     public lastPrice: number;
     public percentChange: number;
-    public dateCreated: Date;
-    public dateModified: Date;
     public stocks: Array<StockNotesStock> = [];
 
     /**

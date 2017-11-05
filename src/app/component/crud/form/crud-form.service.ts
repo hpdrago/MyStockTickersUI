@@ -17,9 +17,9 @@ import { Subscription } from "rxjs/Subscription";
  */
 export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
-    private formDirtySubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false );
-    private formTouchedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false );
-    private formValidSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>( false );
+    private formDirtySubject: Subject<boolean> = new Subject<boolean>();
+    private formTouchedSubject: Subject<boolean> = new Subject<boolean>();
+    private formValidSubject: Subject<boolean> = new Subject<boolean>();
     private formResetSubject: Subject<void> = new Subject<void>();
     private formLogStateSubject: Subject<void> = new Subject<void>();
     private formPrepareToSaveSubject: Subject<void> = new Subject<void>();

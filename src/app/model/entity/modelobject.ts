@@ -8,6 +8,8 @@ export abstract class ModelObject<T>
     public version: number;
     public createdBy: number;
     public updatedBy: number;
+    public dateCreated: Date;
+    public dateModified: Date;
 
     /**
      * Determines if two model object primary keys are the equal.

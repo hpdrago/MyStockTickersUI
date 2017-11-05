@@ -180,6 +180,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         SliderModule,
         CurrencyMaskModule,
         ChipsModule,
+        CheckboxModule,
         // Third Party modules,
         BusyModule,
         ToastModule.forRoot()
