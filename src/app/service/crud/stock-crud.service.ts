@@ -8,6 +8,7 @@ import { PagingRestCRUDService } from "./paging-rest-crud.service";
 import { AppConfigurationService } from "./../app-configuration.service";
 import { StockFactory } from "../../model/factory/stock.factory";
 import { Stock } from "../../model/entity/stock";
+import { StockQuote } from "../../model/entity/stock-quote";
 
 /**
  * This class provides all of the REST communication services for Stocks.
@@ -138,5 +139,21 @@ export class StockCrudService extends PagingRestCRUDService<Stock>
         var readOnly: boolean = !this.canEditOrDelete( stock, this.sessionService.getLoggedInUserId() );
         //this.logger.log( "isModelObjectReadOnly = " + readOnly + " " + JSON.stringify( stock ));
         return readOnly;
+    }
+
+    /**
+     * Get a stock quote
+     * @param {string} tickerSymbol
+     * @return {Observable<StockQuote>}
+     */
+    public getStockQuote( tickerSymbol: string ): Observable<StockQuote>
+    {
+        let methodName = "getStockQuote";
+        this.debug( methodName + " " + tickerSymbol );
+        let url = this.appConfig.getBaseUrl() + "/stockQuote/" + tickerSymbol;
+        return this.http
+                   .get( url )
+                   .map( ( response: Response ) => response.json() )
+                   .catch( ( error: any ) => Observable.throw( this.reportError( error )) );
     }
 }

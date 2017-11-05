@@ -1,10 +1,15 @@
 import { ModelObject } from "./modelobject";
+import { StockQuoteState } from "../../component/common/stock-quote-state";
 
 /**
  * Created 11/4/2017
  */
 export abstract class StockQuoteModelObject<T> extends ModelObject<T>
 {
-    public stockQuoteState: number;
+    public tickerSymbol: string;
+    public companyName: string;
+    public lastPrice: number;
+    public lastPriceDate: Date;
+    public stockQuoteState: StockQuoteState;
 
 }
