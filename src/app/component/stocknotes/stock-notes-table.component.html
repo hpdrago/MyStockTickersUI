@@ -37,7 +37,7 @@
             </p-column>
 
             <!----------------------------------------------------------------------------------------------------------
-            STOCK PRICE
+            STOCK PRICE WHEN CREATED
             ------------------------------------------------------------------------------------------------------------>
             <p-column id="stockPriceColumn"
                       field="stockPriceWhenCreated"
@@ -56,7 +56,25 @@
                       header="Last Price"
                       [style]="{'width':'80px','text-align':'right'}">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    {{stockNotes[col.field] | currency: 'USD': true }}
+                    <div *ngIf="isFetchingQuote( stockNotes )">
+                        Loading...
+                    </div>
+                    <div *ngIf="!isFetchingQuote( stockNotes )">
+                        {{stockNotes[col.field] | currency: 'USD': true }}
+                    </div>
+                </ng-template>
+            </p-column>
+
+            <!----------------------------------------------------------------------------------------------------------
+            LAST PRICE DATE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="lastPriceChangeColumn"
+                      field="lastPriceChange"
+                      header="Last Price Change "
+                      [style]="{'width':'80px'}"
+                      [sortable]="true">
+                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                    {{stockNotes[col.field] | date: 'y-MM-dd h:mm a' }}
                 </ng-template>
             </p-column>
 

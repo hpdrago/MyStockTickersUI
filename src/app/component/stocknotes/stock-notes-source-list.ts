@@ -19,10 +19,11 @@ export class StockNotesSourceList extends BaseClass
     {
         this.debug( "toSelectItems.begin: " + JSON.stringify( this.stockNotesSources ));
         var selectItems: SelectItem[] = [];
-        for ( let stockNotesSource of this.stockNotesSources )
-        {
-            selectItems.push( {label: stockNotesSource.name, value: stockNotesSource.id } );
-        }
+        this.stockNotesSources
+            .forEach( stockNotesSource =>
+            {
+                selectItems.push( {label: stockNotesSource.name, value: stockNotesSource.id } );
+            });
         this.debug( "toSelectItems.end: " + JSON.stringify( selectItems ));
         return selectItems;
     }

@@ -1,13 +1,19 @@
 /**
  * Created by mike on 11/4/2017
  */
-import { StockQuoteState } from "../../component/common/stock-quote-state";
+import { ModelObject } from "./modelobject";
 
-export class StockQuote
+export class StockQuote extends ModelObject<StockQuote>
 {
     public tickerSymbol: string;
     public companyName: string;
     public lastPrice: number;
-    public lastPriceDate: Date;
-    public stockQuoteState: StockQuoteState;
+    public lastPriceChange: Date;
+    public stockQuoteState: number;
+
+    public isEqualPrimaryKey( stockQuote: StockQuote ): boolean
+    {
+        return this.tickerSymbol === stockQuote.tickerSymbol;
+    }
+
 }

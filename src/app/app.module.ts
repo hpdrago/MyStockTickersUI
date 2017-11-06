@@ -131,6 +131,7 @@ import { StockToBuyFormButtonsComponent } from "./component/stocktobuy/stock-to-
 import { StockToBuyFactory } from "./model/factory/stock-to-buy.factory";
 import { StockToBuyCrudServiceContainer } from "./component/stocktobuy/stock-to-buy-crud-service-container";
 import { StockToBuyCrudService } from "./service/crud/stock-to-buy-crud.service";
+import { StockQuoteRefreshService } from "./service/stock-quote-refresh.service";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -249,6 +250,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         StockExchangeService,
         StockFactory,
         StockSectorFactory,
+        StockQuoteRefreshService,
 
         PortfolioFactory,
         PortfolioCrudService,

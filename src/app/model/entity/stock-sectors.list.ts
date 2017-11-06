@@ -76,7 +76,7 @@ export class StockSectorList extends ModelObject<StockSectorList>
                                       code: 'none'
                                   }
                               } );
-            for ( let sector of sectors )
+            sectors.forEach( sector =>
             {
                 selectItems.push( {   label: sector.sectorName,
                                       value: {
@@ -85,7 +85,7 @@ export class StockSectorList extends ModelObject<StockSectorList>
                                           code: sector.sectorName
                                       }
                                   } );
-            }
+            });
         }
         return selectItems;
     }

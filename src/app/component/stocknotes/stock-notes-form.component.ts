@@ -217,12 +217,12 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
              */
             var stocks = this.tickerSymbols.split( "," );
             this.modelObject.stocks = [];
-            for ( let stock of stocks )
+            stocks.forEach( stock =>
             {
                 var stockNoteStock: StockNotesStock = new StockNotesStock();
                 stockNoteStock.tickerSymbol = stock.trim();
                 this.modelObject.stocks.push( stockNoteStock );
-            }
+            });
         }
 
         /*

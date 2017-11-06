@@ -396,15 +396,35 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     }
 
     /**
-     * This method is called when a user updates the model object and the table needs to be updated to reflect the
-     * user's changes.
-     * @param {number} index
+     * Updates the model object in the table.  This method calles {@code updateModelObjectTableRow( index, modelObject )}
+     * after determining the row of the model object.
      * @param {T} modelObject
+     * @param {Error} errorBack is a callback function that will be called when the model object cannot be found in table
      */
-    protected updateModelObjectTableRow( index: number, modelObject: T ): void
+    protected updateModelObjectRow( modelObject: T, errorBack?: ( Error ) => any )
     {
         this.debug( 'updateModelObjectTableRow' + JSON.stringify( modelObject ) );
-        this.rows[index] = modelObject;
+        let rowIndex = this.indexOf( modelObject );
+        if ( rowIndex == -1 )
+        {
+            errorBack( new RangeError( "row was not found for model object key: " + JSON.stringify( this.modelObject )));
+        }
+        else
+        {
+            this.updateModelObjectTableRow( rowIndex, modelObject );
+        }
+    }
+
+    /**
+     * This method is called when a user updates the model object and the table needs to be updated to reflect the
+     * user's changes.
+     * @param {number} rowIndex
+     * @param {T} modelObject
+     */
+    protected updateModelObjectTableRow( rowIndex: number, modelObject: T ): void
+    {
+        this.debug( 'updateModelObjectTableRow index: ' + rowIndex + " " + JSON.stringify( modelObject ) );
+        this.rows[rowIndex] = modelObject;
         /*
          * A new array must be created to trigger a change event
          */

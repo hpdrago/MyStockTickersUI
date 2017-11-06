@@ -105,15 +105,16 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
 
     private initializeMenuBar()
     {
-        for ( let portfolio of this.rows )
-        {
-            let menuItem = <MenuItem>{};
-            menuItem.label = portfolio.name;
-            menuItem.icon = 'fa-chart';
-            menuItem.routerLink = ['/stocks'];
-            //portfolioMenuItem.routerLink = 'fa-chart';
-            this.menuItems.push( menuItem ) ;
-        }
+        this.rows
+            .forEach( portfolio =>
+            {
+                let menuItem = <MenuItem>{};
+                menuItem.label = portfolio.name;
+                menuItem.icon = 'fa-chart';
+                menuItem.routerLink = ['/stocks'];
+                //portfolioMenuItem.routerLink = 'fa-chart';
+                this.menuItems.push( menuItem ) ;
+            });
         /*            [
          { label: 'Dashboard', icon: 'fa-chart', routerLink: ['/dashboard'] },
          { label: 'Stock Table', icon: 'fa-chart', routerLink: ['/stocks'] }

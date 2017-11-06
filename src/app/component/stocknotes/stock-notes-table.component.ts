@@ -12,6 +12,7 @@ import { isNullOrUndefined } from "util";
 import { StockUrlMap } from "../../common/stock-url-map";
 import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
 import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
+import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 
 /**
  * This component lists all stock notes
@@ -30,12 +31,11 @@ export class StockNotesTableComponent extends StockQuoteModelObjectTableComponen
 
     constructor( protected toaster: ToastsManager,
                  protected stockNotesServiceContainer: StockNotesCrudServiceContainer,
-                 protected session: SessionService )
+                 protected session: SessionService,
+                 protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
-        super( toaster, stockNotesServiceContainer );
+        super( toaster, stockNotesServiceContainer, stockQuoteRefreshService );
     }
-
-
 
     /**
      * This method is called after stockNotes are loaded from the database.

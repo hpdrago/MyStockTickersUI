@@ -135,11 +135,12 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
         return this.crudOperation == CrudOperation.DELETE;
     }
 
-    get busyIndicator():Subscription
+    protected get busyIndicator():Subscription
     {
         return this._busyIndicator;
     }
-    set busyIndicator( busyIndicator: Subscription)
+
+    protected set busyIndicator( busyIndicator: Subscription)
     {
         this.debug( "busyIndicator setting displayProgressBar to true");
         this._busyIndicator = busyIndicator;

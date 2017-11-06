@@ -23,6 +23,7 @@ export class StockNotes extends StockQuoteModelObject<StockNotes> implements Sto
     public actionTakenPrice: number;
     public stockPriceWhenCreated: number;
     public percentChange: number;
+    public stocks: Array<StockNotesStock> = [];
 
     /**
      * Get the notes
@@ -50,5 +51,24 @@ export class StockNotes extends StockQuoteModelObject<StockNotes> implements Sto
             isEqual = this.id === modelObject.id;
         }
         return isEqual;
+    }
+
+    /**
+     * Returns a comma delimeted string of the ticker symbols
+     * @return {string}
+     */
+    public getTickerSymbols(): string
+    {
+        var tickerSymbols = '';
+        this.stocks
+            .forEach( stockNotesStock =>
+                      {
+                          if ( tickerSymbols.length > 0 )
+                          {
+                              tickerSymbols += ', ';
+                          }
+                          tickerSymbols += stockNotesStock.tickerSymbol;
+                      } );
+        return tickerSymbols;
     }
 }

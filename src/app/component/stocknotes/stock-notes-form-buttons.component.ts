@@ -49,12 +49,14 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
     {
         this.log( "onAddButtonClick.override " + JSON.stringify( this.modelObject ));
         this.sendFormPrepareToSaveEvent();
-        for ( var stockNotesStock of this.modelObject.stocks )
-        {
-            this.modelObject.tickerSymbol = stockNotesStock.tickerSymbol;
-            this.log( "onAddButtonClick.override" + JSON.stringify( this.modelObject ));
-            super.onAddButtonClick();
-        }
+        this.modelObject
+            .stocks
+            .forEach( stockNotesStock =>
+            {
+                this.modelObject.tickerSymbol = stockNotesStock.tickerSymbol;
+                this.log( "onAddButtonClick.override" + JSON.stringify( this.modelObject ));
+                super.onAddButtonClick();
+            });
     }
 
     /**
