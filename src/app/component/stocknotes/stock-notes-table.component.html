@@ -86,11 +86,11 @@
                       header="% Change Since Entered"
                       [style]="{'width':'80px','text-align':'right'}">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <div class="positiveGain" *ngIf="stockNotes && stockNotes[col.field] >= 0.0">
-                        {{stockNotes[col.field] | percent: '1.2-2' }}
+                    <div class="positiveGain" *ngIf="calculatePercentChange( stockNotes ) >= 0.0">
+                        {{calculatePercentChange( stockNotes ) | percent: '1.2-2' }}
                     </div>
-                    <div class="negativeGain" *ngIf="stockNotes && stockNotes[col.field] < 0.0">
-                        {{stockNotes[col.field] | percent: '1.2-2' }}
+                    <div class="negativeGain" *ngIf="calculatePercentChange( stockNotes ) < 0.0">
+                        {{calculatePercentChange( stockNotes ) | percent: '1.2-2' }}
                     </div>
                 </ng-template>
             </p-column>

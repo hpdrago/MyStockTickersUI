@@ -27,7 +27,7 @@ export class StockUrlMap
     public extractURLsFromNotes( noteContainers: StockNoteContainer[] )
     {
         this.urlMap = new Map();
-        for ( let noteContainer of noteContainers )
+        noteContainers.forEach( noteContainer =>
         {
             var url: string = this.extractURLFromNotes( noteContainer.getNotes() );
             if ( !isNullOrUndefined( url ) )
@@ -35,7 +35,7 @@ export class StockUrlMap
                 //this.log( 'extractURLsFromNotes ticker: ' + stockNote.tickerSymbol + ' url: ' + url );
                 this.urlMap.set( noteContainer.getTickerSymbol(), url );
             }
-        }
+        });
     }
 
     /**

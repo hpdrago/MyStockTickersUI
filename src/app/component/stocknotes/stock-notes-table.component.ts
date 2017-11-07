@@ -54,4 +54,28 @@ export class StockNotesTableComponent extends StockQuoteModelObjectTableComponen
         //this.log( 'getActionTaken: ' + actionTaken );
         return StockNotesActionTaken.getName( actionTaken );
     }
+
+    /**
+     * Determines the percent of change from the original price to the last price.
+     * @return A percent of change.
+     */
+    private calculatePercentChange( stockNotes: StockNotes ): number
+    {
+        if ( isNullOrUndefined( stockNotes ))
+        {
+            return 0;
+        }
+        {
+            if ( stockNotes.lastPrice == null || stockNotes.lastPrice == 0 )
+            {
+                return 0;
+            }
+            if ( stockNotes.stockPriceWhenCreated == null || stockNotes.stockPriceWhenCreated == 0 )
+            {
+                return 0;
+            }
+            let percentChanged = 1.0 - ( stockNotes.stockPriceWhenCreated / stockNotes.lastPrice );
+            return percentChanged;
+        }
+    }
 }
