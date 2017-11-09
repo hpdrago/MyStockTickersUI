@@ -38,6 +38,7 @@ export class StockToBuyFormComponent extends CrudFormComponent<StockToBuy>
             {
                 'tickerSymbol':       new FormControl( this.modelObject.tickerSymbol, Validators.required ),
                 'comments':           new FormControl( this.modelObject.comments, Validators.required ),
+                'notesSource':        new FormControl( this.modelObject.notesSourceId ),
                 'buySharesUpToPrice': new FormControl( this.modelObject.buySharesUpToPrice ),
                 'buyAfterDate':       new FormControl( this.modelObject.buyAfterDate ),
                 'tags':               new FormControl( this.modelObject.tags )

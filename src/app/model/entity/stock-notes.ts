@@ -2,6 +2,7 @@ import { ModelObject } from "./modelobject";
 import { StockNotesStock } from "./stock-notes-stock";
 import { StockNoteContainer } from "../../common/stock-note-container";
 import { StockQuoteModelObject } from "./stock-quote-modelobject";
+import { TagList } from "../../common/tag_list";
 
 /**
  * Defines a single portfolio for a customer
@@ -22,7 +23,7 @@ export class StockNotes extends StockQuoteModelObject<StockNotes> implements Sto
     public actionTakenShares: number;
     public actionTakenPrice: number;
     public stockPriceWhenCreated: number;
-    public percentChange: number;
+    public tags: TagList;
     public stocks: Array<StockNotesStock> = [];
 
     /**
@@ -32,15 +33,6 @@ export class StockNotes extends StockQuoteModelObject<StockNotes> implements Sto
     public getNotes(): string
     {
         return this.notes;
-    }
-
-    /**
-     * Get the ticker symbol
-     * @returns {string}
-     */
-    public getTickerSymbol(): string
-    {
-        return this.tickerSymbol;
     }
 
     public isEqualPrimaryKey( modelObject: StockNotes )
@@ -59,7 +51,7 @@ export class StockNotes extends StockQuoteModelObject<StockNotes> implements Sto
      */
     public getTickerSymbols(): string
     {
-        var tickerSymbols = '';
+        let tickerSymbols: string = '';
         this.stocks
             .forEach( stockNotesStock =>
                       {

@@ -28,4 +28,19 @@ export class StockNotesSourceList extends BaseClass
         return selectItems;
     }
 
+    /**
+     * Gets the label for the {@code id}
+     * @param {number} id
+     * @returns {string}
+     */
+    public getLabel( id: number ): string
+    {
+        let filteredSources: StockNotesSource[] = this.stockNotesSources.filter( stockNotesSource => stockNotesSource.id === id );
+        if ( filteredSources.length == 0 )
+        {
+            return "";
+        }
+        return filteredSources[0].name;
+    }
+
 }

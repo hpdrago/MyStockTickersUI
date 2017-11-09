@@ -32,6 +32,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     private sourceItems: SelectItem[] = [];
     private bullOrBearOptions: SelectItem[];
     private actionTakenOptions: SelectItem[];
+    private stockNotesSources: StockNotesSourceList;
 
     /**
      * The stock is returned via an event when the user searches for a ticker symbol or company
@@ -61,7 +62,10 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     public ngOnInit()
     {
         this.log( 'ngOnInit.begin' );
-        super.ngOnInit();
+        /*
+         * Get the stock note sources for the logged in user and populate the sources SelectItems
+         */
+        this.loadSources();
         this.bullOrBearOptions = [];
         this.bullOrBearOptions.push( {label: 'BULL', value: StockNotesSentiment.BULL } );
         this.bullOrBearOptions.push( {label: 'BEAR', value: StockNotesSentiment.BEAR } );
@@ -71,10 +75,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.actionTakenOptions.push( {label: 'NONE', value: StockNotesActionTaken.NONE });
         this.actionTakenOptions.push( {label: 'BUY', value: StockNotesActionTaken.BUY });
         this.actionTakenOptions.push( {label: 'SELL', value: StockNotesActionTaken.SELL });
-        /*
-         * Get the stock note sources for the logged in user and populate the sources SelectItems
-         */
-        this.loadSources();
+        super.ngOnInit();
         this.enableDisableFields();
         this.log( 'ngOnInit.end' );
     }
@@ -89,8 +90,14 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             .getStockNoteSources( this.sessionService.getLoggedInUserId() )
             .subscribe( ( stockNotesSources: StockNotesSourceList ) =>
                         {
+                            this.stockNotesSources = stockNotesSources;
                             this.sourceItems = stockNotesSources.toSelectItems()
                             this.log( 'loadSources ' + JSON.stringify( this.sourceItems ) );
+
+
+                           Must be able to handle asynchronous initialization
+
+
                         },
                         error =>
                         {
@@ -114,8 +121,9 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                     'tickerSymbols':     new FormControl( this.tickerSymbols, Validators.required ),
                     'notes':             new FormControl( this.modelObject.notes, Validators.required ),
                     'notesDate':         new FormControl( this.modelObject.notesDate, Validators.required ),
-                    'notesSource':       new FormControl( this.modelObject.notesSourceId ),
+                    'notesSource':       new FormControl( this.getSourceName( this.modelObject )),
                     'notesRating':       new FormControl( this.modelObject.notesRating ),
+                    'tags':              new FormControl( this.modelObject.tags ),
                     'bullOrBear':        new FormControl( this.modelObject.bullOrBear ),
                     'actionTaken':       new FormControl( this.modelObject.actionTaken ),
                     'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
@@ -129,8 +137,9 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                     'tickerSymbol':      new FormControl( this.modelObject.tickerSymbol, Validators.required ),
                     'notes':             new FormControl( this.modelObject.notes, Validators.required ),
                     'notesDate':         new FormControl( this.modelObject.notesDate, Validators.required ),
-                    'notesSource':       new FormControl( this.modelObject.notesSourceId ),
+                    'notesSource':       new FormControl( this.getSourceName( this.modelObject )),
                     'notesRating':       new FormControl( this.modelObject.notesRating ),
+                    'tags':              new FormControl( this.modelObject.tags ),
                     'bullOrBear':        new FormControl( this.modelObject.bullOrBear ),
                     'actionTaken':       new FormControl( this.modelObject.actionTaken ),
                     'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
@@ -138,6 +147,15 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                 } );
         }
         return stockNoteForm;
+    }
+
+    private getSourceName( stockNotes: StockNotes ): string
+    {
+        if ( isNullOrUndefined( stockNotes ) )
+        {
+            return "";
+        }
+        return this.stockNotesSources.getLabel( stockNotes.notesSourceId );
     }
 
     /**
@@ -148,11 +166,11 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     {
         var methodName = "setFormValues";
         this.log( methodName + " modelObject: " + JSON.stringify( modelObject ));
-        this.tickerSymbols = modelObject.getTickerSymbols();
-        this.log( methodName + " tickerSymbols: " + this.tickerSymbols );
-        this.setFormValue( 'tickerSymbols', this.tickerSymbols );
-        if ( this.crudOperation == CrudOperation.CREATE )
+        if ( this.isCrudCreateOperation() )
         {
+            this.tickerSymbols = modelObject.getTickerSymbols();
+            this.log( methodName + " tickerSymbols: " + JSON.stringify( this.tickerSymbols ));
+            this.setFormValue( 'tickerSymbols', this.tickerSymbols );
             if ( isNullOrUndefined( this.modelObject.actionTaken ))
             {
                 this.modelObject.actionTaken = StockNotesActionTaken.NONE;
@@ -247,8 +265,11 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     private sourcesOnChange( event )
     {
-        //this.log( "sourcesOnChange: " + JSON.stringify( event ));
-        this.modelObject.notesSourceName = event.value;
+        this.log( "sourcesOnChange: " + JSON.stringify( event ));
+        /*
+         * Capture the new values that the user types and put in the source name
+         */
+        this.modelObject.notesSourceName = event.value.toUpperCase();
     }
 
     /**

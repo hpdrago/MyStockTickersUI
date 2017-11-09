@@ -62,12 +62,13 @@
                     <div class="crud-form-label ui-grid-col-2">
                         <label class="crud-form" for="tickerSymbols">Stock:</label>
                     </div>
-                    <div class="ui-grid-col-2">
+                    <div class="ui-grid-col-1">
                         <input id="tickerSymbol"
                                type="text"
                                pInputText
                                required
                                uppercase
+                               maxlength="5"
                                formControlName="tickerSymbol"
                                [(ngModel)]="modelObject.tickerSymbol">
                     </div>
@@ -123,6 +124,23 @@
             </div>
 
             <!----------------------------------------------------------------------------------------------------------
+            TAGS
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="ui-grid-row">
+                <div class="crud-form-label ui-grid-col-2">
+                    <label class="crud-form" for="tags">Tags:</label>
+                </div>
+                <div class="ui-grid-col-10">
+                    <p-chips id="tags"
+                             name="basic"
+                             placeholder="type and press enter"
+                             formControlName="tags"
+                             [(ngModel)]="modelObject.tags">
+                    </p-chips>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
             SOURCE
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
@@ -137,6 +155,7 @@
                                 [(ngModel)]="modelObject.notesSourceId"
                                 (onChange)="sourcesOnChange($event)"
                                 [style]="{'width':'225px'}"
+                                maxlength="20"
                                 uppercase
                                 editable="true"
                                 placeholder="Select or enter a source">

@@ -38,6 +38,14 @@ const routes: Routes = [
         component: StockToBuyTableComponent,
     },
     {
+        path: 'Popular Links',
+        component: StockTableComponent,
+    },
+    {
+        path: 'News',
+        component: StockTableComponent,
+    },
+    {
         path: 'stocks',
         component: StockTableComponent,
     },
