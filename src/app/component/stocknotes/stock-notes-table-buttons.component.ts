@@ -3,6 +3,7 @@ import { ToastsManager } from "ng2-toastr";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
 import { StockNotes } from "../../model/entity/stock-notes";
+import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
 
 /**
  * Created by mike on 8/15/2017.
@@ -26,6 +27,7 @@ export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<S
         let modelObject = this.stockNotesServiceContainer .modelObjectFactory.newModelObject();
         modelObject.notesRating = 3;
         modelObject.bullOrBear = 1;
+        modelObject.actionTaken = StockNotesActionTaken.NONE;
         modelObject.notesDate = new Date( Date.now() );
         this.setModelObject( modelObject ) ;
         super.onAddButtonClick();

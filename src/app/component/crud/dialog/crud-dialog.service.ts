@@ -1,12 +1,11 @@
 import { Subject } from "rxjs";
 import { ModelObject } from "../../../model/entity/modelobject";
-import { Injectable } from "@angular/core";
 import { BaseCrudComponentService } from "../common/base-crud-component.service";
-import { DisplayDialogRequestSubjectInfo } from "./display-dialog-request-subject-info";
 import { CrudOperation } from "../common/crud-operation";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { DialogCloseEventType } from "../common/close-button-event";
 import { Subscription } from "rxjs/Subscription";
+import { ModelObjectCrudOperationSubjectInfo } from "./modelobject-crudoperation-subject-info";
 
 /**
  * This service defines the Observables for interacting with a CRUD dialog.
@@ -18,16 +17,16 @@ import { Subscription } from "rxjs/Subscription";
  */
 export class CrudDialogService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
-    protected displayDialogRequestSubject: BehaviorSubject<DisplayDialogRequestSubjectInfo> = new BehaviorSubject<DisplayDialogRequestSubjectInfo>( null );
+    protected displayDialogRequestSubject: BehaviorSubject<ModelObjectCrudOperationSubjectInfo> = new BehaviorSubject<ModelObjectCrudOperationSubjectInfo>( null );
     protected closeButtonClickedSubject: Subject<DialogCloseEventType> = new Subject<DialogCloseEventType>();
 
     /**
-     * This method must be implemented to return an instance of a DisplayDialogRequestSubjectInfo that contains
+     * This method must be implemented to return an instance of a ModelObjectCrudOperationSubject that contains
      * the model object and the crud operation to be sent to the dialog.
      */
-    protected createDisplayDialogRequestSubjectInfo( modelObject: T, crudOperation: CrudOperation  ): DisplayDialogRequestSubjectInfo
+    protected createDisplayDialogRequestSubjectInfo( modelObject: T, crudOperation: CrudOperation  ): ModelObjectCrudOperationSubjectInfo
     {
-        var subjectInfo: DisplayDialogRequestSubjectInfo = new DisplayDialogRequestSubjectInfo();
+        var subjectInfo: ModelObjectCrudOperationSubjectInfo = new ModelObjectCrudOperationSubjectInfo();
         subjectInfo.modelObject = modelObject;
         subjectInfo.crudOperation = crudOperation;
         return subjectInfo;
@@ -47,7 +46,7 @@ export class CrudDialogService<T extends ModelObject<T>> extends BaseCrudCompone
      */
     public sendDisplayDialogRequestEvent( modelObject: T, crudOperation: CrudOperation )
     {
-        var subjectInfo: DisplayDialogRequestSubjectInfo = this.createDisplayDialogRequestSubjectInfo( modelObject, crudOperation );
+        var subjectInfo: ModelObjectCrudOperationSubjectInfo = this.createDisplayDialogRequestSubjectInfo( modelObject, crudOperation );
         this.debug( "sendDisplayDialogRequestEvent " + JSON.stringify( subjectInfo ));
         this.tickThenRun( () => this.displayDialogRequestSubject.next( subjectInfo ));
     }

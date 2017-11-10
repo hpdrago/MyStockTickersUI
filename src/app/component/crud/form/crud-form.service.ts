@@ -4,6 +4,7 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { Subscription } from "rxjs/Subscription";
+import { ModelObjectCrudOperationSubjectInfo } from "../dialog/modelobject-crudoperation-subject-info";
 /**
  * This service provides communication from the CrudFormComponent's parent aka CrudFormComponent
  * to the CrudFormComponent.
@@ -25,6 +26,8 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     private formPrepareToSaveSubject: Subject<void> = new Subject<void>();
     private createFormSubject: Subject<void> = new Subject<void>();
     private formModelObjectVersionUpdateSubject: Subject<T> = new Subject<T>();
+    private modelObjectCrudOperationChangeSubject: BehaviorSubject<ModelObjectCrudOperationSubjectInfo> = new BehaviorSubject( null );
+
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
@@ -34,6 +37,16 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     /*
      * O B S E R V E R   M E T H O D S
      */
+
+    /**
+     * The {@code CrudFormForm} will call this method and register to be notified and receive a new crud operation
+     * and model object to display.
+     */
+    public subscribeToModelObjectCrudOperationChangedEvent( fn: ( ModelObjectCrudOperationSubjectInfo ) => any ): Subscription
+    {
+        this.debug( "subscribeToModelObjectCrudOperationChangedEvent" );
+        return this.modelObjectCrudOperationChangeSubject.asObservable().subscribe( fn );
+    }
 
     /**
      * The {@code CrudFormForm} will call this method and register to the Observable
@@ -179,7 +192,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
      */
     public sendFormPrepareToSaveEvent()
     {
-        //this.debug( "sendFormPrepareToSaveEvent" + valid );
+        this.debug( "sendFormPrepareToSaveEvent" );
         this.tickThenRun( () => this.formPrepareToSaveSubject.next() );
     }
 
@@ -190,7 +203,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
      */
     public sendFormModelObjectVersionUpdateEvent( modelObject: T )
     {
-        //this.debug( "sendFormModelObjectVersionUpdateEvent: " + JSON.stringIfy( modelObject ) );
+        this.debug( "sendFormModelObjectVersionUpdateEvent: " + JSON.stringify( modelObject ) );
         this.tickThenRun( () => this.formModelObjectVersionUpdateSubject.next( modelObject ) );
     }
 
@@ -200,7 +213,23 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
      */
     public sendCreateFormEvent()
     {
-        //this.debug( "sendFormModelObjectVersionUpdateEvent: " + JSON.stringIfy( modelObject ) );
+        this.debug( "sendFormModelObjectVersionUpdateEvent: " );
         this.tickThenRun( () => this.createFormSubject.next() );
+    }
+
+    /**
+     * This method is called by the dialog to send the model object and crud operation values in a single
+     * message to the crud form.
+     * @param {} subjectInfo
+     */
+    public sendModelObjectCrudOperationChangedEvent( subjectInfo: ModelObjectCrudOperationSubjectInfo )
+    {
+        this.debug( "sendModelObjectCrudOperationChangedEvent " + JSON.stringify( subjectInfo ) );
+        this.modelObjectCrudOperationChangeSubject.next( subjectInfo );
+        /*
+         * Also set the individual values for model object and crud operation
+         */
+        this.sendModelObjectChangedEvent( subjectInfo.modelObject );
+        this.sendCrudOperationChangedEvent( subjectInfo.crudOperation );
     }
 }

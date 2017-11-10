@@ -1,8 +1,9 @@
 import { ModelObjectFactory } from "./model-object.factory";
 import { StockNotes } from "../entity/stock-notes";
 import { Injectable } from "@angular/core";
-import { stringDistance } from "codelyzer/util/utils";
 import { SessionService } from "../../service/crud/session.service";
+import { StockNotesActionTaken } from "../../component/common/stock-notes-action-taken";
+import { TagList } from "../../common/tag_list";
 
 /**
  * This is the StockNotes model object factory
@@ -26,12 +27,18 @@ export class StockNotesFactory extends ModelObjectFactory<StockNotes>
         stockNote.id = 0;
         stockNote.customerId = this.session.getLoggedInUserId();
         stockNote.notes = '';
+        stockNote.notesDate = new Date();
         stockNote.notesSourceId = 0;
+        stockNote.notesSourceName = "";
         stockNote.notesRating = 0;
         stockNote.publicInd = false;
         stockNote.bullOrBear = 0;
         stockNote.notesRating = 0;
-        stockNote.notesDate = new Date();
+        stockNote.actionTaken = StockNotesActionTaken.NONE;
+        stockNote.actionTakenShares = 0;
+        stockNote.actionTakenPrice = 0;
+        stockNote.tags = [];
+        stockNote.stocks = [];
         return stockNote;
     }
 

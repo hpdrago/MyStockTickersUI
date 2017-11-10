@@ -1,12 +1,5 @@
 <div *ngIf="modelObject">
     <div [ngBusy]="busyIndicator"></div>
-    <div *ngIf="isCrudCreateOperation()" class="crud-form ui-grid-row">
-        <div class="crud-form-label ui-grid-col-2">
-        </div>
-        <div class="ui-grid-col-10">
-            When specifying multiple stocks, the note information will be duplicated for each stock
-        </div>
-    </div>
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
             <div *ngIf="isCrudCreateOperation(); then createDiv else modifyDiv" class="crud-form ui-grid-row">
@@ -18,17 +11,26 @@
                 <!----------------------------------------------------------------------------------------------------------
                 SEARCH
                 ------------------------------------------------------------------------------------------------------------>
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="stockSearch">Stock Search:</label>
+                <div class="crud-form ui-grid-row">
+                    <div class="crud-form-label ui-grid-col-2">
+                    </div>
+                    <div class="ui-grid-col-10">
+                        When specifying multiple stocks, the note information will be duplicated for each stock
+                    </div>
                 </div>
-                <div class="ui-grid-col-10">
-                    <stock-autocomplete id="stockSearch"
-                                        [(ngModel)]="stockSearch"
-                                        [formGroup]="formGroup"
-                                        formControlName="stockSearch"
-                                        uppercase
-                                        (stockSelected)="onStockSelected( $event )">
-                    </stock-autocomplete>
+                <div class="crud-form ui-grid-row">
+                    <div class="crud-form-label ui-grid-col-2">
+                        <label class="crud-form" for="stockSearch">Stock Search:</label>
+                    </div>
+                    <div class="ui-grid-col-10">
+                        <stock-autocomplete id="stockSearch"
+                                            [(ngModel)]="stockSearch"
+                                            [formGroup]="formGroup"
+                                            formControlName="stockSearch"
+                                            uppercase
+                                            (stockSelected)="onStockSelected( $event )">
+                        </stock-autocomplete>
+                    </div>
                 </div>
 
                 <!----------------------------------------------------------------------------------------------------------

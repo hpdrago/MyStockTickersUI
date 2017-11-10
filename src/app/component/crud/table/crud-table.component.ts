@@ -217,8 +217,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected showDialogToAdd( modelObject: T ): void
     {
         this.debug( "showDialogToAdd" );
-        this.crudOperation = CrudOperation.CREATE;
         this.setModelObject( modelObject );
+        this.setCrudOperation( CrudOperation.CREATE );
         this.displayModelObject();
     }
 
@@ -233,7 +233,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         if ( !isNullOrUndefined( modelObject ) )
         {
             this.debug( "showDialogToEdit" );
-            this.crudOperation = CrudOperation.UPDATE;
+            this.setCrudOperation( CrudOperation.UPDATE );
             this.setModelObject( modelObject );
             this.displayModelObject();
         }
@@ -249,7 +249,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         if ( !isNullOrUndefined( modelObject ) )
         {
             this.debug( "showDialogToDelete" );
-            this.crudOperation = CrudOperation.DELETE;
+            this.setCrudOperation( CrudOperation.DELETE );
             this.setModelObject( modelObject );
             this.displayModelObject();
         }
@@ -262,7 +262,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected displayModelObject(): void
     {
         this.debug( "displayModelObject " + JSON.stringify( this.modelObject ));
-        this.checkModelObjectVersion();
+        /*
+         * if the user is modifying the model object, we need to check that they have the latest version of the data.
+         */
+        if ( this.isCrudUpdateOperation() )
+        {
+            this.checkModelObjectVersion();
+        }
         /*
          * Notify the panel of the changes
          * If a panel is used to display the selected contents, then notify the panel
@@ -295,6 +301,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected checkModelObjectVersion()
     {
+        this.debug( "checkModelObjectVersion.begin" );
         this.crudServiceContainer.crudRestService
             .getModelObject( this.modelObject )
             .subscribe( modelObject =>
@@ -315,6 +322,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                                     .crudFormService
                                     .sendFormModelObjectVersionUpdateEvent( modelObject );
                             }
+                            this.debug( "checkModelObjectVersion.end" );
                         },
                         error =>
                         {

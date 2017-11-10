@@ -2,10 +2,10 @@ import { ToastsManager } from "ng2-toastr";
 import { CrudServiceContainer } from "../common/crud-service-container";
 import { BaseCrudComponent } from "../common/base-crud.component";
 import { ModelObject } from "../../../model/entity/modelobject";
-import { DisplayDialogRequestSubjectInfo } from "./display-dialog-request-subject-info";
 import { CrudOperation } from "../common/crud-operation";
 import { isNullOrUndefined } from "util";
 import { DialogCloseEventType } from "../common/close-button-event";
+import { ModelObjectCrudOperationSubjectInfo } from "./modelobject-crudoperation-subject-info";
 /**
  * This is the base class for Modal dialogs that provide CRUD operations on a model object.
  *
@@ -40,12 +40,14 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
             throw new Error( "crudButtonsService argument cannot be null" );
         }
         this.subscribeToCrudDialogServiceEvents();
+        /*
         this.crudServiceContainer
             .crudFormService
             .subscribeToComponentInitializedEvent( ()=> this.formInitialized() );
         this.crudServiceContainer
             .crudFormButtonsService
             .subscribeToComponentInitializedEvent( ()=> this.formButtonsInitialized() );
+            */
         // Tell everyone that we are done
         this.crudServiceContainer
             .crudDialogService
@@ -58,6 +60,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
      * We will then send the model object and crud operation back to the form that we have received previously via
      * the display dialog event.
      */
+    /*
     private formInitialized()
     {
         this.debug( "formInitialized sending model object and crud operation to form" );
@@ -68,12 +71,14 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
             .crudFormService
             .sendModelObjectChangedEvent( this.modelObject );
     }
+    */
 
     /**
      * This method is called when the dialog receives notification that the form buttons has completed initializing.
      * We will then send the model object and crud operation back to the form that we have received previously via
      * the display dialog event.
      */
+    /*
     private formButtonsInitialized()
     {
         this.debug( "formButtonsInitialized sending model object and crud operation to form buttons" );
@@ -84,6 +89,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
             .crudFormButtonsService
             .sendModelObjectChangedEvent( this.modelObject,   );
     }
+    */
 
     /**
      * Subscribe to the events that will be initiated by the parent container.
@@ -98,7 +104,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
         this.addSubscription(
             this.crudServiceContainer
             .crudDialogService
-            .subscribeToDisplayDialogRequestEvent(( subjectInfo: DisplayDialogRequestSubjectInfo ) => this.setDisplayDialog( subjectInfo ) ));
+            .subscribeToDisplayDialogRequestEvent(( subjectInfo: ModelObjectCrudOperationSubjectInfo ) => this.setDisplayDialog( subjectInfo ) ));
         this.addSubscription( this.crudServiceContainer
             .crudDialogService
             .subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) ));
@@ -130,7 +136,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
      *
      * @param displayDialog
      */
-    protected setDisplayDialog( subjectInfo: DisplayDialogRequestSubjectInfo ): void
+    protected setDisplayDialog( subjectInfo: ModelObjectCrudOperationSubjectInfo ): void
     {
         this.debug( "setDisplayDialog.begin " + JSON.stringify( subjectInfo ) );
         if ( !isNullOrUndefined( subjectInfo ) )
@@ -146,25 +152,11 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
                 /*
                  * Tell the buttons and form of the changes
                  */
-                this.debug( "Sending events to Form" );
+                this.debug( "Sending crud operation and modelObject to Form" );
                 this.crudServiceContainer
                     .crudFormService
-                    .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
-                this.crudServiceContainer
-                    .crudFormService
-                    .sendModelObjectChangedEvent( subjectInfo.modelObject );
-                /*
-                 * Wait for the form to complete initialization before sending the create form event.
-                 */
-                this.crudServiceContainer
-                    .crudFormService
-                    .subscribeToComponentInitializedEvent( () =>
-                                                           {
-                                                               this.crudServiceContainer
-                                                                   .crudFormService
-                                                                   .sendCreateFormEvent();
-                                                           });
-                this.debug( "Sending events to Form Buttons" );
+                    .sendModelObjectCrudOperationChangedEvent( subjectInfo );
+                this.debug( "Sending crud operation and modelObject to the form buttons" );
                 this.crudServiceContainer
                     .crudFormButtonsService
                     .sendCrudOperationChangedEvent( subjectInfo.crudOperation );

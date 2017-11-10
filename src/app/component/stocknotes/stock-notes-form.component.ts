@@ -34,7 +34,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     private bullOrBearOptions: SelectItem[];
     private actionTakenOptions: SelectItem[];
     private stockNotesSources: StockNotesSourceList;
-    private sourcesLoadedSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
 
     /**
      * The stock is returned via an event when the user searches for a ticker symbol or company
@@ -63,7 +62,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     public ngOnInit()
     {
-        this.log( 'ngOnInit.begin' );
+        this.log( 'ngOnInit.override.begin' );
         this.bullOrBearOptions = [];
         this.bullOrBearOptions.push( {label: 'BULL', value: StockNotesSentiment.BULL } );
         this.bullOrBearOptions.push( {label: 'BEAR', value: StockNotesSentiment.BEAR } );
@@ -75,7 +74,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.actionTakenOptions.push( {label: 'SELL', value: StockNotesActionTaken.SELL });
         super.ngOnInit();
         this.enableDisableFields();
-        this.log( 'ngOnInit.end' );
+        this.log( 'ngOnInit.override.end' );
     }
 
     /**
@@ -102,16 +101,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                         {
                             this.stockNotesSources = stockNotesSources;
                             this.sourceItems = stockNotesSources.toSelectItems()
-                            this.log( 'loadSources.end ' + JSON.stringify( this.sourceItems ) );
-                            this.sourcesLoadedSubject.next( true );
-                            /*
-                             * Check to see if we need to set the source name on the form
-                             */
-                            if ( this.formInitializationCompletedSubject.getValue() )
-                            {
-                                this.log( "Setting notes source value " );
-                                this.setFormValue( 'notesSource', this.getSourceName( this.modelObject ));
-                            }
                             this.loadResourcesCompleted();
                         },
                         error =>
@@ -121,13 +110,23 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     }
 
     /**
-     * Override this method to delay the form completion event until the sources have loaded.
-     * @returns {any}
+     * This method is called when {@code loadSources} has completed.
      */
-    protected sendComponentInitializedCompletedEvent()
+    protected loadResourcesCompleted(): void
     {
-        this.log( "sendComponentInitializedCompletedEvent" );
-        this.sourcesLoadedSubject.asObservable().subscribe( () => super.sendComponentInitializedCompletedEvent() );
+        this.log( "loadResourcesCompleted.override" );
+        this.formGroup.addControl( 'notesSource', new FormControl( this.getSourceName( this.modelObject ) ) );
+        super.loadResourcesCompleted();
+    }
+
+    /**
+     * This method is called after {@code loadResources() and ngOnInit() have completed}.  At that time, the form
+     * has been built and the source names have been loaded so it's safe to set the source name field.
+     */
+    protected postInit(): void
+    {
+        this.log( "postInit.override" );
+        this.setFormValue( 'notesSource', this.getSourceName( this.modelObject ) );
     }
 
     /**
@@ -145,6 +144,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                     'stockSearch': new FormControl( this.stockSearch ),
                     'tickerSymbols': new FormControl( this.tickerSymbols, Validators.required ),
                     'notes': new FormControl( this.modelObject.notes, Validators.required ),
+                    'notesSource': new FormControl( "" ),
                     'notesDate': new FormControl( this.modelObject.notesDate, Validators.required ),
                     'notesRating': new FormControl( this.modelObject.notesRating ),
                     'tags': new FormControl( this.modelObject.tags ),
@@ -160,6 +160,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                 {
                     'tickerSymbol': new FormControl( this.modelObject.tickerSymbol, Validators.required ),
                     'notes': new FormControl( this.modelObject.notes, Validators.required ),
+                    'notesSource': new FormControl( "" ),
                     'notesDate': new FormControl( this.modelObject.notesDate, Validators.required ),
                     'notesRating': new FormControl( this.modelObject.notesRating ),
                     'tags': new FormControl( this.modelObject.tags ),
@@ -168,18 +169,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                     'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
                     'actionTakenPrice': new FormControl( this.modelObject.actionTakenPrice )
                 } );
-        }
-
-        /*
-         * The sources are loaded asynchronously so need to set a value on the form that will not cause an exception
-         */
-        if ( this.sourcesLoadedSubject.getValue() )
-        {
-            stockNoteForm.addControl( 'notesSource', new FormControl( this.getSourceName( this.modelObject ) ) );
-        }
-        else
-        {
-            stockNoteForm.addControl( 'notesSource', new FormControl( "" ));
         }
         return stockNoteForm;
     }
