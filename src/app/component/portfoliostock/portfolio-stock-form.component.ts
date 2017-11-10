@@ -105,7 +105,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      * Create the form.  This method is called by the super class
      * @return {FormGroup}
      */
-    protected createCrudForm(): FormGroup
+    protected createFormGroup(): FormGroup
     {
         var formGroup: FormGroup = this.formBuilder.group(
         {

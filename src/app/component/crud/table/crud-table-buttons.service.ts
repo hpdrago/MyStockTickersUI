@@ -13,15 +13,13 @@ import { Subscription } from "rxjs/Subscription";
 export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
     private refreshButtonClickedSubject: Subject<any> = new Subject();
-    private addButtonClickedSubject: Subject<any> = new Subject();
-    private deleteButtonClickedSubject: BehaviorSubject<T>;
-    private editButtonClickedSubject: BehaviorSubject<T>;
+    private addButtonClickedSubject: Subject<T> = new Subject();
+    private deleteButtonClickedSubject: Subject<T> = new Subject();
+    private editButtonClickedSubject: Subject<T> = new Subject();
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super( modelObjectFactory );
-        this.deleteButtonClickedSubject = new BehaviorSubject<T>( null );
-        this.editButtonClickedSubject = new BehaviorSubject<T>( null );
     }
 
     /**
@@ -56,10 +54,10 @@ export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudC
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the Add button.
      */
-    public sendAddButtonClickedEvent()
+    public sendAddButtonClickedEvent( modelObject: T )
     {
         this.debug( "sendAddButtonClickedEvent " );
-        this.tickThenRun( () => this.addButtonClickedSubject.next() );
+        this.tickThenRun( () => this.addButtonClickedSubject.next( modelObject ) );
     }
 
     /**

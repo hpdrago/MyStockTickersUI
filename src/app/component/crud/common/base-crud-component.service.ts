@@ -17,7 +17,7 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     private modelObjectChangedSubject: BehaviorSubject<T>;
     private crudOperationChangedSubject: BehaviorSubject<CrudOperation>;
     private crudOperationErrorSubject: BehaviorSubject<string>;
-    private componentInitializedSubject: Subject<void>;
+    private componentInitializedSubject: BehaviorSubject<boolean>;
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
@@ -25,7 +25,7 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
         this.modelObjectChangedSubject = new BehaviorSubject<T>( null );
         this.crudOperationChangedSubject = new BehaviorSubject<CrudOperation>( CrudOperation.NONE );
         this.crudOperationErrorSubject = new BehaviorSubject<string>( "" );
-        this.componentInitializedSubject = new Subject<void>();
+        this.componentInitializedSubject = new BehaviorSubject<boolean>( false );
     }
 
     /**
@@ -46,6 +46,7 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
      */
     public subscribeToModelObjectChangedEvent( fn: ( ModelObject ) => any ): Subscription
     {
+        this.debug( "subscribeToModelObjectChangedEvent" );
         var observable: Observable<T> = this.modelObjectChangedSubject.asObservable();
         var subscription: Subscription = observable.subscribe( fn );
         this.debug( "subscribeToModelObjectChangedEvent " + this.modelObjectChangedSubject.observers.length + " observers" );
@@ -59,7 +60,10 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     public subscribeToCrudOperationChangeEvent( fn: ( CrudOperation ) => any ): Subscription
     {
         this.debug( "subscribeToCrudOperationChangeEvent" );
-        return this.crudOperationChangedSubject.asObservable().subscribe( fn );
+        var observable: Observable<CrudOperation> = this.crudOperationChangedSubject.asObservable();
+        var subscription: Subscription = observable.subscribe( fn );
+        this.debug( "subscribeToCrudOperationChangeEvent" + this.crudOperationChangedSubject.observers.length + " observers" );
+        return subscription;
     }
 
     /**
@@ -101,7 +105,7 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     public sendComponentInitializedEvent()
     {
         this.debug( "sendComponentInitialized" );
-        this.tickThenRun( () => this.componentInitializedSubject.next() );
+        this.tickThenRun( () => this.componentInitializedSubject.next( true ) );
     }
 
     /**
@@ -109,7 +113,7 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
      * to be notified when the form has completed it's initialization.
      * @return Subscription instance
      */
-    public subscribeToComponentInitializedEvent( fn: () => any ): Subscription
+    public subscribeToComponentInitializedEvent( fn: ( boolean ) => any ): Subscription
     {
         this.debug( "subscribeToComponentInitializedEvent" );
         return this.componentInitializedSubject.asObservable().subscribe( fn );

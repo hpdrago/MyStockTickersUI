@@ -29,7 +29,7 @@ export class StockFormComponent extends CrudFormComponent<Stock>
      * @return {FormGroup}
      * @override
      */
-    protected createCrudForm(): FormGroup
+    protected createFormGroup(): FormGroup
     {
         var stockForm: FormGroup = this.formBuilder.group(
         {

@@ -153,6 +153,17 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
                 this.crudServiceContainer
                     .crudFormService
                     .sendModelObjectChangedEvent( subjectInfo.modelObject );
+                /*
+                 * Wait for the form to complete initialization before sending the create form event.
+                 */
+                this.crudServiceContainer
+                    .crudFormService
+                    .subscribeToComponentInitializedEvent( () =>
+                                                           {
+                                                               this.crudServiceContainer
+                                                                   .crudFormService
+                                                                   .sendCreateFormEvent();
+                                                           });
                 this.debug( "Sending events to Form Buttons" );
                 this.crudServiceContainer
                     .crudFormButtonsService

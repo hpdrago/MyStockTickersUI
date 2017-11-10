@@ -15,6 +15,7 @@ import { isNullOrUndefined } from "util";
 import { StockNotesSentiment } from "../common/stock-notes-sentiment";
 import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
 import { StockCrudService } from "../../service/crud/stock-crud.service";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 /**
  * This is the Stock Note Form Component class.
@@ -33,6 +34,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     private bullOrBearOptions: SelectItem[];
     private actionTakenOptions: SelectItem[];
     private stockNotesSources: StockNotesSourceList;
+    private sourcesLoadedSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
 
     /**
      * The stock is returned via an event when the user searches for a ticker symbol or company
@@ -62,10 +64,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     public ngOnInit()
     {
         this.log( 'ngOnInit.begin' );
-        /*
-         * Get the stock note sources for the logged in user and populate the sources SelectItems
-         */
-        this.loadSources();
         this.bullOrBearOptions = [];
         this.bullOrBearOptions.push( {label: 'BULL', value: StockNotesSentiment.BULL } );
         this.bullOrBearOptions.push( {label: 'BEAR', value: StockNotesSentiment.BEAR } );
@@ -81,23 +79,40 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     }
 
     /**
+     * This method is called by the super class at the beginning of ngOnInit
+     * @returns {any}
+     */
+    protected loadResources(): any
+    {
+        /*
+         * Get the stock note sources for the logged in user and populate the sources SelectItems
+         */
+        this.loadSources();
+    }
+
+    /**
      * This method will get the user's note source values from the database
      */
     private loadSources()
     {
-        this.log( 'loadSources' );
+        this.log( 'loadSources.begin' );
         this.stockNotesCrudServiceContainer.stockNoteSourceService
             .getStockNoteSources( this.sessionService.getLoggedInUserId() )
             .subscribe( ( stockNotesSources: StockNotesSourceList ) =>
                         {
                             this.stockNotesSources = stockNotesSources;
                             this.sourceItems = stockNotesSources.toSelectItems()
-                            this.log( 'loadSources ' + JSON.stringify( this.sourceItems ) );
-
-
-                           Must be able to handle asynchronous initialization
-
-
+                            this.log( 'loadSources.end ' + JSON.stringify( this.sourceItems ) );
+                            this.sourcesLoadedSubject.next( true );
+                            /*
+                             * Check to see if we need to set the source name on the form
+                             */
+                            if ( this.formInitializationCompletedSubject.getValue() )
+                            {
+                                this.log( "Setting notes source value " );
+                                this.setFormValue( 'notesSource', this.getSourceName( this.modelObject ));
+                            }
+                            this.loadResourcesCompleted();
                         },
                         error =>
                         {
@@ -106,45 +121,65 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     }
 
     /**
+     * Override this method to delay the form completion event until the sources have loaded.
+     * @returns {any}
+     */
+    protected sendComponentInitializedCompletedEvent()
+    {
+        this.log( "sendComponentInitializedCompletedEvent" );
+        this.sourcesLoadedSubject.asObservable().subscribe( () => super.sendComponentInitializedCompletedEvent() );
+    }
+
+    /**
      * Creates and identifies the fields for the FormGroup instance for the stock notes form.
      * @return {FormGroup}
      */
-    protected createCrudForm(): FormGroup
+    protected createFormGroup(): FormGroup
     {
-        this.log( "createCrudForm" );
+        this.log( "initializeForm " + CrudOperation.getName( this.crudOperation ) );
         var stockNoteForm: FormGroup;
         if ( this.isCrudCreateOperation() )
         {
             stockNoteForm = this.formBuilder.group(
                 {
-                    'stockSearch':       new FormControl( this.stockSearch ),
-                    'tickerSymbols':     new FormControl( this.tickerSymbols, Validators.required ),
-                    'notes':             new FormControl( this.modelObject.notes, Validators.required ),
-                    'notesDate':         new FormControl( this.modelObject.notesDate, Validators.required ),
-                    'notesSource':       new FormControl( this.getSourceName( this.modelObject )),
-                    'notesRating':       new FormControl( this.modelObject.notesRating ),
-                    'tags':              new FormControl( this.modelObject.tags ),
-                    'bullOrBear':        new FormControl( this.modelObject.bullOrBear ),
-                    'actionTaken':       new FormControl( this.modelObject.actionTaken ),
+                    'stockSearch': new FormControl( this.stockSearch ),
+                    'tickerSymbols': new FormControl( this.tickerSymbols, Validators.required ),
+                    'notes': new FormControl( this.modelObject.notes, Validators.required ),
+                    'notesDate': new FormControl( this.modelObject.notesDate, Validators.required ),
+                    'notesRating': new FormControl( this.modelObject.notesRating ),
+                    'tags': new FormControl( this.modelObject.tags ),
+                    'bullOrBear': new FormControl( this.modelObject.bullOrBear ),
+                    'actionTaken': new FormControl( this.modelObject.actionTaken ),
                     'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
-                    'actionTakenPrice':  new FormControl( this.modelObject.actionTakenPrice )
+                    'actionTakenPrice': new FormControl( this.modelObject.actionTakenPrice )
                 } );
         }
         else
         {
             stockNoteForm = this.formBuilder.group(
                 {
-                    'tickerSymbol':      new FormControl( this.modelObject.tickerSymbol, Validators.required ),
-                    'notes':             new FormControl( this.modelObject.notes, Validators.required ),
-                    'notesDate':         new FormControl( this.modelObject.notesDate, Validators.required ),
-                    'notesSource':       new FormControl( this.getSourceName( this.modelObject )),
-                    'notesRating':       new FormControl( this.modelObject.notesRating ),
-                    'tags':              new FormControl( this.modelObject.tags ),
-                    'bullOrBear':        new FormControl( this.modelObject.bullOrBear ),
-                    'actionTaken':       new FormControl( this.modelObject.actionTaken ),
+                    'tickerSymbol': new FormControl( this.modelObject.tickerSymbol, Validators.required ),
+                    'notes': new FormControl( this.modelObject.notes, Validators.required ),
+                    'notesDate': new FormControl( this.modelObject.notesDate, Validators.required ),
+                    'notesRating': new FormControl( this.modelObject.notesRating ),
+                    'tags': new FormControl( this.modelObject.tags ),
+                    'bullOrBear': new FormControl( this.modelObject.bullOrBear ),
+                    'actionTaken': new FormControl( this.modelObject.actionTaken ),
                     'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
-                    'actionTakenPrice':  new FormControl( this.modelObject.actionTakenPrice )
+                    'actionTakenPrice': new FormControl( this.modelObject.actionTakenPrice )
                 } );
+        }
+
+        /*
+         * The sources are loaded asynchronously so need to set a value on the form that will not cause an exception
+         */
+        if ( this.sourcesLoadedSubject.getValue() )
+        {
+            stockNoteForm.addControl( 'notesSource', new FormControl( this.getSourceName( this.modelObject ) ) );
+        }
+        else
+        {
+            stockNoteForm.addControl( 'notesSource', new FormControl( "" ));
         }
         return stockNoteForm;
     }
@@ -170,23 +205,23 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         {
             this.tickerSymbols = modelObject.getTickerSymbols();
             this.log( methodName + " tickerSymbols: " + JSON.stringify( this.tickerSymbols ));
-            this.setFormValue( 'tickerSymbols', this.tickerSymbols );
-            if ( isNullOrUndefined( this.modelObject.actionTaken ))
+            this.setFormValue( 'tickerSymbols', isNullOrUndefined( this.tickerSymbols ) ? "" : this.tickerSymbols );
+            if ( isNullOrUndefined( modelObject.actionTaken ))
             {
-                this.modelObject.actionTaken = StockNotesActionTaken.NONE;
+                modelObject.actionTaken = StockNotesActionTaken.NONE;
             }
-            if ( isNullOrUndefined( this.modelObject.actionTakenShares ))
+            if ( isNullOrUndefined( modelObject.actionTakenShares ))
             {
-                this.modelObject.actionTakenShares = 0;
+                modelObject.actionTakenShares = 0;
             }
-            if ( !isNullOrUndefined( this.modelObject.tickerSymbol ))
+            if ( !isNullOrUndefined( modelObject.tickerSymbol ))
             {
                 this.stockService
-                    .getStock( this.modelObject.tickerSymbol )
+                    .getStock( modelObject.tickerSymbol )
                     .subscribe( (stock) =>
                                 {
                                     this.log( methodName + " found: " + stock.tickerSymbol );
-                                    this.modelObject.stockPriceWhenCreated = stock.lastPrice;
+                                    modelObject.stockPriceWhenCreated = stock.lastPrice;
                                 },
                                 error =>
                                 {

@@ -23,6 +23,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     private formResetSubject: Subject<void> = new Subject<void>();
     private formLogStateSubject: Subject<void> = new Subject<void>();
     private formPrepareToSaveSubject: Subject<void> = new Subject<void>();
+    private createFormSubject: Subject<void> = new Subject<void>();
     private formModelObjectVersionUpdateSubject: Subject<T> = new Subject<T>();
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
@@ -100,10 +101,21 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
      * provided for the form to update its components.
      * @param {(modelObject: T) => any} fn
      */
-    public subscribeToFormModelObjectVersionUpdateEvent( fn: ( modelObject: T ) => any )
+    public subscribeToFormModelObjectVersionUpdateEvent( fn: ( modelObject: T ) => any ): Subscription
     {
         this.debug( "subscribeToFormModelObjectVersionUpdateEvent" );
-        this.formModelObjectVersionUpdateSubject.asObservable().subscribe( fn );
+        return this.formModelObjectVersionUpdateSubject.asObservable().subscribe( fn );
+    }
+
+    /**
+     * The {@code CrudFormComponent} will call this method to register to be notified when the form should perform
+     * the form initialization logic.
+     * @param {() => any} fn
+     */
+    public subscribeToCreateFormEvent( fn: () => any ): Subscription
+    {
+        this.debug( "subscribeToFormPerformInitializationEvent" );
+        return this.createFormSubject.asObservable().subscribe( fn );
     }
 
     /*
@@ -180,5 +192,15 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     {
         //this.debug( "sendFormModelObjectVersionUpdateEvent: " + JSON.stringIfy( modelObject ) );
         this.tickThenRun( () => this.formModelObjectVersionUpdateSubject.next( modelObject ) );
+    }
+
+    /**
+     * The {@code CrudFormDialogComponent} will call this method to notify the form that it needs to initialize the
+     * form as it is about to be displayed.
+     */
+    public sendCreateFormEvent()
+    {
+        //this.debug( "sendFormModelObjectVersionUpdateEvent: " + JSON.stringIfy( modelObject ) );
+        this.tickThenRun( () => this.createFormSubject.next() );
     }
 }

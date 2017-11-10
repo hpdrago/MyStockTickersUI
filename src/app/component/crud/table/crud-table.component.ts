@@ -175,7 +175,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.addSubscription(
             this.crudServiceContainer
             .crudTableButtonsService
-            .subscribeToAddButtonClickedEvent(( modelObject: T ) => this.showDialogToAdd() ));
+            .subscribeToAddButtonClickedEvent(( modelObject: T ) => this.showDialogToAdd( modelObject ) ));
         this.addSubscription(
             this.crudServiceContainer
             .crudTableButtonsService
@@ -214,11 +214,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * This method is called when the user clicks on the add button.
      * A dialog will be displayed to allow the user to add a new model object.
      */
-    protected showDialogToAdd(): void
+    protected showDialogToAdd( modelObject: T ): void
     {
         this.debug( "showDialogToAdd" );
         this.crudOperation = CrudOperation.CREATE;
-        this.setModelObject( this.newModelObject() );
+        this.setModelObject( modelObject );
         this.displayModelObject();
     }
 

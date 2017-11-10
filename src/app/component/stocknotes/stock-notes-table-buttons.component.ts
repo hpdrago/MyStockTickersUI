@@ -23,11 +23,11 @@ export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<S
 
     protected onAddButtonClick(): void
     {
-        this.setModelObject( this.stockNotesServiceContainer
-                                 .modelObjectFactory.newModelObject() );
-        this.modelObject.notesRating = 3;
-        this.modelObject.bullOrBear = 1;
-        this.modelObject.notesDate = new Date( Date.now() );
+        let modelObject = this.stockNotesServiceContainer .modelObjectFactory.newModelObject();
+        modelObject.notesRating = 3;
+        modelObject.bullOrBear = 1;
+        modelObject.notesDate = new Date( Date.now() );
+        this.setModelObject( modelObject ) ;
         super.onAddButtonClick();
     }
 

@@ -32,9 +32,9 @@ export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockA
      * Creates and identifies the fields for the FormGroup instance for the stock notes form.
      * @return {FormGroup}
      */
-    protected createCrudForm(): FormGroup
+    protected createFormGroup(): FormGroup
     {
-        this.debug( "createCrudForm " );
+        this.debug( "initializeForm " );
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
                 'tickerSymbol':             new FormControl( this.modelObject.tickerSymbol, Validators.required ),

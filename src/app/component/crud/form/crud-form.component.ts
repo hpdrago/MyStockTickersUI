@@ -7,6 +7,7 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
 import { isNullOrUndefined } from "util";
 import { CrudServiceContainer } from "../common/crud-service-container";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 /**
  * This class contains the common functionality for a form for a CRUD model object.
@@ -20,6 +21,8 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected formGroup: FormGroup;
     protected continuousAdd: boolean = false;
+    protected formInitializationCompletedSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
+    protected loadResourcesCompletedSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
 
     /**
      * C O N S T R U C T O R
@@ -44,13 +47,43 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     public ngOnInit()
     {
         this.debug( "ngOnInit.begin" );
-        this.modelObject = this.crudServiceContainer.modelObjectFactory.newModelObject();
-        this.formGroup = this.createCrudForm();
-        this.subscribeToFormChanges();
+        this.loadResources();
+        //this.modelObject = this.crudServiceContainer.modelObjectFactory.newModelObject();
         this.subscribeToCrudFormServiceEvents();
         // Tell everyone that we are done
-        this.crudServiceContainer.crudFormService.sendComponentInitializedEvent();
+        this.sendComponentInitializedCompletedEvent();
+        this.formInitializationCompletedSubject.next( true );
         this.debug( "ngOnInit.end" );
+    }
+
+    /**
+     * This method is called at the beginning of the {@code ngOnInit}.  It is provided to provide subclasses a place
+     * to load external data required for the form.  By default, this method only called {@code loadResourcesCompleted} to
+     * send the proper observable message.
+     */
+    protected loadResources()
+    {
+        this.log( "loadResources" );
+        this.loadResourcesCompleted();
+    }
+
+    /**
+     * This method sends any subscribers a true message to indicate the resource loading has completed.
+     */
+    protected loadResourcesCompleted()
+    {
+        this.log( "loadResourcesCompleted" );
+        this.loadResourcesCompletedSubject.next( true );
+    }
+
+    /**
+     * This method is called at the end of the ngOnInit method.  Override this event to add additional logic on when
+     * to send this event.
+     */
+    protected sendComponentInitializedCompletedEvent()
+    {
+        this.debug( "sendComponentInitializedCompletedEvent" );
+        this.crudServiceContainer.crudFormService.sendComponentInitializedEvent();
     }
 
     public ngAfterViewInit()
@@ -58,6 +91,60 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.debug( "ngAfterViewInit.begin" );
         this.debug( "ngAfterViewInit.end" );
     }
+
+    /**
+     * Subscribes to {@code CrudFormService} events through the {@code crudFormService} service.
+     */
+    protected subscribeToCrudFormServiceEvents()
+    {
+        this.debug( "subscribeToCrudFormServiceEvents.begin" );
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormService
+                .subscribeToCrudOperationChangeEvent( ( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) ));
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormService
+                .subscribeToModelObjectChangedEvent( ( modelObject: T ) => this.modelObjectChanged( modelObject ) ));
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormService
+                .subscribeToFormResetEvent( () => this.resetForm() ));
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormService
+                .subscribeToFormPrepareToSaveEvent( () => this.prepareToSave() ));
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormService
+                .subscribeToFormModelObjectVersionUpdateEvent( ( modelObject: T ) => this.modelObjectVersionUpdate( modelObject ) ));
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormService
+                .subscribeToFormResetEvent( () => this.resetForm() ));
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormService
+                .subscribeToCreateFormEvent(() => this.initializeForm() ));
+        this.debug( "subscribeToCrudFormServiceEvents.end" );
+    }
+
+    /**
+     * This method is called as a result of receiving a notification from the dialog or panel that it's time to create
+     * the form.  It creates the for group and subscribes to form change events.
+     */
+    protected initializeForm(): void
+    {
+        this.debug( "initializeForm.begin" );
+        this.formGroup = this.createFormGroup();
+        this.subscribeToFormChanges();
+        this.debug( "initializeForm.end" );
+    }
+
+    /**
+     * This method must be override to create the formGroup
+     */
+    protected abstract createFormGroup(): FormGroup;
 
     /**
      * This method will subscribe to events for the stock form.
@@ -84,39 +171,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
                                        });
         this.debug( "subscribeToFormChanges.end" );
     }
-
-    /**
-     * Subscribes to {@code CrudFormService} events through the {@code crudFormService} service.
-     */
-    protected subscribeToCrudFormServiceEvents()
-    {
-        this.debug( "subscribeToCrudFormServiceEvents.begin" );
-        this.addSubscription(
-            this.crudServiceContainer
-            .crudFormService
-            .subscribeToFormResetEvent( () => this.resetForm() ));
-        this.addSubscription(
-            this.crudServiceContainer
-            .crudFormService
-            .subscribeToCrudOperationChangeEvent( ( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) ));
-        this.addSubscription(
-            this.crudServiceContainer
-            .crudFormService
-            .subscribeToModelObjectChangedEvent( ( modelObject: T ) => this.modelObjectChanged( modelObject ) ));
-        this.addSubscription(
-            this.crudServiceContainer
-            .crudFormService
-            .subscribeToFormPrepareToSaveEvent( () => this.prepareToSave() ));
-        this.crudServiceContainer
-            .crudFormService
-            .subscribeToFormModelObjectVersionUpdateEvent( ( modelObject: T ) => this.modelObjectVersionUpdate( modelObject ) );
-        this.debug( "subscribeToCrudFormServiceEvents.end" );
-    }
-
-    /**
-     * This method must be override to create the formGroup
-     */
-    protected abstract createCrudForm(): FormGroup;
 
     /**
      * Identify visual fields that should be read only
@@ -193,7 +247,22 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected setFormValue( fieldName: string, fieldValue: any )
     {
-        //this.debug( "setFormValue fieldName: " + fieldName + " fieldValue: " + fieldValue );
+        this.debug( "setFormValue fieldName: " + fieldName + " fieldValue: " + fieldValue );
+        if ( isNullOrUndefined( fieldName ) )
+        {
+            this.log( 'setFormValue WARNING: null or undefined field name' );
+            return;
+        }
+        if ( isNullOrUndefined( fieldValue ) )
+        {
+            this.log( 'setFormValue WARNING: null or undefined field value for ' + fieldName );
+            return;
+        }
+        if ( isNullOrUndefined( this.formGroup.controls[fieldName] ))
+        {
+            this.log( 'setFormValue WARNING: there is no form control for field ' + fieldName );
+            return;
+        }
         (<FormControl>this.formGroup.controls[fieldName]).setValue( fieldValue );
     }
 

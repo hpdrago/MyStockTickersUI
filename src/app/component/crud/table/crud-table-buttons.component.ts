@@ -35,7 +35,8 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
         /*
          * We need to know when the table selections change so that we can enable/disable buttons
          */
-        this.crudServiceContainer.crudTableService
+        this.crudServiceContainer
+            .crudTableService
             .subscribeToTableSelectionChangeEvent( ( modelObject: T ) =>
                                                    {
                                                        this.handleTableSelectionChangeEvent( modelObject );
@@ -50,7 +51,7 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     private handleTableSelectionChangeEvent( modelObject: T )
     {
         this.debug( "handleTableSelectionChangeEvent modelObject: " + JSON.stringify( modelObject ));
-        this.modelObject = modelObject;
+        this.setModelObject( modelObject );
     }
 
     /**
@@ -159,10 +160,10 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
      */
     protected onAddButtonClick(): void
     {
-        this.debug( "onAddButtonClick " );
+        this.debug( "onAddButtonClick " + JSON.stringify( this.modelObject ));
         this.crudServiceContainer
             .crudTableButtonsService
-            .sendAddButtonClickedEvent();
+            .sendAddButtonClickedEvent( this.modelObject );
     }
 
     /**

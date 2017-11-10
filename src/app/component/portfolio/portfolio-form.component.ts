@@ -24,7 +24,7 @@ export class PortfolioFormComponent extends CrudFormComponent<Portfolio>
         super( toaster, portfolioCrudServiceContainer );
     }
 
-    protected createCrudForm(): FormGroup
+    protected createFormGroup(): FormGroup
     {
         var portfolioForm: FormGroup = this.formBuilder.group(
             {

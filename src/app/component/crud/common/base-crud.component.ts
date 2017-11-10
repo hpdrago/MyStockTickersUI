@@ -94,7 +94,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected crudOperationChanged( crudOperation: CrudOperation )
    {
-      this.log( "crudOperation change " + crudOperation );
+      this.log( "crudOperation change " + CrudOperation.getName( crudOperation ));
       this.crudOperation = crudOperation;
    }
 
@@ -104,7 +104,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
     protected setCrudOperation( crudOperation: CrudOperation )
     {
-        this.log( "setCrudOperation " + crudOperation );
+        this.log( "setCrudOperation " + CrudOperation.getName( crudOperation ));
         this.crudOperation = crudOperation;
     }
 
