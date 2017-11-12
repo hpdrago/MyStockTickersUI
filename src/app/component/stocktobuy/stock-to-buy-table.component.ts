@@ -7,11 +7,12 @@ import { StockUrlMap } from "../../common/stock-url-map";
 import { isNullOrUndefined } from "util";
 import { StockNotesCrudServiceContainer } from "../stocknotes/stock-notes-crud-service-container";
 import { StockNotes } from "../../model/entity/stock-notes";
-import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
-import { StockNotesSentiment } from "../common/stock-notes-sentiment";
+import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
+import { StockNotesSentiment } from "../../common/stock-notes-sentiment.enum";
 import { CrudOperation } from "../crud/common/crud-operation";
 import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { DialogCloseEventType } from "../crud/common/close-button-event";
+import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
 /**
  * This component displays a list of Stocks to buy.

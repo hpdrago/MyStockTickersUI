@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockCatalystEventFactory } from "../../model/factory/stock-catalyst-event.factory";
 import { StockCatalystEventCrudService } from "../../service/crud/stock-catalyst-event-crud.service";
+import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
 /**
  * This is the service container for the StockCatalystEvent entity.
@@ -13,7 +14,8 @@ export class StockCatalystEventCrudServiceContainer extends CrudServiceContainer
     constructor( private _stockCatalystEventFactory: StockCatalystEventFactory,
                  private _stockCatalystEventCrudService: StockCatalystEventCrudService )
     {
-        super( _stockCatalystEventFactory, _stockCatalystEventCrudService )
+        super( new ModelObjectChangeService<StockCatalystEvent>(), _stockCatalystEventFactory,
+               _stockCatalystEventCrudService )
     }
 
     get stockCatalystEventFactory(): StockCatalystEventFactory { return this._stockCatalystEventFactory; }

@@ -20,7 +20,7 @@ export class StockToBuy extends StockQuoteModelObject<StockToBuy> implements Sto
     public stockPriceWhenCreated: number;
     public completed: boolean;
     public buyAfterDate: Date;
-    public tags: TagList;
+    public tags: string[];
 
     public getNotes(): string
     {

@@ -6,6 +6,7 @@ import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { isNullOrUndefined } from "util";
+import { StockQuote } from "../../model/entity/stock-quote";
 /**
  * This component is a text input that finds stocks based on the incremental search of the input
  * Created by mike on 12/24/2016.
@@ -19,6 +20,7 @@ import { isNullOrUndefined } from "util";
                                [minLength]="1"
                                (completeMethod)="onStockSearch( $event )"
                                (onSelect)="onStockSearchSelected( $event )"
+                               (onBlur)="onBlur( $event )"
                                placeholder="Enter company name of ticker symbol">
                </p-autoComplete>
     </div>
@@ -39,11 +41,11 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     @Output()
     private stockSelected: EventEmitter<Stock>  = new EventEmitter<Stock>();
 
-    private stockSearch: string;
     private stockSearchResults: string[];
     private tickerSymbol: string;
     private companyName: string;
     private disabled: boolean;
+    private isStockSelected : boolean;
 
     constructor( protected toaster: ToastsManager,
                  private stockCrudService: StockCrudService )
@@ -58,6 +60,17 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         {
             throw new Error( "stockSelected has not been set by Input value" );
         }
+    }
+
+    public ngAfterViewInit()
+    {
+        this.log( "ngAfterViewInit" );
+        this.isStockSelected = false;
+    }
+
+    public ngAfterContentInit()
+    {
+        this.log( "ngAfterContentInit" );
     }
 
     private getFormControlName(): string
@@ -75,7 +88,8 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         var query: string = event.query.toUpperCase();
         this.log( "onStockSearch " + JSON.stringify( query ));
         this.propagateChange( query );
-        this.stockCrudService.getStockCompaniesLike( query )
+        this.stockCrudService
+            .getStockCompaniesLike( query )
             .subscribe( ( data: PaginationPage<Stock> ) =>
                         {
                             this.stockSearchResults = [];
@@ -90,6 +104,54 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                             this.reportRestError( err );
                         }
             );
+    }
+
+    /**
+     * This method is called when the search input loses focus.
+     * If the user hasn't selected a stock, then it's possible that the stock does not exist in the stock table so
+     * now we'll make another search based on the ticker symbol value to see if we can get a quote for the symbol.
+     * @param event
+     */
+    private onBlur( event )
+    {
+        this.log( "onBlur " + JSON.stringify( event ) +
+                  " tickerSymbol: " + this.tickerSymbol +
+                  " isStockSelected: " + this.isStockSelected );
+        if ( !this.isStockSelected &&
+             !isNullOrUndefined( this.tickerSymbol ) &&
+             this.tickerSymbol.length > 0 )
+        {
+            this.stockCrudService
+                .getStockQuote( this.tickerSymbol )
+                .subscribe( ( stockQuote: StockQuote ) =>
+                {
+                    this.log( "onBlue " + JSON.stringify( stockQuote ));
+                    if ( !isNullOrUndefined( stockQuote ))
+                    {
+                        let stock: Stock = new Stock();
+                        stock.tickerSymbol = stockQuote.tickerSymbol;
+                        stock.companyName = stockQuote.companyName;
+                        stock.lastPrice = stockQuote.lastPrice;
+                        this.log( "emitting stock selected event" );
+                        /*
+                         * Send the change through ngModel
+                         */
+                        this.propagateChange( this.tickerSymbol );
+                        this.stockSelected.emit( stock );
+                        this.isStockSelected = true;
+                    }
+                },
+                ( error ) =>
+                {
+                    /*
+                     * 404 = not found
+                     */
+                    if ( error.status != 404 )
+                    {
+                        this.reportRestError( error );
+                    }
+                })
+        }
     }
 
     /**
@@ -111,11 +173,10 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
             .getStock( this.tickerSymbol )
             .subscribe( (stock) =>
                         {
-                            this.logger.log( "onStockSearchSelected tickerSymbol: " + stock.tickerSymbol );
+                            this.log( "onStockSearchSelected tickerSymbol: " + stock.tickerSymbol );
                             this.stockSelected.emit( stock );
-                            //(<FormControl>this.formGroup.controls[this.formControlName]).setValue( this.tickerSymbol  );
-                        }
-                        ,
+                            this.isStockSelected = true;
+                        },
                         error =>
                         {
                             this.reportRestError( error );

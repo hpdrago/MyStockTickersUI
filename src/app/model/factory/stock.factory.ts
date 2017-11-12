@@ -22,7 +22,11 @@ export class StockFactory extends ModelObjectFactory<Stock>
      */
     public newModelObject(): Stock
     {
-        var stock = new Stock( '', '', 0, '', 0, false );
+        var stock = new Stock();
+        stock.tickerSymbol = '';
+        stock.companyName = '';
+        stock.createdBy = 0;
+        stock.exchange = '';
         //console.log( "newStock...: " + JSON.stringify( stock ) + " isUserEntered(): " + stock.isUserEntered() );
         return stock;
     }

@@ -6,7 +6,8 @@ import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-conta
 import { SessionService } from "../../service/crud/session.service";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { StockNotes } from "../../model/entity/stock-notes";
-import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
+import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
+import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
 /**
  * This class contains the UI for listing the user's portfolios.

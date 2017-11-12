@@ -6,6 +6,7 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { CrudTableButtonsService } from "../table/crud-table-buttons.service";
 import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
 import { CrudTableService } from "../table/crud-table.service";
+import { ModelObjectChangeService } from "../../../service/crud/model-object-change.service";
 
 /**
  * This is a container class for all of the CRUD services and the model object factory.
@@ -13,7 +14,8 @@ import { CrudTableService } from "../table/crud-table.service";
  */
 export abstract class CrudServiceContainer<T extends ModelObject<T>>
 {
-    constructor( private _modelObjectFactory: ModelObjectFactory<T>,
+    constructor( private _modelObjectChangeService: ModelObjectChangeService<T>,
+                 private _modelObjectFactory: ModelObjectFactory<T>,
                  private _crudRestService: CrudRestService<T>,
                  private _crudTableService?: CrudTableService<T>,
                  private _crudTableButtonsService?: CrudTableButtonsService<T>,
@@ -23,7 +25,8 @@ export abstract class CrudServiceContainer<T extends ModelObject<T>>
     {
         if ( !_crudTableService )
         {
-            this._crudTableService = new CrudTableService<T>( _modelObjectFactory );
+            this._crudTableService = new CrudTableService<T>( _modelObjectFactory,
+                                                              _modelObjectChangeService );
         }
         if ( !_crudTableButtonsService )
         {
@@ -113,4 +116,13 @@ export abstract class CrudServiceContainer<T extends ModelObject<T>>
         this._crudRestService = crudRestService;
     }
 
+    public get modelObjectChangeService(): ModelObjectChangeService<T>
+    {
+        return this._modelObjectChangeService;
+    }
+
+    public set modelObjectChangeService( value: ModelObjectChangeService<T> )
+    {
+        this._modelObjectChangeService = value;
+    }
 }

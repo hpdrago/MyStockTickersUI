@@ -12,6 +12,7 @@ import { CrudModelObjectEditMode } from "../common/crud-model-object-edit-mode";
 import { CrudServiceContainer } from "../common/crud-service-container";
 import { CrudOperation } from "../common/crud-operation";
 import { isNullOrUndefined } from "util";
+import { ModelObjectChangeEvent } from "../../../service/crud/model-object-change.event";
 
 /**
  * This is the base class for CRUD enabled tables.
@@ -47,6 +48,10 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
         super( toaster );
+        if ( !this.crudServiceContainer.modelObjectChangeService )
+        {
+            throw new Error( "modelObjectChangeService argument cannot be null" );
+        }
         if ( !this.crudServiceContainer.modelObjectFactory )
         {
             throw new Error( "modelObjectFactory argument cannot be null" );
@@ -77,6 +82,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( "ngOnInit.begin" );
         this.subscribeToCrudFormButtonEvents();
         this.subscribeToCrudTableButtonEvents();
+        this.subscribeToModelObjectChangeEvents();
         /*
          * Create a new object instance as it will most likely be nulled by subscribing to events
          */
@@ -343,15 +349,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         if ( !isNullOrUndefined( this.modelObject ) )
         {
             this.selectedModelObject = modelObject;
-            var index = this.indexOf( modelObject );
-            if ( index == -1 )
-            {
-                this.addModelObjectToTableRows( this.modelObject );
-            }
-            else
-            {
-                this.updateModelObjectTableRow( index, modelObject );
-            }
+            this.updateModelObjectInTable( modelObject, true );
             this.crudServiceContainer
                 .crudTableService
                 .sendTableContentChangeEvent();
@@ -363,21 +361,43 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     }
 
     /**
+     * This method will find the model object in the table and update it contents of the model if found.
+     * @param {T} modelObject
+     * @param {boolean} addIfNotFound When true, if the model object is not found in the table it will be added to the
+     *        table.
+     */
+    protected updateModelObjectInTable( modelObject: T, addIfNotFound: boolean )
+    {
+        var index = this.indexOf( modelObject );
+        if ( index == -1 )
+        {
+            if ( addIfNotFound )
+            {
+                this.addModelObjectToTable( modelObject );
+            }
+        }
+        else
+        {
+            this.updateModelObjectTableRow( index, modelObject );
+        }
+    }
+
+    /**
      * This method is called when the user has created a new model object that needs to be added to the table.
      */
     protected onUserCreatedModelObject( modelObject: T ): void
     {
         this.debug( 'onUserCreatedModelObject ' + JSON.stringify( modelObject ) );
-        this.setModelObject( modelObject );
-        if ( !isNullOrUndefined( this.modelObject ))
+        //this.setModelObject( modelObject );
+        if ( !isNullOrUndefined( modelObject ))
         {
-            this.addModelObjectToTableRows( this.modelObject );
+            this.addModelObjectToTable( modelObject );
             this.crudServiceContainer
                 .crudTableService
                 .sendTableContentChangeEvent();
             this.crudServiceContainer
                 .crudTableService
-                .sendTableRowAddedChangeEvent( this.modelObject );
+                .sendTableRowAddedChangeEvent( modelObject );
         }
     }
 
@@ -395,7 +415,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * entry to the table.
      * @param {T} modelObject The model object to be added to the table.
      */
-    protected addModelObjectToTableRows( modelObject: T ): void
+    protected addModelObjectToTable( modelObject: T ): void
     {
         /*
          * A new array must be created to trigger a change event
@@ -445,24 +465,38 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onUserDeletedModelObject( modelObject: T ): void
     {
         this.debug( 'onUserDeletedModelObject' + JSON.stringify( modelObject ) );
-        this.setModelObject( modelObject );
-        if ( !isNullOrUndefined( this.modelObject ))
+        //this.setModelObject( modelObject );
+        if ( !isNullOrUndefined( modelObject ))
         {
-            var index = this.indexOf( modelObject );
-            if ( index != -1 )
-            {
-                /*
-                 * A new array must be created to trigger a change event
-                 */
-                this.rows = this.rows.slice( index+1 ).concat( this.rows.slice( 0,index ));
-                this.setModelObject( null );
-            }
+            this.removeModelObjectFromTable( modelObject );
             this.crudServiceContainer
                 .crudTableService
                 .sendTableContentChangeEvent();
             this.crudServiceContainer
                 .crudTableService
-                .sendTableRowDeletedChangeEvent( this.modelObject );
+                .sendTableRowDeletedChangeEvent( modelObject );
+        }
+    }
+
+    /**
+     * This method removes the modelObject from the table if it is found
+     * @param {T} modelObject
+     * @return true if the modelObject was found and removed.  returns false otherwise.
+     */
+    protected removeModelObjectFromTable( modelObject: T ): boolean
+    {
+        var index = this.indexOf( modelObject );
+        if ( index == -1 )
+        {
+            return false;
+        }
+        {
+            /*
+             * A new array must be created to trigger a change event
+             */
+            this.rows = this.rows.slice( index+1 ).concat( this.rows.slice( 0,index ));
+            //this.setModelObject( null );
+            return true;
         }
     }
 
@@ -544,4 +578,49 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             .crudTableButtonsService
             .sendModelObjectChangedEvent( modelObject );
     }
+
+    /**
+     * Subscribe to model object changes.  The model objects displayed in this table could be modified by other
+     * components.  When that occurs, this class will be notified.
+     */
+    protected subscribeToModelObjectChangeEvents()
+    {
+        this.debug( "subscribeToModelObjectChangeEvents" );
+        this.crudServiceContainer
+            .modelObjectChangeService
+            .subscribeToModelObjectChangeEvent( ( modelObjectChangeEvent ) =>
+                                                this.onModelObjectChangeEvent( modelObjectChangeEvent ));
+    }
+
+    /**
+     * This method is called when a modelObject of type T is changed.  This method will determine if the event is
+     * from itself or another component and if so, make any necessary changes.
+     * @param {ModelObjectChangeEvent<T extends ModelObject<T>>} modelObjectChangeEvent
+     */
+    protected onModelObjectChangeEvent( modelObjectChangeEvent: ModelObjectChangeEvent<T> )
+    {
+        var methodName = "onModelObjectChangeEvent";
+        this.debug( methodName + ".begin " + JSON.stringify( modelObjectChangeEvent ));
+        if ( modelObjectChangeEvent.sender === this )
+        {
+            this.debug( methodName + " received our own change...ignoring" ) ;
+        }
+        else
+        {
+            switch ( modelObjectChangeEvent.crudOperation )
+            {
+                case CrudOperation.CREATE:
+                    this.addModelObjectToTable( modelObjectChangeEvent.modelObject );
+                    break;
+                case CrudOperation.DELETE:
+                    this.removeModelObjectFromTable( modelObjectChangeEvent.modelObject );
+                    break;
+                case CrudOperation.UPDATE:
+                    this.updateModelObjectInTable( modelObjectChangeEvent.modelObject, false );
+                    break;
+            }
+        }
+        this.debug( methodName + ".end" );
+    }
+
 }

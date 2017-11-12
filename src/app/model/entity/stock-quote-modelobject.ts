@@ -1,5 +1,5 @@
 import { ModelObject } from "./modelobject";
-import { StockQuoteState } from "../../component/common/stock-quote-state";
+import { StockQuoteState } from "../../common/stock-quote-state.enum";
 
 /**
  * Created 11/4/2017

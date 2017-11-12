@@ -1,15 +1,21 @@
-/**
- * Created by mike on 11/4/2017
- */
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { StockQuoteModelObject } from "../../model/entity/stock-quote-modelobject";
-import { StockQuoteState } from "../common/stock-quote-state";
+import { StockQuoteState } from "../../common/stock-quote-state.enum";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { ToastsManager } from "ng2-toastr";
 import { CrudServiceContainer } from "../crud/common/crud-service-container";
 import { StockQuote } from "../../model/entity/stock-quote";
+import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
-export class StockQuoteModelObjectTableComponent<T extends StockQuoteModelObject<T>> extends CrudTableComponent<T>
+/**
+ * This is a base class for tables that contain Stock Quote information.  It provides the common methods for updating
+ * the stock quote information based on the state of the quote.  For quotes that are not cached in the backend stock cache
+ * and those quotes that are stale, this class will handle the retrieving of the updated information and updating the
+ * containing table.
+ *
+ * Created by mike on 11/4/2017
+ */
+export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteModelObject<T>> extends CrudTableComponent<T>
 {
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T>,
@@ -19,7 +25,7 @@ export class StockQuoteModelObjectTableComponent<T extends StockQuoteModelObject
     }
 
     /**
-     * This method is override to evaluate the {@code stockQuoteModelObjects} to see if they need their stock quote
+     * This method is overriden to evaluate the {@code stockQuoteModelObjects} to see if they need their stock quote
      * information refreshed.  The backend will refresh those quote where it already has the information in the cache
      * that is not stale.  Subsequent calls to get the refreshed data is necessary so that the loading of the table
      * is quick and the refreshes can happen in the background.

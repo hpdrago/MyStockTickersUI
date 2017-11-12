@@ -5,6 +5,7 @@ import { StockNotesCountService } from "../../service/crud/stock-notes-count.ser
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 import { StockNotesSourceService } from "../../service/crud/stock-notes-source.service";
+import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
 /**
  * This is the service container for the StockNotes entity.
@@ -17,7 +18,7 @@ export class StockNotesCrudServiceContainer extends CrudServiceContainer<StockNo
                  private _stockNoteCountService: StockNotesCountService,
                  private _stockNoteSourceService: StockNotesSourceService )
     {
-        super( _stockNoteFactory, _stockNoteCrudService )
+        super( new ModelObjectChangeService<StockNotes>(), _stockNoteFactory, _stockNoteCrudService )
     }
 
     get stockNoteFactory(): StockNotesFactory { return this._stockNoteFactory; }

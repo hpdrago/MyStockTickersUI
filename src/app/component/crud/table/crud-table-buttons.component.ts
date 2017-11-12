@@ -66,7 +66,7 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
         }
         this.crudServiceContainer
             .crudTableButtonsService
-            .subscribeToModelObjectChangedEvent(( modelObject: T) => this.modelObjectChanged( modelObject ) );
+            .subscribeToModelObjectChangedEvent(( modelObject: T) => this.onModelObjectChanged( modelObject ) );
         this.debug( "ngOnInit.end" );
     }
 

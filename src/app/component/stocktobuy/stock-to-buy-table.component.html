@@ -1,193 +1,191 @@
-<p-panel id="stockToBuyPanelDiv" header="Stocks To Buy">
-    <div id="stockToBuyTableDiv">
-        <p-dataTable [value]="rows"
-                     selectionMode="single"
-                     [(selection)]="selectedModelObject"
-                     (onRowSelect)="onRowSelect($event)"
-                     (onRowUnselect)="onRowUnSelect($event)"
-                     [paginator]="true"
-                     [pageLinks]="3"
-                     [rowsPerPageOptions]="[20,30,40]"
-                     [rows]="20"
-                     [loading]="loading"
-                     (onRowDblclick)="onRowDoubleClick($event)"
-                     [responsive]="true">
+<div id="stockToBuyTableDiv">
+    <p-dataTable [value]="rows"
+                 selectionMode="single"
+                 [(selection)]="selectedModelObject"
+                 (onRowSelect)="onRowSelect($event)"
+                 (onRowUnselect)="onRowUnSelect($event)"
+                 [paginator]="true"
+                 [pageLinks]="3"
+                 [rowsPerPageOptions]="[20,30,40]"
+                 [rows]="20"
+                 [loading]="loading"
+                 (onRowDblclick)="onRowDoubleClick($event)"
+                 [responsive]="true">
 
-            <!----------------------------------------------------------------------------------------------------------
-            TICKER SYMBOL
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="tickerSymbol"
-                      field="tickerSymbol"
-                      header="Ticker"
-                      [style]="{'width':'10px'}"
-                      [sortable]="true">
-            </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        TICKER SYMBOL
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="tickerSymbol"
+                  field="tickerSymbol"
+                  header="Ticker"
+                  [style]="{'width':'10px'}"
+                  [sortable]="true">
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            COMPLETED
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="completed"
-                      field="completed"
-                      header="completed"
-                      [style]="{'width':'30px'}"
-                      [sortable]="false">
-                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                    <p-checkbox name="completed" value="stockToBuy[col.field] == 'Y' ? true : false"></p-checkbox>
-                </ng-template>
-            </p-column>
-            <!----------------------------------------------------------------------------------------------------------
-            COMPANY NAME
-            ------------------------------------------------------------------------------------------------------------>
-            <!--
-            <p-column id="companyName"
-                      field="companyName"
-                      header="Company Name"
-                      [style]="{'width':'150px'}"
-                      [sortable]="false">
-            </p-column>
-            -->
+        <!----------------------------------------------------------------------------------------------------------
+        COMPLETED
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="completed"
+                  field="completed"
+                  header="completed"
+                  [style]="{'width':'30px'}"
+                  [sortable]="false">
+            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                <p-checkbox name="completed" value="stockToBuy[col.field] == 'Y' ? true : false"></p-checkbox>
+            </ng-template>
+        </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        COMPANY NAME
+        ------------------------------------------------------------------------------------------------------------>
+        <!--
+        <p-column id="companyName"
+                  field="companyName"
+                  header="Company Name"
+                  [style]="{'width':'150px'}"
+                  [sortable]="false">
+        </p-column>
+        -->
 
-            <!----------------------------------------------------------------------------------------------------------
-            ACTIONS
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="buyButton"
-                      header="Record Buy"
-                      [style]="{'width':'30px'}">
-                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                    <button pButton type="button" (click)="onBuyButtonClick( stockToBuy )" label="Record Buy"></button>
-                </ng-template>
-            </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        ACTIONS
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="buyButton"
+                  header="Record Buy"
+                  [style]="{'width':'30px'}">
+            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                <button pButton type="button" (click)="onBuyButtonClick( stockToBuy )" label="Record Buy"></button>
+            </ng-template>
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            STOCK PRICE WHEN CREATED
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="stockPriceWhenCreated"
-                      field="stockPriceWhenCreated"
-                      header="Price When Created"
-                      [style]="{'width':'10px','text-align':'right'}">
-                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+        <!----------------------------------------------------------------------------------------------------------
+        STOCK PRICE WHEN CREATED
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="stockPriceWhenCreated"
+                  field="stockPriceWhenCreated"
+                  header="Price When Created"
+                  [style]="{'width':'10px','text-align':'right'}">
+            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                {{stockToBuy[col.field] | currency: 'USD' : true }}
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        LAST PRICE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="lastPrice"
+                  field="lastPrice"
+                  header="Last Price"
+                  [style]="{'width':'10px','text-align':'right'}">
+            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                {{stockToBuy[col.field] | currency: 'USD' : true }}
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        PERCENT OF CHANGE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="percentChange"
+                  field="percentChange"
+                  header="% Change"
+                  [style]="{'width':'10px','text-align':'right'}">
+            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                {{stockToBuy[col.field] | percent: '1.2-2' }}
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        BUY SHARES UP TO PRICE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="buySharesUpToPrice"
+                  field="buySharesUpToPrice"
+                  header="Buy Up To"
+                  [style]="{'width':'10px','text-align':'right'}">
+            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                <div class="buy" *ngIf="stockToBuy && stockToBuy['lastPrice'] < stockToBuy[col.field]">
                     {{stockToBuy[col.field] | currency: 'USD' : true }}
-                </ng-template>
-            </p-column>
-
-            <!----------------------------------------------------------------------------------------------------------
-            LAST PRICE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="lastPrice"
-                      field="lastPrice"
-                      header="Last Price"
-                      [style]="{'width':'10px','text-align':'right'}">
-                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                </div>
+                <div class="wait" *ngIf="stockToBuy && stockToBuy['lastPrice'] >= stockToBuy[col.field]">
                     {{stockToBuy[col.field] | currency: 'USD' : true }}
-                </ng-template>
-            </p-column>
+                </div>
+            </ng-template>
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            PERCENT OF CHANGE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="percentChange"
-                      field="percentChange"
-                      header="% Change"
-                      [style]="{'width':'10px','text-align':'right'}">
-                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                    {{stockToBuy[col.field] | percent: '1.2-2' }}
-                </ng-template>
-            </p-column>
-
-            <!----------------------------------------------------------------------------------------------------------
-            BUY SHARES UP TO PRICE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="buySharesUpToPrice"
-                      field="buySharesUpToPrice"
-                      header="Buy Up To"
-                      [style]="{'width':'10px','text-align':'right'}">
-                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                    <div class="buy" *ngIf="stockToBuy && stockToBuy['lastPrice'] < stockToBuy[col.field]">
-                        {{stockToBuy[col.field] | currency: 'USD' : true }}
-                    </div>
-                    <div class="wait" *ngIf="stockToBuy && stockToBuy['lastPrice'] >= stockToBuy[col.field]">
-                        {{stockToBuy[col.field] | currency: 'USD' : true }}
-                    </div>
-                </ng-template>
-            </p-column>
-
-            <!----------------------------------------------------------------------------------------------------------
-            BUY SHARES AFTER DATE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="buyAfterDate"
-                      field="buyAfterDate"
-                      header="Buy After Date"
-                      [style]="{'width':'20px'}"
-                      [sortable]="true">
-                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                    <div class="buy" *ngIf="stockToBuy && isAfterBuyAfterDate( stockToBuy )">
-                        {{stockToBuy[col.field] | date: 'y-MM-dd' }}
-                    </div>
-                    <div class="wait" *ngIf="stockToBuy && !isAfterBuyAfterDate( stockToBuy )">
-                        {{stockToBuy[col.field] | date: 'y-MM-dd' }}
-                    </div>
-                </ng-template>
-            </p-column>
-            <!----------------------------------------------------------------------------------------------------------
-            DATE CREATED
-            ------------------------------------------------------------------------------------------------------------>
-
-            <p-column id="createDate"
-                      field="createDate"
-                      header="Date Created"
-                      [style]="{'width':'20px'}"
-                      [sortable]="true">
-                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+        <!----------------------------------------------------------------------------------------------------------
+        BUY SHARES AFTER DATE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="buyAfterDate"
+                  field="buyAfterDate"
+                  header="Buy After Date"
+                  [style]="{'width':'20px'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                <div class="buy" *ngIf="stockToBuy && isAfterBuyAfterDate( stockToBuy )">
                     {{stockToBuy[col.field] | date: 'y-MM-dd' }}
-                </ng-template>
-            </p-column>
+                </div>
+                <div class="wait" *ngIf="stockToBuy && !isAfterBuyAfterDate( stockToBuy )">
+                    {{stockToBuy[col.field] | date: 'y-MM-dd' }}
+                </div>
+            </ng-template>
+        </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        DATE CREATED
+        ------------------------------------------------------------------------------------------------------------>
 
-            <!----------------------------------------------------------------------------------------------------------
-            TAGS
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="tags"
-                      field="tags"
-                      header="Tags"
-                      [style]="{'width':'40px'}"
-                      [sortable]="true">
-                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                    {{stockToBuy[col.field] }}
-                </ng-template>
-            </p-column>
+        <p-column id="createDate"
+                  field="createDate"
+                  header="Date Created"
+                  [style]="{'width':'20px'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                {{stockToBuy[col.field] | date: 'y-MM-dd' }}
+            </ng-template>
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            COMMENTS
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="comments"
-                      field="comments"
-                      header="Comments"
-                      [style]="{'width':'150px'}">
-                <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                    <div *ngIf="urlMap.getURL( stockToBuy.tickerSymbol ) == null " >{{stockToBuy[col.field]}}</div>
-                    <div *ngIf="urlMap.getURL( stockToBuy.tickerSymbol ) != null " >
-                        <a href="{{urlMap.getURL( stockToBuy.tickerSymbol )}}" target="_blank">{{urlMap.getURL( stockToBuy.tickerSymbol )}}</a>
-                    </div>
-                </ng-template>
-            </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        TAGS
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="tags"
+                  field="tags"
+                  header="Tags"
+                  [style]="{'width':'40px'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                {{stockToBuy[col.field] }}
+            </ng-template>
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            NOTES SOURCE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="tags"
-                      field="tags"
-                      header="Tags"
-                      [style]="{'width':'80px'}"
-                      [sortable]="true">
-            </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        COMMENTS
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="comments"
+                  field="comments"
+                  header="Comments"
+                  [style]="{'width':'150px'}">
+            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                <div *ngIf="urlMap.getURL( stockToBuy.tickerSymbol ) == null " >{{stockToBuy[col.field]}}</div>
+                <div *ngIf="urlMap.getURL( stockToBuy.tickerSymbol ) != null " >
+                    <a href="{{urlMap.getURL( stockToBuy.tickerSymbol )}}" target="_blank">{{urlMap.getURL( stockToBuy.tickerSymbol )}}</a>
+                </div>
+            </ng-template>
+        </p-column>
 
-            <p-footer>
-                <stock-to-buy-table-buttons>
-                </stock-to-buy-table-buttons>
-            </p-footer>
-        </p-dataTable>
-    </div>
-</p-panel>
-<stock-to-buy-dialog>
-</stock-to-buy-dialog>
-<stock-notes-dialog>
-</stock-notes-dialog>
+        <!----------------------------------------------------------------------------------------------------------
+        NOTES SOURCE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="tags"
+                  field="tags"
+                  header="Tags"
+                  [style]="{'width':'80px'}"
+                  [sortable]="true">
+        </p-column>
+
+        <p-footer>
+            <stock-to-buy-table-buttons>
+            </stock-to-buy-table-buttons>
+        </p-footer>
+    </p-dataTable>
+    <stock-to-buy-dialog>
+    </stock-to-buy-dialog>
+    <stock-notes-dialog>
+    </stock-notes-dialog>
+</div>

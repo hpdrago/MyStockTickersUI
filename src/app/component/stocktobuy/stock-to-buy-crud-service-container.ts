@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { StockToBuyFactory } from "../../model/factory/stock-to-buy.factory";
 import { StockToBuyCrudService } from "../../service/crud/stock-to-buy-crud.service";
+import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
 /**
  * This is the service container for the StockToBuy entity.
@@ -13,7 +14,7 @@ export class StockToBuyCrudServiceContainer extends CrudServiceContainer<StockTo
     constructor( private _stockToBuyFactory: StockToBuyFactory,
                  private _stockToBuyCrudService: StockToBuyCrudService )
     {
-        super( _stockToBuyFactory, _stockToBuyCrudService )
+        super( new ModelObjectChangeService<StockToBuy>(), _stockToBuyFactory, _stockToBuyCrudService )
     }
 
     get stockToBuyFactory(): StockToBuyFactory { return this._stockToBuyFactory; }

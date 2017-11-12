@@ -1,165 +1,163 @@
-<p-panel id="stockNotesPanelDiv" header="Stock Notes">
-    <div id="stockNotesTableDiv">
-        <p-dataTable [value]="rows"
-                     selectionMode="single"
-                     [(selection)]="selectedModelObject"
-                     (onRowSelect)="onRowSelect($event)"
-                     (onRowUnselect)="onRowUnSelect($event)"
-                     [paginator]="true"
-                     [pageLinks]="3"
-                     [rowsPerPageOptions]="[20,30,40]"
-                     [rows]="25"
-                     [loading]="loading"
-                     (onRowDblclick)="onRowDoubleClick($event)"
-                     [responsive]="true">
+<div id="stockNotesTableDiv">
+    <p-dataTable [value]="rows"
+                 selectionMode="single"
+                 [(selection)]="selectedModelObject"
+                 (onRowSelect)="onRowSelect($event)"
+                 (onRowUnselect)="onRowUnSelect($event)"
+                 [paginator]="true"
+                 [pageLinks]="3"
+                 [rowsPerPageOptions]="[20,30,40]"
+                 [rows]="25"
+                 [loading]="loading"
+                 (onRowDblclick)="onRowDoubleClick($event)"
+                 [responsive]="true">
 
-            <!----------------------------------------------------------------------------------------------------------
-            NOTES DATE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="notesDateColumn"
-                      field="notesDate"
-                      header="Date"
-                      [style]="{'width':'80px'}"
-                      [sortable]="true">
-                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    {{stockNotes[col.field] | date: 'y-MM-dd' }}
-                </ng-template>
-            </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        NOTES DATE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="notesDateColumn"
+                  field="notesDate"
+                  header="Date"
+                  [style]="{'width':'80px'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                {{stockNotes[col.field] | date: 'y-MM-dd' }}
+            </ng-template>
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            TICKER SYMBOL
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="tickerSymbolColumn"
-                      field="tickerSymbol"
-                      header="Ticker"
-                      [style]="{'width':'80px'}"
-                      [sortable]="true">
-            </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        TICKER SYMBOL
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="tickerSymbolColumn"
+                  field="tickerSymbol"
+                  header="Ticker"
+                  [style]="{'width':'80px'}"
+                  [sortable]="true">
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            STOCK PRICE WHEN CREATED
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="stockPriceColumn"
-                      field="stockPriceWhenCreated"
-                      header="Price When Entered"
-                      [style]="{'width':'80px','text-align':'right'}">
-                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+        <!----------------------------------------------------------------------------------------------------------
+        STOCK PRICE WHEN CREATED
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="stockPriceColumn"
+                  field="stockPriceWhenCreated"
+                  header="Price When Entered"
+                  [style]="{'width':'80px','text-align':'right'}">
+            <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                {{stockNotes[col.field] | currency: 'USD': true }}
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        LAST PRICE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="lastPrice"
+                  field="lastPrice"
+                  header="Last Price"
+                  [style]="{'width':'80px','text-align':'right'}">
+            <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                <div *ngIf="isFetchingQuote( stockNotes )">
+                    Loading...
+                </div>
+                <div *ngIf="!isFetchingQuote( stockNotes )">
                     {{stockNotes[col.field] | currency: 'USD': true }}
-                </ng-template>
-            </p-column>
+                </div>
+            </ng-template>
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            LAST PRICE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="lastPrice"
-                      field="lastPrice"
-                      header="Last Price"
-                      [style]="{'width':'80px','text-align':'right'}">
-                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <div *ngIf="isFetchingQuote( stockNotes )">
-                        Loading...
-                    </div>
-                    <div *ngIf="!isFetchingQuote( stockNotes )">
-                        {{stockNotes[col.field] | currency: 'USD': true }}
-                    </div>
-                </ng-template>
-            </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        LAST PRICE DATE
+        ------------------------------------------------------------------------------------------------------------>
+        <!--
+        <p-column id="lastPriceChangeColumn"
+                  field="lastPriceChange"
+                  header="Last Price Change "
+                  [style]="{'width':'80px'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                {{stockNotes[col.field] | date: 'y-MM-dd h:mm a' }}
+            </ng-template>
+        </p-column>
+        -->
 
-            <!----------------------------------------------------------------------------------------------------------
-            LAST PRICE DATE
-            ------------------------------------------------------------------------------------------------------------>
-            <!--
-            <p-column id="lastPriceChangeColumn"
-                      field="lastPriceChange"
-                      header="Last Price Change "
-                      [style]="{'width':'80px'}"
-                      [sortable]="true">
-                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    {{stockNotes[col.field] | date: 'y-MM-dd h:mm a' }}
-                </ng-template>
-            </p-column>
-            -->
+        <!----------------------------------------------------------------------------------------------------------
+        PERCENT OF CHANGE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="percentChange"
+                  field="percentChange"
+                  header="% Change Since Entered"
+                  [style]="{'width':'80px','text-align':'right'}">
+            <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                <div class="positiveGain" *ngIf="calculatePercentChange( stockNotes ) >= 0.0">
+                    {{calculatePercentChange( stockNotes ) | percent: '1.2-2' }}
+                </div>
+                <div class="negativeGain" *ngIf="calculatePercentChange( stockNotes ) < 0.0">
+                    {{calculatePercentChange( stockNotes ) | percent: '1.2-2' }}
+                </div>
+            </ng-template>
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            PERCENT OF CHANGE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="percentChange"
-                      field="percentChange"
-                      header="% Change Since Entered"
-                      [style]="{'width':'80px','text-align':'right'}">
-                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <div class="positiveGain" *ngIf="calculatePercentChange( stockNotes ) >= 0.0">
-                        {{calculatePercentChange( stockNotes ) | percent: '1.2-2' }}
-                    </div>
-                    <div class="negativeGain" *ngIf="calculatePercentChange( stockNotes ) < 0.0">
-                        {{calculatePercentChange( stockNotes ) | percent: '1.2-2' }}
-                    </div>
-                </ng-template>
-            </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        ACTION TAKEN
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="actionTakenColumn"
+                  field="actionTaken"
+                  header="Action Taken"
+                  [style]="{'width':'80px'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                {{getActionTaken( stockNotes[col.field] )}}
+            </ng-template>
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            ACTION TAKEN
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="actionTakenColumn"
-                      field="actionTaken"
-                      header="Action Taken"
-                      [style]="{'width':'80px'}"
-                      [sortable]="true">
-                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    {{getActionTaken( stockNotes[col.field] )}}
-                </ng-template>
-            </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        ACTION TAKEN SHARES
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="actionTakenSharesColumn"
+                  field="actionTakenShares"
+                  header="Action Shares"
+                  [style]="{'width':'80px','text-align':'right'}"
+                  [sortable]="true">
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            ACTION TAKEN SHARES
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="actionTakenSharesColumn"
-                      field="actionTakenShares"
-                      header="Action Shares"
-                      [style]="{'width':'80px','text-align':'right'}"
-                      [sortable]="true">
-            </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        NOTES SOURCE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="source"
+                  field="notesSourceName"
+                  header="Source"
+                  [style]="{'width':'120px'}"
+                  [sortable]="true">
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            NOTES SOURCE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="source"
-                      field="notesSourceName"
-                      header="Source"
-                      [style]="{'width':'120px'}"
-                      [sortable]="true">
-            </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        NOTES SOURCE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="tags"
+                  field="tags"
+                  header="Tags"
+                  [style]="{'width':'120px'}"
+                  [sortable]="true">
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            NOTES SOURCE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="tags"
-                      field="tags"
-                      header="Tags"
-                      [style]="{'width':'120px'}"
-                      [sortable]="true">
-            </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        NOTES
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="notesColumn"
+                  field="notes"
+                  header="Notes">
+            <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) == null " >{{stockNotes[col.field]}}</div>
+                <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) != null " >
+                    <a href="{{urlMap.getURL( stockNotes.tickerSymbol )}}" target="_blank">{{urlMap.getURL( stockNotes.tickerSymbol )}}</a>
+                </div>
+            </ng-template>
+        </p-column>
 
-            <!----------------------------------------------------------------------------------------------------------
-            NOTES
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="notesColumn"
-                      field="notes"
-                      header="Notes">
-                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) == null " >{{stockNotes[col.field]}}</div>
-                    <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) != null " >
-                        <a href="{{urlMap.getURL( stockNotes.tickerSymbol )}}" target="_blank">{{urlMap.getURL( stockNotes.tickerSymbol )}}</a>
-                    </div>
-                </ng-template>
-            </p-column>
-
-            <p-footer>
-                <stock-notes-table-buttons>
-                </stock-notes-table-buttons>
-            </p-footer>
-        </p-dataTable>
-    </div>
-</p-panel>
-<stock-notes-dialog>
-</stock-notes-dialog>
+        <p-footer>
+            <stock-notes-table-buttons>
+            </stock-notes-table-buttons>
+        </p-footer>
+    </p-dataTable>
+    <stock-notes-dialog>
+    </stock-notes-dialog>
+</div>

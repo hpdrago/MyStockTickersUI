@@ -5,7 +5,8 @@ export enum StockNotesActionTaken
 {
     NONE = 0,
     BUY = 1,
-    SELL = 2
+    BUY_LATER = 2,
+    SELL = 3
 }
 export namespace StockNotesActionTaken
 {
@@ -21,6 +22,9 @@ export namespace StockNotesActionTaken
                 returnValue = 'BUY';
                 break;
             case 2:
+                returnValue = 'BUY LATER';
+                break;
+            case 3:
                 returnValue = 'SELL';
                 break;
             case '0':
@@ -30,6 +34,9 @@ export namespace StockNotesActionTaken
                 returnValue = 'BUY';
                 break;
             case '2':
+                returnValue = 'BUY LATER';
+                break;
+            case '3':
                 returnValue = 'SELL';
                 break;
         }

@@ -139,7 +139,7 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     }
 
     /**
-     * The {@code CrudPanelComponent will call this method when the user clicks the Save button.
+     * The {@code CrudFormComponent will call this method when the user clicks the Save button.
      * @param modelObject
      */
     public sendSaveButtonClickedEvent( modelObject: T )
@@ -153,7 +153,7 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
      * button is clicked on the panel.
      * @return {Subscription}
      */
-    public registerToResetButtonClickedEvent( fn: () => any ): Subscription
+    public subscribeToResetButtonClickedEvent( fn: () => any ): Subscription
     {
         this.debug( "subscribed to resetButtonClicked" );
         return this.resetButtonClickedSubject.asObservable().subscribe( fn );

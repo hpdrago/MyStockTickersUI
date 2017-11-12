@@ -51,16 +51,16 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
              /*
               * The object might still be initializing so execute on next clock tick
               */
-             this.tickThenRun( () => this.crudOperationChanged( newValue ) );
-             //this.crudOperationChanged( newValue );
+             this.tickThenRun( () => this.onCrudOperationChanged( newValue ) );
+             //this.onCrudOperationChanged( newValue );
              break;
 
          case 'modelObject':
              this.debug( "inputPropertyChange: " + property +
                  " previousValue: " + (previousValue ? JSON.stringify( previousValue ) : previousValue ) +
                  " newValue: " + (newValue ? JSON.stringify( newValue ) : newValue ));
-             this.tickThenRun( () => this.modelObjectChanged( newValue ) );
-             //this.modelObjectChanged( newValue );
+             this.tickThenRun( () => this.onModelObjectChanged( newValue ) );
+             //this.onModelObjectChanged( newValue );
              break;
 
          //default:
@@ -72,9 +72,9 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     * This method is called whenever the model object changes.
     * @param modelObject
     */
-   protected modelObjectChanged( modelObject: T )
+   protected onModelObjectChanged( modelObject: T )
    {
-       this.debug( "modelObjectChanged " + JSON.stringify( modelObject ) );
+       this.debug( "onModelObjectChanged " + JSON.stringify( modelObject ) );
        this.modelObject = modelObject;
    }
 
@@ -92,7 +92,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     * This method is called whenever the crudOperation changes.
     * @param crudOperation
     */
-   protected crudOperationChanged( crudOperation: CrudOperation )
+   protected onCrudOperationChanged( crudOperation: CrudOperation )
    {
       this.debug( "crudOperation change " + CrudOperation.getName( crudOperation ));
       this.crudOperation = crudOperation;

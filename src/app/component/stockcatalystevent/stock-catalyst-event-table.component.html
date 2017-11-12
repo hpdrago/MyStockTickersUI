@@ -1,68 +1,66 @@
-<p-panel id="stockCatalystEventPanelDiv" header="Stock Catalyst Events">
-    <div id="stockCatalystEventTableDiv">
-        <p-dataTable [value]="rows"
-                     selectionMode="single"
-                     [(selection)]="selectedModelObject"
-                     (onRowSelect)="onRowSelect($event)"
-                     (onRowUnselect)="onRowUnSelect($event)"
-                     [paginator]="true"
-                     [pageLinks]="3"
-                     [rowsPerPageOptions]="[20,30,40]"
-                     [rows]="25"
-                     [loading]="loading"
-                     (onRowDblclick)="onRowDoubleClick($event)"
-                     [responsive]="true">
-            <!----------------------------------------------------------------------------------------------------------
-            TICKER SYMBOL
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="tickerSymbol"
-                      field="tickerSymbol"
-                      header="Ticker"
-                      [style]="{'width':'80px'}"
-                      [sortable]="true">
-            </p-column>
-            <!----------------------------------------------------------------------------------------------------------
-            COMPANY NAME
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="companyName"
-                      field="companyName"
-                      header="Company Name"
-                      [style]="{'width':'150px'}"
-                      [sortable]="false">
-            </p-column>
-            <!----------------------------------------------------------------------------------------------------------
-            CATALYST DATE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="catalystDate"
-                      field="catalystDate"
-                      header="Date"
-                      [style]="{'width':'80px'}"
-                      [sortable]="true">
-                <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
-                    {{stockCatalystEvent[col.field] | date: 'y-MM-dd' }}
-                </ng-template>
-            </p-column>
-            <!----------------------------------------------------------------------------------------------------------
-            CATALYST DESCRIPTION
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="catalystDesc"
-                      field="catalystDesc"
-                      header="Description"
-                      [sortable]="false">
-                <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
-                    <div *ngIf="urlMap.getURL( stockCatalystEvent.tickerSymbol ) == null " >{{stockCatalystEvent[col.field]}}</div>
-                    <div *ngIf="urlMap.getURL( stockCatalystEvent.tickerSymbol ) != null " >
-                        <a href="{{urlMap.getURL( stockCatalystEvent.tickerSymbol )}}" target="_blank">{{urlMap.getURL( stockCatalystEvent.tickerSymbol )}}</a>
-                    </div>
-                </ng-template>
-            </p-column>
+<div id="stockCatalystEventTableDiv">
+    <p-dataTable [value]="rows"
+                 selectionMode="single"
+                 [(selection)]="selectedModelObject"
+                 (onRowSelect)="onRowSelect($event)"
+                 (onRowUnselect)="onRowUnSelect($event)"
+                 [paginator]="true"
+                 [pageLinks]="3"
+                 [rowsPerPageOptions]="[20,30,40]"
+                 [rows]="25"
+                 [loading]="loading"
+                 (onRowDblclick)="onRowDoubleClick($event)"
+                 [responsive]="true">
+        <!----------------------------------------------------------------------------------------------------------
+        TICKER SYMBOL
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="tickerSymbol"
+                  field="tickerSymbol"
+                  header="Ticker"
+                  [style]="{'width':'80px'}"
+                  [sortable]="true">
+        </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        COMPANY NAME
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="companyName"
+                  field="companyName"
+                  header="Company Name"
+                  [style]="{'width':'150px'}"
+                  [sortable]="false">
+        </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        CATALYST DATE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="catalystDate"
+                  field="catalystDate"
+                  header="Date"
+                  [style]="{'width':'80px'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
+                {{stockCatalystEvent[col.field] | date: 'y-MM-dd' }}
+            </ng-template>
+        </p-column>
+        <!----------------------------------------------------------------------------------------------------------
+        CATALYST DESCRIPTION
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="catalystDesc"
+                  field="catalystDesc"
+                  header="Description"
+                  [sortable]="false">
+            <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
+                <div *ngIf="urlMap.getURL( stockCatalystEvent.tickerSymbol ) == null " >{{stockCatalystEvent[col.field]}}</div>
+                <div *ngIf="urlMap.getURL( stockCatalystEvent.tickerSymbol ) != null " >
+                    <a href="{{urlMap.getURL( stockCatalystEvent.tickerSymbol )}}" target="_blank">{{urlMap.getURL( stockCatalystEvent.tickerSymbol )}}</a>
+                </div>
+            </ng-template>
+        </p-column>
 
-            <p-footer>
-                <stock-catalyst-event-table-buttons>
-                </stock-catalyst-event-table-buttons>
-            </p-footer>
-        </p-dataTable>
-    </div>
-</p-panel>
+        <p-footer>
+            <stock-catalyst-event-table-buttons>
+            </stock-catalyst-event-table-buttons>
+        </p-footer>
+    </p-dataTable>
+</div>
 <stock-catalyst-event-dialog>
 </stock-catalyst-event-dialog>

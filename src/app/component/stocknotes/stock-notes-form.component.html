@@ -38,7 +38,7 @@
                 ------------------------------------------------------------------------------------------------------------>
                 <div class="crud-form ui-grid-row">
                     <div class="crud-form-label ui-grid-col-2">
-                        <label class="crud-form" for="tickerSymbols">Stocks:</label>
+                        <label class="crud-form" for="tickerSymbols">Selected Stocks:</label>
                     </div>
                     <div class="ui-grid-col-10">
                         <input id="tickerSymbols"
@@ -211,6 +211,7 @@
                     <p-selectButton id="actionTaken"
                                     class="crud-form"
                                     formControlName="actionTaken"
+                                    pTooltip="BUY LATER - Will create a 'Stock to Buy' record when saving the Stock Note"
                                     [options]="actionTakenOptions"
                                     (onChange)="onActionTakenChange($event)"
                                     [(ngModel)]="modelObject.actionTaken">
@@ -228,8 +229,8 @@
                 <div class="ui-grid-col-2">
                     <p-inputMask
                         id="actionTakenShares"
-                        [ngClass]="{'ui-state-disabled': modelObject.actionTaken == 0,
-                                    'ui-state-default': modelObject.actionTaken != 0 }"
+                        [ngClass]="{'ui-state-disabled': isActionTakenFieldsDisabled(),
+                                    'ui-state-default': !isActionTakenFieldsDisabled() }"
                         class="crud-form"
                         formControlName="actionTakenShares"
                         [(ngModel)]="modelObject.actionTakenShares"
@@ -251,8 +252,8 @@
                     <input currencyMask
                            [style]="{'width':'60px'}"
                            class="crud-form ui-inputtext ui-widget ui-widget-content ui-corner-all ui-state-filled"
-                           [ngClass]="{'ui-state-disabled': modelObject.actionTaken == 0,
-                                       'ui-state-default': modelObject.actionTaken != 0 }"
+                           [ngClass]="{'ui-state-disabled': isActionTakenFieldsDisabled(),
+                                       'ui-state-default': !isActionTakenFieldsDisabled() }"
                            formControlName="actionTakenPrice"
                            [(ngModel)]="modelObject.actionTakenPrice"
                            placeholder="$"/>
@@ -264,7 +265,7 @@
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="notesDate">Date:</label>
+                    <label class="crud-form" for="notesDate">Note Date:</label>
                 </div>
                 <div class="ui-grid-col-10">
                     <p-calendar id="notesDate"

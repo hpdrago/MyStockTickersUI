@@ -4,6 +4,10 @@ import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-conta
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { SessionService } from "../../service/crud/session.service";
 import { StockNotes } from "../../model/entity/stock-notes";
+import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
+import { StockToBuyCrudServiceContainer } from "../stocktobuy/stock-to-buy-crud-service-container";
+import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
+import { CrudOperation } from "../crud/common/crud-operation";
 
 /**
  * Button panel component for the StockNotes dialog.
@@ -19,6 +23,7 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
 {
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,
+                 private stocksToBuyServiceContainer: StockToBuyCrudServiceContainer,
                  private stockNotesServiceContainer: StockNotesCrudServiceContainer )
     {
         super( toaster, stockNotesServiceContainer );
@@ -47,16 +52,55 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
      */
     protected onAddButtonClick()
     {
-        this.log( "onAddButtonClick.override " + JSON.stringify( this.modelObject ));
+        var methodName = "onAddButtonClick.override";
+        this.log( methodName + " " + JSON.stringify( this.modelObject ));
         this.sendFormPrepareToSaveEvent();
         this.modelObject
             .stocks
             .forEach( stockNotesStock =>
             {
                 this.modelObject.tickerSymbol = stockNotesStock.tickerSymbol;
-                this.log( "onAddButtonClick.override" + JSON.stringify( this.modelObject ));
+                this.log( methodName + " " + JSON.stringify( this.modelObject ));
                 super.onAddButtonClick();
+                /*
+                 * If the user chose BUY_LATER, then create StocksToBuy records
+                 */
+                if ( this.modelObject.actionTaken == StockNotesActionTaken.BUY_LATER )
+                {
+                    this.log( methodName + " creating stocks to buy for " + this.modelObject.tickerSymbol );
+                    this.createStockToBuy();
+                }
             });
+    }
+
+    /**
+     * This method will create a stock to buy record from the information contained within the stock note
+     */
+    private createStockToBuy()
+    {
+        var stockToBuy = this.stocksToBuyServiceContainer
+                             .stockToBuyFactory
+                             .newModelObject();
+        stockToBuy.customerId = this.modelObject.customerId;
+        stockToBuy.tickerSymbol = this.modelObject.tickerSymbol;
+        stockToBuy.tags = this.modelObject.tags;
+        stockToBuy.notesSourceId = this.modelObject.notesSourceId;
+        stockToBuy.notesSourceName = this.modelObject.notesSourceName;
+        stockToBuy.comments = this.modelObject.notes;
+        stockToBuy.completed = false;
+        this.stocksToBuyServiceContainer
+            .stockToBuyCrudService
+            .createModelObject( stockToBuy )
+            .subscribe( () =>
+                        {
+                            this.showInfo( "Stock To Buy created for " + this.modelObject.tickerSymbol );
+                            this.stocksToBuyServiceContainer
+                                .modelObjectChangeService
+                                .sendModelObjectChangeEvent( this, CrudOperation.CREATE, stockToBuy );
+                        },
+                        error => {
+                            this.reportRestError( error );
+                        } );
     }
 
     /**

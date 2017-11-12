@@ -58,24 +58,42 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.debug( "ngOnInit.end" );
     }
 
+    public ngAfterContentInit()
+    {
+        this.debug( "ngAfterContentInit" );
+    }
+
+    public ngAfterViewInit()
+    {
+        this.debug( "ngAfterViewInit" );
+    }
+
+    /**
+     * This method is called after {@code ngOnInit() and loadResources() have both completed}
+     */
+    protected postInit(): void
+    {
+        this.debug( "postInit" );
+    }
+
     /**
      * This method is called at the beginning of the {@code ngOnInit}.  It is provided to provide subclasses a place
-     * to load external data required for the form.  By default, this method only called {@code loadResourcesCompleted} to
+     * to load external data required for the form.  By default, this method only called {@code onLoadResourcesCompleted} to
      * send the proper observable message.
      */
     protected loadResources(): void
     {
         this.debug( "loadResources" );
-        this.loadResourcesCompleted();
+        this.onLoadResourcesCompleted();
     }
 
     /**
      * This method sends any subscribers a true message to indicate the resource loading has completed.
      * It will also call {@code postInit} if and when {@codg ngOnInit} has completed.
      */
-    protected loadResourcesCompleted(): void
+    protected onLoadResourcesCompleted(): void
     {
-        this.debug( "loadResourcesCompleted.begin" );
+        this.debug( "onLoadResourcesCompleted.begin" );
         /*
          * Must wait for the ngOnInit to complete so that we can call postInit
          */
@@ -104,14 +122,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * This method is called after {@code ngOnInit() and loadResources() have both completed}
-     */
-    protected postInit(): void
-    {
-        this.debug( "postInit" );
-    }
-
-    /**
      * This method is called at the end of the ngOnInit method.  Override this event to add additional logic on when
      * to send this event.
      */
@@ -119,12 +129,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     {
         this.debug( "sendComponentInitializedCompletedEvent" );
         this.crudServiceContainer.crudFormService.sendComponentInitializedEvent();
-    }
-
-    public ngAfterViewInit()
-    {
-        this.debug( "ngAfterViewInit.begin" );
-        this.debug( "ngAfterViewInit.end" );
     }
 
     /**
@@ -138,7 +142,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
                 .crudFormService
                 .subscribeToModelObjectCrudOperationChangedEvent(
                     ( subjectInfo: ModelObjectCrudOperationSubjectInfo ) =>
-                        this.modelObjectCrudOperationChanged( subjectInfo ) ));
+                        this.onModelObjectCrudOperationChanged( subjectInfo ) ));
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormService
@@ -150,13 +154,11 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormService
-                .subscribeToFormModelObjectVersionUpdateEvent( ( modelObject: T ) => this.modelObjectVersionUpdate( modelObject ) ));
-        /*
+                .subscribeToFormModelObjectVersionUpdateEvent( ( modelObject: T ) => this.onModelObjectVersionUpdate( modelObject ) ));
         this.addSubscription(
             this.crudServiceContainer
-                .crudFormService
-                .subscribeToCreateFormEvent(() => this.initializeForm() ));
-                */
+                .crudFormButtonsService
+                .subscribeToSaveButtonClickedEvent( ( modelObject: T ) => this.onSaveCompleted( modelObject ) ));
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 
@@ -217,6 +219,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected prepareToSave(): void
     {
+        this.log( "prepareToSave" );
     }
 
     /**
@@ -224,9 +227,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      * @param crudOperation
      * @override
      */
-    protected crudOperationChanged( crudOperation: CrudOperation ): void
+    protected onCrudOperationChanged( crudOperation: CrudOperation ): void
     {
-        super.crudOperationChanged( crudOperation );
+        super.onCrudOperationChanged( crudOperation );
         this.enableDisableInputs();
     }
 
@@ -235,17 +238,17 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      * @param modelObject
      * @override
      */
-    protected modelObjectChanged( modelObject: T ): void
+    protected onModelObjectChanged( modelObject: T ): void
     {
-        this.debug( "modelObjectChanged " + JSON.stringify( this.modelObject ));
+        this.debug( "onModelObjectChanged " + JSON.stringify( this.modelObject ));
         /*
          * Clear the form fields of any previous model object.
          */
         if ( !isNullOrUndefined( this.formGroup ))
         {
-            this.formGroup.reset();
+            this.resetForm();
         }
-        super.modelObjectChanged( modelObject );
+        super.onModelObjectChanged( modelObject );
         this.enableDisableInputs();
         if ( modelObject )
         {
@@ -254,6 +257,23 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.crudServiceContainer
             .crudFormService
             .sendFormLogStateRequest();
+    }
+
+    protected onModelObjectVersionUpdate( modelObject: T ): void
+    {
+        this.debug( "onModelObjectVersionUpdate " + JSON.stringify( modelObject ) );
+    }
+
+    /**
+     * This method is called by the dialog to set the model object and crud operation for the form.
+     * @param {ModelObjectCrudOperationSubjectInfo} subjectInfo
+     */
+    protected onModelObjectCrudOperationChanged( subjectInfo: ModelObjectCrudOperationSubjectInfo ): void
+    {
+        this.debug( "onModelObjectCrudOperationChanged.begin" );
+        this.setCrudOperation( subjectInfo.crudOperation );
+        this.setModelObject( subjectInfo.modelObject );
+        this.debug( "onModelObjectCrudOperationChanged.end" );
     }
 
     /**
@@ -321,9 +341,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     {
         this.debug( "resetForm" );
         this.formGroup.reset();
-        this.setModelObject( this.crudServiceContainer
-                                 .modelObjectFactory
-                                 .newModelObject() );
     }
 
     /**
@@ -525,20 +542,11 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         return isReadOnly;
     }
 
-    protected modelObjectVersionUpdate( modelObject: T ): void
-    {
-        this.debug( "modelObjectVersionUpdate " + JSON.stringify( modelObject ) );
-    }
-
     /**
-     * This method is called by the dialog to set the model object and crud operation for the form.
-     * @param {ModelObjectCrudOperationSubjectInfo} subjectInfo
+     * This method is called after the user has clicked the Save/Add button and it completed successfully.
      */
-    private modelObjectCrudOperationChanged( subjectInfo: ModelObjectCrudOperationSubjectInfo ): void
+    protected onSaveCompleted( modelObject: T ): void
     {
-        this.debug( "modelObjectCrudOperationChanged.begin" );
-        this.setCrudOperation( subjectInfo.crudOperation );
-        this.setModelObject( subjectInfo.modelObject );
-        this.debug( "modelObjectCrudOperationChanged.end" );
+        this.log( "onSaveCompleted" );
     }
 }

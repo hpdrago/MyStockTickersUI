@@ -107,11 +107,11 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
             .subscribeToDisplayDialogRequestEvent(( subjectInfo: ModelObjectCrudOperationSubjectInfo ) => this.setDisplayDialog( subjectInfo ) ));
         this.addSubscription( this.crudServiceContainer
             .crudDialogService
-            .subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) ));
+            .subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.onCrudOperationChanged( crudOperation ) ));
         this.addSubscription(
             this.crudServiceContainer
             .crudDialogService
-            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) ));
+            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.onModelObjectChanged( modelObject ) ));
         this.addSubscription(
             this.crudServiceContainer
             .crudFormButtonsService

@@ -72,7 +72,6 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         this.debug( "ngOnInit.begin" );
         this.subscribeToCrudFormServiceEvents();
-        this.debug( "ngOnInit.end" );
         // Tell everyone that we are done
         this.crudServiceContainer
             .crudFormButtonsService
@@ -97,19 +96,19 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
             .subscribeToFormValidEvent(( valid: boolean ) => this.onFormValid( valid ) );
         this.crudServiceContainer
             .crudFormService
-            .subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) );
+            .subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.onCrudOperationChanged( crudOperation ) );
         this.crudServiceContainer
             .crudFormService
-            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) );
+            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.onModelObjectChanged( modelObject ) );
         this.crudServiceContainer
             .crudFormService
             .subscribeToFormLogStateRequest( () => this.logState() ) ;
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 
-    protected crudOperationChanged( crudOperation: CrudOperation )
+    protected onCrudOperationChanged( crudOperation: CrudOperation )
     {
-        super.crudOperationChanged( crudOperation );
+        super.onCrudOperationChanged( crudOperation );
         this.logState();
     }
 

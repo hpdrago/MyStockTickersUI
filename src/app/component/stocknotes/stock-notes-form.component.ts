@@ -12,10 +12,11 @@ import { StockNotesSourceList } from "./stock-notes-source-list";
 import { isNumeric } from "rxjs/util/isNumeric";
 import { CrudOperation } from "../crud/common/crud-operation";
 import { isNullOrUndefined } from "util";
-import { StockNotesSentiment } from "../common/stock-notes-sentiment";
-import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
+import { StockNotesSentiment } from "../../common/stock-notes-sentiment.enum";
+import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { StockCrudService } from "../../service/crud/stock-crud.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { CustomerService } from "../../service/crud/customer.service";
 
 /**
  * This is the Stock Note Form Component class.
@@ -33,7 +34,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     private sourceItems: SelectItem[] = [];
     private bullOrBearOptions: SelectItem[];
     private actionTakenOptions: SelectItem[];
-    private stockNotesSources: StockNotesSourceList;
+    private stockNotesSourceList: StockNotesSourceList = new StockNotesSourceList( [] );
 
     /**
      * The stock is returned via an event when the user searches for a ticker symbol or company
@@ -52,6 +53,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private stockService: StockCrudService,
+                 private customerService: CustomerService,
                  private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {
         super( toaster, stockNotesCrudServiceContainer );
@@ -70,53 +72,30 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
 
         this.actionTakenOptions = [];
         this.actionTakenOptions.push( {label: 'NONE', value: StockNotesActionTaken.NONE });
+        this.actionTakenOptions.push( {label: 'BUY LATER', value: StockNotesActionTaken.BUY_LATER });
         this.actionTakenOptions.push( {label: 'BUY', value: StockNotesActionTaken.BUY });
         this.actionTakenOptions.push( {label: 'SELL', value: StockNotesActionTaken.SELL });
         super.ngOnInit();
-        this.enableDisableFields();
         this.log( 'ngOnInit.override.end' );
     }
 
     /**
-     * This method is called by the super class at the beginning of ngOnInit
-     * @returns {any}
+     * Load the necessary resources
      */
-    protected loadResources(): any
+    protected loadResources(): void
     {
-        /*
-         * Get the stock note sources for the logged in user and populate the sources SelectItems
-         */
-        this.loadSources();
-    }
-
-    /**
-     * This method will get the user's note source values from the database
-     */
-    private loadSources()
-    {
-        this.log( 'loadSources.begin' );
-        this.stockNotesCrudServiceContainer.stockNoteSourceService
-            .getStockNoteSources( this.sessionService.getLoggedInUserId() )
-            .subscribe( ( stockNotesSources: StockNotesSourceList ) =>
-                        {
-                            this.stockNotesSources = stockNotesSources;
-                            this.sourceItems = stockNotesSources.toSelectItems()
-                            this.loadResourcesCompleted();
-                        },
-                        error =>
-                        {
-                            this.reportRestError( error );
-                        } );
-    }
-
-    /**
-     * This method is called when {@code loadSources} has completed.
-     */
-    protected loadResourcesCompleted(): void
-    {
-        this.log( "loadResourcesCompleted.override" );
-        this.formGroup.addControl( 'notesSource', new FormControl( this.getSourceName( this.modelObject ) ) );
-        super.loadResourcesCompleted();
+        this.log( "loadResources" );
+        this.customerService.subscribeToSourcesLoading( (loading)=>
+        {
+            this.log( "loadResources customerService is loading: " + loading );
+            if ( !loading )
+            {
+                this.stockNotesSourceList = this.customerService.getStockNotesSourceList();
+                this.sourceItems = this.stockNotesSourceList.toSelectItems();
+                this.log( "loadResources source items set " + JSON.stringify( this.stockNotesSourceList ) );
+                this.onLoadResourcesCompleted();
+            }
+        });
     }
 
     /**
@@ -125,8 +104,10 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected postInit(): void
     {
-        this.log( "postInit.override" );
-        this.setFormValue( 'notesSource', this.getSourceName( this.modelObject ) );
+        this.log( "postInit.override.begin setting notesSourceId to " + this.modelObject.notesSourceId );
+        this.setFormValue( 'notesSource', this.modelObject.notesSourceId );
+        this.enableDisableActionTakenFields();
+        this.log( "postInit.override.end" );
     }
 
     /**
@@ -137,39 +118,21 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     {
         this.log( "initializeForm " + CrudOperation.getName( this.crudOperation ) );
         var stockNoteForm: FormGroup;
-        if ( this.isCrudCreateOperation() )
+        stockNoteForm = this.formBuilder.group(
         {
-            stockNoteForm = this.formBuilder.group(
-                {
-                    'stockSearch': new FormControl( this.stockSearch ),
-                    'tickerSymbols': new FormControl( this.tickerSymbols, Validators.required ),
-                    'notes': new FormControl( this.modelObject.notes, Validators.required ),
-                    'notesSource': new FormControl( "" ),
-                    'notesDate': new FormControl( this.modelObject.notesDate, Validators.required ),
-                    'notesRating': new FormControl( this.modelObject.notesRating ),
-                    'tags': new FormControl( this.modelObject.tags ),
-                    'bullOrBear': new FormControl( this.modelObject.bullOrBear ),
-                    'actionTaken': new FormControl( this.modelObject.actionTaken ),
-                    'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
-                    'actionTakenPrice': new FormControl( this.modelObject.actionTakenPrice )
-                } );
-        }
-        else
-        {
-            stockNoteForm = this.formBuilder.group(
-                {
-                    'tickerSymbol': new FormControl( this.modelObject.tickerSymbol, Validators.required ),
-                    'notes': new FormControl( this.modelObject.notes, Validators.required ),
-                    'notesSource': new FormControl( "" ),
-                    'notesDate': new FormControl( this.modelObject.notesDate, Validators.required ),
-                    'notesRating': new FormControl( this.modelObject.notesRating ),
-                    'tags': new FormControl( this.modelObject.tags ),
-                    'bullOrBear': new FormControl( this.modelObject.bullOrBear ),
-                    'actionTaken': new FormControl( this.modelObject.actionTaken ),
-                    'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
-                    'actionTakenPrice': new FormControl( this.modelObject.actionTakenPrice )
-                } );
-        }
+            'stockSearch': new FormControl( this.stockSearch ),
+            'tickerSymbols': new FormControl( this.tickerSymbols ),
+            'tickerSymbol': new FormControl( this.modelObject.tickerSymbol, Validators.required ),
+            'notes': new FormControl( this.modelObject.notes, Validators.required ),
+            'notesSource': new FormControl( "" ),
+            'notesDate': new FormControl( this.modelObject.notesDate, Validators.required ),
+            'notesRating': new FormControl( this.modelObject.notesRating ),
+            'tags': new FormControl( this.modelObject.tags ),
+            'bullOrBear': new FormControl( this.modelObject.bullOrBear ),
+            'actionTaken': new FormControl( this.modelObject.actionTaken ),
+            'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
+            'actionTakenPrice': new FormControl( this.modelObject.actionTakenPrice )
+        } );
         return stockNoteForm;
     }
 
@@ -179,7 +142,8 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         {
             return "";
         }
-        return this.stockNotesSources.getLabel( stockNotes.notesSourceId );
+        this.log( "getSourceName: " + JSON.stringify( stockNotes ));
+        return this.stockNotesSourceList.getLabel( stockNotes.notesSourceId );
     }
 
     /**
@@ -192,7 +156,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.log( methodName + " modelObject: " + JSON.stringify( modelObject ));
         if ( this.isCrudCreateOperation() )
         {
-            this.tickerSymbols = modelObject.getTickerSymbols();
             this.log( methodName + " tickerSymbols: " + JSON.stringify( this.tickerSymbols ));
             this.setFormValue( 'tickerSymbols', isNullOrUndefined( this.tickerSymbols ) ? "" : this.tickerSymbols );
             if ( isNullOrUndefined( modelObject.actionTaken ))
@@ -218,6 +181,10 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                                     this.reportRestError( error );
                                 });
             }
+        }
+        else
+        {
+            this.tickerSymbols = modelObject.getTickerSymbols();
         }
         super.setFormValues( modelObject );
     }
@@ -293,7 +260,10 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         /*
          * Capture the new values that the user types and put in the source name
          */
-        this.modelObject.notesSourceName = event.value.toUpperCase();
+        if ( !isNumeric( event.value ))
+        {
+            this.modelObject.notesSourceName = event.value.toUpperCase();
+        }
     }
 
     /**
@@ -303,22 +273,60 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     private onActionTakenChange( event )
     {
         this.log( 'onActionTakenChange event: ' + JSON.stringify( event ))
-        this.enableDisableFields()
+        this.enableDisableActionTakenFields()
     }
 
-    private enableDisableFields()
+    private enableDisableActionTakenFields()
     {
-        this.log( 'enableDisableFields modelObject: ' + JSON.stringify( this.modelObject ))
+        this.log( 'enableDisableFields modelObject.actionTaken: ' + this.modelObject.actionTaken )
+        this.log( 'enableDisableFields modelObject.actionTaken: ' + StockNotesActionTaken.getName( this.modelObject.actionTaken ));
         if ( !isNullOrUndefined( this.modelObject ))
         {
-            if ( this.modelObject.actionTaken == StockNotesActionTaken.NONE )
+            if ( this.isActionTakenFieldsDisabled() )
             {
                 this.disableField( 'actionTakenShares' );
+                this.disableField( 'actionTakenPrice' );
             }
             else
             {
                 this.enableField( 'actionTakenShares' );
+                this.enableField( 'actionTakenPrice' );
             }
+        }
+    }
+
+    /**
+     * Determines if the action taken shares and prices fields should be disabled.
+     * @return {boolean}
+     */
+    private isActionTakenFieldsDisabled(): boolean
+    {
+        return this.modelObject.actionTaken == StockNotesActionTaken.NONE ||
+               this.modelObject.actionTaken == StockNotesActionTaken.BUY_LATER;
+    }
+
+    /**
+     * Need to reset the form and any non-modelObject local variables
+     */
+    protected resetForm(): void
+    {
+        super.resetForm();
+        this.tickerSymbols = "";
+        this.stockSearch = "";
+    }
+
+    /**
+     * This method is override to check to see if the user added a new source.  if so, we need to notify the customer
+     * service that the sources changed.
+     * @param {StockNotes} modelObject
+     */
+    protected onSaveCompleted( modelObject: StockNotes )
+    {
+        super.onSaveCompleted( modelObject );
+        if ( !isNullOrUndefined( this.modelObject.notesSourceName ) &&
+             this.modelObject.notesSourceName.length > 0 )
+        {
+            this.customerService.stockNoteSourcesChanged();
         }
     }
 }

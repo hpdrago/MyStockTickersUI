@@ -3,7 +3,7 @@ import { ToastsManager } from "ng2-toastr";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
 import { StockNotes } from "../../model/entity/stock-notes";
-import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
+import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 
 /**
  * Created by mike on 8/15/2017.

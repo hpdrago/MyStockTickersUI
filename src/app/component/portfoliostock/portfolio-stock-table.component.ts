@@ -7,6 +7,7 @@ import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-servi
 import { SessionService } from "../../service/crud/session.service";
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
+import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
 /**
  * This component lists all of the stocks for a portfolio

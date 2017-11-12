@@ -2,6 +2,8 @@ import { BaseCrudComponentService } from "../common/base-crud-component.service"
 import { ModelObject } from "../../../model/entity/modelobject";
 import { Subject } from "rxjs/Subject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
+import { ModelObjectChangeService } from "../../../service/crud/model-object-change.service";
+import { CrudOperation } from "../common/crud-operation";
 
 /**
  * This class defines the CRUD table subjects that can be subscribe to and the methods that trigger the events.
@@ -14,7 +16,8 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
     private tableRowUpdatedSubject: Subject<T> = new Subject();
     private tableRowDeletedSubject: Subject<T> = new Subject();
 
-    constructor( protected modelObjectFactory: ModelObjectFactory<T> )
+    constructor( protected modelObjectFactory: ModelObjectFactory<T>,
+                 protected modelObjectChangeService: ModelObjectChangeService<T> )
     {
         super( modelObjectFactory );
     }
@@ -77,6 +80,7 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
     {
         this.debug( "sendTableRowAddedChangeEvent " + JSON.stringify( modelObject ) );
         this.tickThenRun( () => this.tableRowAddedSubject.next( modelObject ) );
+        this.modelObjectChangeService.sendModelObjectChangeEvent( this, CrudOperation.CREATE, modelObject );
     }
 
     /**
@@ -87,16 +91,6 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
     {
         this.debug( "subscribeToTableRowDeletedChangeEvent" );
         this.tableRowDeletedSubject.asObservable().subscribe( fn );
-    }
-
-    /**
-     * This method will notify all subscribers that the user has selected a row in the table
-     * @param {T} modelObject
-     */
-    public sendTableRowDeletedChangeEvent( modelObject: T )
-    {
-        this.debug( "sendTableRowDeletedChangeEvent " + JSON.stringify( modelObject ) );
-        this.tickThenRun( () => this.tableRowDeletedSubject.next( modelObject ) );
     }
 
     /**
@@ -113,9 +107,21 @@ export class CrudTableService <T extends ModelObject<T>> extends BaseCrudCompone
      * This method will notify all subscribers that the user has selected a row in the table
      * @param {T} modelObject
      */
+    public sendTableRowDeletedChangeEvent( modelObject: T )
+    {
+        this.debug( "sendTableRowDeletedChangeEvent " + JSON.stringify( modelObject ) );
+        this.tickThenRun( () => this.tableRowDeletedSubject.next( modelObject ) );
+        this.modelObjectChangeService.sendModelObjectChangeEvent( this, CrudOperation.DELETE, modelObject );
+    }
+
+    /**
+     * This method will notify all subscribers that the user has selected a row in the table
+     * @param {T} modelObject
+     */
     public sendTableRowUpdatedChangeEvent( modelObject: T )
     {
         this.debug( "sendTableRowUpdatedChangeEvent " + JSON.stringify( modelObject ) );
         this.tickThenRun( () => this.tableRowUpdatedSubject.next( modelObject ) );
+        this.modelObjectChangeService.sendModelObjectChangeEvent( this, CrudOperation.UPDATE, modelObject );
     }
 }

@@ -5,6 +5,7 @@ import { LazyLoadEvent } from "primeng/components/common/api";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { StockCrudServiceContainer } from "./stock-crud-service-container";
+import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
 /**
  * This component lists the all of the stocks in the database.

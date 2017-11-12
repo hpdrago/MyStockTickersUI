@@ -4,6 +4,7 @@ import { ToastsManager } from "ng2-toastr";
 import { StockCatalystEventCrudServiceContainer } from "./stock-catalyst-event-crud-service-container";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockUrlMap } from "../../common/stock-url-map";
+import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
 /**
  * This component lists all stock notes

@@ -10,9 +10,10 @@ import { CrudOperation } from "../crud/common/crud-operation";
 import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { isNullOrUndefined } from "util";
 import { StockUrlMap } from "../../common/stock-url-map";
-import { StockNotesActionTaken } from "../common/stock-notes-action-taken";
+import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
+import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
 /**
  * This component lists all stock notes

@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
 import { Http } from "@angular/http";
 import { SessionService } from "./session.service";
 import { AppConfigurationService } from "../app-configuration.service";

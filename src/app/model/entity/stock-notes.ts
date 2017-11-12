@@ -3,7 +3,7 @@ import { StockNotesStock } from "./stock-notes-stock";
 import { StockNoteContainer } from "../../common/stock-note-container";
 import { StockQuoteModelObject } from "./stock-quote-modelobject";
 import { TagList } from "../../common/tag_list";
-import { StockNotesActionTaken } from "../../component/common/stock-notes-action-taken";
+import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 
 /**
  * Defines a single portfolio for a customer

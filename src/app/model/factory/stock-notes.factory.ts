@@ -2,7 +2,7 @@ import { ModelObjectFactory } from "./model-object.factory";
 import { StockNotes } from "../entity/stock-notes";
 import { Injectable } from "@angular/core";
 import { SessionService } from "../../service/crud/session.service";
-import { StockNotesActionTaken } from "../../component/common/stock-notes-action-taken";
+import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { TagList } from "../../common/tag_list";
 
 /**

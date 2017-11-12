@@ -54,10 +54,10 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
         this.debug( "subscribeToCrudPanelServiceEvents.begin" );
         this.addSubscription( this.crudServiceContainer
             .crudFormButtonsService
-            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.modelObjectChanged( modelObject ) ));
+            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.onModelObjectChanged( modelObject ) ));
         this.addSubscription( this.crudServiceContainer
             .crudFormButtonsService
-            .subscribeToCrudOperationChangeEvent( ( crudOperation: CrudOperation ) => this.crudOperationChanged( crudOperation ) ));
+            .subscribeToCrudOperationChangeEvent( ( crudOperation: CrudOperation ) => this.onCrudOperationChanged( crudOperation ) ));
         this.debug( "subscribeToCrudPanelServiceEvents.end" );
     }
 
@@ -82,9 +82,9 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      * @param modelObject
      * @override
      */
-    protected modelObjectChanged( modelObject: T ): void
+    protected onModelObjectChanged( modelObject: T ): void
     {
-        super.modelObjectChanged( modelObject );
+        super.onModelObjectChanged( modelObject );
         this.crudServiceContainer
             .crudFormService
             .sendModelObjectChangedEvent( this.modelObject );
@@ -95,9 +95,9 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      * @param crudOperation
      * @override
      */
-    protected crudOperationChanged( crudOperation: CrudOperation ): void
+    protected onCrudOperationChanged( crudOperation: CrudOperation ): void
     {
-        super.crudOperationChanged( crudOperation );
+        super.onCrudOperationChanged( crudOperation );
         this.crudServiceContainer
             .crudFormService
             .sendCrudOperationChangedEvent( this.crudOperation );

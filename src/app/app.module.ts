@@ -40,7 +40,7 @@ import {
     CalendarModule,
     EditorModule,
     SliderModule,
-    ChipsModule
+    ChipsModule, TooltipModule
 } from "primeng/primeng";
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
@@ -132,6 +132,9 @@ import { StockToBuyFactory } from "./model/factory/stock-to-buy.factory";
 import { StockToBuyCrudServiceContainer } from "./component/stocktobuy/stock-to-buy-crud-service-container";
 import { StockToBuyCrudService } from "./service/crud/stock-to-buy-crud.service";
 import { StockQuoteRefreshService } from "./service/stock-quote-refresh.service";
+import { CustomerService } from "./service/crud/customer.service";
+import { CustomerFactory } from "./model/factory/customer.factory";
+import { ModelObjectChangeService } from "./service/crud/model-object-change.service";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -182,6 +185,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
         CurrencyMaskModule,
         ChipsModule,
         CheckboxModule,
+        TooltipModule,
         // Third Party modules,
         BusyModule,
         ToastModule.forRoot()
@@ -244,6 +248,9 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     providers:
     [
         // Global providers -- singletons
+        CustomerService,
+        CustomerFactory,
+
         StockCrudService,
         StockCrudServiceContainer,
         StockSectorCrudService,

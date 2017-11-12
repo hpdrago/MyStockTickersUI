@@ -6,6 +6,7 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockTableComponent } from "../portfoliostock/portfolio-stock-table.component";
 import { PortfolioCrudServiceContainer } from "./porfolio-crud-service-container";
+import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
 /**
  * This class contains the UI for listing the user's portfolios.
