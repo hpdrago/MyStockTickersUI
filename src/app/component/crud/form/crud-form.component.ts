@@ -367,18 +367,20 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onFormChange( formData: any ): void
     {
         var methodName = "onFormChange";
-        this.debug( "onFormChange.begin " + JSON.stringify( formData ) );
+        //this.debug( "onFormChange.begin " + JSON.stringify( formData ) );
         this.emitFormDirtyChange();
         this.emitFormValidChange();
         //this.modelObjectChange.emit( this.modelObject );
         if ( !this.formGroup.valid )
         {
+            /*
             this.debug( methodName + " Form is not valid" );
             for ( let propertyName in this.formGroup.controls )
             {
                 this.debug( methodName + " propertyName: " + propertyName +
                                          " status: " + this.formGroup.controls[propertyName].status );
             }
+            */
             for ( let propertyName in this.formGroup.errors )
             {
                 this.debug( methodName + " propertyName: " + this.formGroup.errors[propertyName] );

@@ -13,14 +13,18 @@ import { StockQuote } from "../../model/entity/stock-quote";
  */
 @Component(
 {
+    /*[(ngModel)]="stockSearch"*/
+    /*formControlName="{{formControlName}}"*/
     selector: 'stock-autocomplete',
     template: `<div [formGroup]="formGroup"> 
                <p-autoComplete formControlName="{{formControlName}}"
                                [suggestions]="stockSearchResults"
+                               [(ngModel)]="tickerSymbol"
                                [minLength]="1"
                                (completeMethod)="onStockSearch( $event )"
                                (onSelect)="onStockSearchSelected( $event )"
                                (onBlur)="onBlur( $event )"
+                               (onKeyUp)="onKeyUp( $event )"
                                placeholder="Enter company name of ticker symbol">
                </p-autoComplete>
     </div>
@@ -43,7 +47,6 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
 
     private stockSearchResults: string[];
     private tickerSymbol: string;
-    private companyName: string;
     private disabled: boolean;
     private isStockSelected : boolean;
 
@@ -85,8 +88,8 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
      */
     private onStockSearch( event ): void
     {
-        var query: string = event.query.toUpperCase();
-        this.log( "onStockSearch " + JSON.stringify( query ));
+        var query: string = event.query;
+        this.log( "onStockSearch " + query );
         this.propagateChange( query );
         this.stockCrudService
             .getStockCompaniesLike( query )
@@ -96,7 +99,6 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                             for ( let stock of data.content )
                             {
                                 this.stockSearchResults.push( "[" + stock.tickerSymbol + "] " + stock.companyName );
-                                //this.stockSearchResults.push( stock.tickerSymbol );
                             }
                         },
                         err =>
@@ -164,11 +166,10 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         this.log( "onStockSearchSelected " + JSON.stringify( event ));
         var matches = /\[(.*)] (.*)/.exec( event );
         this.tickerSymbol = matches[1];
-        this.companyName = matches[2];
         /*
          * Send the change through ngModel
          */
-        this.propagateChange( event.toUpperCase() );
+        this.propagateChange( this.tickerSymbol.toUpperCase() );
         this.stockCrudService
             .getStock( this.tickerSymbol )
             .subscribe( (stock) =>
@@ -183,21 +184,31 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                         });
     }
 
-    /*
-     * The following methods are needed to send the stock information to the component -- [(ngModel)]
-     */
-    public writeValue( obj: string ): void
+    private onKeyUp(event)
     {
-        if ( !isNullOrUndefined( obj ) )
+        this.debug( "onChange " + JSON.stringify( event ) );
+        // get value from text area
+        this.tickerSymbol = this.tickerSymbol.toUpperCase();
+    }
+
+    /*
+     * The following methods are needed to send the stock information to the component
+     * https://medium.com/@tarik.nzl/angular-2-custom-form-control-with-validation-json-input-2b4cf9bc2d73
+     */
+    public writeValue( searchString: string ): void
+    {
+        this.debug( "writeValue: " + searchString );
+        if ( !isNullOrUndefined( searchString ) )
         {
-            this.tickerSymbol = obj.toUpperCase();
+            this.tickerSymbol = searchString.toUpperCase();
         }
     }
 
-    private propagateChange = ( _: any) =>
-    {
-        this.debug( "propagateChagne: " + _ );
-    };
+    /**
+     * This is a placeholder function that is replace with a new function in registerOnChange
+     * @param _
+     */
+    private propagateChange = ( _: any) => {};
 
     public registerOnChange( fn: any ): void
     {
