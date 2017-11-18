@@ -24,10 +24,8 @@
                     </div>
                     <div class="ui-grid-col-10">
                         <stock-autocomplete id="stockSearch"
-                                            [(ngModel)]="stockSearch"
                                             [formGroup]="formGroup"
                                             formControlName="stockSearch"
-                                            uppercase
                                             (stockSelected)="onStockSelected( $event )">
                         </stock-autocomplete>
                     </div>
@@ -44,11 +42,9 @@
                         <input id="tickerSymbols"
                                type="text"
                                pInputText
-                               required
                                uppercase
                                placeholder="Comma delimited ticker symbols"
-                               formControlName="tickerSymbols"
-                               [(ngModel)]="tickerSymbols">
+                               formControlName="tickerSymbols">
                     </div>
                 </div>
             </ng-template>
@@ -71,8 +67,7 @@
                                required
                                uppercase
                                maxlength="5"
-                               formControlName="tickerSymbol"
-                               [(ngModel)]="modelObject.tickerSymbol">
+                               formControlName="tickerSymbol">
                     </div>
                 </div>
             </ng-template>
@@ -107,8 +102,7 @@
                               class="crud-form"
                               formControlName="notes"
                               maxlength="4000"
-                              required
-                              [(ngModel)]="modelObject.notes">
+                              required>
                     </p-editor>
                     <!--
                     <textarea id="notes"
@@ -121,7 +115,6 @@
                               maxlength="4000"
                               pInputTextarea
                               required
-                              [(ngModel)]="modelObject.notes">
                     </textarea> -->
                 </div>
             </div>
@@ -137,8 +130,7 @@
                     <p-chips id="tags"
                              name="basic"
                              placeholder="type and press enter"
-                             formControlName="tags"
-                             [(ngModel)]="modelObject.tags">
+                             formControlName="tags">
                     </p-chips>
                 </div>
             </div>
@@ -155,7 +147,6 @@
                                 class="crud-form"
                                 [options]="sourceItems"
                                 formControlName="notesSource"
-                                [(ngModel)]="modelObject.notesSourceId"
                                 (onChange)="sourcesOnChange($event)"
                                 [style]="{'width':'225px'}"
                                 maxlength="20"
@@ -177,8 +168,7 @@
                     <p-rating id="notesRating"
                               class="crud-form"
                               formControlName="notesRating"
-                              [stars]="5"
-                              [(ngModel)]="modelObject.notesRating">
+                              [stars]="5">
                     </p-rating>
                 </div>
             </div>
@@ -194,8 +184,7 @@
                     <p-selectButton id="bullOrBear"
                                     class="crud-form"
                                     formControlName="bullOrBear"
-                                    [options]="bullOrBearOptions"
-                                    [(ngModel)]="modelObject.bullOrBear">
+                                    [options]="bullOrBearOptions">
                     </p-selectButton>
                 </div>
             </div>
@@ -213,8 +202,7 @@
                                     formControlName="actionTaken"
                                     pTooltip="BUY LATER - Will create a 'Stock to Buy' record when saving the Stock Note"
                                     [options]="actionTakenOptions"
-                                    (onChange)="onActionTakenChange($event)"
-                                    [(ngModel)]="modelObject.actionTaken">
+                                    (onChange)="onActionTakenChange($event)">
                     </p-selectButton>
                 </div>
             </div>
@@ -233,7 +221,6 @@
                                     'ui-state-default': !isActionTakenFieldsDisabled() }"
                         class="crud-form"
                         formControlName="actionTakenShares"
-                        [(ngModel)]="modelObject.actionTakenShares"
                         maxLength="6"
                         placeholder=""
                         mask="9?99999">
@@ -255,7 +242,6 @@
                            [ngClass]="{'ui-state-disabled': isActionTakenFieldsDisabled(),
                                        'ui-state-default': !isActionTakenFieldsDisabled() }"
                            formControlName="actionTakenPrice"
-                           [(ngModel)]="modelObject.actionTakenPrice"
                            placeholder="$"/>
                 </div>
             </div>
@@ -273,8 +259,7 @@
                                 [inputStyle]="{'width':'100px'}"
                                 formControlName="notesDate"
                                 dateFormat="mm/dd/yy"
-                                [showIcon]="true"
-                                [(ngModel)]="modelObject.notesDate">
+                                [showIcon]="true">
                     </p-calendar>
                 </div>
             </div>

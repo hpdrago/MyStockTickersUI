@@ -143,18 +143,30 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
                 .subscribeToModelObjectCrudOperationChangedEvent(
                     ( subjectInfo: ModelObjectCrudOperationSubjectInfo ) =>
                         this.onModelObjectCrudOperationChanged( subjectInfo ) ));
+        /*
+         * Reset button
+         */
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormService
                 .subscribeToFormResetEvent( () => this.resetForm() ));
+        /*
+         * Prepare to save
+         */
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormService
                 .subscribeToFormPrepareToSaveEvent( () => this.prepareToSave() ));
+        /*
+         * Model Object version update
+         */
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormService
                 .subscribeToFormModelObjectVersionUpdateEvent( ( modelObject: T ) => this.onModelObjectVersionUpdate( modelObject ) ));
+        /*
+         * Save button
+         */
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormButtonsService
@@ -259,6 +271,10 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
             .sendFormLogStateRequest();
     }
 
+    /**
+     * This method is called when a new version of the model object was loaded.
+     * @param {T} modelObject
+     */
     protected onModelObjectVersionUpdate( modelObject: T ): void
     {
         this.debug( "onModelObjectVersionUpdate " + JSON.stringify( modelObject ) );
@@ -351,15 +367,21 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onFormChange( formData: any ): void
     {
         var methodName = "onFormChange";
-        //this.debug( "onFormChange.begin " + JSON.stringify( formData ) );
+        this.debug( "onFormChange.begin " + JSON.stringify( formData ) );
         this.emitFormDirtyChange();
         this.emitFormValidChange();
         //this.modelObjectChange.emit( this.modelObject );
         if ( !this.formGroup.valid )
         {
-            //this.debug( "Form is not valid" );
+            this.debug( methodName + " Form is not valid" );
+            for ( let propertyName in this.formGroup.controls )
+            {
+                this.debug( methodName + " propertyName: " + propertyName +
+                                         " status: " + this.formGroup.controls[propertyName].status );
+            }
             for ( let propertyName in this.formGroup.errors )
             {
+                this.debug( methodName + " propertyName: " + this.formGroup.errors[propertyName] );
                 if ( this.formGroup.errors.hasOwnProperty( propertyName ) &&
                      this.formGroup.touched )
                 {
@@ -372,7 +394,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         }
         else
         {
-            //this.debug( "Form IS valid" );
+            this.debug( methodName + " Form IS valid" );
         }
         //this.debug( methodName + ".end" );
     }
@@ -439,9 +461,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         //this.debug( "disableInputs" );
         if ( this.formGroup )
         {
-            for ( let fieldName in this.formGroup.controls )
+            for ( let property in this.formGroup.controls )
             {
-                this.disableField( fieldName );
+                this.disableField( property );
             }
         }
     }

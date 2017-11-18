@@ -186,23 +186,27 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     /*
      * The following methods are needed to send the stock information to the component -- [(ngModel)]
      */
-    writeValue( obj: any ): void
+    public writeValue( obj: string ): void
     {
         if ( !isNullOrUndefined( obj ) )
         {
-            this.tickerSymbol = obj;
+            this.tickerSymbol = obj.toUpperCase();
         }
     }
 
-    propagateChange = (_: any) => {};
-    registerOnChange( fn: any ): void
+    private propagateChange = ( _: any) =>
+    {
+        this.debug( "propagateChagne: " + _ );
+    };
+
+    public registerOnChange( fn: any ): void
     {
         this.propagateChange = fn;
     }
 
-    registerOnTouched( fn: any ): void {}
+    public registerOnTouched( fn: any ): void {}
 
-    setDisabledState( isDisabled: boolean ): void
+    public setDisabledState( isDisabled: boolean ): void
     {
         this.disabled = isDisabled;
     }

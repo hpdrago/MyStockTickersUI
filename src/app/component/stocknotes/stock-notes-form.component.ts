@@ -118,11 +118,11 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     {
         this.log( "initializeForm " + CrudOperation.getName( this.crudOperation ) );
         var stockNoteForm: FormGroup;
+        /*
+         * Create the form group and the common form fields
+         */
         stockNoteForm = this.formBuilder.group(
         {
-            'stockSearch': new FormControl( this.stockSearch ),
-            'tickerSymbols': new FormControl( this.tickerSymbols ),
-            'tickerSymbol': new FormControl( this.modelObject.tickerSymbol, Validators.required ),
             'notes': new FormControl( this.modelObject.notes, Validators.required ),
             'notesSource': new FormControl( "" ),
             'notesDate': new FormControl( this.modelObject.notesDate, Validators.required ),
@@ -133,6 +133,18 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
             'actionTakenPrice': new FormControl( this.modelObject.actionTakenPrice )
         } );
+        /*
+         * Add the specific fields based on the crud operation
+         */
+        if ( this.isCrudCreateOperation() )
+        {
+            stockNoteForm.addControl( 'stockSearch', new FormControl( this.stockSearch ));
+            stockNoteForm.addControl( 'tickerSymbols', new FormControl( this.tickerSymbols ));
+        }
+        else
+        {
+            stockNoteForm.addControl( 'tickerSymbol', new FormControl( this.modelObject.tickerSymbol, Validators.required ));
+        }
         return stockNoteForm;
     }
 
@@ -208,6 +220,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.stock = stock;
         this.stockSearch = '';
         this.modelObject.stockPriceWhenCreated = stock.lastPrice;
+        (<FormControl>this.formGroup.controls['tickerSymbols']).setValue( this.tickerSymbols );
         (<FormControl>this.formGroup.controls['stockSearch']).setValue( '' );
     }
 
