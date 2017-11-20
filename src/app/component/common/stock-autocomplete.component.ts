@@ -90,7 +90,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     {
         var query: string = event.query;
         this.log( "onStockSearch " + query );
-        this.propagateChange( query );
+        this.propagateChange( query.toUpperCase() );
         this.stockCrudService
             .getStockCompaniesLike( query )
             .subscribe( ( data: PaginationPage<Stock> ) =>
