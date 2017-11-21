@@ -1,6 +1,9 @@
 import { DefaultValueAccessor } from "@angular/forms";
 import { Directive } from "@angular/core";
 
+/**
+ * https://stackoverflow.com/questions/35826325/how-to-convert-input-value-to-uppercase-in-angular-2-value-passing-to-ngcontrol
+ */
 @Directive( {
                 selector: 'input[uppercase]',
                 // When the user updates the input
