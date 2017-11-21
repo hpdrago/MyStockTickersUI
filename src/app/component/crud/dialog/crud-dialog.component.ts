@@ -163,6 +163,9 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends BaseCrudCompo
                 this.crudServiceContainer
                     .crudFormButtonsService
                     .sendModelObjectChangedEvent( subjectInfo.modelObject );
+                this.crudServiceContainer
+                    .crudFormService
+                    .sendFormPrepareToDisplayEvent();
                 this.displayDialog = true;
             }
         }

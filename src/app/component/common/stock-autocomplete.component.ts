@@ -16,18 +16,16 @@ import { StockQuote } from "../../model/entity/stock-quote";
     /*[(ngModel)]="stockSearch"*/
     /*formControlName="{{formControlName}}"*/
     selector: 'stock-autocomplete',
-    template: `<div [formGroup]="formGroup"> 
-               <p-autoComplete formControlName="{{formControlName}}"
-                               [suggestions]="stockSearchResults"
-                               [(ngModel)]="tickerSymbol"
-                               [minLength]="1"
-                               (completeMethod)="onStockSearch( $event )"
-                               (onSelect)="onStockSearchSelected( $event )"
-                               (onBlur)="onBlur( $event )"
-                               (onKeyUp)="onKeyUp( $event )"
-                               placeholder="Enter company name of ticker symbol">
+    template: ` <p-autoComplete [suggestions]="stockSearchResults"
+                                [(ngModel)]="tickerSymbol"
+                                [minLength]="1"
+                                (completeMethod)="onStockSearch( $event )"
+                                (onSelect)="onStockSearchSelected( $event )"
+                                (onBlur)="onBlur( $event )"
+                                (onKeyUp)="onKeyUp( $event )"
+                                uppercase
+                                placeholder="Enter company name of ticker symbol">
                </p-autoComplete>
-    </div>
     `,
     providers: [
     {
@@ -90,7 +88,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     {
         var query: string = event.query;
         this.log( "onStockSearch " + query );
-        this.propagateChange( query.toUpperCase() );
+        this.propagateChange( query );
         this.stockCrudService
             .getStockCompaniesLike( query )
             .subscribe( ( data: PaginationPage<Stock> ) =>
@@ -188,7 +186,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     {
         this.debug( "onChange " + JSON.stringify( event ) );
         // get value from text area
-        this.tickerSymbol = this.tickerSymbol.toUpperCase();
+        //this.tickerSymbol = this.tickerSymbol.toUpperCase();
     }
 
     /*

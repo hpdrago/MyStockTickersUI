@@ -24,6 +24,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     private formResetSubject: Subject<void> = new Subject<void>();
     private formLogStateSubject: Subject<void> = new Subject<void>();
     private formPrepareToSaveSubject: Subject<void> = new Subject<void>();
+    private formPrepareToDisplaySubject: Subject<void> = new Subject<void>();
     private createFormSubject: Subject<void> = new Subject<void>();
     private formModelObjectVersionUpdateSubject: Subject<T> = new Subject<T>();
     private modelObjectCrudOperationChangeSubject: BehaviorSubject<ModelObjectCrudOperationSubjectInfo> = new BehaviorSubject( null );
@@ -106,6 +107,17 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     {
         this.debug( "subscribeToFormPrepareToSaveEvent" );
         return this.formPrepareToSaveSubject.asObservable().subscribe( fn );
+    }
+
+    /**
+     * The {@code CrudFormComponent} will call this method to register to be notified right before the dialog containing
+     * the form will be displayed.  This allows the form to perform any initialization before it is displayed.
+     * This method is called after the model object and the crud operation have been set on the form.
+     */
+    public subscribeToFormPrepareToDisplayEvent( fn: () => any ): Subscription
+    {
+        this.debug( "subscribeToFormPrepareToDisplayEvent" );
+        return this.formPrepareToDisplaySubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -194,6 +206,16 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     {
         this.debug( "sendFormPrepareToSaveEvent" );
         this.tickThenRun( () => this.formPrepareToSaveSubject.next() );
+    }
+
+    /**
+     * The {@code CrudDialog} will call this method to notify the form right before the dialog containing the form
+     * will be displayed.
+     */
+    public sendFormPrepareToDisplayEvent()
+    {
+        this.debug( "sendFormPrepareToDisplayEvent" );
+        this.tickThenRun( () => this.formPrepareToDisplaySubject.next() );
     }
 
     /**

@@ -171,6 +171,14 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
             this.crudServiceContainer
                 .crudFormButtonsService
                 .subscribeToSaveButtonClickedEvent( ( modelObject: T ) => this.onSaveCompleted( modelObject ) ));
+
+        /*
+         * Prepare to display
+         */
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormService
+                .subscribeToFormPrepareToDisplayEvent( () => this.onPrepareToDisplay() ));
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 
@@ -396,7 +404,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         }
         else
         {
-            this.debug( methodName + " Form IS valid" );
+            //this.debug( methodName + " Form IS valid" );
         }
         //this.debug( methodName + ".end" );
     }
@@ -571,6 +579,18 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected onSaveCompleted( modelObject: T ): void
     {
-        this.log( "onSaveCompleted" );
+        this.debug( "onSaveCompleted" );
+    }
+
+    /**
+     * This method is called just before the dialog is displayed.
+     * This method is meant to contain initialization logic outside of the creation initialization.  Once created,
+     * a form is not created again and there may be some initialiation logic to be performed each time the form
+     * is displayed.
+     */
+    protected onPrepareToDisplay(): void
+    {
+        this.debug( "prepareToDisplay" );
+        this.resetForm();
     }
 }

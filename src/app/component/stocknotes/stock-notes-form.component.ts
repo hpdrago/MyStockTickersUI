@@ -15,7 +15,6 @@ import { isNullOrUndefined } from "util";
 import { StockNotesSentiment } from "../../common/stock-notes-sentiment.enum";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { StockCrudService } from "../../service/crud/stock-crud.service";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { CustomerService } from "../../service/crud/customer.service";
 
 /**
@@ -123,15 +122,15 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
          */
         stockNoteForm = this.formBuilder.group(
         {
-            'notes': new FormControl( this.modelObject.notes, Validators.required ),
-            'notesSource': new FormControl( "" ),
-            'notesDate': new FormControl( this.modelObject.notesDate, Validators.required ),
-            'notesRating': new FormControl( this.modelObject.notesRating ),
-            'tags': new FormControl( this.modelObject.tags ),
-            'bullOrBear': new FormControl( this.modelObject.bullOrBear ),
-            'actionTaken': new FormControl( this.modelObject.actionTaken ),
+            'notes':             new FormControl( this.modelObject.notes, Validators.required ),
+            'notesSource':       new FormControl( "" ),
+            'notesDate':         new FormControl( this.modelObject.notesDate, Validators.required ),
+            'notesRating':       new FormControl( this.modelObject.notesRating ),
+            'tags':              new FormControl( this.modelObject.tags ),
+            'bullOrBear':        new FormControl( this.modelObject.bullOrBear ),
+            'actionTaken':       new FormControl( this.modelObject.actionTaken ),
             'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
-            'actionTakenPrice': new FormControl( this.modelObject.actionTakenPrice )
+            'actionTakenPrice':  new FormControl( this.modelObject.actionTakenPrice )
         } );
         /*
          * Add the specific fields based on the crud operation
@@ -341,5 +340,11 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         {
             this.customerService.stockNoteSourcesChanged();
         }
+    }
+
+    protected onTextChange( event )
+    {
+        this.log( "onTextChange " + JSON.stringify( event ));
+        this.log( "modelObject: " + JSON.stringify( this.modelObject ));
     }
 }

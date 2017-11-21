@@ -134,7 +134,6 @@ import { StockToBuyCrudService } from "./service/crud/stock-to-buy-crud.service"
 import { StockQuoteRefreshService } from "./service/stock-quote-refresh.service";
 import { CustomerService } from "./service/crud/customer.service";
 import { CustomerFactory } from "./model/factory/customer.factory";
-import { ModelObjectChangeService } from "./service/crud/model-object-change.service";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
