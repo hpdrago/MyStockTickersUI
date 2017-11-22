@@ -14,6 +14,7 @@ import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enu
 import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
+import { BullOrBear } from "../../common/bull-or-bear.enum";
 
 /**
  * This component lists all stock notes
@@ -54,6 +55,11 @@ export class StockNotesTableComponent extends StockQuoteModelObjectTableComponen
     {
         //this.log( 'getActionTaken: ' + actionTaken );
         return StockNotesActionTaken.getName( actionTaken );
+    }
+
+    private getBullOrBear( bullOrBear: string )
+    {
+        return BullOrBear.getName( bullOrBear );
     }
 
     /**

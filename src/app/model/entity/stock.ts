@@ -9,19 +9,7 @@ export class Stock extends ModelObject<Stock>
     public tickerSymbol: string;
     public companyName: string;
     public lastPrice: number;
-    public exchange: string;
-    public createdBy: number;
-    public userEntered: boolean;
-
-    /**
-     * Determines if the stock was entered by a user. Otherwise, it was download from a stock exchange source.
-     * @returns false if the stock was entered by a user, otherwise true as it was information
-     *          downloaded from a data feed
-     */
-    public isUserEntered(): boolean
-    {
-        return this.userEntered;
-    }
+    public stockExchange: string;
 
     public isEqualPrimaryKey( modelObject: Stock )
     {

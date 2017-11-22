@@ -407,6 +407,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected addRows( newRows: T[] ): void
     {
+        this.debug( "addRows" );
         this.rows = [...newRows, ...this.rows];
     }
 
@@ -417,6 +418,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected addModelObjectToTable( modelObject: T ): void
     {
+        this.debug( "addModelObjectToTable " + JSON.stringify( this.modelObject ) );
         /*
          * A new array must be created to trigger a change event
          */
@@ -485,6 +487,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected removeModelObjectFromTable( modelObject: T ): boolean
     {
+        this.debug( "removeModelObjectFromTable " + JSON.stringify( this.modelObject ) );
         var index = this.indexOf( modelObject );
         if ( index == -1 )
         {
@@ -600,8 +603,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onModelObjectChangeEvent( modelObjectChangeEvent: ModelObjectChangeEvent<T> )
     {
         var methodName = "onModelObjectChangeEvent";
-        this.debug( methodName + ".begin " + JSON.stringify( modelObjectChangeEvent ));
-        if ( modelObjectChangeEvent.sender === this )
+        this.debug( methodName + ".begin object: " + JSON.stringify( modelObjectChangeEvent.modelObject ));
+        this.debug( methodName + " sender: " + (<any>modelObjectChangeEvent.sender).constructor.name );
+        /*
+         * Ignore if generated form this component
+         */
+        if ( modelObjectChangeEvent.sender === this ||
+             modelObjectChangeEvent.sender === this.crudServiceContainer.crudTableService )
         {
             this.debug( methodName + " received our own change...ignoring" ) ;
         }

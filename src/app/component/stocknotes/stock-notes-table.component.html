@@ -130,7 +130,7 @@
         </p-column>
 
         <!----------------------------------------------------------------------------------------------------------
-        NOTES SOURCE
+        TAGS
         ------------------------------------------------------------------------------------------------------------>
         <p-column id="tags"
                   field="tags"
@@ -140,15 +140,34 @@
         </p-column>
 
         <!----------------------------------------------------------------------------------------------------------
+        BULL OR BEAR
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="bullOrBearColumn"
+                  field="bullOrBear"
+                  header="Bull or Bear"
+                  [style]="{'width':'80px'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                {{getBullOrBear( stockNotes[col.field] )}}
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
         NOTES
         ------------------------------------------------------------------------------------------------------------>
         <p-column id="notesColumn"
                   field="notes"
                   header="Notes">
             <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) == null " >{{stockNotes[col.field]}}</div>
+                <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) == null">
+                    <div [innerHTML]="stockNotes[col.field]">
+                    </div>
+                </div>
                 <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) != null " >
-                    <a href="{{urlMap.getURL( stockNotes.tickerSymbol )}}" target="_blank">{{urlMap.getURL( stockNotes.tickerSymbol )}}</a>
+                    <a href="{{urlMap.getURL( stockNotes.tickerSymbol )}}" target="_blank">
+                        <div [innerHTML]="stockNotes[col.field]">
+                        </div>
+                    </a>
                 </div>
             </ng-template>
         </p-column>

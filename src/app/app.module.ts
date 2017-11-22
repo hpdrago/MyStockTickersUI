@@ -5,8 +5,8 @@
 /**
  * Angular Imports
  */
-import { NgModule } from "@angular/core";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { forwardRef, NgModule, Provider } from "@angular/core";
+import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpModule } from "@angular/http";
@@ -134,6 +134,7 @@ import { StockToBuyCrudService } from "./service/crud/stock-to-buy-crud.service"
 import { StockQuoteRefreshService } from "./service/stock-quote-refresh.service";
 import { CustomerService } from "./service/crud/customer.service";
 import { CustomerFactory } from "./model/factory/customer.factory";
+import { UppercaseValueDirective } from "./directives/uppercase.value.accessor";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -145,6 +146,11 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     suffix: "",
     thousands: ","
 };
+
+/*
+const CUSTOM_VALUE_ACCESSOR = new Provider(
+    NG_VALUE_ACCESSOR, {useExisting: forwardRef(() => UppercaseValueDirective), multi: true});
+*/
 
 @NgModule({
     imports:
@@ -238,6 +244,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
 
         DashboardComponent,
         UppercaseDirective,
+        UppercaseValueDirective,
         StockAutoCompleteComponent
     ],
     bootstrap:

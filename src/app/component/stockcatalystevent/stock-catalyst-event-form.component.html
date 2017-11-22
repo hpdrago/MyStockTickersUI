@@ -6,10 +6,10 @@
             TICKER SYMBOL
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="tickerSymbol">Ticker Symbol:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-10">
                     <stock-autocomplete id="tickerSymbol"
                                         [(ngModel)]="modelObject.tickerSymbol"
                                         [formGroup]="formGroup"
@@ -30,11 +30,28 @@
             COMPANY NAME
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="companyNameColumn">Company:</label>
                 </div>
-                <div id="companyNameColumn" class="ui-grid-col-9">
+                <div id="companyNameColumn" class="ui-grid-col-10">
                     {{modelObject.companyName}}
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            CATALYST DATE or TIME PERIOD
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-2">
+                    <label class="crud-form" for="dateOrTimePeriod">Date or Time Period:</label>
+                </div>
+                <div class="crud-form-label ui-grid-col-10">
+                    <p-selectButton id="dateOrTimePeriod"
+                                    class="crud-form"
+                                    formControlName="dateOrTimePeriod"
+                                    (onChange)="onDateOrTimePeriodChange($event)"
+                                    [options]="dateOrTimePeriodOptions">
+                    </p-selectButton>
                 </div>
             </div>
 
@@ -42,11 +59,13 @@
             CATALYST DATE
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="catalystDate">Catalyst Date:</label>
                 </div>
-                <div class="ui-grid-col-9">
+                <div class="ui-grid-col-3">
                     <p-calendar id="catalystDate"
+                                [ngClass]="{'ui-state-disabled': isTimePeriod(),
+                                            'ui-state-default': !isTimePeriod() }"
                                 class="crud-form"
                                 formControlName="catalystDate"
                                 dateFormat="yy-mm-dd"
@@ -59,20 +78,61 @@
             </div>
 
             <!----------------------------------------------------------------------------------------------------------
+            CATALYST TIME PERIOD
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-2">
+                    <label class="crud-form" for="timePeriod">Time Period:</label>
+                </div>
+                <div class="crud-form-label ui-grid-col-10">
+                    <p-selectButton id="timePeriod"
+                                    [ngClass]="{'ui-state-disabled': !isTimePeriod(),
+                                                'ui-state-default': isTimePeriod() }"
+                                    class="crud-form"
+                                    formControlName="timePeriod"
+                                    [(ngModel)]="modelObject.timePeriod"
+                                    [options]="timePeriodOptions">
+                    </p-selectButton>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            CATALYST TIME PERIOD YEAR
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-2">
+                    <label class="crud-form" for="timePeriodYear">Time Period Year:</label>
+                </div>
+                <div class="crud-form-label ui-grid-col-10">
+                    <p-selectButton id="timePeriodYear"
+                                    [ngClass]="{'ui-state-disabled': !isTimePeriod(),
+                                                'ui-state-default': isTimePeriod() }"
+                                    class="timePeriod-form"
+                                    formControlName="timePeriodYear"
+                                    [(ngModel)]="modelObject.timePeriodYear"
+                                    [options]="timePeriodYearOptions">
+                    </p-selectButton>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
             CATALYST DESCRIPTION
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="catalystDesc">Catalyst Description:</label>
                 </div>
-                <div class="ui-grid-col-9">
-                    <input id="catalystDesc"
-                           type="text"
-                           maxlength="60"
-                           pInputText
-                           required
-                           formControlName="catalystDesc"
-                           [(ngModel)]="modelObject.catalystDesc">
+                <div class="ui-grid-col-10">
+                    <p-editor id="catalystDesc"
+                              name="basic"
+                              [style]="{'height':'120px'}"
+                              styleClass="editor-dimensions"
+                              class="crud-form"
+                              formControlName="catalystDesc"
+                              [(ngModel)]="modelObject.catalystDesc"
+                              maxlength="1000"
+                              required>
+                    </p-editor>
                 </div>
             </div>
         </div>

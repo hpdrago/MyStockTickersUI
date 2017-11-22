@@ -14,6 +14,9 @@ export class StockCatalystEvent extends ModelObject<StockCatalystEvent> implemen
     public catalystDate: Date;
     public catalystDesc: string;
     public companyName: string;
+    public dateOrTimePeriod: number;
+    public timePeriod: number;
+    public timePeriodYear: number;
     public createDate: Date;
     public updateDate: Date;
 

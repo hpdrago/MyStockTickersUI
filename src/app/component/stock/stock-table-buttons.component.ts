@@ -33,7 +33,6 @@ export class StockTableButtonsComponent extends CrudTableButtonsComponent<Stock>
         //this.logger.debug( "isDeleteButtonDisabled " + JSON.stringify( this.modelObject ) );
         var disabled = true;
         if ( !isNullOrUndefined( this.modelObject ) &&
-             this.modelObject.userEntered &&
              this.sessionService.getLoggedInUserId() == this.modelObject.createdBy )
         {
             //this.logger.debug( "isDeleteButtonDisabled false" );

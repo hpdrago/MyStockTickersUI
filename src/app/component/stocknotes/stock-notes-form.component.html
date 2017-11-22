@@ -36,15 +36,17 @@
                 ------------------------------------------------------------------------------------------------------------>
                 <div class="crud-form ui-grid-row">
                     <div class="crud-form-label ui-grid-col-2">
-                        <label class="crud-form" for="tickerSymbols">Selected Stocks:</label>
+                        <label class="crud-form" >Selected Stocks:</label>
                     </div>
                     <div class="ui-grid-col-10">
-                        <input id="tickerSymbols"
+                        {{tickerSymbols}}
+                        <!--<input id="tickerSymbols"
                                type="text"
                                pInputText
                                uppercase
+                               [(ngModel)]="tickerSymbols"
                                placeholder="Comma delimited ticker symbols"
-                               formControlName="tickerSymbols">
+                               formControlName="tickerSymbols">-->
                     </div>
                 </div>
             </ng-template>
@@ -58,13 +60,14 @@
                 ------------------------------------------------------------------------------------------------------------>
                 <div class="crud-form ui-grid-row">
                     <div class="crud-form-label ui-grid-col-2">
-                        <label class="crud-form" for="tickerSymbols">Stock:</label>
+                        <label class="crud-form" for="tickerSymbol">Stock:</label>
                     </div>
                     <div class="ui-grid-col-1">
                         <input id="tickerSymbol"
                                type="text"
                                pInputText
                                required
+                               [(ngModel)]="modelObject.tickerSymbol"
                                uppercase
                                maxlength="5"
                                formControlName="tickerSymbol">
@@ -83,7 +86,24 @@
                     <label class="crud-form" for="lastPriceColumn">Price when note created:</label>
                 </div>
                 <div id="lastPriceColumn" class="ui-grid-col-2">
-                    {{modelObject.stockPriceWhenCreated | currency:'USD': true}}
+                    <div *ngIf="isCrudCreateOperation()">
+                        {{modelObject.stockPriceWhenCreated | currency:'USD': true}}
+                    </div>
+                    <div *ngIf="!isCrudCreateOperation()">
+                         {{modelObject.lastPrice | currency:'USD': true}}
+                    </div>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            COMPANY
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="ui-grid-row">
+                <div class="crud-form-label ui-grid-col-2">
+                    <label class="crud-form" for="notes">Company:</label>
+                </div>
+                <div *ngIf="stock" class="ui-grid-col-10">
+                    {{stock.companyName}}
                 </div>
             </div>
 
@@ -102,6 +122,7 @@
                               class="crud-form"
                               formControlName="notes"
                               onTextChange="onTextChange( $event )"
+                              [(ngModel)]="modelObject.notes"
                               maxlength="4000"
                               required>
                     </p-editor>
@@ -259,6 +280,7 @@
                                 class="crud-form"
                                 [inputStyle]="{'width':'100px'}"
                                 formControlName="notesDate"
+                                [(ngModel)]="modelObject.notesDate"
                                 dateFormat="mm/dd/yy"
                                 [showIcon]="true">
                     </p-calendar>

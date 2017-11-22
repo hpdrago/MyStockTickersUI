@@ -24,11 +24,7 @@ export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<S
 
     protected onAddButtonClick(): void
     {
-        let modelObject = this.stockNotesServiceContainer .modelObjectFactory.newModelObject();
-        modelObject.notesRating = 3;
-        modelObject.bullOrBear = 1;
-        modelObject.actionTaken = StockNotesActionTaken.NONE;
-        modelObject.notesDate = new Date( Date.now() );
+        let modelObject = this.stockNotesServiceContainer.modelObjectFactory.newModelObject();
         this.setModelObject( modelObject ) ;
         super.onAddButtonClick();
     }

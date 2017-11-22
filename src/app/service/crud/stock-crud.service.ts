@@ -102,46 +102,6 @@ export class StockCrudService extends PagingRestCRUDService<Stock>
     }
 
     /**
-     * Adds the stock to the database
-     * @param stock
-     * @return {Observable<C>}
-     * @override To set createdBy and userEntered before the insert
-     */
-    public createModelObject( stock: Stock ): Observable<Stock>
-    {
-        stock.userEntered = true;
-        return super.createModelObject( stock );
-    }
-
-    /**
-     * Determines if the user (userId) is allowed to edit or delete the stock
-     * @param stock
-     * @param userId
-     * @returns true if the stock was entered by the logged in user, then he can change it.
-     *          Or if it is me logged in :-)
-     */
-    public canEditOrDelete( stock: Stock, userId: number ): boolean
-    {
-        var canEditOrDelete = false;
-        if ( stock.userEntered )
-        {
-            //this.logger.log( "canEditOrDelete is user entered" );
-            if ( stock.createdBy == userId )
-            {
-                canEditOrDelete = true;
-            }
-        }
-        return canEditOrDelete;
-    }
-
-    public isModelObjectReadOnly( stock: Stock ): boolean
-    {
-        var readOnly: boolean = !this.canEditOrDelete( stock, this.sessionService.getLoggedInUserId() );
-        //this.logger.log( "isModelObjectReadOnly = " + readOnly + " " + JSON.stringify( stock ));
-        return readOnly;
-    }
-
-    /**
      * Get a stock quote
      * @param {string} tickerSymbol
      * @return {Observable<StockQuote>}

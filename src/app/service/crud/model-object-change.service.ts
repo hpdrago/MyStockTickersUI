@@ -42,6 +42,6 @@ export class ModelObjectChangeService<T extends ModelObject<T>> extends BaseServ
 
     private logSendEvent( methodName: string, crudOperation: CrudOperation, modelObject: ModelObject<any> )
     {
-        this.log( methodName + " " + CrudOperation.getName( crudOperation ) + " " + JSON.stringify( modelObject ));
+        this.debug( methodName + " " + CrudOperation.getName( crudOperation ) + " " + JSON.stringify( modelObject ));
     }
 }

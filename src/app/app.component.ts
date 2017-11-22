@@ -3,6 +3,7 @@
  */
 import { Component, ViewContainerRef } from '@angular/core';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
+import { DateOrTimePeriod } from "./common/date-or-time-period.enum";
 
 @Component( {
     selector:    'app-root',
@@ -11,6 +12,8 @@ import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 })
 export class AppComponent
 {
+    DateOrTimePeriod: typeof DateOrTimePeriod = DateOrTimePeriod;
+
     title = 'My Stock Tickers';
     constructor(public toastr: ToastsManager, vRef: ViewContainerRef)
     {

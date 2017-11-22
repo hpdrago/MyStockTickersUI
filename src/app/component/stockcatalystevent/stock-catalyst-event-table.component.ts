@@ -5,6 +5,8 @@ import { StockCatalystEventCrudServiceContainer } from "./stock-catalyst-event-c
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockUrlMap } from "../../common/stock-url-map";
 import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
+import { DateOrTimePeriod } from "../../common/date-or-time-period.enum";
+import { TimePeriods } from "../../common/time-periods.enum";
 
 /**
  * This component lists all stock notes
@@ -20,12 +22,14 @@ import { ModelObjectChangeService } from "../../service/crud/model-object-change
 export class StockCatalystEventTableComponent extends CrudTableComponent<StockCatalystEvent>
 {
     private urlMap: StockUrlMap = new StockUrlMap();
+    private DATE_OR_TIMEPERIOD = DateOrTimePeriod;
+    private TIME_PERIODS = TimePeriods;
+
     constructor( protected toaster: ToastsManager,
                  protected StockCatalystEventServiceContainer: StockCatalystEventCrudServiceContainer )
     {
         super( toaster, StockCatalystEventServiceContainer );
     }
-
 
     protected onTableLoad( modelObjects: StockCatalystEvent[] ): any
     {

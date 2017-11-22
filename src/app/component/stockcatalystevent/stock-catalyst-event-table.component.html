@@ -11,6 +11,7 @@
                  [loading]="loading"
                  (onRowDblclick)="onRowDoubleClick($event)"
                  [responsive]="true">
+
         <!----------------------------------------------------------------------------------------------------------
         TICKER SYMBOL
         ------------------------------------------------------------------------------------------------------------>
@@ -20,6 +21,7 @@
                   [style]="{'width':'80px'}"
                   [sortable]="true">
         </p-column>
+
         <!----------------------------------------------------------------------------------------------------------
         COMPANY NAME
         ------------------------------------------------------------------------------------------------------------>
@@ -29,18 +31,25 @@
                   [style]="{'width':'150px'}"
                   [sortable]="false">
         </p-column>
+
         <!----------------------------------------------------------------------------------------------------------
         CATALYST DATE
         ------------------------------------------------------------------------------------------------------------>
         <p-column id="catalystDate"
                   field="catalystDate"
-                  header="Date"
+                  header="Date/Period"
                   [style]="{'width':'80px'}"
                   [sortable]="true">
             <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
-                {{stockCatalystEvent[col.field] | date: 'y-MM-dd' }}
+                <div *ngIf="stockCatalystEvent['dateOrTimePeriod'] == DATE_OR_TIMEPERIOD.DATE">
+                    {{stockCatalystEvent[col.field] | date: 'y-MM-dd' }}
+                </div>
+                <div *ngIf="stockCatalystEvent['dateOrTimePeriod'] == DATE_OR_TIMEPERIOD.TIMER_PERIOD">
+                    {{stockCatalystEvent['timePeriodYear'] + ' ' + TIME_PERIODS.getName( stockCatalystEvent['timePeriod']) }}
+                </div>
             </ng-template>
         </p-column>
+
         <!----------------------------------------------------------------------------------------------------------
         CATALYST DESCRIPTION
         ------------------------------------------------------------------------------------------------------------>
@@ -49,9 +58,15 @@
                   header="Description"
                   [sortable]="false">
             <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
-                <div *ngIf="urlMap.getURL( stockCatalystEvent.tickerSymbol ) == null " >{{stockCatalystEvent[col.field]}}</div>
+                <div *ngIf="urlMap.getURL( stockCatalystEvent.tickerSymbol ) == null">
+                    <div [innerHTML]="stockCatalystEvent[col.field]">
+                    </div>
+                </div>
                 <div *ngIf="urlMap.getURL( stockCatalystEvent.tickerSymbol ) != null " >
-                    <a href="{{urlMap.getURL( stockCatalystEvent.tickerSymbol )}}" target="_blank">{{urlMap.getURL( stockCatalystEvent.tickerSymbol )}}</a>
+                    <a href="{{urlMap.getURL( stockCatalystEvent.tickerSymbol )}}" target="_blank">
+                        <div [innerHTML]="stockCatalystEvent[col.field]">
+                        </div>
+                    </a>
                 </div>
             </ng-template>
         </p-column>

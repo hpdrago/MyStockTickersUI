@@ -1,11 +1,11 @@
-/**
- * This class provides a map of URLs keyed by the ticker symbol.  It is meant to be used with class
- * that allows the user to enter notes that might contain a URL.  This class will extract the URL from the notes
- * and map the URL to the ticker symbol.
- */
 import { StockNoteContainer } from "./stock-note-container";
 import { isNullOrUndefined } from "util";
 
+/**
+ * This class provides a map of URLs keyed by the ticker symbol.  It is meant to be used with classes
+ * that allows the user to enter notes that might contain a URL.  This class will extract the URL from the notes
+ * and map the URL to the ticker symbol.
+ */
 export class StockUrlMap
 {
     private urlMap: Map<string, string> = new Map();
@@ -32,7 +32,7 @@ export class StockUrlMap
             var url: string = this.extractURLFromNotes( noteContainer.getNotes() );
             if ( !isNullOrUndefined( url ) )
             {
-                //this.log( 'extractURLsFromNotes ticker: ' + stockNote.tickerSymbol + ' url: ' + url );
+                //console.log( 'extractURLsFromNotes ticker: ' + stockNote.tickerSymbol + ' url: ' + url );
                 this.urlMap.set( noteContainer.getTickerSymbol(), url );
             }
         });
@@ -47,29 +47,29 @@ export class StockUrlMap
     private extractURLFromNotes( stockNotes: string ): string
     {
         var returnValue = null;
-        //this.log( stockNotes );
+        //console.log( stockNotes );
         /*
          * Look for links that were created in the editor
          */
         var startPos = stockNotes.indexOf( '\<p\>\<a href="' );
-        //this.log( '1 startPos: ' + startPos );
+        //console.log( '1 startPos: ' + startPos );
         if ( startPos != -1 )
         {
             var url = stockNotes.substring( startPos + 12 );
-            //this.log( 'url: ' + url );
+            //console.log( 'url: ' + url );
             endPos = url.indexOf( '\"' );
-            //this.log( '2 endPos: ' + startPos );
+            //console.log( '2 endPos: ' + startPos );
             if ( endPos != -1 )
             {
                 url = url.substring( startPos, endPos );
-                //this.log( '3 url: ' + url );
+                //console.log( '3 url: ' + url );
                 returnValue = url;
             }
         }
         else
         {
             startPos = stockNotes.indexOf( 'http' );
-            //this.log( '4 startPos: ' + startPos );
+            //console.log( '4 startPos: ' + startPos );
             if ( startPos != -1 )
             {
                 var endPos = -1;
@@ -82,11 +82,11 @@ export class StockUrlMap
                 {
                     endPos = stockNotes.indexOf( '\<\/p\>');
                 }
-                //this.log( '5 endPos: ' + startPos );
+                //console.log( '5 endPos: ' + startPos );
                 if ( endPos != -1 )
                 {
                     var url = stockNotes.substring( startPos, endPos );
-                    //this.log( '6 url: ' + url );
+                    //console.log( '6 url: ' + url );
                     returnValue = url;
                 }
             }

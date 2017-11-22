@@ -160,10 +160,11 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
      */
     protected onAddButtonClick(): void
     {
-        this.debug( "onAddButtonClick " + JSON.stringify( this.modelObject ));
+        var modelObject = this.crudServiceContainer.modelObjectFactory.newModelObject();
+        this.debug( "onAddButtonClick " );
         this.crudServiceContainer
             .crudTableButtonsService
-            .sendAddButtonClickedEvent( this.modelObject );
+            .sendAddButtonClickedEvent( modelObject );
     }
 
     /**

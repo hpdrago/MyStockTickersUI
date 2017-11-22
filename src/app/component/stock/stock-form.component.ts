@@ -102,7 +102,7 @@ export class StockFormComponent extends CrudFormComponent<Stock>
     }
 
     /**
-     * Determines if the stock exchange is invalid
+     * Determines if the stock stockExchange is invalid
      * @returns {boolean}
      */
    /* private isStockExchangeInvalid(): boolean

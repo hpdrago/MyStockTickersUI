@@ -150,6 +150,10 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                     {
                         this.reportRestError( error );
                     }
+                    else
+                    {
+                        this.showError( this.tickerSymbol + " was not found" );
+                    }
                 })
         }
     }

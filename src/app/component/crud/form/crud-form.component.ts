@@ -1,4 +1,4 @@
-import { Input, OnInit } from "@angular/core";
+import { OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ValidationService } from "../../../service/validation-service";
 import { CrudOperation } from "../common/crud-operation";
@@ -45,7 +45,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     /**
      * Object initialization
      */
-    public ngOnInit()
+    public ngOnInit(): void
     {
         this.debug( "ngOnInit.begin" );
         this.loadResources();
@@ -58,12 +58,12 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.debug( "ngOnInit.end" );
     }
 
-    public ngAfterContentInit()
+    public ngAfterContentInit(): void
     {
         this.debug( "ngAfterContentInit" );
     }
 
-    public ngAfterViewInit()
+    public ngAfterViewInit(): void
     {
         this.debug( "ngAfterViewInit" );
     }
@@ -73,7 +73,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected postInit(): void
     {
-        this.debug( "postInit" );
+        this.debug( "postInit.begin" );
+        this.setFormValues( this.modelObject );
+        this.debug( "postInit.end" );
     }
 
     /**
@@ -239,7 +241,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected prepareToSave(): void
     {
-        this.log( "prepareToSave" );
+        this.debug( "prepareToSave" );
     }
 
     /**
@@ -297,7 +299,19 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.debug( "onModelObjectCrudOperationChanged.begin" );
         this.setCrudOperation( subjectInfo.crudOperation );
         this.setModelObject( subjectInfo.modelObject );
+        if ( this.isCrudCreateOperation() )
+        {
+            this.setDefaultValues();
+        }
         this.debug( "onModelObjectCrudOperationChanged.end" );
+    }
+
+    /**
+     * This method is called when a new model object is being created or when the reset button is clicked.
+     */
+    protected setDefaultValues(): void
+    {
+        this.debug( "setDefaultValue" );
     }
 
     /**
@@ -364,7 +378,12 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected resetForm(): void
     {
         this.debug( "resetForm" );
-        this.formGroup.reset();
+        if ( this.formGroup )
+        {
+            this.formGroup.reset();
+            this.setDefaultValues();
+            this.setFormValues( this.modelObject );
+        }
     }
 
     /**
@@ -579,7 +598,11 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected onSaveCompleted( modelObject: T ): void
     {
-        this.debug( "onSaveCompleted" );
+        if ( this.modelObject )
+        {
+            this.debug( "onSaveCompleted" );
+            this.resetForm();
+        }
     }
 
     /**
@@ -591,6 +614,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onPrepareToDisplay(): void
     {
         this.debug( "prepareToDisplay" );
-        this.resetForm();
+        this.setFormValues( this.modelObject );
     }
 }

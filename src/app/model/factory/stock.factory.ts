@@ -26,8 +26,7 @@ export class StockFactory extends ModelObjectFactory<Stock>
         stock.tickerSymbol = '';
         stock.companyName = '';
         stock.createdBy = 0;
-        stock.exchange = '';
-        //console.log( "newStock...: " + JSON.stringify( stock ) + " isUserEntered(): " + stock.isUserEntered() );
+        stock.stockExchange = '';
         return stock;
     }
 }
