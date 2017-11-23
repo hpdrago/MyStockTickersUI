@@ -1,5 +1,5 @@
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
@@ -16,6 +16,7 @@ import { StockNotesSentiment } from "../../common/stock-notes-sentiment.enum";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { StockCrudService } from "../../service/crud/stock-crud.service";
 import { CustomerService } from "../../service/crud/customer.service";
+import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
 
 /**
  * This is the Stock Note Form Component class.
@@ -37,13 +38,21 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     private sourcesChanged: boolean;
 
     /**
+     * Reference to the stock search
+     */
+    @ViewChild(StockAutoCompleteComponent)
+    private stockAutoCompletedComponent: StockAutoCompleteComponent;
+
+    /**
      * The stock is returned via an event when the user searches for a ticker symbol or company
      */
     private stock: Stock;
+
     /**
      * Comma delimited list of ticker symbols
      */
     private tickerSymbols: string = "";
+
     /**
      * The string the user enters the ticker symbols or company name to search for
      */
@@ -92,6 +101,19 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             this.modelObject.bullOrBear = 1;
             this.modelObject.actionTaken = StockNotesActionTaken.NONE;
             this.modelObject.notesDate = new Date( Date.now() );
+            this.sourcesChanged = false;
+            this.tickerSymbols = '';
+            this.stockSearch = '';
+            this.stock = null;
+        }
+    }
+
+    protected resetForm(): void
+    {
+        super.resetForm();
+        if ( this.stockAutoCompletedComponent )
+        {
+            this.stockAutoCompletedComponent.reset();
         }
     }
 
@@ -168,17 +190,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             stockNoteForm.controls['tickerSymbol'].enable();
         }
         return stockNoteForm;
-    }
-
-    /**
-     * This method is called just before the form is displayed.  This is a good place to perform initialization.
-     */
-    protected onPrepareToDisplay(): void
-    {
-        super.onPrepareToDisplay();
-        this.sourcesChanged = false;
-        this.tickerSymbols = '';
-        this.stockSearch = '';
     }
 
     private getSourceName( stockNotes: StockNotes ): string
@@ -359,17 +370,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     {
         return this.modelObject.actionTaken == StockNotesActionTaken.NONE ||
                this.modelObject.actionTaken == StockNotesActionTaken.BUY_LATER;
-    }
-
-    /**
-     * Need to reset the form and any non-modelObject local variables
-     */
-    protected resetForm(): void
-    {
-        super.resetForm();
-        this.tickerSymbols = "";
-        this.stockSearch = "";
-        this.stock = null;
     }
 
     /**

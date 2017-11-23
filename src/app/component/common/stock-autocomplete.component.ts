@@ -61,17 +61,14 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         {
             throw new Error( "stockSelected has not been set by Input value" );
         }
+        this.reset();
     }
 
-    public ngAfterViewInit()
+    public reset(): void
     {
-        this.log( "ngAfterViewInit" );
+        this.tickerSymbol = '';
+        this.disabled = false;
         this.isStockSelected = false;
-    }
-
-    public ngAfterContentInit()
-    {
-        this.log( "ngAfterContentInit" );
     }
 
     private getFormControlName(): string
@@ -112,7 +109,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
      * now we'll make another search based on the ticker symbol value to see if we can get a quote for the symbol.
      * @param event
      */
-    private onBlur( event )
+    protected onBlur( event )
     {
         this.log( "onBlur " + JSON.stringify( event ) +
                   " tickerSymbol: " + this.tickerSymbol +
@@ -125,7 +122,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                 .getStockQuote( this.tickerSymbol )
                 .subscribe( ( stockQuote: StockQuote ) =>
                 {
-                    this.log( "onBlue " + JSON.stringify( stockQuote ));
+                    this.log( "onBlur " + JSON.stringify( stockQuote ));
                     if ( !isNullOrUndefined( stockQuote ))
                     {
                         let stock: Stock = new Stock();
@@ -163,7 +160,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
      * as a result of a search
      * @param event
      */
-    private onStockSearchSelected( event ): void
+    protected onStockSearchSelected( event ): void
     {
         this.log( "onStockSearchSelected " + JSON.stringify( event ));
         var matches = /\[(.*)] (.*)/.exec( event );

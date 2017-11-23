@@ -78,6 +78,8 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
      */
     private createStockToBuy()
     {
+        var methodName = "createStockToBuy";
+        this.log( methodName + ".begin" ) ;
         var stockToBuy = this.stocksToBuyServiceContainer
                              .stockToBuyFactory
                              .newModelObject();
@@ -88,6 +90,7 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
         stockToBuy.notesSourceName = this.modelObject.notesSourceName;
         stockToBuy.comments = this.modelObject.notes;
         stockToBuy.completed = false;
+        this.log( methodName + " " + JSON.stringify( stockToBuy ));
         this.stocksToBuyServiceContainer
             .stockToBuyCrudService
             .createModelObject( stockToBuy )
@@ -97,6 +100,7 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
                             this.stocksToBuyServiceContainer
                                 .modelObjectChangeService
                                 .sendModelObjectChangeEvent( this, CrudOperation.CREATE, stockToBuy );
+                            this.log( methodName + ".end" );
                         },
                         error => {
                             this.reportRestError( error );
