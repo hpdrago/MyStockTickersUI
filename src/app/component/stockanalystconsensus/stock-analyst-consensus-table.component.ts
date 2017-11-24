@@ -1,9 +1,7 @@
 import { Component } from "@angular/core";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
-import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { StockAnalystConsensusCrudServiceContainer } from "./stock-analyst-consensus-crud-service-container";
-import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { StockUrlMap } from "../../common/stock-url-map";
@@ -27,6 +25,11 @@ export class StockAnalystConsensusTableComponent extends StockQuoteModelObjectTa
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
         super( toaster, StockAnalystConsensusServiceContainer, stockQuoteRefreshService );
+    }
+
+    protected getRowStyle( rowData: any, index: number ): string
+    {
+        return "rowStyle";
     }
 
     /**

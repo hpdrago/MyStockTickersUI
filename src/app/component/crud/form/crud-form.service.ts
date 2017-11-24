@@ -5,6 +5,7 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { Subscription } from "rxjs/Subscription";
 import { ModelObjectCrudOperationSubjectInfo } from "../dialog/modelobject-crudoperation-subject-info";
+
 /**
  * This service provides communication from the CrudFormComponent's parent aka CrudFormComponent
  * to the CrudFormComponent.
@@ -18,6 +19,7 @@ import { ModelObjectCrudOperationSubjectInfo } from "../dialog/modelobject-crudo
  */
 export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
+    private formErrorsSubject: Subject<string[]> = new Subject<string[]>();
     private formDirtySubject: Subject<boolean> = new Subject<boolean>();
     private formTouchedSubject: Subject<boolean> = new Subject<boolean>();
     private formValidSubject: Subject<boolean> = new Subject<boolean>();
@@ -35,9 +37,18 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
         super( modelObjectFactory );
     }
 
-    /*
+    /*******************************************************************************************************************
      * O B S E R V E R   M E T H O D S
+     ******************************************************************************************************************/
+
+    /**
+     * The {@code CrudFormForm} will call this method and register to send errors to any subscribers.
      */
+    public subscribeFormErrorsEvent( fn: ( errors: string[] ) => any ): Subscription
+    {
+        this.debug( "subscribeToFormErrorsEvent" );
+        return this.formErrorsSubject.asObservable().subscribe( fn );
+    }
 
     /**
      * The {@code CrudFormForm} will call this method and register to be notified and receive a new crud operation
@@ -143,9 +154,18 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
         return this.createFormSubject.asObservable().subscribe( fn );
     }
 
-    /*
+    /*******************************************************************************************************************
      * N O T I F I E R   M E T H O D S
+     ******************************************************************************************************************/
+
+    /**
+     * The {@code CrudFormComponent} will call this method to notify the subscribers of the form errors if any.
      */
+    public sendFormErrors( errors: string[] )
+    {
+        this.debug( "sendFormModelObjectVersionUpdateEvent: " );
+        this.tickThenRun( () => this.formErrorsSubject.next( errors ) );
+    }
 
     /**
      * The form container [@code CrudFormFormComponent) will call this method when to notify the form to resetForm.

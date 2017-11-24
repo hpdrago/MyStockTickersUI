@@ -121,14 +121,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.crudServiceContainer
             .crudRestService
             .getModelObjectList( this.modelObject )
-            .subscribe( ( modelObjects: T[] ) =>
-                        {
+            .subscribe( ( modelObjects: T[] ) => {
                             this.onTableLoad( modelObjects );
                             this.debug( "loadTable.end" );
                             this.loading = false;
                         },
-                        error =>
-                        {
+                        error => {
                             this.reportRestError( error );
                             this.loading = false;
                         } );
@@ -161,16 +159,19 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         this.addSubscription(
             this.crudServiceContainer
-            .crudFormButtonsService
-            .subscribeToSaveButtonClickedEvent(( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) ));
+                .crudFormButtonsService
+                .subscribeToSaveButtonClickedEvent(
+                    ( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) ) );
         this.addSubscription(
             this.crudServiceContainer
-            .crudFormButtonsService
-            .subscribeToAddButtonClickedEvent(( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) ));
+                .crudFormButtonsService
+                .subscribeToAddButtonClickedEvent(
+                    ( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) ) );
         this.addSubscription(
             this.crudServiceContainer
-            .crudFormButtonsService
-            .subscribeToHandleDeleteButtonClickedEvent(( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) ));
+                .crudFormButtonsService
+                .subscribeToHandleDeleteButtonClickedEvent(
+                    ( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) ) );
     }
 
     /**
@@ -180,19 +181,19 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         this.addSubscription(
             this.crudServiceContainer
-            .crudTableButtonsService
-            .subscribeToAddButtonClickedEvent(( modelObject: T ) => this.showDialogToAdd( modelObject ) ));
+                .crudTableButtonsService
+                .subscribeToAddButtonClickedEvent( ( modelObject: T ) => this.showDialogToAdd( modelObject ) ) );
         this.addSubscription(
             this.crudServiceContainer
-            .crudTableButtonsService
-            .subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showDialogToEdit( modelObject ) ));
+                .crudTableButtonsService
+                .subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showDialogToEdit( modelObject ) ) );
         this.addSubscription(
             this.crudServiceContainer
-            .crudTableButtonsService
-            .subscribeToDeleteButtonClickedEvent(( modelObject: T ) => this.showDialogToDelete( modelObject ) ));
+                .crudTableButtonsService
+                .subscribeToDeleteButtonClickedEvent( ( modelObject: T ) => this.showDialogToDelete( modelObject ) ) );
         this.addSubscription( this.crudServiceContainer
-            .crudTableButtonsService
-            .subscribeToRefreshButtonClickedEvent(( modelObject: T ) => this.refreshTable() ));
+                                  .crudTableButtonsService
+                                  .subscribeToRefreshButtonClickedEvent( ( modelObject: T ) => this.refreshTable() ) );
     }
 
     /**
@@ -235,7 +236,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected showDialogToEdit( modelObject: T ): void
     {
-        this.debug( "showDialogToEdit " + JSON.stringify( modelObject ));
+        this.debug( "showDialogToEdit " + JSON.stringify( modelObject ) );
         if ( !isNullOrUndefined( modelObject ) )
         {
             this.debug( "showDialogToEdit" );
@@ -251,7 +252,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected showDialogToDelete( modelObject: T ): void
     {
-        this.debug( "showDialogToDelete " + JSON.stringify( modelObject ));
+        this.debug( "showDialogToDelete " + JSON.stringify( modelObject ) );
         if ( !isNullOrUndefined( modelObject ) )
         {
             this.debug( "showDialogToDelete" );
@@ -267,7 +268,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected displayModelObject(): void
     {
-        this.debug( "displayModelObject " + JSON.stringify( this.modelObject ));
+        this.debug( "displayModelObject " + JSON.stringify( this.modelObject ) );
         /*
          * if the user is modifying the model object, we need to check that they have the latest version of the data.
          */
@@ -310,8 +311,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( "checkModelObjectVersion.begin" );
         this.crudServiceContainer.crudRestService
             .getModelObject( this.modelObject )
-            .subscribe( modelObject =>
-                        {
+            .subscribe( modelObject => {
                             this.log( "Checking model object version: " + JSON.stringify( modelObject ) );
                             if ( this.modelObject.isDifferentVersion( modelObject ) )
                             {
@@ -330,8 +330,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                             }
                             this.debug( "checkModelObjectVersion.end" );
                         },
-                        error =>
-                        {
+                        error => {
                             this.reportRestError( error );
                         } );
     }
@@ -389,7 +388,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         this.debug( 'onUserCreatedModelObject ' + JSON.stringify( modelObject ) );
         //this.setModelObject( modelObject );
-        if ( !isNullOrUndefined( modelObject ))
+        if ( !isNullOrUndefined( modelObject ) )
         {
             this.addModelObjectToTable( modelObject );
             this.crudServiceContainer
@@ -437,7 +436,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         let rowIndex = this.indexOf( modelObject );
         if ( rowIndex == -1 )
         {
-            errorBack( new RangeError( "row was not found for model object key: " + JSON.stringify( this.modelObject )));
+            errorBack(
+                new RangeError( "row was not found for model object key: " + JSON.stringify( this.modelObject ) ) );
         }
         else
         {
@@ -468,7 +468,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         this.debug( 'onUserDeletedModelObject' + JSON.stringify( modelObject ) );
         //this.setModelObject( modelObject );
-        if ( !isNullOrUndefined( modelObject ))
+        if ( !isNullOrUndefined( modelObject ) )
         {
             this.removeModelObjectFromTable( modelObject );
             this.crudServiceContainer
@@ -497,7 +497,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             /*
              * A new array must be created to trigger a change event
              */
-            this.rows = this.rows.slice( index+1 ).concat( this.rows.slice( 0,index ));
+            this.rows = this.rows.slice( index + 1 ).concat( this.rows.slice( 0, index ) );
             //this.setModelObject( null );
             return true;
         }
@@ -511,7 +511,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         this.debug( "onRowSelect " + JSON.stringify( event ) );
         this.selectedModelObject = event.data;
-        this.setModelObject( this.newModelObjectFromEvent( event ));
+        this.setModelObject( this.newModelObjectFromEvent( event ) );
         this.crudServiceContainer
             .crudTableService
             .sendTableSelectionChangeEvent( this.modelObject );
@@ -553,7 +553,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * Determines the index of a model object in the rows array
      * @returns {number} -1 if not found
      */
-    protected indexOf( targetModelObject : T ): number
+    protected indexOf( targetModelObject: T ): number
     {
         if ( targetModelObject )
         {
@@ -592,7 +592,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.crudServiceContainer
             .modelObjectChangeService
             .subscribeToModelObjectChangeEvent( ( modelObjectChangeEvent ) =>
-                                                this.onModelObjectChangeEvent( modelObjectChangeEvent ));
+                                                    this.onModelObjectChangeEvent( modelObjectChangeEvent ) );
     }
 
     /**
@@ -603,15 +603,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onModelObjectChangeEvent( modelObjectChangeEvent: ModelObjectChangeEvent<T> )
     {
         var methodName = "onModelObjectChangeEvent";
-        this.debug( methodName + ".begin object: " + JSON.stringify( modelObjectChangeEvent.modelObject ));
+        this.debug( methodName + ".begin object: " + JSON.stringify( modelObjectChangeEvent.modelObject ) );
         this.debug( methodName + " sender: " + (<any>modelObjectChangeEvent.sender).constructor.name );
         /*
          * Ignore if generated form this component
          */
         if ( modelObjectChangeEvent.sender === this ||
-             modelObjectChangeEvent.sender === this.crudServiceContainer.crudTableService )
+            modelObjectChangeEvent.sender === this.crudServiceContainer.crudTableService )
         {
-            this.debug( methodName + " received our own change...ignoring" ) ;
+            this.debug( methodName + " received our own change...ignoring" );
         }
         else
         {
@@ -631,4 +631,23 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( methodName + ".end" );
     }
 
+    /**
+     * Truncates {@code notes} to the max length defined by the return value from {@code getNotesSize()} which defaults
+     * to 250 chars.
+     * @param {string} notes
+     * @return {string}
+     */
+    protected truncateNotes( notes: string )
+    {
+        return notes.substring( 0, Math.min( this.getNotesSize(), notes.length ) );
+    }
+
+    /**
+     * Defines the max number of characters to display in a notes/comments field.
+     * @return {number}
+     */
+    protected getNotesSize(): number
+    {
+        return 250;
+    }
 }

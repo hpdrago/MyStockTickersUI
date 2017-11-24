@@ -37,7 +37,9 @@ export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockA
         this.debug( "initializeForm " );
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
-                'tickerSymbol':             new FormControl( this.modelObject.tickerSymbol, Validators.required ),
+                'tickerSymbol':             new FormControl( this.modelObject.tickerSymbol, Validators.compose(
+                    [Validators.required,
+                              Validators.maxLength( 400 )])),
                 'comments':                 new FormControl( this.modelObject.comments ),
                 'analystStrongBuyCount':    new FormControl( this.modelObject.analystStrongBuyCount ),
                 'analystBuyCount':          new FormControl( this.modelObject.analystBuyCount ),

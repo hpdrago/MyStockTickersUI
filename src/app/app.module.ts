@@ -134,6 +134,7 @@ import { StockNotesTableTabComponent } from "./component/stocknotes/stock-notes-
 import { StockNotesTableDashboardComponent } from "./component/dashboard/stock-notes-table-dashboard.component";
 import { StockToBuyTableDashboardComponent } from "./component/dashboard/stock-to-buy-table-dashboard.component";
 import { StockToBuyTableTabComponent } from "./component/stocktobuy/stock-to-buy-table-tab.component";
+import { FormErrorsComponent } from "./component/common/form-errors.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -244,6 +245,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockToBuyFormButtonsComponent,
 
         DashboardComponent,
+        FormErrorsComponent,
         UppercaseDirective,
         UppercaseValueDirective,
         StockAutoCompleteComponent

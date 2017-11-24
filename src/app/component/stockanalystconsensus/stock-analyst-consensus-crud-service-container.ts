@@ -14,7 +14,8 @@ export class StockAnalystConsensusCrudServiceContainer extends CrudServiceContai
     constructor( private _stockAnalystConsensusFactory: StockAnalystConsensusFactory,
                  private _stockAnalystConsensusCrudService: StockAnalystConsensusCrudService )
     {
-        super( new ModelObjectChangeService<StockAnalystConsensus>(), _stockAnalystConsensusFactory,
+        super( new ModelObjectChangeService<StockAnalystConsensus>(),
+               _stockAnalystConsensusFactory,
                _stockAnalystConsensusCrudService )
     }
 
