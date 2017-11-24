@@ -24,7 +24,6 @@
 
         <!----------------------------------------------------------------------------------------------------------
         COMPLETED
-        ------------------------------------------------------------------------------------------------------------>
         <p-column id="completed"
                   field="completed"
                   header="completed"
@@ -34,6 +33,8 @@
                 <p-checkbox name="completed" value="stockToBuy[col.field] == 'Y' ? true : false"></p-checkbox>
             </ng-template>
         </p-column>
+        ------------------------------------------------------------------------------------------------------------>
+
         <!----------------------------------------------------------------------------------------------------------
         COMPANY NAME
         ------------------------------------------------------------------------------------------------------------>
@@ -59,7 +60,6 @@
 
         <!----------------------------------------------------------------------------------------------------------
         STOCK PRICE WHEN CREATED
-        ------------------------------------------------------------------------------------------------------------>
         <p-column id="stockPriceWhenCreated"
                   field="stockPriceWhenCreated"
                   header="Price When Created"
@@ -68,6 +68,7 @@
                 {{stockToBuy[col.field] | currency: 'USD' : true }}
             </ng-template>
         </p-column>
+        ------------------------------------------------------------------------------------------------------------>
 
         <!----------------------------------------------------------------------------------------------------------
         LAST PRICE
@@ -83,15 +84,20 @@
 
         <!----------------------------------------------------------------------------------------------------------
         PERCENT OF CHANGE
-        ------------------------------------------------------------------------------------------------------------>
         <p-column id="percentChange"
                   field="percentChange"
                   header="% Change"
                   [style]="{'width':'10px','text-align':'right'}">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                {{stockToBuy[col.field] | percent: '1.2-2' }}
+                <div class="positiveGain" *ngIf="calculatePercentChange( stockToBuy ) >= 0.0">
+                    {{calculatePercentChange( stockToBuy ) | percent: '1.2-2' }}
+                </div>
+                <div class="negativeGain" *ngIf="calculatePercentChange( stockToBuy ) < 0.0">
+                    {{calculatePercentChange( stockToBuy ) | percent: '1.2-2' }}
+                </div>
             </ng-template>
         </p-column>
+        ------------------------------------------------------------------------------------------------------------>
 
         <!----------------------------------------------------------------------------------------------------------
         BUY SHARES UP TO PRICE
@@ -127,9 +133,9 @@
                 </div>
             </ng-template>
         </p-column>
+
         <!----------------------------------------------------------------------------------------------------------
         DATE CREATED
-        ------------------------------------------------------------------------------------------------------------>
 
         <p-column id="createDate"
                   field="createDate"
@@ -140,10 +146,10 @@
                 {{stockToBuy[col.field] | date: 'y-MM-dd' }}
             </ng-template>
         </p-column>
+        ------------------------------------------------------------------------------------------------------------>
 
         <!----------------------------------------------------------------------------------------------------------
         TAGS
-        ------------------------------------------------------------------------------------------------------------>
         <p-column id="tags"
                   field="tags"
                   header="Tags"
@@ -153,6 +159,7 @@
                 {{stockToBuy[col.field] }}
             </ng-template>
         </p-column>
+        ------------------------------------------------------------------------------------------------------------>
 
         <!----------------------------------------------------------------------------------------------------------
         COMMENTS
@@ -162,9 +169,15 @@
                   header="Comments"
                   [style]="{'width':'150px'}">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                <div *ngIf="urlMap.getURL( stockToBuy.tickerSymbol ) == null " >{{stockToBuy[col.field]}}</div>
+                <div *ngIf="urlMap.getURL( stockToBuy.tickerSymbol ) == null">
+                    <div [innerHTML]="stockToBuy[col.field]">
+                    </div>
+                </div>
                 <div *ngIf="urlMap.getURL( stockToBuy.tickerSymbol ) != null " >
-                    <a href="{{urlMap.getURL( stockToBuy.tickerSymbol )}}" target="_blank">{{urlMap.getURL( stockToBuy.tickerSymbol )}}</a>
+                    <a href="{{urlMap.getURL( stockToBuy.tickerSymbol )}}" target="_blank">
+                        <div [innerHTML]="stockToBuy[col.field]">
+                        </div>
+                    </a>
                 </div>
             </ng-template>
         </p-column>

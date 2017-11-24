@@ -7,6 +7,19 @@
 
 /* My customizations of PrimeNG afterdark theme */
 
+.positiveGain
+{
+    color: white;
+    background: green;
+    display: block;
+}
+.negativeGain
+{
+    color: white;
+    background: red;
+    display: block;
+}
+
 div.crud-panel-delete-message
 {
     margin-bottom: 20px;

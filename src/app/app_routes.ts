@@ -7,10 +7,10 @@ import { DashboardComponent }   from './component/dashboard/dashboard.component'
 import { StockFormComponent } from './component/stock/stock-form.component';
 import { PortfolioStockFormComponent } from "./component/portfoliostock/portfolio-stock-form.component";
 import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
-import {StockNotesTableComponent} from "./component/stocknotes/stock-notes-table.component";
 import { StockCatalystEventTableComponent } from "./component/stockcatalystevent/stock-catalyst-event-table.component";
 import { StockAnalystConsensusTableComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-table.component";
-import { StockToBuyTableComponent } from "./component/stocktobuy/stock-to-buy-table.component";
+import { StockNotesTableTabComponent } from "./component/stocknotes/stock-notes-table-tab.component";
+import { StockToBuyTableTabComponent } from "./component/stocktobuy/stock-to-buy-table-tab.component";
 
 const routes: Routes = [
     {
@@ -23,7 +23,7 @@ const routes: Routes = [
     },
     {
         path: 'stockNotes',
-        component: StockNotesTableComponent,
+        component: StockNotesTableTabComponent,
     },
     {
         path: 'stockCatalystEvents',
@@ -35,7 +35,7 @@ const routes: Routes = [
     },
     {
         path: 'stocksToBuy',
-        component: StockToBuyTableComponent,
+        component: StockToBuyTableTabComponent,
     },
     {
         path: 'Popular Links',

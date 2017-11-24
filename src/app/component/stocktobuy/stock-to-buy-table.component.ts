@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
-import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
 import { StockUrlMap } from "../../common/stock-url-map";
@@ -12,27 +11,23 @@ import { StockNotesSentiment } from "../../common/stock-notes-sentiment.enum";
 import { CrudOperation } from "../crud/common/crud-operation";
 import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { DialogCloseEventType } from "../crud/common/close-button-event";
-import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
+import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
+import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 
 /**
  * This component displays a list of Stocks to buy.
  *
  * Created by mike on 10/24/2017.
  */
-@Component(
-    {
-        selector:    'stock-to-buy-table',
-        styleUrls:   ['./stock-to-buy-table.component.css'],
-        templateUrl: './stock-to-buy-table.component.html'
-    } )
-export class StockToBuyTableComponent extends CrudTableComponent<StockToBuy>
+export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTableComponent<StockToBuy>
 {
     private urlMap: StockUrlMap = new StockUrlMap();
     constructor( protected toaster: ToastsManager,
                  protected stockToBuyServiceContainer: StockToBuyCrudServiceContainer,
-                 protected stockNotesServiceContainer: StockNotesCrudServiceContainer )
+                 protected stockNotesServiceContainer: StockNotesCrudServiceContainer,
+                 protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
-        super( toaster, stockToBuyServiceContainer );
+        super( toaster, stockToBuyServiceContainer, stockQuoteRefreshService );
     }
 
     /**
@@ -51,7 +46,7 @@ export class StockToBuyTableComponent extends CrudTableComponent<StockToBuy>
      * @param {StockToBuy} stockToBuy
      * @returns {boolean}
      */
-    private isAfterBuyAfterDate( stockToBuy: StockToBuy )
+    protected isAfterBuyAfterDate( stockToBuy: StockToBuy )
     {
         if ( isNullOrUndefined( stockToBuy.buyAfterDate ) )
             return true;
@@ -68,7 +63,7 @@ export class StockToBuyTableComponent extends CrudTableComponent<StockToBuy>
      * then the user will be prompted to delete the stock to buy entry if they want.
      * @param {StockToBuy} stockToBuy
      */
-    private onBuyButtonClick( stockToBuy: StockToBuy )
+    protected onBuyButtonClick( stockToBuy: StockToBuy )
     {
         var methodName: string = 'onBuyButtonClick ';
         this.log( methodName + " " + JSON.stringify( stockToBuy ));

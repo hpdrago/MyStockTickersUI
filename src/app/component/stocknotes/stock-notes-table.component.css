@@ -1,17 +1,4 @@
 
-.positiveGain
-{
-    color: white;
-    background: green;
-    display: block;
-}
-.negativeGain
-{
-    color: white;
-    background: red;
-    display: block;
-}
-
 #stockNotesPanelDiv
 {
     width:100%;

@@ -10,6 +10,7 @@ export class StockQuote extends ModelObject<StockQuote>
     public lastPrice: number;
     public lastPriceChange: Date;
     public stockQuoteState: number;
+    public stockPriceWhenCreated: number;
 
     public isEqualPrimaryKey( stockQuote: StockQuote ): boolean
     {

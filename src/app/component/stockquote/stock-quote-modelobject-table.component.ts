@@ -5,7 +5,7 @@ import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.serv
 import { ToastsManager } from "ng2-toastr";
 import { CrudServiceContainer } from "../crud/common/crud-service-container";
 import { StockQuote } from "../../model/entity/stock-quote";
-import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
+import { isNullOrUndefined } from "util";
 
 /**
  * This is a base class for tables that contain Stock Quote information.  It provides the common methods for updating
@@ -15,7 +15,8 @@ import { ModelObjectChangeService } from "../../service/crud/model-object-change
  *
  * Created by mike on 11/4/2017
  */
-export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteModelObject<T>> extends CrudTableComponent<T>
+export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteModelObject<T>>
+    extends CrudTableComponent<T>
 {
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T>,
@@ -79,5 +80,29 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
     {
         return stockQuoteModelObject.stockQuoteState == StockQuoteState.NOT_CACHED ||
                stockQuoteModelObject.stockQuoteState == StockQuoteState.STALE;
+    }
+
+    /**
+     * Determines the percent of change from the original price to the last price.
+     * @return A percent of change.
+     */
+    protected calculatePercentChange( stockQuote: StockQuote ): number
+    {
+        if ( isNullOrUndefined( stockQuote ))
+        {
+            return 0;
+        }
+        {
+            if ( stockQuote.lastPrice == null || stockQuote.lastPrice == 0 )
+            {
+                return 0;
+            }
+            if ( stockQuote.stockPriceWhenCreated == null || stockQuote.stockPriceWhenCreated == 0 )
+            {
+                return 0;
+            }
+            let percentChanged = 1.0 - ( stockQuote.stockPriceWhenCreated / stockQuote.lastPrice );
+            return percentChanged;
+        }
     }
 }

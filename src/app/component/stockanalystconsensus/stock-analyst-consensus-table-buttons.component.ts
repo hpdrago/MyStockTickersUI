@@ -23,12 +23,12 @@ export class StockAnalystConsensusTableButtonsComponent extends CrudTableButtons
 
     protected getAddButtonLabel(): string
     {
-        return "Add AnalystConsensus";
+        return "Add Consensus";
     }
 
     protected getDeleteButtonLabel(): string
     {
-        return "Delete AnalystConsensus";
+        return "Delete Consensus";
     }
 
 }

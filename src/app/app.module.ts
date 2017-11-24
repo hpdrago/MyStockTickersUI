@@ -5,42 +5,40 @@
 /**
  * Angular Imports
  */
-import { forwardRef, NgModule, Provider } from "@angular/core";
-import { FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from "@angular/forms";
+import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
 import { HttpModule } from "@angular/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-
 /**
  *  Angular Material
  */
-import {MatProgressBarModule} from '@angular/material';
-import {MatSliderModule} from '@angular/material';
-
+import { MatProgressBarModule, MatSliderModule } from '@angular/material';
 /**
  * PrimeNG
  */
 import {
-    InputTextModule,
-    DataTableModule,
-    MenubarModule,
     ButtonModule,
+    CalendarModule,
+    CheckboxModule,
+    ChipsModule,
+    ConfirmationService,
+    ConfirmDialogModule,
+    DataTableModule,
     DialogModule,
     DropdownModule,
+    EditorModule,
+    InputTextareaModule,
+    InputTextModule,
+    MenubarModule,
     PanelModule,
+    RatingModule,
+    SelectButtonModule,
+    SliderModule,
     TabMenuModule,
     TabViewModule,
-    SelectButtonModule,
-    ConfirmDialogModule,
-    ConfirmationService,
-    InputTextareaModule,
-    CheckboxModule,
-    RatingModule,
-    CalendarModule,
-    EditorModule,
-    SliderModule,
-    ChipsModule, TooltipModule
+    TooltipModule
 } from "primeng/primeng";
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
@@ -50,10 +48,7 @@ import { FieldsetModule } from "primeng/components/fieldset/fieldset";
 /**
  * Third party imports
  */
-import { ToastModule,
-         ToastOptions,
-         ToastsManager } from "ng2-toastr/ng2-toastr";
-
+import { ToastModule, ToastOptions, ToastsManager } from "ng2-toastr/ng2-toastr";
 /**
  * Application Imports
  */
@@ -104,7 +99,7 @@ import { StockNotesCountService } from "./service/crud/stock-notes-count.service
 import { StockNotesCountFactory } from "./model/factory/stock-note-count.factory";
 import { StockNotesSourceService } from "./service/crud/stock-notes-source.service";
 import { StockNotesSourceFactory } from "./model/factory/stock-notes-source.factory";
-import {BusyModule} from 'angular2-busy';
+import { BusyModule } from 'angular2-busy';
 
 import { CURRENCY_MASK_CONFIG, CurrencyMaskConfig } from "ng2-currency-mask/src/currency-mask.config";
 import { StockAnalystConsensusTableComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-table.component";
@@ -135,6 +130,10 @@ import { StockQuoteRefreshService } from "./service/stock-quote-refresh.service"
 import { CustomerService } from "./service/crud/customer.service";
 import { CustomerFactory } from "./model/factory/customer.factory";
 import { UppercaseValueDirective } from "./directives/uppercase.value.accessor";
+import { StockNotesTableTabComponent } from "./component/stocknotes/stock-notes-table-tab.component";
+import { StockNotesTableDashboardComponent } from "./component/dashboard/stock-notes-table-dashboard.component";
+import { StockToBuyTableDashboardComponent } from "./component/dashboard/stock-to-buy-table-dashboard.component";
+import { StockToBuyTableTabComponent } from "./component/stocktobuy/stock-to-buy-table-tab.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -218,7 +217,8 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         PortfolioStockDialogComponent,
         PortfolioStockFormButtonsComponent,
 
-        StockNotesTableComponent,
+        StockNotesTableTabComponent,
+        StockNotesTableDashboardComponent,
         StockNotesFormComponent,
         StockNotesDialogComponent,
         StockNotesTableButtonsComponent,
@@ -236,7 +236,8 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockCatalystEventTableButtonsComponent,
         StockCatalystEventFormButtonsComponent,
 
-        StockToBuyTableComponent,
+        StockToBuyTableTabComponent,
+        StockToBuyTableDashboardComponent,
         StockToBuyFormComponent,
         StockToBuyDialogComponent,
         StockToBuyTableButtonsComponent,

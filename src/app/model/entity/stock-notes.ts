@@ -1,9 +1,6 @@
-import { ModelObject } from "./modelobject";
 import { StockNotesStock } from "./stock-notes-stock";
 import { StockNoteContainer } from "../../common/stock-note-container";
 import { StockQuoteModelObject } from "./stock-quote-modelobject";
-import { TagList } from "../../common/tag_list";
-import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 
 /**
  * Defines a single portfolio for a customer
@@ -23,7 +20,6 @@ export class StockNotes extends StockQuoteModelObject<StockNotes> implements Sto
     public actionTaken: number;
     public actionTakenShares: number;
     public actionTakenPrice: number;
-    public stockPriceWhenCreated: number;
     public tags: string[];
     public stocks: Array<StockNotesStock>;
 

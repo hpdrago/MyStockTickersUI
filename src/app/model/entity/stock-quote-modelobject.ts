@@ -11,6 +11,7 @@ export abstract class StockQuoteModelObject<T> extends ModelObject<T>
     public lastPrice: number;
     public lastPriceChange: Date;
     public stockQuoteState: number;
+    public stockPriceWhenCreated: number;
 
     /**
      * Get the ticker symbol
