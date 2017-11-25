@@ -14,7 +14,7 @@ import { StockNotesTableComponent } from "../stocknotes/stock-notes-table.compon
     {
         selector: 'stock-notes-dashboard-table',
         styleUrls: ['../stocknotes/stock-notes-table.component.css'],
-        templateUrl: '../stocknotes/stock-notes-table-tab.component.html'
+        templateUrl: './stock-notes-table-dashboard.component.html'
     } )
 export class StockNotesTableDashboardComponent extends StockNotesTableComponent
 {

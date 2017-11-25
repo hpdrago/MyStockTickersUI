@@ -6,6 +6,8 @@ import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { StockAnalystConsensusCrudServiceContainer } from "./stock-analyst-consensus-crud-service-container";
 import { SessionService } from "../../service/crud/session.service";
+import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
+import { CustomerService } from "../../service/crud/customer.service";
 
 /**
  * This is the Stock AnalystConsensus Form Component class.
@@ -18,14 +20,15 @@ import { SessionService } from "../../service/crud/session.service";
                             './stock-analyst-consensus-form.component.css'],
                 templateUrl: './stock-analyst-consensus-form.component.html'
             } )
-export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockAnalystConsensus>
+export class StockAnalystConsensusFormComponent extends CrudFormWithNotesSourceComponent<StockAnalystConsensus>
 {
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
-                 private stockAnalystConsensusCrudServiceContainer: StockAnalystConsensusCrudServiceContainer )
+                 private stockAnalystConsensusCrudServiceContainer: StockAnalystConsensusCrudServiceContainer,
+                 protected customerService: CustomerService )
     {
-        super( toaster, stockAnalystConsensusCrudServiceContainer );
+        super( toaster, stockAnalystConsensusCrudServiceContainer, customerService );
     }
 
     /**
@@ -38,9 +41,10 @@ export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockA
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
                 'tickerSymbol':             new FormControl( this.modelObject.tickerSymbol, Validators.compose(
-                    [Validators.required,
-                              Validators.maxLength( 400 )])),
+                                                      [Validators.required,
+                                                                Validators.maxLength( 4000 )])),
                 'comments':                 new FormControl( this.modelObject.comments ),
+                'notesSource':              new FormControl( this.modelObject.notesSourceId ),
                 'analystStrongBuyCount':    new FormControl( this.modelObject.analystStrongBuyCount ),
                 'analystBuyCount':          new FormControl( this.modelObject.analystBuyCount ),
                 'analystHoldCount':         new FormControl( this.modelObject.analystHoldCount ),

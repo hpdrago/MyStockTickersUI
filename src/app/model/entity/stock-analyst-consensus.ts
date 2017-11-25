@@ -1,6 +1,7 @@
 import { ModelObject } from "./modelobject";
 import { StockQuoteModelObject } from "./stock-quote-modelobject";
 import { StockNoteContainer } from "../../common/stock-note-container";
+import { StockNotesSourceContainer } from "../../common/stock-notes-source-container";
 
 /**
  * This entity contains the elements for the stock summary
@@ -8,7 +9,8 @@ import { StockNoteContainer } from "../../common/stock-note-container";
  * Created 10/17/2017
  */
 export class StockAnalystConsensus extends StockQuoteModelObject<StockAnalystConsensus>
-                                   implements StockNoteContainer
+                                   implements StockNoteContainer,
+                                              StockNotesSourceContainer
 {
     public id: number;
     public customerId: number;
@@ -24,6 +26,8 @@ export class StockAnalystConsensus extends StockQuoteModelObject<StockAnalystCon
     public highAnalystPriceTarget: number;
     public analystPriceDate: Date;
     public avgUpsidePercent: number;
+    public notesSourceId: number;
+    public notesSourceName: string;
     public createDate: Date;
     public updateDate: Date;
 
@@ -35,5 +39,25 @@ export class StockAnalystConsensus extends StockQuoteModelObject<StockAnalystCon
     public getNotes(): string
     {
         return this.comments;
+    }
+
+    public getNotesSourceId(): number
+    {
+        return this.notesSourceId;
+    }
+
+    public setNotesSourceId( notesSourceId: number )
+    {
+        this.notesSourceId = notesSourceId;
+    }
+
+    public getNotesSourceName(): string
+    {
+        return this.notesSourceName;
+    }
+
+    public setNotesSourceName( notesSourceName: string )
+    {
+        this.notesSourceName = notesSourceName;
     }
 }

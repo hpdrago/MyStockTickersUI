@@ -1,12 +1,14 @@
 import { StockNotesStock } from "./stock-notes-stock";
 import { StockNoteContainer } from "../../common/stock-note-container";
 import { StockQuoteModelObject } from "./stock-quote-modelobject";
+import { StockNotesSourceContainer } from "../../common/stock-notes-source-container";
 
 /**
  * Defines a single portfolio for a customer
  * Created by mike on 10/23/2016.
  */
-export class StockNotes extends StockQuoteModelObject<StockNotes> implements StockNoteContainer
+export class StockNotes extends StockQuoteModelObject<StockNotes> implements StockNoteContainer,
+                                                                             StockNotesSourceContainer
 {
     public id: number;
     public customerId: number;
@@ -59,5 +61,25 @@ export class StockNotes extends StockQuoteModelObject<StockNotes> implements Sto
                           tickerSymbols += stockNotesStock.tickerSymbol;
                       } );
         return tickerSymbols;
+    }
+
+    public getNotesSourceId(): number
+    {
+        return this.notesSourceId;
+    }
+
+    public setNotesSourceId( notesSourceId: number )
+    {
+        this.notesSourceId = notesSourceId;
+    }
+
+    public getNotesSourceName(): string
+    {
+        return this.notesSourceName;
+    }
+
+    public setNotesSourceName( notesSourceName: string )
+    {
+        this.notesSourceName = notesSourceName;
     }
 }

@@ -37,4 +37,23 @@ export class StockToBuy extends StockQuoteModelObject<StockToBuy> implements Sto
         return modelObject.id === this.id;
     }
 
+    public getNotesSourceId(): number
+    {
+        return this.notesSourceId;
+    }
+
+    public setNotesSourceId( notesSourceId: number )
+    {
+        this.notesSourceId = notesSourceId;
+    }
+
+    public getNotesSourceName(): string
+    {
+        return this.notesSourceName;
+    }
+
+    public setNotesSourceName( notesSourceName: string )
+    {
+        this.notesSourceName = notesSourceName;
+    }
 }

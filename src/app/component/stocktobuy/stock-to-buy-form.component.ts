@@ -6,6 +6,8 @@ import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
 import { SessionService } from "../../service/crud/session.service";
+import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
+import { CustomerService } from "../../service/crud/customer.service";
 
 /**
  * This is the Stock ToBuy Form Component class.
@@ -17,14 +19,15 @@ import { SessionService } from "../../service/crud/session.service";
                 styleUrls: ['../crud/form/crud-form.component.css'],
                 templateUrl: './stock-to-buy-form.component.html'
             } )
-export class StockToBuyFormComponent extends CrudFormComponent<StockToBuy>
+export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<StockToBuy>
 {
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
-                 private stockToBuyCrudServiceContainer: StockToBuyCrudServiceContainer )
+                 private stockToBuyCrudServiceContainer: StockToBuyCrudServiceContainer,
+                 protected customerService: CustomerService)
     {
-        super( toaster, stockToBuyCrudServiceContainer );
+        super( toaster, stockToBuyCrudServiceContainer, customerService );
     }
 
     /**
@@ -37,7 +40,8 @@ export class StockToBuyFormComponent extends CrudFormComponent<StockToBuy>
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
                 'tickerSymbol':       new FormControl( this.modelObject.tickerSymbol, Validators.required ),
-                'comments':           new FormControl( this.modelObject.comments, Validators.required ),
+                'comments':           new FormControl( this.modelObject.comments, Validators.compose( [Validators.required,
+                                                                                                                Validators.maxLength(4000 )])),
                 'notesSource':        new FormControl( this.modelObject.notesSourceId ),
                 'buySharesUpToPrice': new FormControl( this.modelObject.buySharesUpToPrice ),
                 'buyAfterDate':       new FormControl( this.modelObject.buyAfterDate ),

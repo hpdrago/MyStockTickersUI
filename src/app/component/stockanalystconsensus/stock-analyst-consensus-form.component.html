@@ -61,6 +61,28 @@
             </div>
 
             <!----------------------------------------------------------------------------------------------------------
+            SOURCE
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="notesSource">Source:</label>
+                </div>
+                <div class="ui-grid-col-9">
+                    <p-dropdown id="notesSource"
+                                class="crud-form"
+                                [options]="sourceItems"
+                                formControlName="notesSource"
+                                [(ngModel)]="modelObject.notesSourceId"
+                                [style]="{'width':'225px'}"
+                                maxlength="20"
+                                uppercase
+                                editable="true"
+                                placeholder="Select or enter a source">
+                    </p-dropdown>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
             ANALYST STRONG BUY COUNT
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">

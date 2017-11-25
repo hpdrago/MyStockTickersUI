@@ -10,6 +10,7 @@ import { CrudServiceContainer } from "../common/crud-service-container";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectCrudOperationSubjectInfo } from "../dialog/modelobject-crudoperation-subject-info";
 import { INVALID } from "@angular/forms/src/model";
+import { Subject } from "rxjs/Subject";
 
 /**
  * This class contains the common functionality for a form for a CRUD model object.
@@ -25,12 +26,13 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected continuousAdd: boolean = false;
     protected ngOnInitCompletedSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
     protected loadResourcesCompletedSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
+    //private sourcesLoadedSubject: BehaviorSubject<boolean> = new BehaviorSubject()<false>();
 
     /**
      * C O N S T R U C T O R
      */
     constructor( protected toaster: ToastsManager,
-                 private crudServiceContainer: CrudServiceContainer<T> )
+                 protected crudServiceContainer: CrudServiceContainer<T> )
     {
         super( toaster );
         if ( !this.crudServiceContainer.modelObjectFactory )
@@ -55,8 +57,18 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.initializeForm();
         // Tell everyone that we are done
         this.sendComponentInitializedCompletedEvent();
-        this.ngOnInitCompletedSubject.next( true );
+        this.sendNgOnINitCompletedEvent();
         this.debug( "ngOnInit.end" );
+    }
+
+    /**
+     * This method notifies all subject observers that the ngOnInit method has completed.
+     * Subclasses should override this method and defer the subject notification if there are
+     * other depending activities that need to be performed before sending this event.
+     */
+    protected sendNgOnINitCompletedEvent()
+    {
+        this.ngOnInitCompletedSubject.next( true );
     }
 
     public ngAfterContentInit(): void
@@ -86,7 +98,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected loadResources(): void
     {
-        this.debug( "loadResources" );
+        this.debug( "CrudFormComponent.loadResources" );
         this.onLoadResourcesCompleted();
     }
 
@@ -104,6 +116,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         {
             this.loadResourcesCompletedSubject.next( true );
             this.postInit();
+            this.debug( "onLoadResourcesCompleted.end" );
         }
         /*
          * Check to see if we need to set the source name on the form
