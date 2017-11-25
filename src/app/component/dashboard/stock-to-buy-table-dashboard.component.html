@@ -12,6 +12,11 @@
                  (onRowDblclick)="onRowDoubleClick($event)"
                  [responsive]="true">
 
+        <p-header >
+            <stock-to-buy-table-buttons>
+            </stock-to-buy-table-buttons>
+        </p-header>
+
         <!----------------------------------------------------------------------------------------------------------
         TICKER SYMBOL
         ------------------------------------------------------------------------------------------------------------>
@@ -182,7 +187,7 @@
             </ng-template>
         </p-column>
 
-        <p-footer>
+        <p-footer >
             <stock-to-buy-table-buttons>
             </stock-to-buy-table-buttons>
         </p-footer>

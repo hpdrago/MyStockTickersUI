@@ -6,11 +6,16 @@
                  (onRowUnselect)="onRowUnSelect($event)"
                  [paginator]="true"
                  [pageLinks]="3"
-                 [rowsPerPageOptions]="[20,30,40]"
-                 [rows]="25"
+                 [rowsPerPageOptions]="[10,20,30,40,50]"
+                 [rows]="10"
                  [loading]="loading"
                  (onRowDblclick)="onRowDoubleClick($event)"
                  [responsive]="true">
+
+        <p-header>
+            <stock-notes-table-buttons>
+            </stock-notes-table-buttons>
+        </p-header>
 
         <!----------------------------------------------------------------------------------------------------------
         NOTES DATE

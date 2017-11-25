@@ -51,6 +51,7 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
         this.timePeriodOptions.push( { label: '4Q', value: TimePeriods.FOURTH_QUARTER })
 
         this.timePeriodYearOptions = [];
+        this.timePeriodYearOptions.push( { label: '2017', value: 2017 })
         this.timePeriodYearOptions.push( { label: '2018', value: 2018 })
         this.timePeriodYearOptions.push( { label: '2019', value: 2019 })
         this.timePeriodYearOptions.push( { label: '2020', value: 2020 })
