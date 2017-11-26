@@ -4,6 +4,8 @@ import { ToastsManager } from "ng2-toastr";
 import { CrudOperation } from "./crud-operation";
 import { Subscription } from "rxjs/Subscription";
 import { OnDestroy } from "@angular/core";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { isNullOrUndefined } from "util";
 /**
  * This class is the base class for all CRUD components
  *
@@ -17,6 +19,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     protected crudOperation: CrudOperation = CrudOperation.NONE;
     private displayProgressBar: boolean = false;
     private _busyIndicator: Subscription;
+    private modelObjectChangeSubject: BehaviorSubject<T> = new BehaviorSubject<T>( null );
     /**
      * The object that contains the form's data
      */
@@ -31,6 +34,15 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
         }
     }
 
+    /**
+     * Subscribe to be notified when the model object has been changed.
+     * @param {(T) => any} fn
+     * @return {Subscription}
+     */
+    protected subscribeToModelObjectChangeEvent( fn: ( T ) => any ): Subscription
+    {
+        return this.modelObjectChangeSubject.subscribe( fn );
+    }
 
    /**
     * This method is called by the super class whenever an @Input() property changes.
@@ -76,6 +88,10 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
    {
        this.debug( "onModelObjectChanged " + JSON.stringify( modelObject ) );
        this.modelObject = modelObject;
+       if ( !isNullOrUndefined( this.modelObject ) )
+       {
+           this.modelObjectChangeSubject.next( this.modelObject );
+       }
    }
 
     /**

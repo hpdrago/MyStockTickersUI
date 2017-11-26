@@ -87,7 +87,18 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected postInit(): void
     {
         this.debug( "postInit.begin" );
-        this.setFormValues( this.modelObject );
+        /*
+         * Need to check and wait for the model object before setting the form values.
+         */
+        if ( isNullOrUndefined( this.modelObject ) )
+        {
+            this.debug( "postInit waiting for valid model object" );
+            this.subscribeToModelObjectChangeEvent( ( modelObject ) => this.setFormValues( modelObject ));
+        }
+        else
+        {
+            this.setFormValues( this.modelObject );
+        }
         this.debug( "postInit.end" );
     }
 
@@ -337,6 +348,10 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected setFormValues( modelObject: T ): void
     {
         this.debug( "setFormValues: " + JSON.stringify( modelObject ));
+        if ( isNullOrUndefined( this.modelObject ) )
+        {
+            throw new ReferenceError( "modelObject has not been set'" );
+        }
         for ( var property in this.modelObject )
         {
             if ( !isNullOrUndefined( this.formGroup.controls[property] ) &&

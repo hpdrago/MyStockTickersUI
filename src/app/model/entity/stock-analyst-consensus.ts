@@ -25,7 +25,6 @@ export class StockAnalystConsensus extends StockQuoteModelObject<StockAnalystCon
     public lowAnalystPriceTarget: number;
     public highAnalystPriceTarget: number;
     public analystPriceDate: Date;
-    public avgUpsidePercent: number;
     public notesSourceId: number;
     public notesSourceName: string;
     public createDate: Date;

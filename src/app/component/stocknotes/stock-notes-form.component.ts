@@ -120,10 +120,8 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      */
     protected postInit(): void
     {
-        this.log( "postInit.override.begin setting notesSourceId to " + this.modelObject.notesSourceId );
-        this.setFormValue( 'notesSource', this.modelObject.notesSourceId );
+        this.log( "postInit" );
         this.enableDisableActionTakenFields();
-        this.log( "postInit.override.end" );
     }
 
     /**

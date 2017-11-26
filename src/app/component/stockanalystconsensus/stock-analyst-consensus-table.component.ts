@@ -43,4 +43,18 @@ export class StockAnalystConsensusTableComponent extends StockQuoteModelObjectTa
         this.urlMap.extractURLsFromNotes( stockAnalystConsensus );
         super.onTableLoad( stockAnalystConsensus );
     }
+
+    protected calcAvgUpsidePercent( rowData ): number
+    {
+        if ( rowData.lastPrice != null &&
+             rowData.avgAnalystPriceTarget != null &&
+             rowData.avgAnalystPriceTarget > 0.0 )
+        {
+            return 1 - (rowData.lastPrice/rowData.avgAnalystPriceTarget)
+        }
+        else
+        {
+            return 0;
+        }
+    }
 }

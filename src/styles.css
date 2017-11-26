@@ -15,10 +15,10 @@
     /*border: 1px solid green;*/
 }
 
-.ng-invalid.ng-dirty:not(form)
+input.ng-invalid.ng-dirty:not(form)
 {
-    /*border-left: 5px solid #a94442;*/ /* red */
-    border: 1px solid red;
+    border-left: 5px solid #a94442; /* red*/
+    /*border: 1px solid red;*/
 }
 
 .positiveGain

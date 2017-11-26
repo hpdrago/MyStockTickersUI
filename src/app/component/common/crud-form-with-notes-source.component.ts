@@ -22,7 +22,6 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
     private sourceItems: SelectItem[] = [];
     private stockNotesSourceList: StockNotesSourceList = new StockNotesSourceList( [] );
     private sourcesChanged: boolean;
-    private sourcesLoadedSubject: Subject<void> = new Subject<void>();
 
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T>,
@@ -31,16 +30,17 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
         super( toaster, crudServiceContainer );
     }
 
+
     /**
-     * This method allows sub class to be notified when the sources have been loaded (asynchronously).
-     * @param {() => any} fn
+     * This method is called after {@code loadResources() and ngOnInit() have completed}.  At that time, the form
+     * has been built and the source names have been loaded so it's safe to set the source name field.
      */
-    /*
-    protected subscribeToSourcesLoadCompleted( fn: () => any )
+    protected postInit(): void
     {
-        this.sourcesLoadedSubject.subscribe( fn );
+        super.postInit();
+        this.log( "CrudFormWithNotesSourceComponent.postInit setting notesSourceId to " + this.modelObject.getNotesSourceId() );
+        this.setFormValue( 'notesSource', this.modelObject.getNotesSourceId() );
     }
-    */
 
     /**
      * Sets the default values.  In this, we reset the sources changed flag.

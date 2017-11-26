@@ -13,6 +13,11 @@
                  (onRowDblclick)="onRowDoubleClick($event)"
                  [responsive]="true">
 
+        <p-header>
+            <stock-analyst-consensus-table-buttons>
+            </stock-analyst-consensus-table-buttons>
+        </p-header>
+
         <!----------------------------------------------------------------------------------------------------------
         TICKER SYMBOL
         ------------------------------------------------------------------------------------------------------------>
@@ -27,12 +32,11 @@
         AVG UPSIDE PERCENTAGE
         ------------------------------------------------------------------------------------------------------------>
         <p-column id="avgUpsidePercent"
-                  field="avgUpsidePercent"
                   header="Avg Upside"
                   [style]="{'width':'40px','text-align':'right'}"
                   [sortable]="true">
             <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                {{stockAnalystConsensus[col.field] | percent:'1.2-2' }}
+                {{calcAvgUpsidePercent( stockAnalystConsensus ) | percent:'1.2-2' }}
             </ng-template>
         </p-column>
 

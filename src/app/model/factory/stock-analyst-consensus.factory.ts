@@ -32,7 +32,6 @@ export class StockAnalystConsensusFactory extends ModelObjectFactory<StockAnalys
         stockAnalystConsensus.analystPriceDate = null;
         stockAnalystConsensus.lastPrice = 0;
         stockAnalystConsensus.lastPriceChange = null;
-        stockAnalystConsensus.avgUpsidePercent = 0;
         return stockAnalystConsensus;
     }
 }

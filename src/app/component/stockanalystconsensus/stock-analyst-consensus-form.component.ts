@@ -42,8 +42,9 @@ export class StockAnalystConsensusFormComponent extends CrudFormWithNotesSourceC
             {
                 'tickerSymbol':             new FormControl( this.modelObject.tickerSymbol, Validators.compose(
                                                       [Validators.required,
-                                                                Validators.maxLength( 4000 )])),
-                'comments':                 new FormControl( this.modelObject.comments ),
+                                                                Validators.minLength( 1 ),
+                                                                Validators.maxLength( 5 )])),
+                'comments':                 new FormControl( this.modelObject.comments, Validators.maxLength( 4000 )),
                 'notesSource':              new FormControl( this.modelObject.notesSourceId ),
                 'analystStrongBuyCount':    new FormControl( this.modelObject.analystStrongBuyCount ),
                 'analystBuyCount':          new FormControl( this.modelObject.analystBuyCount ),

@@ -12,6 +12,11 @@
                  (onRowDblclick)="onRowDoubleClick($event)"
                  [responsive]="true">
 
+        <p-header>
+            <stock-catalyst-event-table-buttons>
+            </stock-catalyst-event-table-buttons>
+        </p-header>
+
         <!----------------------------------------------------------------------------------------------------------
         TICKER SYMBOL
         ------------------------------------------------------------------------------------------------------------>
@@ -75,6 +80,7 @@
             <stock-catalyst-event-table-buttons>
             </stock-catalyst-event-table-buttons>
         </p-footer>
+
     </p-dataTable>
 </div>
 <stock-catalyst-event-dialog>
