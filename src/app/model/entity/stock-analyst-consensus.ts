@@ -1,4 +1,3 @@
-import { ModelObject } from "./modelobject";
 import { StockQuoteModelObject } from "./stock-quote-modelobject";
 import { StockNoteContainer } from "../../common/stock-note-container";
 import { StockNotesSourceContainer } from "../../common/stock-notes-source-container";

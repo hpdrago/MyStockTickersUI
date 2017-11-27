@@ -1,4 +1,3 @@
-import { Component } from "@angular/core";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { ToastsManager } from "ng2-toastr";
 import { StockAnalystConsensusCrudServiceContainer } from "./stock-analyst-consensus-crud-service-container";
@@ -7,17 +6,9 @@ import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.serv
 import { StockUrlMap } from "../../common/stock-url-map";
 
 /**
- * This component lists all stock notes
- *
- * Created by mike on 10/30/2016.
+ * This is the base class for the tab and dashboard table for Stock Analyst Consensus information
  */
-@Component(
-    {
-        selector: 'stock-analyst-consensus-table',
-        styleUrls: ['./stock-analyst-consensus-table.component.css'],
-        templateUrl: './stock-analyst-consensus-table.component.html'
-    } )
-export class StockAnalystConsensusTableComponent extends StockQuoteModelObjectTableComponent<StockAnalystConsensus>
+export abstract class StockAnalystConsensusTableComponent extends StockQuoteModelObjectTableComponent<StockAnalystConsensus>
 {
     protected urlMap: StockUrlMap = new StockUrlMap();
     constructor( protected toaster: ToastsManager,
@@ -25,11 +16,6 @@ export class StockAnalystConsensusTableComponent extends StockQuoteModelObjectTa
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
         super( toaster, StockAnalystConsensusServiceContainer, stockQuoteRefreshService );
-    }
-
-    protected getRowStyle( rowData: any, index: number ): string
-    {
-        return "rowStyle";
     }
 
     /**
@@ -44,13 +30,18 @@ export class StockAnalystConsensusTableComponent extends StockQuoteModelObjectTa
         super.onTableLoad( stockAnalystConsensus );
     }
 
+    /**
+     * Calculates the amount of upside potential from current stock price to the average analyst price
+     * @param rowData
+     * @returns {number}
+     */
     protected calcAvgUpsidePercent( rowData ): number
     {
         if ( rowData.lastPrice != null &&
              rowData.avgAnalystPriceTarget != null &&
              rowData.avgAnalystPriceTarget > 0.0 )
         {
-            return 1 - (rowData.lastPrice/rowData.avgAnalystPriceTarget)
+            return rowData.avgAnalystPriceTarget/rowData.lastPrice;
         }
         else
         {

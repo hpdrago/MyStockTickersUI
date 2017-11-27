@@ -1,0 +1,174 @@
+<div id="stockAnalystConsensusTableDiv">
+    <p-dataTable [value]="rows"
+                 selectionMode="single"
+                 [(selection)]="selectedModelObject"
+                 (onRowSelect)="onRowSelect($event)"
+                 (onRowUnselect)="onRowUnSelect($event)"
+                 [paginator]="true"
+                 [pageLinks]="3"
+                 [rowsPerPageOptions]="[20,30,40]"
+                 [rows]="15"
+                 [style]="{'max--height':'80px'}"
+                 [loading]="loading"
+                 (onRowDblclick)="onRowDoubleClick($event)"
+                 [responsive]="true">
+
+        <!----------------------------------------------------------------------------------------------------------
+        TICKER SYMBOL
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="tickerSymbol"
+                  field="tickerSymbol"
+                  header="Ticker"
+                  [style]="{'width':'40px'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                <a href="https://www.tipranks.com/stocks/{{stockAnalystConsensus.tickerSymbol}}/price-target" target="_blank">{{stockAnalystConsensus.tickerSymbol}}</a>
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        AVG UPSIDE PERCENTAGE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="avgUpsidePercent"
+                  header="Avg Upside"
+                  [style]="{'width':'40px','text-align':'right'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                {{calcAvgUpsidePercent( stockAnalystConsensus ) | percent:'1.0-0' }}
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        COMPANY NAME
+        ------------------------------------------------------------------------------------------------------------>
+        <!--
+        <p-column id="companyName"
+                  field="companyName"
+                  header="Company Name"
+                  [style]="{'width':'150px'}"
+                  [sortable]="false">
+        </p-column> -->
+
+        <!----------------------------------------------------------------------------------------------------------
+        COMMENTS
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="comments"
+                  field="comments"
+                  header="Comments"
+                  [style]="{'width':'250px'}"
+                  [sortable]="false">
+            <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) == null">
+                    <div [innerHTML]="truncateNotes( stockNotes[col.field] )">
+                    </div>
+                </div>
+                <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) != null " >
+                    <a href="{{urlMap.getURL( stockNotes.tickerSymbol )}}" target="_blank">
+                        <div [innerHTML]="truncateNotes( stockNotes[col.field] )">
+                        </div>
+                    </a>
+                </div>
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        ANALYST BUY COUNT
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id=""
+                  field="analystByCount"
+                  header="Analyst BSH"
+                  [style]="{'width':'80px'}">
+            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                <span class="strongBuy">       {{stockAnalystConsensus['analystStrongBuyCount']}}</span><!--
+                --><span class="buy">          {{stockAnalystConsensus['analystBuyCount']}}</span><!--
+                --><span class="hold">         {{stockAnalystConsensus['analystHoldCount']}}</span><!--
+                --><span class="underPerform"> {{stockAnalystConsensus['analystUnderPerformCount']}}</span><!--
+                --><span class="sell">         {{stockAnalystConsensus['analystSellCount']}}</span>
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        ANALYST SENTIMENT DATE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="analystSentimentDate"
+                  field="analystSentimentDate"
+                  header="Sentiment Date"
+                  [style]="{'width':'40px'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                {{stockAnalystConsensus[col.field] | date: 'y-MM-dd' }}
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        HIGH ANALYST PRICE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="highAnalystPrice"
+                  field="highAnalystPriceTarget"
+                  header="High Analyst PT"
+                  [style]="{'width':'40px','text-align':'right'}"
+                  [sortable]="false">
+            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                {{stockAnalystConsensus[col.field] | currency: 'USD' : true }}
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        AVG ANALYST PRICE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="avgAnalystPrice"
+                  field="avgAnalystPriceTarget"
+                  header="Avg Analyst PT"
+                  [style]="{'width':'40px','text-align':'right'}"
+                  [sortable]="false">
+            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                {{stockAnalystConsensus[col.field] | currency: 'USD' : true }}
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        LOW ANALYST PRICE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="lowAnalystPrice"
+                  field="lowAnalystPriceTarget"
+                  header="Low Analyst PT"
+                  [style]="{'width':'40px','text-align':'right'}"
+                  [sortable]="false">
+            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                {{stockAnalystConsensus[col.field] | currency: 'USD' : true }}
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        LAST PRICE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="lastPrice"
+                  field="lastPrice"
+                  header="Last Price"
+                  [style]="{'width':'40px','text-align':'right'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                {{stockAnalystConsensus[col.field] | currency: 'USD' : true }}
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        LAST PRICE CHANGE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="analystPriceDate"
+                  field="analystPriceDate"
+                  header="PT Date"
+                  [style]="{'width':'40px'}">
+            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                {{stockAnalystConsensus[col.field] | date: 'y-MM-dd' }}
+            </ng-template>
+        </p-column>
+
+        <p-footer>
+            <stock-analyst-consensus-table-buttons>
+            </stock-analyst-consensus-table-buttons>
+        </p-footer>
+    </p-dataTable>
+</div>
+<stock-analyst-consensus-dialog>
+</stock-analyst-consensus-dialog>

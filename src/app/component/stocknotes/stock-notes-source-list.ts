@@ -1,6 +1,7 @@
 import { StockNotesSource } from "../../model/entity/stock-notes-source";
 import { SelectItem } from "primeng/primeng";
 import { BaseClass } from "../../common/base-class";
+import { isNullOrUndefined } from "util";
 
 export class StockNotesSourceList extends BaseClass
 {
@@ -43,4 +44,14 @@ export class StockNotesSourceList extends BaseClass
         return filteredSources[0].name;
     }
 
+    /**
+     * Determines if the {@code sourceName} is in the source list.
+     * @param {string} sourceName
+     * @returns {boolean}
+     */
+    public contains( sourceName: string ): boolean
+    {
+        //let filteredSources: StockNotesSource[] = this.stockNotesSources.filter( stockNotesSource => stockNotesSource.name === sourceName );
+        return !isNullOrUndefined( this.stockNotesSources[sourceName] );
+    }
 }

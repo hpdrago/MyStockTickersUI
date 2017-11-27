@@ -36,9 +36,20 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
         return baseUrl + this.urlPath + `/${stockNotes.id}`;
     }
 
+    /**
+     * This method is called to load the stock notes tables.
+     * @param {string} baseUrl
+     * @param {StockNotes} stockNotes Must have the customerId set and optionally the tickerSymbol
+     * @returns {string}
+     */
     protected getReadModelObjectListUrl( baseUrl: string, stockNotes: StockNotes ): string
     {
-        return baseUrl + `${this.urlPath}/${stockNotes.customerId}`;
+        var url: string = baseUrl + `${this.urlPath}/${stockNotes.customerId}`;
+        if ( stockNotes.tickerSymbol )
+        {
+            url += '/' + stockNotes.tickerSymbol;
+        }
+        return url;
     }
 
     protected getUpdateModelObjectUrl( baseUrl: string, stockNotes: StockNotes ): string
@@ -49,5 +60,10 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
     protected getDeleteModelObjectUrl( baseUrl: string, stockNotes: StockNotes ): string
     {
         return baseUrl + this.urlPath + `/${stockNotes.id}`;
+    }
+
+    public getStockNotesForTickerSymbol( tickerSymbol: string )
+    {
+
     }
 }

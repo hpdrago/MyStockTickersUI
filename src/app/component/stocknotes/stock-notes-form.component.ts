@@ -1,5 +1,5 @@
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
-import { Component, ViewChild } from "@angular/core";
+import { Component, ElementRef, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
@@ -40,6 +40,8 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      */
     @ViewChild(StockAutoCompleteComponent)
     private stockAutoCompletedComponent: StockAutoCompleteComponent;
+    @ViewChild(StockAutoCompleteComponent)
+    private stockAutoCompletedElementRef: ElementRef;
 
     /**
      * The stock is returned via an event when the user searches for a ticker symbol or company
@@ -85,6 +87,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
         super.ngOnInit();
         this.log( 'ngOnInit.override.end' );
     }
+
 
     /**
      * Set the initial values for new notes and when the form resets.
@@ -219,20 +222,32 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
     public onStockSelected( stock: Stock )
     {
         this.log( "onStockSelected: " + JSON.stringify( stock ) );
-        if ( !this.tickerSymbols )
+        if ( this.tickerSymbols.indexOf( stock.tickerSymbol ) == -1 )
         {
-            this.tickerSymbols = '';
+            if ( !this.tickerSymbols )
+            {
+                this.tickerSymbols = '';
+            }
+            if ( this.tickerSymbols.length > 0 )
+            {
+                this.tickerSymbols += ', '
+            }
+            this.tickerSymbols += stock.tickerSymbol;
+            this.modelObject.tickerSymbol = stock.tickerSymbol;
+            this.stock = stock;
+            this.stockSearch = '';
+            this.modelObject.stockPriceWhenCreated = stock.lastPrice;
+            (<FormControl>this.formGroup.controls['tickerSymbols']).setValue( this.tickerSymbols );
+            (<FormControl>this.formGroup.controls['stockSearch']).setValue( '' );
         }
-        if ( this.tickerSymbols.length > 0 )
-        {
-            this.tickerSymbols += ', '
-        }
-        this.tickerSymbols += stock.tickerSymbol;
-        this.stock = stock;
-        this.stockSearch = '';
-        this.modelObject.stockPriceWhenCreated = stock.lastPrice;
-        (<FormControl>this.formGroup.controls['tickerSymbols']).setValue( this.tickerSymbols );
-        (<FormControl>this.formGroup.controls['stockSearch']).setValue( '' );
+    }
+
+    /**
+     * This method is called just before the form is displayed
+     */
+    protected onPrepareToDisplay(): void
+    {
+        super.onPrepareToDisplay();
     }
 
     /**
@@ -278,7 +293,10 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
     private onActionTakenChange( event )
     {
         this.log( 'onActionTakenChange event: ' + JSON.stringify( event ))
-        this.modelObject.actionTaken = event.value;
+        if ( !isNullOrUndefined( this.modelObject ))
+        {
+            this.modelObject.actionTaken = event.value;
+        }
         this.enableDisableActionTakenFields()
     }
 
@@ -287,10 +305,10 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      */
     private enableDisableActionTakenFields()
     {
-        this.log( 'enableDisableFields modelObject.actionTaken: ' + this.modelObject.actionTaken )
-        this.log( 'enableDisableFields modelObject.actionTaken: ' + StockNotesActionTaken.getName( this.modelObject.actionTaken ));
         if ( !isNullOrUndefined( this.modelObject ))
         {
+            this.log( 'enableDisableFields modelObject.actionTaken: ' + this.modelObject.actionTaken )
+            this.log( 'enableDisableFields modelObject.actionTaken: ' + StockNotesActionTaken.getName( this.modelObject.actionTaken ));
             if ( this.isActionTakenFieldsDisabled() )
             {
                 this.disableField( 'actionTakenShares' );
@@ -310,7 +328,14 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      */
     private isActionTakenFieldsDisabled(): boolean
     {
-        return this.modelObject.actionTaken == StockNotesActionTaken.NONE ||
-               this.modelObject.actionTaken == StockNotesActionTaken.BUY_LATER;
+        if ( isNullOrUndefined( this.modelObject ))
+        {
+            return false;
+        }
+        else
+        {
+            return this.modelObject.actionTaken == StockNotesActionTaken.NONE ||
+                this.modelObject.actionTaken == StockNotesActionTaken.BUY_LATER;
+        }
     }
 }

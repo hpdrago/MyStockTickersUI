@@ -26,6 +26,9 @@
                   header="Ticker"
                   [style]="{'width':'40px'}"
                   [sortable]="true">
+            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                <a href="https://www.tipranks.com/stocks/{{stockAnalystConsensus.tickerSymbol}}/price-target" target="_blank">{{stockAnalystConsensus.tickerSymbol}}</a>
+            </ng-template>
         </p-column>
 
         <!----------------------------------------------------------------------------------------------------------
@@ -36,7 +39,7 @@
                   [style]="{'width':'40px','text-align':'right'}"
                   [sortable]="true">
             <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                {{calcAvgUpsidePercent( stockAnalystConsensus ) | percent:'1.2-2' }}
+                {{calcAvgUpsidePercent( stockAnalystConsensus ) | percent:'1.0-0' }}
             </ng-template>
         </p-column>
 
@@ -90,19 +93,6 @@
         </p-column>
 
         <!----------------------------------------------------------------------------------------------------------
-        ANALYST SENTIMENT DATE
-        ------------------------------------------------------------------------------------------------------------>
-        <p-column id="analystSentimentDate"
-                  field="analystSentimentDate"
-                  header="Sentiment Date"
-                  [style]="{'width':'40px'}"
-                  [sortable]="true">
-            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                {{stockAnalystConsensus[col.field] | date: 'y-MM-dd' }}
-            </ng-template>
-        </p-column>
-
-        <!----------------------------------------------------------------------------------------------------------
         HIGH ANALYST PRICE
         ------------------------------------------------------------------------------------------------------------>
         <p-column id="highAnalystPrice"
@@ -151,18 +141,6 @@
                   [sortable]="true">
             <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
                 {{stockAnalystConsensus[col.field] | currency: 'USD' : true }}
-            </ng-template>
-        </p-column>
-
-        <!----------------------------------------------------------------------------------------------------------
-        LAST PRICE CHANGE
-        ------------------------------------------------------------------------------------------------------------>
-        <p-column id="analystPriceDate"
-                  field="analystPriceDate"
-                  header="PT Date"
-                  [style]="{'width':'40px'}">
-            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                {{stockAnalystConsensus[col.field] | date: 'y-MM-dd' }}
             </ng-template>
         </p-column>
 

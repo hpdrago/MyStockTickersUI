@@ -1,4 +1,3 @@
-import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { StockQuoteModelObject } from "../../model/entity/stock-quote-modelobject";
 import { StockQuoteState } from "../../common/stock-quote-state.enum";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
@@ -6,6 +5,7 @@ import { ToastsManager } from "ng2-toastr";
 import { CrudServiceContainer } from "../crud/common/crud-service-container";
 import { StockQuote } from "../../model/entity/stock-quote";
 import { isNullOrUndefined } from "util";
+import { StockModelObjectTableComponent } from "../common/stock-model-object-table-component";
 
 /**
  * This is a base class for tables that contain Stock Quote information.  It provides the common methods for updating
@@ -16,7 +16,7 @@ import { isNullOrUndefined } from "util";
  * Created by mike on 11/4/2017
  */
 export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteModelObject<T>>
-    extends CrudTableComponent<T>
+    extends StockModelObjectTableComponent<T>
 {
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T>,
@@ -34,7 +34,7 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
      */
     protected onTableLoad( modelObjects: T[] ): void
     {
-        this.debug( 'onTableLoad.overridden.begin ' + JSON.stringify( modelObjects ));
+        this.debug( 'onTableLoad.overridden.begin' );
         super.onTableLoad( modelObjects );
         modelObjects.forEach( stockQuoteModelObject =>
         {

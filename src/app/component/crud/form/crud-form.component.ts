@@ -10,7 +10,7 @@ import { CrudServiceContainer } from "../common/crud-service-container";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectCrudOperationSubjectInfo } from "../dialog/modelobject-crudoperation-subject-info";
 import { INVALID } from "@angular/forms/src/model";
-import { Subject } from "rxjs/Subject";
+import { Subscription } from "rxjs/Subscription";
 
 /**
  * This class contains the common functionality for a form for a CRUD model object.
@@ -26,7 +26,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected continuousAdd: boolean = false;
     protected ngOnInitCompletedSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
     protected loadResourcesCompletedSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
-    //private sourcesLoadedSubject: BehaviorSubject<boolean> = new BehaviorSubject()<false>();
 
     /**
      * C O N S T R U C T O R
@@ -57,7 +56,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.initializeForm();
         // Tell everyone that we are done
         this.sendComponentInitializedCompletedEvent();
-        this.sendNgOnINitCompletedEvent();
+        this.sendNgOnInitCompletedEvent();
         this.debug( "ngOnInit.end" );
     }
 
@@ -66,7 +65,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      * Subclasses should override this method and defer the subject notification if there are
      * other depending activities that need to be performed before sending this event.
      */
-    protected sendNgOnINitCompletedEvent()
+    protected sendNgOnInitCompletedEvent()
     {
         this.ngOnInitCompletedSubject.next( true );
     }
@@ -92,8 +91,14 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
          */
         if ( isNullOrUndefined( this.modelObject ) )
         {
-            this.debug( "postInit waiting for valid model object" );
-            this.subscribeToModelObjectChangeEvent( ( modelObject ) => this.setFormValues( modelObject ));
+            this.waitForValidModelObject( ( modelObject ) =>
+            {
+                if ( !isNullOrUndefined( modelObject ) )
+                {
+                    this.debug( "postInit received valid modelObject" );
+                    this.setFormValues( modelObject )
+                }
+            });
         }
         else
         {
@@ -156,6 +161,28 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     {
         this.debug( "sendComponentInitializedCompletedEvent" );
         this.crudServiceContainer.crudFormService.sendComponentInitializedEvent();
+    }
+
+    /**
+     * This method will notify the subscriber when a non null modelObject has been loaded.
+     * @param {(modelObject) => any} fn
+     */
+    protected waitForValidModelObject( fn: ( modelObject ) => any )
+    {
+        while ( isNullOrUndefined( this.modelObject ))
+        {
+            this.debug( "waitForValidModelObject waiting" );
+            let subscription: Subscription = this.subscribeToModelObjectChangeEvent( ( modelObject: T ) =>
+            {
+                this.debug( "waitForValidModelObject " + JSON.stringify( modelObject ) );
+                if ( !isNullOrUndefined( modelObject ))
+                {
+                    this.debug( "waitForValidModelObject found" );
+                    fn( this.modelObject );
+                    subscription.unsubscribe();
+                }
+            })
+        }
     }
 
     /**

@@ -1,4 +1,3 @@
-///<reference path="service/crud/stock-notes-crud.service.ts"/>
 /**
  * Created by mike on 9/16/2016.
  */
@@ -135,6 +134,8 @@ import { StockNotesTableDashboardComponent } from "./component/dashboard/stock-n
 import { StockToBuyTableDashboardComponent } from "./component/dashboard/stock-to-buy-table-dashboard.component";
 import { StockToBuyTableTabComponent } from "./component/stocktobuy/stock-to-buy-table-tab.component";
 import { FormErrorsComponent } from "./component/common/form-errors.component";
+import { StockAnalystConsensusDashboardTableComponent } from "./component/dashboard/stock-analyst-consensus-dashboard-table.component";
+import { StockAnalystConsensusTabTableComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-tab-table.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -225,7 +226,8 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockNotesTableButtonsComponent,
         StockNotesFormButtonsComponent,
 
-        StockAnalystConsensusTableComponent,
+        StockAnalystConsensusTabTableComponent,
+        StockAnalystConsensusDashboardTableComponent,
         StockAnalystConsensusFormComponent,
         StockAnalystConsensusDialogComponent,
         StockAnalystConsensusTableButtonsComponent,

@@ -1,25 +1,15 @@
 import { ModelObject } from "./modelobject";
 import { StockQuoteState } from "../../common/stock-quote-state.enum";
+import { StockModelObject } from "./stock-model-object";
 
 /**
  * Created 11/4/2017
  */
-export abstract class StockQuoteModelObject<T> extends ModelObject<T>
+export abstract class StockQuoteModelObject<T extends StockModelObject<T>> extends StockModelObject<T>
 {
-    public tickerSymbol: string;
-    public companyName: string;
     public lastPrice: number;
     public lastPriceChange: Date;
     public stockQuoteState: number;
     public stockPriceWhenCreated: number;
-
-    /**
-     * Get the ticker symbol
-     * @returns {string}
-     */
-    public getTickerSymbol(): string
-    {
-        return this.tickerSymbol;
-    }
 
 }

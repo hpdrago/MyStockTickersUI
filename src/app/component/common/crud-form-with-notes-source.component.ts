@@ -21,7 +21,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
 {
     private sourceItems: SelectItem[] = [];
     private stockNotesSourceList: StockNotesSourceList = new StockNotesSourceList( [] );
-    private sourcesChanged: boolean;
+    private sourceAdded: boolean;
 
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T>,
@@ -47,7 +47,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
      */
     protected setDefaultValues(): void
     {
-        this.sourcesChanged = false;
+        this.sourceAdded = false;
         super.setDefaultValues();
     }
 
@@ -82,13 +82,29 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
         if ( !isNumeric( event.value ))
         {
             this.modelObject.setNotesSourceName( event.value.toUpperCase() );
-            this.sourcesChanged = true;
+            this.sourceAdded = true;
         }
         else
         {
             this.log( "sourcesOnChange: setting notesSourceId= " + event.value );
             this.modelObject.setNotesSourceId( event.value );
             this.modelObject.setNotesSourceName( this.stockNotesSourceList.getLabel( event.value ));
+        }
+    }
+
+    /**
+     * this method is called just before form data is saved.
+     * We need to check to see if a new source was added and if so, create a new sources in the database.
+     */
+    protected prepareToSave(): void
+    {
+        this.debug( "prepareToSave checking for added source " + JSON.stringify( this.modelObject ))
+        super.prepareToSave();
+        if ( !isNumeric( this.modelObject.getNotesSourceId() ))
+        {
+            this.debug( this.modelObject.getNotesSourceName() + " is a new source" );
+            this.modelObject.setNotesSourceName( "" + this.modelObject.getNotesSourceId() );
+            this.modelObject.setNotesSourceId( 0 );
         }
     }
 
@@ -101,7 +117,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
     {
         this.log( "onSaveCompleted" );
         super.onSaveCompleted( modelObject );
-        if ( this.sourcesChanged )
+        if ( this.sourceAdded )
         {
             this.customerService.stockNoteSourcesChanged();
         }
