@@ -6,6 +6,7 @@ import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockUrlMap } from "../../common/stock-url-map";
 import { DateOrTimePeriod } from "../../common/date-or-time-period.enum";
 import { TimePeriods } from "../../common/time-periods.enum";
+import { StockModelObjectTableComponent } from "../common/stock-model-object-table-component";
 
 /**
  * This component lists all stock notes
@@ -18,7 +19,7 @@ import { TimePeriods } from "../../common/time-periods.enum";
         styleUrls: ['./stock-catalyst-event-table.component.css'],
         templateUrl: './stock-catalyst-event-table.component.html'
     } )
-export class StockCatalystEventTableComponent extends CrudTableComponent<StockCatalystEvent>
+export class StockCatalystEventTableComponent extends StockModelObjectTableComponent<StockCatalystEvent>
 {
     private urlMap: StockUrlMap = new StockUrlMap();
     private DATE_OR_TIMEPERIOD = DateOrTimePeriod;

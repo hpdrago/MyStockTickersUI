@@ -11,6 +11,8 @@ import { StockNotesTableTabComponent } from "../stocknotes/stock-notes-table-tab
 import { StockNotesTableDashboardComponent } from "./stock-notes-table-dashboard.component";
 import { StockAnalystConsensusDashboardTableComponent } from "./stock-analyst-consensus-dashboard-table.component";
 import { StockToBuyTableDashboardComponent } from "./stock-to-buy-table-dashboard.component";
+import { StockCatalystEventTableComponent } from "../stockcatalystevent/stock-catalyst-event-table.component";
+import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
 
 @Component(
 {
@@ -26,6 +28,10 @@ export class DashboardComponent extends BaseComponent implements OnInit
     private stockAnalystConsensusDashboardTableComponent: StockAnalystConsensusDashboardTableComponent;
     @ViewChild(StockToBuyTableDashboardComponent)
     private stockToBuyTableDashboardComponent: StockToBuyTableDashboardComponent
+    @ViewChild(StockCatalystEventTableComponent)
+    private stockCatalystEventTableComponent: StockCatalystEventTableComponent;
+    @ViewChild(StockAutoCompleteComponent)
+    private stockAutoCompletedComponent: StockAutoCompleteComponent;
 
     constructor( protected toaster: ToastsManager,
                  private router: Router,
@@ -38,11 +44,28 @@ export class DashboardComponent extends BaseComponent implements OnInit
     {
     }
 
+    /**
+     * This method is called when the user enters a ticker symbol in the search box
+     * @param {Stock} stock
+     */
     protected onStockSelected(  stock: Stock  )
     {
         this.stockNotesTableDashboardComponent.loadTableForTickerSymbol( stock.tickerSymbol );
         this.stockToBuyTableDashboardComponent.loadTableForTickerSymbol( stock.tickerSymbol );
         this.stockAnalystConsensusDashboardTableComponent.loadTableForTickerSymbol( stock.tickerSymbol );
+        this.stockCatalystEventTableComponent.loadTableForTickerSymbol( stock.tickerSymbol );
+    }
+
+    /**
+     * This method is called when the user clicks the reset button to clear the ticker symbol search.
+     */
+    protected onResetButtonClick()
+    {
+        this.stockNotesTableDashboardComponent.resetTable();
+        this.stockToBuyTableDashboardComponent.resetTable();
+        this.stockAnalystConsensusDashboardTableComponent.resetTable();
+        this.stockCatalystEventTableComponent.resetTable();
+        this.stockAutoCompletedComponent.reset();
     }
 }
 

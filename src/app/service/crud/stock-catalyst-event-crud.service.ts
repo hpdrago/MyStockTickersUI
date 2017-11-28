@@ -5,6 +5,7 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockCatalystEventFactory } from "../../model/factory/stock-catalyst-event.factory";
+import { isNullOrUndefined } from "util";
 
 /**
  * This class provides all CRUD REST services for Stock Catalyst Events.
@@ -36,7 +37,12 @@ export class StockCatalystEventCrudService extends CrudRestService<StockCatalyst
 
     protected getReadModelObjectListUrl( baseUrl: string, stockCatalystEvent: StockCatalystEvent ): string
     {
-        return baseUrl + this.urlPath + `/customer/${stockCatalystEvent.customerId}`;
+        var url: string = baseUrl + this.urlPath + `/customer/${stockCatalystEvent.customerId}`;
+        if ( !isNullOrUndefined( stockCatalystEvent.tickerSymbol ) )
+        {
+            url += '/' + stockCatalystEvent.tickerSymbol;
+        }
+        return url;
     }
 
     protected getUpdateModelObjectUrl( baseUrl: string, stockCatalystEvent: StockCatalystEvent ): string
