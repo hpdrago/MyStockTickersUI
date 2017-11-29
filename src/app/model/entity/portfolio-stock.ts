@@ -24,19 +24,19 @@ export class PortfolioStock extends ModelObject<PortfolioStock>
     public profitTakingPrice: number;
     public profitTakingShares: number;
 
-    public clone(): PortfolioStock
-    {
-        return undefined;
-    }
-
     public isEqualPrimaryKey( modelObject: PortfolioStock )
     {
         var isEqual = false;
         if ( modelObject )
         {
-            isEqual = this.tickerSymbol === modelObject.tickerSymbol;
+            isEqual = this.tickerSymbol === modelObject.tickerSymbol &&
+                      this.portfolioId === modelObject.portfolioId;
         }
         return isEqual;
     }
 
+    public getPrimaryKey(): any
+    {
+        return this.id;
+    }
 }

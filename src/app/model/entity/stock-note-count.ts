@@ -18,4 +18,9 @@ export class StockNoteCount extends ModelObject<StockNoteCount>
         }
       return isEqual;
     }
+
+    public getPrimaryKey(): any
+    {
+        return undefined;
+    }
 }

@@ -13,6 +13,7 @@ import { StockNotesCrudServiceContainer } from "../../component/stocknotes/stock
 import { SelectItem } from "primeng/primeng";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Subscription } from "rxjs/Subscription";
+import { PaginationURL } from "../../common/pagination-url";
 
 /**
  * This service handles all of the customer related actions.
@@ -30,14 +31,24 @@ export class CustomerService extends CrudRestService<Customer>
 
     constructor( protected http: Http,
                  protected sessionService: SessionService,
-                 protected appConfigurationService: AppConfigurationService,
+                 protected appConfig: AppConfigurationService,
                  private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer,
                  private customerFactory: CustomerFactory )
     {
-        super( http, sessionService, appConfigurationService, customerFactory );
+        super( http, sessionService, appConfig, customerFactory );
         this.customer = new Customer();
         this.customer.id = 1;
         this.loadSources();
+    }
+
+    protected getContextURL( modelObject: Customer ): string
+    {
+        return '/customer';
+    }
+
+    protected getCustomerURL()
+    {
+        return null;
     }
 
     /**
@@ -106,28 +117,4 @@ export class CustomerService extends CrudRestService<Customer>
         return this.stockNotesSources.getLabel( notesSourceId );
     }
 
-    protected getCreateModelObjectUrl( baseUrl: string, modelObject: Customer ): string
-    {
-        return undefined;
-    }
-
-    protected getUpdateModelObjectUrl( baseUrl: string, modelObject: Customer ): string
-    {
-        return undefined;
-    }
-
-    protected getDeleteModelObjectUrl( baseUrl: string, modelObject: Customer ): string
-    {
-        return undefined;
-    }
-
-    protected getReadModelObjectUrl( baseUrl: string, modelObject: Customer ): string
-    {
-        return undefined;
-    }
-
-    protected getReadModelObjectListUrl( baseUrl: string, modelObject: Customer ): string
-    {
-        return undefined;
-    }
 }

@@ -28,7 +28,7 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
                  private session: SessionService,
                  protected portfolioStockCrudServiceContainer: PortfolioStockCrudServiceContainer )
     {
-        super( toaster, portfolioStockCrudServiceContainer );
+        super( false, toaster, portfolioStockCrudServiceContainer );
     }
 
     private getAddButtonText(): string

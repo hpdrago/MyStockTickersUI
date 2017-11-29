@@ -30,7 +30,7 @@ export class StockNotesCountTableComponent extends CrudTableComponent<StockNotes
                  private session: SessionService,
                  private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {
-        super( toaster, stockNotesCrudServiceContainer );
+        super( false, toaster, stockNotesCrudServiceContainer );
     }
 
     /**

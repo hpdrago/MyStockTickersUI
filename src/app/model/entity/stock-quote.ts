@@ -12,9 +12,8 @@ export class StockQuote extends ModelObject<StockQuote>
     public stockQuoteState: number;
     public stockPriceWhenCreated: number;
 
-    public isEqualPrimaryKey( stockQuote: StockQuote ): boolean
+    public getPrimaryKey(): any
     {
-        return this.tickerSymbol === stockQuote.tickerSymbol;
+        return this.tickerSymbol;
     }
-
 }

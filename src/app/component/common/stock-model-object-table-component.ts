@@ -12,7 +12,7 @@ export abstract class StockModelObjectTableComponent<T extends StockModelObject<
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
-        super( toaster, crudServiceContainer );
+        super( true, toaster, crudServiceContainer );
     }
 
     /**

@@ -13,4 +13,9 @@ export class StockNotesStock extends ModelObject<StockNotesStock>
                modelObject.customerId == this.customerId &&
                modelObject.tickerSymbol == this.tickerSymbol;
     }
+
+    public getPrimaryKey(): any
+    {
+        return this.stockNotesId;
+    }
 }

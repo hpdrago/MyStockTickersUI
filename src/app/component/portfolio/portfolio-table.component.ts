@@ -30,7 +30,7 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
                  protected session: SessionService,
                  protected portfolioCrudServiceContainer: PortfolioCrudServiceContainer )
     {
-        super( toaster, portfolioCrudServiceContainer );
+        super( false, toaster, portfolioCrudServiceContainer );
     }
 
     /**

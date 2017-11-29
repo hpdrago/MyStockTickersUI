@@ -21,9 +21,8 @@ export class StockNotesSource extends ModelObject<StockNotesSource>
     set dateCreated( dateCreated: Date ) { this._dateCreated = dateCreated }
     get dateCreated(): Date { return this._dateCreated }
 
-    public isEqualPrimaryKey( modelObject: StockNotesSource ): boolean
+    public getPrimaryKey(): any
     {
-        return this._id === modelObject._id;
+        return this.id;
     }
-
 }

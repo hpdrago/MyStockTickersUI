@@ -6,13 +6,15 @@
 
 import { ModelObject } from "../../../model/entity/modelobject";
 import { BaseCrudComponent } from "../common/base-crud.component";
-import { OnInit } from "@angular/core";
+import { OnInit, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudModelObjectEditMode } from "../common/crud-model-object-edit-mode";
 import { CrudServiceContainer } from "../common/crud-service-container";
 import { CrudOperation } from "../common/crud-operation";
 import { isNullOrUndefined } from "util";
 import { ModelObjectChangeEvent } from "../../../service/crud/model-object-change.event";
+import { DataTable, LazyLoadEvent } from "primeng/primeng";
+import { PaginationPage } from "../../../common/pagination";
 
 /**
  * This is the base class for CRUD enabled tables.
@@ -44,7 +46,16 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected loading: boolean = false;
 
-    constructor( protected toaster: ToastsManager,
+    /**
+     * The last page load event
+     */
+    protected lastLoadEvent: LazyLoadEvent;
+
+    @ViewChild(DataTable)
+    protected dataTable: DataTable;
+
+    constructor( protected lazyLoading: boolean,
+                 protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
         super( toaster );
@@ -87,8 +98,51 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
          * Create a new object instance as it will most likely be nulled by subscribing to events
          */
         this.modelObject = this.crudServiceContainer.modelObjectFactory.newModelObject();
-        this.loadTable();
+        if ( !this.lazyLoading )
+        {
+            this.loading = true;
+            this.loadTable();
+        }
         this.debug( "ngOnInit.end" );
+    }
+
+    /**
+     * This event is triggered by the DataTable containing the stocks to request the load of a new page of stocks
+     * @param event
+     */
+    protected lazyLoadTable( event: LazyLoadEvent ): void
+    {
+        this.debug( 'lazyLoadTable ' + JSON.stringify( event ) );
+        this.crudServiceContainer
+            .crudRestService
+            .getPage( this.modelObject, event.first, event.rows )
+            .subscribe( page =>
+                        {
+                            this.loading = false;
+                            this.onPageLoad( page );
+                            //alert( JSON.stringify( stocksPage))
+                        },
+                        err =>
+                        {
+                            // Log errors if any
+                            this.loading = false;
+                            this.reportRestError( err );
+                        } );
+        this.lastLoadEvent = event;
+    }
+
+    /**
+     * A new stock page has been received
+     * @param stocksPage
+     */
+    protected onPageLoad( page: PaginationPage<T> ): void
+    {
+        this.debug( "onPageLoad.begin" );
+        var rows: T[] = this.crudServiceContainer
+                            .modelObjectFactory
+                            .newModelObjectArray( page.content );
+        this.onTableLoad( rows );
+        this.debug( 'onPageLoad.end: totalElements: ' + this.rows.length );
     }
 
     /**
@@ -131,6 +185,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                             this.loading = false;
                         } );
     }
+
 
     /**
      * This method is called after the modelObjects have been retrieved from the database

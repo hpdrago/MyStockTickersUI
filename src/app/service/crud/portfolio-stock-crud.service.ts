@@ -7,6 +7,7 @@ import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.facto
 import { CrudRestService } from "./crud-rest.serivce";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { AppConfigurationService } from "../app-configuration.service";
+import { PaginationURL } from "../../common/pagination-url";
 
 /**
  * This service manages REST communication for PortfolioStocks.
@@ -20,58 +21,15 @@ export class PortfolioStockCrudService extends CrudRestService<PortfolioStock>
 {
     constructor( protected http: Http,
                  protected sessionService: SessionService,
-                 protected appConfigurationService: AppConfigurationService,
+                 protected appConfig: AppConfigurationService,
                  private portfolioStockFactory: PortfolioStockFactory )
     {
-        super( http, sessionService, appConfigurationService, portfolioStockFactory );
+        super( http, sessionService, appConfig, portfolioStockFactory );
     }
 
-    protected getCreateModelObjectUrl( baseUrl: string, modelObject: PortfolioStock ): string
+    protected getContextURL( portfolioStock: PortfolioStock ): string
     {
-        var createUrl = this.getPortfolioStockUrl();
-        return createUrl;
-    }
-
-    protected getReadModelObjectUrl( baseUrl: string, modelObject: PortfolioStock ): string
-    {
-        var readUrl = this.getPortfolioStockUrl();
-        return readUrl;
-    }
-
-    protected getReadModelObjectListUrl( baseUrl: string, modelObject: PortfolioStock ): string
-    {
-        var url = `${this.getCustomerUrl()}${modelObject.customerId}/portfolio/${modelObject.portfolioId}/stocks`;
-        return url;
-    }
-
-    protected getUpdateModelObjectUrl( baseUrl: string, modelObject: PortfolioStock ): string
-    {
-        var updateUrl = this.getPortfolioStockUrl();
-        return updateUrl;
-    }
-
-    protected getDeleteModelObjectUrl( baseUrl: string, portfolioStock: PortfolioStock ): string
-    {
-        var updateUrl = this.getPortfolioStockUrl() + portfolioStock.id;
-        return updateUrl;
-    }
-
-    /**
-     * Defines the URL for REST services that start with /customer
-     * @return {string}
-     */
-    private getCustomerUrl(): string
-    {
-        return this.appConfigurationService.getBaseUrl() + "/customer/";
-    }
-
-    /**
-     * Defines the URL for REST services that start with /portfolioStock
-     * @return {string}
-     */
-    private getPortfolioStockUrl(): string
-    {
-        return this.appConfigurationService.getBaseUrl() + "/portfolioStock/";
+        return '/portfolio/' + portfolioStock.portfolioId + '/portfolioStock'
     }
 
     /**

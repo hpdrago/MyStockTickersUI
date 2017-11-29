@@ -1,11 +1,8 @@
 import { Component } from "@angular/core";
 import { Stock } from "../../model/entity/stock";
-import { PaginationPage } from "../../common/pagination";
-import { LazyLoadEvent } from "primeng/components/common/api";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { StockCrudServiceContainer } from "./stock-crud-service-container";
-import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
 /**
  * This component lists the all of the stocks in the database.
@@ -19,7 +16,6 @@ import { ModelObjectChangeService } from "../../service/crud/model-object-change
 export class StockTableComponent extends CrudTableComponent<Stock>
 {
     private companyNameSearch: string;
-    private lastLoadEvent: LazyLoadEvent;
 
     /**
      * Create a new instance with required DI sources
@@ -27,30 +23,7 @@ export class StockTableComponent extends CrudTableComponent<Stock>
     constructor( protected toaster: ToastsManager,
                  private stockCrudServiceContainer: StockCrudServiceContainer )
     {
-        super( toaster, stockCrudServiceContainer );
-    }
-
-    /**
-     * This event is triggered by the DataTable containing the stocks to request the load of a new page of stocks
-     * @param event
-     */
-    protected lazyLoadData( event: LazyLoadEvent ) : void
-    {
-        this.logger.log( 'lazyLoadData ' + JSON.stringify( event ) );
-        this.stockCrudServiceContainer
-            .stockCrudService
-            .getStocksPage( event.first, event.rows )
-            .subscribe( stocksPage =>
-                        {
-                            this.setStocksPage( stocksPage );
-                            //alert( JSON.stringify( stocksPage))
-                        }, //Bind to view
-                        err =>
-                        {
-                            // Log errors if any
-                            this.reportRestError( err );
-                        } );
-        this.lastLoadEvent = event;
+        super( true, toaster, stockCrudServiceContainer );
     }
 
     /**
@@ -65,7 +38,7 @@ export class StockTableComponent extends CrudTableComponent<Stock>
             .getStockCompaniesLike( searchString )
             .subscribe( stocksPage =>
             {
-                this.setStocksPage( stocksPage );
+                this.onPageLoad( stocksPage );
                 //alert( JSON.stringify( stocksPage))
             }, //Bind to view
             error =>
@@ -73,27 +46,6 @@ export class StockTableComponent extends CrudTableComponent<Stock>
                 // Log errors if any
                 this.reportRestError( error );
             } );
-    }
-
-    /**
-     * A new stock page has been received
-     * @param stocksPage
-     */
-    private setStocksPage( stocksPage: PaginationPage<Stock> ): void
-    {
-        this.logger.log( "setStocksPage" );
-        //this.logger.log( JSON.stringify( stocksPage ).valueOf() );
-        //this.stocksPage = stocksPage;
-        this.rows = this.stockCrudServiceContainer
-                        .stockFactory
-                        .newModelObjectArray( stocksPage.content );
-        for ( var stock of this.rows )
-        {
-            this.logger.log( "setStockPage.stock: " + JSON.stringify( stock ) );
-        }
-        this.totalRows = stocksPage.totalElements;
-        this.logger.log( 'setStocksPage: length: ' + stocksPage.content.length );
-        this.logger.log( 'setStocksPage: totalElements: ' + stocksPage.totalElements );
     }
 
     /*****************************************************************

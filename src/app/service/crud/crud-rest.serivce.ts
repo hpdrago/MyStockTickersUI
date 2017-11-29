@@ -6,6 +6,8 @@ import { ModelObject } from "../../model/entity/modelobject";
 import { AppConfigurationService } from "../app-configuration.service";
 import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 import { isNullOrUndefined } from "util";
+import { PaginationURL } from "../../common/pagination-url";
+import { PaginationPage } from "../../common/pagination";
 
 /**
  * Generic Service class for REST CRUD methods
@@ -19,29 +21,38 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
 {
     constructor( protected http: Http,
                  protected sessionService: SessionService,
-                 protected appConfigurationService: AppConfigurationService,
+                 protected appConfig: AppConfigurationService,
                  protected modelObjectFactory: ModelObjectFactory<T> )
     {
-        super( http, sessionService, appConfigurationService, modelObjectFactory );
+        super( http, sessionService, appConfig, modelObjectFactory );
     }
 
     /**
      * Returns the URL string to Create a single model object via REST
      * @param modelObject
      */
-    protected abstract getCreateModelObjectUrl( baseUrl: string, modelObject: T ): string;
+    protected getCreateModelObjectUrl( modelObject: T ): string
+    {
+        return this.getTargetURL( modelObject );
+    }
 
     /**
      * Returns the URL string to Update a single model object via REST
      * @param modelObject
      */
-    protected abstract getUpdateModelObjectUrl( baseUrl: string, modelObject: T ): string;
+    protected getUpdateModelObjectUrl( modelObject: T ): string
+    {
+        return this.getCustomerURL() + `/${modelObject.getPrimaryKey()}`;
+    }
 
     /**
      * Returns the URL string to delete a single model object via REST
      * @param modelObject
      */
-    protected abstract getDeleteModelObjectUrl( baseUrl: string, modelObject: T ): string;
+    protected getDeleteModelObjectUrl( modelObject: T ): string
+    {
+        return this.getCustomerURL() + `/${modelObject.getPrimaryKey()}`;
+    }
 
     /**
      * Creates the model object via REST.
@@ -62,7 +73,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
         }
         var headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
         var options = new RequestOptions( { headers: headers } ); // Create a request option
-        var url = this.getCreateModelObjectUrl( this.appConfigurationService.getBaseUrl(), modelObject );
+        var url = this.getCreateModelObjectUrl( modelObject );
         if ( isNullOrUndefined( url ) )
         {
             throw new ReferenceError( "url is null or undefined" );
@@ -98,7 +109,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
         }
         var headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
         var options = new RequestOptions( { headers: headers } ); // Create a request option
-        var url =  this.getUpdateModelObjectUrl( this.appConfigurationService.getBaseUrl(), modelObject );
+        var url =  this.getUpdateModelObjectUrl( modelObject );
         this.log( methodName + " url: " + url );
         if ( isNullOrUndefined( url ) )
         {
@@ -129,7 +140,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
         {
             throw new ReferenceError( "modelObject is null or undefined" );
         }
-        var url = this.getDeleteModelObjectUrl( this.appConfigurationService.getBaseUrl(), modelObject );
+        var url = this.getDeleteModelObjectUrl( modelObject );
         this.log( methodName + " url: " + url ) ;
         if ( isNullOrUndefined( url ) )
         {

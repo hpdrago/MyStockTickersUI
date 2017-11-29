@@ -6,6 +6,7 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 import { Portfolio } from "../../model/entity/portfolio";
+import { PaginationURL } from "../../common/pagination-url";
 
 /**
  * This class provides all CRUD REST services.
@@ -19,35 +20,15 @@ export class PortfolioCrudService extends CrudRestService<Portfolio>
 
     constructor( protected http: Http,
                  protected sessionService: SessionService,
-                 protected appConfigurationService: AppConfigurationService,
+                 protected appConfig: AppConfigurationService,
                  protected portfolioFactory: PortfolioFactory )
     {
-        super( http, sessionService, appConfigurationService, portfolioFactory );
+        super( http, sessionService, appConfig, portfolioFactory );
     }
 
-    protected getCreateModelObjectUrl( baseUrl: string, portfolio: Portfolio ): string
+    protected getContextURL( modelObject: Portfolio ): string
     {
-        return baseUrl + this.urlPath + `/customer/${portfolio.customerId}`;
-    }
-
-    protected getReadModelObjectUrl( baseUrl: string, portfolio: Portfolio ): string
-    {
-        return baseUrl + this.urlPath + `/portfolio/${portfolio.id}`;
-    }
-
-    protected getReadModelObjectListUrl( baseUrl: string, portfolio: Portfolio ): string
-    {
-        return baseUrl + this.urlPath + `/customer/${portfolio.customerId}`;
-    }
-
-    protected getUpdateModelObjectUrl( baseUrl: string, portfolio: Portfolio ): string
-    {
-        return baseUrl + this.urlPath;
-    }
-
-    protected getDeleteModelObjectUrl( baseUrl: string, portfolio: Portfolio ): string
-    {
-        return baseUrl + this.urlPath + portfolio.id;
+        return this.urlPath;
     }
 
     /**

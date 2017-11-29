@@ -2,10 +2,10 @@ import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
 import { SessionService } from "./session.service";
 import { AppConfigurationService } from "../app-configuration.service";
-import { CrudRestService } from "./crud-rest.serivce";
 import { StockNotesCountFactory } from "../../model/factory/stock-note-count.factory";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
+import { CrudRestService } from "./crud-rest.serivce";
 
 /**
  * This class provides all CRUD REST services for Stock Notes.
@@ -19,21 +19,16 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
 
     constructor ( protected http: Http,
                   protected sessionService: SessionService,
-                  protected appConfigurationService: AppConfigurationService,
+                  protected appConfig: AppConfigurationService,
                   protected stockNotesFactory: StockNotesFactory,
                   protected stockNoteCountFactory: StockNotesCountFactory )
     {
-        super( http, sessionService, appConfigurationService, stockNotesFactory );
+        super( http, sessionService, appConfig, stockNotesFactory );
     }
 
-    protected getCreateModelObjectUrl( baseUrl: string, stockNotes: StockNotes ): string
+    protected getContextURL( stockNotes: StockNotes ): string
     {
-        return baseUrl + `${this.urlPath}`;
-    }
-
-    protected getReadModelObjectUrl( baseUrl: string, stockNotes: StockNotes ): string
-    {
-        return baseUrl + this.urlPath + `/${stockNotes.id}`;
+        return this.urlPath;
     }
 
     /**
@@ -42,9 +37,9 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
      * @param {StockNotes} stockNotes Must have the customerId set and optionally the tickerSymbol
      * @returns {string}
      */
-    protected getReadModelObjectListUrl( baseUrl: string, stockNotes: StockNotes ): string
+    protected getReadModelObjectListUrl( stockNotes: StockNotes ): string
     {
-        var url: string = baseUrl + `${this.urlPath}/${stockNotes.customerId}`;
+        var url: string = super.getReadModelObjectListUrl( stockNotes );
         if ( stockNotes.tickerSymbol )
         {
             url += '/' + stockNotes.tickerSymbol;
@@ -52,18 +47,4 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
         return url;
     }
 
-    protected getUpdateModelObjectUrl( baseUrl: string, stockNotes: StockNotes ): string
-    {
-        return baseUrl + this.urlPath + `/${stockNotes.id}`;
-    }
-
-    protected getDeleteModelObjectUrl( baseUrl: string, stockNotes: StockNotes ): string
-    {
-        return baseUrl + this.urlPath + `/${stockNotes.id}`;
-    }
-
-    public getStockNotesForTickerSymbol( tickerSymbol: string )
-    {
-
-    }
 }

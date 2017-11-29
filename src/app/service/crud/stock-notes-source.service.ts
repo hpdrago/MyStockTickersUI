@@ -14,39 +14,19 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class StockNotesSourceService extends CrudRestService<StockNotesSource>
 {
-    private stockNotesSourceUrl = "stockNotesSource";
+    private urlPath = "/stockNotesSource";
 
     constructor( protected http: Http,
                  protected sessionService: SessionService,
-                 protected appConfigurationService: AppConfigurationService,
+                 protected appConfig: AppConfigurationService,
                  protected modelObjectFactory: StockNotesSourceFactory )
     {
-        super( http, sessionService, appConfigurationService, modelObjectFactory );
+        super( http, sessionService, appConfig, modelObjectFactory );
     }
 
-    protected getCreateModelObjectUrl( baseUrl: string, modelObject: StockNotesSource ): string
+    protected getContextURL( stockNotes: StockNotesSource ): string
     {
-        return undefined;
-    }
-
-    protected getUpdateModelObjectUrl( baseUrl: string, modelObject: StockNotesSource ): string
-    {
-        return undefined;
-    }
-
-    protected getDeleteModelObjectUrl( baseUrl: string, modelObject: StockNotesSource ): string
-    {
-        return undefined;
-    }
-
-    protected getReadModelObjectUrl( baseUrl: string, modelObject: StockNotesSource ): string
-    {
-        return undefined;
-    }
-
-    protected getReadModelObjectListUrl( baseUrl: string, modelObject: StockNotesSource ): string
-    {
-        return `${baseUrl}/${this.stockNotesSourceUrl}/${this.sessionService.getLoggedInUserId()}`;
+        return this.urlPath;
     }
 
     /**

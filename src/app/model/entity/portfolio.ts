@@ -12,13 +12,8 @@ export class Portfolio extends ModelObject<Portfolio>
     public unrealizedGL: number;
     public marketValue: number;
 
-    public isEqualPrimaryKey( modelObject: Portfolio )
+    public getPrimaryKey(): any
     {
-        var isEqual = false;
-        if ( modelObject )
-        {
-            isEqual = this.id === modelObject.id;
-        }
-        return isEqual;
+        return this.id;
     }
 }

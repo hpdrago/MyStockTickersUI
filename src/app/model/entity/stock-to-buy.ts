@@ -1,6 +1,4 @@
-import { ModelObject } from "./modelobject";
 import { StockNoteContainer } from "../../common/stock-note-container";
-import { TagList } from "../../common/tag_list";
 import { StockQuoteModelObject } from "./stock-quote-modelobject";
 
 /**
@@ -10,7 +8,6 @@ import { StockQuoteModelObject } from "./stock-quote-modelobject";
  */
 export class StockToBuy extends StockQuoteModelObject<StockToBuy> implements StockNoteContainer
 {
-    public static readonly COMMENTS_LEN = 10;
     public id: number;
     public customerId: number;
     public comments: string;
@@ -55,5 +52,10 @@ export class StockToBuy extends StockQuoteModelObject<StockToBuy> implements Sto
     public setNotesSourceName( notesSourceName: string )
     {
         this.notesSourceName = notesSourceName;
+    }
+
+    public getPrimaryKey(): any
+    {
+        return this.id;
     }
 }

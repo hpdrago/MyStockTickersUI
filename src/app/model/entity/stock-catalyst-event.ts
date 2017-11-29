@@ -20,11 +20,6 @@ export class StockCatalystEvent extends ModelObject<StockCatalystEvent> implemen
     public createDate: Date;
     public updateDate: Date;
 
-    public isEqualPrimaryKey( modelObject: StockCatalystEvent ): boolean
-    {
-        return modelObject.id === this.id;
-    }
-
     public getNotes(): string
     {
         return this.catalystDesc;
@@ -33,5 +28,10 @@ export class StockCatalystEvent extends ModelObject<StockCatalystEvent> implemen
     public getTickerSymbol(): string
     {
         return this.tickerSymbol;
+    }
+
+    public getPrimaryKey(): any
+    {
+        return this.id;
     }
 }

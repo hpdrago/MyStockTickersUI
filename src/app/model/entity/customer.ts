@@ -7,9 +7,9 @@ export class Customer extends ModelObject<Customer>
 {
     public id;
 
-    public isEqualPrimaryKey( customer: Customer ): boolean
+    public getPrimaryKey(): any
     {
-        return this.id === customer.id;
+        return this.id;
     }
 
 }

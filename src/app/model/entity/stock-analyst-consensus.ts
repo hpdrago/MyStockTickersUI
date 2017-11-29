@@ -29,11 +29,6 @@ export class StockAnalystConsensus extends StockQuoteModelObject<StockAnalystCon
     public createDate: Date;
     public updateDate: Date;
 
-    public isEqualPrimaryKey( modelObject: StockAnalystConsensus ): boolean
-    {
-        return modelObject.id === this.id;
-    }
-
     public getNotes(): string
     {
         return this.comments;
@@ -57,5 +52,10 @@ export class StockAnalystConsensus extends StockQuoteModelObject<StockAnalystCon
     public setNotesSourceName( notesSourceName: string )
     {
         this.notesSourceName = notesSourceName;
+    }
+
+    public getPrimaryKey(): any
+    {
+        return this.id;
     }
 }

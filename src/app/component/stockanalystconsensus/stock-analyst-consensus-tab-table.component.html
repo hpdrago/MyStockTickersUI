@@ -13,6 +13,11 @@
                  (onRowDblclick)="onRowDoubleClick($event)"
                  [responsive]="true">
 
+        <p-header>
+            <stock-analyst-consensus-table-buttons>
+            </stock-analyst-consensus-table-buttons>
+        </p-header>
+
         <!----------------------------------------------------------------------------------------------------------
         TICKER SYMBOL
         ------------------------------------------------------------------------------------------------------------>
@@ -168,6 +173,7 @@
             <stock-analyst-consensus-table-buttons>
             </stock-analyst-consensus-table-buttons>
         </p-footer>
+
     </p-dataTable>
 </div>
 <stock-analyst-consensus-dialog>

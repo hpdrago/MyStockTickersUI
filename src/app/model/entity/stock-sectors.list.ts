@@ -104,4 +104,9 @@ export class StockSectorList extends ModelObject<StockSectorList>
     {
         return undefined;
     }
+
+    public getPrimaryKey(): any
+    {
+        return undefined;
+    }
 }

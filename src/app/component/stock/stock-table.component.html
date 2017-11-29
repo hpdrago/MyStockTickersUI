@@ -29,7 +29,6 @@
                          [(selection)]="selectedModelObject"
                          selectionMode="single"
                          [scrollable]="true"
-                         [lazy]="true"
                          [paginator]="true"
                          [pageLinks]="10"
                          [responsive]="true"
@@ -38,7 +37,8 @@
                          [rowsPerPageOptions]="[20,35,50]"
                          [totalRecords]="totalRows"
                          (onRowSelect)="onRowSelect($event)"
-                         (onLazyLoad)="lazyLoadData($event)">
+                         [lazy]="true"
+                         (onLazyLoad)="lazyLoadTable($event)">
 
                 <p-column id="tickerSymbolColumn"
                           field="tickerSymbol"

@@ -6,6 +6,7 @@ import { CrudRestService } from "./crud-rest.serivce";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockCatalystEventFactory } from "../../model/factory/stock-catalyst-event.factory";
 import { isNullOrUndefined } from "util";
+import { PaginationURL } from "../../common/pagination-url";
 
 /**
  * This class provides all CRUD REST services for Stock Catalyst Events.
@@ -19,40 +20,24 @@ export class StockCatalystEventCrudService extends CrudRestService<StockCatalyst
 
     constructor ( protected http: Http,
                   protected sessionService: SessionService,
-                  protected appConfigurationService: AppConfigurationService,
+                  protected appConfig: AppConfigurationService,
                   protected stockCatalystEventFactory: StockCatalystEventFactory )
     {
-        super( http, sessionService, appConfigurationService, stockCatalystEventFactory );
+        super( http, sessionService, appConfig, stockCatalystEventFactory );
     }
 
-    protected getCreateModelObjectUrl( baseUrl: string, stockCatalystEvent: StockCatalystEvent ): string
+    protected getContextURL( stockCatalystEvent: StockCatalystEvent ): string
     {
-        return baseUrl + `${this.urlPath}`;
+        return this.urlPath;
     }
 
-    protected getReadModelObjectUrl( baseUrl: string, stockCatalystEvent: StockCatalystEvent ): string
+    protected getReadModelObjectListUrl( stockCatalystEvent: StockCatalystEvent ): string
     {
-        return baseUrl + this.urlPath + `/${stockCatalystEvent.id}`;
-    }
-
-    protected getReadModelObjectListUrl( baseUrl: string, stockCatalystEvent: StockCatalystEvent ): string
-    {
-        var url: string = baseUrl + this.urlPath + `/customer/${stockCatalystEvent.customerId}`;
+        var url: string = super.getReadModelObjectListUrl( stockCatalystEvent );
         if ( !isNullOrUndefined( stockCatalystEvent.tickerSymbol ) )
         {
             url += '/' + stockCatalystEvent.tickerSymbol;
         }
         return url;
     }
-
-    protected getUpdateModelObjectUrl( baseUrl: string, stockCatalystEvent: StockCatalystEvent ): string
-    {
-        return baseUrl + this.urlPath;
-    }
-
-    protected getDeleteModelObjectUrl( baseUrl: string, stockCatalystEvent: StockCatalystEvent ): string
-    {
-        return baseUrl + this.urlPath + `/${stockCatalystEvent.id}`;
-    }
-
 }

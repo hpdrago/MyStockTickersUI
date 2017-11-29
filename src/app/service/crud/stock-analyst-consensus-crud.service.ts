@@ -6,6 +6,7 @@ import { CrudRestService } from "./crud-rest.serivce";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { StockAnalystConsensusFactory } from "../../model/factory/stock-analyst-consensus.factory";
 import { isNullOrUndefined } from "util";
+import { PaginationURL } from "../../common/pagination-url";
 
 /**
  * This class provides all CRUD REST services for Stock Summary.
@@ -19,40 +20,24 @@ export class StockAnalystConsensusCrudService extends CrudRestService<StockAnaly
 
     constructor ( protected http: Http,
                   protected sessionService: SessionService,
-                  protected appConfigurationService: AppConfigurationService,
+                  protected appConfig: AppConfigurationService,
                   protected stockAnalystConsensusFactory: StockAnalystConsensusFactory )
     {
-        super( http, sessionService, appConfigurationService, stockAnalystConsensusFactory );
+        super( http, sessionService, appConfig, stockAnalystConsensusFactory );
     }
 
-    protected getCreateModelObjectUrl( baseUrl: string, stockAnalystConsensus: StockAnalystConsensus ): string
+    protected getContextURL( stockAnalysisConensus: StockAnalystConsensus ): string
     {
-        return baseUrl + `${this.urlPath}`;
+        return this.urlPath;
     }
 
-    protected getReadModelObjectUrl( baseUrl: string, stockAnalystConsensus: StockAnalystConsensus ): string
+    protected getReadModelObjectListUrl( stockAnalystConsensus: StockAnalystConsensus ): string
     {
-        return baseUrl + this.urlPath + `/${stockAnalystConsensus.id}`;
-    }
-
-    protected getReadModelObjectListUrl( baseUrl: string, stockAnalystConsensus: StockAnalystConsensus ): string
-    {
-        var url: string = baseUrl + this.urlPath + `/customer/${stockAnalystConsensus.customerId}`;
+        var url: string = super.getReadModelObjectListUrl( stockAnalystConsensus );
         if ( !isNullOrUndefined( stockAnalystConsensus.tickerSymbol ))
         {
             url += '/' + stockAnalystConsensus.tickerSymbol;
         }
         return url;
     }
-
-    protected getUpdateModelObjectUrl( baseUrl: string, stockAnalystConsensus: StockAnalystConsensus ): string
-    {
-        return baseUrl + this.urlPath;
-    }
-
-    protected getDeleteModelObjectUrl( baseUrl: string, stockAnalystConsensus: StockAnalystConsensus ): string
-    {
-        return baseUrl + this.urlPath + `/${stockAnalystConsensus.id}`;
-    }
-
 }

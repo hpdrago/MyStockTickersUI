@@ -6,6 +6,8 @@ import { Http, Response } from "@angular/http";
 import { ModelObject } from "../../model/entity/modelobject";
 import { BaseService } from "../base-service";
 import { isNullOrUndefined } from "util";
+import { PaginationPage } from "../../common/pagination";
+import { PaginationURL } from "../../common/pagination-url";
 
 /**
  * Generic class for reading model objects from the database.  Provides a method to read a single entity or a list
@@ -16,23 +18,70 @@ export abstract class ReadRestService<T extends ModelObject<T>>
 {
     constructor( protected http: Http,
                  protected sessionService: SessionService,
-                 protected appConfigurationService: AppConfigurationService,
+                 protected appConfig: AppConfigurationService,
                  protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super();
     }
 
     /**
-     * Returns the URL string to Read a single model object via REST
-     * @param modelObject
+     * This method combines the {baseUrl} + {customerUrl} + {contextUrl}.
+     * Properly handles the conditional addition of hte customer url based on whether its null or not.
+     * @param {T} modelObject
+     * @returns {string}
      */
-    protected abstract getReadModelObjectUrl( baseUrl: string, modelObject: T ): string;
+    protected getTargetURL( modelObject: T )
+    {
+        return this.appConfig.getBaseURL() +
+               this.getCustomerURL() == null ? "/" : '/' + this.getCustomerURL() + '/' +
+               this.getContextURL( modelObject );
+    }
+
+    /**
+     * Each CRUD service must define the context URL.  This is the portion of the URL that defines the scope/context
+     * of the REST service calls right after the protocol, host, and port.
+     * @param modelObject (T) The context may be defined by model object properties.  Subclasses can customize the URL
+     * based on these properties.
+     * @returns {string}
+     */
+    protected abstract getContextURL( modelObject: T ): string;
+
+    /**
+     * Returns the customer portion of the url
+     * @returns {string}
+     */
+    protected getCustomerURL(): string
+    {
+        return '/customer/' + this.sessionService.getLoggedInUserId();
+    }
+
+    /**
+     * Defines the URL to load a single model object
+     * @param {T} modelObject
+     * @returns {string}
+     */
+    protected getReadModelObjectUrl( modelObject: T ): string
+    {
+        return this.getTargetURL( modelObject ) + '/' + modelObject.getPrimaryKey();
+    }
 
     /**
      * Returns the URL string to Read a single model object via REST
      * @param modelObject
      */
-    protected abstract getReadModelObjectListUrl( baseUrl: string, modelObject: T ): string;
+    protected getReadModelObjectListUrl( modelObject: T ): string
+    {
+        return this.getTargetURL( modelObject );
+        //var url: string = this.appConfig.getBaseURL() + this.getContextURL();
+        //return `${this.appConfig.getBaseURL()}/${this.getContextURL()}/${this.sessionService.getLoggedInUserId()}`;
+        /*
+        if ( !isNullOrUndefined( modelObject.tickerSymbol ) )
+        {
+            url += '/' + stockToBuy.tickerSymbol;
+        }
+        */
+        //return url;
+    }
 
     /**
      * Serializes the object from a TypeScript object to a JSON object
@@ -61,7 +110,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         {
             throw new ReferenceError( "modelObject is null or undefined" );
         }
-        var url = this.getReadModelObjectUrl( this.appConfigurationService.getBaseUrl(), modelObject );
+        var url = this.getReadModelObjectUrl( modelObject );
         this.debug( methodName + " url: " + url );
         if ( isNullOrUndefined( url ) )
         {
@@ -91,7 +140,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         {
             throw new ReferenceError( "modelObject is null or undefined" );
         }
-        var url: string = this.getReadModelObjectListUrl( this.appConfigurationService.getBaseUrl(), modelObject );
+        var url: string = this.getReadModelObjectListUrl( modelObject );
         this.debug( methodName + " url: " + url );
         if ( isNullOrUndefined( url ) )
         {
@@ -107,4 +156,35 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
                    .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
+
+    /**
+     * Retrieves a specific page of stocks
+     * @param rowOffSet The page to retrieve
+     * @param rows The numbers of rows per page (rows to return for this page)
+     * @returns {Observable<PaginationPage<Stock>>}
+     */
+    public getPage( modelObject: T, rowOffSet: number, rows: number ): Observable<PaginationPage<T>>
+    {
+        let methodName = "getPage";
+        let url = new PaginationURL( this.getReadModelObjectListUrl( modelObject ) ).getPage( rowOffSet, rows );
+        this.logger.log( `${methodName} url: ${url} rowOffset: ${rowOffSet} rows: ${rows}` );
+        try
+        {
+            return this.http.get( url )
+                       .map( ( response: Response ) =>
+                             {
+                                 return response.json();
+                             })
+                       .catch( ( error: any ) =>
+                               {
+                                   this.reportError( error );
+                                   return Observable.throw( error.json().error || 'Server error' );
+                               });
+        }
+        catch( exception )
+        {
+            this.reportError( exception );
+        }
+    }
+
 }

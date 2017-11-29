@@ -34,16 +34,6 @@ export class StockNotes extends StockQuoteModelObject<StockNotes> implements Sto
         return this.notes;
     }
 
-    public isEqualPrimaryKey( modelObject: StockNotes )
-    {
-        var isEqual = false;
-        if ( modelObject )
-        {
-            isEqual = this.id === modelObject.id;
-        }
-        return isEqual;
-    }
-
     /**
      * Returns a comma delimeted string of the ticker symbols
      * @return {string}
@@ -81,5 +71,10 @@ export class StockNotes extends StockQuoteModelObject<StockNotes> implements Sto
     public setNotesSourceName( notesSourceName: string )
     {
         this.notesSourceName = notesSourceName;
+    }
+
+    public getPrimaryKey(): any
+    {
+        return this.id;
     }
 }

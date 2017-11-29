@@ -11,13 +11,8 @@ export class Stock extends ModelObject<Stock>
     public lastPrice: number;
     public stockExchange: string;
 
-    public isEqualPrimaryKey( modelObject: Stock )
+    public getPrimaryKey(): any
     {
-        var isEqual = false;
-        if ( modelObject )
-        {
-            isEqual = this.tickerSymbol === modelObject.tickerSymbol;
-        }
-        return isEqual;
+        return this.tickerSymbol;
     }
 }

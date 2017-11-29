@@ -23,7 +23,7 @@ export class AppConfigurationService
      * Get the base url which includes the transport, host, and port
      * @returns {any}
      */
-    public getBaseUrl(): string
+    public getBaseURL(): string
     {
         return this.baseURL;
     }

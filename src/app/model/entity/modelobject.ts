@@ -12,12 +12,6 @@ export abstract class ModelObject<T>
     public dateModified: Date;
 
     /**
-     * Determines if two model object primary keys are the equal.
-     * @param modelObject
-     */
-    public abstract isEqualPrimaryKey( modelObject: T ): boolean;
-
-    /**
      * Compares the two object's properties.
      * @param obj1
      * @param obj2
@@ -39,5 +33,20 @@ export abstract class ModelObject<T>
     public isDifferentVersion( otherModelObject: ModelObject<T> ): boolean
     {
         return this.version != otherModelObject.version;
+    }
+
+    /**
+     * Returns the primary key value
+     * @returns {any}
+     */
+    public abstract getPrimaryKey(): any;
+
+    /**
+     * Determines if two model object primary keys are the equal.
+     * @param modelObject
+     */
+    public isEqualPrimaryKey( modelObject: ModelObject<T> ): boolean
+    {
+        return this.getPrimaryKey() === modelObject.getPrimaryKey();
     }
 }

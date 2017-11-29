@@ -6,6 +6,7 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { Injectable } from "@angular/core";
 import { StockSectorFactory } from "../../model/factory/stock-sector.factory";
 import { StockSectorList } from "../../model/entity/stock-sectors.list";
+import { PaginationURL } from "../../common/pagination-url";
 
 /**
  * This class provides CRUD REST services for StockSectors
@@ -23,28 +24,9 @@ export class StockSectorCrudService extends CrudRestService<StockSectorList>
         super( http, sessionService, appConfigurationService, stockSectorFactory );
     }
 
-    protected getReadModelObjectListUrl( baseUrl: string, modelObject: StockSectorList ): string
+    protected getContextURL( stockSectorList: StockSectorList ): string
     {
-        return  baseUrl + '/stockSectors';
-    }
-    protected getCreateModelObjectUrl( baseUrl: string, modelObject: StockSectorList ): string
-    {
-        return undefined;
-    }
-
-    protected getReadModelObjectUrl( baseUrl: string,  modelObject: StockSectorList ): string
-    {
-        return baseUrl + '/stockSectors';
-    }
-
-    protected getUpdateModelObjectUrl( baseUrl: string,  modelObject: StockSectorList ): string
-    {
-        return undefined;
-    }
-
-    protected getDeleteModelObjectUrl( baseUrl: string,  modelObject: StockSectorList ): string
-    {
-        return undefined;
+        return '/stockSectors'
     }
 
     /**
