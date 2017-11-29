@@ -38,7 +38,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
     protected postInit(): void
     {
         super.postInit();
-        this.log( "CrudFormWithNotesSourceComponent.postInit setting notesSourceId to " + this.modelObject.getNotesSourceId() );
+        this.debug( "CrudFormWithNotesSourceComponent.postInit setting notesSourceId to " + this.modelObject.getNotesSourceId() );
         this.setFormValue( 'notesSource', this.modelObject.getNotesSourceId() );
     }
 
@@ -62,7 +62,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
         {
             return "";
         }
-        this.log( "getSourceName: " + JSON.stringify( notesSourceContainer ));
+        this.debug( "getSourceName: " + JSON.stringify( notesSourceContainer ));
         return this.stockNotesSourceList.getLabel( notesSourceContainer.getNotesSourceId() );
     }
 
@@ -75,7 +75,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
      */
     protected sourcesOnChange( event )
     {
-        this.log( "sourcesOnChange: " + JSON.stringify( event ));
+        this.debug( "sourcesOnChange: " + JSON.stringify( event ));
         /*
          * Capture the new values that the user types and put in the source name
          */
@@ -86,7 +86,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
         }
         else
         {
-            this.log( "sourcesOnChange: setting notesSourceId= " + event.value );
+            this.debug( "sourcesOnChange: setting notesSourceId= " + event.value );
             this.modelObject.setNotesSourceId( event.value );
             this.modelObject.setNotesSourceName( this.stockNotesSourceList.getLabel( event.value ));
         }
@@ -115,7 +115,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
      */
     protected onSaveCompleted( modelObject: T )
     {
-        this.log( "onSaveCompleted" );
+        this.debug( "onSaveCompleted" );
         super.onSaveCompleted( modelObject );
         if ( this.sourceAdded )
         {
@@ -132,12 +132,12 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
         this.customerService
             .subscribeToSourcesLoading( (loading)=>
                                             {
-                                                this.log( "loadResources customerService is loading: " + loading );
+                                                this.debug( "loadResources customerService is loading: " + loading );
                                                 if ( !loading )
                                                 {
                                                     this.stockNotesSourceList = this.customerService.getStockNotesSourceList();
                                                     this.sourceItems = this.stockNotesSourceList.toSelectItems();
-                                                    this.log( "loadResources source items set " + JSON.stringify( this.stockNotesSourceList ) );
+                                                    this.debug( "loadResources source items set " + JSON.stringify( this.stockNotesSourceList ) );
                                                     this.debug( "CrudFormWithNotesSource.loadResources.end")
                                                     super.loadResources();
                                                 }

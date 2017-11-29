@@ -36,6 +36,11 @@ export class StockCrudService extends CrudRestService<Stock>
         return this.stocksUrl;
     }
 
+    protected getCustomerURL(): string
+    {
+        return null;
+    }
+
     /**
      * Get a list of stocks where the company or ticker symbol matches {@code searchString}
      * @param searchString
@@ -72,7 +77,7 @@ export class StockCrudService extends CrudRestService<Stock>
     {
         let methodName = "getStockQuote";
         this.debug( methodName + " " + tickerSymbol );
-        let url = this.appConfig.getBaseURL() + "/stockQuote/" + tickerSymbol;
+        let url = this.appConfig.getBaseURL() + this.getContextURL( null ) + "/stockQuote/" + tickerSymbol;
         return this.http
                    .get( url )
                    .map( ( response: Response ) => response.json() )

@@ -33,19 +33,21 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * @type {Array}
      */
     protected rows: Array<T> = [];
+    /**
+     * totalRows is used to tell the paginator how many total rows are in the database so that it can accurately display
+     * the page selection list and other pagination information.
+     */
     protected totalRows: number;
     /**
      * This is a reference to the object in the table that is selected.  It is not the same object as the model object
      * and this variable must be separate from this.modelObject.
      */
     protected selectedModelObject: T;
-
     /**
      * This is true when the table is loading and false otherwise.
      * @type {boolean}
      */
     protected loading: boolean = false;
-
     /**
      * The last page load event
      */
@@ -112,15 +114,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected lazyLoadTable( event: LazyLoadEvent ): void
     {
-        this.debug( 'lazyLoadTable ' + JSON.stringify( event ) );
+        this.debug( 'lazyLoadTable' );
         this.crudServiceContainer
             .crudRestService
             .getPage( this.modelObject, event.first, event.rows )
             .subscribe( page =>
                         {
                             this.loading = false;
+                            this.debug( 'lazyLoadTable ' );
                             this.onPageLoad( page );
-                            //alert( JSON.stringify( stocksPage))
                         },
                         err =>
                         {
@@ -137,7 +139,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onPageLoad( page: PaginationPage<T> ): void
     {
-        this.debug( "onPageLoad.begin" );
+        this.debug( "onPageLoad.begin totalElements: " + page.totalElements +
+                    " totalPages: " + page.totalPages );
+        this.totalRows = page.totalElements;
         var rows: T[] = this.crudServiceContainer
                             .modelObjectFactory
                             .newModelObjectArray( page.content );
@@ -149,7 +153,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * This method is called when the refresh button is clicked.
      * By default, it simply calls the {@code loadTable} method.
      */
-    protected refreshTable(): void
+    refreshTable(): void
     {
         this.debug( "refreshTable.begin" );
         /*
@@ -157,7 +161,14 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
          */
         this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
         this.selectedModelObject = null;
-        this.loadTable();
+        if ( this.lazyLoading )
+        {
+            this.lazyLoadTable( this.lastLoadEvent );
+        }
+        else
+        {
+            this.loadTable();
+        }
         this.crudServiceContainer
             .crudTableService
             .sendTableSelectionChangeEvent( this.selectedModelObject );
@@ -176,16 +187,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             .crudRestService
             .getModelObjectList( this.modelObject )
             .subscribe( ( modelObjects: T[] ) => {
+                            this.loading = false;
                             this.onTableLoad( modelObjects );
                             this.debug( "loadTable.end" );
-                            this.loading = false;
                         },
                         error => {
-                            this.reportRestError( error );
                             this.loading = false;
+                            this.reportRestError( error );
                         } );
     }
-
 
     /**
      * This method is called after the modelObjects have been retrieved from the database
@@ -194,7 +204,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onTableLoad( modelObjects: T[] ): void
     {
         this.debug( "onTableLoad.begin" );
-        if ( modelObjects.length > 0 )
+        if ( !isNullOrUndefined( modelObjects ) && modelObjects.length > 0 )
         {
             this.rows = modelObjects;
             this.debug( "loaded " + this.rows.length + " rows" );
@@ -202,6 +212,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         else
         {
             this.rows = [];
+            this.debug( "loaded 0 rows" );
         }
         this.debug( "onTableLoad.end" );
     }

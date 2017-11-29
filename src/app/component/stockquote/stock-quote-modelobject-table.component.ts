@@ -34,31 +34,37 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
      */
     protected onTableLoad( modelObjects: T[] ): void
     {
-        this.debug( 'onTableLoad.overridden.begin' );
+        this.debug( 'onTableLoad.overridden.begin getting stock quotes' );
         super.onTableLoad( modelObjects );
-        modelObjects.forEach( stockQuoteModelObject =>
+        if ( !isNullOrUndefined( modelObjects ))
         {
-            if ( stockQuoteModelObject.stockQuoteState == StockQuoteState.NOT_CACHED ||
-                 stockQuoteModelObject.stockQuoteState == StockQuoteState.STALE )
-            {
-                this.stockQuoteRefreshService
-                    .refreshStockQuote( stockQuoteModelObject )
-                    .subscribe( (stockQuote: StockQuote) =>
-                    {
-                        this.debug( 'onTableLoad.overridden stockQuote: ' + JSON.stringify( stockQuote ));
-                        stockQuoteModelObject.companyName = stockQuote.companyName;
-                        stockQuoteModelObject.stockQuoteState = stockQuote.stockQuoteState;
-                        stockQuoteModelObject.lastPrice = stockQuote.lastPrice;
-                        stockQuoteModelObject.lastPriceChange = stockQuote.lastPriceChange;
-                    },
-                    error =>
-                    {
-                        stockQuoteModelObject.stockQuoteState = StockQuoteState.FAILURE;
-                        this.debug( "Error " + error + " refreshing stock quote: " + JSON.stringify( stockQuoteModelObject ));
-                    }
-                );
-            }
-        });
+            /*
+             * The table is loaded, get quotes for those stocks that are stale or not cached already
+             */
+            modelObjects.forEach( stockQuoteModelObject =>
+                                  {
+                                      if ( stockQuoteModelObject.stockQuoteState == StockQuoteState.NOT_CACHED ||
+                                          stockQuoteModelObject.stockQuoteState == StockQuoteState.STALE )
+                                      {
+                                          this.stockQuoteRefreshService
+                                              .refreshStockQuote( stockQuoteModelObject )
+                                              .subscribe( ( stockQuote: StockQuote ) =>
+                                                          {
+                                                              //this.debug( 'onTableLoad.overridden stockQuote: ' + JSON.stringify( stockQuote ));
+                                                              stockQuoteModelObject.companyName = stockQuote.companyName;
+                                                              stockQuoteModelObject.stockQuoteState = stockQuote.stockQuoteState;
+                                                              stockQuoteModelObject.lastPrice = stockQuote.lastPrice;
+                                                              stockQuoteModelObject.lastPriceChange = stockQuote.lastPriceChange;
+                                                          },
+                                                          error =>
+                                                          {
+                                                              stockQuoteModelObject.stockQuoteState = StockQuoteState.FAILURE;
+                                                              this.debug( "Error " + error + " refreshing stock quote: " + JSON.stringify( stockQuoteModelObject ) );
+                                                          }
+                                              );
+                                      }
+                                  } );
+        }
         this.log( 'onTableLoad.overridden.end' );
     }
 

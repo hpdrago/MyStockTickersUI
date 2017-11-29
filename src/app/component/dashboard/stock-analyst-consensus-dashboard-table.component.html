@@ -10,6 +10,9 @@
                  [rows]="15"
                  [style]="{'max--height':'80px'}"
                  [loading]="loading"
+                 [totalRecords]="totalRows"
+                 [lazy]="true"
+                 (onLazyLoad)="lazyLoadTable($event)"
                  (onRowDblclick)="onRowDoubleClick($event)"
                  [responsive]="true">
 

@@ -27,15 +27,4 @@ export abstract class StockModelObjectTableComponent<T extends StockModelObject<
         this.modelObject.tickerSymbol = tickerSymbol;
         this.loadTable();
     }
-
-    /**
-     * Clears the current contents and loads the table
-     */
-    public resetTable()
-    {
-        this.modelObject = this.crudServiceContainer
-                               .modelObjectFactory
-                               .newModelObject();
-        this.loadTable();
-    }
 }

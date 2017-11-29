@@ -9,6 +9,9 @@
                  [rowsPerPageOptions]="[20,30,40]"
                  [rows]="20"
                  [loading]="loading"
+                 [totalRecords]="totalRows"
+                 [lazy]="true"
+                 (onLazyLoad)="lazyLoadTable($event)"
                  (onRowDblclick)="onRowDoubleClick($event)"
                  [responsive]="true">
 

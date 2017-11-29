@@ -27,15 +27,18 @@ export class StockUrlMap
     public extractURLsFromNotes( noteContainers: StockNoteContainer[] )
     {
         this.urlMap = new Map();
-        noteContainers.forEach( noteContainer =>
+        if ( !isNullOrUndefined( noteContainers ))
         {
-            var url: string = this.extractURLFromNotes( noteContainer.getNotes() );
-            if ( !isNullOrUndefined( url ) )
-            {
-                //console.log( 'extractURLsFromNotes ticker: ' + stockNote.tickerSymbol + ' url: ' + url );
-                this.urlMap.set( noteContainer.getTickerSymbol(), url );
-            }
-        });
+            noteContainers.forEach( noteContainer =>
+                                    {
+                                        var url: string = this.extractURLFromNotes( noteContainer.getNotes() );
+                                        if ( !isNullOrUndefined( url ) )
+                                        {
+                                            //console.log( 'extractURLsFromNotes ticker: ' + stockNote.tickerSymbol + ' url: ' + url );
+                                            this.urlMap.set( noteContainer.getTickerSymbol(), url );
+                                        }
+                                    } );
+        }
     }
 
     /**

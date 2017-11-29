@@ -32,9 +32,14 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getTargetURL( modelObject: T )
     {
-        return this.appConfig.getBaseURL() +
-               this.getCustomerURL() == null ? "/" : '/' + this.getCustomerURL() + '/' +
-               this.getContextURL( modelObject );
+        var contextURL = this.getContextURL( modelObject );
+        if ( isNullOrUndefined( contextURL ) )
+        {
+            throw new ReferenceError( "getContextURL cannot return a null or undefined value" );
+        }
+        var customerURL = this.getCustomerURL() == null ? "/" : this.getCustomerURL();
+        this.debug( "contextURL: " + contextURL + " customerURL: " + customerURL );
+        return this.appConfig.getBaseURL() + contextURL + customerURL
     }
 
     /**
@@ -151,7 +156,8 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                    .map( ( response: Response ) =>
                    {
                        this.debug( methodName + " received response" );
-                       return this.modelObjectFactory.newModelObjectArray( response.json() )
+                       var modelObjects: T[] = this.modelObjectFactory.newModelObjectArray( response.json() )
+                       this.debug( methodName + " " + modelObjects.length + " model objects" );
                    })
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
                    .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer

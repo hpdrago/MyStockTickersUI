@@ -86,7 +86,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected onModelObjectChanged( modelObject: T )
    {
-       this.debug( "onModelObjectChanged " + JSON.stringify( modelObject ) );
+       //this.debug( "onModelObjectChanged " + JSON.stringify( modelObject ) );
        this.modelObject = modelObject;
        if ( !isNullOrUndefined( this.modelObject ) )
        {
@@ -100,7 +100,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
    protected setModelObject( modelObject: T )
    {
-       this.debug( "setModelObject " + JSON.stringify( modelObject ));
+       //this.debug( "setModelObject " + JSON.stringify( modelObject ));
        this.modelObject = modelObject;
    }
 
@@ -110,7 +110,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected onCrudOperationChanged( crudOperation: CrudOperation )
    {
-      this.debug( "crudOperation change " + CrudOperation.getName( crudOperation ));
+      //this.debug( "crudOperation change " + CrudOperation.getName( crudOperation ));
       this.crudOperation = crudOperation;
    }
 
@@ -120,7 +120,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
     protected setCrudOperation( crudOperation: CrudOperation )
     {
-        this.debug( "setCrudOperation " + CrudOperation.getName( crudOperation ));
+        //this.debug( "setCrudOperation " + CrudOperation.getName( crudOperation ));
         this.crudOperation = crudOperation;
     }
 

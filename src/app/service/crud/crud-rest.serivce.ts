@@ -42,7 +42,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
      */
     protected getUpdateModelObjectUrl( modelObject: T ): string
     {
-        return this.getCustomerURL() + `/${modelObject.getPrimaryKey()}`;
+        return this.getTargetURL( modelObject ) + `/${modelObject.getPrimaryKey()}`;
     }
 
     /**
@@ -51,7 +51,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
      */
     protected getDeleteModelObjectUrl( modelObject: T ): string
     {
-        return this.getCustomerURL() + `/${modelObject.getPrimaryKey()}`;
+        return this.getTargetURL( modelObject ) + `/${modelObject.getPrimaryKey()}`;
     }
 
     /**

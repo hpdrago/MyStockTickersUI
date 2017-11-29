@@ -61,10 +61,10 @@ export class DashboardComponent extends BaseComponent implements OnInit
      */
     protected onResetButtonClick()
     {
-        this.stockNotesTableDashboardComponent.resetTable();
-        this.stockToBuyTableDashboardComponent.resetTable();
-        this.stockAnalystConsensusDashboardTableComponent.resetTable();
-        this.stockCatalystEventTableComponent.resetTable();
+        this.stockNotesTableDashboardComponent.refreshTable();
+        this.stockToBuyTableDashboardComponent.refreshTable();
+        this.stockAnalystConsensusDashboardTableComponent.refreshTable();
+        this.stockCatalystEventTableComponent.refreshTable();
         this.stockAutoCompletedComponent.reset();
     }
 }
