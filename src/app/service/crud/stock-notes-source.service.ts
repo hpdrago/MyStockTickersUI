@@ -49,9 +49,10 @@ export class StockNotesSourceService extends CrudRestService<StockNotesSource>
                                       super.getModelObjectList( modelObject )
                                            .subscribe( stockNotesSourcesArray =>
                                                       {
-                                                          this.log( methodName + " received response" );
+                                                          this.log( methodName + " received response " + JSON.stringify( stockNotesSourcesArray ) );
                                                           var stockNotesSourceList: StockNotesSourceList = new StockNotesSourceList(
                                                               stockNotesSourcesArray );
+                                                          this.log( methodName + " " + JSON.stringify( stockNotesSourceList ));
                                                           observer.next( stockNotesSourceList );
                                                           observer.complete();
                                                       },

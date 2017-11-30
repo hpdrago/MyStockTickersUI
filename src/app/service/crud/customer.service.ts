@@ -14,6 +14,7 @@ import { SelectItem } from "primeng/primeng";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Subscription } from "rxjs/Subscription";
 import { PaginationURL } from "../../common/pagination-url";
+import { isNullOrUndefined } from "util";
 
 /**
  * This service handles all of the customer related actions.
@@ -36,9 +37,6 @@ export class CustomerService extends CrudRestService<Customer>
                  private customerFactory: CustomerFactory )
     {
         super( http, sessionService, appConfig, customerFactory );
-        this.customer = new Customer();
-        this.customer.id = 1;
-        this.loadSources();
     }
 
     protected getContextURL( modelObject: Customer ): string
@@ -72,6 +70,12 @@ export class CustomerService extends CrudRestService<Customer>
      */
     public subscribeToSourcesLoading( fn: (boolean) => any ) : Subscription
     {
+        if ( isNullOrUndefined( this.stockNotesSources ) )
+        {
+            this.customer = new Customer();
+            this.customer.id = 1;
+            this.loadSources();
+        }
         return this.sourcesLoadingSubject.asObservable().subscribe( fn );
     }
 
@@ -88,7 +92,7 @@ export class CustomerService extends CrudRestService<Customer>
             .subscribe( ( stockNotesSources: StockNotesSourceList ) =>
                         {
                             this.stockNotesSources = stockNotesSources;
-                            this.log( 'loadSources.end' );
+                            this.log( 'loadSources.end ' + JSON.stringify( this.stockNotesSources ) );
                             this.sourcesLoadingSubject.next( false );
                         },
                         error =>

@@ -33,7 +33,25 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
      */
     protected getCreateModelObjectUrl( modelObject: T ): string
     {
-        return this.getTargetURL( modelObject );
+        return this.getCreateOrReadURL( modelObject );
+    }
+
+    /**
+     * Returns the URL for an update or a delete where the URL targets a specific model object instance.
+     * @param {T} modelObject
+     * @returns {string}
+     */
+    protected getUpdateOrDeleteURL( modelObject: T ): string
+    {
+        var contextURL = this.getContextURL( modelObject );
+        if ( isNullOrUndefined( contextURL ) )
+        {
+            throw new ReferenceError( "getContextURL cannot return a null or undefined value" );
+        }
+        contextURL += '/' + modelObject.getPrimaryKey();
+        var customerURL = this.getCustomerURL() == null ? "/" : this.getCustomerURL();
+        this.debug( "contextURL: " + contextURL + " customerURL: " + customerURL );
+        return this.appConfig.getBaseURL() + contextURL + customerURL
     }
 
     /**
@@ -42,7 +60,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
      */
     protected getUpdateModelObjectUrl( modelObject: T ): string
     {
-        return this.getTargetURL( modelObject ) + `/${modelObject.getPrimaryKey()}`;
+        return this.getUpdateOrDeleteURL( modelObject );
     }
 
     /**
@@ -51,7 +69,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
      */
     protected getDeleteModelObjectUrl( modelObject: T ): string
     {
-        return this.getTargetURL( modelObject ) + `/${modelObject.getPrimaryKey()}`;
+        return this.getUpdateOrDeleteURL( modelObject );
     }
 
     /**

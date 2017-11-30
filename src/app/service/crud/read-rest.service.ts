@@ -30,7 +30,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * @param {T} modelObject
      * @returns {string}
      */
-    protected getTargetURL( modelObject: T )
+    protected getCreateOrReadURL( modelObject: T )
     {
         var contextURL = this.getContextURL( modelObject );
         if ( isNullOrUndefined( contextURL ) )
@@ -67,7 +67,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getReadModelObjectUrl( modelObject: T ): string
     {
-        return this.getTargetURL( modelObject ) + '/' + modelObject.getPrimaryKey();
+        return this.getCreateOrReadURL( modelObject ) + '/' + modelObject.getPrimaryKey();
     }
 
     /**
@@ -76,7 +76,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getReadModelObjectListUrl( modelObject: T ): string
     {
-        return this.getTargetURL( modelObject );
+        return this.getCreateOrReadURL( modelObject );
         //var url: string = this.appConfig.getBaseURL() + this.getContextURL();
         //return `${this.appConfig.getBaseURL()}/${this.getContextURL()}/${this.sessionService.getLoggedInUserId()}`;
         /*
@@ -158,6 +158,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                        this.debug( methodName + " received response" );
                        var modelObjects: T[] = this.modelObjectFactory.newModelObjectArray( response.json() )
                        this.debug( methodName + " " + modelObjects.length + " model objects" );
+                       return modelObjects;
                    })
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
                    .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
@@ -176,7 +177,8 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         this.logger.log( `${methodName} url: ${url} rowOffset: ${rowOffSet} rows: ${rows}` );
         try
         {
-            return this.http.get( url )
+            return this.http
+                       .get( url )
                        .map( ( response: Response ) =>
                              {
                                  return response.json();

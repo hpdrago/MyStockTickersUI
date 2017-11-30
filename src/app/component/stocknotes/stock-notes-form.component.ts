@@ -43,10 +43,8 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
     @ViewChild(StockAutoCompleteComponent)
     private stockAutoCompletedElementRef: ElementRef;
 
-    /**
-     * The stock is returned via an event when the user searches for a ticker symbol or company
-     */
     private stock: Stock;
+    private stocks: Stock[];
 
     /**
      * Comma delimited list of ticker symbols
@@ -105,6 +103,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
             this.tickerSymbols = '';
             this.stockSearch = '';
             this.stock = null;
+            this.stocks = [];
         }
     }
 
@@ -123,6 +122,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      */
     protected postInit(): void
     {
+        super.postInit();
         this.log( "postInit" );
         this.enableDisableActionTakenFields();
     }
@@ -227,6 +227,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
             if ( !this.tickerSymbols )
             {
                 this.tickerSymbols = '';
+                this.stocks = [];
             }
             if ( this.tickerSymbols.length > 0 )
             {
@@ -239,6 +240,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
             this.modelObject.stockPriceWhenCreated = stock.lastPrice;
             (<FormControl>this.formGroup.controls['tickerSymbols']).setValue( this.tickerSymbols );
             (<FormControl>this.formGroup.controls['stockSearch']).setValue( '' );
+            this.stocks.push( stock );
         }
     }
 
