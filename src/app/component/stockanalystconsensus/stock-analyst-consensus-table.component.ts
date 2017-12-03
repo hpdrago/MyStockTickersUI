@@ -41,7 +41,14 @@ export abstract class StockAnalystConsensusTableComponent extends StockQuoteMode
              rowData.avgAnalystPriceTarget != null &&
              rowData.avgAnalystPriceTarget > 0.0 )
         {
-            return rowData.avgAnalystPriceTarget/rowData.lastPrice;
+            if ( rowData.lastPrice < rowData.avgAnalystPriceTarget )
+            {
+                return rowData.lastPrice / rowData.avgAnalystPriceTarget;
+            }
+            else
+            {
+                return 1 - (rowData.lastPrice / rowData.avgAnalystPriceTarget);
+            }
         }
         else
         {
