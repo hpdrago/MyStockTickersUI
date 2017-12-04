@@ -10,19 +10,12 @@ import { CrudOperation } from "../common/crud-operation";
  *
  * @param <T> Read Model Type and Search Criteria
  *
- * inputs: ['crudButtonsService', 'crudDialogService']
- *
  * Created by mike on 11/27/2016.
  */
 export abstract class CrudPanelComponent<T extends ModelObject<T>>
     extends BaseCrudComponent<T>
     implements OnInit
 {
-
-
-    /**
-     * C O N S T R U C T O R
-     */
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
@@ -34,6 +27,7 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      */
     public ngOnInit()
     {
+        this.log( "CurdPanelComponent.ngOnInit.begin" );
         if ( !this.crudServiceContainer.crudFormButtonsService )
         {
             throw new Error( "crudButtonsService has not been set by Input value" );
@@ -44,63 +38,47 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
         }
         this.subscribeToCrudFormServiceEvents();
         this.subscribeToCrudPanelServiceEvents();
+        this.sendComponentInitializedEvent();
+        this.log( "CurdPanelComponent.ngOnInit.end" );
+    }
+
+    /**
+     * This method is called at the end of ngOnInit to notify listeners that the component has been initialized.
+     * Subclasses that override ngOnInit should override this method as well and have it wait on a subject to indicate
+     * when the component has completed initialization.
+     */
+    protected sendComponentInitializedEvent()
+    {
+        this.crudServiceContainer
+            .crudDialogService
+            .sendComponentInitializedEvent();
     }
 
     /**
      * Subscribes to the events received from the CrudFormButtonsService
      */
-    private subscribeToCrudPanelServiceEvents(): void
+    protected subscribeToCrudPanelServiceEvents(): void
     {
         this.debug( "subscribeToCrudPanelServiceEvents.begin" );
-        this.addSubscription( this.crudServiceContainer
-            .crudFormButtonsService
-            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.onModelObjectChanged( modelObject ) ));
-        this.addSubscription( this.crudServiceContainer
-            .crudFormButtonsService
-            .subscribeToCrudOperationChangeEvent( ( crudOperation: CrudOperation ) => this.onCrudOperationChanged( crudOperation ) ));
         this.debug( "subscribeToCrudPanelServiceEvents.end" );
     }
 
     /**
      * Subscribes to the events received from the CrudFormService
      */
-    private subscribeToCrudFormServiceEvents(): void
+    protected subscribeToCrudFormServiceEvents(): void
     {
         this.debug( "subscribeToCrudFormServiceEvents.begin" );
         /**
          * Subscribe to error notifications from child components
          */
+        /*
         this.addSubscription(
             this.crudServiceContainer
             .crudFormService
             .subscribeToCrudOperationError(( errorMessage: string ) => this.reportRestError( errorMessage )));
+            */
         this.debug( "subscribeToCrudFormServiceEvents.end" );
-    }
-
-    /**
-     * This method is called whenever the model object changes.
-     * @param modelObject
-     * @override
-     */
-    protected onModelObjectChanged( modelObject: T ): void
-    {
-        super.onModelObjectChanged( modelObject );
-        this.crudServiceContainer
-            .crudFormService
-            .sendModelObjectChangedEvent( this.modelObject );
-    }
-
-    /**
-     * This method is called whenever the crudOperation changes.
-     * @param crudOperation
-     * @override
-     */
-    protected onCrudOperationChanged( crudOperation: CrudOperation ): void
-    {
-        super.onCrudOperationChanged( crudOperation );
-        this.crudServiceContainer
-            .crudFormService
-            .sendCrudOperationChangedEvent( this.crudOperation );
     }
 
     protected onSubmit(): void

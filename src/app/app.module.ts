@@ -118,7 +118,6 @@ import { StockCatalystEventTableButtonsComponent } from "./component/stockcataly
 import { StockCatalystEventFormButtonsComponent } from "./component/stockcatalystevent/stock-catalyst-event-form-buttons.component";
 import { StockCatalystEventFormComponent } from "./component/stockcatalystevent/stock-catalyst-event-form.component";
 import { StockToBuyDialogComponent } from "./component/stocktobuy/stock-to-buy-dialog.component";
-import { StockToBuyTableComponent } from "./component/stocktobuy/stock-to-buy-table.component";
 import { StockToBuyFormComponent } from "./component/stocktobuy/stock-to-buy-form.component";
 import { StockToBuyTableButtonsComponent } from "./component/stocktobuy/stock-to-buy-table-buttons.component";
 import { StockToBuyFormButtonsComponent } from "./component/stocktobuy/stock-to-buy-form-buttons.component";
@@ -126,7 +125,7 @@ import { StockToBuyFactory } from "./model/factory/stock-to-buy.factory";
 import { StockToBuyCrudServiceContainer } from "./component/stocktobuy/stock-to-buy-crud-service-container";
 import { StockToBuyCrudService } from "./service/crud/stock-to-buy-crud.service";
 import { StockQuoteRefreshService } from "./service/stock-quote-refresh.service";
-import { CustomerService } from "./service/crud/customer.service";
+import { CustomerCrudService } from "./service/crud/customer-crud.service";
 import { CustomerFactory } from "./model/factory/customer.factory";
 import { UppercaseValueDirective } from "./directives/uppercase.value.accessor";
 import { StockNotesTableTabComponent } from "./component/stocknotes/stock-notes-table-tab.component";
@@ -136,6 +135,15 @@ import { StockToBuyTableTabComponent } from "./component/stocktobuy/stock-to-buy
 import { FormErrorsComponent } from "./component/common/form-errors.component";
 import { StockAnalystConsensusDashboardTableComponent } from "./component/dashboard/stock-analyst-consensus-dashboard-table.component";
 import { StockAnalystConsensusTabTableComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-tab-table.component";
+import { CustomerAccountFactory } from "./model/factory/customer-account.factory";
+import { CustomerAccountCrudService } from "./service/crud/customer-account-crud.service";
+import { CustomerFormComponent } from "./component/customer/customer-form.component";
+import { ProfileComponent } from "./component/profile/profile.component";
+import { CustomerAccountCrudServiceContainer } from "./component/account/customer-account-crud-service-container";
+import { CustomerCrudServiceContainer } from "./component/customer/customer-crud-service-container";
+import { CustomerPanelComponent } from "./component/customer/customer-panel.component";
+import { CustomerFormButtonsComponent } from "./component/customer/customer-form-buttons.component";
+import { CustomerService } from "./service/customer.service";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -201,6 +209,11 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         AppComponent,
         MenuBarComponent,
 
+        CustomerFormComponent,
+        CustomerPanelComponent,
+        CustomerFormButtonsComponent,
+        ProfileComponent,
+
         StockTableComponent,
         StockFormComponent,
         StockDialogComponent,
@@ -260,7 +273,13 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
     [
         // Global providers -- singletons
         CustomerService,
+        CustomerCrudService,
+        CustomerCrudServiceContainer,
         CustomerFactory,
+
+        CustomerAccountCrudServiceContainer,
+        CustomerAccountCrudService,
+        CustomerAccountFactory,
 
         StockCrudService,
         StockCrudServiceContainer,

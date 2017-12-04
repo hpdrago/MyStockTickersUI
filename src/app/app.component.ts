@@ -4,6 +4,8 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import { DateOrTimePeriod } from "./common/date-or-time-period.enum";
+import { CustomerService } from "./service/customer.service";
+import { Customer } from "./model/entity/customer";
 
 @Component( {
     selector:    'app-root',
@@ -15,8 +17,11 @@ export class AppComponent
     DateOrTimePeriod: typeof DateOrTimePeriod = DateOrTimePeriod;
 
     title = 'My Stock Tickers';
-    constructor(public toastr: ToastsManager, vRef: ViewContainerRef)
+    constructor( public toastr: ToastsManager,
+                 private vRef: ViewContainerRef,
+                 private customerService: CustomerService )
     {
         this.toastr.setRootViewContainerRef(vRef);
+        customerService.login( 'michael.earl.65@gmail.com' );
     }
 }

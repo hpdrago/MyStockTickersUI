@@ -12,8 +12,7 @@ import { CrudOperation } from "../crud/common/crud-operation";
 @Component(
 {
     selector:    'stock-form',
-    templateUrl: './stock-form.component.html',
-    inputs: ['crudFormService']
+    templateUrl: './stock-form.component.html'
 })
 export class StockFormComponent extends CrudFormComponent<Stock>
 {

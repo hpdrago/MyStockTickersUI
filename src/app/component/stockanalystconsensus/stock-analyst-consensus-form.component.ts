@@ -7,7 +7,7 @@ import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensu
 import { StockAnalystConsensusCrudServiceContainer } from "./stock-analyst-consensus-crud-service-container";
 import { SessionService } from "../../service/crud/session.service";
 import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
-import { CustomerService } from "../../service/crud/customer.service";
+import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 
 /**
  * This is the Stock AnalystConsensus Form Component class.
@@ -26,7 +26,7 @@ export class StockAnalystConsensusFormComponent extends CrudFormWithNotesSourceC
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private stockAnalystConsensusCrudServiceContainer: StockAnalystConsensusCrudServiceContainer,
-                 protected customerService: CustomerService )
+                 protected customerService: CustomerCrudService )
     {
         super( toaster, stockAnalystConsensusCrudServiceContainer, customerService );
     }

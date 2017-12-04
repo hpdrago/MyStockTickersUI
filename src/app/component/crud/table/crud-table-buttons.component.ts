@@ -8,8 +8,6 @@ import { isNullOrUndefined } from "util";
 /**
  * This is the base component class for the buttons on all CRUD enabled tables
  *
- * inputs: ['crudTableButtonsService']
- *
  * Created by mike on 1/2/2017.
  */
 @Component({

@@ -11,6 +11,7 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectCrudOperationSubjectInfo } from "../dialog/modelobject-crudoperation-subject-info";
 import { INVALID } from "@angular/forms/src/model";
 import { Subscription } from "rxjs/Subscription";
+import { Observable } from "rxjs/Observable";
 
 /**
  * This class contains the common functionality for a form for a CRUD model object.
@@ -24,8 +25,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected formGroup: FormGroup;
     protected continuousAdd: boolean = false;
-    protected ngOnInitCompletedSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
-    protected loadResourcesCompletedSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
+    private ngOnInitCompletedSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
+    private loadResourcesCompletedSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
+    private resourceLoaders: Observable<boolean>[] = [];
 
     /**
      * C O N S T R U C T O R
@@ -49,15 +51,26 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     public ngOnInit(): void
     {
-        this.debug( "ngOnInit.begin" );
-        this.loadResources();
-        //this.modelObject = this.crudServiceContainer.modelObjectFactory.newModelObject();
+        this.debug( "CrudFormComponent.ngOnInit.begin" );
+        this.resourceLoaders = this.loadResources();
         this.subscribeToCrudFormServiceEvents();
         this.initializeForm();
-        // Tell everyone that we are done
-        this.sendComponentInitializedCompletedEvent();
-        this.sendNgOnInitCompletedEvent();
-        this.debug( "ngOnInit.end" );
+        if ( this.resourceLoaders.length > 0 )
+        {
+            this.debug( "Waiting for " + this.resourceLoaders.length + " resource loaders" );
+            Observable.forkJoin( this.resourceLoaders )
+                      .subscribe( results =>
+                       {
+                           this.debug( "CrudFormComponent.ngOnInit results: " + JSON.stringify( results ));
+                           this.debug( "CrudFormComponent.ngOnInit.end" );
+                           this.sendNgOnInitCompletedEvent();
+                       });
+        }
+        else
+        {
+            this.sendNgOnInitCompletedEvent();
+            this.debug( "CrudFormComponent.ngOnInit.end" );
+        }
     }
 
     /**
@@ -67,7 +80,11 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected sendNgOnInitCompletedEvent()
     {
+        this.debug( "sendNgOnInitCompletedEvent.begin" );
         this.ngOnInitCompletedSubject.next( true );
+        this.sendComponentInitializedCompletedEvent();
+        this.postInit();
+        this.debug( "sendNgOnInitCompletedEvent.end" );
     }
 
     public ngAfterContentInit(): void
@@ -109,48 +126,44 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
 
     /**
      * This method is called at the beginning of the {@code ngOnInit}.  It is provided to provide subclasses a place
-     * to load external data required for the form.  By default, this method only called {@code onLoadResourcesCompleted} to
-     * send the proper observable message.
+     * to load external data required for the form. Override this method and return a {@code BehaviourSubject} for each
+     * resource loading task.  Be sure to add the parents jobs to the returned array --> super.loadResources()
      */
-    protected loadResources(): void
+    protected loadResources(): Observable<boolean>[]
     {
-        this.debug( "CrudFormComponent.loadResources" );
-        this.onLoadResourcesCompleted();
+        return [];
     }
 
     /**
      * This method sends any subscribers a true message to indicate the resource loading has completed.
-     * It will also call {@code postInit} if and when {@codg ngOnInit} has completed.
+     * process.
      */
     protected onLoadResourcesCompleted(): void
     {
-        this.debug( "onLoadResourcesCompleted.begin" );
-        /*
-         * Must wait for the ngOnInit to complete so that we can call postInit
-         */
-        var completionFunction = () =>
+        this.debug( "onLoadResourcesCompleted" );
+        this.loadResourcesCompletedSubject.next( true );
+    }
+
+    /**
+     * This method will wait for the ngOnInit completion subject to send a true value which indicates that the method
+     * has completed.
+     *
+     * @param {() => void} completionFunction
+     */
+    protected waitForCompletion( taskName: string, subject: BehaviorSubject<boolean>, completionFunction: () => void )
+    {
+        this.debug( "waitForNgOnInitCompletion.begin " + taskName );
+        this.ngOnInitCompletedSubject.subscribe( ( completed: boolean ) =>
         {
-            this.loadResourcesCompletedSubject.next( true );
-            this.postInit();
-            this.debug( "onLoadResourcesCompleted.end" );
-        }
-        /*
-         * Check to see if we need to set the source name on the form
-         */
-        if ( !this.ngOnInitCompletedSubject.getValue() )
-        {
-            this.debug( "waiting for ngOnInit to completed" );
-            this.ngOnInitCompletedSubject
-                .asObservable()
-                .subscribe( () =>
-                            {
-                                completionFunction();
-                            })
-        }
-        else
-        {
-            completionFunction();
-        }
+            /*
+             * Check to see if we need to set the source name on the form
+             */
+            if ( completed )
+            {
+                completionFunction();
+                this.debug( "waitForNgOnInitCompletion.end " + taskName );
+            }
+        });
     }
 
     /**
@@ -350,11 +363,14 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onModelObjectCrudOperationChanged( subjectInfo: ModelObjectCrudOperationSubjectInfo ): void
     {
         this.debug( "onModelObjectCrudOperationChanged.begin" );
-        this.setCrudOperation( subjectInfo.crudOperation );
-        this.setModelObject( subjectInfo.modelObject );
-        if ( this.isCrudCreateOperation() )
+        if ( !isNullOrUndefined( subjectInfo ))
         {
-            this.setDefaultValues();
+            this.setCrudOperation( subjectInfo.crudOperation );
+            this.setModelObject( subjectInfo.modelObject );
+            if ( this.isCrudCreateOperation() )
+            {
+                this.setDefaultValues();
+            }
         }
         this.debug( "onModelObjectCrudOperationChanged.end" );
     }

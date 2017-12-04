@@ -1,4 +1,3 @@
-import { Component } from "@angular/core";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { ToastsManager } from "ng2-toastr";
 import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";

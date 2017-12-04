@@ -11,6 +11,7 @@ import { StockCatalystEventTableComponent } from "./component/stockcatalystevent
 import { StockNotesTableTabComponent } from "./component/stocknotes/stock-notes-table-tab.component";
 import { StockToBuyTableTabComponent } from "./component/stocktobuy/stock-to-buy-table-tab.component";
 import { StockAnalystConsensusTabTableComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-tab-table.component";
+import { ProfileComponent } from "./component/profile/profile.component";
 
 const routes: Routes = [
     {
@@ -56,6 +57,10 @@ const routes: Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent,
+    },
+    {
+        path: 'profile',
+        component: ProfileComponent,
     },
     {
         path: '',

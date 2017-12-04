@@ -15,7 +15,7 @@ import { isNullOrUndefined } from "util";
 import { StockNotesSentiment } from "../../common/stock-notes-sentiment.enum";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { StockCrudService } from "../../service/crud/stock-crud.service";
-import { CustomerService } from "../../service/crud/customer.service";
+import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
 import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
 
@@ -60,7 +60,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private stockService: StockCrudService,
-                 protected customerService: CustomerService,
+                 protected customerService: CustomerCrudService,
                  private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {
         super( toaster, stockNotesCrudServiceContainer, customerService );
@@ -142,7 +142,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
         {
             'notes':             new FormControl( this.modelObject.notes, Validators.compose( [Validators.maxLength( 4000 ),
                                                                                                Validators.required] )),
-            'notesSource':       new FormControl( "" ),
+            'notesSourceId':     new FormControl( this.modelObject.notesSourceId ),
             'notesDate':         new FormControl( this.modelObject.notesDate, Validators.required ),
             'notesRating':       new FormControl( this.modelObject.notesRating ),
             'tags':              new FormControl( this.modelObject.tags ),
@@ -337,7 +337,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
         else
         {
             return this.modelObject.actionTaken == StockNotesActionTaken.NONE ||
-                this.modelObject.actionTaken == StockNotesActionTaken.BUY_LATER;
+                   this.modelObject.actionTaken == StockNotesActionTaken.BUY_LATER;
         }
     }
 }

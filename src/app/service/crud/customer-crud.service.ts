@@ -7,23 +7,21 @@ import { Customer } from "../../model/entity/customer";
 import { SessionService } from "./session.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { AppConfigurationService } from "../app-configuration.service";
-import { Http } from "@angular/http";
 import { CustomerFactory } from "../../model/factory/customer.factory";
 import { StockNotesCrudServiceContainer } from "../../component/stocknotes/stock-notes-crud-service-container";
 import { SelectItem } from "primeng/primeng";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Subscription } from "rxjs/Subscription";
-import { PaginationURL } from "../../common/pagination-url";
-import { isNullOrUndefined } from "util";
+import { Observable } from "rxjs/Observable";
+import { Http, Response } from "@angular/http";
 
 /**
  * This service handles all of the customer related actions.
  */
 @Injectable()
-export class CustomerService extends CrudRestService<Customer>
+export class CustomerCrudService extends CrudRestService<Customer>
 {
     private stockNotesSources: StockNotesSourceList;
-    private customer: Customer;
     /**
      * This subject tracks when the sources are being loaded
      * @type {BehaviorSubject<boolean>}
@@ -37,6 +35,7 @@ export class CustomerService extends CrudRestService<Customer>
                  private customerFactory: CustomerFactory )
     {
         super( http, sessionService, appConfig, customerFactory );
+        this.loadSources();
     }
 
     protected getContextURL( modelObject: Customer ): string
@@ -70,25 +69,19 @@ export class CustomerService extends CrudRestService<Customer>
      */
     public subscribeToSourcesLoading( fn: (boolean) => any ) : Subscription
     {
-        if ( isNullOrUndefined( this.stockNotesSources ) )
-        {
-            this.customer = new Customer();
-            this.customer.id = 1;
-            this.loadSources();
-        }
         return this.sourcesLoadingSubject.asObservable().subscribe( fn );
     }
 
     /**
      * This method will get the user's note source values from the database
      */
-    private loadSources()
+    public loadSources()
     {
         this.log( 'loadSources.begin' );
         this.sourcesLoadingSubject.next( true );
         this.stockNotesCrudServiceContainer
             .stockNoteSourceService
-            .getStockNoteSources( this.customer.id )
+            .getStockNoteSources( this.sessionService.getLoggedInUserId() )
             .subscribe( ( stockNotesSources: StockNotesSourceList ) =>
                         {
                             this.stockNotesSources = stockNotesSources;
@@ -121,4 +114,23 @@ export class CustomerService extends CrudRestService<Customer>
         return this.stockNotesSources.getLabel( notesSourceId );
     }
 
+    /**
+     * Get the customer entity by the customer's email.
+     * @param {string} email
+     * @returns {Observable<Customer>}
+     */
+    public getCustomerByEmail( email: string ): Observable<Customer>
+    {
+        var methodName = "getCustomerByEmail";
+        var url: string = this.appConfig.getBaseURL() + this.getContextURL( null ) + this.getCustomerURL() + '/email/' + email;
+        return this.http
+                   .get( url )
+                   .map( ( response: Response ) =>
+                         {
+                             this.debug( methodName + " received: " + JSON.stringify( response.json() ))
+                             return this.customerFactory.newModelObjectFromJSON( response.json() );
+                         } ) // ...and calling .json() on the response to return data
+                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+
+    }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AppConfigurationService } from "../app-configuration.service";
 import { BaseService } from "../base-service";
+import { Customer } from "../../model/entity/customer";
 
 /**
  * Created by mike on 10/22/2016.
@@ -8,7 +9,7 @@ import { BaseService } from "../base-service";
 @Injectable()
 export class SessionService extends BaseService
 {
-    private loggedInUserId: number = 1;
+    private customer: Customer;
 
     constructor( private config: AppConfigurationService )
     {
@@ -21,7 +22,7 @@ export class SessionService extends BaseService
      */
     public getLoggedInUserId(): number
     {
-        return this.loggedInUserId;
+        return this.customer.id;
     }
 
     /**
@@ -30,6 +31,11 @@ export class SessionService extends BaseService
      */
     public isAdminUser(): boolean
     {
-        return this.loggedInUserId == this.config.getAdminUserId();
+        return this.customer.id == this.config.getAdminUserId();
+    }
+
+    public setCustomer( customer: Customer )
+    {
+        this.customer = customer;
     }
 }

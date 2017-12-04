@@ -7,7 +7,7 @@ import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
 import { SessionService } from "../../service/crud/session.service";
 import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
-import { CustomerService } from "../../service/crud/customer.service";
+import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 
 /**
  * This is the Stock ToBuy Form Component class.
@@ -25,7 +25,7 @@ export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<St
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private stockToBuyCrudServiceContainer: StockToBuyCrudServiceContainer,
-                 protected customerService: CustomerService)
+                 protected customerService: CustomerCrudService)
     {
         super( toaster, stockToBuyCrudServiceContainer, customerService );
     }

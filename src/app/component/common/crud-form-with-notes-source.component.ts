@@ -5,13 +5,15 @@ import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { ModelObject } from "../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
 import { CrudServiceContainer } from "../crud/common/crud-service-container";
-import { CustomerService } from "../../service/crud/customer.service";
+import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { SelectItem } from "primeng/primeng";
 import { StockNotesSourceList } from "../stocknotes/stock-notes-source-list";
 import { isNullOrUndefined } from "util";
 import { StockNotesSourceContainer } from "../../common/stock-notes-source-container";
 import { isNumeric } from "rxjs/util/isNumeric";
 import { Subject } from "rxjs/Subject";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs/Observable";
 
 /**
  * This class contains the methods to handle forms for entities with note sources.
@@ -25,11 +27,10 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
 
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T>,
-                 protected customerService: CustomerService )
+                 protected customerService: CustomerCrudService )
     {
         super( toaster, crudServiceContainer );
     }
-
 
     /**
      * This method is called after {@code loadResources() and ngOnInit() have completed}.  At that time, the form
@@ -38,8 +39,8 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
     protected postInit(): void
     {
         super.postInit();
-        this.debug( "CrudFormWithNotesSourceComponent.postInit setting notesSourceId to " + this.modelObject.getNotesSourceId() );
-        this.setFormValue( 'notesSource', this.modelObject.getNotesSourceId() );
+        //this.debug( "CrudFormWithNotesSourceComponent.postInit setting notesSourceId to " + this.modelObject.getNotesSourceId() );
+        //this.setFormValue( 'notesSource', this.modelObject.getNotesSourceId() );
     }
 
     /**
@@ -82,6 +83,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
         if ( !isNumeric( event.value ))
         {
             this.modelObject.setNotesSourceName( event.value.toUpperCase() );
+            this.modelObject.setNotesSourceId( 0 );
             this.sourceAdded = true;
         }
         else
@@ -126,9 +128,10 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
     /**
      * Loads the customer's sources
      */
-    protected loadResources(): void
+    protected loadResources(): Observable<boolean>[]
     {
         this.debug( "CrudFormWithNotesSource.loadResources.begin")
+        var sourcesLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
         this.customerService
             .subscribeToSourcesLoading( (loading)=>
                                             {
@@ -137,10 +140,12 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
                                                 {
                                                     this.stockNotesSourceList = this.customerService.getStockNotesSourceList();
                                                     this.sourceItems = this.stockNotesSourceList.toSelectItems();
-                                                    this.debug( "loadResources source items set " + JSON.stringify( this.stockNotesSourceList ) );
+                                                    this.debug( "loadResources source items set " + JSON.stringify( this.sourceItems ) );
                                                     this.debug( "CrudFormWithNotesSource.loadResources.end")
-                                                    super.loadResources();
+                                                    sourcesLoadingSubject.next( true );
+                                                    sourcesLoadingSubject.complete();
                                                 }
                                             });
+        return [sourcesLoadingSubject.asObservable()];
     }
 }
