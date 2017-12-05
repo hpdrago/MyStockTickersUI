@@ -7,7 +7,7 @@ import { SelectItem } from "primeng/primeng";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { StockNotesStock } from "../../model/entity/stock-notes-stock";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { StockNotesSourceList } from "./stock-notes-source-list";
 import { isNumeric } from "rxjs/util/isNumeric";
 import { CrudOperation } from "../crud/common/crud-operation";

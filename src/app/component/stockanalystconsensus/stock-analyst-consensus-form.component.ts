@@ -5,7 +5,7 @@ import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { StockAnalystConsensusCrudServiceContainer } from "./stock-analyst-consensus-crud-service-container";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 

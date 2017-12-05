@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 import { CrudRestService } from "./crud-rest.serivce";
 import { Http } from "@angular/http";
-import { SessionService } from "./session.service";
+import { SessionService } from "../session.service";
 import { AppConfigurationService } from "../app-configuration.service";
 import { Injectable } from "@angular/core";
 import { StockSectorFactory } from "../../model/factory/stock-sector.factory";

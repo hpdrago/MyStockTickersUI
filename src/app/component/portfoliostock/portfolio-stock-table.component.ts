@@ -4,7 +4,7 @@ import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-service-container";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";

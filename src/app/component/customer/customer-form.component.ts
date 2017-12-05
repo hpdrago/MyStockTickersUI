@@ -1,10 +1,11 @@
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { Customer } from "../../model/entity/customer";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { CustomerCrudServiceContainer } from "./customer-crud-service-container";
+import { CrudOperation } from "../crud/common/crud-operation";
 
 /**
  * This is the Customer Form Component class.
@@ -24,6 +25,13 @@ export class CustomerFormComponent extends CrudFormComponent<Customer>
                  private customerCrudServiceContainer: CustomerCrudServiceContainer )
     {
         super( toaster, customerCrudServiceContainer );
+    }
+
+    public ngOnInit(): void
+    {
+        this.setModelObject( this.sessionService.customer );
+        this.setCrudOperation( CrudOperation.UPDATE );
+        super.ngOnInit();
     }
 
     /**

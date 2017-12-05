@@ -22,6 +22,6 @@ export class AppComponent
                  private customerService: CustomerService )
     {
         this.toastr.setRootViewContainerRef(vRef);
-        customerService.login( 'michael.earl.65@gmail.com' );
+        //customerService.login( 'michael.earl.65@gmail.com' );
     }
 }

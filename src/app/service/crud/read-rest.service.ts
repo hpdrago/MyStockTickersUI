@@ -1,4 +1,4 @@
-import { SessionService } from "./session.service";
+import { SessionService } from "../session.service";
 import { AppConfigurationService } from "../app-configuration.service";
 import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 import { Observable } from "rxjs/Observable";

@@ -1,6 +1,6 @@
 import { Observable } from "rxjs";
 import { Headers, Http, RequestOptions, Response } from "@angular/http";
-import { SessionService } from "./session.service";
+import { SessionService } from "../session.service";
 import { ReadRestService } from "./read-rest.service";
 import { ModelObject } from "../../model/entity/modelobject";
 import { AppConfigurationService } from "../app-configuration.service";

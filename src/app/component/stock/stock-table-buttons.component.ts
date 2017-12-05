@@ -2,7 +2,7 @@ import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.comp
 import { Stock } from "../../model/entity/stock";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { StockCrudServiceContainer } from "./stock-crud-service-container";
 import { isNullOrUndefined } from "util";
 

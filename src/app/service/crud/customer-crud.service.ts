@@ -4,7 +4,7 @@
 import { StockNotesSourceList } from "../../component/stocknotes/stock-notes-source-list";
 import { Injectable } from "@angular/core";
 import { Customer } from "../../model/entity/customer";
-import { SessionService } from "./session.service";
+import { SessionService } from "../session.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { AppConfigurationService } from "../app-configuration.service";
 import { CustomerFactory } from "../../model/factory/customer.factory";
@@ -35,7 +35,6 @@ export class CustomerCrudService extends CrudRestService<Customer>
                  private customerFactory: CustomerFactory )
     {
         super( http, sessionService, appConfig, customerFactory );
-        this.loadSources();
     }
 
     protected getContextURL( modelObject: Customer ): string
@@ -122,7 +121,8 @@ export class CustomerCrudService extends CrudRestService<Customer>
     public getCustomerByEmail( email: string ): Observable<Customer>
     {
         var methodName = "getCustomerByEmail";
-        var url: string = this.appConfig.getBaseURL() + this.getContextURL( null ) + this.getCustomerURL() + '/email/' + email;
+        var url: string = this.appConfig.getBaseURL() + this.getContextURL( null ) + '/email/' + email;
+        this.debug( methodName + " url: " + url );
         return this.http
                    .get( url )
                    .map( ( response: Response ) =>

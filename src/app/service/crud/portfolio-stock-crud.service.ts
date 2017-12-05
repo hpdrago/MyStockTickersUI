@@ -1,5 +1,5 @@
 
-import { SessionService } from "./session.service";
+import { SessionService } from "../session.service";
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
 import { Observable } from "rxjs";

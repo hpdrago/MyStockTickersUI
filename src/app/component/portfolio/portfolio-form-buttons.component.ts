@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { PortfolioCrudServiceContainer } from "./porfolio-crud-service-container";
 
 /**

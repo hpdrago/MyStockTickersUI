@@ -53,7 +53,7 @@ import { ToastModule, ToastOptions, ToastsManager } from "ng2-toastr/ng2-toastr"
  */
 import { routing } from "./app_routes";
 import { StockExchangeService } from "./service/crud/stock-exchange.service";
-import { SessionService } from "./service/crud/session.service";
+import { SessionService } from "./service/session.service";
 import { AppConfigurationService } from "./service/app-configuration.service";
 import { AppComponent } from "./app.component";
 import { StockTableComponent } from "./component/stock/stock-table.component";
@@ -144,6 +144,12 @@ import { CustomerCrudServiceContainer } from "./component/customer/customer-crud
 import { CustomerPanelComponent } from "./component/customer/customer-panel.component";
 import { CustomerFormButtonsComponent } from "./component/customer/customer-form-buttons.component";
 import { CustomerService } from "./service/customer.service";
+import { AuthGuard } from "./service/auth-guard.service";
+import { AuthService } from "./service/auth.service";
+import { LoginRoutingModule } from "./login-routes.module";
+import { AdminRoutingModule } from "./admin-routing.module";
+import { LoginComponent } from "./login.component";
+import { AdminComponent } from "./component/admin/admin.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -202,11 +208,17 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         TooltipModule,
         // Third Party modules,
         BusyModule,
-        ToastModule.forRoot()
+        ToastModule.forRoot(),
+
+        // StoxTracker Modules
+        LoginRoutingModule,
+        AdminRoutingModule
     ],
     declarations:
     [
         AppComponent,
+        AdminComponent,
+        LoginComponent,
         MenuBarComponent,
 
         CustomerFormComponent,
@@ -272,6 +284,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
     providers:
     [
         // Global providers -- singletons
+        AuthService,
+        AuthGuard,
+
         CustomerService,
         CustomerCrudService,
         CustomerCrudServiceContainer,

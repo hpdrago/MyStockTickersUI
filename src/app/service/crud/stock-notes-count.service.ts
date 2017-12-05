@@ -1,6 +1,6 @@
 import { ReadRestService } from "./read-rest.service";
 import { Http } from "@angular/http";
-import { SessionService } from "./session.service";
+import { SessionService } from "../session.service";
 import { AppConfigurationService } from "../app-configuration.service";
 import { StockNotesCountFactory } from "../../model/factory/stock-note-count.factory";
 import { Observable } from "rxjs/Observable";

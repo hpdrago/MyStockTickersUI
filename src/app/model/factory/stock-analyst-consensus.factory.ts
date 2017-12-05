@@ -1,7 +1,7 @@
 
 import { ModelObjectFactory } from "./model-object.factory";
 import { StockAnalystConsensus } from "../entity/stock-analyst-consensus";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { Injectable } from "@angular/core";
 
 @Injectable()

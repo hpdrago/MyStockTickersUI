@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Rx";
 import { PaginationPage } from "../../common/pagination";
 import { PaginationURL } from "../../common/pagination-url";
-import { SessionService } from "./session.service";
+import { SessionService } from "../session.service";
 import { AppConfigurationService } from "./../app-configuration.service";
 import { StockFactory } from "../../model/factory/stock.factory";
 import { Stock } from "../../model/entity/stock";

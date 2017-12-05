@@ -12,31 +12,44 @@ import { StockNotesTableTabComponent } from "./component/stocknotes/stock-notes-
 import { StockToBuyTableTabComponent } from "./component/stocktobuy/stock-to-buy-table-tab.component";
 import { StockAnalystConsensusTabTableComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-tab-table.component";
 import { ProfileComponent } from "./component/profile/profile.component";
+import { AuthGuard } from "./service/auth-guard.service";
+import { AdminComponent } from "./component/admin/admin.component";
 
 const routes: Routes = [
     {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [AuthGuard]
+    },
+    {
         path: 'portfolios',
         component: PortfolioTableComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'portfolioStock',
         component: PortfolioStockFormComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'stockNotes',
         component: StockNotesTableTabComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'stockCatalystEvents',
         component: StockCatalystEventTableComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'stockAnalystConsensus',
         component: StockAnalystConsensusTabTableComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'stocksToBuy',
         component: StockToBuyTableTabComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'Popular Links',
@@ -57,15 +70,18 @@ const routes: Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'profile',
         component: ProfileComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: '',
         redirectTo: 'dashboard',
-        pathMatch: 'full'
+        pathMatch: 'full',
+        canActivate: [AuthGuard]
     }
 ];
 

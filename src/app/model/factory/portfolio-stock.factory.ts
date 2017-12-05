@@ -1,7 +1,7 @@
 import { PortfolioStock } from "../entity/portfolio-stock";
 import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 
 /**
  * This class provides factory methods for the Stock ModelObject.

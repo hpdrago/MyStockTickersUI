@@ -1,6 +1,6 @@
 import { CrudRestService } from "./crud-rest.serivce";
 import { StockNotesSource } from "../../model/entity/stock-notes-source";
-import { SessionService } from "./session.service";
+import { SessionService } from "../session.service";
 import { Http } from "@angular/http";
 import { AppConfigurationService } from "../app-configuration.service";
 import { StockNotesSourceFactory } from "../../model/factory/stock-notes-source.factory";

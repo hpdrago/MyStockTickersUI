@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockNotesCrudServiceContainer } from "../stocknotes/stock-notes-crud-service-container";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";

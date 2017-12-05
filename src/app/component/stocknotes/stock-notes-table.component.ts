@@ -1,5 +1,5 @@
 import { StockNotes } from "../../model/entity/stock-notes";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { StockUrlMap } from "../../common/stock-url-map";

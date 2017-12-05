@@ -1,23 +1,23 @@
 import { Injectable } from "@angular/core";
 import { Customer } from "../model/entity/customer";
-import { SessionService } from "./crud/session.service";
+import { SessionService } from "./session.service";
 import { CustomerCrudService } from "./crud/customer-crud.service";
+import { BaseService } from "./base-service";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
 
+/**
+ * This is the general (not CRUD) service class for the customer.
+ *
+ * Created 12/4/2017
+ */
 @Injectable()
-export class CustomerService
+export class CustomerService extends BaseService
 {
     constructor( private session: SessionService,
                  private customerCrudService: CustomerCrudService )
     {
+        super();
     }
 
-    public login( email: string )
-    {
-        this.customerCrudService.loadSources();
-        this.customerCrudService.getCustomerByEmail( email )
-                                .subscribe( (customer: Customer ) =>
-                                            {
-                                                this.session.setCustomer( customer );
-                                            });
-    }
 }

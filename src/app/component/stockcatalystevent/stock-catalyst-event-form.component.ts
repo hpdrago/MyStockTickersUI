@@ -5,7 +5,7 @@ import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { StockCatalystEventCrudServiceContainer } from "./stock-catalyst-event-crud-service-container";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { SelectItem } from "primeng/primeng";
 import { DateOrTimePeriod } from "../../common/date-or-time-period.enum";

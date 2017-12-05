@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { Portfolio } from "../../model/entity/portfolio";
 import { MenuItem } from "primeng/primeng";
 import { CrudTableComponent } from "../crud/table/crud-table.component";

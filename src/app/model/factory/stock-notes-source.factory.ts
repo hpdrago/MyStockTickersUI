@@ -1,7 +1,7 @@
 import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
 import { StockNotesSource } from "../entity/stock-notes-source";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 
 /**
  * This is the StockNotesSource model object factory

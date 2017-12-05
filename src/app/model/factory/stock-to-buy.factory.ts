@@ -1,6 +1,6 @@
 
 import { ModelObjectFactory } from "./model-object.factory";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { Injectable } from "@angular/core";
 import { StockToBuy } from "../entity/stock-to-buy";
 

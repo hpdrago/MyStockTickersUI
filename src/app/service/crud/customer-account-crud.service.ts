@@ -3,7 +3,7 @@
  */
 import { Injectable } from "@angular/core";
 import { CustomerAccount } from "../../model/entity/customer-account";
-import { SessionService } from "./session.service";
+import { SessionService } from "../session.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { AppConfigurationService } from "../app-configuration.service";
 import { Http } from "@angular/http";

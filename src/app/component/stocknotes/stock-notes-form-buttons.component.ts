@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { StockToBuyCrudServiceContainer } from "../stocktobuy/stock-to-buy-crud-service-container";

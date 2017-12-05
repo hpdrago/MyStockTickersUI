@@ -3,7 +3,7 @@ import {ToastsManager} from "ng2-toastr";
 import {StockNoteCount} from "../../model/entity/stock-note-count";
 import {StockNotesTableComponent} from "./stock-notes-table.component";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
-import { SessionService } from "../../service/crud/session.service";
+import { SessionService } from "../../service/session.service";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
