@@ -1,5 +1,3 @@
-import { ModelObject } from "./modelobject";
-import { StockQuoteState } from "../../common/stock-quote-state.enum";
 import { StockModelObject } from "./stock-model-object";
 
 /**
@@ -11,5 +9,4 @@ export abstract class StockQuoteModelObject<T extends StockModelObject<T>> exten
     public lastPriceChange: Date;
     public stockQuoteState: number;
     public stockPriceWhenCreated: number;
-
 }

@@ -11,6 +11,7 @@ export class StockQuote extends ModelObject<StockQuote>
     public lastPriceChange: Date;
     public stockQuoteState: number;
     public stockPriceWhenCreated: number;
+    public expiration: Date;
 
     public getPrimaryKey(): any
     {

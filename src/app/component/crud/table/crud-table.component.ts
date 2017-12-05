@@ -640,7 +640,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * @param modelObject
      * @return {undefined}
      */
-    protected setModelObject( modelObject: T ): void
+    public setModelObject( modelObject: T ): void
     {
         super.setModelObject( modelObject );
         this.crudServiceContainer

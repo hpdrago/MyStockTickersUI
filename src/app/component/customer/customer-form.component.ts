@@ -27,13 +27,6 @@ export class CustomerFormComponent extends CrudFormComponent<Customer>
         super( toaster, customerCrudServiceContainer );
     }
 
-    public ngOnInit(): void
-    {
-        this.setModelObject( this.sessionService.customer );
-        this.setCrudOperation( CrudOperation.UPDATE );
-        super.ngOnInit();
-    }
-
     /**
      * Creates and identifies the fields for the FormGroup instance for the stock notes form.
      * @return {FormGroup}

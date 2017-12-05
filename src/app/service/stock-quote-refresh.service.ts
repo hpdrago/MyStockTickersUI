@@ -8,6 +8,7 @@ import { StockQuote } from "../model/entity/stock-quote";
 import { Subject } from "rxjs/Subject";
 import { Injectable } from "@angular/core";
 import { BaseService } from "./base-service";
+import { StockQuoteCache } from "./stock-quote-cache";
 
 /**
  * This service will refresh stock quotes by making REST calls through the {@code StockCrudService}.
@@ -15,7 +16,7 @@ import { BaseService } from "./base-service";
 @Injectable()
 export class StockQuoteRefreshService extends BaseService
 {
-    constructor( private stockService: StockCrudService )
+    constructor( private stockQuoteCache: StockQuoteCache )
     {
         super();
     }
@@ -28,17 +29,10 @@ export class StockQuoteRefreshService extends BaseService
     public refreshStockQuote<T extends StockQuoteModelObject<T>>( stockQuoteModelObject: T ): Observable<StockQuote>
     {
         this.debug( "refreshStockQuote" );
-        let stockQuoteSubject: Subject<StockQuote> = new Subject();
-        this.stockService.getStockQuote( stockQuoteModelObject.tickerSymbol )
-                         .subscribe( (stockQuote) =>
-                                   {
-                                       stockQuoteSubject.next( stockQuote );
-                                   },
-                                   error =>
-                                   {
-                                       stockQuoteSubject.error( "failed to get a stock quote for " + stockQuoteModelObject.tickerSymbol );
-                                   });
-
-        return stockQuoteSubject.asObservable();
+        return this.stockQuoteCache.refreshStockQuote( stockQuoteModelObject.tickerSymbol )
+                                   .map( (stockQuote) =>
+                                         {
+                                             return stockQuote;
+                                         });
     }
 }

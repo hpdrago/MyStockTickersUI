@@ -6,15 +6,16 @@
             EMAIL
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-4">
+                <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="email">Email:</label>
                 </div>
-                <div class="ui-grid-col-8">
+                <div class="ui-grid-col-10">
                     <input id="email"
                            class="crud-form"
                            formControlName="email"
                            placeholder="Required"
                            size="60"
+                           maxlength="60"
                            type="email"
                            pInputText required
                            [(ngModel)]="modelObject.email"/>

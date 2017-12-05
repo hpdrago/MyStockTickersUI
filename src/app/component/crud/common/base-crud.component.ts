@@ -98,7 +98,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      * Allow sub classes to change the model object through a method that will record (log) the change.
      * @param modelObject
      */
-   protected setModelObject( modelObject: T )
+   public setModelObject( modelObject: T )
    {
        //this.debug( "setModelObject " + JSON.stringify( modelObject ));
        this.modelObject = modelObject;
@@ -118,7 +118,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      * Allow subclasses to change the {@code CrudOperation} and log the change.
      * @param crudOperation
      */
-    protected setCrudOperation( crudOperation: CrudOperation )
+    public setCrudOperation( crudOperation: CrudOperation )
     {
         //this.debug( "setCrudOperation " + CrudOperation.getName( crudOperation ));
         this.crudOperation = crudOperation;

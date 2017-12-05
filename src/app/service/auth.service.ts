@@ -8,6 +8,8 @@ import { BaseService } from "./base-service";
 import { Customer } from "../model/entity/customer";
 import { CustomerCrudService } from "./crud/customer-crud.service";
 import { SessionService } from "./session.service";
+import { CookieService } from "ngx-cookie-service";
+import { CustomerFactory } from "../model/factory/customer.factory";
 
 /**
  * This is the service that identifies the login status of a user and performs the login and logout functionality.
@@ -23,9 +25,17 @@ export class AuthService extends BaseService
     public redirectUrl: string;
 
     constructor( private customerCrudService: CustomerCrudService,
-                 private session: SessionService )
+                 private customerFactory: CustomerFactory,
+                 private cookieService: CookieService,
+                 private sessionService: SessionService )
     {
         super();
+        if ( this.cookieService.check( "customer" ) )
+        {
+            this.isLoggedIn = true;
+            this.sessionService.customer = this.customerFactory.newModelObjectFromJSON( JSON.parse( this.cookieService.get( "customer" )));
+            this.debug( "found customer cookie: " +  this.cookieService.get( "customer" ) );
+        }
     }
 
     /**
@@ -45,7 +55,8 @@ export class AuthService extends BaseService
                              {
                                  this.debug( "login successful" );
                                  this.isLoggedIn = true;
-                                 this.session.customer = customer;
+                                 this.sessionService.customer = customer;
+                                 this.cookieService.set( "customer", JSON.stringify( customer ));
                                  return true;
                              }
                              else

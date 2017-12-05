@@ -150,6 +150,8 @@ import { LoginRoutingModule } from "./login-routes.module";
 import { AdminRoutingModule } from "./admin-routing.module";
 import { LoginComponent } from "./login.component";
 import { AdminComponent } from "./component/admin/admin.component";
+import { CookieService } from "ngx-cookie-service";
+import { StockQuoteCache } from "./service/stock-quote-cache";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -286,6 +288,8 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         // Global providers -- singletons
         AuthService,
         AuthGuard,
+        CookieService,
+        StockQuoteCache,
 
         CustomerService,
         CustomerCrudService,
