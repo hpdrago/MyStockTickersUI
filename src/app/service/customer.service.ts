@@ -20,4 +20,9 @@ export class CustomerService extends BaseService
         super();
     }
 
+    public onLogin( customer: Customer )
+    {
+        this.debug( "onLogin " + JSON.stringify( customer ));
+        this.customerCrudService.loadSources();
+    }
 }
