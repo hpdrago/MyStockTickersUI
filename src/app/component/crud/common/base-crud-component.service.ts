@@ -73,7 +73,7 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     public sendCrudOperationErrorEvent( errorMessage: string )
     {
         this.debug( "sendCrudOperationErrorEvent " + errorMessage );
-        this.tickThenRun( () => this.crudOperationErrorSubject.next( errorMessage ) );
+        this.crudOperationErrorSubject.next( errorMessage );
     }
 
     /**
@@ -85,7 +85,7 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     {
         this.debug( "sendModelObjectChangedEvent " + JSON.stringify( modelObject ) + " to " +
             this.modelObjectChangedSubject.observers.length + " observers" );
-        this.tickThenRun( () => this.modelObjectChangedSubject.next( modelObject ) );
+        this.modelObjectChangedSubject.next( modelObject );
     }
 
     /**
@@ -96,7 +96,7 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     public sendCrudOperationChangedEvent( crudOperation: CrudOperation )
     {
         this.debug( "sendCrudOperationChangedEvent " + crudOperation );
-        this.tickThenRun( () => this.crudOperationChangedSubject.next( crudOperation ) );
+        this.crudOperationChangedSubject.next( crudOperation );
     }
 
     /**
@@ -105,7 +105,7 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     public sendComponentInitializedEvent()
     {
         this.debug( "sendComponentInitialized" );
-        this.tickThenRun( () => this.componentInitializedSubject.next( true ) );
+        this.componentInitializedSubject.next( true );
     }
 
     /**

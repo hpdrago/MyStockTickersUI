@@ -63,7 +63,7 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     public sendNavigateToModelObjectEvent( modelObject: T )
     {
         this.debug( "sendNavigateToModelObjectEvent" );
-        this.tickThenRun( () => this.navigateToModelObjectSubject.next( modelObject ) );
+        this.navigateToModelObjectSubject.next( modelObject );
     }
 
     /**
@@ -83,7 +83,7 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     public sendContinuousAddButtonClickedEvent( modelObject: T )
     {
         this.debug( "sendContinuousAddButtonClickedEvent" );
-        this.tickThenRun( () => this.addAndContinueButtonClickedSubject.next( modelObject ) );
+        this.addAndContinueButtonClickedSubject.next( modelObject );
     }
 
     /**
@@ -103,7 +103,7 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     public sendAddButtonClickedEvent( modelObject: T )
     {
         this.debug( "sendAddButtonClickedEvent" );
-        this.tickThenRun( () => this.addButtonClickedSubject.next( modelObject ) );
+        this.addButtonClickedSubject.next( modelObject );
     }
 
     /**
@@ -124,7 +124,7 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     public sendDeleteButtonClickedEvent( modelObject: T )
     {
         this.debug( "sendDeleteButtonClickedEvent" );
-        this.tickThenRun( () => this.deleteButtonClickedSubject.next( modelObject ) );
+        this.deleteButtonClickedSubject.next( modelObject );
     }
 
     /**
@@ -145,7 +145,7 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     public sendSaveButtonClickedEvent( modelObject: T )
     {
         this.debug( "sendSaveButtonClickedEvent" );
-        this.tickThenRun( () => this.saveButtonClickedSubject.next( modelObject ) );
+        this.saveButtonClickedSubject.next( modelObject );
     }
 
     /**
@@ -165,6 +165,6 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     public sendResetButtonClickedEvent()
     {
         this.debug( "sendResetButtonClickedEvent" );
-        this.tickThenRun( () => this.resetButtonClickedSubject.next() );
+        this.resetButtonClickedSubject.next();
     }
 }

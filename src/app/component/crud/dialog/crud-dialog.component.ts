@@ -33,6 +33,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
             throw new Error( "crudDialogService argument cannot be null" );
         }
         this.subscribeToCrudDialogServiceEvents();
+        this.subscribeToCrudFormButtonsServiceEvents();
         // Tell everyone that we are done
         super.ngOnInit();
         this.log( "ngOnInit.end" );
@@ -52,7 +53,8 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
             this.crudServiceContainer
             .crudDialogService
             .subscribeToDisplayDialogRequestEvent(( subjectInfo: ModelObjectCrudOperationSubjectInfo ) => this.setDisplayDialog( subjectInfo ) ));
-        this.addSubscription( this.crudServiceContainer
+        this.addSubscription(
+            this.crudServiceContainer
             .crudDialogService
             .subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.onCrudOperationChanged( crudOperation ) ));
         this.addSubscription(
