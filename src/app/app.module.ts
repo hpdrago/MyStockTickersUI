@@ -78,7 +78,6 @@ import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.c
 import { PortfolioTableButtonsComponent } from "./component/portfolio/portfolio-table-buttons.component";
 import { StockSectorFactory } from "./model/factory/stock-sector.factory";
 import { StockNotesDialogComponent } from "./component/stocknotes/stock-notes-dialog.component";
-import { StockNotesTableComponent } from "./component/stocknotes/stock-notes-table.component";
 import { StockNotesFormComponent } from "./component/stocknotes/stock-notes-form.component";
 import { StockFormButtonsComponent } from "./component/stock/stock-form-buttons.component";
 import { PortfolioStockFormButtonsComponent } from "./component/portfoliostock/portfolio-stock-form-buttons.component";
@@ -101,7 +100,6 @@ import { StockNotesSourceFactory } from "./model/factory/stock-notes-source.fact
 import { BusyModule } from 'angular2-busy';
 
 import { CURRENCY_MASK_CONFIG, CurrencyMaskConfig } from "ng2-currency-mask/src/currency-mask.config";
-import { StockAnalystConsensusTableComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-table.component";
 import { StockAnalystConsensusFormComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-form.component";
 import { StockAnalystConsensusTableButtonsComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-table-buttons.component";
 import { StockAnalystConsensusFormButtonsComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-form-buttons.component";
@@ -152,6 +150,12 @@ import { LoginComponent } from "./login.component";
 import { AdminComponent } from "./component/admin/admin.component";
 import { CookieService } from "ngx-cookie-service";
 import { StockQuoteCache } from "./service/stock-quote-cache";
+import { TradeitService } from "./service/tradeit/tradeit.service";
+import { CustomerAccountTableButtonsComponent } from "./component/customeraccount/customer-account-table-buttons.component";
+import { CustomerAccountFormButtonsComponent } from "./component/customeraccount/customer-account-form-buttons.component";
+import { CustomerAccountDialogComponent } from "./component/customeraccount/customer-account-dialog.component";
+import { CustomerAccountFormComponent } from "./component/customeraccount/customer-account-form.component";
+import { CustomerAccountTableComponent } from "./component/customeraccount/customer-account-table.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -228,6 +232,12 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         CustomerFormButtonsComponent,
         ProfileComponent,
 
+        CustomerAccountTableComponent,
+        CustomerAccountFormComponent,
+        CustomerAccountDialogComponent,
+        CustomerAccountFormButtonsComponent,
+        CustomerAccountTableButtonsComponent,
+
         StockTableComponent,
         StockFormComponent,
         StockDialogComponent,
@@ -290,6 +300,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         AuthGuard,
         CookieService,
         StockQuoteCache,
+        TradeitService,
 
         CustomerService,
         CustomerCrudService,
