@@ -139,7 +139,7 @@ import { CustomerAccountFactory } from "./model/factory/customer-account.factory
 import { CustomerAccountCrudService } from "./service/crud/customer-account-crud.service";
 import { CustomerFormComponent } from "./component/customer/customer-form.component";
 import { ProfileComponent } from "./component/profile/profile.component";
-import { CustomerAccountCrudServiceContainer } from "./component/account/customer-account-crud-service-container";
+import { CustomerAccountCrudServiceContainer } from "./component/customeraccount/customer-account-crud-service-container";
 import { CustomerCrudServiceContainer } from "./component/customer/customer-crud-service-container";
 import { CustomerPanelComponent } from "./component/customer/customer-panel.component";
 import { CustomerFormButtonsComponent } from "./component/customer/customer-form-buttons.component";

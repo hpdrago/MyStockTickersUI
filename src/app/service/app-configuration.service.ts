@@ -9,7 +9,7 @@ export class AppConfigurationService
     private ADMIN_USER_ID = 1;
     //private baseURL = "https://localhost:8443";
     private baseURL = "http://localhost:8080";
-    public tradeitAPIKey = "84dedd9215da4c24ab28b82af02f564a";
+
 
     /**
      * Get the admin user id;
