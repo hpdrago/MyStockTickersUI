@@ -1,7 +1,7 @@
-import { TradeitApiResult } from "./tradeit-api-result";
-import { TradeitBroker } from "./tradeit-broker";
+import { TradeItApiResult } from "./tradeit-api-result";
+import { TradeItBroker } from "./tradeit-broker";
 
-export class TradeitBrokerList extends TradeitApiResult
+export class TradeItBrokerList extends TradeItApiResult
 {
-    public brokerList: TradeitBroker[];
+    public brokerList: TradeItBroker[];
 }

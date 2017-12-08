@@ -3,7 +3,7 @@
  *
  * Created 12/7/2017
  */
-export abstract class TradeitApiResult
+export abstract class TradeItApiResult
 {
     public status: string;
     public token: string;

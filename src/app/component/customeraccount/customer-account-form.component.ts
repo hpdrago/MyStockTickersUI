@@ -6,6 +6,7 @@ import { SessionService } from "../../service/session.service";
 import { CustomerAccount } from "../../model/entity/customer-account";
 import { CustomerAccountCrudServiceContainer } from "./customer-account-crud-service-container";
 import { SelectItem } from "primeng/primeng";
+import { TradeItService } from "../../service/tradeit/tradeit.service";
 
 /**
  * This is the Customer Account Form Component class.
@@ -22,17 +23,30 @@ export class CustomerAccountFormComponent extends CrudFormComponent<CustomerAcco
     private brokerageItems: SelectItem[];
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
+                 private tradeItService: TradeItService,
                  private formBuilder: FormBuilder,
-                 private stockToBuyCrudServiceContainer: CustomerAccountCrudServiceContainer )
+                 private customerAccountCrudServiceContainer: CustomerAccountCrudServiceContainer )
     {
-        super( toaster, stockToBuyCrudServiceContainer );
+        super( toaster, customerAccountCrudServiceContainer );
     }
 
 
     public ngOnInit(): void
     {
         super.ngOnInit();
-        this.brokerageItems = [];
+        this.tradeItService
+            .getBrokerSelectItems()
+            .subscribe( items =>
+                        {
+                            this.log( "ngOnInit broker select items loaded" );
+                            this.brokerageItems = items;
+                        }
+                        ,
+                        error =>
+                        {
+                            this.reportRestError( error );
+                        });
+
     }
 
     /**
@@ -44,9 +58,9 @@ export class CustomerAccountFormComponent extends CrudFormComponent<CustomerAcco
         this.debug( "initializeForm " );
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
-                'name':               new FormControl( this.modelObject.name, Validators.required ),
-                'comments':           new FormControl( this.modelObject.brokerage, Validators.compose( [Validators.required,
-                                                                                                                Validators.maxLength( 20 )]))
+                'name':               new FormControl( this.modelObject.name, Validators.compose( [Validators.required,
+                                                                                                             Validators.maxLength( 20 )])),
+                'brokerage':          new FormControl( this.modelObject.brokerage, Validators.required )
             } );
         return stockNoteForm;
     }

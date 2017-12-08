@@ -4,6 +4,8 @@
  *
  * Created by mike on 12/13/2016.
  */
+import { isNullOrUndefined } from "util";
+
 export abstract class ModelObjectFactory<T>
 {
     /**
@@ -14,10 +16,13 @@ export abstract class ModelObjectFactory<T>
     public newModelObjectArray( jsonArray: Array<T> ): Array<T>
     {
         var tsObjects: Array<T> = [];
-        for ( var jsObject of jsonArray )
+        if ( !isNullOrUndefined( jsonArray ))
         {
-            var tsObject = this.newModelObjectFromJSON( jsObject ) ;
-            tsObjects.push( tsObject );
+            for ( var jsObject of jsonArray )
+            {
+                var tsObject = this.newModelObjectFromJSON( jsObject );
+                tsObjects.push( tsObject );
+            }
         }
         return tsObjects;
     }

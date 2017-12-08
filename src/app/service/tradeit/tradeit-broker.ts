@@ -3,13 +3,12 @@
  *
  * Created 12/7/2017
  */
-import { TradeitBrokerInstrument } from "./tradeit-broker-instrument";
+import { TradeItBrokerInstrument } from "./tradeit-broker-instrument";
 
-export class TradeitBroker
+export class TradeItBroker
 {
     public shortName: string;
     public longName: string;
     public userName: string;
-    public brokerInstruments: TradeitBrokerInstrument[];
-    public logos: string[];
+    public brokerInstruments: TradeItBrokerInstrument[];
 }

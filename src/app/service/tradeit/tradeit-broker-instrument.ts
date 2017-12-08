@@ -1,7 +1,7 @@
 /**
  * This class contains the supported functions for each broker.
  */
-export class TradeitBrokerInstrument
+export class TradeItBrokerInstrument
 {
     public instrument: string;
     public supportsAccountOverview: boolean;

@@ -3,7 +3,7 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { CustomerAccount } from "../../model/entity/customer-account";
 import { CustomerAccountCrudServiceContainer } from "./customer-account-crud-service-container";
 import { Component } from "@angular/core";
-import { TradeitService } from "../../service/tradeit/tradeit.service";
+import { TradeItService } from "../../service/tradeit/tradeit.service";
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -20,7 +20,7 @@ export class CustomerAccountTableComponent extends CrudTableComponent<CustomerAc
 {
     constructor( protected toaster: ToastsManager,
                  protected customerAccountServiceContainer: CustomerAccountCrudServiceContainer,
-                 protected tradeitService: TradeitService )
+                 protected tradeItService: TradeItService )
     {
         super( false, toaster, customerAccountServiceContainer );
     }
