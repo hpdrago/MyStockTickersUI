@@ -13,6 +13,7 @@ import { StockAnalystConsensusDashboardTableComponent } from "./stock-analyst-co
 import { StockToBuyTableDashboardComponent } from "./stock-to-buy-table-dashboard.component";
 import { StockCatalystEventTableComponent } from "../stockcatalystevent/stock-catalyst-event-table.component";
 import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
+import { StockSearchComponent } from "../common/stock-search.component";
 
 @Component(
 {
@@ -30,8 +31,8 @@ export class DashboardComponent extends BaseComponent implements OnInit
     private stockToBuyTableDashboardComponent: StockToBuyTableDashboardComponent
     @ViewChild(StockCatalystEventTableComponent)
     private stockCatalystEventTableComponent: StockCatalystEventTableComponent;
-    @ViewChild(StockAutoCompleteComponent)
-    private stockAutoCompletedComponent: StockAutoCompleteComponent;
+    @ViewChild(StockSearchComponent)
+    private stockSearchComponent: StockSearchComponent;
 
     constructor( protected toaster: ToastsManager,
                  private router: Router,
@@ -48,7 +49,7 @@ export class DashboardComponent extends BaseComponent implements OnInit
      * This method is called when the user enters a ticker symbol in the search box
      * @param {Stock} stock
      */
-    protected onStockSelected(  stock: Stock  )
+    protected onStockSelected( stock: Stock )
     {
         this.stockNotesTableDashboardComponent.loadTableForTickerSymbol( stock.tickerSymbol );
         this.stockToBuyTableDashboardComponent.loadTableForTickerSymbol( stock.tickerSymbol );
@@ -65,7 +66,6 @@ export class DashboardComponent extends BaseComponent implements OnInit
         this.stockToBuyTableDashboardComponent.refreshTable();
         this.stockAnalystConsensusDashboardTableComponent.refreshTable();
         this.stockCatalystEventTableComponent.refreshTable();
-        this.stockAutoCompletedComponent.reset();
     }
 }
 

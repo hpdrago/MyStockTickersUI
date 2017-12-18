@@ -274,17 +274,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
                 this.modelObject.stocks.push( stockNoteStock );
             });
         }
-
-        /*
-         * When a new source is added, what the user types in goes into the notesSourceId which is a numeric field, the
-         * value also goes into the notesSourceName field by the sourcesOnChange event.  We need to make notesSourceId
-         * to be numeric so that it can be sent to the backend without JSON parsing errors
-         */
-        this.log( "isNumeric: " + isNumeric( this.modelObject.notesSourceId ));
-        if ( !isNumeric( this.modelObject.notesSourceId ) )
-        {
-            this.modelObject.notesSourceId = 0;
-        }
+        super.prepareToSave();
         this.log( "prepareToSave.end " + JSON.stringify( this.modelObject ));
     }
 

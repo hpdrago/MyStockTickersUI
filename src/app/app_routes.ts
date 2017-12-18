@@ -10,10 +10,11 @@ import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.c
 import { StockCatalystEventTableComponent } from "./component/stockcatalystevent/stock-catalyst-event-table.component";
 import { StockNotesTableTabComponent } from "./component/stocknotes/stock-notes-table-tab.component";
 import { StockToBuyTableTabComponent } from "./component/stocktobuy/stock-to-buy-table-tab.component";
-import { StockAnalystConsensusTabTableComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-tab-table.component";
+import { StockAnalystConsensusTableTabComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-table-tab.component";
 import { ProfileComponent } from "./component/profile/profile.component";
 import { AuthGuard } from "./service/auth-guard.service";
 import { AdminComponent } from "./component/admin/admin.component";
+import { StockCatalystEventTableTabComponent } from "./component/stockcatalystevent/stock-catalyst-event-table-tab.component";
 
 const routes: Routes = [
     {
@@ -38,12 +39,12 @@ const routes: Routes = [
     },
     {
         path: 'stockCatalystEvents',
-        component: StockCatalystEventTableComponent,
+        component: StockCatalystEventTableTabComponent,
         canActivate: [AuthGuard]
     },
     {
         path: 'stockAnalystConsensus',
-        component: StockAnalystConsensusTabTableComponent,
+        component: StockAnalystConsensusTableTabComponent,
         canActivate: [AuthGuard]
     },
     {

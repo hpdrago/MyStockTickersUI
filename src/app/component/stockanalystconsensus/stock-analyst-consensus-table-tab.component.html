@@ -1,4 +1,13 @@
 <div id="stockAnalystConsensusTableDiv">
+
+    <div class="crud-form ui-grid-row" style="height: 4%">
+        <div class="ui-grid-col-4 ui-state-default">
+            <stock-search (stockSelected)="onStockSelected( $event )"
+                          (resetButtonClick)="onResetButtonClick()">
+            </stock-search>
+        </div>
+    </div>
+
     <p-dataTable [value]="rows"
                  selectionMode="single"
                  [(selection)]="selectedModelObject"
@@ -44,6 +53,16 @@
             <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
                 {{calcAvgUpsidePercent( stockAnalystConsensus ) | percent:'1.0-0' }}
             </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        SOURCE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="notesSourceName"
+                  field="notesSourceName"
+                  header="Source"
+                  [style]="{'width':'80px'}"
+                  [sortable]="true">
         </p-column>
 
         <!----------------------------------------------------------------------------------------------------------

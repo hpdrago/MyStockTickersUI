@@ -26,7 +26,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
 
     /**
      * This method combines the {baseUrl} + {customerUrl} + {contextUrl}.
-     * Properly handles the conditional addition of hte customer url based on whether its null or not.
+     * Properly handles the conditional addition of the customer url based on whether its null or not.
      * @param {T} modelObject
      * @returns {string}
      */

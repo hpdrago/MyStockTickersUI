@@ -40,8 +40,7 @@ export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<St
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
                 'tickerSymbol':       new FormControl( this.modelObject.tickerSymbol, Validators.required ),
-                'comments':           new FormControl( this.modelObject.comments, Validators.compose( [Validators.required,
-                                                                                                                Validators.maxLength(4000 )])),
+                'comments':           new FormControl( this.modelObject.comments, Validators.maxLength(4000 ) ),
                 'notesSource':        new FormControl( this.modelObject.notesSourceId ),
                 'buySharesUpToPrice': new FormControl( this.modelObject.buySharesUpToPrice ),
                 'buyAfterDate':       new FormControl( this.modelObject.buyAfterDate ),

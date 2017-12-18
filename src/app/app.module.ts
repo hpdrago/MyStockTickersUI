@@ -132,7 +132,7 @@ import { StockToBuyTableDashboardComponent } from "./component/dashboard/stock-t
 import { StockToBuyTableTabComponent } from "./component/stocktobuy/stock-to-buy-table-tab.component";
 import { FormErrorsComponent } from "./component/common/form-errors.component";
 import { StockAnalystConsensusDashboardTableComponent } from "./component/dashboard/stock-analyst-consensus-dashboard-table.component";
-import { StockAnalystConsensusTabTableComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-tab-table.component";
+import { StockAnalystConsensusTableTabComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-table-tab.component";
 import { CustomerAccountFactory } from "./model/factory/customer-account.factory";
 import { CustomerAccountCrudService } from "./service/crud/customer-account-crud.service";
 import { CustomerFormComponent } from "./component/customer/customer-form.component";
@@ -156,6 +156,8 @@ import { CustomerAccountFormButtonsComponent } from "./component/customeraccount
 import { CustomerAccountDialogComponent } from "./component/customeraccount/customer-account-dialog.component";
 import { CustomerAccountFormComponent } from "./component/customeraccount/customer-account-form.component";
 import { CustomerAccountTableComponent } from "./component/customeraccount/customer-account-table.component";
+import { StockSearchComponent } from "./component/common/stock-search.component";
+import { StockCatalystEventTableTabComponent } from "./component/stockcatalystevent/stock-catalyst-event-table-tab.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -263,7 +265,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockNotesTableButtonsComponent,
         StockNotesFormButtonsComponent,
 
-        StockAnalystConsensusTabTableComponent,
+        StockAnalystConsensusTableTabComponent,
         StockAnalystConsensusDashboardTableComponent,
         StockAnalystConsensusFormComponent,
         StockAnalystConsensusDialogComponent,
@@ -271,6 +273,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockAnalystConsensusFormButtonsComponent,
 
         StockCatalystEventTableComponent,
+        StockCatalystEventTableTabComponent,
         StockCatalystEventFormComponent,
         StockCatalystEventDialogComponent,
         StockCatalystEventTableButtonsComponent,
@@ -287,7 +290,8 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         FormErrorsComponent,
         UppercaseDirective,
         UppercaseValueDirective,
-        StockAutoCompleteComponent
+        StockAutoCompleteComponent,
+        StockSearchComponent
     ],
     bootstrap:
     [

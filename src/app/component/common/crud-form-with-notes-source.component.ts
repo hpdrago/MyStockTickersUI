@@ -85,6 +85,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
             this.modelObject.setNotesSourceName( event.value.toUpperCase() );
             this.modelObject.setNotesSourceId( 0 );
             this.sourceAdded = true;
+            this.setFormValue( 'notesSourceId', event.value.toUpperCase() )
         }
         else
         {
@@ -104,6 +105,12 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
         super.prepareToSave();
         if ( !isNumeric( this.modelObject.getNotesSourceId() ))
         {
+            /*
+             * When a new source is added, what the user types in goes into the notesSourceId which is a numeric field, the
+             * value also goes into the notesSourceName field by the sourcesOnChange event.  We need to make notesSourceId
+             * to be numeric so that it can be sent to the backend without JSON parsing errors
+             */
+            this.log( "isNumeric: false" );
             this.debug( this.modelObject.getNotesSourceName() + " is a new source" );
             this.modelObject.setNotesSourceName( "" + this.modelObject.getNotesSourceId() );
             this.modelObject.setNotesSourceId( 0 );

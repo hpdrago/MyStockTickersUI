@@ -13,9 +13,9 @@ import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.serv
     {
         selector: 'stock-analyst-consensus-tab-table',
         styleUrls: ['./stock-analyst-consensus-table.component.css'],
-        templateUrl: './stock-analyst-consensus-tab-table.component.html'
+        templateUrl: './stock-analyst-consensus-table-tab.component.html'
     } )
-export class StockAnalystConsensusTabTableComponent extends StockAnalystConsensusTableComponent
+export class StockAnalystConsensusTableTabComponent extends StockAnalystConsensusTableComponent
 {
     constructor( protected toaster: ToastsManager,
                  protected StockAnalystConsensusServiceContainer: StockAnalystConsensusCrudServiceContainer,
