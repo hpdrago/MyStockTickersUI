@@ -6,49 +6,28 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { DialogCloseEventType } from "../common/close-button-event";
 import { Subscription } from "rxjs/Subscription";
 import { ModelObjectCrudOperationSubjectInfo } from "./modelobject-crudoperation-subject-info";
+import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
+import { CrudPanelService } from "../panel/crud-panel.service";
+import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
 
 /**
  * This service defines the Observables for interacting with a CRUD dialog.
+ * This service inherits general behaviour from the CrudPanelService.  A panel and a dialog both display a form.
+ * The only difference is that the dialog is displayed modally and contains a close button.
  *
  * The following subjects are provided:
  *  - CloseButtonClicked
  *  - DisplayDialogRequest
  * Created by mike on 12/30/2016.
  */
-export class CrudDialogService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
+export class CrudDialogService<T extends ModelObject<T>> extends CrudPanelService<T>
 {
-    protected displayDialogRequestSubject: BehaviorSubject<ModelObjectCrudOperationSubjectInfo> = new BehaviorSubject<ModelObjectCrudOperationSubjectInfo>( null );
     protected closeButtonClickedSubject: Subject<DialogCloseEventType> = new Subject<DialogCloseEventType>();
 
-    /**
-     * This method must be implemented to return an instance of a ModelObjectCrudOperationSubject that contains
-     * the model object and the crud operation to be sent to the dialog.
-     */
-    protected createDisplayDialogRequestSubjectInfo( modelObject: T, crudOperation: CrudOperation  ): ModelObjectCrudOperationSubjectInfo
+    constructor( protected modelObjectFactory: ModelObjectFactory<T>,
+                 protected crudFormButtonsService: CrudFormButtonsService<T> )
     {
-        var subjectInfo: ModelObjectCrudOperationSubjectInfo = new ModelObjectCrudOperationSubjectInfo();
-        subjectInfo.modelObject = modelObject;
-        subjectInfo.crudOperation = crudOperation;
-        return subjectInfo;
-    }
-
-    /**
-     * Handle the request to display the dialog
-     */
-    public subscribeToDisplayDialogRequestEvent( fn: ( DisplayDialogRequestSubjectInfo ) => any ): Subscription
-    {
-        this.debug( "subscribeToDisplayDialogRequestEvent" );
-        return this.displayDialogRequestSubject.asObservable().subscribe( fn );
-    }
-
-    /**
-     * Sends a request to display the CRUD dialog
-     */
-    public sendDisplayDialogRequestEvent( modelObject: T, crudOperation: CrudOperation )
-    {
-        var subjectInfo: ModelObjectCrudOperationSubjectInfo = this.createDisplayDialogRequestSubjectInfo( modelObject, crudOperation );
-        this.debug( "sendDisplayDialogRequestEvent " + JSON.stringify( subjectInfo ));
-        this.tickThenRun( () => this.displayDialogRequestSubject.next( subjectInfo ));
+        super( modelObjectFactory, crudFormButtonsService );
     }
 
     /**

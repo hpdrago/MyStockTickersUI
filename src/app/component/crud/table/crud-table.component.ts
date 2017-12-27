@@ -27,7 +27,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     /**
      * Defines how a model object is presented to the user either by a dialog or a panel.
      */
-    protected modelObjectEditMode: CrudModelObjectEditMode = CrudModelObjectEditMode.DIALOG;
+    //protected modelObjectEditMode: CrudModelObjectEditMode = CrudModelObjectEditMode.DIALOG;
     /**
      * The list of model objects displayed.
      * @type {Array}
@@ -92,7 +92,10 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     public ngOnInit()
     {
-        this.debug( "ngOnInit.begin" );
+        if ( this.crudServiceContainer.crudPanelService == null )
+        {
+            throw new Error( "crudPanelService cannot be null" );
+        }
         this.subscribeToCrudFormButtonEvents();
         this.subscribeToCrudTableButtonEvents();
         this.subscribeToModelObjectChangeEvents();
@@ -153,7 +156,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * This method is called when the refresh button is clicked.
      * By default, it simply calls the {@code loadTable} method.
      */
-    refreshTable(): void
+    public refreshTable(): void
     {
         this.debug( "refreshTable.begin" );
         /*
@@ -175,26 +178,44 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( "refreshTable.end" );
     }
 
+    protected getRowsPerPage(): number
+    {
+        return 20;
+    }
+
     /**
      * This method is called from {@code ngOnInit} and can be overridden by subclasses to load the table with the
      * model objects.
      */
     protected loadTable(): void
     {
-        this.loading = true;
         this.debug( "loadTable.begin" );
-        this.crudServiceContainer
-            .crudRestService
-            .getModelObjectList( this.modelObject )
-            .subscribe( ( modelObjects: T[] ) => {
-                            this.loading = false;
-                            this.onTableLoad( modelObjects );
-                            this.debug( "loadTable.end" );
-                        },
-                        error => {
-                            this.loading = false;
-                            this.reportRestError( error );
-                        } );
+        if ( this.lazyLoading )
+        {
+            this.debug( "loadTable lazyLoading=true" );
+            //this.lastLoadEvent.first = 0;
+            //this.lastLoadEvent = this.getRowsPerPage();
+            this.lazyLoadTable( this.lastLoadEvent );
+        }
+        else
+        {
+            this.loading = true;
+            this.crudServiceContainer
+                .crudRestService
+                .getModelObjectList( this.modelObject )
+                .subscribe( ( modelObjects: T[] ) =>
+                            {
+                                this.loading = false;
+                                this.onTableLoad( modelObjects );
+                                this.debug( "loadTable.end" );
+                            },
+                            error =>
+                            {
+                                this.loading = false;
+                                this.reportRestError( error );
+                            } );
+
+        }
     }
 
     /**
@@ -248,15 +269,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.addSubscription(
             this.crudServiceContainer
                 .crudTableButtonsService
-                .subscribeToAddButtonClickedEvent( ( modelObject: T ) => this.showDialogToAdd( modelObject ) ) );
+                .subscribeToAddButtonClickedEvent( ( modelObject: T ) => this.showFormToAdd( modelObject ) ) );
         this.addSubscription(
             this.crudServiceContainer
                 .crudTableButtonsService
-                .subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showDialogToEdit( modelObject ) ) );
+                .subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showFormToEdit( modelObject ) ) );
         this.addSubscription(
             this.crudServiceContainer
                 .crudTableButtonsService
-                .subscribeToDeleteButtonClickedEvent( ( modelObject: T ) => this.showDialogToDelete( modelObject ) ) );
+                .subscribeToDeleteButtonClickedEvent( ( modelObject: T ) => this.showFormToDelete( modelObject ) ) );
         this.addSubscription( this.crudServiceContainer
                                   .crudTableButtonsService
                                   .subscribeToRefreshButtonClickedEvent( ( modelObject: T ) => this.refreshTable() ) );
@@ -287,9 +308,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * This method is called when the user clicks on the add button.
      * A dialog will be displayed to allow the user to add a new model object.
      */
-    protected showDialogToAdd( modelObject: T ): void
+    protected showFormToAdd( modelObject: T ): void
     {
-        this.debug( "showDialogToAdd" );
+        this.debug( "showFormToAdd" );
         this.setModelObject( modelObject );
         this.setCrudOperation( CrudOperation.CREATE );
         this.displayModelObject();
@@ -300,12 +321,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * A dialog will be displayed to allow the user to edit the selected model object.
      * @param modelObject
      */
-    protected showDialogToEdit( modelObject: T ): void
+    protected showFormToEdit( modelObject: T ): void
     {
-        this.debug( "showDialogToEdit " + JSON.stringify( modelObject ) );
+        this.debug( "showFormToEdit " + JSON.stringify( modelObject ) );
         if ( !isNullOrUndefined( modelObject ) )
         {
-            this.debug( "showDialogToEdit" );
+            this.debug( "showFormToEdit" );
             this.setCrudOperation( CrudOperation.UPDATE );
             this.setModelObject( modelObject );
             this.displayModelObject();
@@ -316,12 +337,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * This method is called when the user wants to delete a modelObject.
      * @param modelObject
      */
-    protected showDialogToDelete( modelObject: T ): void
+    protected showFormToDelete( modelObject: T ): void
     {
-        this.debug( "showDialogToDelete " + JSON.stringify( modelObject ) );
+        this.debug( "showFormToDelete " + JSON.stringify( modelObject ) );
         if ( !isNullOrUndefined( modelObject ) )
         {
-            this.debug( "showDialogToDelete" );
+            this.debug( "showFormToDelete" );
             this.setCrudOperation( CrudOperation.DELETE );
             this.setModelObject( modelObject );
             this.displayModelObject();
@@ -334,7 +355,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected displayModelObject(): void
     {
-        this.debug( "displayModelObject " + JSON.stringify( this.modelObject ) );
+        this.debug( "displayModelObject: " + JSON.stringify( this.modelObject ) );
         /*
          * if the user is modifying the model object, we need to check that they have the latest version of the data.
          */
@@ -342,27 +363,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         {
             this.checkModelObjectVersion();
         }
-        /*
-         * Notify the panel of the changes
-         * If a panel is used to display the selected contents, then notify the panel
-         */
-        if ( this.modelObjectEditMode == CrudModelObjectEditMode.PANEL )
-        {
-            this.crudServiceContainer
-                .crudFormButtonsService
-                .sendCrudOperationChangedEvent( this.crudOperation );
-            this.crudServiceContainer
-                .crudFormButtonsService
-                .sendModelObjectChangedEvent( this.modelObject );
-        }
-        else
-        {
-            this.crudServiceContainer
-                .crudDialogService
-                .sendDisplayDialogRequestEvent( this.modelObject, this.crudOperation );
-            //this.crudDialogService.sendCrudOperationChangedEvent( this.crudOperation );
-            //this.crudDialogService.sendModelObjectChangedEvent( this.modelObject );
-        }
+        this.crudServiceContainer
+            .crudPanelService
+            .sendDisplayFormRequestEvent( this.modelObject, this.crudOperation );
     }
 
     /**
@@ -584,10 +587,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         /*
          * If a panel is used to display the selected contents, then notify the panel
          */
+        /*
         if ( this.modelObjectEditMode == CrudModelObjectEditMode.PANEL )
         {
-            this.showDialogToEdit( this.modelObject );
+            this.showFormToEdit( this.modelObject );
         }
+        */
     }
 
     /**
@@ -612,7 +617,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         var methodName = "onRowDoubleClick";
         this.debug( methodName + " " + JSON.stringify( event ) );
         this.setModelObject( this.newModelObjectFromEvent( event ) );
-        this.showDialogToEdit( this.modelObject );
+        this.showFormToEdit( this.modelObject );
     }
 
     /**

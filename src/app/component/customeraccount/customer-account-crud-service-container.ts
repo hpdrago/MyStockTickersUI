@@ -4,6 +4,7 @@ import { ModelObjectChangeService } from "../../service/crud/model-object-change
 import { CustomerAccountFactory } from "../../model/factory/customer-account.factory";
 import { CustomerAccountCrudService } from "../../service/crud/customer-account-crud.service";
 import { CustomerAccount } from "../../model/entity/customer-account";
+import { CrudPanelService } from "../crud/panel/crud-panel.service";
 
 /**
  * This is the service container for the CustomerAccount entity.
@@ -11,18 +12,10 @@ import { CustomerAccount } from "../../model/entity/customer-account";
 @Injectable()
 export class CustomerAccountCrudServiceContainer extends CrudServiceContainer<CustomerAccount>
 {
-    constructor( private _accountFactory: CustomerAccountFactory,
-                 private _accountCrudService: CustomerAccountCrudService )
+    constructor( private _customerAccountFactory: CustomerAccountFactory,
+                 private _customerAccountCrudService: CustomerAccountCrudService )
     {
-        super( new ModelObjectChangeService<CustomerAccount>(), _accountFactory, _accountCrudService )
+        super( new ModelObjectChangeService<CustomerAccount>(), _customerAccountFactory, _customerAccountCrudService );
+        this.crudPanelService = new CrudPanelService<CustomerAccount>( _customerAccountFactory, this.crudFormButtonsService );
     }
-
-    get accountFactory(): CustomerAccountFactory { return this._accountFactory; }
-
-    set accountFactory( value: CustomerAccountFactory ) { this._accountFactory = value; }
-
-    get accountCrudService(): CustomerAccountCrudService { return this._accountCrudService; }
-
-    set accountCrudService( value: CustomerAccountCrudService ) { this._accountCrudService = value; }
-
 }

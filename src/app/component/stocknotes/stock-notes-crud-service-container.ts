@@ -6,6 +6,7 @@ import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 import { StockNotesSourceService } from "../../service/crud/stock-notes-source.service";
 import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
+import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
 
 /**
  * This is the service container for the StockNotes entity.
@@ -19,6 +20,8 @@ export class StockNotesCrudServiceContainer extends CrudServiceContainer<StockNo
                  private _stockNoteSourceService: StockNotesSourceService )
     {
         super( new ModelObjectChangeService<StockNotes>(), _stockNoteFactory, _stockNoteCrudService )
+        this.crudDialogService = new CrudDialogService<StockNotes>( _stockNoteFactory, this.crudFormButtonsService );
+        this.crudPanelService = this.crudDialogService;
     }
 
     get stockNoteFactory(): StockNotesFactory { return this._stockNoteFactory; }
@@ -36,4 +39,5 @@ export class StockNotesCrudServiceContainer extends CrudServiceContainer<StockNo
     get stockNoteSourceService(): StockNotesSourceService { return this._stockNoteSourceService; }
 
     set stockNoteSourceService( value: StockNotesSourceService ) { this._stockNoteSourceService = value; }
+
 }

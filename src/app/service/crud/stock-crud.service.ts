@@ -57,15 +57,11 @@ export class StockCrudService extends CrudRestService<Stock>
     /**
      * Get a stock by the ticker symbol
      * @param tickerSymbol
-     * @returns {Observable<R>}
+     * @returns {Observable<StockQuote>}
      */
-    public getStock( tickerSymbol: string ): Observable<Stock>
+    public getStock( tickerSymbol: string ): Observable<StockQuote>
     {
-        let methodName = "getStock";
-        this.debug( methodName + " tickerSymbol: " + tickerSymbol );
-        let stock: Stock = this.stockFactory.newModelObject();
-        stock.tickerSymbol = tickerSymbol;
-        return super.getModelObject( stock );
+        return this.getStockQuote( tickerSymbol );
     }
 
     /**

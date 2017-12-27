@@ -30,29 +30,4 @@ export abstract class StockAnalystConsensusTableComponent extends StockQuoteMode
         super.onTableLoad( stockAnalystConsensus );
     }
 
-    /**
-     * Calculates the amount of upside potential from current stock price to the average analyst price
-     * @param rowData
-     * @returns {number}
-     */
-    protected calcAvgUpsidePercent( rowData ): number
-    {
-        if ( rowData.lastPrice != null &&
-             rowData.avgAnalystPriceTarget != null &&
-             rowData.avgAnalystPriceTarget > 0.0 )
-        {
-            if ( rowData.lastPrice < rowData.avgAnalystPriceTarget )
-            {
-                return rowData.lastPrice / rowData.avgAnalystPriceTarget;
-            }
-            else
-            {
-                return 1 - (rowData.lastPrice / rowData.avgAnalystPriceTarget);
-            }
-        }
-        else
-        {
-            return 0;
-        }
-    }
 }

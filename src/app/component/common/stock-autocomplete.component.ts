@@ -41,7 +41,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     @Input()
     private formControlName: string;
     @Output()
-    private stockSelected: EventEmitter<Stock>  = new EventEmitter<Stock>();
+    private stockSelected: EventEmitter<StockQuote>  = new EventEmitter<StockQuote>();
 
     private stockSearchResults: string[];
     private tickerSymbol: string;
@@ -125,16 +125,12 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                     this.log( "onBlur " + JSON.stringify( stockQuote ));
                     if ( !isNullOrUndefined( stockQuote ))
                     {
-                        let stock: Stock = new Stock();
-                        stock.tickerSymbol = stockQuote.tickerSymbol;
-                        stock.companyName = stockQuote.companyName;
-                        stock.lastPrice = stockQuote.lastPrice;
                         this.log( "emitting stock selected event" );
                         /*
                          * Send the change through ngModel
                          */
                         this.propagateChange( this.tickerSymbol );
-                        this.stockSelected.emit( stock );
+                        this.stockSelected.emit( stockQuote );
                         this.isStockSelected = true;
                     }
                 },
@@ -170,11 +166,11 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
          */
         this.propagateChange( this.tickerSymbol.toUpperCase() );
         this.stockCrudService
-            .getStock( this.tickerSymbol )
-            .subscribe( (stock) =>
+            .getStockQuote( this.tickerSymbol )
+            .subscribe( (stockQuote) =>
                         {
-                            this.log( "onStockSearchSelected tickerSymbol: " + stock.tickerSymbol );
-                            this.stockSelected.emit( stock );
+                            this.log( "onStockSearchSelected tickerSymbol: " + stockQuote.tickerSymbol );
+                            this.stockSelected.emit( stockQuote );
                             this.isStockSelected = true;
                         },
                         error =>

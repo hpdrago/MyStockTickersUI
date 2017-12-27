@@ -4,6 +4,7 @@ import { StockAnalystConsensusCrudService } from "../../service/crud/stock-analy
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { StockAnalystConsensusFactory } from "../../model/factory/stock-analyst-consensus.factory";
 import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
+import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
 
 /**
  * This is the service container for the StockAnalystConsensus entity.
@@ -17,6 +18,9 @@ export class StockAnalystConsensusCrudServiceContainer extends CrudServiceContai
         super( new ModelObjectChangeService<StockAnalystConsensus>(),
                _stockAnalystConsensusFactory,
                _stockAnalystConsensusCrudService )
+        this.crudDialogService = new CrudDialogService<StockAnalystConsensus>( this._stockAnalystConsensusFactory,
+                                                                               this.crudFormButtonsService );
+        this.crudPanelService = this.crudDialogService;
     }
 
     get stockAnalystConsensusFactory(): StockAnalystConsensusFactory { return this._stockAnalystConsensusFactory; }

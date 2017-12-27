@@ -52,7 +52,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
         this.addSubscription(
             this.crudServiceContainer
             .crudDialogService
-            .subscribeToDisplayDialogRequestEvent(( subjectInfo: ModelObjectCrudOperationSubjectInfo ) => this.setDisplayDialog( subjectInfo ) ));
+            .subscribeToDisplayFormRequestEvent( ( subjectInfo: ModelObjectCrudOperationSubjectInfo ) => this.setDisplayDialog( subjectInfo ) ));
         this.addSubscription(
             this.crudServiceContainer
             .crudDialogService

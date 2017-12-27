@@ -4,6 +4,8 @@ import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { StockToBuyFactory } from "../../model/factory/stock-to-buy.factory";
 import { StockToBuyCrudService } from "../../service/crud/stock-to-buy-crud.service";
 import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
+import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
+import { Stock } from "../../model/entity/stock";
 
 /**
  * This is the service container for the StockToBuy entity.
@@ -15,6 +17,8 @@ export class StockToBuyCrudServiceContainer extends CrudServiceContainer<StockTo
                  private _stockToBuyCrudService: StockToBuyCrudService )
     {
         super( new ModelObjectChangeService<StockToBuy>(), _stockToBuyFactory, _stockToBuyCrudService )
+        this.crudDialogService = new CrudDialogService<StockToBuy>( _stockToBuyFactory, this.crudFormButtonsService );
+        this.crudPanelService = this.crudDialogService;
     }
 
     get stockToBuyFactory(): StockToBuyFactory { return this._stockToBuyFactory; }

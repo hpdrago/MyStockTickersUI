@@ -4,6 +4,7 @@ import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
 import { PortfolioStockCrudService } from "../../service/crud/portfolio-stock-crud.service";
 import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
+import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
 
 /**
  * This is the CRUD Service class for PortfolioStock model objects
@@ -15,6 +16,9 @@ export class PortfolioStockCrudServiceContainer extends CrudServiceContainer<Por
                  private _portfolioStockCrudService: PortfolioStockCrudService )
     {
         super( new ModelObjectChangeService<PortfolioStock>(), _portfolioStockFactory, _portfolioStockCrudService )
+        this.crudDialogService = new CrudDialogService<PortfolioStock>( this._portfolioStockFactory,
+                                                                        this.crudFormButtonsService );
+        this.crudPanelService = this.crudDialogService;
     }
 
     get portfolioStockFactory(): PortfolioStockFactory { return this._portfolioStockFactory; }

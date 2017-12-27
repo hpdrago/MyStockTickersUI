@@ -4,6 +4,7 @@ import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockCatalystEventFactory } from "../../model/factory/stock-catalyst-event.factory";
 import { StockCatalystEventCrudService } from "../../service/crud/stock-catalyst-event-crud.service";
 import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
+import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
 
 /**
  * This is the service container for the StockCatalystEvent entity.
@@ -16,6 +17,9 @@ export class StockCatalystEventCrudServiceContainer extends CrudServiceContainer
     {
         super( new ModelObjectChangeService<StockCatalystEvent>(), _stockCatalystEventFactory,
                _stockCatalystEventCrudService )
+        this.crudDialogService = new CrudDialogService<StockCatalystEvent>( this._stockCatalystEventFactory,
+                                                                            this.crudFormButtonsService );
+        this.crudPanelService = this.crudDialogService;
     }
 
     get stockCatalystEventFactory(): StockCatalystEventFactory { return this._stockCatalystEventFactory; }
@@ -25,5 +29,4 @@ export class StockCatalystEventCrudServiceContainer extends CrudServiceContainer
     get stockCatalystEventCrudService(): StockCatalystEventCrudService { return this._stockCatalystEventCrudService; }
 
     set stockCatalystEventCrudService( value: StockCatalystEventCrudService ) { this._stockCatalystEventCrudService = value; }
-
 }

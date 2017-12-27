@@ -100,7 +100,7 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
          */
         this.stockNotesServiceContainer
             .crudDialogService
-            .sendDisplayDialogRequestEvent( stockNotes, CrudOperation.CREATE );
+            .sendDisplayFormRequestEvent( stockNotes, CrudOperation.CREATE );
     }
 
 }

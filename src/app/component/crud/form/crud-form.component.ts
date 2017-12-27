@@ -44,6 +44,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         {
             throw new Error( "crudFormService argument cannot be null" );
         }
+        this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
     }
 
     /**

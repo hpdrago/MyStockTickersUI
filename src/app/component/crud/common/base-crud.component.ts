@@ -100,7 +100,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
    public setModelObject( modelObject: T )
    {
-       //this.debug( "setModelObject " + JSON.stringify( modelObject ));
+       this.debug( "setModelObject " + JSON.stringify( modelObject ));
        this.modelObject = modelObject;
    }
 
@@ -110,7 +110,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected onCrudOperationChanged( crudOperation: CrudOperation )
    {
-      //this.debug( "crudOperation change " + CrudOperation.getName( crudOperation ));
+      this.debug( "crudOperation change " + CrudOperation.getName( crudOperation ));
       this.crudOperation = crudOperation;
    }
 

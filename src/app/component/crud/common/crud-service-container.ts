@@ -7,6 +7,7 @@ import { CrudTableButtonsService } from "../table/crud-table-buttons.service";
 import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
 import { CrudTableService } from "../table/crud-table.service";
 import { ModelObjectChangeService } from "../../../service/crud/model-object-change.service";
+import { CrudPanelService } from "../panel/crud-panel.service";
 
 /**
  * This is a container class for all of the CRUD services and the model object factory.
@@ -14,13 +15,16 @@ import { ModelObjectChangeService } from "../../../service/crud/model-object-cha
  */
 export abstract class CrudServiceContainer<T extends ModelObject<T>>
 {
+    private _crudPanelService: CrudPanelService<T>;
+    private _crudDialogService: CrudDialogService<T>;
     constructor( private _modelObjectChangeService: ModelObjectChangeService<T>,
                  private _modelObjectFactory: ModelObjectFactory<T>,
                  private _crudRestService: CrudRestService<T>,
                  private _crudTableService?: CrudTableService<T>,
                  private _crudTableButtonsService?: CrudTableButtonsService<T>,
                  private _crudFormButtonsService?: CrudFormButtonsService<T>,
-                 private _crudDialogService?: CrudDialogService<T>,
+                 //private _crudDialogService?: CrudDialogService<T>,
+                 //private _crudPanelService?: CrudPanelService<T>,
                  private _crudFormService?: CrudFormService<T>, )
     {
         if ( !_crudTableService )
@@ -36,10 +40,12 @@ export abstract class CrudServiceContainer<T extends ModelObject<T>>
         {
             this._crudFormButtonsService = new CrudFormButtonsService<T>( _modelObjectFactory );
         }
+        /*
         if ( !_crudDialogService )
         {
             this._crudDialogService = new CrudDialogService<T>( _modelObjectFactory );
         }
+        */
         if ( !_crudFormService )
         {
             this._crudFormService = new CrudFormService<T>( _modelObjectFactory );
@@ -84,6 +90,16 @@ export abstract class CrudServiceContainer<T extends ModelObject<T>>
     public set crudDialogService( crudDialogService: CrudDialogService<T> )
     {
         this._crudDialogService = crudDialogService;
+    }
+
+    public get crudPanelService(): CrudPanelService<T>
+    {
+        return this._crudPanelService;
+    }
+
+    public set crudPanelService( crudPanelService: CrudPanelService<T> )
+    {
+        this._crudPanelService = crudPanelService;
     }
 
     public get crudFormService(): CrudFormService<T>

@@ -158,6 +158,8 @@ import { CustomerAccountFormComponent } from "./component/customeraccount/custom
 import { CustomerAccountTableComponent } from "./component/customeraccount/customer-account-table.component";
 import { StockSearchComponent } from "./component/common/stock-search.component";
 import { StockCatalystEventTableTabComponent } from "./component/stockcatalystevent/stock-catalyst-event-table-tab.component";
+import { CustomerAccountsComponent } from "./component/customeraccount/customer-accounts.component";
+import { CustomerAccountPanelComponent } from "./component/customeraccount/customer-account-panel.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -237,8 +239,10 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         CustomerAccountTableComponent,
         CustomerAccountFormComponent,
         CustomerAccountDialogComponent,
+        CustomerAccountPanelComponent,
         CustomerAccountFormButtonsComponent,
         CustomerAccountTableButtonsComponent,
+        CustomerAccountsComponent,
 
         StockTableComponent,
         StockFormComponent,

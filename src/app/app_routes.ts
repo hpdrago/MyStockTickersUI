@@ -15,11 +15,18 @@ import { ProfileComponent } from "./component/profile/profile.component";
 import { AuthGuard } from "./service/auth-guard.service";
 import { AdminComponent } from "./component/admin/admin.component";
 import { StockCatalystEventTableTabComponent } from "./component/stockcatalystevent/stock-catalyst-event-table-tab.component";
+import { CustomerAccountTableComponent } from "./component/customeraccount/customer-account-table.component";
+import { CustomerAccountsComponent } from "./component/customeraccount/customer-accounts.component";
 
 const routes: Routes = [
     {
         path: 'admin',
         component: AdminComponent,
+        canActivate: [AuthGuard]
+    },
+    {
+        path: 'accounts',
+        component: CustomerAccountsComponent,
         canActivate: [AuthGuard]
     },
     {

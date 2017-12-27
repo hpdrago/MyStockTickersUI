@@ -1,55 +1,69 @@
-<div id="customerAccountTableDiv">
-    <p-dataTable [value]="rows"
-                 selectionMode="single"
-                 [(selection)]="selectedModelObject"
-                 (onRowSelect)="onRowSelect($event)"
-                 (onRowUnselect)="onRowUnSelect($event)"
-                 [paginator]="true"
-                 [pageLinks]="3"
-                 [rowsPerPageOptions]="[20,30,40]"
-                 [rows]="20"
-                 [totalRecords]="totalRows"
-                 [loading]="loading"
-                 [lazy]="true"
-                 (onLazyLoad)="lazyLoadTable($event)"
-                 (onRowDblclick)="onRowDoubleClick($event)"
-                 [responsive]="true">
+<div id="customerAccountTableDiv" ngStyle="">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-12">
+                <p-dataTable [value]="rows"
+                             [ngClass]="{'editing-table': crudOperation != OPERATION.NONE }"
+                             selectionMode="single"
+                             [(selection)]="selectedModelObject"
+                             (onRowSelect)="onRowSelect($event)"
+                             (onRowUnselect)="onRowUnSelect($event)"
+                             [paginator]="true"
+                             [pageLinks]="3"
+                             [rowsPerPageOptions]="[20,30,40]"
+                             [rows]="20"
+                             [totalRecords]="totalRows"
+                             [loading]="loading"
+                             [lazy]="true"
+                             (onLazyLoad)="lazyLoadTable($event)"
+                             (onRowDblclick)="onRowDoubleClick($event)"
+                             [responsive]="true">
 
-        <!----------------------------------------------------------------------------------------------------------
-        NAME
-        ------------------------------------------------------------------------------------------------------------>
-        <p-column id="name"
-                  field="name"
-                  header="Name"
-                  [style]="{'width':'60px'}"
-                  [sortable]="true">
-        </p-column>
+                    <!----------------------------------------------------------------------------------------------------------
+                    NAME
+                    ------------------------------------------------------------------------------------------------------------>
+                    <p-column id="name"
+                              field="name"
+                              header="Name"
+                              [style]="{'width':'60px'}"
+                              [sortable]="true">
+                    </p-column>
 
-        <!----------------------------------------------------------------------------------------------------------
-        NAME
-        ------------------------------------------------------------------------------------------------------------>
-        <p-column id="broker"
-                  field="broker"
-                  header="Broker"
-                  [style]="{'width':'60px'}"
-                  [sortable]="true">
-        </p-column>
+                    <!----------------------------------------------------------------------------------------------------------
+                    NAME
+                    ------------------------------------------------------------------------------------------------------------>
+                    <p-column id="broker"
+                              field="broker"
+                              header="Broker"
+                              [style]="{'width':'60px'}"
+                              [sortable]="true">
+                    </p-column>
 
-        <!----------------------------------------------------------------------------------------------------------
-        LOGIN TOKEN
-        ------------------------------------------------------------------------------------------------------------>
-        <p-column id="loginToken"
-                  field="loginToken"
-                  header="Login Token"
-                  [style]="{'width':'150px'}"
-                  [sortable]="false">
-        </p-column>
+                    <!----------------------------------------------------------------------------------------------------------
+                    LOGIN TOKEN
+                    ------------------------------------------------------------------------------------------------------------>
+                    <p-column id="loginToken"
+                              field="loginToken"
+                              header="Login Token"
+                              [style]="{'width':'150px'}"
+                              [sortable]="false">
+                    </p-column>
 
-        <p-footer>
-            <customer-account-table-buttons>
-            </customer-account-table-buttons>
-        </p-footer>
-    </p-dataTable>
-    <customer-account-dialog>
-    </customer-account-dialog>
+                    <p-footer>
+                        <customer-account-table-buttons>
+                        </customer-account-table-buttons>
+                    </p-footer>
+                </p-dataTable>
+            </div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4">
+            </div>
+            <div class="ui-grid-col-4">
+                <customer-account-panel [ngClass]="{'editing-form': crudOperation != OPERATION.NONE }">
+                </customer-account-panel>
+            </div>
+            <div class="ui-grid-col-4">
+            </div>
+        </div>
 </div>

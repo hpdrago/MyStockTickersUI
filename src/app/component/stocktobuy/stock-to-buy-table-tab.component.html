@@ -37,8 +37,8 @@
         ------------------------------------------------------------------------------------------------------------>
         <p-column id="completed"
                   field="completed"
-                  header="completed"
-                  [style]="{'width':'30px'}"
+                  header="Completed"
+                  [style]="{'width':'10px'}"
                   [sortable]="false">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
                 <p-checkbox name="completed" value="stockToBuy[col.field] == 'Y' ? true : false"></p-checkbox>
@@ -107,7 +107,7 @@
         ------------------------------------------------------------------------------------------------------------>
         <p-column id="percentChange"
                   field="percentChange"
-                  header="% Change"
+                  header="% Changed"
                   [style]="{'width':'10px','text-align':'right'}">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
                 <div class="positiveGain" *ngIf="calculatePercentChange( stockToBuy ) >= 0.0">
@@ -118,6 +118,7 @@
                 </div>
             </ng-template>
         </p-column>
+
 
         <!----------------------------------------------------------------------------------------------------------
         BUY SHARES UP TO PRICE
@@ -133,6 +134,31 @@
                 <div class="wait" *ngIf="stockToBuy && stockToBuy['lastPrice'] >= stockToBuy[col.field]">
                     {{stockToBuy[col.field] | currency: 'USD' : true }}
                 </div>
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        ANALYST PRICE TARGET
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="avgAnalystPriceTarget"
+                  field="avgAnalystPriceTarget"
+                  header="Analyst PT"
+                  [style]="{'width':'10px','text-align':'right'}">
+            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                {{stockToBuy[col.field] | currency: 'USD' : true }}
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        AVG UPSIDE PERCENTAGE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="avgUpsidePercent"
+                  header="Avg Upside"
+                  field="avgUpsidePercent"
+                  [style]="{'width':'10px','text-align':'right'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
+                {{calcAvgUpsidePercent( stockToBuy ) | percent:'1.0-0' }}
             </ng-template>
         </p-column>
 
@@ -153,10 +179,10 @@
                 </div>
             </ng-template>
         </p-column>
+
         <!----------------------------------------------------------------------------------------------------------
         DATE CREATED
         ------------------------------------------------------------------------------------------------------------>
-
         <p-column id="createDate"
                   field="createDate"
                   header="Date Created"
@@ -165,6 +191,16 @@
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
                 {{stockToBuy[col.field] | date: 'y-MM-dd' }}
             </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        SOURCE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="notesSourceName"
+                  field="notesSourceName"
+                  header="Source"
+                  [style]="{'width':'40px'}"
+                  [sortable]="true">
         </p-column>
 
         <!----------------------------------------------------------------------------------------------------------

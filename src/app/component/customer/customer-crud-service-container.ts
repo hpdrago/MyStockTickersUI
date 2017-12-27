@@ -4,6 +4,7 @@ import { ModelObjectChangeService } from "../../service/crud/model-object-change
 import { Customer } from "../../model/entity/customer";
 import { CustomerFactory } from "../../model/factory/customer.factory";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
+import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
 
 /**
  * This is the service container for the Customer entity.
@@ -17,6 +18,9 @@ export class CustomerCrudServiceContainer extends CrudServiceContainer<Customer>
                  private _customerCrudService: CustomerCrudService )
     {
         super( new ModelObjectChangeService<Customer>(), _customerFactory, _customerCrudService )
+        this.crudDialogService = new CrudDialogService<Customer>( this._customerFactory,
+                                                                   this.crudFormButtonsService );
+        this.crudPanelService = this.crudDialogService;
     }
 
     get CustomerFactory(): CustomerFactory { return this._customerFactory; }
