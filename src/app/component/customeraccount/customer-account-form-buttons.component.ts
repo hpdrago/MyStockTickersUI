@@ -83,6 +83,7 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
             {
                 // ignore exceptions as this is a general function that receives a lot of messages that are not
                 // what we are looking for.
+                console.log((<Error>e).message);
             }
         }
     }

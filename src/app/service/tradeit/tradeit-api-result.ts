@@ -12,13 +12,13 @@ export class TradeItApiResult
     public status: string = undefined;
 
     @JsonProperty( "token", String )
-    public token: string = undefined;
+    public token: string = "";
 
     @JsonProperty( "shortMessage", String )
-    public shortMessage: string = undefined;
+    public shortMessage: string = "";
 
     @JsonProperty( "longMessages", [String] )
-    public longMessages: string[] = undefined;
+    public longMessages: string[] = [];
 
     public getMessages(): string
     {

@@ -7,7 +7,7 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { TradeItBroker } from "./tradeit-broker";
 import { TradeItBrokerList } from "./tradeit-broker-list";
 import { OAuthAccess } from "./oauthaccess";
-import { JsonConvert } from "json2typescript";
+import { JsonConvert, ValueCheckingMode } from "json2typescript";
 
 /**
  * This service contains the methods to inteface with the Tradeit API
@@ -36,7 +36,7 @@ export class TradeItService extends BaseService
     public getOAuthAccessToken( oAuthVerifier: string ): Observable<OAuthAccess>
     {
         let methodName = "getOAuthAccessToken";
-        let url = this.appConfig.getBaseURL() + this.CONTEXT_URL + this.GET_REQUEST_OAUTH_POPUP_URL + oAuthVerifier;
+        let url = this.appConfig.getBaseURL() + this.CONTEXT_URL + this.GET_OAUTH_ACCESS_TOKEN + oAuthVerifier;
         this.debug( methodName + " url: " + url );
         return this.http
                    .get( url )
@@ -51,6 +51,7 @@ export class TradeItService extends BaseService
                              else
                              {
                                  let jsonConvert: JsonConvert = new JsonConvert();
+                                 jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
                                  let oAuthAccess: OAuthAccess = jsonConvert.deserialize( response.json(), OAuthAccess );
                                  this.debug( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ) );
                                  return oAuthAccess;
