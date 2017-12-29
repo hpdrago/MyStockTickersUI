@@ -24,22 +24,24 @@ import { Subscription } from "rxjs/Subscription";
  */
 export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
-    private addButtonClickedSubject: BehaviorSubject<T>;
-    private addAndContinueButtonClickedSubject: BehaviorSubject<T>;
-    private deleteButtonClickedSubject: BehaviorSubject<T>;
-    private saveButtonClickedSubject: BehaviorSubject<T>;
+    private addButtonClickedSubject: Subject<T>;
+    private addAndContinueButtonClickedSubject: Subject<T>;
+    private deleteButtonClickedSubject: Subject<T>;
+    private saveButtonClickedSubject: Subject<T>;
+    private saveButtonClickCompletedSubject: Subject<T>;
     private resetButtonClickedSubject: Subject<void>;
-    private navigateToModelObjectSubject: BehaviorSubject<T>;
+    private navigateToModelObjectSubject: Subject<T>;
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super( modelObjectFactory );
-        this.addButtonClickedSubject = new BehaviorSubject<T>( null );
-        this.addAndContinueButtonClickedSubject = new BehaviorSubject<T>( null );
-        this.deleteButtonClickedSubject = new BehaviorSubject<T>( null );
-        this.saveButtonClickedSubject = new BehaviorSubject<T>( null );
+        this.addButtonClickedSubject = new Subject<T>();
+        this.addAndContinueButtonClickedSubject = new Subject<T>();
+        this.deleteButtonClickedSubject = new Subject<T>();
+        this.saveButtonClickedSubject = new Subject<T>();
+        this.saveButtonClickCompletedSubject = new Subject<T>();
         this.resetButtonClickedSubject = new Subject<void>();
-        this.navigateToModelObjectSubject = new BehaviorSubject<T>( null );
+        this.navigateToModelObjectSubject = new Subject<T>();
     }
 
     /**
@@ -149,11 +151,33 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     }
 
     /**
+     * The {@code CrudTableComponent} will call this method to register to receive notification when the Save
+     * button is clicked handling was completed successfully.
+     * @return Subscription
+     */
+    public subscribeToSaveButtonClickCompletedEvent( fn: ( T ) => any ): Subscription
+    {
+        this.debug( "subscribed to saveButtonClickCompleted" );
+        return this.saveButtonClickCompletedSubject.asObservable().subscribe( fn );
+    }
+
+    /**
+     * The {@code CrudFormComponent will call this method when the user clicks the Save button and the save button work
+     * was completed successfully.
+     * @param modelObject
+     */
+    public sendSaveButtonClickCompletedEvent( modelObject: T )
+    {
+        this.debug( "sendSaveButtonClickCompletedEvent" );
+        this.saveButtonClickCompletedSubject.next( modelObject );
+    }
+
+    /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Reset
      * button is clicked on the panel.
      * @return {Subscription}
      */
-    public subscribeToResetButtonClickedEvent( fn: () => any ): Subscription
+    public subscribeToResetButtonClickedEvent( fn: ( T ) => any ): Subscription
     {
         this.debug( "subscribed to resetButtonClicked" );
         return this.resetButtonClickedSubject.asObservable().subscribe( fn );

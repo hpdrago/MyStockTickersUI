@@ -108,6 +108,9 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
                                                                                                         displayInfo.crudOperation )
                                                                            }
                                                                        }));
+        this.addSubscription( this.crudServiceContainer
+                                  .crudPanelService
+                                  .subscribeToCancelButtonClickedEvent( () => this.cancelButtonClicked() ));
         this.debug( "subscribeToCrudPanelServiceEvents.end" );
     }
 
@@ -163,5 +166,15 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     protected onSubmit(): void
     {
         this.debug( "onSubmit " + JSON.stringify( this.modelObject ));
+    }
+
+    /**
+     * This method is called when the cancel button is clicked.
+     */
+    protected cancelButtonClicked()
+    {
+        this.debug( "cancelButtonClicked" );
+        this.setCrudOperation( CrudOperation.NONE );
+        this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
     }
 }

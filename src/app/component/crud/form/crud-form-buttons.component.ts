@@ -331,9 +331,23 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "onSaveButtonClick";
         this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
+        this.sendSaveButtonClickedEvent();
         this.sendFormPrepareToSaveEvent();
         this.performSaveButtonWork();
         this.debug( methodName + ".end" );
+    }
+
+    /**
+     * This method is called when the save button is clicked but before the save button work is started.
+     * {@see notifySaveButtonSuccessful}
+     */
+    protected sendSaveButtonClickedEvent()
+    {
+        var methodName = "sendSaveButtonClickedEvent";
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .sendSaveButtonClickedEvent( this.modelObject );
     }
 
     /**
@@ -372,7 +386,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
             .sendFormResetEvent();
         this.crudServiceContainer
             .crudFormButtonsService
-            .sendSaveButtonClickedEvent( this.modelObject );
+            .sendSaveButtonClickCompletedEvent( this.modelObject );
     }
 
     /**
@@ -542,9 +556,18 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected onCloseButtonClick( event: DialogCloseEventType ): void
     {
         this.debug( "onCloseButtonClick " + DialogCloseEventType.getName( event ) );
-        this.crudServiceContainer
-            .crudDialogService
-            .sendCloseButtonClickedEvent( event );
+        if ( !isNullOrUndefined( this.crudServiceContainer.crudDialogService ))
+        {
+            this.crudServiceContainer
+                .crudDialogService
+                .sendCloseButtonClickedEvent( event );
+        }
+        else
+        {
+            this.crudServiceContainer
+                .crudPanelService
+                .sendCancelButtonClickedEvent();
+        }
     }
 
     /**
@@ -623,5 +646,4 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      * This method is called by {@code getDeleteMessage} to produce a meaningful confirm delete message.
      */
     public abstract getDeleteKeyword(): string;
-
 }

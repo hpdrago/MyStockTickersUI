@@ -18,4 +18,9 @@ export class CustomerAccountCrudServiceContainer extends CrudServiceContainer<Cu
         super( new ModelObjectChangeService<CustomerAccount>(), _customerAccountFactory, _customerAccountCrudService );
         this.crudPanelService = new CrudPanelService<CustomerAccount>( _customerAccountFactory, this.crudFormButtonsService );
     }
+
+    get customerAccountCrudService(): CustomerAccountCrudService
+    {
+        return this._customerAccountCrudService;
+    }
 }

@@ -3,10 +3,27 @@
  *
  * Created 12/7/2017
  */
-export abstract class TradeItApiResult
+import { JsonObject, JsonProperty } from "json2typescript";
+
+@JsonObject
+export class TradeItApiResult
 {
-    public status: string;
-    public token: string;
-    public shortMessage: string;
-    public longMessages: string;
+    @JsonProperty( "status", String )
+    public status: string = undefined;
+
+    @JsonProperty( "token", String )
+    public token: string = undefined;
+
+    @JsonProperty( "shortMessage", String )
+    public shortMessage: string = undefined;
+
+    @JsonProperty( "longMessages", [String] )
+    public longMessages: string[] = undefined;
+
+    public getMessages(): string
+    {
+        var messages: string;
+        messages = this.shortMessage + ". " + this.longMessages;
+        return messages;
+    }
 }

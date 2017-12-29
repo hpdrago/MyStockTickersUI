@@ -13,6 +13,8 @@ export class CustomerAccount extends ModelObject<CustomerAccount>
     public id: number;
     public customerId: number;
     public name: string;
+    public userId: string;
+    public userToken: string;
     public loginToken: string;
     public brokerage: string;
 

@@ -6,6 +6,7 @@ import { CrudOperation } from "../common/crud-operation";
 import { ModelObjectCrudOperationSubjectInfo } from "../dialog/modelobject-crudoperation-subject-info";
 import { Subscription } from "rxjs/Subscription";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Subject } from "rxjs/Subject";
 
 /**
  * This is the base service for CRUD Panel operations.
@@ -15,10 +16,32 @@ export class CrudPanelService<T extends ModelObject<T>> extends BaseCrudComponen
     protected displayDialogRequestSubject: BehaviorSubject<ModelObjectCrudOperationSubjectInfo> =
         new BehaviorSubject<ModelObjectCrudOperationSubjectInfo>( null );
 
+    protected cancelButtonClickedSubject: Subject<void> = new Subject<void>();
+
     constructor( protected modelObjectFactory: ModelObjectFactory<T>,
                  protected crudFormButtonsService: CrudFormButtonsService<T> )
     {
         super( modelObjectFactory );
+    }
+
+    /**
+     * Subscribe to the cancel button clicked event.
+     * @param {() => any} fn
+     * @returns {Subscription}
+     */
+    public subscribeToCancelButtonClickedEvent( fn: () => any ): Subscription
+    {
+        this.debug( "subscribeToDisplayFormRequestEvent" );
+        return this.cancelButtonClickedSubject.asObservable().subscribe( fn );
+    }
+
+    /**
+     * Notifies all subscribers that the cancel button was clicked.
+     */
+    public sendCancelButtonClickedEvent()
+    {
+        this.debug( "sendCancelButtonClickedEvent" );
+        this.cancelButtonClickedSubject.next();
     }
 
     /**
@@ -47,6 +70,7 @@ export class CrudPanelService<T extends ModelObject<T>> extends BaseCrudComponen
      */
     protected createDisplayFormRequestSubjectInfo( modelObject: T, crudOperation: CrudOperation  ): ModelObjectCrudOperationSubjectInfo
     {
+        this.debug( "createDisplayFormRequestSubjectInfo crudOperation: " + crudOperation + " " + JSON.stringify( modelObject ));
         var subjectInfo: ModelObjectCrudOperationSubjectInfo = new ModelObjectCrudOperationSubjectInfo();
         subjectInfo.modelObject = modelObject;
         subjectInfo.crudOperation = crudOperation;

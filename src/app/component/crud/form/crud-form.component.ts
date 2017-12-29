@@ -238,7 +238,12 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormButtonsService
-                .subscribeToSaveButtonClickedEvent( ( modelObject: T ) => this.onSaveCompleted( modelObject ) ));
+                .subscribeToSaveButtonClickedEvent( ( modelObject: T ) => this.onSaveButtonClicked( modelObject ) ));
+
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormButtonsService
+                .subscribeToSaveButtonClickCompletedEvent( ( modelObject: T ) => this.onSaveButtonClickCompleted( modelObject ) ));
 
         /*
          * Prepare to display
@@ -671,14 +676,18 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         return isReadOnly;
     }
 
+    protected onSaveButtonClicked( modelObject: T ): void
+    {
+    }
+
     /**
      * This method is called after the user has clicked the Save/Add button and it completed successfully.
      */
-    protected onSaveCompleted( modelObject: T ): void
+    private onSaveButtonClickCompleted( modelObject: T )
     {
         if ( this.modelObject )
         {
-            this.debug( "onSaveCompleted" );
+            this.debug( "onSaveButtonClicked" );
             this.resetForm();
         }
     }

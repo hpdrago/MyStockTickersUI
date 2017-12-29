@@ -26,6 +26,8 @@ export class CustomerAccountFactory extends ModelObjectFactory<CustomerAccount>
         account.customerId = this.session.getLoggedInUserId();
         account.brokerage = "";
         account.id = 0;
+        account.userId = "";
+        account.userToken = "";
         account.loginToken = "";
         account.name = "";
         return account;
