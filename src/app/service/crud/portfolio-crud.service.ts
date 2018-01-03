@@ -6,7 +6,6 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 import { Portfolio } from "../../model/entity/portfolio";
-import { PaginationURL } from "../../common/pagination-url";
 
 /**
  * This class provides all CRUD REST services.
@@ -16,7 +15,7 @@ import { PaginationURL } from "../../common/pagination-url";
 @Injectable()
 export class PortfolioCrudService extends CrudRestService<Portfolio>
 {
-    private urlPath = "/portfolios/"
+    private urlPath = "/portfolios"
 
     constructor( protected http: Http,
                  protected sessionService: SessionService,
@@ -26,7 +25,7 @@ export class PortfolioCrudService extends CrudRestService<Portfolio>
         super( http, sessionService, appConfig, portfolioFactory );
     }
 
-    protected getContextURL( modelObject: Portfolio ): string
+    protected getContextBaseURL(): string
     {
         return this.urlPath;
     }

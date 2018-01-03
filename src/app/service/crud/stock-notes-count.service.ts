@@ -20,7 +20,7 @@ export class StockNotesCountService extends ReadRestService<StockNoteCount>
         super( http, sessionService, appConfigurationService, modelObjectFactory );
     }
 
-    protected getContextURL( stockNoteCount: StockNoteCount ): string
+    protected getContextBaseURL(): string
     {
         return this.contextUrl;
     }

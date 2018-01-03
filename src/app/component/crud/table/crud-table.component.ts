@@ -92,6 +92,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     public ngOnInit()
     {
+        this.debug( "ngOnInit.begin" );
         if ( this.crudServiceContainer.crudPanelService == null )
         {
             throw new Error( "crudPanelService cannot be null" );
@@ -117,15 +118,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected lazyLoadTable( event: LazyLoadEvent ): void
     {
-        this.debug( 'lazyLoadTable' );
+        this.debug( 'lazyLoadTable.begin' );
         this.crudServiceContainer
             .crudRestService
             .getPage( this.modelObject, event.first, event.rows )
             .subscribe( page =>
                         {
                             this.loading = false;
-                            this.debug( 'lazyLoadTable ' );
                             this.onPageLoad( page );
+                            this.debug( 'lazyLoadTable.end' );
                         },
                         err =>
                         {
@@ -257,7 +258,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormButtonsService
-                .subscribeToHandleDeleteButtonClickedEvent(
+                .subscribeToDeleteButtonClickedEvent(
                     ( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) ) );
     }
 

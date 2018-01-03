@@ -5,8 +5,6 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { StockAnalystConsensusFactory } from "../../model/factory/stock-analyst-consensus.factory";
-import { isNullOrUndefined } from "util";
-import { PaginationURL } from "../../common/pagination-url";
 
 /**
  * This class provides all CRUD REST services for Stock Summary.
@@ -26,18 +24,8 @@ export class StockAnalystConsensusCrudService extends CrudRestService<StockAnaly
         super( http, sessionService, appConfig, stockAnalystConsensusFactory );
     }
 
-    protected getContextURL( stockAnalysisConensus: StockAnalystConsensus ): string
+    protected getContextBaseURL(): string
     {
         return this.urlPath;
-    }
-
-    protected getReadModelObjectListUrl( stockAnalystConsensus: StockAnalystConsensus ): string
-    {
-        var url: string = super.getReadModelObjectListUrl( stockAnalystConsensus );
-        if ( !isNullOrUndefined( stockAnalystConsensus.tickerSymbol ))
-        {
-            url += '/' + stockAnalystConsensus.tickerSymbol;
-        }
-        return url;
     }
 }

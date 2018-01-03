@@ -233,17 +233,52 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
                 .crudFormService
                 .subscribeToFormModelObjectVersionUpdateEvent( ( modelObject: T ) => this.onModelObjectVersionUpdate( modelObject ) ));
         /*
-         * Save button
+         * Add button clicked
+         */
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormButtonsService
+                .subscribeToAddButtonClickedEvent( ( modelObject: T ) => this.onAddButtonClicked( modelObject ) ));
+
+        /*
+         * Add button click completed
+         */
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormButtonsService
+                .subscribeToAddButtonClickCompletedEvent( ( modelObject: T ) => this.onAddButtonClickCompleted( modelObject ) ));
+
+        /*
+         * Save button clicked
          */
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormButtonsService
                 .subscribeToSaveButtonClickedEvent( ( modelObject: T ) => this.onSaveButtonClicked( modelObject ) ));
 
+        /*
+         * Save button click completed
+         */
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormButtonsService
                 .subscribeToSaveButtonClickCompletedEvent( ( modelObject: T ) => this.onSaveButtonClickCompleted( modelObject ) ));
+
+        /*
+         * Delete button clicked
+         */
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormButtonsService
+                .subscribeToDeleteButtonClickedEvent( ( modelObject: T ) => this.onDeleteButtonClicked( modelObject ) ));
+
+        /*
+         * Delete button click completed
+         */
+        this.addSubscription(
+            this.crudServiceContainer
+                .crudFormButtonsService
+                .subscribeToDeleteButtonClickCompletedEvent( ( modelObject: T ) => this.onDeleteButtonClickCompleted( modelObject ) ));
 
         /*
          * Prepare to display
@@ -452,7 +487,20 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * Initializes the form and the model object to empty values
+     * Clears the model object and the crud operation and then reset the form so that is contains empty fields.
+     */
+    protected clearForm(): void
+    {
+        this.debug( "clearForm" );
+        this.setModelObject( this.crudServiceContainer
+                                 .modelObjectFactory
+                                 .newModelObject() );
+        this.setCrudOperation( CrudOperation.NONE );
+        this.resetForm();
+    }
+
+    /**
+     * Initializes the form to the current model object and default values.
      */
     protected resetForm(): void
     {
@@ -676,20 +724,66 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         return isReadOnly;
     }
 
+    /**
+     * This method is called after the successful completion of the saving of the model object.
+     * @param {T} modelObject
+     */
     protected onSaveButtonClicked( modelObject: T ): void
     {
+        let methodName = "onSaveButtonClicked";
+        this.debug( methodName );
     }
 
     /**
-     * This method is called after the user has clicked the Save/Add button and it completed successfully.
+     * This method is called after the user has clicked the Save button and it completed successfully.
      */
-    private onSaveButtonClickCompleted( modelObject: T )
+    protected onSaveButtonClickCompleted( modelObject: T ): void
     {
-        if ( this.modelObject )
-        {
-            this.debug( "onSaveButtonClicked" );
-            this.resetForm();
-        }
+        let methodName = "onSaveButtonClickCompleted";
+        this.debug( methodName );
+        this.clearForm();
+    }
+
+    /**
+     * This method is called after the successful completion of the saving of the model object.
+     * @param {T} modelObject
+     */
+    protected onAddButtonClicked( modelObject: T ): void
+    {
+        let methodName = "onAddButtonClicked";
+        this.debug( methodName );
+    }
+
+    /**
+     * This method is called after the user has clicked the Add button and it completed successfully.
+     */
+    protected onAddButtonClickCompleted( modelObject: T ): void
+    {
+        let methodName = "onAddButtonClickCompleted";
+        this.debug( methodName );
+        this.clearForm();
+    }
+
+    /**
+     * This method is called when the delete button is clicked.
+     * @param {T} modelObject
+     */
+    protected onDeleteButtonClicked( modelObject: T ): void
+    {
+        let methodName = "onDeleteButtonClicked";
+        this.debug( methodName );
+    }
+
+    /**
+     * This method is called when the delete button work completed successfully.
+     * By default, the model object and crud operations are reset.
+     * @param {T} modelObject
+     */
+    protected onDeleteButtonClickCompleted( modelObject: T ): void
+    {
+        let methodName = "onDeleteButtonClickCompleted";
+        this.debug( methodName );
+        this.clearForm();
     }
 
     /**

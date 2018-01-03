@@ -1,4 +1,3 @@
-
 import { SessionService } from "../session.service";
 import { Injectable } from "@angular/core";
 import { Http } from "@angular/http";
@@ -7,7 +6,6 @@ import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.facto
 import { CrudRestService } from "./crud-rest.serivce";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { AppConfigurationService } from "../app-configuration.service";
-import { PaginationURL } from "../../common/pagination-url";
 
 /**
  * This service manages REST communication for PortfolioStocks.
@@ -27,9 +25,9 @@ export class PortfolioStockCrudService extends CrudRestService<PortfolioStock>
         super( http, sessionService, appConfig, portfolioStockFactory );
     }
 
-    protected getContextURL( portfolioStock: PortfolioStock ): string
+    protected getContextBaseURL(): string
     {
-        return '/portfolio/' + portfolioStock.portfolioId + '/portfolioStock'
+        return '/portfolio';
     }
 
     /**

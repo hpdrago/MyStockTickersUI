@@ -22,10 +22,8 @@ export class CustomerAccountTableComponent extends CrudTableComponent<CustomerAc
 {
     private OPERATION = CrudOperation;
     constructor( protected toaster: ToastsManager,
-                 protected customerAccountServiceContainer: CustomerAccountCrudServiceContainer,
-                 protected tradeItService: TradeItService )
+                 protected customerAccountServiceContainer: CustomerAccountCrudServiceContainer )
     {
         super( false, toaster, customerAccountServiceContainer );
-        //this.modelObjectEditMode = CrudModelObjectEditMode.P;
     }
 }

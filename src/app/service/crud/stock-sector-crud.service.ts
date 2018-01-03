@@ -6,7 +6,6 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { Injectable } from "@angular/core";
 import { StockSectorFactory } from "../../model/factory/stock-sector.factory";
 import { StockSectorList } from "../../model/entity/stock-sectors.list";
-import { PaginationURL } from "../../common/pagination-url";
 
 /**
  * This class provides CRUD REST services for StockSectors
@@ -24,7 +23,7 @@ export class StockSectorCrudService extends CrudRestService<StockSectorList>
         super( http, sessionService, appConfigurationService, stockSectorFactory );
     }
 
-    protected getContextURL( stockSectorList: StockSectorList ): string
+    protected getContextBaseURL(): string
     {
         return '/stockSectors'
     }

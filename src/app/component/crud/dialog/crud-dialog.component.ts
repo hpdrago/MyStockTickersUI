@@ -85,7 +85,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormButtonsService
-                .subscribeToHandleDeleteButtonClickedEvent(( modelObject ) => this.onDeleteButtonClicked( modelObject ) ));
+                .subscribeToDeleteButtonClickedEvent(( modelObject ) => this.onDeleteButtonClicked( modelObject ) ));
         this.log( "subscribeToCrudFormButtonsServiceEvents.end" );
     }
 

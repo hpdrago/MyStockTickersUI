@@ -8,6 +8,7 @@ import { TradeItBroker } from "./tradeit-broker";
 import { TradeItBrokerList } from "./tradeit-broker-list";
 import { OAuthAccess } from "./oauthaccess";
 import { JsonConvert, ValueCheckingMode } from "json2typescript";
+import { SessionService } from "../session.service";
 
 /**
  * This service contains the methods to inteface with the Tradeit API
@@ -15,12 +16,14 @@ import { JsonConvert, ValueCheckingMode } from "json2typescript";
 @Injectable()
 export class TradeItService extends BaseService
 {
-    readonly CONTEXT_URL = "/tradeIt";
-    readonly GET_BROKERS = "/brokers";
-    readonly GET_REQUEST_OAUTH_POPUP_URL = "/requestOAuthPopUpURL/broker/";
-    readonly GET_OAUTH_ACCESS_TOKEN = "/getOAuthAccessToken/oAuthVerifier/";
+    private readonly CONTEXT_URL = "/tradeIt";
+    private readonly GET_BROKERS = "/brokers";
+    private readonly GET_REQUEST_OAUTH_POPUP_URL = "/requestOAuthPopUpURL/broker/";
+    private readonly GET_OAUTH_ACCESS_TOKEN = "/getOAuthAccessToken/";
+    private readonly AUTHENTICATE = "/authenticate";
 
     constructor( protected http: Http,
+                 protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                )
     {
@@ -33,10 +36,14 @@ export class TradeItService extends BaseService
      * @param {string} oAuthVerifier
      * @returns {Observable<string>} The URL for the popup.
      */
-    public getOAuthAccessToken( oAuthVerifier: string ): Observable<OAuthAccess>
+    public getOAuthAccessToken( broker: string, accountName: string, oAuthVerifier: string ): Observable<OAuthAccess>
     {
         let methodName = "getOAuthAccessToken";
-        let url = this.appConfig.getBaseURL() + this.CONTEXT_URL + this.GET_OAUTH_ACCESS_TOKEN + oAuthVerifier;
+        let url = `${this.appConfig.getBaseURL()}/${this.CONTEXT_URL}/${this.GET_OAUTH_ACCESS_TOKEN}`;
+        url += `/customerId/${this.sessionService.getLoggedInUserId()}`;
+        url += `/broker/${broker}`
+        url += `/accountName/${accountName}`
+        url += `/oAuthVerifier/${oAuthVerifier}`;
         this.debug( methodName + " url: " + url );
         return this.http
                    .get( url )

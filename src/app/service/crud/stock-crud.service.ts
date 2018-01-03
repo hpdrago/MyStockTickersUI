@@ -18,7 +18,7 @@ import { CrudRestService } from "./crud-rest.serivce";
 @Injectable()
 export class StockCrudService extends CrudRestService<Stock>
 {
-    private stocksUrl: string = '/stocks';
+    private stocksUrl: string = '/stocks/';
     private stocksCompaniesLikeUrl: string = '/' + this.stocksUrl + '/companiesLike';
     private stocksCompaniesLikePaginationUrl: PaginationURL;
 
@@ -31,9 +31,9 @@ export class StockCrudService extends CrudRestService<Stock>
         this.stocksCompaniesLikePaginationUrl = new PaginationURL( appConfig.getBaseURL() + this.stocksCompaniesLikeUrl );
     }
 
-    protected getContextURL( stock: Stock ): string
+    protected getContextBaseURL(): string
     {
-        return this.stocksUrl;
+        return undefined;
     }
 
     protected getCustomerURL(): string

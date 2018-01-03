@@ -41,15 +41,18 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
      */
     protected getUpdateOrDeleteURL( modelObject: T ): string
     {
+        var methodName = "getUpdateOrDeleteURL";
+        this.debug( methodName + " " + JSON.stringify( modelObject ));
         var contextURL = this.getContextURL( modelObject );
         if ( isNullOrUndefined( contextURL ) )
         {
             throw new ReferenceError( "getContextURL cannot return a null or undefined value" );
         }
-        contextURL += '/' + modelObject.getPrimaryKey();
         var customerURL = this.getCustomerURL() == null ? "/" : this.getCustomerURL();
-        this.debug( "contextURL: " + contextURL + " customerURL: " + customerURL );
-        return this.appConfig.getBaseURL() + contextURL + customerURL
+        this.debug( methodName + " contextURL: " + contextURL + " customerURL: " + customerURL );
+        var url = this.appConfig.getBaseURL() + contextURL + customerURL;
+        this.debug( methodName + " url: " + url );
+        return url;
     }
 
     /**

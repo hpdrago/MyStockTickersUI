@@ -25,8 +25,10 @@ import { Subscription } from "rxjs/Subscription";
 export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
     private addButtonClickedSubject: Subject<T>;
+    private addButtonClickCompletedSubject: Subject<T>;
     private addAndContinueButtonClickedSubject: Subject<T>;
     private deleteButtonClickedSubject: Subject<T>;
+    private deleteButtonClickCompletedSubject: Subject<T>;
     private saveButtonClickedSubject: Subject<T>;
     private saveButtonClickCompletedSubject: Subject<T>;
     private resetButtonClickedSubject: Subject<void>;
@@ -36,8 +38,10 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     {
         super( modelObjectFactory );
         this.addButtonClickedSubject = new Subject<T>();
+        this.addButtonClickCompletedSubject = new Subject<T>();
         this.addAndContinueButtonClickedSubject = new Subject<T>();
         this.deleteButtonClickedSubject = new Subject<T>();
+        this.deleteButtonClickCompletedSubject = new Subject<T>();
         this.saveButtonClickedSubject = new Subject<T>();
         this.saveButtonClickCompletedSubject = new Subject<T>();
         this.resetButtonClickedSubject = new Subject<void>();
@@ -109,13 +113,54 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     }
 
     /**
+     * The {@code CrudTableComponent} will call this method to register to receive notification when the Add
+     * button work completed successfully.
+     */
+    public subscribeToAddButtonClickCompletedEvent( fn: ( T ) => any ): Subscription
+    {
+        this.debug( "subscribed to addButtonClickCompletedEvent" );
+        return this.addButtonClickCompletedSubject.asObservable().subscribe( fn );
+    }
+
+    /**
+     * The {@code CrudPanelComponent will call this method when the user clicks the Add button.
+     * @param modelObject
+     */
+    public sendAddButtonClickCompletedEvent( modelObject: T )
+    {
+        this.debug( "sendAddButtonClickCompletedEvent" );
+        this.addButtonClickCompletedSubject.next( modelObject );
+    }
+
+    /**
+     * The {@code CrudTableComponent} will call this method to register to receive notification when the Delete
+     * button work was completed successfully.
+     * @return {Subscription}
+     */
+    public subscribeToDeleteButtonClickCompletedEvent( fn: ( T ) => any ): Subscription
+    {
+        this.debug( "subscribed to deleteButtonClickCompletedEvent" );
+        return this.deleteButtonClickCompletedSubject.asObservable().subscribe( fn );
+    }
+
+    /**
+     * The {@code CrudPanelComponent will call this method when the delete button work completed successfully.
+     * @param modelObject
+     */
+    public sendDeleteButtonClickCompletedEvent( modelObject: T )
+    {
+        this.debug( "sendDeleteButtonClickCompletedEvent to " + this.deleteButtonClickCompletedSubject.observers.length + " observers" );
+        this.deleteButtonClickCompletedSubject.next( modelObject );
+    }
+
+    /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Delete
      * button is clicked on the panel.
      * @return {Subscription}
      */
-    public subscribeToHandleDeleteButtonClickedEvent( fn: ( T ) => any ): Subscription
+    public subscribeToDeleteButtonClickedEvent( fn: ( T ) => any ): Subscription
     {
-        this.debug( "subscribed to deleteButtonClicked" );
+        this.debug( "subscribed to deleteButtonClickedEvent" );
         return this.deleteButtonClickedSubject.asObservable().subscribe( fn );
     }
 
@@ -125,10 +170,9 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
      */
     public sendDeleteButtonClickedEvent( modelObject: T )
     {
-        this.debug( "sendDeleteButtonClickedEvent" );
+        this.debug( "sendDeleteButtonClickedEvent to " + this.deleteButtonClickedSubject.observers.length + " observers" );
         this.deleteButtonClickedSubject.next( modelObject );
     }
-
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Save
      * button is clicked on the panel.

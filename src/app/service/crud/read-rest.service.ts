@@ -5,7 +5,7 @@ import { Observable } from "rxjs/Observable";
 import { Http, Response } from "@angular/http";
 import { ModelObject } from "../../model/entity/modelobject";
 import { BaseService } from "../base-service";
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined, isNumber } from "util";
 import { PaginationPage } from "../../common/pagination";
 import { PaginationURL } from "../../common/pagination-url";
 
@@ -30,16 +30,20 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * @param {T} modelObject
      * @returns {string}
      */
-    protected getCreateOrReadURL( modelObject: T )
+    protected getCreateOrReadURL( modelObject: T ): string
     {
+        var methodName = "getCreateOrReadURL";
         var contextURL = this.getContextURL( modelObject );
+        this.debug( methodName + " " + JSON.stringify( modelObject ));
         if ( isNullOrUndefined( contextURL ) )
         {
             throw new ReferenceError( "getContextURL cannot return a null or undefined value" );
         }
         var customerURL = this.getCustomerURL() == null ? "/" : this.getCustomerURL();
-        this.debug( "contextURL: " + contextURL + " customerURL: " + customerURL );
-        return this.appConfig.getBaseURL() + contextURL + customerURL
+        this.debug( methodName + " contextURL: " + contextURL + " customerURL: " + customerURL );
+        var url = this.appConfig.getBaseURL() + contextURL + customerURL;
+        this.debug( methodName + " url: " + url );
+        return url;
     }
 
     /**
@@ -49,7 +53,54 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * based on these properties.
      * @returns {string}
      */
-    protected abstract getContextURL( modelObject: T ): string;
+    protected abstract getContextBaseURL(): string;
+
+    /**
+     * This method customizes the context URL to include the primary key of the model object.  If the model object is
+     * not set (null or undefined), then just the context based url (@code getContextBaseURL) is return.
+     * @param {T} modelObject
+     * @returns {string}
+     */
+    protected getContextURL( modelObject: T ): string
+    {
+        let methodName = "getContextURL";
+        this.debug( methodName + " " + JSON.stringify( modelObject ));
+        let contextURL = this.getContextBaseURL();
+        let primaryKey: string = null;
+        /*
+         * Determine if there is a primary key to add to the URL
+         */
+        !isNullOrUndefined( modelObject.getPrimaryKey() )
+        {
+            if ( isNumber( modelObject.getPrimaryKey() ))
+            {
+                if ( modelObject.getPrimaryKey() > 0 )
+                {
+                    primaryKey = modelObject.getPrimaryKey();
+                }
+            }
+            else
+            {
+                primaryKey = modelObject.getPrimaryKey();
+            }
+        }
+        /*
+         * Add missing / if needed
+         */
+        if ( !isNullOrUndefined( primaryKey ))
+        {
+            if ( contextURL.endsWith( "/" ))
+            {
+                contextURL += primaryKey;
+            }
+            else
+            {
+                contextURL += '/' + primaryKey;
+            }
+        }
+        this.debug( methodName + " contextURL: " + contextURL );
+        return contextURL;
+    }
 
     /**
      * Returns the customer portion of the url
@@ -67,7 +118,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getReadModelObjectUrl( modelObject: T ): string
     {
-        return this.getCreateOrReadURL( modelObject ) + '/' + modelObject.getPrimaryKey();
+        return this.getCreateOrReadURL( modelObject );
     }
 
     /**
@@ -76,16 +127,23 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getReadModelObjectListUrl( modelObject: T ): string
     {
-        return this.getCreateOrReadURL( modelObject );
-        //var url: string = this.appConfig.getBaseURL() + this.getContextURL();
-        //return `${this.appConfig.getBaseURL()}/${this.getContextURL()}/${this.sessionService.getLoggedInUserId()}`;
-        /*
-        if ( !isNullOrUndefined( modelObject.tickerSymbol ) )
+        var methodName = "getReadModelObjectListUrl";
+        this.debug( methodName + " " + JSON.stringify( modelObject ));
+        var customerURL = this.getCustomerURL();
+        if ( isNullOrUndefined( customerURL ) )
         {
-            url += '/' + stockToBuy.tickerSymbol;
+            throw new ReferenceError( "getCustomerURL cannot return a null or undefined value" );
         }
-        */
-        //return url;
+        this.debug( methodName + " customerURL: " + customerURL );
+        var contextURL = this.getContextURL( modelObject );
+        if ( isNullOrUndefined( contextURL ) )
+        {
+            throw new ReferenceError( "getContextURL cannot return a null or undefined value" );
+        }
+        var url = this.appConfig.getBaseURL() + contextURL + customerURL
+        this.debug( methodName + " contextURL: " + contextURL + " customerURL: " + customerURL );
+        this.debug( methodName + " url: " + url );
+        return url;
     }
 
     /**
@@ -155,9 +213,10 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                    .get( url )
                    .map( ( response: Response ) =>
                    {
-                       this.debug( methodName + " received response" );
+                       this.debug( methodName + " received response " + JSON.stringify(response) );
                        var modelObjects: T[] = this.modelObjectFactory.newModelObjectArray( response.json() )
                        this.debug( methodName + " " + modelObjects.length + " model objects" );
+                       this.debug( methodName + " " + JSON.stringify( modelObjects ));
                        return modelObjects;
                    })
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )

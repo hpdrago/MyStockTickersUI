@@ -120,7 +120,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
     public setCrudOperation( crudOperation: CrudOperation )
     {
-        //this.debug( "setCrudOperation " + CrudOperation.getName( crudOperation ));
+        this.debug( "setCrudOperation " + CrudOperation.getName( crudOperation ));
         this.crudOperation = crudOperation;
     }
 

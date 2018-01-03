@@ -23,7 +23,7 @@ export class CustomerAccountCrudService extends CrudRestService<CustomerAccount>
         super( http, sessionService, appConfig, customerAccountFactory );
     }
 
-    protected getContextURL( modelObject: CustomerAccount ): string
+    protected getContextBaseURL(): string
     {
         return '/account';
     }

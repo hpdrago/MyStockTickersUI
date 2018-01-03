@@ -41,7 +41,7 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
         {
             throw new Error( "crudFormService has not been set by Input value" );
         }
-        //this.subscribeToCrudFormServiceEvents();
+        this.subscribeToCrudFormServiceEvents();
         //this.subscribeToCrudTableServiceEvents();
         this.subscribeToCrudPanelServiceEvents();
         this.sendComponentInitializedEvent();
@@ -120,23 +120,15 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     protected subscribeToCrudFormServiceEvents(): void
     {
         this.debug( "subscribeToCrudFormServiceEvents.begin" );
-        /**
-         * Subscribe to error notifications from child components
-         */
-        /*
         this.addSubscription( this.crudServiceContainer
                                   .crudFormButtonsService
-                                  .subscribeToModelObjectChangedEvent( customerAccount => this.setModelObject( customerAccount ) ))
+                                  .subscribeToDeleteButtonClickCompletedEvent( modelObject => this.deleteButtonClickCompleted( modelObject ) ));
         this.addSubscription( this.crudServiceContainer
                                   .crudFormButtonsService
-                                  .subscribeToCrudOperationChangeEvent( crudOperation => this.setCrudOperation( crudOperation )));
-                                  */
-        /*
-        this.addSubscription(
-            this.crudServiceContainer
-            .crudFormService
-            .subscribeToCrudOperationError(( errorMessage: string ) => this.reportRestError( errorMessage )));
-            */
+                                  .subscribeToSaveButtonClickCompletedEvent( modelObject => this.saveButtonClickCompleted( modelObject ) ));
+        this.addSubscription( this.crudServiceContainer
+                                  .crudFormButtonsService
+                                  .subscribeToAddButtonClickCompletedEvent( modelObject => this.addButtonClickCompleted( modelObject ) ));
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 
@@ -174,6 +166,45 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     protected cancelButtonClicked()
     {
         this.debug( "cancelButtonClicked" );
+        this.setCrudOperation( CrudOperation.NONE );
+        this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
+    }
+
+    /**
+     * This method is called upon the successful completion of deleting a model object.
+     * @param customerAccount
+     */
+    protected deleteButtonClickCompleted( modelObject: T )
+    {
+        this.debug( "deleteButtonClickCompleted" );
+        this.resetPanel();
+    }
+
+    /**
+     * This method is called upon the successful completion of adding a model object.
+     * @param modelObject
+     */
+    protected addButtonClickCompleted( modelObject: T )
+    {
+        this.debug( "addButtonClickCompleted" );
+        this.resetPanel();
+    }
+
+    /**
+     * This method is called upon the successful completion of saving a model object.
+     * @param modelObject
+     */
+    protected saveButtonClickCompleted( modelObject: T )
+    {
+        this.debug( "saveButtonClickCompleted" );
+        this.resetPanel();
+    }
+
+    /**
+     * Resets the model object and the crud operation
+     */
+    protected resetPanel()
+    {
         this.setCrudOperation( CrudOperation.NONE );
         this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
     }

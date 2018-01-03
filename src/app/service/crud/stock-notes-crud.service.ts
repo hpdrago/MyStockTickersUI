@@ -26,7 +26,7 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
         super( http, sessionService, appConfig, stockNotesFactory );
     }
 
-    protected getContextURL( stockNotes: StockNotes ): string
+    protected getContextBaseURL(): string
     {
         return this.urlPath;
     }

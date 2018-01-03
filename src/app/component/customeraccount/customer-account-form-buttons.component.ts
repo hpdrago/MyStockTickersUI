@@ -5,8 +5,9 @@ import { CustomerAccountCrudServiceContainer } from "./customer-account-crud-ser
 import { CustomerAccount } from "../../model/entity/customer-account";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { OAuthAccess } from "../../service/tradeit/oauthaccess";
-import { JsonConvert } from "json2typescript";
+import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
 import { TradeItApiResult } from "../../service/tradeit/tradeit-api-result";
+import { CrudOperation } from "../crud/common/crud-operation";
 
 /**
  * Button panel component for the Account dialog.
@@ -51,27 +52,29 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
             this.log( methodName + " event: " + JSON.stringify( event ) );
             try
             {
+
                 var data = JSON.parse( event.data );
                 var oAuthVerifier = data.oAuthVerifier;
                 this.log( methodName + " oAuthVerifier: " + oAuthVerifier );
                 this.log( methodName + " getting OAuthAccessToken" );
-                this.tradeItService.getOAuthAccessToken( oAuthVerifier )
+                this.tradeItService.getOAuthAccessToken( this.modelObject.brokerage, this.modelObject.name, oAuthVerifier )
                                    .subscribe( (oAuthAccess: OAuthAccess) =>
                                                {
                                                    this.log( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ));
                                                    if ( oAuthAccess.status == "ERROR" )
                                                    {
                                                        let jsonConvert: JsonConvert = new JsonConvert();
+                                                       jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
+                                                       jsonConvert.operationMode = OperationMode.LOGGING;
                                                        let apiResult: TradeItApiResult = jsonConvert.deserialize( oAuthAccess, TradeItApiResult );
                                                        this.log( "Messages: " + apiResult.getMessages() );
                                                        this.toaster.error( apiResult.getMessages(), "Error" )
                                                    }
                                                    else
                                                    {
-                                                       this.modelObject.userId = oAuthAccess.userId;
-                                                       this.modelObject.userToken = oAuthAccess.userToken;
-                                                       this.log( methodName + " adding account: " + JSON.stringify( this.modelObject ));
-                                                       super.onAddButtonClick();
+                                                       this.setModelObject( oAuthAccess.customerAccount );
+                                                       this.notifySaveButtonSuccessful();
+                                                       this.log( methodName + " added account: " + JSON.stringify( this.modelObject ));
                                                    }
                                                },
                                                error =>
@@ -112,6 +115,11 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
     protected getSaveSuccessFulMessage( account: CustomerAccount )
     {
         return "Save Successful for " + account.name;
+    }
+
+    protected getAddButtonLabel(): string
+    {
+        return "Add Account";
     }
 
     protected onAddButtonClick(): void

@@ -401,6 +401,19 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     }
 
     /**
+     * This method is called when the delete button is clicked but before the delete button work is started.
+     * {@see notifySaveButtonSuccessful}
+     */
+    protected sendDeleteButtonClickedEvent()
+    {
+        var methodName = "sendDeleteButtonClickedEvent";
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .sendDeleteButtonClickedEvent( this.modelObject );
+    }
+
+    /**
      * This method is called when the Continuous Add button is clicked.
      */
     protected onContinuousAddButtonClick(): void
@@ -424,9 +437,23 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "onAddButtonClicked";
         this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
+        this.sendAddButtonClickedEvent();
         this.sendFormPrepareToSaveEvent();
         this.performAddButtonWork();
         this.debug( methodName + ".end " + JSON.stringify( this.modelObject ));
+    }
+
+    /**
+     * This method is called when the save button is clicked but before the save button work is started.
+     * {@see notifySaveButtonSuccessful}
+     */
+    protected sendAddButtonClickedEvent()
+    {
+        var methodName = "sendADdButtonClickedEvent";
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
+        this.crudServiceContainer
+            .crudFormButtonsService
+            .sendAddButtonClickedEvent( this.modelObject );
     }
 
     /**
@@ -498,7 +525,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
             .crudFormService.sendFormResetEvent();
         this.crudServiceContainer
             .crudFormButtonsService
-            .sendAddButtonClickedEvent( this.modelObject );
+            .sendAddButtonClickCompletedEvent( this.modelObject );
     }
 
     /**
@@ -508,21 +535,31 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "onDeleteButtonClick";
         this.debug( methodName + " " + JSON.stringify( this.modelObject ));
+        this.sendDeleteButtonClickedEvent()
+        this.performDeleteButtonWork( methodName );
+    }
+
+    /**
+     * This method performs the actual delete of the model object.
+     * @param {string} methodName
+     */
+    protected performDeleteButtonWork( methodName: string )
+    {
         var observable: Observable<void> = this.crudServiceContainer
                                                .crudRestService
                                                .deleteModelObject( this.modelObject );
         observable.subscribe( () =>
-                   {
-                       this.debug( methodName + " delete successful" );
-                       this.showInfo( this.getDeleteSuccessfulMessage() )
-                       this.notifyDeleteButtonWorkSuccessful();
-                   },
-                   err =>
-                   {
-                       this.debug( methodName + " delete failed" );
-                       this.reportRestError( err );
-                   }
-            );
+                              {
+                                  this.debug( methodName + " delete successful" );
+                                  this.showInfo( this.getDeleteSuccessfulMessage() )
+                                  this.notifyDeleteButtonWorkSuccessful();
+                              },
+                              err =>
+                              {
+                                  this.debug( methodName + " delete failed" );
+                                  this.reportRestError( err );
+                              }
+        );
         this.busyIndicator = observable.subscribe();
     }
 
@@ -546,7 +583,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
             .sendFormResetEvent();
         this.crudServiceContainer
             .crudFormButtonsService
-            .sendDeleteButtonClickedEvent( this.modelObject );
+            .sendDeleteButtonClickCompletedEvent( this.modelObject );
     }
 
     /**

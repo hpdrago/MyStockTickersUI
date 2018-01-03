@@ -3,12 +3,24 @@
  *
  * Created by mike on 12/8/2016.
  */
+import { JsonObject, JsonProperty } from "json2typescript";
+
+@JsonObject
 export abstract class ModelObject<T>
 {
+    @JsonProperty( "version", Number )
     public version: number;
+
+    @JsonProperty( "createdBy", Number )
     public createdBy: number;
+
+    @JsonProperty( "updatedBy", Number )
     public updatedBy: number;
+
+    @JsonProperty( "dateCreate", Date )
     public dateCreated: Date;
+
+    @JsonProperty( "dateModified", Date )
     public dateModified: Date;
 
     /**

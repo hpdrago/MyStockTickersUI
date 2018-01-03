@@ -6,7 +6,6 @@ import { CrudRestService } from "./crud-rest.serivce";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { StockToBuyFactory } from "../../model/factory/stock-to-buy.factory";
 import { isNullOrUndefined } from "util";
-import { PaginationURL } from "../../common/pagination-url";
 
 /**
  * This class provides all CRUD REST services for Stock To Buy.
@@ -26,7 +25,7 @@ export class StockToBuyCrudService extends CrudRestService<StockToBuy>
         super( http, sessionService, appConfig, stockToBuyFactory );
     }
 
-    protected getContextURL( stockToBuy: StockToBuy ): string
+    protected getContextBaseURL(): string
     {
         return this.urlPath;
     }

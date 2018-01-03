@@ -14,8 +14,7 @@
                              [rows]="20"
                              [totalRecords]="totalRows"
                              [loading]="loading"
-                             [lazy]="true"
-                             (onLazyLoad)="lazyLoadTable($event)"
+                             [lazy]="false"
                              (onRowDblclick)="onRowDoubleClick($event)"
                              [responsive]="true">
 
@@ -33,20 +32,10 @@
                     NAME
                     ------------------------------------------------------------------------------------------------------------>
                     <p-column id="broker"
-                              field="broker"
+                              field="brokerage"
                               header="Broker"
                               [style]="{'width':'60px'}"
                               [sortable]="true">
-                    </p-column>
-
-                    <!----------------------------------------------------------------------------------------------------------
-                    LOGIN TOKEN
-                    ------------------------------------------------------------------------------------------------------------>
-                    <p-column id="loginToken"
-                              field="loginToken"
-                              header="Login Token"
-                              [style]="{'width':'150px'}"
-                              [sortable]="false">
                     </p-column>
 
                     <p-footer>
