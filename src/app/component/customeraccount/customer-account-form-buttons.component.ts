@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component, OnDestroy } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { CustomerAccountCrudServiceContainer } from "./customer-account-crud-service-container";
@@ -19,11 +19,15 @@ import { CrudOperation } from "../crud/common/crud-operation";
     templateUrl: '../crud/form/crud-form-buttons.component.html',
     styleUrls: ['../crud/form/crud-form-buttons.component.css']
 })
-export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponent<CustomerAccount>
+export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponent<CustomerAccount> implements OnDestroy
 {
+    private requestInProcess = false;
+    private requestCompleted = false;
+    private destroyed: boolean = false;
     constructor( protected toaster: ToastsManager,
                  private customerAccountCrudServiceContainer: CustomerAccountCrudServiceContainer,
-                 private tradeItService: TradeItService )
+                 private tradeItService: TradeItService,
+                 private changeDetectorRef: ChangeDetectorRef )
     {
         super( toaster, customerAccountCrudServiceContainer );
         /*
@@ -40,19 +44,28 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
         }
     }
 
+    public ngOnDestroy(): void
+    {
+        this.destroyed = true;
+        super.ngOnDestroy();
+    }
+
     /**
      * This method is called from the popup window.
+     *
+     * NOTE: This method gets called twice instead of once on a successful login so the requestInProcess,
+     * requestCompleted, and destroyed flags are used to prevent errors showing up as the second call results in a error from TradeIt.
      * @param event
      */
     private receiveMessage( event: any )
     {
-        if ( event.data )
+        if ( event.data && !this.requestInProcess && !this.requestCompleted && !this.destroyed )
         {
             var methodName = "receiveMessage";
+            this.log( methodName + " requestInProcess: " + this.requestInProcess );
             this.log( methodName + " event: " + JSON.stringify( event ) );
             try
             {
-
                 var data = JSON.parse( event.data );
                 var oAuthVerifier = data.oAuthVerifier;
                 this.log( methodName + " oAuthVerifier: " + oAuthVerifier );
@@ -60,26 +73,36 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
                 this.tradeItService.getOAuthAccessToken( this.modelObject.brokerage, this.modelObject.name, oAuthVerifier )
                                    .subscribe( (oAuthAccess: OAuthAccess) =>
                                                {
-                                                   this.log( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ));
-                                                   if ( oAuthAccess.status == "ERROR" )
+                                                   this.log( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ) +
+                                                             " requestCompleted: " + this.requestCompleted +
+                                                             " requestInProcess: " + this.requestInProcess );
+                                                   if ( !this.requestCompleted && !this.destroyed )
                                                    {
-                                                       let jsonConvert: JsonConvert = new JsonConvert();
-                                                       jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
-                                                       jsonConvert.operationMode = OperationMode.LOGGING;
-                                                       let apiResult: TradeItApiResult = jsonConvert.deserialize( oAuthAccess, TradeItApiResult );
-                                                       this.log( "Messages: " + apiResult.getMessages() );
-                                                       this.toaster.error( apiResult.getMessages(), "Error" )
-                                                   }
-                                                   else
-                                                   {
-                                                       this.setModelObject( oAuthAccess.customerAccount );
-                                                       this.notifySaveButtonSuccessful();
-                                                       this.log( methodName + " added account: " + JSON.stringify( this.modelObject ));
+                                                       if ( oAuthAccess.status == "ERROR" )
+                                                       {
+                                                           let jsonConvert: JsonConvert = new JsonConvert();
+                                                           jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
+                                                           jsonConvert.operationMode = OperationMode.LOGGING;
+                                                           let apiResult: TradeItApiResult = jsonConvert.deserialize( oAuthAccess, TradeItApiResult );
+                                                           this.log( "Messages: " + apiResult.getMessages() );
+                                                           this.toaster.error( apiResult.getMessages(), "Error" )
+                                                       }
+                                                       else
+                                                       {
+                                                           this.setModelObject( oAuthAccess.customerAccount );
+                                                           this.notifySaveButtonSuccessful();
+                                                           this.log( methodName + " added account: " + JSON.stringify( this.modelObject ) );
+                                                           this.showInfo( oAuthAccess.customerAccount.name + " was successfully linked." )
+                                                           this.requestCompleted = true;
+                                                       }
                                                    }
                                                },
                                                error =>
                                                {
-                                                    this.reportRestError( error );
+                                                   if ( !this.requestInProcess && !this.requestCompleted )
+                                                   {
+                                                       this.reportRestError( error );
+                                                   }
                                                });
             }
             catch( e )
@@ -88,6 +111,8 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
                 // what we are looking for.
                 console.log((<Error>e).message);
             }
+            this.requestInProcess = true;
+            this.log( methodName + " setting requestInProcess: " + this.requestInProcess );
         }
     }
 
@@ -130,6 +155,7 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
             .subscribe( url =>
                         {
                             this.log( "onAddButtonClick: url: " + url );
+                            this.log( "Opening login window" );
                             window.open( url );
                         },
                         error =>

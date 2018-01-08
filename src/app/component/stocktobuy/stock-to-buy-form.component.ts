@@ -1,5 +1,5 @@
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
@@ -8,6 +8,7 @@ import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-cont
 import { SessionService } from "../../service/session.service";
 import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
+import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
 
 /**
  * This is the Stock ToBuy Form Component class.
@@ -21,6 +22,9 @@ import { CustomerCrudService } from "../../service/crud/customer-crud.service";
             } )
 export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<StockToBuy>
 {
+    @ViewChild( StockAutoCompleteComponent )
+    private stockAutoCompleteComponent: StockAutoCompleteComponent;
+
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
@@ -69,5 +73,11 @@ export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<St
     {
         return !this.formGroup.controls['tickerSymbol'].valid &&
                this.formGroup.controls['tickerSymbol'].dirty;
+    }
+
+    protected resetForm(): void
+    {
+        this.stockAutoCompleteComponent.reset();
+        super.resetForm();
     }
 }

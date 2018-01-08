@@ -9,5 +9,5 @@ import { CustomerAccount } from "../../model/entity/customer-account";
 export class OAuthAccess extends TradeItApiResult
 {
     @JsonProperty( "customerAccount", CustomerAccount )
-    public customerAccount;
+    public customerAccount: CustomerAccount = undefined;
 }

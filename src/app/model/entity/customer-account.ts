@@ -13,16 +13,16 @@ import { JsonObject, JsonProperty } from "json2typescript";
 export class CustomerAccount extends ModelObject<CustomerAccount>
 {
     @JsonProperty( "id", Number )
-    public id: number;
+    public id: number = undefined;
 
     @JsonProperty( "customerId", Number )
-    public customerId: number;
+    public customerId: number = undefined;
 
     @JsonProperty( "name", String )
-    public name: string;
+    public name: string = undefined;
 
     @JsonProperty( "brokerage", String )
-    public brokerage: string;
+    public brokerage: string = undefined;
 
     public getPrimaryKey(): any
     {

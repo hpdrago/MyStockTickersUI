@@ -33,7 +33,7 @@ export class StockCrudService extends CrudRestService<Stock>
 
     protected getContextBaseURL(): string
     {
-        return undefined;
+        return this.stocksUrl;
     }
 
     protected getCustomerURL(): string
@@ -73,7 +73,7 @@ export class StockCrudService extends CrudRestService<Stock>
     {
         let methodName = "getStockQuote";
         this.debug( methodName + " " + tickerSymbol );
-        let url = this.appConfig.getBaseURL() + this.getContextURL( null ) + "/stockQuote/" + tickerSymbol;
+        let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockQuote/" + tickerSymbol;
         return this.http
                    .get( url )
                    .map( ( response: Response ) => response.json() )

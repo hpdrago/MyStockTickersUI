@@ -70,7 +70,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         /*
          * Determine if there is a primary key to add to the URL
          */
-        !isNullOrUndefined( modelObject.getPrimaryKey() )
+        if ( !isNullOrUndefined( modelObject ) )
         {
             if ( isNumber( modelObject.getPrimaryKey() ))
             {
@@ -136,11 +136,15 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         }
         this.debug( methodName + " customerURL: " + customerURL );
         var contextURL = this.getContextURL( modelObject );
+        var url: string = '';
         if ( isNullOrUndefined( contextURL ) )
         {
-            throw new ReferenceError( "getContextURL cannot return a null or undefined value" );
+            url = this.appConfig.getBaseURL() + customerURL
         }
-        var url = this.appConfig.getBaseURL() + contextURL + customerURL
+        else
+        {
+            url = this.appConfig.getBaseURL() + contextURL + customerURL
+        }
         this.debug( methodName + " contextURL: " + contextURL + " customerURL: " + customerURL );
         this.debug( methodName + " url: " + url );
         return url;
@@ -216,7 +220,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                        this.debug( methodName + " received response " + JSON.stringify(response) );
                        var modelObjects: T[] = this.modelObjectFactory.newModelObjectArray( response.json() )
                        this.debug( methodName + " " + modelObjects.length + " model objects" );
-                       this.debug( methodName + " " + JSON.stringify( modelObjects ));
+                       //this.debug( methodName + " " + JSON.stringify( modelObjects ));
                        return modelObjects;
                    })
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )

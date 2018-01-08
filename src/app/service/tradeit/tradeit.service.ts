@@ -7,7 +7,7 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { TradeItBroker } from "./tradeit-broker";
 import { TradeItBrokerList } from "./tradeit-broker-list";
 import { OAuthAccess } from "./oauthaccess";
-import { JsonConvert, ValueCheckingMode } from "json2typescript";
+import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
 import { SessionService } from "../session.service";
 
 /**
@@ -58,6 +58,7 @@ export class TradeItService extends BaseService
                              else
                              {
                                  let jsonConvert: JsonConvert = new JsonConvert();
+                                 jsonConvert.operationMode = OperationMode.LOGGING;
                                  jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
                                  let oAuthAccess: OAuthAccess = jsonConvert.deserialize( response.json(), OAuthAccess );
                                  this.debug( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ) );
