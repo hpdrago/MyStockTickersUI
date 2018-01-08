@@ -17,6 +17,10 @@ interface Sector
  */
 export class StockSectorList extends ModelObject<StockSectorList>
 {
+    getPrimaryKeyName(): string
+    {
+        return undefined;
+    }
     private sectors: Array<Sector>;
 
     /**
@@ -105,7 +109,7 @@ export class StockSectorList extends ModelObject<StockSectorList>
         return undefined;
     }
 
-    public getPrimaryKey(): any
+    public getPrimaryKeyValue(): any
     {
         return undefined;
     }

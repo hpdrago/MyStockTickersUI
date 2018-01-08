@@ -54,8 +54,13 @@ export class StockAnalystConsensus extends StockQuoteModelObject<StockAnalystCon
         this.notesSourceName = notesSourceName;
     }
 
-    public getPrimaryKey(): any
+    public getPrimaryKeyValue(): any
     {
         return this.id;
+    }
+
+    public getPrimaryKeyName(): string
+    {
+        return "id";
     }
 }

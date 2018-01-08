@@ -6,6 +6,7 @@ import { StockNotesCountFactory } from "../../model/factory/stock-note-count.fac
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 import { CrudRestService } from "./crud-rest.serivce";
+import { KeyValuePairs } from "../../common/key-value-pairs";
 
 /**
  * This class provides all CRUD REST services for Stock Notes.
@@ -32,19 +33,18 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
     }
 
     /**
-     * This method is called to load the stock notes tables.
-     * @param {string} baseUrl
-     * @param {StockNotes} stockNotes Must have the customerId set and optionally the tickerSymbol
+     * Check for the ticker symbol being set.
+     * @param {StockNotes} stockNotes
      * @returns {string}
      */
-    protected getReadModelObjectListUrl( stockNotes: StockNotes ): string
+    protected getContextURLKeyValues( stockNotes: StockNotes ): KeyValuePairs<string,any>
     {
-        var url: string = super.getReadModelObjectListUrl( stockNotes );
+        let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
         if ( stockNotes.tickerSymbol )
         {
-            url += '/' + stockNotes.tickerSymbol;
+            keyColumns.addPair( "tickerSymbol", stockNotes.tickerSymbol );
         }
-        return url;
+        return keyColumns;
     }
 
 }

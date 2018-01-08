@@ -24,9 +24,13 @@ export class CustomerAccount extends ModelObject<CustomerAccount>
     @JsonProperty( "brokerage", String )
     public brokerage: string = undefined;
 
-    public getPrimaryKey(): any
+    public getPrimaryKeyValue(): any
     {
         return this.id;
     }
 
+    public getPrimaryKeyName(): string
+    {
+        return "id";
+    }
 }

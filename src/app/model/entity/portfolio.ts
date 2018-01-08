@@ -12,8 +12,13 @@ export class Portfolio extends ModelObject<Portfolio>
     public unrealizedGL: number;
     public marketValue: number;
 
-    public getPrimaryKey(): any
+    public getPrimaryKeyValue(): any
     {
         return this.id;
+    }
+
+    public getPrimaryKeyName(): string
+    {
+        return "id";
     }
 }

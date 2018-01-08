@@ -5,6 +5,7 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { StockAnalystConsensusFactory } from "../../model/factory/stock-analyst-consensus.factory";
+import { KeyValuePairs } from "../../common/key-value-pairs";
 
 /**
  * This class provides all CRUD REST services for Stock Summary.
@@ -27,5 +28,20 @@ export class StockAnalystConsensusCrudService extends CrudRestService<StockAnaly
     protected getContextBaseURL(): string
     {
         return this.urlPath;
+    }
+
+    /**
+     * Check for the ticker symbol being set.
+     * @param {StockNotes} stockNotes
+     * @returns {string}
+     */
+    protected getContextURLKeyValues( stockAnalystConsensus: StockAnalystConsensus ): KeyValuePairs<string,any>
+    {
+        let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
+        if ( stockAnalystConsensus.tickerSymbol )
+        {
+            keyColumns.addPair( "tickerSymbol", stockAnalystConsensus.tickerSymbol );
+        }
+        return keyColumns;
     }
 }

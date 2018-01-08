@@ -13,8 +13,13 @@ export class StockQuote extends ModelObject<StockQuote>
     public stockPriceWhenCreated: number;
     public expiration: Date;
 
-    public getPrimaryKey(): any
+    public getPrimaryKeyValue(): any
     {
         return this.tickerSymbol;
+    }
+
+    public getPrimaryKeyName(): string
+    {
+        return "tickerSymbol";
     }
 }

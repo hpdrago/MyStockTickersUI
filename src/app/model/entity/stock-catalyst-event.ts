@@ -30,8 +30,13 @@ export class StockCatalystEvent extends ModelObject<StockCatalystEvent> implemen
         return this.tickerSymbol;
     }
 
-    public getPrimaryKey(): any
+    public getPrimaryKeyValue(): any
     {
         return this.id;
+    }
+
+    public getPrimaryKeyName(): string
+    {
+        return "id";
     }
 }

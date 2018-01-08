@@ -8,6 +8,8 @@ import { BaseService } from "../base-service";
 import { isNullOrUndefined, isNumber } from "util";
 import { PaginationPage } from "../../common/pagination";
 import { PaginationURL } from "../../common/pagination-url";
+import { KeyValuePairs } from "../../common/key-value-pairs";
+import { KeyValuePair } from "../../common/key-value-pair";
 
 /**
  * Generic class for reading model objects from the database.  Provides a method to read a single entity or a list
@@ -25,19 +27,39 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     }
 
     /**
-     * This method combines the {baseUrl} + {customerUrl} + {contextUrl}.
-     * Properly handles the conditional addition of the customer url based on whether its null or not.
+     * This method is called to create a new entity.  It combines the {baseUrl} + {contextBaseURL} + {customerURL}.
+     * @returns {string}
+     */
+    protected getCreateModelObjectUrl(): string
+    {
+        var methodName = "getCreateModelObjectUrl";
+        this.debug( methodName + ".begin" );
+        var contextURL = this.getContextBaseURL();
+        if ( isNullOrUndefined( contextURL ) )
+        {
+            throw new ReferenceError( methodName +" cannot return a null or undefined value" );
+        }
+        var customerURL = this.getCustomerURL() == null ? "/" : this.getCustomerURL();
+        this.debug( methodName + " contextURL: " + contextURL + " customerURL: " + customerURL );
+        var url = this.appConfig.getBaseURL() + contextURL + customerURL;
+        this.debug( methodName + " url: " + url );
+        return url;
+    }
+
+    /**
+     * This method is called to read an entity.  It combines the {baseUrl}  + {contextUrl} + {customerUrl} to create
+     * the REST url.  The contextURL will contain any key/value pairs as returned by {@code getContextURLKeyValues}.
      * @param {T} modelObject
      * @returns {string}
      */
-    protected getCreateOrReadURL( modelObject: T ): string
+    protected getReadModelObjectURL( modelObject: T ): string
     {
-        var methodName = "getCreateOrReadURL";
+        var methodName = "getReadModelObjectURL";
         var contextURL = this.getContextURL( modelObject );
         this.debug( methodName + " " + JSON.stringify( modelObject ));
         if ( isNullOrUndefined( contextURL ) )
         {
-            throw new ReferenceError( "getContextURL cannot return a null or undefined value" );
+            throw new ReferenceError( methodName +" cannot return a null or undefined value" );
         }
         var customerURL = this.getCustomerURL() == null ? "/" : this.getCustomerURL();
         this.debug( methodName + " contextURL: " + contextURL + " customerURL: " + customerURL );
@@ -66,40 +88,56 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         let methodName = "getContextURL";
         this.debug( methodName + " " + JSON.stringify( modelObject ));
         let contextURL = this.getContextBaseURL();
-        let primaryKey: string = null;
+        let keyColumnValues: KeyValuePairs<string,any> = this.getContextURLKeyValues( modelObject );
+        keyColumnValues.forEach( (key, value) => contextURL += "/" + key + "/" + value );
+        this.debug( methodName + " contextURL: " + contextURL );
+        return contextURL;
+    }
+
+    /**
+     * This method will return a KeyValuePair for the primary key value of the {@code modelObject}
+     * @param {T} modelObject
+     * @returns {KeyValuePair<string, any>}
+     */
+    protected getContextPrimaryURLKeyValue( modelObject: T ): KeyValuePair<string,any>
+    {
+        return new KeyValuePair<string, any>( modelObject.getPrimaryKeyName(), modelObject.getPrimaryKeyValue() );
+    }
+
+    /**
+     * Returns the list of key value pairs to add to the URL.  By default, only the primary key value is checked and
+     * added to the URL.  Subclasses should override this method to add different key/value pairs.
+     * @param {T} modelObject
+     * @param {string} primaryKey
+     * @returns list of key value pairs, key=column name,value=column value.
+     */
+    protected getContextURLKeyValues( modelObject: T ): KeyValuePairs<string,any>
+    {
+        let primaryKeyValue: any = null;
+
+        let keyValuePairs: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
         /*
          * Determine if there is a primary key to add to the URL
          */
         if ( !isNullOrUndefined( modelObject ) )
         {
-            if ( isNumber( modelObject.getPrimaryKey() ))
+            if ( isNumber( modelObject.getPrimaryKeyValue() ) )
             {
-                if ( modelObject.getPrimaryKey() > 0 )
+                if ( modelObject.getPrimaryKeyValue() > 0 )
                 {
-                    primaryKey = modelObject.getPrimaryKey();
+                    primaryKeyValue = modelObject.getPrimaryKeyValue();
                 }
             }
             else
             {
-                primaryKey = modelObject.getPrimaryKey();
+                primaryKeyValue = modelObject.getPrimaryKeyValue();
             }
         }
-        /*
-         * Add missing / if needed
-         */
-        if ( !isNullOrUndefined( primaryKey ))
+        if ( primaryKeyValue != null )
         {
-            if ( contextURL.endsWith( "/" ))
-            {
-                contextURL += primaryKey;
-            }
-            else
-            {
-                contextURL += '/' + primaryKey;
-            }
+            keyValuePairs.addPair( modelObject.getPrimaryKeyName(), primaryKeyValue );
         }
-        this.debug( methodName + " contextURL: " + contextURL );
-        return contextURL;
+        return keyValuePairs;
     }
 
     /**
@@ -109,16 +147,6 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     protected getCustomerURL(): string
     {
         return '/customer/' + this.sessionService.getLoggedInUserId();
-    }
-
-    /**
-     * Defines the URL to load a single model object
-     * @param {T} modelObject
-     * @returns {string}
-     */
-    protected getReadModelObjectUrl( modelObject: T ): string
-    {
-        return this.getCreateOrReadURL( modelObject );
     }
 
     /**
@@ -177,7 +205,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         {
             throw new ReferenceError( "modelObject is null or undefined" );
         }
-        var url = this.getReadModelObjectUrl( modelObject );
+        var url = this.getReadModelObjectURL( modelObject );
         this.debug( methodName + " url: " + url );
         if ( isNullOrUndefined( url ) )
         {

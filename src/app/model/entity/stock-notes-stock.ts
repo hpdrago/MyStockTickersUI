@@ -14,8 +14,13 @@ export class StockNotesStock extends ModelObject<StockNotesStock>
                modelObject.tickerSymbol == this.tickerSymbol;
     }
 
-    public getPrimaryKey(): any
+    public getPrimaryKeyValue(): any
     {
         return this.stockNotesId;
+    }
+
+    public getPrimaryKeyName(): string
+    {
+        return "stockNotesId";
     }
 }

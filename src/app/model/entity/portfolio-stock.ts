@@ -35,8 +35,13 @@ export class PortfolioStock extends ModelObject<PortfolioStock>
         return isEqual;
     }
 
-    public getPrimaryKey(): any
+    public getPrimaryKeyValue(): any
     {
         return this.id;
+    }
+
+    public getPrimaryKeyName(): string
+    {
+        return "id";
     }
 }

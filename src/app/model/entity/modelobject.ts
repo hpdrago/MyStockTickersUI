@@ -51,7 +51,13 @@ export abstract class ModelObject<T>
      * Returns the primary key value
      * @returns {any}
      */
-    public abstract getPrimaryKey(): any;
+    public abstract getPrimaryKeyValue(): any;
+
+    /**
+     * Returns the primary key name
+     * @returns {any}
+     */
+    public abstract getPrimaryKeyName(): string;
 
     /**
      * Determines if two model object primary keys are the equal.
@@ -59,6 +65,6 @@ export abstract class ModelObject<T>
      */
     public isEqualPrimaryKey( modelObject: ModelObject<T> ): boolean
     {
-        return this.getPrimaryKey() === modelObject.getPrimaryKey();
+        return this.getPrimaryKeyValue() === modelObject.getPrimaryKeyValue();
     }
 }

@@ -8,9 +8,13 @@ export class Customer extends ModelObject<Customer>
     public id;
     public email: string;
 
-    public getPrimaryKey(): any
+    public getPrimaryKeyValue(): any
     {
         return this.id;
     }
 
+    public getPrimaryKeyName(): string
+    {
+        return "id";
+    }
 }

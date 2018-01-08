@@ -171,6 +171,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                         {
                             this.log( "onStockSearchSelected tickerSymbol: " + stockQuote.tickerSymbol );
                             this.stockSelected.emit( stockQuote );
+                            this.tickerSymbol = "";
                             this.isStockSelected = true;
                         },
                         error =>

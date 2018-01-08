@@ -21,8 +21,13 @@ export class StockNotesSource extends ModelObject<StockNotesSource>
     set dateCreated( dateCreated: Date ) { this._dateCreated = dateCreated }
     get dateCreated(): Date { return this._dateCreated }
 
-    public getPrimaryKey(): any
+    public getPrimaryKeyValue(): any
     {
         return this.id;
+    }
+
+    public getPrimaryKeyName(): string
+    {
+        return "id";
     }
 }

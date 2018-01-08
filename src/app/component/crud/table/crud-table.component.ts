@@ -248,17 +248,17 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormButtonsService
-                .subscribeToSaveButtonClickedEvent(
+                .subscribeToSaveButtonClickCompletedEvent(
                     ( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) ) );
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormButtonsService
-                .subscribeToAddButtonClickedEvent(
+                .subscribeToAddButtonClickCompletedEvent(
                     ( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) ) );
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormButtonsService
-                .subscribeToDeleteButtonClickedEvent(
+                .subscribeToDeleteButtonClickCompletedEvent(
                     ( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) ) );
     }
 
@@ -711,7 +711,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected truncateNotes( notes: string )
     {
-        return notes.substring( 0, Math.min( this.getNotesSize(), notes.length ) );
+        return notes == null ? "" : notes.substring( 0, Math.min( this.getNotesSize(), notes.length ) );
     }
 
     /**

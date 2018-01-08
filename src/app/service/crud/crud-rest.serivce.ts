@@ -6,6 +6,8 @@ import { ModelObject } from "../../model/entity/modelobject";
 import { AppConfigurationService } from "../app-configuration.service";
 import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 import { isNullOrUndefined } from "util";
+import { KeyValuePair } from "../../common/key-value-pair";
+import { any } from "codelyzer/util/function";
 
 /**
  * Generic Service class for REST CRUD methods
@@ -26,15 +28,6 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
     }
 
     /**
-     * Returns the URL string to Create a single model object via REST
-     * @param modelObject
-     */
-    protected getCreateModelObjectUrl( modelObject: T ): string
-    {
-        return this.getCreateOrReadURL( modelObject );
-    }
-
-    /**
      * Returns the URL for an update or a delete where the URL targets a specific model object instance.
      * @param {T} modelObject
      * @returns {string}
@@ -43,11 +36,13 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
     {
         var methodName = "getUpdateOrDeleteURL";
         this.debug( methodName + " " + JSON.stringify( modelObject ));
-        var contextURL = this.getContextURL( modelObject );
+        var contextURL = this.getContextBaseURL();
         if ( isNullOrUndefined( contextURL ) )
         {
             throw new ReferenceError( "getContextURL cannot return a null or undefined value" );
         }
+        var primaryKey: KeyValuePair<string,any> = this.getContextPrimaryURLKeyValue( modelObject );
+        contextURL += "/" + primaryKey.key + "/" + primaryKey.value;
         var customerURL = this.getCustomerURL() == null ? "/" : this.getCustomerURL();
         this.debug( methodName + " contextURL: " + contextURL + " customerURL: " + customerURL );
         var url = this.appConfig.getBaseURL() + contextURL + customerURL;
@@ -59,7 +54,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
      * Returns the URL string to Update a single model object via REST
      * @param modelObject
      */
-    protected getUpdateModelObjectUrl( modelObject: T ): string
+    protected getUpdateModelObjectURL( modelObject: T ): string
     {
         return this.getUpdateOrDeleteURL( modelObject );
     }
@@ -68,7 +63,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
      * Returns the URL string to delete a single model object via REST
      * @param modelObject
      */
-    protected getDeleteModelObjectUrl( modelObject: T ): string
+    protected getDeleteModelObjectURL( modelObject: T ): string
     {
         return this.getUpdateOrDeleteURL( modelObject );
     }
@@ -92,7 +87,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
         }
         var headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
         var options = new RequestOptions( { headers: headers } ); // Create a request option
-        var url = this.getCreateModelObjectUrl( modelObject );
+        var url = this.getCreateModelObjectUrl();
         if ( isNullOrUndefined( url ) )
         {
             throw new ReferenceError( "url is null or undefined" );
@@ -112,7 +107,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
 
     /**
      * Updates the model object via REST.
-     * Override {@code getUpdateModelObjectUrl( modelObject )} to get the correct REST URL
+     * Override {@code getUpdateModelObjectURL( modelObject )} to get the correct REST URL
      * @param modelObject
      * @returns {Observable<T>}
      */
@@ -128,7 +123,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
         }
         var headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
         var options = new RequestOptions( { headers: headers } ); // Create a request option
-        var url =  this.getUpdateModelObjectUrl( modelObject );
+        var url =  this.getUpdateModelObjectURL( modelObject );
         this.log( methodName + " url: " + url );
         if ( isNullOrUndefined( url ) )
         {
@@ -147,7 +142,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
 
     /**
      * Updates the model object via REST.
-     * Override {@code getUpdateModelObjectUrl( modelObject )} to get the correct REST URL
+     * Override {@code getUpdateModelObjectURL( modelObject )} to get the correct REST URL
      * @param modelObject
      * @returns {Observable<Response>}
      */
@@ -159,7 +154,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
         {
             throw new ReferenceError( "modelObject is null or undefined" );
         }
-        var url = this.getDeleteModelObjectUrl( modelObject );
+        var url = this.getDeleteModelObjectURL( modelObject );
         this.log( methodName + " url: " + url ) ;
         if ( isNullOrUndefined( url ) )
         {

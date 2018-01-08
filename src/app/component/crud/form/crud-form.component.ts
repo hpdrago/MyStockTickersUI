@@ -527,12 +527,12 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         //this.modelObjectChange.emit( this.modelObject );
         if ( !this.formGroup.valid )
         {
-            this.debug( methodName + " Form is not valid" );
+            //this.debug( methodName + " Form is not valid" );
             var errors: string[] = [];
             for ( let propertyName in this.formGroup.controls )
             {
-                this.debug( methodName + " propertyName: " + propertyName +
-                                         " status: " + this.formGroup.controls[propertyName].status );
+                //this.debug( methodName + " propertyName: " + propertyName +
+                //                         " status: " + this.formGroup.controls[propertyName].status );
                 if ( this.formGroup.controls[propertyName].status == 'INVALID' )
                 {
                     errors.push( propertyName + " is not valid" );
@@ -540,13 +540,13 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
             }
             for ( let propertyName in this.formGroup.errors )
             {
-                this.debug( methodName + " propertyName: " + this.formGroup.errors[propertyName] );
+                //this.debug( methodName + " propertyName: " + this.formGroup.errors[propertyName] );
                 if ( this.formGroup.errors.hasOwnProperty( propertyName ) &&
                      this.formGroup.touched )
                 {
                     var errorMessage = ValidationService.getValidatorErrorMessage( propertyName,
                                                                                    this.formGroup.errors[propertyName] );
-                    this.debug( methodName + " error: " + errorMessage );
+                    //this.debug( methodName + " error: " + errorMessage );
                     errors.push( errorMessage );
                 }
             }

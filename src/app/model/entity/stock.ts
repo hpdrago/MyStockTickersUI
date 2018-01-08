@@ -11,8 +11,13 @@ export class Stock extends ModelObject<Stock>
     public lastPrice: number;
     public stockExchange: string;
 
-    public getPrimaryKey(): any
+    public getPrimaryKeyValue(): any
     {
         return this.tickerSymbol;
+    }
+
+    public getPrimaryKeyName(): string
+    {
+        return "tickerSymbol";
     }
 }
