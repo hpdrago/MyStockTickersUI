@@ -1,46 +1,48 @@
-<div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 5px 0px; height:100vh; overflow: auto">
-    <div class="crud-form ui-grid-row" style="height: 4%">
-        <div class="ui-grid-col-4 ui-state-default">
-            <stock-search (stockSelected)="onStockSelected( $event )"
-                          (resetButtonClick)="onResetButtonClick()">
-            </stock-search>
+<p-panel header="Dashboard">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 5px 0px; height:100vh; overflow: auto">
+        <div class="crud-form ui-grid-row" style="height: 4%">
+            <div class="ui-grid-col-4 ui-state-default">
+                <stock-search (stockSelected)="onStockSelected( $event )"
+                              (resetButtonClick)="onResetButtonClick()">
+                </stock-search>
+            </div>
+            <!--
+                <div class="ui-grid-col-1 ui-state-default">
+                    <label class="crud-form" for="stockSearch">Stock Search:</label>
+                </div>
+                <div class="ui-grid-col-2">
+                    <stock-autocomplete id="stockSearch"
+                                        (stockSelected)="onStockSelected( $event )">
+                    </stock-autocomplete>
+                </div>
+                <div class="ui-grid-col-2">
+                    <button pButton type="button" class="ui-button-info" label="Reset" (click)="onResetButtonClick()"></button>
+                </div>
+            -->
+       </div>
+        <div class="ui-grid-row" style="height: 48%">
+            <div class="ui-grid-col-6" style="overflow:auto;">
+                <p-panel header="Notes">
+                    <stock-notes-dashboard-table></stock-notes-dashboard-table>
+                </p-panel>
+            </div>
+            <div class="ui-grid-col-6" style="overflow:auto;">
+                <p-panel header="Stocks to Buy">
+                    <stock-to-buy-dashboard-table></stock-to-buy-dashboard-table>
+                </p-panel>
+            </div>
         </div>
-        <!--
-            <div class="ui-grid-col-1 ui-state-default">
-                <label class="crud-form" for="stockSearch">Stock Search:</label>
+        <div class="ui-grid-row" style="height: 48%">
+            <div class=" ui-grid-col-6" style="overflow: auto">
+                <p-panel header="Analyst Consensus">
+                    <stock-analyst-consensus-dashboard-table></stock-analyst-consensus-dashboard-table>
+                </p-panel>
             </div>
-            <div class="ui-grid-col-2">
-                <stock-autocomplete id="stockSearch"
-                                    (stockSelected)="onStockSelected( $event )">
-                </stock-autocomplete>
+            <div class="ui-grid-col-6" style="overflow: auto">
+                <p-panel header="Catalyst Events">
+                    <stock-catalyst-event-table></stock-catalyst-event-table>
+                </p-panel>
             </div>
-            <div class="ui-grid-col-2">
-                <button pButton type="button" class="ui-button-info" label="Reset" (click)="onResetButtonClick()"></button>
-            </div>
-        -->
-   </div>
-    <div class="ui-grid-row" style="height: 48%">
-        <div class="ui-grid-col-6" style="overflow:auto;">
-            <p-panel header="Notes">
-                <stock-notes-dashboard-table></stock-notes-dashboard-table>
-            </p-panel>
-        </div>
-        <div class="ui-grid-col-6" style="overflow:auto;">
-            <p-panel header="Stocks to Buy">
-                <stock-to-buy-dashboard-table></stock-to-buy-dashboard-table>
-            </p-panel>
         </div>
     </div>
-    <div class="ui-grid-row" style="height: 48%">
-        <div class=" ui-grid-col-6" style="overflow: auto">
-            <p-panel header="Analyst Consensus">
-                <stock-analyst-consensus-dashboard-table></stock-analyst-consensus-dashboard-table>
-            </p-panel>
-        </div>
-        <div class="ui-grid-col-6" style="overflow: auto">
-            <p-panel header="Catalyst Events">
-                <stock-catalyst-event-table></stock-catalyst-event-table>
-            </p-panel>
-        </div>
-    </div>
-</div>
+</p-panel>

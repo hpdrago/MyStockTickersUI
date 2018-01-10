@@ -444,6 +444,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
                 this.setFormValue( property, modelObject[property] );
             }
         }
+        this.enableDisableInputs()
     }
 
     /**
@@ -796,5 +797,17 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     {
         this.debug( "prepareToDisplay" );
         this.setFormValues( this.modelObject );
+    }
+
+    public setModelObject( modelObject: T ): void
+    {
+        super.setModelObject( modelObject );
+        /*
+         * Don't set the form values unless the form has been created.
+         */
+        if ( this.formGroup && this.formGroup.controls )
+        {
+            this.setFormValues( this.modelObject );
+        }
     }
 }

@@ -17,6 +17,7 @@
                            required
                            type="text"
                            pInputText
+                           [ngClass]="{'ui-state-disabled': isModelObjectReadOnly()}"
                            [(ngModel)]="modelObject.name"/>
                 </div>
             </div>

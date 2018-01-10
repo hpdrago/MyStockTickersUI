@@ -17,6 +17,7 @@ import { AdminComponent } from "./component/admin/admin.component";
 import { StockCatalystEventTableTabComponent } from "./component/stockcatalystevent/stock-catalyst-event-table-tab.component";
 import { CustomerAccountTableComponent } from "./component/customeraccount/customer-account-table.component";
 import { CustomerAccountsComponent } from "./component/customeraccount/customer-accounts.component";
+import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 
 const routes: Routes = [
     {
@@ -31,7 +32,7 @@ const routes: Routes = [
     },
     {
         path: 'portfolios',
-        component: PortfolioTableComponent,
+        component: PortfoliosComponent,
         canActivate: [AuthGuard]
     },
     {

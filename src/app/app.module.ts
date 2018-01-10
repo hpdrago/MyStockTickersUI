@@ -86,7 +86,7 @@ import { StockNotesTableButtonsComponent } from "./component/stocknotes/stock-no
 import { StockNotesFormButtonsComponent } from "./component/stocknotes/stock-notes-form-buttons.component";
 import { StockNotesCrudServiceContainer } from "./component/stocknotes/stock-notes-crud-service-container";
 import { PortfolioStockCrudServiceContainer } from "./component/portfoliostock/portfolio-stock-crud-service-container";
-import { PortfolioCrudServiceContainer } from "./component/portfolio/porfolio-crud-service-container";
+import { PortfolioCrudServiceContainer } from "./component/portfolio/portfolio-crud-service-container";
 import { StockCrudServiceContainer } from "./component/stock/stock-crud-service-container";
 import { StockCrudService } from "./service/crud/stock-crud.service";
 import { PortfolioCrudService } from "./service/crud/portfolio-crud.service";
@@ -160,6 +160,8 @@ import { StockSearchComponent } from "./component/common/stock-search.component"
 import { StockCatalystEventTableTabComponent } from "./component/stockcatalystevent/stock-catalyst-event-table-tab.component";
 import { CustomerAccountsComponent } from "./component/customeraccount/customer-accounts.component";
 import { CustomerAccountPanelComponent } from "./component/customeraccount/customer-account-panel.component";
+import { CustomerAccountSelectionTableComponent } from "./component/customeraccount/customer-account-selection-table.component";
+import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -237,6 +239,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         ProfileComponent,
 
         CustomerAccountTableComponent,
+        CustomerAccountSelectionTableComponent,
         CustomerAccountFormComponent,
         CustomerAccountDialogComponent,
         CustomerAccountPanelComponent,
@@ -250,6 +253,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockFormButtonsComponent,
         StockTableButtonsComponent,
 
+        PortfoliosComponent,
         PortfolioTableComponent,
         PortfolioFormComponent,
         PortfolioFormButtonsComponent,

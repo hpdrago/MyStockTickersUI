@@ -3,7 +3,6 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { CustomerAccount } from "../../model/entity/customer-account";
 import { CustomerAccountCrudServiceContainer } from "./customer-account-crud-service-container";
 import { Component } from "@angular/core";
-import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { CrudOperation } from "../crud/common/crud-operation";
 
 /**

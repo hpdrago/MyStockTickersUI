@@ -3,7 +3,7 @@ import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.compone
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
 import { SessionService } from "../../service/session.service";
-import { PortfolioCrudServiceContainer } from "./porfolio-crud-service-container";
+import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-container";
 
 /**
  * Button panel component for the Portfolio dialog.

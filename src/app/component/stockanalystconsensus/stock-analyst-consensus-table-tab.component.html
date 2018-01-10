@@ -1,5 +1,4 @@
-<div id="stockAnalystConsensusTableDiv">
-
+<p-panel>
     <div class="crud-form ui-grid-row" style="height: 4%">
         <div class="ui-grid-col-4 ui-state-default">
             <stock-search (stockSelected)="onStockSelected( $event )"
@@ -197,6 +196,6 @@
         </p-footer>
 
     </p-dataTable>
-</div>
-<stock-analyst-consensus-dialog>
-</stock-analyst-consensus-dialog>
+    <stock-analyst-consensus-dialog>
+    </stock-analyst-consensus-dialog>
+</p-panel>

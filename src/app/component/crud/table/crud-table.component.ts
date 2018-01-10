@@ -302,7 +302,14 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected newModelObjectFromEvent( event ): T
     {
-        return this.crudServiceContainer.modelObjectFactory.newModelObjectFromJSON( event.data );
+        if ( event.data )
+        {
+            return this.crudServiceContainer.modelObjectFactory.newModelObjectFromJSON( event.data );
+        }
+        else
+        {
+            return this.crudServiceContainer.modelObjectFactory.newModelObjectFromJSON( event );
+        }
     }
 
     /**
@@ -580,7 +587,14 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onRowSelect( event ): void
     {
         this.debug( "onRowSelect " + JSON.stringify( event ) );
-        this.selectedModelObject = event.data;
+        if ( event.data )
+        {
+            this.selectedModelObject = event.data;
+        }
+        else
+        {
+            this.selectedModelObject = event;
+        }
         this.setModelObject( this.newModelObjectFromEvent( event ) );
         this.crudServiceContainer
             .crudTableService

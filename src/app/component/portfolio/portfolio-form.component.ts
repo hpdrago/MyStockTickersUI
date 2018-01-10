@@ -3,7 +3,7 @@ import { Portfolio } from "../../model/entity/portfolio";
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { PortfolioCrudServiceContainer } from "./porfolio-crud-service-container";
+import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-container";
 
 /**
  * This is the Portfolio Form Component class.

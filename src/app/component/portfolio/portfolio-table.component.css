@@ -9,9 +9,7 @@
     margin-right: 5px;
     margin-bottom: 5px;
     padding: 10px;
-    border-width: 1px;
-    border-color: #BBBBBB;
-    border-style: solid;
+    border: 1px solid #BBBBBB;
 }
 
 #portfolio-list

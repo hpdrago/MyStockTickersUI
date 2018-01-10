@@ -6,6 +6,7 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 import { Portfolio } from "../../model/entity/portfolio";
+import { KeyValuePairs } from "../../common/key-value-pairs";
 
 /**
  * This class provides all CRUD REST services.
@@ -15,7 +16,7 @@ import { Portfolio } from "../../model/entity/portfolio";
 @Injectable()
 export class PortfolioCrudService extends CrudRestService<Portfolio>
 {
-    private urlPath = "/portfolios"
+    private urlPath = "/portfolio"
 
     constructor( protected http: Http,
                  protected sessionService: SessionService,
@@ -48,6 +49,23 @@ export class PortfolioCrudService extends CrudRestService<Portfolio>
         portfolio.name = portfolioName;
         return super.createModelObject( portfolio );
     }
+
+    /**
+     * Check for the ticker symbol being set.
+     * @param {StockNotes} stockNotes
+     * @returns {string}
+     */
+    /*
+    protected getContextURLKeyValues( portfiolio: Portfolio ): KeyValuePairs<string,any>
+    {
+        let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
+        if ( portfiolio.id )
+        {
+            keyColumns.addPair( "id", portfiolio.id );
+        }
+        return keyColumns;
+    }
+    */
 
     /**
      * Get a list of the portfolios for the customer by customer id

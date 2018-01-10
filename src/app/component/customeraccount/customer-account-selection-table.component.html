@@ -1,0 +1,15 @@
+<p-panel class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" header="Accounts" id="account-panel">
+    <div id="account-list">
+        <div *ngFor="let customerAccount of rows">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <div class="account-div"
+                         [class.ui-state-active]="isSelectedCustomerAccount(customerAccount)"
+                         (click)="onRowSelect(customerAccount)">
+                        {{customerAccount.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</p-panel>

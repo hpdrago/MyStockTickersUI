@@ -5,8 +5,7 @@ import { MenuItem } from "primeng/primeng";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockTableComponent } from "../portfoliostock/portfolio-stock-table.component";
-import { PortfolioCrudServiceContainer } from "./porfolio-crud-service-container";
-import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
+import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-container";
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -15,7 +14,7 @@ import { ModelObjectChangeService } from "../../service/crud/model-object-change
  */
 @Component(
 {
-    selector: 'portfolios',
+    selector: 'portfolio-table',
     templateUrl: './portfolio-table.component.html',
     styleUrls: ['./portfolio-table.component.css']
 })
@@ -76,7 +75,7 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
         this.portfolioStocksComponent.loadPortfolio( this.modelObject );
     }
 
-    private isSelectedPortfolio( portfolio: Portfolio )
+    protected isSelectedPortfolio( portfolio: Portfolio )
     {
         return this.modelObject != null && this.modelObject.id === portfolio.id;
     }

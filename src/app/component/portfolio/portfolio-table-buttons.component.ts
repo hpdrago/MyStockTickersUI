@@ -2,7 +2,7 @@ import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.comp
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
-import { PortfolioCrudServiceContainer } from "./porfolio-crud-service-container";
+import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-container";
 
 /**
  * Created by mike on 1/2/2017.
