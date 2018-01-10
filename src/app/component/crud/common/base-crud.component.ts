@@ -6,6 +6,12 @@ import { Subscription } from "rxjs/Subscription";
 import { OnDestroy } from "@angular/core";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { isNullOrUndefined } from "util";
+import { RestException } from "../../../common/rest-exception";
+import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
+import { TradeItAPIResult } from "../../../service/tradeit/apiresults/tradeit-api-result";
+import { TradeItException } from "../../../service/tradeit/tradeit-execption";
+import { CrudServiceContainer } from "./crud-service-container";
+import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 /**
  * This class is the base class for all CRUD components
  *
@@ -25,7 +31,8 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
     protected modelObject: T;
 
-    constructor( protected toaster: ToastsManager )
+    constructor( protected toaster: ToastsManager,
+                 protected modelObjectFactory?: ModelObjectFactory<T> )
     {
         super( toaster );
         if ( !this.toaster )
@@ -79,6 +86,15 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
              //this.debug( "inputPropertyChange: " + property + " previousValue: " + previousValue + " newValue: " + newValue );
       }
    }
+
+    /**
+     * Sets the crudOperation to NONE and the model object to an empty object.
+     */
+    protected resetCrudOperationAndModelObject()
+    {
+        this.setCrudOperation( CrudOperation.NONE );
+        this.setModelObject( this.modelObjectFactory.newModelObject() );
+    }
 
    /**
     * This method is called whenever the model object changes.
@@ -166,6 +182,62 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
                                      this.debug( "busyIndicator setting displayProgressBar to false" );
                                      this.displayProgressBar = false
                                  })
+    }
+
+    /**
+     * Reports the error using the {@code toaster} and extracts the error information and returns that in the
+     * return result.
+     * @param {string} rawJsonError
+     * @returns {TradeItException}
+     */
+    protected reportTradeItError( rawJsonError ): TradeItException
+    {
+        let exception: TradeItException = TradeItException.createException( rawJsonError );
+        this.log( "Messages: " + exception.getMessages() );
+        this.toaster.error( exception.getMessages(), "Error" )
+        return exception;
+    }
+
+    /**
+     * Reports the error to the console and a visible message to the user.
+     * @param rawJsonError The JSON text returned from the REST call
+     */
+    protected reportRestError( rawJsonError ): RestException
+    {
+        var restException: RestException;
+        this.log( "reportRestError: " + JSON.stringify( rawJsonError ) );
+        if ( rawJsonError.status )
+        {
+            restException = new RestException( rawJsonError );
+            var message = restException.message;
+            var status = restException.status;
+            var error = restException.error;
+            var exception = restException.exception;
+            this.debug( "message: " + message );
+            this.debug( "status: " + status );
+            this.debug( "error: " + error );
+            this.debug( "exception: " + exception );
+            if ( restException.isDuplicateKeyExists() )
+            {
+                message = this.getDuplicateKeyErrorMessage();
+            }
+            else if ( exception == null )
+            {
+                var statusText = restException.statusText;
+                message = `Error ${status} - ${statusText}`;
+            }
+            else
+            {
+                message = `Error ${status} - ${error} - ${exception} - ${message}`;
+            }
+            this.showError( message );
+        }
+        else
+        {
+            this.log( "reportRestError: rawJsonError data does not have a status value" );
+            this.showError( rawJsonError );
+        }
+        return restException;
     }
 
 }

@@ -20,7 +20,7 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
-        super( toaster );
+        super( toaster, crudServiceContainer.modelObjectFactory );
     }
 
     /**
@@ -166,8 +166,7 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     protected cancelButtonClicked()
     {
         this.debug( "cancelButtonClicked" );
-        this.setCrudOperation( CrudOperation.NONE );
-        this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
+        this.resetCrudOperationAndModelObject();
     }
 
     /**

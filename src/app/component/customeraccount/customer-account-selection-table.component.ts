@@ -4,7 +4,7 @@ import { CustomerAccount } from "../../model/entity/customer-account";
 import { ToastsManager } from "ng2-toastr";
 import { CustomerAccountCrudServiceContainer } from "./customer-account-crud-service-container";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
-import { Authenticate } from "../../service/tradeit/authenticate";
+import { Authenticate } from "../../service/tradeit/apiresults/authenticate-result";
 
 
 /**

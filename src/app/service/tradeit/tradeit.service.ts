@@ -4,12 +4,14 @@ import { Observable } from "rxjs/Observable";
 import { SelectItem } from "primeng/primeng";
 import { Http, Response } from "@angular/http";
 import { AppConfigurationService } from "../app-configuration.service";
-import { TradeItBroker } from "./tradeit-broker";
-import { TradeItBrokerList } from "./tradeit-broker-list";
-import { OAuthAccess } from "./oauthaccess";
+import { TradeItBrokerListResult } from "./apiresults/tradeit-broker-list-result";
+import { OAuthAccess } from "./apiresults/oauthaccess-result";
 import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
 import { SessionService } from "../session.service";
-import { Authenticate } from "./authenticate";
+import { Authenticate } from "./apiresults/authenticate-result";
+import { GetOauthPopupURLResult } from "./apiresults/get-oauth-popup-url-result";
+import { TradeItException } from "./tradeit-execption";
+import { TradeItAPIResult } from "./apiresults/tradeit-api-result";
 
 /**
  * This service contains the methods to inteface with the Tradeit API
@@ -47,21 +49,13 @@ export class TradeItService extends BaseService
                    .get( url )
                    .map( ( response: Response ) =>
                          {
-                             this.debug( methodName + " received: " + JSON.stringify( response.json() ) )
-                             if ( response.json().status == "ERROR" )
-                             {
-                                 this.debug( methodName + " throwing exception back to caller" );
-                                 return response.json();
-                             }
-                             else
-                             {
-                                 let jsonConvert: JsonConvert = new JsonConvert();
-                                 jsonConvert.operationMode = OperationMode.LOGGING;
-                                 jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
-                                 let authenticate: Authenticate = jsonConvert.deserialize( response.json(), Authenticate );
-                                 this.debug( methodName + " authenticateAccount: " + JSON.stringify( authenticate ) );
-                                 return  authenticate;
-                             }
+                             this.checkResponse( methodName, response );
+                             let jsonConvert: JsonConvert = new JsonConvert();
+                             jsonConvert.operationMode = OperationMode.LOGGING;
+                             jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
+                             let authenticate: Authenticate = jsonConvert.deserialize( response.json(), Authenticate );
+                             this.debug( methodName + " authenticateAccount: " + JSON.stringify( authenticate ) );
+                             return  authenticate;
                          })
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
     }
@@ -85,21 +79,13 @@ export class TradeItService extends BaseService
                    .get( url )
                    .map( ( response: Response ) =>
                          {
-                             this.debug( methodName + " received: " + JSON.stringify( response.json() ) )
-                             if ( response.json().status == "ERROR" )
-                             {
-                                 this.debug( methodName + " throwing exception back to caller" );
-                                 return response.json();
-                             }
-                             else
-                             {
-                                 let jsonConvert: JsonConvert = new JsonConvert();
-                                 jsonConvert.operationMode = OperationMode.LOGGING;
-                                 jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
-                                 let oAuthAccess: OAuthAccess = jsonConvert.deserialize( response.json(), OAuthAccess );
-                                 this.debug( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ) );
-                                 return oAuthAccess;
-                             }
+                             this.checkResponse( methodName, response );
+                             let jsonConvert: JsonConvert = new JsonConvert();
+                             jsonConvert.operationMode = OperationMode.LOGGING;
+                             jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
+                             let oAuthAccess: OAuthAccess = jsonConvert.deserialize( response.json(), OAuthAccess );
+                             this.debug( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ) );
+                             return oAuthAccess;
                          } )
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
     }
@@ -109,17 +95,17 @@ export class TradeItService extends BaseService
      * @param {string} broker
      * @returns {Observable<string>} The URL for the popup.
      */
-    public getRequestOAuthPopupURL( broker: string ): Observable<string>
+    public getOAuthPopupURL( broker: string ): Observable<GetOauthPopupURLResult>
     {
-        let methodName = "getRequestOAuthPopupURL";
-        let url = this.appConfig.getBaseURL() + this.CONTEXT_URL + this.GET_REQUEST_OAUTH_POPUP_URL + '/' + broker;
+        let methodName = "getOAuthPopupURL";
+        let url = this.appConfig.getBaseURL() + this.CONTEXT_URL + this.GET_REQUEST_OAUTH_POPUP_URL + "/" + broker;
         this.debug( methodName + " url: " + url );
         return this.http
                    .get( url )
                    .map( ( response: Response ) =>
                          {
-                             this.debug( methodName + " received: " + JSON.stringify( response.json() ) )
-                             return response.json().oAuthURL;
+                             this.checkResponse( methodName, response );
+                             return response.json();
                          } )
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
     }
@@ -128,7 +114,7 @@ export class TradeItService extends BaseService
      * Get the list of TRADEIT supported brokers.
      * @returns {Observable<TradeitBroker[]>}
      */
-    public getBrokers(): Observable<TradeItBrokerList>
+    public getBrokers(): Observable<TradeItBrokerListResult>
     {
         let methodName = "getBrokers";
         let url = this.appConfig.getBaseURL() + this.CONTEXT_URL + this.GET_BROKERS_URL;
@@ -137,7 +123,7 @@ export class TradeItService extends BaseService
                    .get( url )
                    .map( ( response: Response ) =>
                          {
-                             this.debug( methodName + " received: " + JSON.stringify( response.json() ) )
+                             this.checkResponse( methodName, response );
                              return response.json();
                          } )
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
@@ -150,14 +136,41 @@ export class TradeItService extends BaseService
     public getBrokerSelectItems(): Observable<SelectItem[]>
     {
         return this.getBrokers()
-                   .map( (tradeItBrokers: TradeItBrokerList) =>
+                   .map( (tradeItBrokersResult: TradeItBrokerListResult) =>
                          {
                              let selectItems: SelectItem[] = [];
-                             tradeItBrokers.brokerList.forEach( broker =>
-                                            {
-                                                  selectItems.push( {label: broker.longName, value: broker.shortName } );
-                                            })
+                             if ( tradeItBrokersResult.status == "ERROR" )
+                             {
+                                 let tradeItException: TradeItException = new TradeItException( tradeItBrokersResult );
+                                 throw new Error( tradeItException.getMessages() );
+                             }
+                             else
+                             {
+                                 tradeItBrokersResult.brokerList
+                                                     .forEach( broker =>
+                                                     {
+                                                          selectItems.push( {label: broker.longName, value: broker.shortName } );
+                                                     })
+                             }
                              return selectItems;
                          } );
+    }
+
+    /**
+     * Logs the response to the console.
+     * Evaluates the JSON response.  If the {@code response.status == "ERROR"} then a TradeItException is thrown.
+     * @param {string} methodName The name of the calling method so that the log is helpful
+     * @param {Response} response json
+     */
+    private checkResponse( methodName: string, response: Response ): TradeItAPIResult
+    {
+        this.debug( methodName + " received: " + JSON.stringify( response.json() ) )
+        let result: TradeItAPIResult = TradeItAPIResult.newInstance( response.json() );
+        if ( result.status == "ERROR" )
+        {
+            let tradeItException: TradeItException = new TradeItException( result );
+            throw new Error( tradeItException.getMessages() );
+        }
+        return result;
     }
 }

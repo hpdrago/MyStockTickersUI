@@ -18,7 +18,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                  protected crudServiceContainer: CrudServiceContainer<T>,
                  protected showContinuousAddButton: boolean = false )
     {
-        super( toaster );
+        super( toaster, crudServiceContainer.modelObjectFactory );
         if ( !this.crudServiceContainer.modelObjectFactory )
         {
             throw new Error( "modelObjectFactory argument cannot be null" );
@@ -387,6 +387,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.crudServiceContainer
             .crudFormButtonsService
             .sendSaveButtonClickCompletedEvent( this.modelObject );
+        this.resetCrudOperationAndModelObject();
     }
 
     /**
@@ -526,6 +527,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.crudServiceContainer
             .crudFormButtonsService
             .sendAddButtonClickCompletedEvent( this.modelObject );
+        this.resetCrudOperationAndModelObject();
     }
 
     /**
@@ -584,6 +586,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.crudServiceContainer
             .crudFormButtonsService
             .sendDeleteButtonClickCompletedEvent( this.modelObject );
+        this.resetCrudOperationAndModelObject();
     }
 
     /**
@@ -601,10 +604,12 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         }
         else
         {
+            this.setCrudOperation( CrudOperation.NONE );
             this.crudServiceContainer
                 .crudPanelService
                 .sendCancelButtonClickedEvent();
         }
+        this.resetCrudOperationAndModelObject();
     }
 
     /**

@@ -1,6 +1,5 @@
 import { OnChanges, OnDestroy, SimpleChange } from "@angular/core";
-import { RestException } from "../../common/rest-exception";
-import { ToastsManager, Toast } from "ng2-toastr";
+import { Toast, ToastsManager } from "ng2-toastr";
 import { BaseClass } from "../../common/base-class";
 import { Subscription } from "rxjs/Subscription";
 
@@ -70,48 +69,6 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
     protected inputPropertyChange( property: string, previousValue: any, currentValue: any )
     {
         this.debug( `inputPropertyChange property: ${property} ${previousValue} ==> ${currentValue}`)
-    }
-
-    /**
-     * Reports the error to the console and a visible message to the user.
-     * @param rawJsonError The JSON text returned from the REST call
-     */
-    protected reportRestError( rawJsonError ): RestException
-    {
-        var restException: RestException;
-        this.log( "reportRestError: " + JSON.stringify( rawJsonError ) );
-        if ( rawJsonError.status )
-        {
-            restException = new RestException( rawJsonError );
-            var message = restException.message;
-            var status = restException.status;
-            var error = restException.error;
-            var exception = restException.exception;
-            this.debug( "message: " + message );
-            this.debug( "status: " + status );
-            this.debug( "error: " + error );
-            this.debug( "exception: " + exception );
-            if ( restException.isDuplicateKeyExists() )
-            {
-                message = this.getDuplicateKeyErrorMessage();
-            }
-            else if ( exception == null )
-            {
-                var statusText = restException.statusText;
-                message = `Error ${status} - ${statusText}`;
-            }
-            else
-            {
-                message = `Error ${status} - ${error} - ${exception} - ${message}`;
-            }
-            this.showError( message );
-        }
-        else
-        {
-            this.log( "reportRestError: rawJsonError data does not have a status value" );
-            this.showError( rawJsonError );
-        }
-        return restException;
     }
 
     /**

@@ -7,6 +7,9 @@ import { Stock } from "../../model/entity/stock";
 import { ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { isNullOrUndefined } from "util";
 import { StockQuote } from "../../model/entity/stock-quote";
+import { BaseCrudComponent } from "../crud/common/base-crud.component";
+import { ModelObjectFactory } from "../../model/factory/model-object.factory";
+import { StockModelObjectTableComponent } from "./stock-model-object-table-component";
 /**
  * This component is a text input that finds stocks based on the incremental search of the input
  * Created by mike on 12/24/2016.
@@ -34,7 +37,7 @@ import { StockQuote } from "../../model/entity/stock-quote";
         multi: true
     }]
 } )
-export class StockAutoCompleteComponent extends BaseComponent implements ControlValueAccessor
+export class StockAutoCompleteComponent extends BaseCrudComponent<Stock> implements ControlValueAccessor
 {
     @Input()
     private formGroup: FormGroup;

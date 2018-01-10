@@ -60,7 +60,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                  protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
-        super( toaster );
+        super( toaster, crudServiceContainer.modelObjectFactory );
         if ( !this.crudServiceContainer.modelObjectChangeService )
         {
             throw new Error( "modelObjectChangeService argument cannot be null" );

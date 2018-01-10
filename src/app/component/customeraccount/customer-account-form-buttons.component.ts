@@ -4,10 +4,11 @@ import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.compone
 import { CustomerAccountCrudServiceContainer } from "./customer-account-crud-service-container";
 import { CustomerAccount } from "../../model/entity/customer-account";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
-import { OAuthAccess } from "../../service/tradeit/oauthaccess";
+import { OAuthAccess } from "../../service/tradeit/apiresults/oauthaccess-result";
 import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
-import { TradeItApiResult } from "../../service/tradeit/tradeit-api-result";
+import { TradeItAPIResult } from "../../service/tradeit/apiresults/tradeit-api-result";
 import { CrudOperation } from "../crud/common/crud-operation";
+import { GetOauthPopupURLResult } from "../../service/tradeit/apiresults/get-oauth-popup-url-result";
 
 /**
  * Button panel component for the Account dialog.
@@ -80,12 +81,7 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
                                                    {
                                                        if ( oAuthAccess.status == "ERROR" )
                                                        {
-                                                           let jsonConvert: JsonConvert = new JsonConvert();
-                                                           jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
-                                                           jsonConvert.operationMode = OperationMode.LOGGING;
-                                                           let apiResult: TradeItApiResult = jsonConvert.deserialize( oAuthAccess, TradeItApiResult );
-                                                           this.log( "Messages: " + apiResult.getMessages() );
-                                                           this.toaster.error( apiResult.getMessages(), "Error" )
+                                                           this.reportTradeItError( oAuthAccess );
                                                        }
                                                        else
                                                        {
@@ -151,12 +147,19 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
     {
         this.log( "onAddButtonClick" );
         this.tradeItService
-            .getRequestOAuthPopupURL( this.modelObject.brokerage )
-            .subscribe( url =>
+            .getOAuthPopupURL( this.modelObject.brokerage )
+            .subscribe( (getOauthPopupURLResult: GetOauthPopupURLResult) =>
                         {
-                            this.log( "onAddButtonClick: url: " + url );
-                            this.log( "Opening login window" );
-                            window.open( url );
+                            if ( getOauthPopupURLResult.status == "ERROR" )
+                            {
+                                this.reportTradeItError( getOauthPopupURLResult );
+                            }
+                            else
+                            {
+                                this.log( "onAddButtonClick: url: " + getOauthPopupURLResult.oAuthURL );
+                                this.log( "Opening login window" );
+                                window.open( getOauthPopupURLResult.oAuthURL );
+                            }
                         },
                         error =>
                         {

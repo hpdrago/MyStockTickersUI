@@ -1,9 +1,9 @@
-import { TradeItApiResult } from "./tradeit-api-result";
+import { TradeItAPIResult } from "./tradeit-api-result";
 
 /**
  * This class contains the information returned from REST call to authenticate a user's account.
  */
-export class Authenticate extends TradeItApiResult
+export class Authenticate extends TradeItAPIResult
 {
 
 }

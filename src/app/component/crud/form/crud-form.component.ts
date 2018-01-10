@@ -35,7 +35,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
-        super( toaster );
+        super( toaster, crudServiceContainer.modelObjectFactory );
         if ( !this.crudServiceContainer.modelObjectFactory )
         {
             throw new Error( "modelObjectFactory argument cannot be null" );
