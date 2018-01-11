@@ -29,7 +29,7 @@ import {
     DropdownModule,
     EditorModule,
     InputTextareaModule,
-    InputTextModule,
+    InputTextModule, ListboxModule,
     MenubarModule,
     PanelModule,
     RatingModule,
@@ -162,6 +162,7 @@ import { CustomerAccountsComponent } from "./component/customeraccount/customer-
 import { CustomerAccountPanelComponent } from "./component/customeraccount/customer-account-panel.component";
 import { CustomerAccountSelectionTableComponent } from "./component/customeraccount/customer-account-selection-table.component";
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
+import { TradeItSecurityQuestionDialogComponent } from "./component/tradeit/tradeit-security-question-dialog.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -218,6 +219,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         ChipsModule,
         CheckboxModule,
         TooltipModule,
+        ListboxModule,
         // Third Party modules,
         BusyModule,
         ToastModule.forRoot(),
@@ -293,6 +295,8 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockToBuyDialogComponent,
         StockToBuyTableButtonsComponent,
         StockToBuyFormButtonsComponent,
+
+        TradeItSecurityQuestionDialogComponent,
 
         DashboardComponent,
         FormErrorsComponent,

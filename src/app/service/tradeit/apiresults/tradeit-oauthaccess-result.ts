@@ -6,7 +6,7 @@ import { CustomerAccount } from "../../../model/entity/customer-account";
  * This class contains the data returned from the REST call for the TradeIt getOAuthAccess call.
  */
 @JsonObject
-export class OAuthAccess extends TradeItAPIResult
+export class TradeItOAuthAccessResult extends TradeItAPIResult
 {
     @JsonProperty( "customerAccount", CustomerAccount )
     public customerAccount: CustomerAccount = undefined;

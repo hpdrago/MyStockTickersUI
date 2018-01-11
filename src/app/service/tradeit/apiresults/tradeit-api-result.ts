@@ -8,6 +8,9 @@ import { JsonConvert, JsonObject, JsonProperty, OperationMode, ValueCheckingMode
 @JsonObject
 export class TradeItAPIResult
 {
+    @JsonProperty( "code", Number )
+    public code: number = undefined;
+
     @JsonProperty( "status", String )
     public status: string = undefined;
 

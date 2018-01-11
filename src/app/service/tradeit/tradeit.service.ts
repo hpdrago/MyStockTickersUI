@@ -5,11 +5,11 @@ import { SelectItem } from "primeng/primeng";
 import { Http, Response } from "@angular/http";
 import { AppConfigurationService } from "../app-configuration.service";
 import { TradeItBrokerListResult } from "./apiresults/tradeit-broker-list-result";
-import { OAuthAccess } from "./apiresults/oauthaccess-result";
+import { TradeItOAuthAccessResult } from "./apiresults/tradeit-oauthaccess-result";
 import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
 import { SessionService } from "../session.service";
-import { Authenticate } from "./apiresults/authenticate-result";
-import { GetOauthPopupURLResult } from "./apiresults/get-oauth-popup-url-result";
+import { TradeItAuthenticateResult } from "./apiresults/authenticate-result";
+import { TradeItGetOauthPopupURLResult } from "./apiresults/tradeit-get-oauth-popup-url-result";
 import { TradeItException } from "./tradeit-execption";
 import { TradeItAPIResult } from "./apiresults/tradeit-api-result";
 
@@ -36,9 +36,9 @@ export class TradeItService extends BaseService
     /**
      * Authenticates the user's account to obtain a 15 minute session to gather stock account and position information.
      * @param {number} accountId
-     * @returns {Observable<Authenticate>}
+     * @returns {Observable<TradeItAuthenticateResult>}
      */
-    public authenticateAccount( accountId: number ): Observable<Authenticate>
+    public authenticateAccount( accountId: number ): Observable<TradeItAuthenticateResult>
     {
         let methodName = "authenticateAccount";
         let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.AUTHENTICATE_URL}`;
@@ -53,7 +53,7 @@ export class TradeItService extends BaseService
                              let jsonConvert: JsonConvert = new JsonConvert();
                              jsonConvert.operationMode = OperationMode.LOGGING;
                              jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
-                             let authenticate: Authenticate = jsonConvert.deserialize( response.json(), Authenticate );
+                             let authenticate: TradeItAuthenticateResult = jsonConvert.deserialize( response.json(), TradeItAuthenticateResult );
                              this.debug( methodName + " authenticateAccount: " + JSON.stringify( authenticate ) );
                              return  authenticate;
                          })
@@ -66,7 +66,7 @@ export class TradeItService extends BaseService
      * @param {string} oAuthVerifier
      * @returns {Observable<string>} The URL for the popup.
      */
-    public getOAuthAccessToken( broker: string, accountName: string, oAuthVerifier: string ): Observable<OAuthAccess>
+    public getOAuthAccessToken( broker: string, accountName: string, oAuthVerifier: string ): Observable<TradeItOAuthAccessResult>
     {
         let methodName = "getOAuthAccessToken";
         let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.GET_OAUTH_ACCESS_TOKEN_URL}`;
@@ -83,7 +83,7 @@ export class TradeItService extends BaseService
                              let jsonConvert: JsonConvert = new JsonConvert();
                              jsonConvert.operationMode = OperationMode.LOGGING;
                              jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
-                             let oAuthAccess: OAuthAccess = jsonConvert.deserialize( response.json(), OAuthAccess );
+                             let oAuthAccess: TradeItOAuthAccessResult = jsonConvert.deserialize( response.json(), TradeItOAuthAccessResult );
                              this.debug( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ) );
                              return oAuthAccess;
                          } )
@@ -95,7 +95,7 @@ export class TradeItService extends BaseService
      * @param {string} broker
      * @returns {Observable<string>} The URL for the popup.
      */
-    public getOAuthPopupURL( broker: string ): Observable<GetOauthPopupURLResult>
+    public getOAuthPopupURL( broker: string ): Observable<TradeItGetOauthPopupURLResult>
     {
         let methodName = "getOAuthPopupURL";
         let url = this.appConfig.getBaseURL() + this.CONTEXT_URL + this.GET_REQUEST_OAUTH_POPUP_URL + "/" + broker;

@@ -4,11 +4,11 @@ import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.compone
 import { CustomerAccountCrudServiceContainer } from "./customer-account-crud-service-container";
 import { CustomerAccount } from "../../model/entity/customer-account";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
-import { OAuthAccess } from "../../service/tradeit/apiresults/oauthaccess-result";
+import { TradeItOAuthAccessResult } from "../../service/tradeit/apiresults/tradeit-oauthaccess-result";
 import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
 import { TradeItAPIResult } from "../../service/tradeit/apiresults/tradeit-api-result";
 import { CrudOperation } from "../crud/common/crud-operation";
-import { GetOauthPopupURLResult } from "../../service/tradeit/apiresults/get-oauth-popup-url-result";
+import { TradeItGetOauthPopupURLResult } from "../../service/tradeit/apiresults/tradeit-get-oauth-popup-url-result";
 
 /**
  * Button panel component for the Account dialog.
@@ -72,7 +72,7 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
                 this.log( methodName + " oAuthVerifier: " + oAuthVerifier );
                 this.log( methodName + " getting OAuthAccessToken" );
                 this.tradeItService.getOAuthAccessToken( this.modelObject.brokerage, this.modelObject.name, oAuthVerifier )
-                                   .subscribe( (oAuthAccess: OAuthAccess) =>
+                                   .subscribe( (oAuthAccess: TradeItOAuthAccessResult) =>
                                                {
                                                    this.log( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ) +
                                                              " requestCompleted: " + this.requestCompleted +
@@ -148,7 +148,7 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
         this.log( "onAddButtonClick" );
         this.tradeItService
             .getOAuthPopupURL( this.modelObject.brokerage )
-            .subscribe( (getOauthPopupURLResult: GetOauthPopupURLResult) =>
+            .subscribe( (getOauthPopupURLResult: TradeItGetOauthPopupURLResult) =>
                         {
                             if ( getOauthPopupURLResult.status == "ERROR" )
                             {

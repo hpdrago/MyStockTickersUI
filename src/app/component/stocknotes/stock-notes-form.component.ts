@@ -1,15 +1,12 @@
-import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Component, ElementRef, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
-import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { SelectItem } from "primeng/primeng";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { SessionService } from "../../service/session.service";
-import { StockNotesSourceList } from "./stock-notes-source-list";
-import { isNumeric } from "rxjs/util/isNumeric";
 import { CrudOperation } from "../crud/common/crud-operation";
 import { isNullOrUndefined } from "util";
 import { StockNotesSentiment } from "../../common/stock-notes-sentiment.enum";
