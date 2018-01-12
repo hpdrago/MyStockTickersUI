@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { BaseService } from "../base-service";
 import { Observable } from "rxjs/Observable";
 import { SelectItem } from "primeng/primeng";
-import { Http, Response } from "@angular/http";
+import { Http, RequestOptions, Response, Headers } from "@angular/http";
 import { AppConfigurationService } from "../app-configuration.service";
 import { TradeItBrokerListResult } from "./apiresults/tradeit-broker-list-result";
 import { TradeItOAuthAccessResult } from "./apiresults/tradeit-oauthaccess-result";
@@ -12,6 +12,7 @@ import { TradeItAuthenticateResult } from "./apiresults/authenticate-result";
 import { TradeItGetOauthPopupURLResult } from "./apiresults/tradeit-get-oauth-popup-url-result";
 import { TradeItException } from "./tradeit-execption";
 import { TradeItAPIResult } from "./apiresults/tradeit-api-result";
+import { isNullOrUndefined } from "util";
 
 /**
  * This service contains the methods to inteface with the Tradeit API
@@ -24,6 +25,7 @@ export class TradeItService extends BaseService
     private readonly GET_REQUEST_OAUTH_POPUP_URL = "/requestOAuthPopUpURL/broker";
     private readonly GET_OAUTH_ACCESS_TOKEN_URL = "/getOAuthAccessToken";
     private readonly AUTHENTICATE_URL = "/authenticate";
+    private readonly ANSWER_SECURITY_QUESTION_URL = "/authenticate";
 
     constructor( protected http: Http,
                  protected sessionService: SessionService,
@@ -47,6 +49,38 @@ export class TradeItService extends BaseService
         this.debug( methodName + " url: " + url );
         return this.http
                    .get( url )
+                   .map( ( response: Response ) =>
+                         {
+                             this.checkResponse( methodName, response );
+                             let jsonConvert: JsonConvert = new JsonConvert();
+                             jsonConvert.operationMode = OperationMode.LOGGING;
+                             jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
+                             let authenticate: TradeItAuthenticateResult = jsonConvert.deserialize( response.json(), TradeItAuthenticateResult );
+                             this.debug( methodName + " authenticateAccount: " + JSON.stringify( authenticate ) );
+                             return  authenticate;
+                         })
+                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+    }
+
+    /**
+     * This method is called when the user has responded to the security question.  The answer is sent back to the
+     * broker for validation.
+     * @param {number} accountId
+     * @param {string} securityQuestionAnswer
+     * @returns {Observable<TradeItAuthenticateResult>} The same result is returned as the authenticate call.
+     */
+    public answerSecurityQuestion( accountId: number, securityQuestionAnswer: string ): Observable<TradeItAuthenticateResult>
+    {
+        let methodName = "answerSecurityQuestion";
+        let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.ANSWER_SECURITY_QUESTION_URL}`;
+        url += `/accountId/${accountId}`;
+        url += `/customerId/${this.sessionService.getLoggedInUserId()}`;
+        this.debug( methodName + " url: " + url );
+        var bodyString = securityQuestionAnswer;
+        var headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
+        var options = new RequestOptions();
+        options.headers = headers;
+        return this.http.post( url, bodyString, options ) // ...using post request
                    .map( ( response: Response ) =>
                          {
                              this.checkResponse( methodName, response );

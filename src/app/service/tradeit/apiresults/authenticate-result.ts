@@ -1,23 +1,30 @@
 import { TradeItAPIResult } from "./tradeit-api-result";
 import { TradeItAccount } from "../types/tradeit-account";
+import { JsonObject, JsonProperty } from "json2typescript";
 
 /**
  * This class contains the information returned from REST call to authenticate a user's account.
  */
+@JsonObject
 export class TradeItAuthenticateResult extends TradeItAPIResult
 {
     /*
      * status == SUCCESS
      */
-    public tradeItAccounts: TradeItAccount[];
+    @JsonProperty( "tradeItAccounts", TradeItAccount )
+    public tradeItAccounts: TradeItAccount[] = undefined;
 
     /*
      * status = INFORMATION_NEEDED
      */
-    public informationType: string;
-    public securityQuestion: string;
-    public securityOptions: string[];
-    public uuid: string;
+    @JsonProperty( "informationType", String )
+    public informationType: string = undefined;
+
+    @JsonProperty( "securityQuestion", String )
+    public securityQuestion: string = undefined;
+
+    @JsonProperty( "securityOptions", [String] )
+    public securityOptions: string[] = undefined;
 
     public isInformationNeeded(): boolean
     {

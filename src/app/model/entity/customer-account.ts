@@ -3,6 +3,7 @@
  */
 import { ModelObject } from "./modelobject";
 import { JsonObject, JsonProperty } from "json2typescript";
+import { isNullOrUndefined } from "util";
 
 /**
  * CustomerAccount DTO
@@ -24,6 +25,9 @@ export class CustomerAccount extends ModelObject<CustomerAccount>
     @JsonProperty( "brokerage", String )
     public brokerage: string = undefined;
 
+    @JsonProperty( "authTimestamp", String )
+    public authTimestamp: Date = undefined;
+
     public getPrimaryKeyValue(): any
     {
         return this.id;
@@ -32,5 +36,18 @@ export class CustomerAccount extends ModelObject<CustomerAccount>
     public getPrimaryKeyName(): string
     {
         return "id";
+    }
+
+    public isAuthenticated(): boolean
+    {
+        if ( isNullOrUndefined( this.authTimestamp ))
+        {
+            return false;
+        }
+        else
+        {
+            var diffMins = this.authTimestamp.getMilliseconds()/(60 * 1000 * 1000)
+            return diffMins < 15;
+        }
     }
 }

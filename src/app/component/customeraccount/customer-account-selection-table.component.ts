@@ -22,7 +22,6 @@ export class CustomerAccountSelectionTableComponent extends CrudTableComponent<C
 {
     @Output()
     private customerAccountSelected: EventEmitter<CustomerAccount>  = new EventEmitter<CustomerAccount>();
-    private askSecurityQuestion: boolean = false;
     @ViewChild(TradeItSecurityQuestionDialogComponent)
     private tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent;
 
@@ -49,6 +48,12 @@ export class CustomerAccountSelectionTableComponent extends CrudTableComponent<C
         return this.modelObject != null && this.modelObject.id === customerAccount.id;
     }
 
+    protected onTableLoad( modelObjects: CustomerAccount[] ): void
+    {
+        this.log( JSON.stringify( modelObjects ));
+        super.onTableLoad( modelObjects );
+    }
+
     /**
      * This method is called when the user selects an account.
      * @param event
@@ -58,24 +63,27 @@ export class CustomerAccountSelectionTableComponent extends CrudTableComponent<C
         let methodName = "onRowSelect";
         this.log( methodName + ": " + JSON.stringify( event ));
         super.onRowSelect( event );
-        this.tradeItService
-            .authenticateAccount( this.modelObject.id )
-            .subscribe( (authenticateResult: TradeItAuthenticateResult) =>
-                        {
-                            this.log( methodName + " authenticateAccountResult: " + JSON.stringify( authenticateResult ));
-                            //alert( JSON.stringify( authenticateResult ));
-                            if ( authenticateResult.isInformationNeeded() )
+        if ( !this.modelObject.isAuthenticated() )
+        {
+            this.log( methodName + " user is not authenticated" );
+            this.tradeItService
+                .authenticateAccount( this.modelObject.id )
+                .subscribe( ( authenticateResult: TradeItAuthenticateResult ) =>
                             {
-                                this.tradeItSecurityQuestionDialog.setCustomerAccount( this.modelObject );
-                                this.tradeItSecurityQuestionDialog.setAuthenticationResult( authenticateResult );
+                                this.log( methodName + " authenticateAccountResult: " + JSON.stringify( authenticateResult ) );
+                                //alert( JSON.stringify( authenticateResult ));
+                                if ( authenticateResult.isInformationNeeded() )
+                                {
+                                    this.tradeItSecurityQuestionDialog.setCustomerAccount( this.modelObject );
+                                    this.tradeItSecurityQuestionDialog.setAuthenticationResult( authenticateResult );
+                                }
+                            },
+                            ( error ) =>
+                            {
+                                this.reportRestError( error );
                             }
-                        },
-                        (error) =>
-                        {
-                            this.reportRestError( error );
-                        }
-            );
-
+                );
+        }
         this.customerAccountSelected.emit( this.modelObject );
     }
 }

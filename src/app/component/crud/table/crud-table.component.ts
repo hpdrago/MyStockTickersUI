@@ -225,18 +225,19 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onTableLoad( modelObjects: T[] ): void
     {
+        let methodName = "onTableLoad";
         this.debug( "onTableLoad.begin" );
         if ( !isNullOrUndefined( modelObjects ) && modelObjects.length > 0 )
         {
             this.rows = modelObjects;
-            this.debug( "loaded " + this.rows.length + " rows" );
+            this.debug( methodName + " loaded " + this.rows.length + " rows" );
         }
         else
         {
             this.rows = [];
-            this.debug( "loaded 0 rows" );
+            this.debug( methodName + " loaded 0 rows" );
         }
-        this.debug( "onTableLoad.end" );
+        this.debug( methodName + ".end" );
     }
 
     /**
@@ -599,15 +600,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.crudServiceContainer
             .crudTableService
             .sendTableSelectionChangeEvent( this.modelObject );
-        /*
-         * If a panel is used to display the selected contents, then notify the panel
-         */
-        /*
-        if ( this.modelObjectEditMode == CrudModelObjectEditMode.PANEL )
-        {
-            this.showFormToEdit( this.modelObject );
-        }
-        */
     }
 
     /**

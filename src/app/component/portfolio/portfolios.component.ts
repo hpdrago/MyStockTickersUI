@@ -19,6 +19,7 @@ import { CustomerAccount } from "../../model/entity/customer-account";
     })
 export class PortfoliosComponent extends BaseComponent
 {
+    private customerAccount: CustomerAccount;
     @ViewChild( CustomerAccountSelectionTableComponent )
     private customerAccountSelectionTable: CustomerAccountSelectionTableComponent;
     @ViewChild( PortfolioTableComponent )
@@ -29,8 +30,9 @@ export class PortfoliosComponent extends BaseComponent
         super( toaster );
     }
 
-    private customerAccountSelected( customerAccount: CustomerAccount )
+    protected customerAccountSelected( customerAccount: CustomerAccount )
     {
         this.log( "customerAccountSelected: " + JSON.stringify( customerAccount ));
+        this.customerAccount = customerAccount;
     }
 }
