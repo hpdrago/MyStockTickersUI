@@ -31,6 +31,8 @@ export abstract class ModelObject<T>
      */
     public isEqualProperties( otherModelObject: ModelObject<T> ): boolean
     {
+        delete this['__jsonconvert__mapping__'];
+        delete otherModelObject['__jsonconvert__mapping__'];
         return Object.keys( this ).every( function( prop )
         {
             return otherModelObject.hasOwnProperty( prop );

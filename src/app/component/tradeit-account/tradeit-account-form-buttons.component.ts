@@ -1,13 +1,10 @@
 import { ChangeDetectorRef, Component, OnDestroy } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
-import { CustomerAccountCrudServiceContainer } from "./customer-account-crud-service-container";
-import { CustomerAccount } from "../../model/entity/customer-account";
+import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
+import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
-import { TradeItOAuthAccessResult } from "../../service/tradeit/apiresults/tradeit-oauthaccess-result";
-import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
-import { TradeItAPIResult } from "../../service/tradeit/apiresults/tradeit-api-result";
-import { CrudOperation } from "../crud/common/crud-operation";
+import { TradeItOAuthAccessResult } from "../../service/tradeit/apiresults/tradeit-oauth-access-result";
 import { TradeItGetOauthPopupURLResult } from "../../service/tradeit/apiresults/tradeit-get-oauth-popup-url-result";
 
 /**
@@ -16,17 +13,17 @@ import { TradeItGetOauthPopupURLResult } from "../../service/tradeit/apiresults/
  * Created by mike on 8/15/2017.
  */
 @Component({
-    selector:    'customer-account-form-buttons',
+    selector:    'tradeit-account-form-buttons',
     templateUrl: '../crud/form/crud-form-buttons.component.html',
     styleUrls: ['../crud/form/crud-form-buttons.component.css']
 })
-export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponent<CustomerAccount> implements OnDestroy
+export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent<TradeItAccount> implements OnDestroy
 {
     private requestInProcess = false;
     private requestCompleted = false;
     private destroyed: boolean = false;
     constructor( protected toaster: ToastsManager,
-                 private customerAccountCrudServiceContainer: CustomerAccountCrudServiceContainer,
+                 private customerAccountCrudServiceContainer: TradeItAccountCrudServiceContainer,
                  private tradeItService: TradeItService,
                  private changeDetectorRef: ChangeDetectorRef )
     {
@@ -115,7 +112,7 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
     /**
      * Defines the message to display to the user in the dialog when deleting the model object
      */
-    public getDeleteMessage( account: CustomerAccount ): string
+    public getDeleteMessage( account: TradeItAccount ): string
     {
         return 'Are you sure you want to delete account: ' + account.name + "?";
     }
@@ -133,7 +130,7 @@ export class CustomerAccountFormButtonsComponent extends CrudFormButtonsComponen
      * @param {T} modelObject
      * @returns {string}
      */
-    protected getSaveSuccessFulMessage( account: CustomerAccount )
+    protected getSaveSuccessFulMessage( account: TradeItAccount )
     {
         return "Save Successful for " + account.name;
     }

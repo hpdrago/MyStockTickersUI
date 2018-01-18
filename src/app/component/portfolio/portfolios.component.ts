@@ -1,9 +1,9 @@
 import { BaseComponent } from "../common/base.component";
 import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { CustomerAccountSelectionTableComponent } from "../customeraccount/customer-account-selection-table.component";
+import { TradeItAccountSelectionTableComponent } from "../tradeit-account/tradeit-account-selection-table.component";
 import { PortfolioTableComponent } from "./portfolio-table.component";
-import { CustomerAccount } from "../../model/entity/customer-account";
+import { TradeItAccount } from "../../model/entity/tradeit-account";
 
 /**
  * This is the main display component for portfolios.
@@ -19,9 +19,9 @@ import { CustomerAccount } from "../../model/entity/customer-account";
     })
 export class PortfoliosComponent extends BaseComponent
 {
-    private customerAccount: CustomerAccount;
-    @ViewChild( CustomerAccountSelectionTableComponent )
-    private customerAccountSelectionTable: CustomerAccountSelectionTableComponent;
+    private customerAccount: TradeItAccount;
+    @ViewChild( TradeItAccountSelectionTableComponent )
+    private customerAccountSelectionTable: TradeItAccountSelectionTableComponent;
     @ViewChild( PortfolioTableComponent )
     private portfolioTableComponent: PortfolioTableComponent;
 
@@ -30,7 +30,7 @@ export class PortfoliosComponent extends BaseComponent
         super( toaster );
     }
 
-    protected customerAccountSelected( customerAccount: CustomerAccount )
+    protected customerAccountSelected( customerAccount: TradeItAccount )
     {
         this.log( "customerAccountSelected: " + JSON.stringify( customerAccount ));
         this.customerAccount = customerAccount;

@@ -1,21 +1,21 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { CustomerAccountCrudServiceContainer } from "./customer-account-crud-service-container";
+import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
-import { CustomerAccount } from "../../model/entity/customer-account";
+import { TradeItAccount } from "../../model/entity/tradeit-account";
 
 /**
  * Created by mike on 8/15/2017.
  */
 @Component({
-    selector:    'customer-account-table-buttons',
+    selector:    'tradeit-account-table-buttons',
     styleUrls:   ['../crud/table/crud-table-buttons.component.css'],
     templateUrl: '../crud/table/crud-table-buttons.component.html'
 })
-export class CustomerAccountTableButtonsComponent extends CrudTableButtonsComponent<CustomerAccount>
+export class TradeItAccountTableButtonsComponent extends CrudTableButtonsComponent<TradeItAccount>
 {
     constructor( protected toaster: ToastsManager,
-                 protected customerAccountServiceContainer: CustomerAccountCrudServiceContainer )
+                 protected customerAccountServiceContainer: TradeItAccountCrudServiceContainer )
     {
         super( toaster, customerAccountServiceContainer );
     }

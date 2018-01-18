@@ -654,10 +654,36 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     public setModelObject( modelObject: T ): void
     {
+        this.debug( "setModelObject modelObject: " + JSON.stringify( modelObject ) +
+                    " this.modelObject: " + JSON.stringify( this.modelObject ));
         super.setModelObject( modelObject );
-        this.crudServiceContainer
-            .crudTableButtonsService
-            .sendModelObjectChangedEvent( modelObject );
+        /*
+         * Only send the event if they have changed.
+         */
+        if ( isNullOrUndefined( this.modelObject ) )
+        {
+            /*
+             * If they are different
+             */
+            if ( !isNullOrUndefined( modelObject ) )
+            {
+                this.crudServiceContainer
+                    .crudTableButtonsService
+                    .sendModelObjectChangedEvent( modelObject );
+            }
+        }
+        else
+        {
+            /*
+             * If they are different
+             */
+            if ( !this.modelObject.isEqualProperties( this.modelObject ) )
+            {
+                this.crudServiceContainer
+                    .crudTableButtonsService
+                    .sendModelObjectChangedEvent( modelObject );
+            }
+        }
     }
 
     /**

@@ -6,59 +6,56 @@ import { StockTableComponent } from './component/stock/stock-table.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { StockFormComponent } from './component/stock/stock-form.component';
 import { PortfolioStockFormComponent } from "./component/portfoliostock/portfolio-stock-form.component";
-import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
-import { StockCatalystEventTableComponent } from "./component/stockcatalystevent/stock-catalyst-event-table.component";
 import { StockNotesTableTabComponent } from "./component/stocknotes/stock-notes-table-tab.component";
 import { StockToBuyTableTabComponent } from "./component/stocktobuy/stock-to-buy-table-tab.component";
 import { StockAnalystConsensusTableTabComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-table-tab.component";
 import { ProfileComponent } from "./component/profile/profile.component";
-import { AuthGuard } from "./service/auth-guard.service";
+import { AuthGuardService } from "./service/auth-guard.service";
 import { AdminComponent } from "./component/admin/admin.component";
 import { StockCatalystEventTableTabComponent } from "./component/stockcatalystevent/stock-catalyst-event-table-tab.component";
-import { CustomerAccountTableComponent } from "./component/customeraccount/customer-account-table.component";
-import { CustomerAccountsComponent } from "./component/customeraccount/customer-accounts.component";
+import { TradeItAccountsComponent } from "./component/tradeit-account/tradeit-accounts.component";
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 
 const routes: Routes = [
     {
         path: 'admin',
         component: AdminComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuardService]
     },
     {
-        path: 'accounts',
-        component: CustomerAccountsComponent,
-        canActivate: [AuthGuard]
+        path: 'tradeItAccounts',
+        component: TradeItAccountsComponent,
+        canActivate: [AuthGuardService]
     },
     {
         path: 'portfolios',
         component: PortfoliosComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuardService]
     },
     {
         path: 'portfolioStock',
         component: PortfolioStockFormComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuardService]
     },
     {
         path: 'stockNotes',
         component: StockNotesTableTabComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuardService]
     },
     {
         path: 'stockCatalystEvents',
         component: StockCatalystEventTableTabComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuardService]
     },
     {
         path: 'stockAnalystConsensus',
         component: StockAnalystConsensusTableTabComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuardService]
     },
     {
         path: 'stocksToBuy',
         component: StockToBuyTableTabComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuardService]
     },
     {
         path: 'Popular Links',
@@ -79,18 +76,18 @@ const routes: Routes = [
     {
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuardService]
     },
     {
         path: 'profile',
         component: ProfileComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuardService]
     },
     {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuardService]
     }
 ];
 

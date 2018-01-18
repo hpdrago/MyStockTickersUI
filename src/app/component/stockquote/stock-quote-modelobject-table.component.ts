@@ -129,7 +129,7 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
             }
             else
             {
-                return 1 - (rowData.lastPrice / rowData.avgAnalystPriceTarget);
+                return (rowData.avgAnalystPriceTarget / rowData.lastPrice);
             }
         }
         else

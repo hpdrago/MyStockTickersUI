@@ -6,12 +6,12 @@ import { JsonObject, JsonProperty } from "json2typescript";
 import { isNullOrUndefined } from "util";
 
 /**
- * CustomerAccount DTO
+ * TradeItLinkedAccount DTO
  *
  * Created 12/4/2017
  */
 @JsonObject
-export class CustomerAccount extends ModelObject<CustomerAccount>
+export class TradeItAccount extends ModelObject<TradeItAccount>
 {
     @JsonProperty( "id", Number )
     public id: number = undefined;

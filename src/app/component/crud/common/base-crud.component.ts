@@ -103,10 +103,19 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
    protected onModelObjectChanged( modelObject: T )
    {
        //this.debug( "onModelObjectChanged " + JSON.stringify( modelObject ) );
-       this.modelObject = modelObject;
+       let methodName = "onModelObjectChanged";
+       this.setModelObject( modelObject );
        if ( !isNullOrUndefined( this.modelObject ) )
        {
-           this.modelObjectChangeSubject.next( this.modelObject );
+           if ( this.modelObject.isEqualProperties( this.modelObject ))
+           {
+               this.debug( methodName + " the model objects are the same, not propagating changes " +
+                   JSON.stringify( modelObject ));
+           }
+           else
+           {
+               this.modelObjectChangeSubject.next( this.modelObject );
+           }
        }
    }
 
@@ -126,8 +135,11 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected onCrudOperationChanged( crudOperation: CrudOperation )
    {
-      this.debug( "crudOperation change " + CrudOperation.getName( crudOperation ));
-      this.crudOperation = crudOperation;
+       if ( this.crudOperation != this.crudOperation )
+       {
+           this.debug( "crudOperation change " + CrudOperation.getName( crudOperation ) );
+           this.setCrudOperation( crudOperation );
+       }
    }
 
     /**

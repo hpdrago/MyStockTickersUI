@@ -28,7 +28,7 @@ export class MenuBarComponent
                 { label: 'Stock Analyst Consensus', icon: 'fa-tasks', routerLink: ['/stockAnalystConsensus'] },
                 { label: 'Stock Catalyst Events', icon: 'fa-tasks', routerLink: ['/stockCatalystEvents'] },
                 { label: 'Portfolios', icon: 'fa-briefcase', routerLink: ['/portfolios'] },
-                { label: 'Accounts', icon: 'fa-briefcase', routerLink: ['/accounts'] },
+                { label: 'TradeIt Accounts', icon: 'fa-briefcase', routerLink: ['/tradeItAccounts'] },
                 { label: 'Profile', icon: 'fa-chart', routerLink: ['/profile'] }
             ]
     }

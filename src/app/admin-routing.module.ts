@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
-import { AuthGuard } from "./service/auth-guard.service";
+import { AuthGuardService } from "./service/auth-guard.service";
 import { AdminComponent } from "./component/admin/admin.component";
 
 /**
@@ -15,11 +15,11 @@ const adminRoutes: Routes = [
     {
         path: 'admin',
         component: AdminComponent,
-        canActivate: [AuthGuard]/*,
+        canActivate: [AuthGuardService]/*,
         children: [
             {
                 path: '',
-                canActivateChild: [AuthGuard],
+                canActivateChild: [AuthGuardService],
                 children: [
                     { path: 'crises', component: null },
                     { path: 'heroes', component: null },

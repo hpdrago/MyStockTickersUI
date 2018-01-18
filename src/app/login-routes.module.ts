@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './service/auth-guard.service';
+import { AuthGuardService } from './service/auth-guard.service';
 import { AuthService } from './service/auth.service';
 import { LoginComponent } from './login.component';
 
@@ -26,7 +26,7 @@ const loginRoutes: Routes = [
                    RouterModule
                ],
                providers: [
-                   AuthGuard,
+                   AuthGuardService,
                    AuthService
                ]
            } )

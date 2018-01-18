@@ -1,7 +1,7 @@
 import { BaseComponent } from "../common/base.component";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { TradeItAuthenticateResult } from "../../service/tradeit/apiresults/authenticate-result";
-import { CustomerAccount } from "../../model/entity/customer-account";
+import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { SelectItem } from "primeng/primeng";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
@@ -18,7 +18,7 @@ import { TradeItService } from "../../service/tradeit/tradeit.service";
 export class TradeItSecurityQuestionDialogComponent extends BaseComponent
 {
     private authenticateResult: TradeItAuthenticateResult;
-    private customerAccount: CustomerAccount;
+    private customerAccount: TradeItAccount;
     private showDialog: boolean = false;
 
     constructor( protected toaster: ToastsManager,
@@ -60,9 +60,9 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
 
     /**
      * Set the customer account.
-     * @param {CustomerAccount} modelObject
+     * @param {TradeItAccount} modelObject
      */
-    public setCustomerAccount( customerAccount: CustomerAccount )
+    public setCustomerAccount( customerAccount: TradeItAccount )
     {
         this.log( "setCustomerAccount: " + JSON.stringify( this.customerAccount ));
         this.customerAccount = customerAccount;

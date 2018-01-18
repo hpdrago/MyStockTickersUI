@@ -3,8 +3,8 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { SessionService } from "../../service/session.service";
-import { CustomerAccount } from "../../model/entity/customer-account";
-import { CustomerAccountCrudServiceContainer } from "./customer-account-crud-service-container";
+import { TradeItAccount } from "../../model/entity/tradeit-account";
+import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { SelectItem } from "primeng/primeng";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 
@@ -14,18 +14,18 @@ import { TradeItService } from "../../service/tradeit/tradeit.service";
  * Created by mike on 10/17/2017.
  */
 @Component( {
-                selector: 'customer-account-form',
+                selector: 'tradeit-account-form',
                 styleUrls: ['../crud/form/crud-form.component.css'],
-                templateUrl: './customer-account-form.component.html'
+                templateUrl: './tradeit-account-form.component.html'
             } )
-export class CustomerAccountFormComponent extends CrudFormComponent<CustomerAccount>
+export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccount>
 {
     private brokerageItems: SelectItem[];
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private tradeItService: TradeItService,
                  private formBuilder: FormBuilder,
-                 private customerAccountCrudServiceContainer: CustomerAccountCrudServiceContainer )
+                 private customerAccountCrudServiceContainer: TradeItAccountCrudServiceContainer )
     {
         super( toaster, customerAccountCrudServiceContainer );
     }

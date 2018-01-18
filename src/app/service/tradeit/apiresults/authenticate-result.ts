@@ -1,5 +1,5 @@
 import { TradeItAPIResult } from "./tradeit-api-result";
-import { TradeItAccount } from "../types/tradeit-account";
+import { TradeItLinkedAccount } from "../types/tradeit-linked-account";
 import { JsonObject, JsonProperty } from "json2typescript";
 
 /**
@@ -11,8 +11,8 @@ export class TradeItAuthenticateResult extends TradeItAPIResult
     /*
      * status == SUCCESS
      */
-    @JsonProperty( "tradeItAccounts", TradeItAccount )
-    public tradeItAccounts: TradeItAccount[] = undefined;
+    @JsonProperty( "tradeItAccounts", TradeItLinkedAccount )
+    public tradeItAccounts: TradeItLinkedAccount[] = undefined;
 
     /*
      * status = INFORMATION_NEEDED

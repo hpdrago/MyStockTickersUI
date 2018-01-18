@@ -1,15 +1,15 @@
 import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
 import { SessionService } from "../../service/session.service";
-import { CustomerAccount } from "../entity/customer-account";
+import { TradeItAccount } from "../entity/tradeit-account";
 
 /**
- * This class provides CustomerAccount factory methods.
+ * This class provides TradeItLinkedAccount factory methods.
  *
  * Created by mike on 12/4/2017.
  */
 @Injectable()
-export class CustomerAccountFactory extends ModelObjectFactory<CustomerAccount>
+export class TradeItAccountFactory extends ModelObjectFactory<TradeItAccount>
 {
     constructor( protected session: SessionService )
     {
@@ -17,12 +17,12 @@ export class CustomerAccountFactory extends ModelObjectFactory<CustomerAccount>
     }
 
     /**
-     * Create a new CustomerAccount instance
-     * @returns {CustomerAccount}
+     * Create a new TradeItLinkedAccount instance
+     * @returns {TradeItAccount}
      */
-    public newModelObject(): CustomerAccount
+    public newModelObject(): TradeItAccount
     {
-        var account = new CustomerAccount();
+        var account = new TradeItAccount();
         account.customerId = this.session.getLoggedInUserId();
         account.brokerage = "";
         account.id = 0;

@@ -16,7 +16,7 @@ import { BaseClass } from "../common/base-class";
  * Created 12/5/2017
  */
 @Injectable()
-export class AuthGuard extends BaseClass implements CanActivate, CanActivateChild
+export class AuthGuardService extends BaseClass implements CanActivate, CanActivateChild
 {
     constructor( private authService: AuthService, private router: Router )
     {

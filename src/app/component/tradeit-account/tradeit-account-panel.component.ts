@@ -2,8 +2,8 @@ import { CrudPanelComponent } from "../crud/panel/crud-panel.component";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { SessionService } from "../../service/session.service";
-import { CustomerAccountCrudServiceContainer } from "./customer-account-crud-service-container";
-import { CustomerAccount } from "../../model/entity/customer-account";
+import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
+import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { CrudOperation } from "../crud/common/crud-operation";
 
 /**
@@ -11,15 +11,15 @@ import { CrudOperation } from "../crud/common/crud-operation";
  * Created 12/4/2017
  */
 @Component( {
-                selector: 'customer-account-panel',
-                templateUrl: './customer-account-panel.component.html'
+                selector: 'tradeit-account-panel',
+                templateUrl: './tradeit-account-panel.component.html'
             } )
-export class CustomerAccountPanelComponent extends CrudPanelComponent<CustomerAccount>
+export class TradeItAccountPanelComponent extends CrudPanelComponent<TradeItAccount>
 {
     private CrudOperation = CrudOperation;
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
-                 protected customerAccountCrudServiceContainer: CustomerAccountCrudServiceContainer )
+                 protected customerAccountCrudServiceContainer: TradeItAccountCrudServiceContainer )
     {
         super( toaster, customerAccountCrudServiceContainer );
     }

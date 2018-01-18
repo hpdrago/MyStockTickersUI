@@ -133,16 +133,16 @@ import { StockToBuyTableTabComponent } from "./component/stocktobuy/stock-to-buy
 import { FormErrorsComponent } from "./component/common/form-errors.component";
 import { StockAnalystConsensusDashboardTableComponent } from "./component/dashboard/stock-analyst-consensus-dashboard-table.component";
 import { StockAnalystConsensusTableTabComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-table-tab.component";
-import { CustomerAccountFactory } from "./model/factory/customer-account.factory";
-import { CustomerAccountCrudService } from "./service/crud/customer-account-crud.service";
+import { TradeItAccountFactory } from "./model/factory/tradeit-account.factory";
+import { TradeItAccountCrudService } from "./service/crud/tradeit-account-crud.service";
 import { CustomerFormComponent } from "./component/customer/customer-form.component";
 import { ProfileComponent } from "./component/profile/profile.component";
-import { CustomerAccountCrudServiceContainer } from "./component/customeraccount/customer-account-crud-service-container";
+import { TradeItAccountCrudServiceContainer } from "./component/tradeit-account/tradeit-account-crud-service-container";
 import { CustomerCrudServiceContainer } from "./component/customer/customer-crud-service-container";
 import { CustomerPanelComponent } from "./component/customer/customer-panel.component";
 import { CustomerFormButtonsComponent } from "./component/customer/customer-form-buttons.component";
 import { CustomerService } from "./service/customer.service";
-import { AuthGuard } from "./service/auth-guard.service";
+import { AuthGuardService } from "./service/auth-guard.service";
 import { AuthService } from "./service/auth.service";
 import { LoginRoutingModule } from "./login-routes.module";
 import { AdminRoutingModule } from "./admin-routing.module";
@@ -151,16 +151,16 @@ import { AdminComponent } from "./component/admin/admin.component";
 import { CookieService } from "ngx-cookie-service";
 import { StockQuoteCache } from "./service/stock-quote-cache";
 import { TradeItService } from "./service/tradeit/tradeit.service";
-import { CustomerAccountTableButtonsComponent } from "./component/customeraccount/customer-account-table-buttons.component";
-import { CustomerAccountFormButtonsComponent } from "./component/customeraccount/customer-account-form-buttons.component";
-import { CustomerAccountDialogComponent } from "./component/customeraccount/customer-account-dialog.component";
-import { CustomerAccountFormComponent } from "./component/customeraccount/customer-account-form.component";
-import { CustomerAccountTableComponent } from "./component/customeraccount/customer-account-table.component";
+import { TradeItAccountTableButtonsComponent } from "./component/tradeit-account/tradeit-account-table-buttons.component";
+import { TradeItAccountFormButtonsComponent } from "./component/tradeit-account/tradeit-account-form-buttons.component";
+import { TradeItAccountDialogComponent } from "./component/tradeit-account/tradeit-account-dialog.component";
+import { TradeItAccountFormComponent } from "./component/tradeit-account/tradeit-account-form.component";
+import { TradeItAccountTableComponent } from "./component/tradeit-account/tradeit-account-table.component";
 import { StockSearchComponent } from "./component/common/stock-search.component";
 import { StockCatalystEventTableTabComponent } from "./component/stockcatalystevent/stock-catalyst-event-table-tab.component";
-import { CustomerAccountsComponent } from "./component/customeraccount/customer-accounts.component";
-import { CustomerAccountPanelComponent } from "./component/customeraccount/customer-account-panel.component";
-import { CustomerAccountSelectionTableComponent } from "./component/customeraccount/customer-account-selection-table.component";
+import { TradeItAccountsComponent } from "./component/tradeit-account/tradeit-accounts.component";
+import { TradeItAccountPanelComponent } from "./component/tradeit-account/tradeit-account-panel.component";
+import { TradeItAccountSelectionTableComponent } from "./component/tradeit-account/tradeit-account-selection-table.component";
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 import { TradeItSecurityQuestionDialogComponent } from "./component/tradeit/tradeit-security-question-dialog.component";
 
@@ -240,14 +240,14 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         CustomerFormButtonsComponent,
         ProfileComponent,
 
-        CustomerAccountTableComponent,
-        CustomerAccountSelectionTableComponent,
-        CustomerAccountFormComponent,
-        CustomerAccountDialogComponent,
-        CustomerAccountPanelComponent,
-        CustomerAccountFormButtonsComponent,
-        CustomerAccountTableButtonsComponent,
-        CustomerAccountsComponent,
+        TradeItAccountTableComponent,
+        TradeItAccountSelectionTableComponent,
+        TradeItAccountFormComponent,
+        TradeItAccountDialogComponent,
+        TradeItAccountPanelComponent,
+        TradeItAccountFormButtonsComponent,
+        TradeItAccountTableButtonsComponent,
+        TradeItAccountsComponent,
 
         StockTableComponent,
         StockFormComponent,
@@ -313,7 +313,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
     [
         // Global providers -- singletons
         AuthService,
-        AuthGuard,
+        AuthGuardService,
         CookieService,
         StockQuoteCache,
         TradeItService,
@@ -323,9 +323,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         CustomerCrudServiceContainer,
         CustomerFactory,
 
-        CustomerAccountCrudServiceContainer,
-        CustomerAccountCrudService,
-        CustomerAccountFactory,
+        TradeItAccountCrudServiceContainer,
+        TradeItAccountCrudService,
+        TradeItAccountFactory,
 
         StockCrudService,
         StockCrudServiceContainer,

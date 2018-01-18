@@ -2,17 +2,19 @@ import { Injectable } from "@angular/core";
 import { BaseService } from "../base-service";
 import { Observable } from "rxjs/Observable";
 import { SelectItem } from "primeng/primeng";
-import { Http, RequestOptions, Response, Headers } from "@angular/http";
+import { Headers, Http, RequestOptions, Response } from "@angular/http";
 import { AppConfigurationService } from "../app-configuration.service";
 import { TradeItBrokerListResult } from "./apiresults/tradeit-broker-list-result";
-import { TradeItOAuthAccessResult } from "./apiresults/tradeit-oauthaccess-result";
+import { TradeItOAuthAccessResult } from "./apiresults/tradeit-oauth-access-result";
 import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
 import { SessionService } from "../session.service";
 import { TradeItAuthenticateResult } from "./apiresults/authenticate-result";
 import { TradeItGetOauthPopupURLResult } from "./apiresults/tradeit-get-oauth-popup-url-result";
 import { TradeItException } from "./tradeit-execption";
 import { TradeItAPIResult } from "./apiresults/tradeit-api-result";
-import { isNullOrUndefined } from "util";
+import { TradeItLinkedAccount } from "./types/tradeit-linked-account";
+import { TradeItKeepSessionAliveResult } from "./apiresults/tradeit-keep-session-alive-result";
+import { TradeItAccount } from "../../model/entity/tradeit-account";
 
 /**
  * This service contains the methods to inteface with the Tradeit API
@@ -26,6 +28,7 @@ export class TradeItService extends BaseService
     private readonly GET_OAUTH_ACCESS_TOKEN_URL = "/getOAuthAccessToken";
     private readonly AUTHENTICATE_URL = "/authenticate";
     private readonly ANSWER_SECURITY_QUESTION_URL = "/authenticate";
+    private readonly KEEP_SESSION_ALIVE = "/keepSessionAlive"
 
     constructor( protected http: Http,
                  protected sessionService: SessionService,
@@ -188,6 +191,26 @@ export class TradeItService extends BaseService
                              }
                              return selectItems;
                          } );
+    }
+
+    /**
+     * Keeps the session alive (renew) the session for the TradeItLinkedAccount.
+     * @param {TradeItLinkedAccount} tradeItAccount
+     * @returns {Observable<TradeItKeepSessionAliveResult>}
+     */
+    public keepSessionAlive( tradeItAccount: TradeItAccount ): Observable<TradeItKeepSessionAliveResult>
+    {
+        let methodName = "keepSessionAlive";
+        let url = `${this.appConfig.getBaseURL()}/${this.CONTEXT_URL}/${this.KEEP_SESSION_ALIVE}/accountId/${tradeItAccount.id}/customer/${this.sessionService.getLoggedInUserId()}`;
+        this.debug( methodName + " url: " + url );
+        return this.http
+                   .get( url )
+                   .map( ( response: Response ) =>
+                         {
+                             this.checkResponse( methodName, response );
+                             return response.json();
+                         } )
+                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
     }
 
     /**

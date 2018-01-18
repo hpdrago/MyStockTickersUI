@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { Observable } from "rxjs/Observable";
 import { BaseService } from "./base-service";
 import { BaseClass } from "../common/base-class";
+import { TradeItService } from "./tradeit/tradeit.service";
 
 /**
  * Router Guard to redirect user to login screen.
@@ -16,9 +17,9 @@ import { BaseClass } from "../common/base-class";
  * Created 12/5/2017
  */
 @Injectable()
-export class TradeItGuardService extends BaseClass implements CanActivate, CanActivateChild
+export class TradeItAuthGuardService extends BaseClass implements CanActivate, CanActivateChild
 {
-    constructor( private authService: AuthService, private router: Router )
+    constructor( private tradeItService: TradeItService, private router: Router )
     {
         super();
     }
@@ -28,6 +29,7 @@ export class TradeItGuardService extends BaseClass implements CanActivate, CanAc
      */
     public checkLogin( url: string ): boolean
     {
+        /*
         if ( this.authService.isLoggedIn )
         {
             this.debug( "checkLogin url: " + url + " true" );
@@ -40,6 +42,7 @@ export class TradeItGuardService extends BaseClass implements CanActivate, CanAc
         // Navigate to the login page with extras
         this.debug( "checkLogin url: " + url + " false" );
         this.router.navigate( ['/login'] );
+        */
         return false;
     }
 

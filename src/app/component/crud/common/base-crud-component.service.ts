@@ -6,13 +6,14 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { Subscription } from "rxjs/Subscription";
 import { subscriptionLogsToBeFn } from "rxjs/testing/TestScheduler";
+import { isNullOrUndefined } from "util";
 /**
  * This class services as a base abstract class for CRUD based component services to provide common methods
  * and properties.
  *
  * Created by mike on 12/17/2016.
  */
-export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClass
+export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClass
 {
     private modelObjectChangedSubject: BehaviorSubject<T>;
     private crudOperationChangedSubject: BehaviorSubject<CrudOperation>;
@@ -85,7 +86,10 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     {
         this.debug( "sendModelObjectChangedEvent " + JSON.stringify( modelObject ) + " to " +
             this.modelObjectChangedSubject.observers.length + " observers" );
-        this.modelObjectChangedSubject.next( modelObject );
+        if ( !isNullOrUndefined( modelObject ) )
+        {
+            this.modelObjectChangedSubject.next( modelObject );
+        }
     }
 
     /**
@@ -96,7 +100,10 @@ export class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClas
     public sendCrudOperationChangedEvent( crudOperation: CrudOperation )
     {
         this.debug( "sendCrudOperationChangedEvent " + crudOperation );
-        this.crudOperationChangedSubject.next( crudOperation );
+        if ( !isNullOrUndefined( crudOperation ) )
+        {
+            this.crudOperationChangedSubject.next( crudOperation );
+        }
     }
 
     /**
