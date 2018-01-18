@@ -150,7 +150,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
         } );
         stockNoteForm.addControl( 'stockSearch', new FormControl( this.stockSearch ));
         stockNoteForm.addControl( 'tickerSymbols', new FormControl( this.tickerSymbols ));
-        stockNoteForm.addControl( 'tickerSymbol', new FormControl( this.modelObject.tickerSymbol, Validators.required ));
+        stockNoteForm.addControl( 'tickerSymbol', new FormControl( this.modelObject.tickerSymbol ));
         /*
          * Add the specific fields based on the crud operation
          */
@@ -167,6 +167,19 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
             stockNoteForm.controls['tickerSymbol'].enable();
         }
         return stockNoteForm;
+    }
+
+    protected invalidProperty( propertyName: string ): void
+    {
+        super.invalidProperty( propertyName );
+        if ( propertyName === 'tickerSymbol' )
+        {
+            if ( this.stocks.length > 0 )
+            {
+                //this.modelObject.tickerSymbol = this.stocks[0].tickerSymbol;
+                //this.log( "invalidProperty setting ticker symbol to " + this.modelObject.tickerSymbol );
+            }
+        }
     }
 
     /**
@@ -197,6 +210,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
                                 {
                                     this.log( methodName + " found: " + stockQuote.tickerSymbol );
                                     modelObject.stockPriceWhenCreated = stockQuote.lastPrice;
+
                                 },
                                 error =>
                                 {
@@ -235,7 +249,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
             this.stock = stock;
             this.stockSearch = '';
             this.modelObject.stockPriceWhenCreated = stock.lastPrice;
-            (<FormControl>this.formGroup.controls['tickerSymbols']).setValue( this.tickerSymbols );
+            (<FormControl>this.formGroup.controls['tickerSymbol']).setValue( stock.tickerSymbol );
             (<FormControl>this.formGroup.controls['stockSearch']).setValue( '' );
             this.stocks.push( stock );
         }

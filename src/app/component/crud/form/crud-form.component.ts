@@ -537,6 +537,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
                 if ( this.formGroup.controls[propertyName].status == 'INVALID' )
                 {
                     errors.push( propertyName + " is not valid" );
+                    this.invalidProperty( propertyName );
                 }
             }
             for ( let propertyName in this.formGroup.errors )
@@ -552,6 +553,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
                 }
             }
             this.crudServiceContainer.crudFormService.sendFormErrors( errors );
+            //this.log( JSON.stringify( errors ));
         }
         else
         {
@@ -799,6 +801,10 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.setFormValues( this.modelObject );
     }
 
+    /**
+     * Sets the model object and sets the form values if the form has been created.
+     * @param {T} modelObject
+     */
     public setModelObject( modelObject: T ): void
     {
         super.setModelObject( modelObject );
@@ -809,5 +815,14 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         {
             this.setFormValues( this.modelObject );
         }
+    }
+
+    /**
+     * This method is called when a form control fields is invalid.
+     * @param {string} propertyName
+     */
+    protected invalidProperty( propertyName: string )
+    {
+        this.debug( "invalidProperty " + propertyName );
     }
 }

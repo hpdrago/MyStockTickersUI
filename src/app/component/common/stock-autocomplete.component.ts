@@ -39,10 +39,6 @@ import { StockModelObjectTableComponent } from "./stock-model-object-table-compo
 } )
 export class StockAutoCompleteComponent extends BaseCrudComponent<Stock> implements ControlValueAccessor
 {
-    @Input()
-    private formGroup: FormGroup;
-    @Input()
-    private formControlName: string;
     @Output()
     private stockSelected: EventEmitter<StockQuote>  = new EventEmitter<StockQuote>();
 
@@ -72,11 +68,6 @@ export class StockAutoCompleteComponent extends BaseCrudComponent<Stock> impleme
         this.tickerSymbol = '';
         this.disabled = false;
         this.isStockSelected = false;
-    }
-
-    private getFormControlName(): string
-    {
-        return this.formControlName;
     }
 
     /**
