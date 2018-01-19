@@ -18,25 +18,9 @@ import { MatProgressBarModule, MatSliderModule } from '@angular/material';
  * PrimeNG
  */
 import {
-    ButtonModule,
-    CalendarModule,
-    CheckboxModule,
-    ChipsModule,
-    ConfirmationService,
-    ConfirmDialogModule,
-    DataTableModule,
-    DialogModule,
-    DropdownModule,
-    EditorModule,
-    InputTextareaModule,
-    InputTextModule, ListboxModule,
-    MenubarModule,
-    PanelModule,
-    RatingModule,
-    SelectButtonModule,
-    SliderModule,
-    TabMenuModule,
-    TabViewModule,
+    ButtonModule, CalendarModule, CheckboxModule, ChipsModule, ConfirmationService, ConfirmDialogModule,
+    DataTableModule, DialogModule, DropdownModule, EditorModule, InputTextareaModule, InputTextModule, ListboxModule,
+    MenubarModule, PanelModule, RatingModule, SelectButtonModule, SliderModule, TabMenuModule, TabViewModule,
     TooltipModule
 } from "primeng/primeng";
 import { CurrencyMaskModule } from "ng2-currency-mask";
@@ -163,6 +147,11 @@ import { TradeItAccountPanelComponent } from "./component/tradeit-account/tradei
 import { TradeItAccountSelectionTableComponent } from "./component/tradeit-account/tradeit-account-selection-table.component";
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 import { TradeItSecurityQuestionDialogComponent } from "./component/tradeit/tradeit-security-question-dialog.component";
+import { LinkedAccountCrudServiceContainer } from "./component/linked-account/linked-account-crud-service-container";
+import { LinkedAccountFactory } from "./model/factory/linked-account.factory";
+import { LinkedAccountCrudService } from "./service/crud/linked-account-crud.service";
+import { LinkedAccountTableButtonsComponent } from "./component/linked-account/linked-account-table-buttons.component";
+import { LinkedAccountTableComponent } from "./component/linked-account/linked-account-table.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -249,6 +238,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         TradeItAccountTableButtonsComponent,
         TradeItAccountsComponent,
 
+        LinkedAccountTableComponent,
+        LinkedAccountTableButtonsComponent,
+
         StockTableComponent,
         StockFormComponent,
         StockDialogComponent,
@@ -326,6 +318,10 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         TradeItAccountCrudServiceContainer,
         TradeItAccountCrudService,
         TradeItAccountFactory,
+
+        LinkedAccountCrudServiceContainer,
+        LinkedAccountCrudService,
+        LinkedAccountFactory,
 
         StockCrudService,
         StockCrudServiceContainer,

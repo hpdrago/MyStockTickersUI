@@ -8,7 +8,6 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { BaseCrudComponent } from "../common/base-crud.component";
 import { OnInit, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { CrudModelObjectEditMode } from "../common/crud-model-object-edit-mode";
 import { CrudServiceContainer } from "../common/crud-service-container";
 import { CrudOperation } from "../common/crud-operation";
 import { isNullOrUndefined } from "util";
@@ -24,10 +23,6 @@ import { PaginationPage } from "../../../common/pagination";
  */
 export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseCrudComponent<T> implements OnInit
 {
-    /**
-     * Defines how a model object is presented to the user either by a dialog or a panel.
-     */
-    //protected modelObjectEditMode: CrudModelObjectEditMode = CrudModelObjectEditMode.DIALOG;
     /**
      * The list of model objects displayed.
      * @type {Array}
@@ -73,9 +68,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         {
             throw new Error( "crudRestService argument cannot be null" );
         }
-        if ( !this.crudServiceContainer.crudFormService )
+        if ( this.isAllowUpdates() || this.isAllowDeletes() || this.isAllowAdds() )
         {
-            throw new Error( "crudFormService argument cannot be null" );
+            if ( !this.crudServiceContainer.crudFormService )
+            {
+                throw new Error( "crudFormService argument cannot be null" );
+            }
         }
         if ( !this.crudServiceContainer.crudFormButtonsService )
         {
@@ -93,11 +91,14 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     public ngOnInit()
     {
         this.debug( "ngOnInit.begin" );
-        if ( this.crudServiceContainer.crudPanelService == null )
+        if ( this.isAllowUpdates() || this.isAllowDeletes() || this.isAllowAdds() )
         {
-            throw new Error( "crudPanelService cannot be null" );
+            if ( this.crudServiceContainer.crudPanelService == null )
+            {
+                throw new Error( "crudPanelService cannot be null" );
+            }
+            this.subscribeToCrudFormButtonEvents();
         }
-        this.subscribeToCrudFormButtonEvents();
         this.subscribeToCrudTableButtonEvents();
         this.subscribeToModelObjectChangeEvents();
         /*
@@ -246,21 +247,30 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudFormButtonEvents(): void
     {
-        this.addSubscription(
-            this.crudServiceContainer
-                .crudFormButtonsService
-                .subscribeToSaveButtonClickCompletedEvent(
-                    ( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) ) );
-        this.addSubscription(
-            this.crudServiceContainer
-                .crudFormButtonsService
-                .subscribeToAddButtonClickCompletedEvent(
-                    ( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) ) );
-        this.addSubscription(
-            this.crudServiceContainer
-                .crudFormButtonsService
-                .subscribeToDeleteButtonClickCompletedEvent(
-                    ( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) ) );
+        if ( this.isAllowUpdates() )
+        {
+            this.addSubscription(
+                this.crudServiceContainer
+                    .crudFormButtonsService
+                    .subscribeToSaveButtonClickCompletedEvent(
+                        ( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) ) );
+        }
+        if ( this.isAllowAdds() )
+        {
+            this.addSubscription(
+                this.crudServiceContainer
+                    .crudFormButtonsService
+                    .subscribeToAddButtonClickCompletedEvent(
+                        ( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) ) );
+        }
+        if ( this.isAllowDeletes() )
+        {
+            this.addSubscription(
+                this.crudServiceContainer
+                    .crudFormButtonsService
+                    .subscribeToDeleteButtonClickCompletedEvent(
+                        ( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) ) );
+        }
     }
 
     /**
@@ -268,18 +278,27 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudTableButtonEvents(): void
     {
-        this.addSubscription(
-            this.crudServiceContainer
-                .crudTableButtonsService
-                .subscribeToAddButtonClickedEvent( ( modelObject: T ) => this.showFormToAdd( modelObject ) ) );
-        this.addSubscription(
-            this.crudServiceContainer
-                .crudTableButtonsService
-                .subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showFormToEdit( modelObject ) ) );
-        this.addSubscription(
-            this.crudServiceContainer
-                .crudTableButtonsService
-                .subscribeToDeleteButtonClickedEvent( ( modelObject: T ) => this.showFormToDelete( modelObject ) ) );
+        if ( this.isAllowAdds() )
+        {
+            this.addSubscription(
+                this.crudServiceContainer
+                    .crudTableButtonsService
+                    .subscribeToAddButtonClickedEvent( ( modelObject: T ) => this.showFormToAdd( modelObject ) ) );
+        }
+        if ( this.isAllowUpdates() )
+        {
+            this.addSubscription(
+                this.crudServiceContainer
+                    .crudTableButtonsService
+                    .subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showFormToEdit( modelObject ) ) );
+        }
+        if ( this.isAllowDeletes() )
+        {
+            this.addSubscription(
+                this.crudServiceContainer
+                    .crudTableButtonsService
+                    .subscribeToDeleteButtonClickedEvent( ( modelObject: T ) => this.showFormToDelete( modelObject ) ) );
+        }
         this.addSubscription( this.crudServiceContainer
                                   .crudTableButtonsService
                                   .subscribeToRefreshButtonClickedEvent( ( modelObject: T ) => this.refreshTable() ) );
@@ -621,10 +640,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onRowDoubleClick( event ): void
     {
-        var methodName = "onRowDoubleClick";
-        this.debug( methodName + " " + JSON.stringify( event ) );
-        this.setModelObject( this.newModelObjectFromEvent( event ) );
-        this.showFormToEdit( this.modelObject );
+        if ( this.isAllowUpdates() )
+        {
+            var methodName = "onRowDoubleClick";
+            this.debug( methodName + " " + JSON.stringify( event ) );
+            this.setModelObject( this.newModelObjectFromEvent( event ) );
+            this.showFormToEdit( this.modelObject );
+        }
     }
 
     /**
@@ -753,5 +775,32 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected getNotesSize(): number
     {
         return 250;
+    }
+
+    /**
+     * When true, rows can be deleted.
+     * @returns {boolean} Default is true
+     */
+    protected isAllowDeletes(): boolean
+    {
+        return true;
+    }
+
+    /**
+     * When true, rows can be added.
+     * @returns {boolean} Default is true
+     */
+    protected isAllowAdds(): boolean
+    {
+        return true;
+    }
+
+    /**
+     * When true, rows can be edited.
+     * @returns {boolean} Default is true
+     */
+    protected isAllowUpdates(): boolean
+    {
+        return true;
     }
 }

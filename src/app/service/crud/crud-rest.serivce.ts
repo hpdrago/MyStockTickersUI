@@ -7,7 +7,6 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 import { isNullOrUndefined } from "util";
 import { KeyValuePair } from "../../common/key-value-pair";
-import { any } from "codelyzer/util/function";
 
 /**
  * Generic Service class for REST CRUD methods

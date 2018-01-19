@@ -1,4 +1,3 @@
-
 import { ModelObjectFactory } from "./model-object.factory";
 import { SessionService } from "../../service/session.service";
 import { Injectable } from "@angular/core";

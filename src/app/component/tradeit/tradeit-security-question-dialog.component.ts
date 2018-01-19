@@ -1,5 +1,5 @@
 import { BaseComponent } from "../common/base.component";
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Output } from "@angular/core";
 import { TradeItAuthenticateResult } from "../../service/tradeit/apiresults/authenticate-result";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { SelectItem } from "primeng/primeng";

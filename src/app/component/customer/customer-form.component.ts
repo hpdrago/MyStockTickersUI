@@ -1,11 +1,10 @@
-import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { SessionService } from "../../service/session.service";
 import { Customer } from "../../model/entity/customer";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { CustomerCrudServiceContainer } from "./customer-crud-service-container";
-import { CrudOperation } from "../crud/common/crud-operation";
 
 /**
  * This is the Customer Form Component class.

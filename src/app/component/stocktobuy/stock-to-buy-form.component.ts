@@ -1,8 +1,7 @@
-import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
-import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
 import { SessionService } from "../../service/session.service";

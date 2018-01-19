@@ -1,4 +1,5 @@
 import { ModelObject } from "./modelobject";
+
 /**
  * This class defines the information about a single stock that the customer is tracking in
  * one or more portfolios

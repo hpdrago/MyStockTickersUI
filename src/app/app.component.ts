@@ -2,10 +2,9 @@
  * Created by mike on 9/14/2016.
  */
 import { Component, ViewContainerRef } from '@angular/core';
-import {ToastsManager} from 'ng2-toastr/ng2-toastr';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { DateOrTimePeriod } from "./common/date-or-time-period.enum";
 import { CustomerService } from "./service/customer.service";
-import { Customer } from "./model/entity/customer";
 
 @Component( {
     selector:    'app-root',

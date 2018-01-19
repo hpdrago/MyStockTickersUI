@@ -6,7 +6,6 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 import { Portfolio } from "../../model/entity/portfolio";
-import { KeyValuePairs } from "../../common/key-value-pairs";
 
 /**
  * This class provides all CRUD REST services.

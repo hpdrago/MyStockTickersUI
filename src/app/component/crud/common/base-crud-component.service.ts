@@ -1,12 +1,12 @@
-import { Subject, Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { CrudOperation } from "./crud-operation";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { BaseClass } from "../../../common/base-class";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { Subscription } from "rxjs/Subscription";
-import { subscriptionLogsToBeFn } from "rxjs/testing/TestScheduler";
 import { isNullOrUndefined } from "util";
+
 /**
  * This class services as a base abstract class for CRUD based component services to provide common methods
  * and properties.
@@ -99,7 +99,7 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends
      */
     public sendCrudOperationChangedEvent( crudOperation: CrudOperation )
     {
-        this.debug( "sendCrudOperationChangedEvent " + crudOperation );
+        this.debug( "sendCrudOperationChangedEvent " + CrudOperation.getName( crudOperation ));
         if ( !isNullOrUndefined( crudOperation ) )
         {
             this.crudOperationChangedSubject.next( crudOperation );

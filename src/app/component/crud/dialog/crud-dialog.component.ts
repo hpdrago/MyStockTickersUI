@@ -1,12 +1,12 @@
 import { ToastsManager } from "ng2-toastr";
 import { CrudServiceContainer } from "../common/crud-service-container";
-import { BaseCrudComponent } from "../common/base-crud.component";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { CrudOperation } from "../common/crud-operation";
 import { isNullOrUndefined } from "util";
 import { DialogCloseEventType } from "../common/close-button-event";
 import { ModelObjectCrudOperationSubjectInfo } from "./modelobject-crudoperation-subject-info";
 import { CrudPanelComponent } from "../panel/crud-panel.component";
+
 /**
  * This is the base class for Modal dialogs that provide CRUD operations on a model object.
  *

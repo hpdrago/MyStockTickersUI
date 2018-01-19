@@ -3,8 +3,6 @@ import { Customer } from "../model/entity/customer";
 import { SessionService } from "./session.service";
 import { CustomerCrudService } from "./crud/customer-crud.service";
 import { BaseService } from "./base-service";
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs/Subscription";
 
 /**
  * This is the general (not CRUD) service class for the customer.

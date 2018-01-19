@@ -1,4 +1,5 @@
 import { ModelObject } from "./modelobject";
+
 /**
  * This class defines the fields and methods for a single Stock
  * Created by mike on 9/12/2016.

@@ -3,7 +3,6 @@ import { ToastsManager } from "ng2-toastr";
 import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
-import { StockNotes } from "../../model/entity/stock-notes";
 
 /**
  * Button panel component for the StockToBuy dialog.

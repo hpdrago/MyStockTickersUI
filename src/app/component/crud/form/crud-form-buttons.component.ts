@@ -95,10 +95,10 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
             .crudFormService
             .subscribeToFormValidEvent(( valid: boolean ) => this.onFormValid( valid ) );
         this.crudServiceContainer
-            .crudFormService
+            .crudFormButtonsService
             .subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.onCrudOperationChanged( crudOperation ) );
         this.crudServiceContainer
-            .crudFormService
+            .crudFormButtonsService
             .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.onModelObjectChanged( modelObject ) );
         this.crudServiceContainer
             .crudFormService
@@ -106,6 +106,10 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
 
+    /**
+     * This method is called when the crud operation changes.
+     * @param {CrudOperation} crudOperation
+     */
     protected onCrudOperationChanged( crudOperation: CrudOperation )
     {
         super.onCrudOperationChanged( crudOperation );
@@ -117,7 +121,8 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     private logState()
     {
-        /*
+        this.debug( "crudOperation: " + CrudOperation.getName( this.crudOperation ));
+        this.debug( "modelObject: " + JSON.stringify( this.modelObject ));
         this.debug( "isFormValid: " + this.formValidFlag );
         this.debug( "isSaveButtonDisabled: " + this.isSaveButtonDisabled() );
         this.debug( "isDeleteButtonDisabled: " + this.isDeleteButtonDisabled() );
@@ -125,7 +130,6 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.debug( "isShowSaveButton: " + this.isShowSaveButton() );
         this.debug( "isShowAddButton: " + this.isShowAddButton() );
         this.debug( "isShowDeleteButton: " + this.isShowDeleteButton() );
-        */
     }
 
     /**
@@ -388,6 +392,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
             .crudFormButtonsService
             .sendSaveButtonClickCompletedEvent( this.modelObject );
         this.resetCrudOperationAndModelObject();
+        this.sendResetCrudOperationAndModelObject();
     }
 
     /**
@@ -528,6 +533,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
             .crudFormButtonsService
             .sendAddButtonClickCompletedEvent( this.modelObject );
         this.resetCrudOperationAndModelObject();
+        this.sendResetCrudOperationAndModelObject();
     }
 
     /**
@@ -587,6 +593,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
             .crudFormButtonsService
             .sendDeleteButtonClickCompletedEvent( this.modelObject );
         this.resetCrudOperationAndModelObject();
+        this.sendResetCrudOperationAndModelObject();
     }
 
     /**
@@ -610,6 +617,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                 .sendCancelButtonClickedEvent();
         }
         this.resetCrudOperationAndModelObject();
+        this.sendResetCrudOperationAndModelObject();
     }
 
     /**
@@ -688,4 +696,15 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      * This method is called by {@code getDeleteMessage} to produce a meaningful confirm delete message.
      */
     public abstract getDeleteKeyword(): string;
+
+    /**
+     * Notifies the form service to send CRUD operation and model object changes.
+     */
+    private sendResetCrudOperationAndModelObject()
+    {
+        this.crudServiceContainer
+            .crudFormButtonsService.sendCrudOperationChangedEvent( this.crudOperation );
+        this.crudServiceContainer
+            .crudFormButtonsService.sendModelObjectChangedEvent( this.modelObject );
+    }
 }

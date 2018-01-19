@@ -11,7 +11,6 @@ import { StockNotesSourceList } from "../stocknotes/stock-notes-source-list";
 import { isNullOrUndefined } from "util";
 import { StockNotesSourceContainer } from "../../common/stock-notes-source-container";
 import { isNumeric } from "rxjs/util/isNumeric";
-import { Subject } from "rxjs/Subject";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
 

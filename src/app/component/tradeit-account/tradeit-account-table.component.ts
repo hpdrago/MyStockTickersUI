@@ -1,6 +1,4 @@
 import { ToastsManager } from "ng2-toastr";
-import { CrudTableComponent } from "../crud/table/crud-table.component";
-import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { Component } from "@angular/core";
 import { CrudOperation } from "../crud/common/crud-operation";

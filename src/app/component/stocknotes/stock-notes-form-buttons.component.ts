@@ -6,7 +6,6 @@ import { SessionService } from "../../service/session.service";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { StockToBuyCrudServiceContainer } from "../stocktobuy/stock-to-buy-crud-service-container";
-import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 import { CrudOperation } from "../crud/common/crud-operation";
 
 /**

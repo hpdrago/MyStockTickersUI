@@ -1,15 +1,13 @@
-import { Component, Input, EventEmitter, Output, forwardRef } from "@angular/core";
+import { Component, EventEmitter, forwardRef, Output } from "@angular/core";
 import { PaginationPage } from "../../common/pagination";
 import { StockCrudService } from "../../service/crud/stock-crud.service";
-import { BaseComponent } from "../common/base.component";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
-import { ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { isNullOrUndefined } from "util";
 import { StockQuote } from "../../model/entity/stock-quote";
 import { BaseCrudComponent } from "../crud/common/base-crud.component";
-import { ModelObjectFactory } from "../../model/factory/model-object.factory";
-import { StockModelObjectTableComponent } from "./stock-model-object-table-component";
+
 /**
  * This component is a text input that finds stocks based on the incremental search of the input
  * Created by mike on 12/24/2016.

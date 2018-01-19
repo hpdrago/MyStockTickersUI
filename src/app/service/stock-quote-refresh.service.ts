@@ -3,9 +3,7 @@
  */
 import { StockQuoteModelObject } from "../model/entity/stock-quote-modelobject";
 import { Observable } from "rxjs/Observable";
-import { StockCrudService } from "./crud/stock-crud.service";
 import { StockQuote } from "../model/entity/stock-quote";
-import { Subject } from "rxjs/Subject";
 import { Injectable } from "@angular/core";
 import { BaseService } from "./base-service";
 import { StockQuoteCache } from "./stock-quote-cache";

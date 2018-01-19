@@ -7,12 +7,10 @@ import { BaseComponent } from "../common/base.component";
 import { StockCrudService } from "../../service/crud/stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
-import { StockNotesTableTabComponent } from "../stocknotes/stock-notes-table-tab.component";
 import { StockNotesTableDashboardComponent } from "./stock-notes-table-dashboard.component";
 import { StockAnalystConsensusDashboardTableComponent } from "./stock-analyst-consensus-dashboard-table.component";
 import { StockToBuyTableDashboardComponent } from "./stock-to-buy-table-dashboard.component";
 import { StockCatalystEventTableComponent } from "../stockcatalystevent/stock-catalyst-event-table.component";
-import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
 import { StockSearchComponent } from "../common/stock-search.component";
 
 @Component(

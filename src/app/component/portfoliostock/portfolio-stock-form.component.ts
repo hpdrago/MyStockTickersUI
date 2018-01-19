@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
-import { FormBuilder, FormGroup, Validators, FormControl } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { SelectItem } from "primeng/components/common/api";
-import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { StockSectorList } from "../../model/entity/stock-sectors.list";
 import { StockSectorCrudService } from "../../service/crud/stock-sector-crud.service";

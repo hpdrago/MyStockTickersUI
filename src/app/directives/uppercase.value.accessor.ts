@@ -1,5 +1,5 @@
 import { DefaultValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { Directive, forwardRef, Provider } from "@angular/core";
+import { Directive, forwardRef } from "@angular/core";
 
 /**
  * https://stackoverflow.com/questions/35826325/how-to-convert-input-value-to-uppercase-in-angular-2-value-passing-to-ngcontrol

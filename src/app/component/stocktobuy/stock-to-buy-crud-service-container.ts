@@ -5,7 +5,6 @@ import { StockToBuyFactory } from "../../model/factory/stock-to-buy.factory";
 import { StockToBuyCrudService } from "../../service/crud/stock-to-buy-crud.service";
 import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
-import { Stock } from "../../model/entity/stock";
 
 /**
  * This is the service container for the StockToBuy entity.

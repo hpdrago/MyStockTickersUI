@@ -3,15 +3,12 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
 import { CrudOperation } from "./crud-operation";
 import { Subscription } from "rxjs/Subscription";
-import { OnDestroy } from "@angular/core";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { isNullOrUndefined } from "util";
 import { RestException } from "../../../common/rest-exception";
-import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
-import { TradeItAPIResult } from "../../../service/tradeit/apiresults/tradeit-api-result";
 import { TradeItException } from "../../../service/tradeit/tradeit-execption";
-import { CrudServiceContainer } from "./crud-service-container";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
+
 /**
  * This class is the base class for all CRUD components
  *
@@ -92,6 +89,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
     protected resetCrudOperationAndModelObject()
     {
+        this.debug( "resetCrudOperationAndModelObject" );
         this.setCrudOperation( CrudOperation.NONE );
         this.setModelObject( this.modelObjectFactory.newModelObject() );
     }
@@ -102,8 +100,8 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected onModelObjectChanged( modelObject: T )
    {
-       //this.debug( "onModelObjectChanged " + JSON.stringify( modelObject ) );
        let methodName = "onModelObjectChanged";
+       this.debug( methodName + " " + JSON.stringify( modelObject ) );
        this.setModelObject( modelObject );
        if ( !isNullOrUndefined( this.modelObject ) )
        {
@@ -135,9 +133,9 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     */
    protected onCrudOperationChanged( crudOperation: CrudOperation )
    {
-       if ( this.crudOperation != this.crudOperation )
+       this.debug( "crudOperation change " + CrudOperation.getName( crudOperation ) );
+       if ( this.crudOperation != crudOperation )
        {
-           this.debug( "crudOperation change " + CrudOperation.getName( crudOperation ) );
            this.setCrudOperation( crudOperation );
        }
    }

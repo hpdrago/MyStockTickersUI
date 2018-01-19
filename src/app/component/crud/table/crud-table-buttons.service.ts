@@ -1,6 +1,5 @@
 import { ModelObject } from "../../../model/entity/modelobject";
 import { BaseCrudComponentService } from "../common/base-crud-component.service";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { Subject } from "rxjs/Subject";
 import { Subscription } from "rxjs/Subscription";

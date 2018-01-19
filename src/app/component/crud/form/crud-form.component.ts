@@ -599,7 +599,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         if ( this.formGroup )
         {
             var readOnly: boolean = this.isModelObjectReadOnly( this.modelObject );
-            this.debug( methodName + " crudOperation: " + this.crudOperation );
+            this.debug( methodName + " crudOperation: " + CrudOperation.getName( this.crudOperation ));
             this.debug( methodName + " isModelObjectReadOnly: " + readOnly );
             if ( this.crudOperation == CrudOperation.NONE || readOnly )
             {

@@ -1,4 +1,3 @@
-
 import { ModelObjectFactory } from "./model-object.factory";
 import { StockAnalystConsensus } from "../entity/stock-analyst-consensus";
 import { SessionService } from "../../service/session.service";

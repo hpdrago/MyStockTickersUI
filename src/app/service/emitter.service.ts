@@ -5,7 +5,7 @@
 /* * * ./app/emitter.service.ts * * */
 // Credit to https://gist.github.com/sasxa
 // Imports
-import { Injectable, EventEmitter } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
 
 @Injectable()
 export class EmitterService

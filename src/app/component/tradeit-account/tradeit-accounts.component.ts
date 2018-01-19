@@ -1,10 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItAccountPanelComponent } from "./tradeit-account-panel.component";
-import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
-import { BaseCrudComponent } from "../crud/common/base-crud.component";
 import { TradeitAccountBaseTableComponent } from "./tradeit-account-base-table.component";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 

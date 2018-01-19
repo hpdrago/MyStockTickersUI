@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { StockCatalystEventCrudServiceContainer } from "./stock-catalyst-event-crud-service-container";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";

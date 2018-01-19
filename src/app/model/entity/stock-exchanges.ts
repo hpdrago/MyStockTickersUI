@@ -3,7 +3,7 @@
  * Created by mike on 10/10/2016.
  */
 
-import {SelectItem} from 'primeng/primeng';
+import { SelectItem } from 'primeng/primeng';
 
 export class StockExchanges
 {
