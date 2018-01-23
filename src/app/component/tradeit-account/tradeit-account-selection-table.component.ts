@@ -18,9 +18,6 @@ import { TradeitAccountBaseTableComponent } from "./tradeit-account-base-table.c
            })
 export class TradeItAccountSelectionTableComponent extends TradeitAccountBaseTableComponent
 {
-    @Output()
-    private customerAccountSelected: EventEmitter<TradeItAccount>  = new EventEmitter<TradeItAccount>();
-
     /**
      * Constructor
      * @param {ToastsManager} toaster
@@ -50,16 +47,4 @@ export class TradeItAccountSelectionTableComponent extends TradeitAccountBaseTab
         super.onTableLoad( modelObjects );
     }
 
-    /**
-     * This method is called when the user selects an account.
-     * @param event
-     */
-    protected onRowSelect( event ): void
-    {
-        let methodName = "onRowSelect";
-        this.log( methodName + ".begin " + JSON.stringify( event ));
-        super.onRowSelect( event );
-        this.customerAccountSelected.emit( this.modelObject );
-        this.log( methodName + ".end" );
-    }
 }

@@ -4,6 +4,7 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { LinkedAccountCrudServiceContainer } from "./linked-account-crud-service-container";
+import { TableLoadingStrategy } from "../common/table-loading-strategy";
 
 /**
  * This table displays all of the linked account for a TradeItAccount instance.
@@ -20,7 +21,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
                  protected linkedAccountCrudServiceContainer: LinkedAccountCrudServiceContainer,
                  private tradeItService: TradeItService )
     {
-        super( false, toaster, linkedAccountCrudServiceContainer );
+        super( TableLoadingStrategy.FULL_ON_DEMAND, toaster, linkedAccountCrudServiceContainer );
     }
 
     /**

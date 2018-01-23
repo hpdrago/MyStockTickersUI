@@ -151,6 +151,15 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     }
 
     /**
+     * Returns true if the current {@code crudOperation} value is NONE
+     * @return {boolean}
+     */
+    protected isCrudNoneOperation(): boolean
+    {
+        return this.crudOperation == CrudOperation.NONE;
+    }
+
+    /**
      * Returns true if the current {@code crudOperation} value is CREATE
      * @return {boolean}
      */

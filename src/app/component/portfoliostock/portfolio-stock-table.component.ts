@@ -5,6 +5,7 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-service-container";
 import { SessionService } from "../../service/session.service";
+import { TableLoadingStrategy } from "../common/table-loading-strategy";
 
 /**
  * This component lists all of the stocks for a portfolio
@@ -25,7 +26,7 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
                  private session: SessionService,
                  protected portfolioStockCrudServiceContainer: PortfolioStockCrudServiceContainer )
     {
-        super( false, toaster, portfolioStockCrudServiceContainer );
+        super( TableLoadingStrategy.FULL_ON_CREATE, toaster, portfolioStockCrudServiceContainer );
     }
 
     private getAddButtonText(): string

@@ -3,6 +3,7 @@ import { ToastsManager } from "ng2-toastr";
 import { CrudServiceContainer } from "../crud/common/crud-service-container";
 import { StockModelObject } from "../../model/entity/stock-model-object";
 import { Stock } from "../../model/entity/stock";
+import { TableLoadingStrategy } from "./table-loading-strategy";
 
 /**
  * This is a base class for all tables that contain model objects containing a ticker symbol
@@ -13,7 +14,7 @@ export abstract class StockModelObjectTableComponent<T extends StockModelObject<
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
-        super( true, toaster, crudServiceContainer );
+        super( TableLoadingStrategy.LAZY_ON_CREATE, toaster, crudServiceContainer );
     }
 
     /**

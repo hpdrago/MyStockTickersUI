@@ -46,6 +46,7 @@ export class TradeItService extends BaseService
     public authenticateAccount( accountId: number ): Observable<TradeItAuthenticateResult>
     {
         let methodName = "authenticateAccount";
+        this.debug( methodName + ".begin accountId: " + accountId );
         let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.AUTHENTICATE_URL}`;
         url += `/accountId/${accountId}`;
         url += `/customerId/${this.sessionService.getLoggedInUserId()}`;

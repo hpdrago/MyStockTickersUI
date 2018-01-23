@@ -6,6 +6,7 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockTableComponent } from "../portfoliostock/portfolio-stock-table.component";
 import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-container";
+import { TableLoadingStrategy } from "../common/table-loading-strategy";
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -29,7 +30,7 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
                  protected session: SessionService,
                  protected portfolioCrudServiceContainer: PortfolioCrudServiceContainer )
     {
-        super( false, toaster, portfolioCrudServiceContainer );
+        super( TableLoadingStrategy.FULL_ON_CREATE, toaster, portfolioCrudServiceContainer );
     }
 
     /**

@@ -14,6 +14,7 @@ import { isNullOrUndefined } from "util";
 import { ModelObjectChangeEvent } from "../../../service/crud/model-object-change.event";
 import { DataTable, LazyLoadEvent } from "primeng/primeng";
 import { PaginationPage } from "../../../common/pagination";
+import { TableLoadingStrategy } from "../../common/table-loading-strategy";
 
 /**
  * This is the base class for CRUD enabled tables.
@@ -51,11 +52,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     @ViewChild(DataTable)
     protected dataTable: DataTable;
 
-    constructor( protected lazyLoading: boolean,
+    constructor( protected tableLoadingStrategy: TableLoadingStrategy,
                  protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
         super( toaster, crudServiceContainer.modelObjectFactory );
+        this.debug( "Constructor tableLoadingStrategy: " + TableLoadingStrategy.getName( this.tableLoadingStrategy ));
         if ( !this.crudServiceContainer.modelObjectChangeService )
         {
             throw new Error( "modelObjectChangeService argument cannot be null" );
@@ -91,26 +93,47 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     public ngOnInit()
     {
         this.debug( "ngOnInit.begin" );
-        if ( this.isAllowUpdates() || this.isAllowDeletes() || this.isAllowAdds() )
-        {
-            if ( this.crudServiceContainer.crudPanelService == null )
-            {
-                throw new Error( "crudPanelService cannot be null" );
-            }
-            this.subscribeToCrudFormButtonEvents();
-        }
-        this.subscribeToCrudTableButtonEvents();
-        this.subscribeToModelObjectChangeEvents();
+        this.subscribeToServiceEvents();
         /*
          * Create a new object instance as it will most likely be nulled by subscribing to events
          */
         this.modelObject = this.crudServiceContainer.modelObjectFactory.newModelObject();
-        if ( !this.lazyLoading )
+        if ( TableLoadingStrategy.isFullLoading( this.tableLoadingStrategy ) &&
+             TableLoadingStrategy.isLoadOnCreate( this.tableLoadingStrategy ))
         {
             this.loading = true;
             this.loadTable();
         }
         this.debug( "ngOnInit.end" );
+    }
+
+    /**
+     * Determines if lazy loading is enabled.
+     * @returns {boolean}
+     */
+    protected isLazyLoading(): boolean
+    {
+        return TableLoadingStrategy.isLazyLoading( this.tableLoadingStrategy );
+    }
+
+    /**
+     * Subscribes to the necessary service events.
+     */
+    protected subscribeToServiceEvents()
+    {
+        let methodName = "subscribeToServiceEvents";
+        this.debug( methodName + ".begin" );
+        if ( this.isAllowUpdates() || this.isAllowDeletes() || this.isAllowAdds() )
+        {
+            if ( this.crudServiceContainer.crudPanelService == null && this.crudServiceContainer.crudDialogService == null )
+            {
+                throw new Error( "crudPanelService and crudDialogService cannot both be null" );
+            }
+            this.subscribeToCrudFormButtonEvents();
+        }
+        this.subscribeToCrudTableButtonEvents();
+        this.subscribeToModelObjectChangeEvents();
+        this.debug( methodName + ".end" );
     }
 
     /**
@@ -166,7 +189,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
          */
         this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
         this.selectedModelObject = null;
-        if ( this.lazyLoading )
+        if ( this.isLazyLoading() )
         {
             this.lazyLoadTable( this.lastLoadEvent );
         }
@@ -192,7 +215,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected loadTable(): void
     {
         this.debug( "loadTable.begin" );
-        if ( this.lazyLoading )
+        if ( this.isLazyLoading() )
         {
             this.debug( "loadTable lazyLoading=true" );
             //this.lastLoadEvent.first = 0;

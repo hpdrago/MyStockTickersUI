@@ -8,12 +8,13 @@ import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
 import { CrudTableService } from "../table/crud-table.service";
 import { ModelObjectChangeService } from "../../../service/crud/model-object-change.service";
 import { CrudPanelService } from "../panel/crud-panel.service";
+import { BaseClass } from "../../../common/base-class";
 
 /**
  * This is a container class for all of the CRUD services and the model object factory.
  * These classes comprise all of the necessary services for all of the CRUD components.
  */
-export abstract class CrudServiceContainer<T extends ModelObject<T>>
+export abstract class CrudServiceContainer<T extends ModelObject<T>> extends BaseClass
 {
     private _crudPanelService: CrudPanelService<T>;
     private _crudDialogService: CrudDialogService<T>;
@@ -27,6 +28,7 @@ export abstract class CrudServiceContainer<T extends ModelObject<T>>
                  //private _crudPanelService?: CrudPanelService<T>,
                  private _crudFormService?: CrudFormService<T>, )
     {
+        super();
         if ( !_crudTableService )
         {
             this._crudTableService = new CrudTableService<T>( _modelObjectFactory,

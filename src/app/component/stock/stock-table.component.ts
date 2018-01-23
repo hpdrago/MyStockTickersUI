@@ -3,6 +3,7 @@ import { Stock } from "../../model/entity/stock";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { StockCrudServiceContainer } from "./stock-crud-service-container";
+import { TableLoadingStrategy } from "../common/table-loading-strategy";
 
 /**
  * This component lists the all of the stocks in the database.
@@ -23,7 +24,7 @@ export class StockTableComponent extends CrudTableComponent<Stock>
     constructor( protected toaster: ToastsManager,
                  private stockCrudServiceContainer: StockCrudServiceContainer )
     {
-        super( true, toaster, stockCrudServiceContainer );
+        super( TableLoadingStrategy.LAZY_ON_CREATE, toaster, stockCrudServiceContainer );
     }
 
     /**

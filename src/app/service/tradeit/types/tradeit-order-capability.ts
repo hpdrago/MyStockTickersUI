@@ -10,12 +10,18 @@ export class TradeItOrderCapability
     @JsonProperty( "instrument", String )
     public instrument: string = undefined;
 
-    @JsonProperty( "actions", TradeItDisplayLabelValue )
-    public actions: TradeItDisplayLabelValue = undefined;
+    @JsonProperty( "tradeItSymbol", String )
+    public tradeItSymbol: string = undefined;
 
-    @JsonProperty( "priceTypes", TradeItDisplayLabelValue )
-    public priceTypes: TradeItDisplayLabelValue = undefined;
+    @JsonProperty( "symbolSpecific", Boolean )
+    public symbolSpecific: boolean = undefined;
 
-    @JsonProperty( "experationTypes", TradeItDisplayLabelValue )
-    public expirationTypes: TradeItDisplayLabelValue = undefined;
+    @JsonProperty( "actions", [TradeItDisplayLabelValue] )
+    public actions: TradeItDisplayLabelValue[] = undefined;
+
+    @JsonProperty( "priceTypes", [TradeItDisplayLabelValue] )
+    public priceTypes: TradeItDisplayLabelValue[] = undefined;
+
+    @JsonProperty( "experationTypes", [TradeItDisplayLabelValue] )
+    public expirationTypes: TradeItDisplayLabelValue[] = undefined;
 }

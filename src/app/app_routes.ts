@@ -23,7 +23,7 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
     },
     {
-        path: 'tradeItAccounts',
+        path: 'linkedAccounts',
         component: TradeItAccountsComponent,
         canActivate: [AuthGuardService]
     },

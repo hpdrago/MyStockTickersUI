@@ -11,8 +11,8 @@ export class TradeItAuthenticateResult extends TradeItAPIResult
     /*
      * status == SUCCESS
      */
-    @JsonProperty( "tradeItAccounts", TradeItLinkedAccount )
-    public tradeItAccounts: TradeItLinkedAccount[] = undefined;
+    @JsonProperty( "linkedAccounts", [TradeItLinkedAccount] )
+    public linkedAccounts: TradeItLinkedAccount[] = undefined;
 
     /*
      * status = INFORMATION_NEEDED

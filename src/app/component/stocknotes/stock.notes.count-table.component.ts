@@ -7,6 +7,7 @@ import { SessionService } from "../../service/session.service";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
+import { TableLoadingStrategy } from "../common/table-loading-strategy";
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -29,7 +30,7 @@ export class StockNotesCountTableComponent extends CrudTableComponent<StockNotes
                  private session: SessionService,
                  private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {
-        super( false, toaster, stockNotesCrudServiceContainer );
+        super( TableLoadingStrategy.FULL_ON_CREATE, toaster, stockNotesCrudServiceContainer );
     }
 
     /**

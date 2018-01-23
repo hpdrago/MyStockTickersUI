@@ -24,6 +24,12 @@ export class CrudPanelService<T extends ModelObject<T>> extends BaseCrudComponen
         super( modelObjectFactory );
     }
 
+    public resetSubjects(): void
+    {
+        super.resetSubjects();
+        this.displayDialogRequestSubject = new BehaviorSubject<ModelObjectCrudOperationSubjectInfo>( null );
+    }
+
     /**
      * Subscribe to the cancel button clicked event.
      * @param {() => any} fn

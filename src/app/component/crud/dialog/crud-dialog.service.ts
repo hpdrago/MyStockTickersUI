@@ -45,6 +45,6 @@ export class CrudDialogService<T extends ModelObject<T>> extends CrudPanelServic
     {
         this.debug( "sendCloseButtonClickedEvent " + DialogCloseEventType.getName( event ) + " subscribers: "
             + this.closeButtonClickedSubject.observers.length );
-        this.tickThenRun( () => this.closeButtonClickedSubject.next( event ) );
+        this.closeButtonClickedSubject.next( event );
     }
 }

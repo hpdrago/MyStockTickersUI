@@ -1,4 +1,4 @@
-<div *ngIf="modelObject">
+<div *ngIf="!isCrudNoneOperation()">
     <p-dialog header="Stock AnalystConsensus"
               [modal]="true"
               [closable]="false"

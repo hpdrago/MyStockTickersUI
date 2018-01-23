@@ -15,9 +15,6 @@ import { TradeItService } from "../../service/tradeit/tradeit.service";
     })
 export class TradeItAccountsComponent extends TradeitAccountBaseTableComponent implements OnInit
 {
-    @ViewChild( TradeItAccountPanelComponent)
-    private customerAccountPanel: TradeItAccountPanelComponent;
-
     /**
      * Constructor.
      * @param {ToastsManager} toaster
