@@ -132,10 +132,10 @@
               [sortable]="true">
         <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
             <div class="buy" *ngIf="stockToBuy && isAfterBuyAfterDate( stockToBuy )">
-                {{stockToBuy[col.field] | date: 'y-MM-dd' }}
+                <date [dateValue]="stockToBuy[col.field]"></date>
             </div>
             <div class="wait" *ngIf="stockToBuy && !isAfterBuyAfterDate( stockToBuy )">
-                {{stockToBuy[col.field] | date: 'y-MM-dd' }}
+                <date [dateValue]="stockToBuy[col.field]"></date>
             </div>
         </ng-template>
     </p-column>

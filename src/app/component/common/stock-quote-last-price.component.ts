@@ -1,6 +1,8 @@
 import { StockQuoteModelObject } from '../../model/entity/stock-quote-modelobject';
 import { Component, Input, OnInit } from '@angular/core';
 import { StockQuoteState } from '../../common/stock-quote-state.enum';
+import { BaseComponent } from './base.component';
+import { ToastsManager } from 'ng2-toastr';
 
 /**
  * This component is used for StockQuoteModelObject which contains a stock price -- last price.  The stock quote last
@@ -24,18 +26,24 @@ import { StockQuoteState } from '../../common/stock-quote-state.enum';
         </div>
     `
 })
-export class StockQuoteLastPriceComponent implements OnInit
+export class StockQuoteLastPriceComponent extends BaseComponent implements OnInit
 {
     @Input()
     private stockQuote: StockQuoteModelObject<any>;
 
     private priceChange: number;
 
+    constructor( protected toaster: ToastsManager )
+    {
+        super( toaster );
+    }
+
     /**
      * Calculate the difference once.
      */
     public ngOnInit()
     {
+        this.debug( "ngOnInit " + JSON.stringify( this.stockQuote ));
         this.priceChange = this.stockQuote.lastPrice - this.stockQuote.openPrice;
     }
 

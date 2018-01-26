@@ -10,6 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 export abstract class BaseComponent extends BaseClass implements OnChanges, OnDestroy
 {
     private subscriptions: Subscription[] = [];
+
     constructor( protected toaster: ToastsManager )
     {
         super( toaster );

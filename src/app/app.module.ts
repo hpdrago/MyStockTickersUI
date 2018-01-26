@@ -183,6 +183,8 @@ import { GainLossCurrencyComponent } from './component/common/gain-loss-currency
 import { GainLossPercentComponent } from './component/common/gain-loss-percent.component';
 import { PercentComponent } from './component/common/percent.component';
 import { StockQuoteDayPercentChangeComponent } from './component/common/stock-quote-day-percent-change.component';
+import { DateComponent } from './component/common/date.component';
+import { DateOrTimePeriodComponent } from './component/common/date-or-timeperiod.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -343,7 +345,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         PercentComponent,
         GainLossCurrencyComponent,
         GainLossPercentComponent,
-        StockQuoteDayPercentChangeComponent
+        StockQuoteDayPercentChangeComponent,
+        DateComponent,
+        DateOrTimePeriodComponent
     ],
     bootstrap:
     [

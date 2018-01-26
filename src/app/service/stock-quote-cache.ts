@@ -60,7 +60,7 @@ export class StockQuoteCache extends BaseService
                                                          .getStockQuote( tickerSymbol )
                                                          .map( ( stockQuote ) =>
                                                                {
-                                                                   this.debug( methodName + " " + tickerSymbol + " quote retrieved" );
+                                                                   //this.debug( methodName + " " + tickerSymbol + " quote retrieved " + JSON.stringify( stockQuote ) );
                                                                    this.workingMap.delete( tickerSymbol );
                                                                    this.quoteMap.set( tickerSymbol, stockQuote );
                                                                    return stockQuote

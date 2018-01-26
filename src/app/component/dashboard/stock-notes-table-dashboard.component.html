@@ -37,7 +37,7 @@
               [style]="{'width':'80px'}"
               [sortable]="true">
         <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-            {{stockNotes[col.field] | date: 'y-MM-dd' }}
+            <date [dateValue]="stockNotes[col.field]"></date>
         </ng-template>
     </p-column>
 

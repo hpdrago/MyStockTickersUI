@@ -1,5 +1,6 @@
 import { ModelObject } from "./modelobject";
 import { StockNotesContainer } from "../../common/stock-notes-container";
+import { DateOrTimePeriod } from '../../common/date-or-time-period.enum';
 
 /**
  * This entity contains the elements for the stock summary
@@ -11,12 +12,18 @@ export class StockCatalystEvent extends ModelObject<StockCatalystEvent> implemen
     public id: number;
     public customerId: number;
     public tickerSymbol: string;
-    public catalystDate: Date;
     public catalystDesc: string;
     public companyName: string;
-    public dateOrTimePeriod: number;
+
+    /**
+     * Determines whether to use the catalystDate if DateOrTimerPeriod == DATE or use the combination of
+     * timerPeriodYear and timerPeriod if DateOrTimerPeriod == TIME_PERIOD.
+     */
+    public dateOrTimePeriod: DateOrTimePeriod;
     public timePeriod: number;
     public timePeriodYear: number;
+    public catalystDate: Date;
+
     public createDate: Date;
     public updateDate: Date;
 

@@ -17,13 +17,13 @@ export namespace DateOrTimePeriod
                 returnValue = 'DATE';
                 break;
             case '1':
-                returnValue = 'TIMEPERIOD';
+                returnValue = 'TIME_PERIOD';
                 break;
             case 0:
                 returnValue = 'DATE';
                 break;
             case 1:
-                returnValue = 'TIMEPERIOD';
+                returnValue = 'TIME_PERIOD';
                 break;
         }
         return returnValue;

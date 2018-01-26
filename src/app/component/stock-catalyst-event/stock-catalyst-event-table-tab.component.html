@@ -56,12 +56,7 @@
                   [style]="{'width':'80px'}"
                   [sortable]="true">
             <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
-                <div *ngIf="stockCatalystEvent['dateOrTimePeriod'] == DATE_OR_TIMEPERIOD.DATE">
-                    {{stockCatalystEvent[col.field] | date: 'y-MM-dd' }}
-                </div>
-                <div *ngIf="stockCatalystEvent['dateOrTimePeriod'] == DATE_OR_TIMEPERIOD.TIMER_PERIOD">
-                    {{stockCatalystEvent['timePeriodYear'] + ' ' + TIME_PERIODS.getName( stockCatalystEvent['timePeriod']) }}
-                </div>
+                <dateOrTimePeriod [stockCatalystEvent]="stockCatalystEvent"></dateOrTimePeriod>
             </ng-template>
         </p-column>
 

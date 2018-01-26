@@ -72,6 +72,9 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
         let methodName = 'onLinkedAccountTableSelectionChange';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ));
         this.linkedAccount = linkedAccount;
+        /*
+         * Create the QBE object to load the positions.
+         */
         let stockPosition = this.stockPositionFactory
                                 .newModelObject();
         stockPosition.linkedAccountId = linkedAccount.id;
