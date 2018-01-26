@@ -44,7 +44,7 @@ export class StockPriceCacheService extends BaseService
 
     /**
      * Subscribe to stock price changes for a ticker symbol.  When calling this method, if the stock price is not
-     * in the cache, the stockPriceChange method will be called with a null stockPrice value but after the stock price
+     * in the cache, the stockPriceChange method will be called with a null stockPriceQuote value but after the stock price
      * has been received, a subsequent call to stockPriceChange will be called with the new stock price value and
      * whenever the stock price changes, the stockPriceChange method will be called as well.
      * @param {string} tickerSymbol

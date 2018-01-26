@@ -41,8 +41,8 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     @ViewChild(StockAutoCompleteComponent)
     protected stockAutoCompletedComponent: StockAutoCompleteComponent;
 
-    protected stockPrice: StockPriceQuote;
-    protected stockPrices: StockPriceQuote[] = [];
+    protected stockPriceQuote: StockPriceQuote;
+    protected stockPriceQuotes: StockPriceQuote[] = [];
 
     /**
      * Comma delimited list of ticker symbols
@@ -55,6 +55,14 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      * The string the user enters the ticker symbols or company name to search for
      */
     protected stockSearch: string = "";
+
+    private formatter = new Intl.NumberFormat('en-US', {
+                                              style: 'currency',
+                                              currency: 'USD',
+                                              minimumFractionDigits: 2,
+                                                    // the default value for minimumFractionDigits depends on the currency
+                                                    // and is usually already 2
+                                                });
 
     /**
      * Constructor.
@@ -119,8 +127,8 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.lastPrices = '';
         this.companies = '';
         this.stockSearch = '';
-        this.stockPrice = null;
-        this.stockPrices = [];
+        this.stockPriceQuote = null;
+        this.stockPriceQuotes = [];
     }
 
     protected resetForm(): void
@@ -193,7 +201,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         super.invalidProperty( propertyName );
         if ( propertyName === 'tickerSymbol' )
         {
-            if ( this.stockPrices.length > 0 )
+            if ( this.stockPriceQuotes.length > 0 )
             {
                 //this.modelObject.tickerSymbol = this.stocks[0].tickerSymbol;
                 //this.log( "invalidProperty setting ticker symbol to " + this.modelObject.tickerSymbol );
@@ -300,10 +308,14 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     public onStockSelected( stockPriceQuote: StockPriceQuote )
     {
         this.log( "onStockSelected: " + JSON.stringify( stockPriceQuote ) );
+        if ( isNullOrUndefined( this.tickerSymbols ))
+        {
+            this.tickerSymbols = '';
+        }
         let index = this.tickerSymbols.indexOf( stockPriceQuote.tickerSymbol );
         if ( index == -1 )
         {
-            this.stockPrices.push( stockPriceQuote );
+            this.stockPriceQuotes.push( stockPriceQuote );
             if ( this.tickerSymbols.length > 0 )
             {
                 this.tickerSymbols += ', '
@@ -311,15 +323,15 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                 this.companies += ', '
             }
             this.tickerSymbols += stockPriceQuote.tickerSymbol;
-            this.lastPrices += stockPriceQuote.lastPrice;
+            this.lastPrices += this.formatter.format( stockPriceQuote.lastPrice );
             this.companies += stockPriceQuote.companyName;
         }
         else
         {
-            this.stockPrices[index] = stockPriceQuote;
+            this.stockPriceQuotes[index] = stockPriceQuote;
         }
         this.modelObject.tickerSymbol = stockPriceQuote.tickerSymbol;
-        this.stockPrice = stockPriceQuote;
+        this.stockPriceQuote = stockPriceQuote;
         this.stockSearch = '';
         this.modelObject.stockPriceWhenCreated = stockPriceQuote.lastPrice;
         (<FormControl>this.formGroup.controls['tickerSymbol']).setValue( stockPriceQuote.tickerSymbol );

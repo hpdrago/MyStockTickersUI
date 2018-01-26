@@ -86,7 +86,7 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
 
     /**
      * This method is called by the StockPriceCache when the stock price changes.
-     * The stockPrice maybe null in the initial registration.
+     * The stockPriceQuote maybe null in the initial registration.
      * @param {StockPriceQuote} stockPriceQuote
      */
     private onStockPriceChange( stockPriceQuote: StockPriceQuote )
