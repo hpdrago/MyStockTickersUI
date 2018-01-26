@@ -53,6 +53,5 @@ export class StockNotesCompanyList extends StockCompanyList
                           this.lastPrices += this.formatter.format( stockCompany.lastPrice );
                           this.companies += stockCompany.companyName;
                       });
-        super.addCompanyToList( stockCompany );
     }
 }
