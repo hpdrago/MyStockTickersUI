@@ -7,6 +7,11 @@ import { StockAnalystConsensusFactory } from "../../model/factory/stock-analyst-
 import { KeyValuePairs } from "../../common/key-value-pairs";
 import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient } from '@angular/common/http';
+import { StockQuoteCacheService } from '../cache/stock-quote-cache.service';
+import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
+import { BaseStockService } from './base-stock.service';
+import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
+import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 
 /**
  * This class provides all CRUD REST services for StockCompany Summary.
@@ -14,29 +19,41 @@ import { HttpClient } from '@angular/common/http';
  * Created by mike on 10/17/2017.
  */
 @Injectable()
-export class StockAnalystConsensusCrudService extends CrudRestService<StockAnalystConsensus>
+export class StockAnalystConsensusCrudService extends BaseStockService<StockAnalystConsensus>
 {
     private urlPath = "/stockAnalystConsensus"
 
     /**
      * Constructor.
-     * @param {Http} http
+     * @param {HttpClient} http
      * @param {SessionService} sessionService
      * @param {AppConfigurationService} appConfig
-     * @param {restErrorReporter} restErrorReporter
+     * @param {RestErrorReporter} restErrorReporter
      * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
+     * @param {StockQuoteCacheService} stockQuoteCache
+     * @param {StockPriceQuoteCacheService} stockPriceQuoteCache
+     * @param {StockQuoteFactory} stockQuoteFactory
+     * @param {StockPriceQuoteFactory} stockPriceQuoteFactory
      */
     constructor ( protected http: HttpClient,
                   protected sessionService: SessionService,
                   protected appConfig: AppConfigurationService,
                   protected restErrorReporter: RestErrorReporter,
-                  protected stockAnalystConsensusFactory: StockAnalystConsensusFactory )
+                  protected stockAnalystConsensusFactory: StockAnalystConsensusFactory,
+                  protected stockQuoteCache: StockQuoteCacheService,
+                  protected stockPriceQuoteCache: StockPriceQuoteCacheService,
+                  protected stockQuoteFactory: StockQuoteFactory,
+                  protected stockPriceQuoteFactory: StockPriceQuoteFactory )
     {
         super( http,
                sessionService,
                appConfig,
                restErrorReporter,
-               stockAnalystConsensusFactory );
+               stockAnalystConsensusFactory,
+               stockQuoteCache,
+               stockPriceQuoteCache,
+               stockQuoteFactory,
+               stockPriceQuoteFactory );
     }
 
     protected getContextBaseURL(): string

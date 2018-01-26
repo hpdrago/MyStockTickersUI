@@ -1,4 +1,3 @@
-import { CachedValueState } from '../../common/cached-value-state.enum';
 import { StockCompany } from '../entity/stock-company';
 
 /**
@@ -9,7 +8,6 @@ import { StockCompany } from '../entity/stock-company';
  */
 export interface StockCompanyContainer
 {
-    getTickerSymbol(): string;
-    getStockCompany(): StockCompany;
-    setStockCompany( stockCompany: StockCompany );
+    tickerSymbol: string;
+    stockCompany: StockCompany;
 }

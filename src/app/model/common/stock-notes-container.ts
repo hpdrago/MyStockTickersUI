@@ -3,6 +3,6 @@
  */
 export interface StockNotesContainer
 {
+    tickerSymbol: string;
     getNotes(): string;
-    getTickerSymbol(): string;
 }

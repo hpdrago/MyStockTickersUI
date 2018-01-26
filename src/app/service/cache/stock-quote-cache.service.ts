@@ -5,6 +5,7 @@ import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
 import { Observable } from 'rxjs/Observable';
 import { StockQuoteService } from '../crud/stock-quote.service';
 import { Injectable } from '@angular/core';
+import { StockQuoteContainer } from '../../model/common/stock-quote-container';
 
 /**
  * This class caches the {@code StockQuote}s.  It fetches the quotes when they are needed and refreshes the quotes
@@ -38,4 +39,16 @@ export class StockQuoteCacheService extends AsyncCacheService<string,StockQuote>
                    .getStockQuote( tickerSymbol );
     }
 
+    /**
+     * Goes through the containers and extracts the stock quotes and updates the cache.
+     * @param {StockQuoteContainer[]} quotes
+     */
+    public extractStockQuotes( containers: StockQuoteContainer[] ): void
+    {
+        const methodName = 'extractStockQuotes';
+        this.logMethodBegin( methodName );
+        containers.forEach( container => this.addCacheData( container.tickerSymbol,
+                                                                      container.stockQuote ));
+        this.logMethodEnd( methodName );
+    }
 }

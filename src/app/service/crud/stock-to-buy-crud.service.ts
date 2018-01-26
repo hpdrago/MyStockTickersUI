@@ -7,6 +7,15 @@ import { StockToBuyFactory } from "../../model/factory/stock-to-buy.factory";
 import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient } from '@angular/common/http';
 import { KeyValuePairs } from '../../common/key-value-pairs';
+import { LazyLoadEvent } from 'primeng/api';
+import { Observable } from 'rxjs/Observable';
+import { PaginationPage } from '../../common/pagination';
+import { StockQuoteCacheService } from '../cache/stock-quote-cache.service';
+import { StockQuoteContainer } from '../../model/common/stock-quote-container';
+import { BaseStockService } from './base-stock.service';
+import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
+import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
+import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 
 /**
  * This class provides all CRUD REST services for StockCompany To Buy.
@@ -14,29 +23,41 @@ import { KeyValuePairs } from '../../common/key-value-pairs';
  * Created by mike on 10/17/2017.
  */
 @Injectable()
-export class StockToBuyCrudService extends CrudRestService<StockToBuy>
+export class StockToBuyCrudService extends BaseStockService<StockToBuy>
 {
     private urlPath = "/stockToBuy"
 
     /**
      * Constructor.
-     * @param {Http} http
+     * @param {HttpClient} http
      * @param {SessionService} sessionService
      * @param {AppConfigurationService} appConfig
-     * @param {restErrorReporter} restErrorReporter
+     * @param {RestErrorReporter} restErrorReporter
      * @param {StockToBuyFactory} stockToBuyFactory
+     * @param {StockQuoteCacheService} stockQuoteCache
+     * @param {StockPriceQuoteCacheService} stockPriceQuoteCache
+     * @param {StockQuoteFactory} stockQuoteFactory
+     * @param {StockPriceQuoteFactory} stockPriceQuoteFactory
      */
     constructor ( protected http: HttpClient,
                   protected sessionService: SessionService,
                   protected appConfig: AppConfigurationService,
                   protected restErrorReporter: RestErrorReporter,
-                  protected stockToBuyFactory: StockToBuyFactory )
+                  protected stockToBuyFactory: StockToBuyFactory,
+                  protected stockQuoteCache: StockQuoteCacheService,
+                  protected stockPriceQuoteCache: StockPriceQuoteCacheService,
+                  protected stockQuoteFactory: StockQuoteFactory,
+                  protected stockPriceQuoteFactory: StockPriceQuoteFactory )
     {
         super( http,
                sessionService,
                appConfig,
                restErrorReporter,
-               stockToBuyFactory );
+               stockToBuyFactory,
+               stockQuoteCache,
+               stockPriceQuoteCache,
+               stockQuoteFactory,
+               stockPriceQuoteFactory );
     }
 
     protected getContextBaseURL(): string

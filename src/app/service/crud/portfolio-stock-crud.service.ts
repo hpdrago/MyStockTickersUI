@@ -2,11 +2,17 @@ import { SessionService } from "../session.service";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
-import { CrudRestService } from "./crud-rest.serivce";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { AppConfigurationService } from "../app-configuration.service";
 import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient } from '@angular/common/http';
+import { StockQuoteCacheService } from '../cache/stock-quote-cache.service';
+import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
+import { BaseStockService } from './base-stock.service';
+import { StockQuoteService } from './stock-quote.service';
+import { StockPriceQuoteService } from './stock-price-quote.service';
+import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
+import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 
 /**
  * This service manages REST communication for PortfolioStocks.
@@ -16,27 +22,39 @@ import { HttpClient } from '@angular/common/http';
  * Created by mike on 11/26/2016.
  */
 @Injectable()
-export class PortfolioStockCrudService extends CrudRestService<PortfolioStock>
+export class PortfolioStockCrudService extends BaseStockService<PortfolioStock>
 {
     /**
      * Constructor.
-     * @param {Http} http
+     * @param {HttpClient} http
      * @param {SessionService} sessionService
      * @param {AppConfigurationService} appConfig
-     * @param {restErrorReporter} restErrorReporter
+     * @param {RestErrorReporter} restErrorReporter
      * @param {PortfolioStockFactory} portfolioStockFactory
+     * @param {StockQuoteCacheService} stockQuoteCache
+     * @param {StockPriceQuoteCacheService} stockPriceQuoteCache
+     * @param {StockQuoteFactory} stockQuoteFactory
+     * @param {StockPriceQuoteFactory} stockPriceQuoteFactory
      */
     constructor( protected http: HttpClient,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,
-                 private portfolioStockFactory: PortfolioStockFactory )
+                 protected portfolioStockFactory: PortfolioStockFactory,
+                 protected stockQuoteCache: StockQuoteCacheService,
+                 protected stockPriceQuoteCache: StockPriceQuoteCacheService,
+                 protected stockQuoteFactory: StockQuoteFactory,
+                 protected stockPriceQuoteFactory: StockPriceQuoteFactory )
     {
         super( http,
                sessionService,
                appConfig,
                restErrorReporter,
-               portfolioStockFactory );
+               portfolioStockFactory,
+               stockQuoteCache,
+               stockPriceQuoteCache,
+               stockQuoteFactory,
+               stockPriceQuoteFactory );
     }
 
     protected getContextBaseURL(): string

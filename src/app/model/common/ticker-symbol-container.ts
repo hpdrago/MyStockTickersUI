@@ -3,6 +3,5 @@
  */
 export interface TickerSymbolContainer
 {
-    setTickerSymbol( tickerSymbol: string );
-    getTickerSymbol(): string;
+    tickerSymbol: string;
 }

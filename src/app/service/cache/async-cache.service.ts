@@ -24,7 +24,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
      * Contains the cached keys currently being retrieved.
      * @type {Map<any, any>}
      */
-    private workingMap: Map<K, boolean> = new Map();
+    private workingMap: Map<K, boolean> = new Map();G
 
     /**
      * Constructor.
@@ -61,16 +61,20 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
                           .get( key );
         if ( isNullOrUndefined( subject ))
         {
-            subject = new BehaviorSubject<T>( null );
             this.debug( methodName + " " + key + " is not in the cache.  Fetching..." );
-            this.cacheSubjectMap
-                .set( key, subject );
             /*
              * Send the model object with the cache state of STALE so the component will display the loading message.
              */
             let modelObject: T = this.modelObjectFactory.newModelObject();
             modelObject.setCacheState( CachedValueState.STALE );
             modelObject.setCacheError( '' );
+            /*
+             * Add the subject holding the model object to the cache.
+             */
+            this.addCacheData( key, modelObject );
+            /*
+             * Notify all subscribers with the initial data values.
+             */
             this.sendCachedDataChange( key, modelObject );
             /*
              * Not in the cache, so fetch it and then broadcast the new stock price.
@@ -201,5 +205,16 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
             throw new Error( "There are no registrations for " + key );
         }
         return subject;
+    }
+
+    /**
+     * Adds the {@code cacheData} to the cache.
+     * @param {T} cacheData
+     */
+    public addCacheData( key: K, cacheData: T ): void
+    {
+        let subject: BehaviorSubject<T> = new BehaviorSubject<T>( cacheData );
+        this.cacheSubjectMap
+            .set( key, subject );
     }
 }

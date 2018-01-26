@@ -17,6 +17,7 @@ import { CrudStateStore } from '../common/crud-state-store';
 import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
+import { Observable } from 'rxjs/Rx';
 
 /**
  * This is the base class for CRUD enabled tables.
@@ -123,6 +124,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( methodName + '.begin ' + JSON.stringify( event ) );
         this.crudRestService
             .getPage( this.modelObject, event )
+            .catch( error =>
+                    {
+                        this.showError( error );
+                        return Observable.throw( error );
+                    })
             .subscribe( page =>
                         {
                             this.loading = false;
@@ -199,6 +205,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             this.loading = true;
             this.crudRestService
                 .getModelObjectList( this.modelObject )
+                .catch( error =>
+                        {
+                            this.showError( error );
+                            return Observable.throw( error );
+                        })
                 .subscribe( ( modelObjects: T[] ) =>
                             {
                                 this.loading = false;

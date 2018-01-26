@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { BaseService } from '../base-service';
 import { ToastsManager } from 'ng2-toastr';
 import { isNullOrUndefined } from 'util';
+import { StockPriceQuoteContainer } from '../../model/common/stock-price-quote-container';
 
 /**
  * This class provides all of the REST communication services for Stocks.

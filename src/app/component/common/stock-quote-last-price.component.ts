@@ -4,6 +4,7 @@ import { ToastsManager } from 'ng2-toastr';
 import { StockPriceQuoteCacheService } from '../../service/cache/stock-price-quote-cache.service';
 import { StockPriceQuoteContainer } from '../../model/common/stock-price-quote-container';
 import { StockQuoteContainer } from '../../model/common/stock-quote-container';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This component is used for StockPriceQuoteModelObject which contains a stock price -- last price.  The stock quote last
@@ -16,11 +17,11 @@ import { StockQuoteContainer } from '../../model/common/stock-quote-container';
 @Component(
 {
     selector: 'stock-quote-last-price',
-    template: `<stock-quote [tickerSymbol]="stockQuoteContainer.getTickerSymbol()" 
-                            (stockQuoteChange)="stockQuoteContainer.setStockQuote($event)">
-                   <stock-price-quote [tickerSymbol]="stockPriceQuoteContainer.getTickerSymbol()" 
-                                      (stockPriceQuoteChange)="stockPriceQuoteContainer.setStockPriceQuote($event)">
-                       <stock-price-gain-loss [amount]="stockPriceQuoteContainer.getStockPriceQuote().lastPrice"
+    template: `<stock-quote [tickerSymbol]="stockQuoteContainer.tickerSymbol" 
+                            (stockQuoteChange)="stockQuoteContainer.stockQuote = $event">
+                   <stock-price-quote [tickerSymbol]="stockPriceQuoteContainer.tickerSymbol" 
+                                      (stockPriceQuoteChange)="stockPriceQuoteContainer.sockPriceQuote = $event">
+                       <stock-price-gain-loss [amount]="stockPriceQuoteContainer.stockPriceQuote.lastPrice"
                                               [changeAmount]="getChangeAmount()">
                        </stock-price-gain-loss>
                    </stock-price-quote>
@@ -54,10 +55,19 @@ export class StockQuoteLastPriceComponent extends BaseComponent
 
     protected getChangeAmount(): number
     {
-        return this.stockPriceQuoteContainer
-                   .getStockPriceQuote()
-                    .lastPrice - this.stockQuoteContainer
-                                     .getStockQuote()
-                                     .openPrice;
+        if ( isNullOrUndefined( this.stockPriceQuoteContainer.stockPriceQuote ) ||
+             isNullOrUndefined( this.stockQuoteContainer.stockQuote ))
+        {
+            return 0;
+        }
+        let lastPrice: number = this.stockPriceQuoteContainer
+                                    .stockPriceQuote
+                                    .lastPrice;
+        let openPrice: number = this.stockQuoteContainer
+                                    .stockQuote
+                                    .openPrice;
+        return lastPrice - (isNullOrUndefined( openPrice )
+                                              ? lastPrice
+                                              : openPrice);
     }
 }

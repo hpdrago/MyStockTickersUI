@@ -13,12 +13,17 @@ import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient } from '@angular/common/http';
 import { RankCalculator } from '../../common/rank-calculator';
 import { Observable } from 'rxjs/Observable';
+import { BaseStockService } from './base-stock.service';
+import { StockQuoteCacheService } from '../cache/stock-quote-cache.service';
+import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
+import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
+import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 
 /**
  * This service handles all of the stock position related actions.
  */
 @Injectable()
-export class StockPositionCrudService extends CrudRestService<StockPosition>
+export class StockPositionCrudService extends BaseStockService<StockPosition>
 {
     /**
      * Used to calculate the rank for each stock from a set of stocks
@@ -28,23 +33,35 @@ export class StockPositionCrudService extends CrudRestService<StockPosition>
 
     /**
      * Constructor.
-     * @param {Http} http
+     * @param {HttpClient} http
      * @param {SessionService} sessionService
      * @param {AppConfigurationService} appConfig
-     * @param {restErrorReporter} restErrorReporter
+     * @param {RestErrorReporter} restErrorReporter
      * @param {StockPositionFactory} stockPositionFactory
+     * @param {StockQuoteCacheService} stockQuoteCache
+     * @param {StockPriceQuoteCacheService} stockPriceQuoteCache
+     * @param {StockQuoteFactory} stockQuoteFactory
+     * @param {StockPriceQuoteFactory} stockPriceQuoteFactory
      */
     constructor( protected http: HttpClient,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,
-                 private stockPositionFactory: StockPositionFactory )
+                 protected stockPositionFactory: StockPositionFactory,
+                 protected stockQuoteCache: StockQuoteCacheService,
+                 protected stockPriceQuoteCache: StockPriceQuoteCacheService,
+                 protected stockQuoteFactory: StockQuoteFactory,
+                 protected stockPriceQuoteFactory: StockPriceQuoteFactory )
     {
         super( http,
                sessionService,
                appConfig,
                restErrorReporter,
-               stockPositionFactory  );
+               stockPositionFactory,
+               stockQuoteCache,
+               stockPriceQuoteCache,
+               stockQuoteFactory,
+               stockPriceQuoteFactory );
     }
 
     /**

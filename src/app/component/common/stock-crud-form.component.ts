@@ -46,7 +46,7 @@ export abstract class StockCrudFormComponent<T extends ModelObject<T> & StockPri
     protected onStockSelected( stockPriceQuote: StockPriceQuote )
     {
         this.debug( "onStockSelected: " + JSON.stringify( stockPriceQuote ) );
-        this.modelObject.setStockPriceQuote( stockPriceQuote );
+        this.modelObject.stockPriceQuote = stockPriceQuote;
     }
 
     /**

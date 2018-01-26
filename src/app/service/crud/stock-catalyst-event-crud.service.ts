@@ -8,6 +8,11 @@ import { StockCatalystEventFactory } from "../../model/factory/stock-catalyst-ev
 import { KeyValuePairs } from "../../common/key-value-pairs";
 import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient } from '@angular/common/http';
+import { BaseStockService } from './base-stock.service';
+import { StockQuoteCacheService } from '../cache/stock-quote-cache.service';
+import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
+import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
+import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 
 /**
  * This class provides all CRUD REST services for StockCompany Catalyst Events.
@@ -15,29 +20,41 @@ import { HttpClient } from '@angular/common/http';
  * Created by mike on 10/17/2017.
  */
 @Injectable()
-export class StockCatalystEventCrudService extends CrudRestService<StockCatalystEvent>
+export class StockCatalystEventCrudService extends BaseStockService<StockCatalystEvent>
 {
     private urlPath = "/stockCatalystEvent"
 
     /**
      * Constructor.
-     * @param {Http} http
+     * @param {HttpClient} http
      * @param {SessionService} sessionService
      * @param {AppConfigurationService} appConfig
-     * @param {restErrorReporter} restErrorReporter
+     * @param {RestErrorReporter} restErrorReporter
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
+     * @param {StockQuoteCacheService} stockQuoteCache
+     * @param {StockPriceQuoteCacheService} stockPriceQuoteCache
+     * @param {StockQuoteFactory} stockQuoteFactory
+     * @param {StockPriceQuoteFactory} stockPriceQuoteFactory
      */
     constructor ( protected http: HttpClient,
                   protected sessionService: SessionService,
                   protected appConfig: AppConfigurationService,
                   protected restErrorReporter: RestErrorReporter,
-                  protected stockCatalystEventFactory: StockCatalystEventFactory )
+                  protected stockCatalystEventFactory: StockCatalystEventFactory,
+                  protected stockQuoteCache: StockQuoteCacheService,
+                  protected stockPriceQuoteCache: StockPriceQuoteCacheService,
+                  protected stockQuoteFactory: StockQuoteFactory,
+                  protected stockPriceQuoteFactory: StockPriceQuoteFactory )
     {
         super( http,
                sessionService,
                appConfig,
                restErrorReporter,
-               stockCatalystEventFactory );
+               stockCatalystEventFactory,
+               stockQuoteCache,
+               stockPriceQuoteCache,
+               stockQuoteFactory,
+               stockPriceQuoteFactory );
     }
 
     protected getContextBaseURL(): string

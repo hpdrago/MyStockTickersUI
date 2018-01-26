@@ -51,6 +51,6 @@ export class AppDefaultErrorHandler implements ErrorHandler
             }
         }
         this.lastError = error;
-        throw error;
+        //throw error;
     }
 }

@@ -27,8 +27,8 @@ export class StockPosition extends StockModelObject<StockPosition>
     public openPrice: number;
     public closePrice: number;
     public version: number;
-    private rank: number;
-    private rankPercent: number;
+    public rank: number;
+    public rankPercent: number;
 
     public getPrimaryKeyValue(): any
     {

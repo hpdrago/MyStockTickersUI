@@ -123,10 +123,12 @@
                   [style]="{'width':'10px','text-align':'right'}">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
                 <div class="buy" *ngIf="stockToBuy && stockToBuy['lastPrice'] < stockToBuy[col.field]">
-                    {{stockToBuy[col.field] | currency: 'USD' : true }}
+                    <currency [currencyValue]="stockToBuy[col.field]">
+                    </currency>
                 </div>
                 <div class="wait" *ngIf="stockToBuy && stockToBuy['lastPrice'] >= stockToBuy[col.field]">
-                    {{stockToBuy[col.field] | currency: 'USD' : true }}
+                    <currency [currencyValue]="stockToBuy[col.field]">
+                    </currency>
                 </div>
             </ng-template>
         </p-column>
@@ -139,7 +141,8 @@
                   header="Analyst PT"
                   [style]="{'width':'10px','text-align':'right'}">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                {{stockToBuy[col.field] | currency: 'USD' : true }}
+                <currency [currencyValue]="stockToBuy[col.field]">
+                </currency>
             </ng-template>
         </p-column>
 

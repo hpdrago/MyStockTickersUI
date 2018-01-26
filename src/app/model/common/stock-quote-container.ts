@@ -6,20 +6,13 @@ import { StockQuote } from '../entity/stock-quote';
 export interface StockQuoteContainer
 {
     /**
-     * Get the ticker symbol.
+     * Ticker symbol
      * @return {string}
      */
-    getTickerSymbol(): string;
+    tickerSymbol: string;
 
     /**
-     * Set the stock quote.
-     * @param {StockQuote} stockQuote
+     * Stock Quote
      */
-    setStockQuote( stockQuote: StockQuote );
-
-    /**
-     * Get the stock quote.
-     * @return {StockQuote}
-     */
-    getStockQuote(): StockQuote
+    stockQuote: StockQuote;
 }

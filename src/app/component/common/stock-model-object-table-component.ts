@@ -49,7 +49,7 @@ export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & 
         this.debug( "loadTableForTickerSymbol " + tickerSymbol );
         this.modelObject = this.stockFactory
                                .newModelObject();
-        this.modelObject.setTickerSymbol( tickerSymbol );
+        this.modelObject.tickerSymbol = tickerSymbol;
         this.loadTable();
     }
 

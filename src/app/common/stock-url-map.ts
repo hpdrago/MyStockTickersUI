@@ -35,7 +35,7 @@ export class StockUrlMap
                                         if ( !isNullOrUndefined( url ) )
                                         {
                                             //console.log( 'extractURLsFromNotes ticker: ' + stockNote.tickerSymbol + ' url: ' + url );
-                                            this.urlMap.set( noteContainer.getTickerSymbol(), url );
+                                            this.urlMap.set( noteContainer.tickerSymbol, url );
                                         }
                                     } );
         }
