@@ -4,7 +4,6 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { CrudOperation } from "../common/crud-operation";
 import { isNullOrUndefined } from "util";
 import { DialogCloseEventType } from "../common/close-button-event";
-import { ModelObjectCrudOperationSubjectInfo } from "./modelobject-crudoperation-subject-info";
 import { CrudPanelComponent } from "../panel/crud-panel.component";
 
 /**
@@ -72,7 +71,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
         this.addSubscription(
             this.crudServiceContainer
             .crudDialogService
-            .subscribeToDisplayFormRequestEvent( ( subjectInfo: ModelObjectCrudOperationSubjectInfo ) => this.setDisplayDialog( subjectInfo ) ));
+            .subscribeToDisplayFormRequestEvent( () => this.setDisplayDialog() ));
         this.addSubscription(
             this.crudServiceContainer
             .crudDialogService
@@ -114,39 +113,13 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      *
      * @param displayDialog
      */
-    protected setDisplayDialog( subjectInfo: ModelObjectCrudOperationSubjectInfo ): void
+    protected setDisplayDialog(): void
     {
-        this.debug( "setDisplayDialog.begin " + JSON.stringify( subjectInfo ) );
-        if ( !isNullOrUndefined( subjectInfo ) )
-        {
-            if ( isNullOrUndefined( subjectInfo.modelObject ) )
-            {
-                this.debug( "setDisplayDialog model objects is null or not defined" );
-            }
-            else
-            {
-                this.setModelObject( subjectInfo.modelObject );
-                this.setCrudOperation( subjectInfo.crudOperation );
-                /*
-                 * Tell the buttons and form of the changes
-                 */
-                this.debug( "Sending crud operation and modelObject to Form" );
-                this.crudServiceContainer
-                    .crudFormService
-                    .sendModelObjectCrudOperationChangedEvent( subjectInfo );
-                this.debug( "Sending crud operation and modelObject to the form buttons" );
-                this.crudServiceContainer
-                    .crudFormButtonsService
-                    .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
-                this.crudServiceContainer
-                    .crudFormButtonsService
-                    .sendModelObjectChangedEvent( subjectInfo.modelObject );
-                this.crudServiceContainer
-                    .crudFormService
-                    .sendFormPrepareToDisplayEvent();
-                this.displayDialog = true;
-            }
-        }
+        this.debug( "setDisplayDialog.begin" );
+        this.crudServiceContainer
+            .crudFormService
+            .sendFormPrepareToDisplayEvent();
+        this.displayDialog = true;
         this.debug( "setDisplayDialog.end" );
     }
 
@@ -187,7 +160,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
         this.debug( "onContinuousAddButtonClicked " + JSON.stringify( modelObject ) );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
-            this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
+            this.crudStateStore.sendModelObjectChangedEvent( this, this.crudServiceContainer.modelObjectFactory.newModelObject() );
         }
     }
 

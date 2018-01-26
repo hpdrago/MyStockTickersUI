@@ -5,6 +5,7 @@ import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { TradeitAccountBaseTableComponent } from "./tradeit-account-base-table.component";
 import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
+import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 
 
 /**
@@ -22,16 +23,18 @@ export class TradeItAccountSelectionTableComponent extends TradeitAccountBaseTab
     /**
      * Constructor.
      * @param {ToastsManager} toaster
+     * @param {TradeItErrorReporter} tradeItErrorReporter
      * @param {TradeItAccountCrudServiceContainer} tradeItAccountCrudServiceContainer
      * @param {TradeItService} tradeItService
      * @param {TradeitAccountOAuthService} tradeItOAuthService
      */
     constructor( protected toaster: ToastsManager,
+                 protected tradeItErrorReporter: TradeItErrorReporter,
                  protected tradeItAccountCrudServiceContainer: TradeItAccountCrudServiceContainer,
                  protected tradeItService: TradeItService,
                  protected tradeItOAuthService: TradeitAccountOAuthService )
     {
-        super( toaster, tradeItAccountCrudServiceContainer, tradeItService,
+        super( toaster, tradeItErrorReporter, tradeItAccountCrudServiceContainer, tradeItService,
                tradeItOAuthService ) ;
     }
 

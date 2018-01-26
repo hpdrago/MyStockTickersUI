@@ -10,6 +10,7 @@ import { TableLoadingStrategy } from "../common/table-loading-strategy";
 import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
 import { TradeitOAuthComponent } from "./tradeit-oauth-component";
 import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
+import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 
 /**
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}
@@ -24,13 +25,15 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
     private tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent;
 
     /**
-     * Constructor
+     * Constructor.
      * @param {ToastsManager} toaster
-     * @param {CrudRestErrorReporter} crudRestErrorReporter
-     * @param {TradeitAccountCrudServiceContainer} tradeItAccountCrudServiceContainer
+     * @param {TradeItErrorReporter} tradeItErrorReporter
+     * @param {TradeItAccountCrudServiceContainer} tradeItAccountCrudServiceContainer
      * @param {TradeItService} tradeItService
+     * @param {TradeitAccountOAuthService} tradeItOAuthService
      */
     constructor( protected toaster: ToastsManager,
+                 protected tradeItErrorReporter: TradeItErrorReporter,
                  protected tradeItAccountCrudServiceContainer: TradeItAccountCrudServiceContainer,
                  protected tradeItService: TradeItService,
                  protected tradeItOAuthService: TradeitAccountOAuthService )
@@ -70,12 +73,12 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
                             {
                                 this.log( methodName + " account authenticated or kept alive" );
                                 this.setModelObject( authenticateAccountResult.tradeItAccount );
-                                this.updateModelObjectRow( this.modelObject );
+                                //this.updateModelObjectRow( this.modelObject );
                                 this.tradeItAccountSelected.emit( this.modelObject );
                             }
                             else
                             {
-                                this.reportTradeItError( authenticateAccountResult );
+                                this.tradeItErrorReporter.reportError( authenticateAccountResult );
                             }
                         },
                         error =>
@@ -104,14 +107,14 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
                 }
                 else
                 {
-                    this.reportTradeItError( authenticateAccountResult );
+                    this.tradeItErrorReporter.reportError( authenticateAccountResult );
                 }
             },
             error =>
             {
                 if ( error instanceof TradeItAuthenticateResult )
                 {
-                    this.reportTradeItError( error );
+                    this.tradeItErrorReporter.reportError( error );
                 }
                 else
                 {

@@ -4,7 +4,6 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { BaseCrudComponent } from "../common/base-crud.component";
 import { OnInit } from "@angular/core";
 import { CrudOperation } from "../common/crud-operation";
-import { ModelObjectCrudOperationSubjectInfo } from "../dialog/modelobject-crudoperation-subject-info";
 
 /**
  * This is a Panel class that contains a CRUD Form component {@code CrudFormComponent}
@@ -25,7 +24,7 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
-        super( toaster, crudServiceContainer.modelObjectFactory );
+        super( toaster, crudServiceContainer.crudStateStore, crudServiceContainer.modelObjectFactory );
     }
 
     /**
@@ -58,28 +57,29 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      * @param {T} modelObject
      * @param {CrudOperation} crudOperation
      */
-    protected displayModelObject( modelObject: T, crudOperation: CrudOperation )
+    //protected displayModelObject( modelObject: T, crudOperation: CrudOperation )
+    protected displayModelObject()
     {
-        this.setModelObject( modelObject );
-        this.setCrudOperation( crudOperation );
-        var subjectInfo: ModelObjectCrudOperationSubjectInfo = new ModelObjectCrudOperationSubjectInfo();
-        subjectInfo.crudOperation = crudOperation;
-        subjectInfo.modelObject = modelObject;
+        //this.setModelObject( modelObject );
+        //this.setCrudOperation( crudOperation );
+        //var subjectInfo: ModelObjectCrudOperationSubjectInfo = new ModelObjectCrudOperationSubjectInfo();
+        //subjectInfo.crudOperation = crudOperation;
+        //subjectInfo.modelObject = modelObject;
 
         /*
          * Tell the buttons and form of the changes
          */
-        this.debug( "Sending crud operation and modelObject to Form" );
-        this.crudServiceContainer
-            .crudFormService
-            .sendModelObjectCrudOperationChangedEvent( subjectInfo );
-        this.debug( "Sending crud operation and modelObject to the form buttons" );
-        this.crudServiceContainer
-            .crudFormButtonsService
-            .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
-        this.crudServiceContainer
-            .crudFormButtonsService
-            .sendModelObjectChangedEvent( subjectInfo.modelObject );
+        //this.debug( "Sending crud operation and modelObject to Form" );
+        //this.crudServiceContainer
+        //    .crudFormService
+        //    .sendModelObjectCrudOperationChangedEvent( subjectInfo );
+        //this.debug( "Sending crud operation and modelObject to the form buttons" );
+        //this.crudServiceContainer
+        //    .crudFormButtonsService
+        //    .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
+        //this.crudServiceContainer
+        //    .crudFormButtonsService
+        //    .sendModelObjectChangedEvent( subjectInfo.modelObject );
         this.crudServiceContainer
             .crudFormService
             .sendFormPrepareToDisplayEvent();
@@ -105,14 +105,7 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
         this.debug( "subscribeToCrudPanelServiceEvents.begin" );
         this.addSubscription( this.crudServiceContainer
                                   .crudPanelService
-                                  .subscribeToDisplayFormRequestEvent( displayInfo =>
-                                                                       {
-                                                                           if ( displayInfo )
-                                                                           {
-                                                                               this.displayModelObject( displayInfo.modelObject,
-                                                                                                        displayInfo.crudOperation )
-                                                                           }
-                                                                       }));
+                                  .subscribeToDisplayFormRequestEvent( () => this.displayModelObject() ));
         this.addSubscription( this.crudServiceContainer
                                   .crudPanelService
                                   .subscribeToCancelButtonClickedEvent( () => this.cancelButtonClicked() ));
@@ -209,7 +202,7 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      */
     protected resetPanel()
     {
-        this.setCrudOperation( CrudOperation.NONE );
-        this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
+        //this.setCrudOperation( CrudOperation.NONE );
+        //this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
     }
 }

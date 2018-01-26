@@ -15,11 +15,4 @@ export abstract class BaseService extends BaseClass
     {
         super( toaster );
     }
-
-    protected reportError( error ): string
-    {
-        this.logger.error( error );
-        this.showError( error );
-        return error;
-    }
 }

@@ -104,8 +104,11 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
                         {
                             this.showInfo( "Stock To Buy created for " + this.modelObject.tickerSymbol );
                             this.stocksToBuyServiceContainer
-                                .modelObjectChangeService
-                                .sendModelObjectChangeEvent( this, CrudOperation.CREATE, stockToBuy );
+                                .crudStateStore
+                                .sendCrudOperationChangedEvent( CrudOperation.CREATE );
+                            this.stocksToBuyServiceContainer
+                                .crudStateStore
+                                .sendModelObjectChangedEvent( this, stockToBuy )
                             this.log( methodName + ".end" );
                         },
                         error => {

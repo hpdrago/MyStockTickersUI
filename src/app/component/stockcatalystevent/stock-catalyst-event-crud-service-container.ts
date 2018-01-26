@@ -3,7 +3,6 @@ import { Injectable } from "@angular/core";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockCatalystEventFactory } from "../../model/factory/stock-catalyst-event.factory";
 import { StockCatalystEventCrudService } from "../../service/crud/stock-catalyst-event-crud.service";
-import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
 
 /**
@@ -12,12 +11,17 @@ import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
 @Injectable()
 export class StockCatalystEventCrudServiceContainer extends CrudServiceContainer<StockCatalystEvent>
 {
+    /**
+     * Constructor.
+     * @param {StockCatalystEventFactory} _stockCatalystEventFactory
+     * @param {StockCatalystEventCrudService} _stockCatalystEventCrudService
+     */
     constructor( private _stockCatalystEventFactory: StockCatalystEventFactory,
                  private _stockCatalystEventCrudService: StockCatalystEventCrudService )
     {
-        super( new ModelObjectChangeService<StockCatalystEvent>(), _stockCatalystEventFactory,
-               _stockCatalystEventCrudService )
+        super( _stockCatalystEventFactory, _stockCatalystEventCrudService )
         this.crudDialogService = new CrudDialogService<StockCatalystEvent>( this._stockCatalystEventFactory,
+                                                                            this.crudStateStore,
                                                                             this.crudFormButtonsService );
         this.crudPanelService = this.crudDialogService;
     }

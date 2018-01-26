@@ -270,7 +270,8 @@ export class TradeitAccountOAuthService extends BaseTradeItService
                             this.log( methodName + " status: " + tradeItAPIResult );
                             if ( keepAliveResult.isError() )
                             {
-                                if ( TradeItAPIResultEnum.isSessionExpiredError( keepAliveResult ))
+                                if ( TradeItAPIResultEnum.isSessionExpiredError( keepAliveResult ) ||
+                                     TradeItAPIResultEnum.isParamsError( keepAliveResult ))
                                 {
                                     this.log( methodName + " the session has expired, calling authenticate" );
                                     //keepSessionAliveSubject.flatMap(

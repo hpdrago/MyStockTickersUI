@@ -8,7 +8,7 @@ import { TradeItAccount } from "../../../model/entity/tradeit-account";
  */
 export class TradeItKeepSessionAliveResult extends TradeItAPIResult
 {
-    @JsonProperty( "tradeItAccount", [TradeItAccount] )
+    @JsonProperty( "tradeItAccount", TradeItAccount )
     public tradeItAccount: TradeItAccount = undefined;
 
     /**

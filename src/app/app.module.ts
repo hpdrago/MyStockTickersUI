@@ -171,6 +171,7 @@ import { LinkedAccountTableButtonsComponent } from "./component/linked-account/l
 import { LinkedAccountTableComponent } from "./component/linked-account/linked-account-table.component";
 import { TradeitAccountOAuthService } from "./component/tradeit-account/tradeit-account-oauth.service";
 import { RestErrorReporter } from "./service/rest-error-reporter";
+import { TradeItErrorReporter } from "./component/tradeit/tradeit-error-reporter";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -328,6 +329,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         CookieService,
         StockQuoteCache,
         TradeItService,
+        TradeItErrorReporter,
 
         CustomerService,
         CustomerCrudService,

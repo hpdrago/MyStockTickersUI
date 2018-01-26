@@ -99,8 +99,14 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
          * Display the stock notes dialog.
          */
         this.stockNotesServiceContainer
+            .crudStateStore
+            .sendCrudOperationChangedEvent( CrudOperation.CREATE );
+        this.stockNotesServiceContainer
+            .crudStateStore
+            .sendModelObjectChangedEvent( this, stockNotes );
+        this.stockNotesServiceContainer
             .crudDialogService
-            .sendDisplayFormRequestEvent( stockNotes, CrudOperation.CREATE );
+            .sendDisplayFormRequestEvent();
     }
 
 }

@@ -4,6 +4,7 @@ import { ModelObjectFactory } from "../../../model/factory/model-object.factory"
 import { Subject } from "rxjs/Subject";
 import { Subscription } from "rxjs/Subscription";
 import { ToastsManager } from "ng2-toastr";
+import { CrudStateStore } from "../common/crud-state-store";
 
 /**
  * This class handles the default behaviour for the buttons used in a CRUD enabled table.
@@ -20,12 +21,14 @@ export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudC
     /**
      * Constructor.
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
      * @param {ToastsManager} toaster
      */
     constructor( protected modelObjectFactory: ModelObjectFactory<T>,
+                 protected crudStateStore: CrudStateStore<T>,
                  protected toaster?: ToastsManager )
     {
-        super( modelObjectFactory, toaster );
+        super( modelObjectFactory, crudStateStore, toaster );
     }
 
     /**

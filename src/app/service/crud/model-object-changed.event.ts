@@ -7,18 +7,20 @@ import { ModelObject } from "../../model/entity/modelobject";
 /**
  * This class contains the information to send an event with the {@code ModelObjectChangeService}
  */
-export class ModelObjectChangeEvent<T extends ModelObject<T>>
+export class ModelObjectChangedEvent<T extends ModelObject<T>>
 {
     public sender: any;
-    public crudOperation: CrudOperation;
     public modelObject: T;
 
+    /**
+     * Constructor.
+     * @param sender
+     * @param {T} modelObject
+     */
     constructor( sender: any,
-                 crudOperation: CrudOperation,
                  modelObject: T )
     {
         this.sender = sender;
-        this.crudOperation = crudOperation;
         this.modelObject = modelObject;
     }
 }

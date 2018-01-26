@@ -9,6 +9,7 @@ import { isNullOrUndefined } from "util";
 import { Subject } from "rxjs/Subject";
 import { ToastsManager } from "ng2-toastr";
 import { BaseService } from "../../../service/base-service";
+import { CrudStateStore } from "./crud-state-store";
 
 /**
  * This class services as a base abstract class for CRUD based component services to provide common methods
@@ -18,17 +19,16 @@ import { BaseService } from "../../../service/base-service";
  */
 export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends BaseService
 {
-    private modelObjectChangedSubject: BehaviorSubject<T>;
-    private crudOperationChangedSubject: BehaviorSubject<CrudOperation>;
-    private crudOperationErrorSubject: BehaviorSubject<string>;
     private componentInitializedSubject: BehaviorSubject<boolean>;
 
     /**
      * Constructor.
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
      * @param {ToastsManager} toaster
      */
     constructor( protected modelObjectFactory: ModelObjectFactory<T>,
+                 protected crudStateStore: CrudStateStore<T>,
                  protected toaster?: ToastsManager )
     {
         super( toaster );
@@ -42,9 +42,6 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends
     {
         let methodName = "createSubjects";
         this.debug( methodName + ".begin" )
-        this.modelObjectChangedSubject = new BehaviorSubject<T>( null );
-        this.crudOperationChangedSubject = new BehaviorSubject<CrudOperation>( CrudOperation.NONE );
-        this.crudOperationErrorSubject = new BehaviorSubject<string>( "" );
         this.componentInitializedSubject = new BehaviorSubject<boolean>( false );
         this.debug( methodName + ".end" )
     }
@@ -56,23 +53,8 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends
     {
         let methodName = "resetSubjects";
         this.debug( methodName + ".begin" )
-        this.modelObjectChangedSubject.next( null );
-        this.crudOperationChangedSubject.next( CrudOperation.NONE );
-        this.crudOperationErrorSubject.next( "" );
         this.componentInitializedSubject.next( false );
         this.debug( methodName + ".end" )
-    }
-
-    /**
-     * This method is used to register for events when the errors occur during CRUD operations.
-     * This parent panel that contains CRUD components, should register for these events and
-     * property report the error to the user.
-     * @return Subscription
-     */
-    public subscribeToCrudOperationError( fn: ( string ) => any ): Subscription
-    {
-        this.debug( "subscribeToCrudOperationError" );
-        return this.crudOperationErrorSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -82,10 +64,7 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends
     public subscribeToModelObjectChangedEvent( fn: ( ModelObject ) => any ): Subscription
     {
         this.debug( "subscribeToModelObjectChangedEvent" );
-        var observable: Observable<T> = this.modelObjectChangedSubject.asObservable();
-        var subscription: Subscription = observable.subscribe( fn );
-        this.debug( "subscribeToModelObjectChangedEvent " + this.modelObjectChangedSubject.observers.length + " observers" );
-        return subscription;
+        return this.crudStateStore.subscribeToModelObjectChangedEvent( fn );
     }
 
     /**
@@ -95,35 +74,19 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends
     public subscribeToCrudOperationChangeEvent( fn: ( CrudOperation ) => any ): Subscription
     {
         this.debug( "subscribeToCrudOperationChangeEvent" );
-        var observable: Observable<CrudOperation> = this.crudOperationChangedSubject.asObservable();
-        var subscription: Subscription = observable.subscribe( fn );
-        this.debug( "subscribeToCrudOperationChangeEvent" + this.crudOperationChangedSubject.observers.length + " observers" );
-        return subscription;
-    }
-
-    /**
-     * This method is use by sub components to report an error to the containing panel.
-     * @param errorMessage
-     */
-    public sendCrudOperationErrorEvent( errorMessage: string )
-    {
-        this.debug( "sendCrudOperationErrorEvent " + errorMessage );
-        this.crudOperationErrorSubject.next( errorMessage );
+        return this.crudStateStore.subscribeToModelObjectChangedEvent( fn );
     }
 
     /**
      * This method is used by a notifier of a model object change.  Any observers to model object changes
      * will be notified.
+     * @param sender
      * @param modelObject
      */
-    public sendModelObjectChangedEvent( modelObject: T )
+    public sendModelObjectChangedEvent( sender: any, modelObject: T )
     {
-        this.debug( "sendModelObjectChangedEvent " + JSON.stringify( modelObject ) + " to " +
-            this.modelObjectChangedSubject.observers.length + " observers" );
-        if ( !isNullOrUndefined( modelObject ) )
-        {
-            this.modelObjectChangedSubject.next( modelObject );
-        }
+        this.debug( "sendModelObjectChangedEvent " + JSON.stringify( modelObject ));
+        this.crudStateStore.sendModelObjectChangedEvent( sender, modelObject );
     }
 
     /**
@@ -134,10 +97,7 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends
     public sendCrudOperationChangedEvent( crudOperation: CrudOperation )
     {
         this.debug( "sendCrudOperationChangedEvent " + CrudOperation.getName( crudOperation ));
-        if ( !isNullOrUndefined( crudOperation ) )
-        {
-            this.crudOperationChangedSubject.next( crudOperation );
-        }
+        this.crudStateStore.sendCrudOperationChangedEvent( crudOperation );
     }
 
     /**

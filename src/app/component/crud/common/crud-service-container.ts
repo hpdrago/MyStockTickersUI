@@ -6,10 +6,10 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { CrudTableButtonsService } from "../table/crud-table-buttons.service";
 import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
 import { CrudTableService } from "../table/crud-table.service";
-import { ModelObjectChangeService } from "../../../service/crud/model-object-change.service";
 import { CrudPanelService } from "../panel/crud-panel.service";
 import { BaseClass } from "../../../common/base-class";
 import { ToastsManager } from "ng2-toastr";
+import { CrudStateStore } from "./crud-state-store";
 
 /**
  * This is a container class for all of the CRUD services and the model object factory.
@@ -19,6 +19,7 @@ export abstract class CrudServiceContainer<T extends ModelObject<T>> extends Bas
 {
     private _crudPanelService: CrudPanelService<T>;
     private _crudDialogService: CrudDialogService<T>;
+    private _crudStateStore: CrudStateStore<T>;
 
     /**
      * Constructor.
@@ -31,39 +32,30 @@ export abstract class CrudServiceContainer<T extends ModelObject<T>> extends Bas
      * @param {CrudFormButtonsService<T extends ModelObject<T>>} _crudFormButtonsService
      * @param {CrudFormService<T extends ModelObject<T>>} _crudFormService
      */
-    constructor( private _modelObjectChangeService: ModelObjectChangeService<T>,
-                 private _modelObjectFactory: ModelObjectFactory<T>,
+    constructor( private _modelObjectFactory: ModelObjectFactory<T>,
                  private _crudRestService: CrudRestService<T>,
                  private _crudTableService?: CrudTableService<T>,
                  private _crudTableButtonsService?: CrudTableButtonsService<T>,
                  private _crudFormButtonsService?: CrudFormButtonsService<T>,
-                 //private _crudDialogService?: CrudDialogService<T>,
-                 //private _crudPanelService?: CrudPanelService<T>,
-                 private _crudFormService?: CrudFormService<T>, )
+                 private _crudFormService?: CrudFormService<T> )
     {
         super();
+        this._crudStateStore = new CrudStateStore<T>();
         if ( !_crudTableService )
         {
-            this._crudTableService = new CrudTableService<T>( _modelObjectFactory,
-                                                              _modelObjectChangeService );
+            this._crudTableService = new CrudTableService<T>( _modelObjectFactory, this._crudStateStore );
         }
         if ( !_crudTableButtonsService )
         {
-            this._crudTableButtonsService = new CrudTableButtonsService<T>( _modelObjectFactory );
+            this._crudTableButtonsService = new CrudTableButtonsService<T>( _modelObjectFactory, this._crudStateStore );
         }
         if ( !_crudFormButtonsService )
         {
-            this._crudFormButtonsService = new CrudFormButtonsService<T>( _modelObjectFactory );
+            this._crudFormButtonsService = new CrudFormButtonsService<T>( _modelObjectFactory, this._crudStateStore );
         }
-        /*
-        if ( !_crudDialogService )
-        {
-            this._crudDialogService = new CrudDialogService<T>( _modelObjectFactory );
-        }
-        */
         if ( !_crudFormService )
         {
-            this._crudFormService = new CrudFormService<T>( _modelObjectFactory );
+            this._crudFormService = new CrudFormService<T>( _modelObjectFactory, this._crudStateStore );
         }
     }
 
@@ -147,13 +139,8 @@ export abstract class CrudServiceContainer<T extends ModelObject<T>> extends Bas
         this._crudRestService = crudRestService;
     }
 
-    public get modelObjectChangeService(): ModelObjectChangeService<T>
+    public get crudStateStore(): CrudStateStore<T>
     {
-        return this._modelObjectChangeService;
-    }
-
-    public set modelObjectChangeService( value: ModelObjectChangeService<T> )
-    {
-        this._modelObjectChangeService = value;
+        return this._crudStateStore;
     }
 }

@@ -130,7 +130,7 @@ export class CustomerCrudService extends CrudRestService<Customer>
                              this.debug( methodName + " received: " + JSON.stringify( response.json() ))
                              return this.customerFactory.newModelObjectFromJSON( response.json() );
                          } ) // ...and calling .json() on the response to return data
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+                   .catch( ( error: any ) => Observable.throw( error ))
 
     }
 }

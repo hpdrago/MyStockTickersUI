@@ -1,10 +1,9 @@
 import { Subject } from "rxjs";
 import { BaseCrudComponentService } from "../common/base-crud-component.service";
 import { ModelObject } from "../../../model/entity/modelobject";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { Subscription } from "rxjs/Subscription";
-import { ModelObjectCrudOperationSubjectInfo } from "../dialog/modelobject-crudoperation-subject-info";
+import { CrudStateStore } from "../common/crud-state-store";
 
 /**
  * This service provides communication from the CrudFormComponent's parent aka CrudFormComponent
@@ -29,17 +28,25 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     private formPrepareToDisplaySubject: Subject<void> = new Subject<void>();
     private createFormSubject: Subject<void> = new Subject<void>();
     private formModelObjectVersionUpdateSubject: Subject<T> = new Subject<T>();
-    private modelObjectCrudOperationChangeSubject: BehaviorSubject<ModelObjectCrudOperationSubjectInfo> = new BehaviorSubject( null );
 
-
-    constructor( protected modelObjectFactory: ModelObjectFactory<T> )
+    /**
+     * Constructor.
+     * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
+     */
+    constructor( protected modelObjectFactory: ModelObjectFactory<T>,
+                 protected crudStateStore: CrudStateStore<T> )
     {
-        super( modelObjectFactory );
+        super( modelObjectFactory, crudStateStore );
     }
 
+    /**
+     * Resets the subjects to the default values.
+     */
     public resetSubjects(): void
     {
-        this.modelObjectCrudOperationChangeSubject.next( null );
+        this.debug( "resetSubjects" );
+        this.crudStateStore.resetSubjects();
         super.resetSubjects();
     }
 
@@ -54,16 +61,6 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     {
         this.debug( "subscribeToFormErrorsEvent" );
         return this.formErrorsSubject.asObservable().subscribe( fn );
-    }
-
-    /**
-     * The {@code CrudFormForm} will call this method and register to be notified and receive a new crud operation
-     * and model object to display.
-     */
-    public subscribeToModelObjectCrudOperationChangedEvent( fn: ( ModelObjectCrudOperationSubjectInfo ) => any ): Subscription
-    {
-        this.debug( "subscribeToModelObjectCrudOperationChangedEvent" );
-        return this.modelObjectCrudOperationChangeSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -263,21 +260,5 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
     {
         this.debug( "sendFormModelObjectVersionUpdateEvent: " );
         this.createFormSubject.next();
-    }
-
-    /**
-     * This method is called by the dialog to send the model object and crud operation values in a single
-     * message to the crud form.
-     * @param {} subjectInfo
-     */
-    public sendModelObjectCrudOperationChangedEvent( subjectInfo: ModelObjectCrudOperationSubjectInfo )
-    {
-        this.debug( "sendModelObjectCrudOperationChangedEvent " + JSON.stringify( subjectInfo ) );
-        this.modelObjectCrudOperationChangeSubject.next( subjectInfo );
-        /*
-         * Also set the individual values for model object and crud operation
-         */
-        this.sendModelObjectChangedEvent( subjectInfo.modelObject );
-        this.sendCrudOperationChangedEvent( subjectInfo.crudOperation );
     }
 }

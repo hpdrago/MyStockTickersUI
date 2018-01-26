@@ -5,6 +5,7 @@ import { Subscription } from "rxjs/Subscription";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { CrudPanelService } from "../panel/crud-panel.service";
 import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
+import { CrudStateStore } from "../common/crud-state-store";
 
 /**
  * This service defines the Observables for interacting with a CRUD dialog.
@@ -20,10 +21,17 @@ export class CrudDialogService<T extends ModelObject<T>> extends CrudPanelServic
 {
     protected closeButtonClickedSubject: Subject<DialogCloseEventType>;
 
+    /**
+     * Constructor.
+     * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
+     * @param {CrudFormButtonsService<T extends ModelObject<T>>} crudFormButtonsService
+     */
     constructor( protected modelObjectFactory: ModelObjectFactory<T>,
+                 protected crudStateStore: CrudStateStore<T>,
                  protected crudFormButtonsService: CrudFormButtonsService<T> )
     {
-        super( modelObjectFactory, crudFormButtonsService );
+        super( modelObjectFactory, crudStateStore, crudFormButtonsService );
     }
 
     /**

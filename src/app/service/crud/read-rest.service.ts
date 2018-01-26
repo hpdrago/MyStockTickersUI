@@ -227,7 +227,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                        this.debug( methodName + " received: " + JSON.stringify( response.json() ))
                        return this.modelObjectFactory.newModelObjectFromJSON( response.json() );
                    } ) // ...and calling .json() on the response to return data
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+                   .catch( ( error: any ) => Observable.throw( error ) )
                    .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
@@ -260,7 +260,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                        //this.debug( methodName + " " + JSON.stringify( modelObjects ));
                        return modelObjects;
                    })
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+                   .catch( ( error: any ) => Observable.throw( error ))
                    .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
@@ -275,23 +275,15 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         let methodName = "getPage";
         let url = new PaginationURL( this.getReadModelObjectListUrl( modelObject ) ).getPage( lazyLoadEvent );
         this.logger.log( `${methodName} url: ${url}` );
-        try
-        {
-            return this.http
-                       .get( url )
-                       .map( ( response: Response ) =>
-                             {
-                                 return response.json();
-                             })
-                       .catch( ( error: any ) =>
-                               {
-                                   return Observable.throw( error );
-                               });
-        }
-        catch( exception )
-        {
-            this.reportError( exception );
-        }
+        return this.http
+                   .get( url )
+                   .map( ( response: Response ) =>
+                         {
+                             return response.json();
+                         } )
+                   .catch( ( error: any ) =>
+                           {
+                               return Observable.throw( error );
+                           } );
     }
-
 }

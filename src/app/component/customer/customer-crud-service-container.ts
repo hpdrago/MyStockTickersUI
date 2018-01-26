@@ -1,6 +1,5 @@
 import { CrudServiceContainer } from "../crud/common/crud-service-container";
 import { Injectable } from "@angular/core";
-import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 import { Customer } from "../../model/entity/customer";
 import { CustomerFactory } from "../../model/factory/customer.factory";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
@@ -14,12 +13,18 @@ import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
 @Injectable()
 export class CustomerCrudServiceContainer extends CrudServiceContainer<Customer>
 {
+    /**
+     * Constructor.
+     * @param {CustomerFactory} _customerFactory
+     * @param {CustomerCrudService} _customerCrudService
+     */
     constructor( private _customerFactory: CustomerFactory,
                  private _customerCrudService: CustomerCrudService )
     {
-        super( new ModelObjectChangeService<Customer>(), _customerFactory, _customerCrudService )
+        super( _customerFactory, _customerCrudService )
         this.crudDialogService = new CrudDialogService<Customer>( this._customerFactory,
-                                                                   this.crudFormButtonsService );
+                                                                  this.crudStateStore,
+                                                                  this.crudFormButtonsService );
         this.crudPanelService = this.crudDialogService;
     }
 

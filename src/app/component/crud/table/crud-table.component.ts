@@ -11,7 +11,7 @@ import { ToastsManager } from "ng2-toastr";
 import { CrudServiceContainer } from "../common/crud-service-container";
 import { CrudOperation } from "../common/crud-operation";
 import { isNullOrUndefined } from "util";
-import { ModelObjectChangeEvent } from "../../../service/crud/model-object-change.event";
+import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
 import { DataTable, LazyLoadEvent } from "primeng/primeng";
 import { PaginationPage } from "../../../common/pagination";
 import { TableLoadingStrategy } from "../../common/table-loading-strategy";
@@ -64,12 +64,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                  protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
-        super( toaster, crudServiceContainer.modelObjectFactory );
+        super( toaster, crudServiceContainer.crudStateStore, crudServiceContainer.modelObjectFactory );
         this.debug( "Constructor tableLoadingStrategy: " + TableLoadingStrategy.getName( this.tableLoadingStrategy ));
-        if ( !this.crudServiceContainer.modelObjectChangeService )
-        {
-            throw new Error( "modelObjectChangeService argument cannot be null" );
-        }
         if ( !this.crudServiceContainer.modelObjectFactory )
         {
             throw new Error( "modelObjectFactory argument cannot be null" );
@@ -140,7 +136,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             this.subscribeToCrudFormButtonEvents();
         }
         this.subscribeToCrudTableButtonEvents();
-        this.subscribeToModelObjectChangeEvents();
         this.debug( methodName + ".end" );
     }
 
@@ -197,7 +192,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         /*
          * Need to clear out any values for the model object or the table might be filtered based on its contents
          */
-        this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
+        this.crudStateStore.sendModelObjectChangedEvent( this, this.crudServiceContainer.modelObjectFactory.newModelObject() );
         this.selectedModelObject = null;
         if ( this.isLazyLoading() )
         {
@@ -372,8 +367,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected showFormToAdd( modelObject: T ): void
     {
         this.debug( "showFormToAdd" );
-        this.setModelObject( modelObject );
-        this.setCrudOperation( CrudOperation.CREATE );
+        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
+        this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.CREATE );
         this.displayModelObject();
     }
 
@@ -388,8 +383,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         if ( !isNullOrUndefined( modelObject ) )
         {
             this.debug( "showFormToEdit" );
-            this.setCrudOperation( CrudOperation.UPDATE );
-            this.setModelObject( modelObject );
+            this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.UPDATE );
+            this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
             this.displayModelObject();
         }
     }
@@ -404,8 +399,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         if ( !isNullOrUndefined( modelObject ) )
         {
             this.debug( "showFormToDelete" );
-            this.setCrudOperation( CrudOperation.DELETE );
-            this.setModelObject( modelObject );
+            this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.DELETE );
+            this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
             this.displayModelObject();
         }
     }
@@ -426,7 +421,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         }
         this.crudServiceContainer
             .crudPanelService
-            .sendDisplayFormRequestEvent( this.modelObject, this.crudOperation );
+            .sendDisplayFormRequestEvent();
     }
 
     /**
@@ -474,19 +469,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onUserModifiedModelObject( modelObject: T ): void
     {
         this.debug( 'onUserModifiedModelObject ' + JSON.stringify( modelObject ) );
-        this.setModelObject( modelObject );
-        if ( !isNullOrUndefined( this.modelObject ) )
-        {
-            this.selectedModelObject = modelObject;
-            this.updateModelObjectInTable( modelObject, true );
-            this.crudServiceContainer
-                .crudTableService
-                .sendTableContentChangeEvent();
-            this.crudServiceContainer
-                .crudTableService
-                .sendTableRowUpdatedChangeEvent( this.modelObject );
-        }
-        this.setModelObject( modelObject );
+        this.selectedModelObject = modelObject;
+        this.updateModelObjectInTable( modelObject, true );
+        this.crudServiceContainer
+            .crudTableService
+            .sendTableContentChangeEvent();
+        this.crudStateStore
+            .sendModelObjectChangedEvent( this, modelObject );
     }
 
     /**
@@ -527,9 +516,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             this.crudServiceContainer
                 .crudTableService
                 .sendTableContentChangeEvent();
-            this.crudServiceContainer
-                .crudTableService
-                .sendTableRowAddedChangeEvent( modelObject );
+            this.crudStateStore
+                .sendModelObjectCreatedEvent( this, modelObject );
         }
     }
 
@@ -607,9 +595,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             this.crudServiceContainer
                 .crudTableService
                 .sendTableContentChangeEvent();
-            this.crudServiceContainer
-                .crudTableService
-                .sendTableRowDeletedChangeEvent( modelObject );
+            this.crudStateStore
+                .sendModelObjectDeletedEvent( this, modelObject );
         }
     }
 
@@ -714,7 +701,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         this.debug( "setModelObject modelObject: " + JSON.stringify( modelObject ) +
                     " this.modelObject: " + JSON.stringify( this.modelObject ));
-        super.setModelObject( modelObject );
+        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
         /*
          * Only send the event if they have changed.
          */
@@ -727,7 +714,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             {
                 this.crudServiceContainer
                     .crudTableButtonsService
-                    .sendModelObjectChangedEvent( modelObject );
+                    .sendModelObjectChangedEvent( this, modelObject );
             }
         }
         else
@@ -739,58 +726,55 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             {
                 this.crudServiceContainer
                     .crudTableButtonsService
-                    .sendModelObjectChangedEvent( modelObject );
+                    .sendModelObjectChangedEvent( this, modelObject );
             }
         }
     }
 
     /**
-     * Subscribe to model object changes.  The model objects displayed in this table could be modified by other
-     * components.  When that occurs, this class will be notified.
-     */
-    protected subscribeToModelObjectChangeEvents()
-    {
-        this.debug( "subscribeToModelObjectChangeEvents" );
-        this.crudServiceContainer
-            .modelObjectChangeService
-            .subscribeToModelObjectChangeEvent( ( modelObjectChangeEvent ) =>
-                                                    this.onModelObjectChangeEvent( modelObjectChangeEvent ) );
-    }
-
-    /**
      * This method is called when a modelObject of type T is changed.  This method will determine if the event is
      * from itself or another component and if so, make any necessary changes.
-     * @param {ModelObjectChangeEvent<T extends ModelObject<T>>} modelObjectChangeEvent
+     * @param {ModelObjectChangedEvent<T extends ModelObject<T>>} modelObjectChangeEvent
      */
-    protected onModelObjectChangeEvent( modelObjectChangeEvent: ModelObjectChangeEvent<T> )
+    protected onModelObjectChangedEvent( modelObjectChangeEvent: ModelObjectChangedEvent<T> )
     {
-        var methodName = "onModelObjectChangeEvent";
+        var methodName = "onModelObjectChangedEvent";
         this.debug( methodName + ".begin object: " + JSON.stringify( modelObjectChangeEvent.modelObject ) );
         this.debug( methodName + " sender: " + (<any>modelObjectChangeEvent.sender).constructor.name );
         /*
          * Ignore if generated form this component
          */
         if ( modelObjectChangeEvent.sender === this ||
-            modelObjectChangeEvent.sender === this.crudServiceContainer.crudTableService )
+             modelObjectChangeEvent.sender === this.crudServiceContainer.crudTableService )
         {
             this.debug( methodName + " received our own change...ignoring" );
         }
         else
         {
-            switch ( modelObjectChangeEvent.crudOperation )
-            {
-                case CrudOperation.CREATE:
-                    this.addModelObjectToTable( modelObjectChangeEvent.modelObject );
-                    break;
-                case CrudOperation.DELETE:
-                    this.removeModelObjectFromTable( modelObjectChangeEvent.modelObject );
-                    break;
-                case CrudOperation.UPDATE:
-                    this.updateModelObjectInTable( modelObjectChangeEvent.modelObject, false );
-                    break;
-            }
+            this.updateModelObjectInTable( modelObjectChangeEvent.modelObject, false );
         }
         this.debug( methodName + ".end" );
+    }
+
+    /**
+     * Remove the model object from the table.
+     * @param {T} modelObject
+     */
+    protected onModelObjectDeleted( modelObject: T )
+    {
+        var methodName = "onModelObjectChangeEvent";
+        super.onModelObjectDeleted( modelObject );
+        this.removeModelObjectFromTable( modelObject );
+    }
+
+    /**
+     * Add the model object to the table.
+     * @param {T} modelObject
+     */
+    protected onModelObjectCreated( modelObject: T )
+    {
+        super.onModelObjectCreated( modelObject );
+        this.addModelObjectToTable( modelObject );
     }
 
     /**

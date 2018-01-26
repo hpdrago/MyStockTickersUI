@@ -9,13 +9,18 @@ import { RestException } from "../../../common/rest-exception";
 import { TradeItException } from "../../../service/tradeit/tradeit-execption";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { CrudRestErrorReporter } from "../../../service/crud/crud-rest-error-reporter";
+import { CrudStateStore } from "./crud-state-store";
+import { OnInit } from "@angular/core";
+import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
+import { ModelObjectDeletedEvent } from "../../../service/crud/model-object-deleted-event";
+import { ModelObjectCreatedEvent } from "../../../service/crud/model-object-created-event";
 
 /**
  * This class is the base class for all CRUD components
  *
  * Created by mike on 12/9/2016.
  */
-export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
+export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent implements OnInit
 {
     /**
      * Local type of enum so that it's available in the components HTML.
@@ -28,22 +33,24 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     protected crudOperation: CrudOperation = CrudOperation.NONE;
     private displayProgressBar: boolean = false;
     private _busyIndicator: Subscription;
-    private modelObjectChangeSubject: BehaviorSubject<T> = new BehaviorSubject<T>( null );
+
     /**
      * The object that contains the form's data
      */
     protected modelObject: T;
     /**
-     * Rest error reporting class.
+     * Rest error rep
      */
     private crudRestErrorReporter: CrudRestErrorReporter;
 
     /**
      * Constructor.
      * @param {ToastsManager} toaster
+     * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      */
     constructor( protected toaster: ToastsManager,
+                 protected crudStateStore?: CrudStateStore<T>,
                  protected modelObjectFactory?: ModelObjectFactory<T> )
     {
         super( toaster );
@@ -52,6 +59,14 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
             throw new Error( "toaster argument cannot be null" );
         }
         this.crudRestErrorReporter = this.createCrudRestErrorReporter();
+    }
+
+    public ngOnInit()
+    {
+        let methodName = "ngOnInit";
+        this.log( methodName + ".begin" );
+        this.subscribeToModelObjectChangeEvents();
+        this.log( methodName + ".end" );
     }
 
     /**
@@ -68,7 +83,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
     protected resetSubjects(): void
     {
-        this.modelObjectChangeSubject.next( null );
+        this.crudStateStore.resetSubjects();
     }
 
     /**
@@ -88,12 +103,85 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      * @param {(T) => any} fn
      * @return {Subscription}
      */
-    protected subscribeToModelObjectChangeEvent( fn: ( T ) => any ): Subscription
+    private subscribeToModelObjectChangeEvents()
     {
-        return this.modelObjectChangeSubject.subscribe( fn );
+        this.debug( "subscribeToModelObjectChangeEvents" );
+        this.crudStateStore
+            .subscribeToModelObjectChangedEvent( (changeEvent: ModelObjectChangedEvent<T>) => this.onModelObjectChangedEvent( changeEvent ));
+        this.crudStateStore
+            .subscribeToModelObjectDeletedEvent( (deleteEvent: ModelObjectDeletedEvent<T>) => this.onModelObjectDeletedEvent( deleteEvent ));
+        this.crudStateStore
+            .subscribeToModelObjectCreatedEvent( (createEvent: ModelObjectCreatedEvent<T>) => this.onModelObjectCreatedEvent( createEvent ));
     }
 
-   /**
+    /**
+     * This method is called from the {@code CrudStateStore} when a model object has changed.
+     * The change event is evaluated and if the change was not sent by this instance (receiving our own event),
+     * then the change will be propagated.
+     * @param {ModelObjectChangedEvent<T extends ModelObject<T>>} modelObjectChangedEvent
+     */
+    protected onModelObjectChangedEvent( modelObjectChangedEvent: ModelObjectChangedEvent<T> )
+    {
+        let methodName = "onModelObjectChangedEvent";
+        this.debug( methodName + " " + JSON.stringify( modelObjectChangedEvent ));
+        this.crudOperation = CrudOperation.UPDATE;
+        if ( !this.isReceivedOurOwnEvent( methodName, modelObjectChangedEvent ))
+        {
+            this.onModelObjectChanged( modelObjectChangedEvent.modelObject ) ;
+        }
+    }
+
+    /**
+     * This method is called from the {@code CrudStateStore} when a model object has been deleted.
+     * The change event is evaluated and if the change was not sent by this instance (receiving our own event),
+     * then the change will be propagated.
+     * @param {ModelObjectDeletedEvent<T extends ModelObject<T>>} modelObjectDeletedEvent
+     */
+    protected onModelObjectDeletedEvent( modelObjectDeletedEvent: ModelObjectDeletedEvent<T> )
+    {
+        let methodName = "onModelObjectDeletedEvent";
+        this.debug( methodName + " " + JSON.stringify( modelObjectDeletedEvent ));
+        this.crudOperation = CrudOperation.DELETE;
+        if ( !this.isReceivedOurOwnEvent( methodName, modelObjectDeletedEvent ))
+        {
+            this.onModelObjectDeleted( modelObjectDeletedEvent.modelObject ) ;
+        }
+    }
+
+    /**
+     * This method is called from the {@code CrudStateStore} when a model object has been created.
+     * The change event is evaluated and if the change was not sent by this instance (receiving our own event),
+     * then the change will be propagated.
+     * @param {ModelObjectCreatedEvent<T extends ModelObject<T>>} modelObjectCreatedEvent
+     */
+    protected onModelObjectCreatedEvent( modelObjectCreatedEvent: ModelObjectCreatedEvent<T> )
+    {
+        let methodName = "onModelObjectCreatedEvent";
+        this.debug( methodName + " " + JSON.stringify( modelObjectCreatedEvent ));
+        this.crudOperation = CrudOperation.CREATE;
+        if ( !this.isReceivedOurOwnEvent( methodName, modelObjectCreatedEvent ))
+        {
+            this.onModelObjectCreated( modelObjectCreatedEvent.modelObject ) ;
+        }
+    }
+
+    /**
+     * Determines if the sender of the model object object change event is this class instance.
+     * @param {string} methodName
+     * @param {ModelObjectChangedEvent<T extends ModelObject<T>>} modelObjectChangedEvent
+     * @return {boolean}
+     */
+    private isReceivedOurOwnEvent( methodName: string, modelObjectChangedEvent: ModelObjectChangedEvent<T> ): boolean
+    {
+        if ( modelObjectChangedEvent.sender == this && this.modelObject == modelObjectChangedEvent.modelObject )
+        {
+            this.debug( methodName + " received our own event" );
+            return true;
+        }
+        return false;
+    }
+
+    /**
     * This method is called by the super class whenever an @Input() property changes.
     * It looks for specific common CRUD component properties and calls change methods
     * so that subclasses can be notified of these changes.
@@ -135,65 +223,55 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
     protected resetCrudOperationAndModelObject()
     {
         this.debug( "resetCrudOperationAndModelObject" );
-        this.setCrudOperation( CrudOperation.NONE );
-        this.setModelObject( this.modelObjectFactory.newModelObject() );
+        this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.NONE );
+        this.crudStateStore.sendModelObjectChangedEvent( this, this.modelObjectFactory.newModelObject() );
     }
 
    /**
     * This method is called whenever the model object changes.
+    * It should only be called from the {@code crudStateStore} as the result of a model object change event.
     * @param modelObject
     */
-   protected onModelObjectChanged( modelObject: T )
+   protected onModelObjectChanged( modelObject: T ): void
    {
        let methodName = "onModelObjectChanged";
        this.debug( methodName + " " + JSON.stringify( modelObject ) );
-       this.setModelObject( modelObject );
-       if ( !isNullOrUndefined( this.modelObject ) )
-       {
-           if ( this.modelObject.isEqualProperties( this.modelObject ))
-           {
-               this.debug( methodName + " the model objects are the same, not propagating changes " +
-                   JSON.stringify( modelObject ));
-           }
-           else
-           {
-               this.modelObjectChangeSubject.next( this.modelObject );
-           }
-       }
-   }
-
-    /**
-     * Allow sub classes to change the model object through a method that will record (log) the change.
-     * @param modelObject
-     */
-   public setModelObject( modelObject: T )
-   {
-       this.debug( "setModelObject " + JSON.stringify( modelObject ));
        this.modelObject = modelObject;
    }
 
-   /**
+    /**
+     * This method is called whenever the model object is deleted.
+     * It should only be called from the {@code crudStateStore} as the result of a model object deleted event.
+     * @param modelObject
+     */
+    protected onModelObjectDeleted( modelObject: T ): void
+    {
+        let methodName = "onModelObjectDeleted";
+        this.debug( methodName + " " + JSON.stringify( modelObject ) );
+        this.modelObject = this.modelObject;
+    }
+
+    /**
+     * This method is called whenever the model object is created.
+     * It should only be called from the {@code crudStateStore} as the result of a model object create event.
+     * @param modelObject
+     */
+    protected onModelObjectCreated( modelObject: T ): void
+    {
+        let methodName = "onModelObjectDeleted";
+        this.debug( methodName + " " + JSON.stringify( modelObject ) );
+        this.modelObject = this.modelObject;
+    }
+
+    /**
     * This method is called whenever the crudOperation changes.
     * @param crudOperation
     */
    protected onCrudOperationChanged( crudOperation: CrudOperation )
    {
        this.debug( "crudOperation change " + CrudOperation.getName( crudOperation ) );
-       if ( this.crudOperation != crudOperation )
-       {
-           this.setCrudOperation( crudOperation );
-       }
+       this.crudOperation = crudOperation;
    }
-
-    /**
-     * Allow subclasses to change the {@code CrudOperation} and log the change.
-     * @param crudOperation
-     */
-    public setCrudOperation( crudOperation: CrudOperation )
-    {
-        this.debug( "setCrudOperation " + CrudOperation.getName( crudOperation ));
-        this.crudOperation = crudOperation;
-    }
 
     /**
      * Returns true if the current {@code crudOperation} value is NONE
@@ -246,20 +324,6 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
                                      this.debug( "busyIndicator setting displayProgressBar to false" );
                                      this.displayProgressBar = false
                                  })
-    }
-
-    /**
-     * Reports the error using the {@code toaster} and extracts the error information and returns that in the
-     * return result.
-     * @param {string} rawJsonError
-     * @returns {TradeItException}
-     */
-    protected reportTradeItError( rawJsonError ): TradeItException
-    {
-        let exception: TradeItException = TradeItException.createException( rawJsonError );
-        this.log( "Messages: " + exception.getMessages() );
-        this.toaster.error( exception.getMessages(), "Error" )
-        return exception;
     }
 
     /**

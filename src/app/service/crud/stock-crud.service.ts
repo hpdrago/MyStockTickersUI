@@ -23,6 +23,13 @@ export class StockCrudService extends CrudRestService<Stock>
     private stocksCompaniesLikeUrl: string = '/' + this.stocksUrl + '/companiesLike';
     private stocksCompaniesLikePaginationUrl: PaginationURL;
 
+    /**
+     * Constructor.
+     * @param {Http} http
+     * @param {SessionService} session
+     * @param {AppConfigurationService} appConfig
+     * @param {StockFactory} stockFactory
+     */
     constructor( protected http: Http,
                  protected session: SessionService,
                  protected appConfig: AppConfigurationService,
@@ -52,7 +59,7 @@ export class StockCrudService extends CrudRestService<Stock>
         this.debug( "getStockCompaniesLike " + searchString )
         return this.http.get( this.stocksCompaniesLikePaginationUrl.getPageWithSearchString( searchString, 0, 20 ) )
                         .map( ( response: Response ) => response.json() )
-                        .catch( ( error: any ) => Observable.throw( this.reportError( error )) );
+                        .catch( ( error: any ) => Observable.throw( error ));
     }
 
     /**

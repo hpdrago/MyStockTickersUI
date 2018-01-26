@@ -8,10 +8,10 @@ import { ToastsManager } from "ng2-toastr";
 import { isNullOrUndefined } from "util";
 import { CrudServiceContainer } from "../common/crud-service-container";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { ModelObjectCrudOperationSubjectInfo } from "../dialog/modelobject-crudoperation-subject-info";
 import { INVALID } from "@angular/forms/src/model";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
+import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
 
 /**
  * This class contains the common functionality for a form for a CRUD model object.
@@ -37,7 +37,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
-        super( toaster, crudServiceContainer.modelObjectFactory );
+        super( toaster, crudServiceContainer.crudStateStore, crudServiceContainer.modelObjectFactory );
         if ( !this.crudServiceContainer.modelObjectFactory )
         {
             throw new Error( "modelObjectFactory argument cannot be null" );
@@ -193,13 +193,15 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         while ( isNullOrUndefined( this.modelObject ))
         {
             this.debug( "waitForValidModelObject waiting" );
-            let subscription: Subscription = this.subscribeToModelObjectChangeEvent( ( modelObject: T ) =>
+            let subscription: Subscription = this.crudServiceContainer
+                                                 .crudStateStore
+                                                 .subscribeToModelObjectChangedEvent( ( modelObjectChangeEvent: ModelObjectChangedEvent<T> ) =>
             {
-                this.debug( "waitForValidModelObject " + JSON.stringify( modelObject ) );
-                if ( !isNullOrUndefined( modelObject ))
+                this.debug( "waitForValidModelObject " + JSON.stringify( modelObjectChangeEvent ) );
+                if ( !isNullOrUndefined( modelObjectChangeEvent ))
                 {
                     this.debug( "waitForValidModelObject found" );
-                    fn( this.modelObject );
+                    fn( modelObjectChangeEvent.modelObject );
                     subscription.unsubscribe();
                 }
             })
@@ -212,12 +214,14 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected subscribeToCrudFormServiceEvents(): void
     {
         this.debug( "subscribeToCrudFormServiceEvents.begin" );
+        /*
         this.addSubscription(
             this.crudServiceContainer
                 .crudFormService
                 .subscribeToModelObjectCrudOperationChangedEvent(
                     ( subjectInfo: ModelObjectCrudOperationSubjectInfo ) =>
                         this.onModelObjectCrudOperationChanged( subjectInfo ) ));
+                        */
         /*
          * Reset button
          */
@@ -376,6 +380,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected onModelObjectChanged( modelObject: T ): void
     {
+        super.onModelObjectChanged( modelObject );
         this.debug( "onModelObjectChanged " + JSON.stringify( this.modelObject ));
         /*
          * Clear the form fields of any previous model object.
@@ -384,7 +389,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         {
             this.resetForm();
         }
-        super.onModelObjectChanged( modelObject );
         this.enableDisableInputs();
         if ( modelObject )
         {
@@ -405,22 +409,13 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * This method is called by the dialog to set the model object and crud operation for the form.
-     * @param {ModelObjectCrudOperationSubjectInfo} subjectInfo
+     * This is called when a model object is created.
+     * @param {T} modelObject
      */
-    protected onModelObjectCrudOperationChanged( subjectInfo: ModelObjectCrudOperationSubjectInfo ): void
+    protected onModelObjectCreated( modelObject: T ): void
     {
-        this.debug( "onModelObjectCrudOperationChanged.begin" );
-        if ( !isNullOrUndefined( subjectInfo ))
-        {
-            this.setCrudOperation( subjectInfo.crudOperation );
-            this.setModelObject( subjectInfo.modelObject );
-            if ( this.isCrudCreateOperation() )
-            {
-                this.setDefaultValues();
-            }
-        }
-        this.debug( "onModelObjectCrudOperationChanged.end" );
+        super.onModelObjectCreated( modelObject );
+        this.setDefaultValues();
     }
 
     /**
@@ -500,10 +495,13 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected clearForm(): void
     {
         this.debug( "clearForm" );
-        this.setModelObject( this.crudServiceContainer
+        let modelObject: T = this.crudServiceContainer
                                  .modelObjectFactory
-                                 .newModelObject() );
-        this.setCrudOperation( CrudOperation.NONE );
+                                 .newModelObject();
+        this.crudStateStore
+            .sendCrudOperationChangedEvent( CrudOperation.NONE );
+        this.crudStateStore
+            .sendModelObjectChangedEvent( this, modelObject );
         this.resetForm();
     }
 
@@ -816,14 +814,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     public setModelObject( modelObject: T ): void
     {
-        super.setModelObject( modelObject );
-        /*
-         * Don't set the form values unless the form has been created.
-         */
-        if ( this.formGroup && this.formGroup.controls )
-        {
-            this.setFormValues( this.modelObject );
-        }
     }
 
     /**

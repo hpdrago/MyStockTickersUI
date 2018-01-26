@@ -25,7 +25,7 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
-        super( toaster );
+        super( toaster, crudServiceContainer.crudStateStore, crudServiceContainer.modelObjectFactory );
         this.subscribeToCrudTableEvents()
     }
 
@@ -54,7 +54,7 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     private handleTableSelectionChangeEvent( modelObject: T )
     {
         this.debug( "handleTableSelectionChangeEvent modelObject: " + JSON.stringify( modelObject ));
-        this.setModelObject( modelObject );
+        //this.setModelObject( modelObject );
     }
 
     /**

@@ -4,6 +4,7 @@ import { Component } from "@angular/core";
 import { TradeitAccountBaseTableComponent } from "./tradeit-account-base-table.component";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
+import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -22,15 +23,17 @@ export class TradeItAccountTableComponent extends TradeitAccountBaseTableCompone
     /**
      * Constructor.
      * @param {ToastsManager} toaster
+     * @param {TradeItErrorReporter} tradeItErrorReporter
      * @param {TradeItAccountCrudServiceContainer} customerAccountServiceContainer
      * @param {TradeItService} tradeItService
      * @param {TradeitAccountOAuthService} tradeItOAuthService
      */
     constructor( protected toaster: ToastsManager,
+                 protected tradeItErrorReporter: TradeItErrorReporter,
                  protected customerAccountServiceContainer: TradeItAccountCrudServiceContainer,
                  protected tradeItService: TradeItService,
                  protected tradeItOAuthService: TradeitAccountOAuthService )
     {
-        super( toaster, customerAccountServiceContainer, tradeItService, tradeItOAuthService );
+        super( toaster, tradeItErrorReporter, customerAccountServiceContainer, tradeItService, tradeItOAuthService );
     }
 }

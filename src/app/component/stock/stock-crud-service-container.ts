@@ -3,7 +3,6 @@ import { Injectable } from "@angular/core";
 import { StockFactory } from "../../model/factory/stock.factory";
 import { StockCrudService } from "../../service/crud/stock-crud.service";
 import { Stock } from "../../model/entity/stock";
-import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 
 /**
  * This is the CRUD service class for Stock model objects.
@@ -11,10 +10,15 @@ import { ModelObjectChangeService } from "../../service/crud/model-object-change
 @Injectable()
 export class StockCrudServiceContainer extends CrudServiceContainer<Stock>
 {
+    /**
+     * Constructor.
+     * @param {StockFactory} _stockFactory
+     * @param {StockCrudService} _stockCrudService
+     */
     constructor( private _stockFactory: StockFactory,
                  private _stockCrudService: StockCrudService )
     {
-        super( new ModelObjectChangeService<Stock>(), _stockFactory, _stockCrudService )
+        super( _stockFactory, _stockCrudService )
     }
 
     get stockFactory(): StockFactory { return this._stockFactory; }

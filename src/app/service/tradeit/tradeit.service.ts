@@ -73,7 +73,7 @@ export class TradeItService extends BaseService
                              this.debug( methodName + ": " + JSON.stringify( authenticate ) );
                              return  authenticate;
                          })
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+                   .catch( ( error: any ) => Observable.throw( error ))
     }
 
     /**
@@ -105,7 +105,7 @@ export class TradeItService extends BaseService
                              this.debug( methodName + " authenticateAccount: " + JSON.stringify( authenticate ) );
                              return  authenticate;
                          })
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+                   .catch( ( error: any ) => Observable.throw( error ) )
     }
 
     /**
@@ -135,7 +135,7 @@ export class TradeItService extends BaseService
                              this.debug( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ) );
                              return oAuthAccess;
                          } )
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+                   .catch( ( error: any ) => Observable.throw( error ) )
     }
 
     /**
@@ -155,7 +155,7 @@ export class TradeItService extends BaseService
                              this.checkResponse( methodName, response );
                              return response.json();
                          } )
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+                   .catch( ( error: any ) => Observable.throw( error ))
     }
 
     /**
@@ -174,7 +174,7 @@ export class TradeItService extends BaseService
                              this.checkResponse( methodName, response );
                              return response.json();
                          } )
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+                   .catch( ( error: any ) => Observable.throw( error ))
     }
 
     /**
@@ -223,7 +223,7 @@ export class TradeItService extends BaseService
                              let keepAliveResult: TradeItKeepSessionAliveResult = TradeItKeepSessionAliveResult.newInstance( response.json() );
                              return keepAliveResult;
                          } )
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+                   .catch( ( error: any ) => Observable.throw( error ))
     }
 
     /**
@@ -247,7 +247,7 @@ export class TradeItService extends BaseService
                              this.debug( methodName + " returning: " + JSON.stringify( getOauthTokenUpdateURLResult ) );
                              return getOauthTokenUpdateURLResult;
                          } )
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+                   .catch( ( error: any ) => Observable.throw( error ))
 
     }
 
