@@ -55,7 +55,7 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
      */
     public setTradeItAccount( tradeItAccount: TradeItAccount )
     {
-        let methodName = 'onTradeItTableSelectionChange';
+        let methodName = 'setTradeItAccount';
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
         this.clearTable();
@@ -67,7 +67,7 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
      */
     public setLinkedAccount( linkedAccount: LinkedAccount )
     {
-        let methodName = 'onLinkedAccountTableSelectionChange';
+        let methodName = 'setLinkedAccount';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ));
         this.linkedAccount = linkedAccount;
         /*

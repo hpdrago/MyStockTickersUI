@@ -65,8 +65,8 @@
                               header="Last Price Change "
                               [style]="{'width':'80px'}"
                               [sortable]="true">
-                        <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                            {{stockNotes[col.field] | date: 'y-MM-dd h:mm a' }}
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            {{stockPosition[col.field] | date: 'y-MM-dd h:mm a' }}
                         </ng-template>
                     </p-column>
 
@@ -77,8 +77,8 @@
                               field="todayGainLossCurrency"
                               header="Today GL$"
                               [style]="{'width':'80px','text-align':'right'}">
-                        <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                            <gain-loss-currency [currencyValue]="stockNotes[field]"></gain-loss-currency>
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <gain-loss-currency [currencyValue]="stockPosition[field]"></gain-loss-currency>
                         </ng-template>
                     </p-column>
 
@@ -89,8 +89,8 @@
                               field="todayGainLossPercentage"
                               header="Today GL%"
                               [style]="{'width':'80px','text-align':'right'}">
-                        <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                            <gain-loss-percent [percentValue]="stockNotes[field]"></gain-loss-percent>
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <gain-loss-percent [percentValue]="stockPosition[field]"></gain-loss-percent>
                         </ng-template>
                     </p-column>
 
@@ -101,8 +101,8 @@
                               field="totalGainLossDollar"
                               header="Total GL$"
                               [style]="{'width':'80px','text-align':'right'}">
-                        <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                            <gain-loss-currency [currencyValue]="stockNotes[field]"></gain-loss-currency>
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <gain-loss-currency [currencyValue]="stockPosition[field]"></gain-loss-currency>
                         </ng-template>
                     </p-column>
 
@@ -113,8 +113,8 @@
                               field="totalGainLossPercentage"
                               header="Today GL%"
                               [style]="{'width':'80px','text-align':'right'}">
-                        <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                            <gain-loss-percent [percentValue]="stockNotes[field]"></gain-loss-percent>
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <gain-loss-percent [percentValue]="stockPosition[field]"></gain-loss-percent>
                         </ng-template>
                     </p-column>
 
@@ -188,12 +188,12 @@
                               field="percentChange"
                               header="% Change Since Entered"
                               [style]="{'width':'80px','text-align':'right'}">
-                        <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                            <div class="positiveGain" *ngIf="calculatePercentChange( stockNotes ) >= 0.0">
-                                {{calculatePercentChange( stockNotes ) | percent: '1.2-2' }}
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <div class="positiveGain" *ngIf="calculatePercentChange( stockPosition ) >= 0.0">
+                                {{calculatePercentChange( stockPosition ) | percent: '1.2-2' }}
                             </div>
-                            <div class="negativeGain" *ngIf="calculatePercentChange( stockNotes ) < 0.0">
-                                {{calculatePercentChange( stockNotes ) | percent: '1.2-2' }}
+                            <div class="negativeGain" *ngIf="calculatePercentChange( stockPosition ) < 0.0">
+                                {{calculatePercentChange( stockPosition ) | percent: '1.2-2' }}
                             </div>
                         </ng-template>
                     </p-column>

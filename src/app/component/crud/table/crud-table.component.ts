@@ -90,8 +90,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
          * Create a new object instance as it will most likely be nulled by subscribing to events
          */
         this.modelObject = this.modelObjectFactory.newModelObject();
-        if ( TableLoadingStrategy.isFullLoading( this.tableLoadingStrategy ) &&
-             TableLoadingStrategy.isLoadOnCreate( this.tableLoadingStrategy ))
+        if ( TableLoadingStrategy.isLoadOnCreate( this.tableLoadingStrategy ))
         {
             this.loading = true;
             this.loadTable();
