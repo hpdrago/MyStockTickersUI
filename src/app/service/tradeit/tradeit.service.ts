@@ -213,8 +213,7 @@ export class TradeItService extends BaseService
     {
         let methodName = "keepSessionAlive";
         this.debug( methodName + " " + JSON.stringify( tradeItAccount ));
-        let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.KEEP_SESSION_ALIVE}/tradeItAccountId/${tradeItAccount.id}
-                   /customerId/${this.sessionService.getLoggedInUserId()}`;
+        let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.KEEP_SESSION_ALIVE}/tradeItAccountId/${tradeItAccount.id}/customerId/${this.sessionService.getLoggedInUserId()}`;
         this.debug( methodName + " url: " + url );
         return this.http
                    .get( url )
