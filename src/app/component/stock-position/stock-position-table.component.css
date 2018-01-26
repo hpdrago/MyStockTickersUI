@@ -9,3 +9,11 @@
 {
     margin: 0 auto;
 }
+
+
+div.synchronize-table-button
+{
+    display: inline-block;
+    width: 140px;
+    height: 35px;
+}

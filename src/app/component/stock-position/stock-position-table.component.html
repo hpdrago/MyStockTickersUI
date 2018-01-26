@@ -10,10 +10,13 @@
                              (onRowUnselect)="onRowUnSelect($event)"
                              [totalRecords]="totalRows"
                              [loading]="loading"
-                             [lazy]="true"
                              (onRowDblclick)="onRowDoubleClick($event)"
                              [responsive]="true">
 
+                    <p-header>
+                        <stock-position-table-buttons>
+                        </stock-position-table-buttons>
+                    </p-header>
                     <!--
                     public tickerSymbol: string = undefined;
                     public symbolClass: string = undefined;
@@ -58,6 +61,24 @@
                     </p-column>
 
                     <!----------------------------------------------------------------------------------------------------------
+                    OPEN PRICE
+                    ------------------------------------------------------------------------------------------------------------>
+                    <p-column id="openPrice"
+                              field="openPrice"
+                              header="Open Price"
+                              [style]="{'width':'80px','text-align':'right'}">
+                    </p-column>
+
+                    <!----------------------------------------------------------------------------------------------------------
+                    OPEN PRICE
+                    ------------------------------------------------------------------------------------------------------------>
+                    <p-column id="closePrice"
+                              field="closePrice"
+                              header="Close Price"
+                              [style]="{'width':'80px','text-align':'right'}">
+                    </p-column>
+
+                    <!----------------------------------------------------------------------------------------------------------
                     LAST PRICE DATE
                     ------------------------------------------------------------------------------------------------------------>
                     <p-column id="lastPriceChangeColumn"
@@ -73,8 +94,8 @@
                     <!----------------------------------------------------------------------------------------------------------
                     TODAY GAIN/LOSS PERCENTAGE
                     ------------------------------------------------------------------------------------------------------------>
-                    <p-column id="todayGainLossCurrency"
-                              field="todayGainLossCurrency"
+                    <p-column id="todayGainLossDollar"
+                              field="todayGainLossDollar"
                               header="Today GL$"
                               [style]="{'width':'80px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
@@ -125,8 +146,8 @@
                               header="Avg Upside"
                               [style]="{'width':'40px','text-align':'right'}"
                               [sortable]="true">
-                        <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                            <stock-quote-average-upside-percent [stockQuote]="stockAnalystConsensus"></stock-quote-average-upside-percent>
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <stock-quote-average-upside-percent [stockQuote]="stockPosition"></stock-quote-average-upside-percent>
                         </ng-template>
                     </p-column>
 
@@ -137,8 +158,8 @@
                               field="analystByCount"
                               header="Analyst BSH"
                               [style]="{'width':'80px'}">
-                        <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                            <stock-analyst-consensus [stockAnalystConsensus]="stockAnalystConsensus"></stock-analyst-consensus>
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <stock-analyst-consensus [stockAnalystConsensus]="stockPosition"></stock-analyst-consensus>
                         </ng-template>
                     </p-column>
 
@@ -150,8 +171,8 @@
                               header="High Analyst PT"
                               [style]="{'width':'40px','text-align':'right'}"
                               [sortable]="false">
-                        <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                            <currency [currencyValue]="stockAnalystConsensus[col.field]"></currency>
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <currency [currencyValue]="stockPosition[col.field]"></currency>
                         </ng-template>
                     </p-column>
 
@@ -163,8 +184,8 @@
                               header="Avg Analyst PT"
                               [style]="{'width':'40px','text-align':'right'}"
                               [sortable]="false">
-                        <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                            <currency [currencyValue]="stockAnalystConsensus[col.field]"></currency>
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <currency [currencyValue]="stockPosition[col.field]"></currency>
                         </ng-template>
                     </p-column>
 
@@ -176,8 +197,8 @@
                               header="Low Analyst PT"
                               [style]="{'width':'40px','text-align':'right'}"
                               [sortable]="false">
-                        <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                            <currency [currencyValue]="stockAnalystConsensus[col.field]"></currency>
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <currency [currencyValue]="stockPosition[col.field]"></currency>
                         </ng-template>
                     </p-column>
                     <!----------------------------------------------------------------------------------------------------------

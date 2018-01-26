@@ -15,6 +15,7 @@ export abstract class CrudTableButtonComponent<T extends ModelObject<T>> extends
     private _showButton: boolean = true;
     private _buttonDisabled: boolean = false;
     private _buttonClass: string;
+    private _buttonDivClass: string;
     private _buttonIcon: string;
     private _buttonLabel: string;
 
@@ -43,6 +44,8 @@ export abstract class CrudTableButtonComponent<T extends ModelObject<T>> extends
     {
         super.ngOnInit();
         this.subscribeToCrudTableEvents()
+        this.buttonClass = "crud-table-button";
+        this.buttonDivClass = "crud-table-button";
     }
 
     /**
@@ -70,15 +73,6 @@ export abstract class CrudTableButtonComponent<T extends ModelObject<T>> extends
     {
         this.debug( "handleTableSelectionChangeEvent modelObject: " + JSON.stringify( modelObject ));
         this._selectedModelObject = modelObject;
-    }
-
-    /**
-     * Defines the CSS class for the button
-     * @return {string}
-     */
-    protected getButtonClass(): string
-    {
-        return "crud-table-button";
     }
 
     /**
@@ -144,5 +138,15 @@ export abstract class CrudTableButtonComponent<T extends ModelObject<T>> extends
     public set buttonLabel( value: string )
     {
         this._buttonLabel = value;
+    }
+
+    public get buttonDivClass(): string
+    {
+        return this._buttonDivClass;
+    }
+
+    public set buttonDivClass( value: string )
+    {
+        this._buttonDivClass = value;
     }
 }

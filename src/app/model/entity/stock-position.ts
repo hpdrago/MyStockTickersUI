@@ -5,21 +5,23 @@ import { StockQuoteModelObject } from './stock-quote-modelobject';
  */
 export class StockPosition extends StockQuoteModelObject<StockPosition>
 {
-    public id: number = undefined;
-    public customerId: number = undefined;
-    public tradeItAccountId: number = undefined;
-    public linkedAccountId: number = undefined;
-    public tickerSymbol: string = undefined;
-    public symbolClass: string = undefined;
-    public costBasis: number = undefined;
-    public holdingType: string = undefined;
-    public quantity: number = undefined;
-    public todayGainLossDollar: number = undefined;
-    public todayGainLossPercentage: number = undefined;
-    public totalGainLossDollar: number = undefined;
-    public totalGainLossPercentage: number = undefined;
-    public exchange: string = undefined;
-    public version: number = undefined;
+    public id: number;
+    public customerId: number;
+    public tradeItAccountId: number;
+    public linkedAccountId: number;
+    public tickerSymbol: string;
+    public symbolClass: string;
+    public costBasis: number;
+    public holdingType: string;
+    public quantity: number;
+    public todayGainLossDollar: number;
+    public todayGainLossPercentage: number;
+    public totalGainLossDollar: number;
+    public totalGainLossPercentage: number;
+    public exchange: string;
+    public openPrice: number;
+    public closePrice: number;
+    public version: number;
 
     public getPrimaryKeyValue(): any
     {

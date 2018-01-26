@@ -40,4 +40,12 @@ export class StockPositionTableRefreshButtonComponent extends CrudTableRefreshBu
                portfolioStockFactory,
                portfolioStockCrudService );
     }
+
+    public ngOnInit(): void
+    {
+        super.ngOnInit();
+        this.buttonLabel = 'Synchronize';
+        this.buttonDivClass = 'synchronize-table-button';
+        //this.buttonDivClass = "crud-table-button";
+    }
 }

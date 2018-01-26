@@ -4,7 +4,7 @@ import { Component } from "@angular/core";
  * Created by mike on 8/15/2017.
  */
 @Component({
-    selector:    'stock-position-table-buttons',
+    selector: 'stock-position-table-buttons',
     template: `<ng-template #refreshButtonTemplate>
                     <stock-position-table-refresh-button>
                     </stock-position-table-refresh-button>
