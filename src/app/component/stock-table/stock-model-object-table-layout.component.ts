@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { StockCompany } from '../../model/entity/stock-company';
 import { StockSearchComponent } from '../common/stock-search.component';
 import { CrudTableLayoutBaseComponent } from '../crud/table/crud-table-layout-base.component';
 import { ToastsManager } from 'ng2-toastr';
 import { CookieService } from 'ngx-cookie-service';
+import { CrudTableColumn } from '../crud/table/crud-table-column';
+import { CrudTableColumnSelectorDialogComponent } from '../crud/table/crud-table-column-selector-dialog.component';
+import { CrudTableLayoutComponent } from '../crud/table/crud-table-layout.component';
 
 /**
  * Component for all stock related CRUD Tables.
@@ -17,6 +20,12 @@ export class StockModelObjectTableLayoutComponent extends CrudTableLayoutBaseCom
 {
     @ViewChild(StockSearchComponent)
     protected stockSearchComponent: StockSearchComponent
+
+    /**
+     * Column customizer.
+     */
+    @ViewChild(CrudTableLayoutComponent)
+    protected crudTableLayoutComponent: CrudTableLayoutComponent;
 
     @Output()
     protected stockSelected: EventEmitter<StockCompany> = new EventEmitter<StockCompany>();
@@ -53,5 +62,15 @@ export class StockModelObjectTableLayoutComponent extends CrudTableLayoutBaseCom
     {
         this.resetButtonClicked
             .emit();
+    }
+
+    /**
+     * Need to provide the reference of the column customizer dialog to the base class.
+     * @return {CrudTableColumnSelectorDialogComponent}
+     */
+    protected getCrudTableColumnSelectorDialogComponent(): CrudTableColumnSelectorDialogComponent
+    {
+        return this.crudTableLayoutComponent
+                   .crudTableColumnSelectorDialogComponent;
     }
 }

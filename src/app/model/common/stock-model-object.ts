@@ -63,7 +63,7 @@ export abstract class StockModelObject<T extends ModelObject<T>> extends ModelOb
      * Returns the available crudTableColumns.
      * @return {CrudTableColumns}
      */
-    public getCrudTableColumns(): CrudTableColumns
+    public getDefaultCrudTableColumns(): CrudTableColumns
     {
         let crudTableColumns = new CrudTableColumns( [] );
         if ( isNullOrUndefined( this.stockPriceQuote ))
@@ -83,14 +83,14 @@ export abstract class StockModelObject<T extends ModelObject<T>> extends ModelOb
         crudTableColumns.addAll( this.stockPriceQuote.getCrudTableColumns() );
         crudTableColumns.addColumn( {
                                         colId: 'stockPriceWhenCreated',
-                                        header: 'Stock Price When Created',
+                                        header: 'Stock Price When Entered',
                                         dataType: CrudTableColumnType.CURRENCY,
                                         field: 'stockPriceWhenCreated',
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {
                                         colId: 'percentChangeSinceCreated',
-                                        header: '% Changed',
+                                        header: '% Changed Since Entered',
                                         dataType: CrudTableColumnType.CUSTOM,
                                         sortable: true
                                     } );
@@ -120,7 +120,7 @@ export abstract class StockModelObject<T extends ModelObject<T>> extends ModelOb
         {
             this.stockQuote = new StockQuote();
         }
-        crudTableColumns.addAll( this.stockQuote.getCrudTableColumns() );
+        crudTableColumns.addAll( this.stockQuote.getDefaultCrudTableColumns() );
         return crudTableColumns;
     }
 }

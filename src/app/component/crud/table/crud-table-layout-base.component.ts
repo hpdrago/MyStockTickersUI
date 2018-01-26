@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import { EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { ModelObject } from '../../../model/common/model-object';
 import { CrudTableColumn } from './crud-table-column';
 import { BaseComponent } from '../../common/base.component';
@@ -7,24 +7,25 @@ import { CrudTableColumnSelectorDialogComponent } from './crud-table-column-sele
 import { CrudTableColumns } from './crud-table-columns';
 import { CookieService } from 'ngx-cookie-service';
 import { isNullOrUndefined } from 'util';
-import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudController } from '../common/crud-controller';
 
 /**
  * This abstract base class defines the input and output parameters for the crud table.  As a standalone class, it
  * provide the ability for any crud table component to inherit and not have to redefine all of the these parameters.
  */
-export abstract class CrudTableLayoutBaseComponent extends BaseComponent implements AfterViewInit
+export abstract class CrudTableLayoutBaseComponent extends BaseComponent
 {
-    /**
-     * Column customizer.
-     */
-    @ViewChild(CrudTableColumnSelectorDialogComponent)
-    protected crudTableColumnSelectorDialogComponent: CrudTableColumnSelectorDialogComponent;
-
     /**
      * I N P U T S
      */
+
+    /**
+     * Used to store the cookies for the table which includes the column customization.
+     * Since this is a generic class, it is unaware of the application context.
+     */
+    @Input()
+    protected cookieContext: string;
+
     @Input()
     protected buttonsTemplate: TemplateRef<any>;
 
@@ -42,9 +43,6 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
 
     @Input()
     protected modelObjectRows: any[];
-
-    @Input()
-    protected crudTableColumns: CrudTableColumn[];
 
     @Input()
     protected selection: any;
@@ -89,6 +87,41 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
     protected dataKey: string = "id";
 
     /**
+     * These columns are set by the parent component and are the columns to display if there are no cookie columns defined.
+     */
+    @Input()
+    protected defaultColumns: CrudTableColumn[];
+
+    /**
+     * A model object defines default columns and other columns.  The default columns come from the model object itself,
+     * that is, columns for the primitive properties.  Whereas, the other columns, are those columns from other model
+     * objects within the model object.  The combination of these two column arrays constitute the initial available columns.
+     * The columns that are displayed {@code displayColumns} are either the default columns or the customized columns list
+     * as contained in the {@code selectedColumns}.
+     */
+    @Input()
+    protected otherColumns: CrudTableColumn[];
+
+    /**
+     * Column definitions for the crudTableColumns that are selected/displayed.
+     * @type {any[]}
+     */
+    protected selectedColumns: CrudTableColumns = new CrudTableColumns( [] );
+
+    /**
+     * Column definitions for crudTableColumns that have not been selected to be displayed and thus are available.
+     * @type {CrudTableColumns}
+     */
+    protected availableColumns: CrudTableColumns = new CrudTableColumns( [] );
+
+    /**
+     * These are the columns to be sent to/used by the turbo table.  They are defined as <any> because we are going to send it
+     * our crudTableColumns of type CrudTableColumn whereas the turbo table expects a PrimeNg Column definition.
+     * @type {any[]}
+     */
+    protected displayColumns: any[];
+
+    /**
      * O U T P U T
      */
     @Output()
@@ -110,30 +143,11 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
     protected selectedModelObjectChange = new EventEmitter<ModelObject<any>>();
 
     /**
-     * These are the crudTableColumns to be sent to the turbo table.  They are defined as <any> because we are going to send it
-     * our crudTableColumns of type CrudTableColumn.
-     * @type {any[]}
+     * Name of the cookie to store the user's selected column.
      */
-    protected columns: any[] = [];
-
-    /**
-     * Column definitions for the crudTableColumns that are selected/displayed.
-     * @type {any[]}
-     */
-    protected selectedColumns: CrudTableColumns = new CrudTableColumns( [] );
-
-    /**
-     * Column definitions for crudTableColumns that have not been selected to be displayed and thus are available.
-     * @type {CrudTableColumns}
-     */
-    protected availableColumns: CrudTableColumns = new CrudTableColumns( [] );
-
     private selectedColumnsCookieName: string;
-    private availableColumnsCookieName: string;
 
-    private _modelObjectFactory: ModelObjectFactory<any>;
     private _crudController: CrudController<any>;
-
 
     /**
      * Constructor.
@@ -152,60 +166,42 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
     public ngOnInit()
     {
         this.debug( "ngOnInit.begin" );
+        this.loadColumns();
     }
 
     /**
-     * View init completed.
-     */
-    public ngAfterViewInit()
-    {
-        /*
-         * Subscribe to the OK button being clicked to customize the column layout.
-         */
-        if ( !isNullOrUndefined( this.crudTableColumnSelectorDialogComponent ))
-        {
-            this.addSubscription( 'columnsCustomizedEvent',
-                                  this.crudTableColumnSelectorDialogComponent
-                                      .subscribeToOkButtonClicked( () => this.columnsCustomized() ) );
-        }
-    }
-
-    /**
-     * Load all of the crudTableColumns for type table.  This is based on the type of model object.
+     * Loads the columns that will be displayed on the table.  The defaults values from the {@code defaultColumns} and
+     * {@code otherColumns} are used unless there are cookie overrides for these values from customization done by the
+     * user.
      */
     protected loadColumns(): void
     {
         const methodName = 'loadColumns';
-        let modelObject: ModelObject<any> = this._modelObjectFactory
-                                                .newModelObject();
-        let crudTableColumns: CrudTableColumns = modelObject.getCrudTableColumns();
-        this.selectedColumnsCookieName = this.getClassName() + ".SelectedColumns";
-        this.availableColumnsCookieName = this.getClassName() + ".AvailableColumns";
-        if ( !isNullOrUndefined( crudTableColumns ) )
+        this.setCookieNames();
+        if ( this.cookieService.check( this.selectedColumnsCookieName ) )
         {
-            if ( this.cookieService.check( this.selectedColumnsCookieName ) )
-            {
-                this.log( methodName + ' got selected crudTableColumns from cookie' );
-                this.selectedColumns = CrudTableColumns.fromJSON( this.cookieService.get( this.selectedColumnsCookieName ) );
-            }
-            else
-            {
-                this.selectedColumns.addAll( modelObject.getCrudTableColumns() )
-            }
-            if ( this.cookieService.check( this.availableColumnsCookieName ))
-            {
-                this.log( methodName + ' got available crudTableColumns from cookie' );
-                this.availableColumns = CrudTableColumns.fromJSON( this.cookieService.get( this.selectedColumnsCookieName ) );
-            }
-            else
-            {
-                this.availableColumns.addAll( modelObject.getOtherCrudTableColumns() );
-            }
-            this.columns = this.selectedColumns
-                               .toArray();
+            this.log( methodName + ' got selected crudTableColumns from cookie' );
+            this.selectedColumns = this.restoreSelectedColumns();
         }
+        else
+        {
+            this.selectedColumns
+                .addAllFromArray( this.defaultColumns );
+        }
+        /*
+         * Recalculate the available columns by adding all other columns and then removing selected columns.
+         * We re-calculate them instead of storing them in a cookie because the columns contained within the model
+         * object may change in the future.
+         */
+        this.availableColumns = new CrudTableColumns( this.otherColumns );
+        this.availableColumns
+            .removeColumns( this.selectedColumns );
+        this.log( methodName + ' available columns: ' + JSON.stringify( this.availableColumns ));
+        this.log( methodName + ' selected columns: ' + JSON.stringify( this.selectedColumns ));
+        this.displayColumns = this.selectedColumns
+                                  .toArray();
+        this.log( methodName + ' displayColumns: ' + JSON.stringify( this.displayColumns ));
     }
-
 
     /**
      * This method is called when the user clicks on the customize table button.
@@ -214,11 +210,21 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
     {
         const methodName = 'customizeColumns';
         this.log( methodName );
-        this.crudTableColumnSelectorDialogComponent
+        /*
+         * Subscribe to the OK button being clicked to customize the column layout.
+         */
+        if ( isNullOrUndefined( this.getCrudTableColumnSelectorDialogComponent() ))
+        {
+            throw new ReferenceError( "Please include an @ViewChild(CrudTableColumnSelectorDialogComponent" );
+        }
+        this.addSubscription( 'columnsCustomizedEvent',
+                              this.getCrudTableColumnSelectorDialogComponent()
+                                  .subscribeToOkButtonClicked( () => this.columnsCustomized() ) );
+        this.getCrudTableColumnSelectorDialogComponent()
             .selectedColumns = this.selectedColumns.toColumnArray();
-        this.crudTableColumnSelectorDialogComponent
+        this.getCrudTableColumnSelectorDialogComponent()
             .availableColumns = this.availableColumns.toColumnArray();
-        this.crudTableColumnSelectorDialogComponent
+        this.getCrudTableColumnSelectorDialogComponent()
             .displayDialog = true;
     }
 
@@ -228,13 +234,13 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
     protected columnsCustomized(): void
     {
         const methodName = 'columnsCustomized';
-        this.log( methodName + ' selectedColumns ' + JSON.stringify( this.crudTableColumnSelectorDialogComponent
+        this.log( methodName + ' selectedColumns ' + JSON.stringify( this.getCrudTableColumnSelectorDialogComponent()
                                                                          .selectedColumns ));
-        this.log( methodName + ' availableColumns ' + JSON.stringify( this.crudTableColumnSelectorDialogComponent
+        this.log( methodName + ' availableColumns ' + JSON.stringify( this.getCrudTableColumnSelectorDialogComponent()
                                                                           .availableColumns ));
-        this.selectedColumns = new CrudTableColumns( this.crudTableColumnSelectorDialogComponent
+        this.selectedColumns = new CrudTableColumns( this.getCrudTableColumnSelectorDialogComponent()
                                                          .selectedColumns );
-        this.availableColumns = new CrudTableColumns( this.crudTableColumnSelectorDialogComponent
+        this.availableColumns = new CrudTableColumns( this.getCrudTableColumnSelectorDialogComponent()
                                                           .availableColumns );
         /*
          * save the results as cookies for now.  Later, we'll allow the user to add a name and store different
@@ -242,22 +248,20 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
          */
         this.cookieService
             .set( this.selectedColumnsCookieName, JSON.stringify( this.selectedColumns ));
-        this.cookieService
-            .set( this.availableColumnsCookieName, JSON.stringify( this.availableColumns ));
-        this.columns = this.selectedColumns
-                           .toArray();
+        this.displayColumns = this.selectedColumns
+                                  .toArray();
     }
 
     /**
-     * Set the model object factory.
-     * @param {ModelObjectFactory<any>} modelObjectFactory
+     * Sets the cookie names.
      */
-    public set modelObjectFactory( modelObjectFactory: ModelObjectFactory<any> )
+    protected setCookieNames()
     {
-        const methodName = 'setModelObjectFactory';
-        this.log( methodName )
-        this._modelObjectFactory = modelObjectFactory;
-        this.loadColumns();
+        if ( isNullOrUndefined( this.cookieContext ) )
+        {
+            throw ReferenceError( 'input variable cookieContext is not set' );
+        }
+        this.selectedColumnsCookieName = this.cookieContext + '.SelectedColumns';
     }
 
     /**
@@ -275,5 +279,47 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
         this.addSubscription( 'subscribeToCustomizeButtonClickedEvent',
                               this._crudController
                                   .subscribeToCustomizeButtonClickedEvent( () => this.customizeColumns() ) );
+    }
+
+    /**
+     * Subclasses must create a ViewChild component and provide the reference to this parent class.
+     * @return {CrudTableColumnSelectorDialogComponent}
+     */
+    protected abstract getCrudTableColumnSelectorDialogComponent(): CrudTableColumnSelectorDialogComponent;
+
+    /**
+     * Extracts user's selected columns from the cookie.
+     */
+    private restoreSelectedColumns()
+    {
+        const methodName = 'restoreSelectedColumns';
+        this.logMethodBegin( methodName );
+        let cookieColumns: CrudTableColumns = CrudTableColumns.fromJSON( this.cookieService.get( this.selectedColumnsCookieName ) );
+        /*
+         * Loop through these columns and add columns to the selected columns list by colId in case the column definition
+         * has changed since the columns were saved.
+         *
+         * First, get a list of all of the available columns which includes the columns that were passed in as default
+         * and other columns.
+         */
+        let allColumns = new CrudTableColumns( [] );
+        allColumns.addAllFromArray( this.defaultColumns );
+        allColumns.addAllFromArray( this.otherColumns );
+        let returnColumns = new CrudTableColumns( [] );
+        cookieColumns.toArray()
+                     .forEach( cookieColumn =>
+                               {
+                                   let allColumn: CrudTableColumn = allColumns.getColumn( cookieColumn.colId );
+                                   if ( isNullOrUndefined( allColumn ))
+                                   {
+                                       this.logError( 'Could not find column ' + cookieColumn.colId + ' in the all columns list' );
+                                   }
+                                   else
+                                   {
+                                       returnColumns.addColumn( allColumn );
+                                   }
+                               })
+        this.debug( methodName + '.end ' + JSON.stringify( returnColumns.toArray() ));
+        return returnColumns;
     }
 }

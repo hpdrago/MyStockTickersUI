@@ -12,12 +12,16 @@ import { ToastsManager } from 'ng2-toastr';
     template: `<div *ngIf="stockAnalystConsensus != null; then foundTemplate else notFoundTemplate">
                </div>
                <ng-template #foundTemplate>
-                   <currency [currencyValue]="analystPriceTarget"></currency> 
+                   <div style="text-align: right">
+                       <currency [currencyValue]="analystPriceTarget"></currency> 
+                   </div>
                </ng-template>
                <ng-template #notFoundTemplate>
-                   <tipranks-link [tickerSymbol]="tickerSymbol"
-                                  displayValue="Tip Ranks">
-                   </tipranks-link>
+                   <div style="text-align: right">
+                       <tipranks-link [tickerSymbol]="tickerSymbol"
+                                      displayValue="Tip Ranks">
+                       </tipranks-link>
+                   </div>
                </ng-template>
     `
 })

@@ -69,14 +69,11 @@ export class StockToBuyTableTabComponent extends StockToBuyBaseTableComponent im
 
     public ngAfterViewInit(): void
     {
-        debugger
         super.ngAfterViewInit();
         /*
          * Need to pass the crud objects to the table layout.
          */
         this.stockModelObjectTableLayoutComponent
             .crudController = this.stockToBuyController;
-        this.stockModelObjectTableLayoutComponent
-            .modelObjectFactory = this.stockToBuyFactory;
     }
 }

@@ -34,7 +34,6 @@ export class StockQuote extends ModelObject<StockQuote>
     public peRatio: number;
     public week52High: number;
     public week52Low: number;
-    public week52Change: number;
     public ytdChangePercent: number;
     public lastQuoteRequestDate: Date;
     public discontinuedInd;
@@ -61,6 +60,11 @@ export class StockQuote extends ModelObject<StockQuote>
         return this.tickerSymbol;
     }
 
+    public setKey( key: any )
+    {
+        this.tickerSymbol = key;
+    }
+
     public setCacheError( error: string )
     {
         this.cacheError = error;
@@ -81,7 +85,7 @@ export class StockQuote extends ModelObject<StockQuote>
         return this.cacheState;
     }
 
-    public getCrudTableColumns(): CrudTableColumns
+    public getDefaultCrudTableColumns(): CrudTableColumns
     {
         let crudTableColumns = new CrudTableColumns( null );
         crudTableColumns.addColumn( {
@@ -167,7 +171,7 @@ export class StockQuote extends ModelObject<StockQuote>
         crudTableColumns.addColumn( {
                                         colId: 'marketCap',
                                         header: 'Market Cap',
-                                        dataType: CrudTableColumnType.CURRENCY,
+                                        dataType: CrudTableColumnType.MARKET_CAP,
                                         cachedDataType: CrudTableColumnCachedDataType.STOCK_QUOTE,
                                         field: 'marketCap',
                                         sortable: true
@@ -197,17 +201,9 @@ export class StockQuote extends ModelObject<StockQuote>
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {
-                                        colId: 'week52Change',
-                                        header: '52w Change',
-                                        dataType: CrudTableColumnType.CURRENCY,
-                                        cachedDataType: CrudTableColumnCachedDataType.STOCK_QUOTE,
-                                        field: 'week52Change',
-                                        sortable: true
-                                    } );
-        crudTableColumns.addColumn( {
                                         colId: 'week52ChangePercent',
-                                        header: '52w Change %',
-                                        dataType: CrudTableColumnType.PERCENT,
+                                        header: '52w Change',
+                                        dataType: CrudTableColumnType.GAIN_LOSS_PERCENT,
                                         cachedDataType: CrudTableColumnCachedDataType.STOCK_QUOTE,
                                         field: 'ytdChangePercent',
                                         sortable: true

@@ -24,6 +24,12 @@ export interface CacheStateContainer<K>
     getKey(): K;
 
     /**
+     * Set the cache key.
+     * @param key
+     */
+    setKey( key: any );
+
+    /**
      * Get the cached data expiration time.  The cached data will be refreshed when the data expires.
      * @return {Date}
      */

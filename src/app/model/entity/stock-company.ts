@@ -56,4 +56,9 @@ export class StockCompany extends ModelObject<StockCompany> implements CacheStat
     {
         this.cacheState = cacheState;
     }
+
+    public setKey( key: any )
+    {
+        return this.tickerSymbol;
+    }
 }

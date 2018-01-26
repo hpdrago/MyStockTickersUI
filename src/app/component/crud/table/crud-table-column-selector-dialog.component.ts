@@ -98,9 +98,9 @@ export class CrudTableColumnSelectorDialogComponent extends BaseComponent
      * Set the selected crudTableColumns.
      * @param {Column[]} value
      */
-    public set selectedColumns( value: Column[] )
+    public set selectedColumns( columns: Column[] )
     {
-        this._selectedColumns = value;
+        this._selectedColumns = columns;
     }
 
     /**
@@ -116,9 +116,9 @@ export class CrudTableColumnSelectorDialogComponent extends BaseComponent
      * Set the available crudTableColumns.
      * @param {Column[]} value
      */
-    public set availableColumns( value: Column[] )
+    public set availableColumns( columns: Column[] )
     {
-        this._availableColumns = value;
+        this._availableColumns = columns;
     }
 
     /**

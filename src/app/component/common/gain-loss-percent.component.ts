@@ -6,11 +6,13 @@ import { Component, Input } from '@angular/core';
 @Component(
 {
     selector: 'gain-loss-percent',
-    template: `<div class="positiveGain" *ngIf="percentValue >= 0.0">
-                    <percent [percentValue]="percentValue" [divideBy]="divideBy"></percent> 
-               </div>
-               <div class="negativeGain" *ngIf="percentValue < 0.0">
-                   <percent [percentValue]="percentValue" [divideBy]="divideBy"></percent> 
+    template: `<div style="text-align: right">
+                   <div class="positiveGain" *ngIf="percentValue >= 0.0">
+                        <percent [percentValue]="percentValue" [divideBy]="divideBy"></percent> 
+                   </div>
+                   <div class="negativeGain" *ngIf="percentValue < 0.0">
+                       <percent [percentValue]="percentValue" [divideBy]="divideBy"></percent> 
+                   </div>
                </div>
               `
 })

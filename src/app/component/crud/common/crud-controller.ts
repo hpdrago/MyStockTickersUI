@@ -232,7 +232,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     /**
      * Subscribe to be notified when the form is ready to be displayed.
      */
-    public subscribeFormReadyToDisplay( fn: () => any ): Subscription
+    public subscribeToFormReadyToDisplay( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToDisplayFormRequestEvent' );
         return this.formReadyToDisplay

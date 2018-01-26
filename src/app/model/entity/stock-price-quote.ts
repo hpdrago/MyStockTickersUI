@@ -38,6 +38,11 @@ export class StockPriceQuote implements CacheStateContainer<string>
         return this.tickerSymbol;
     }
 
+    public setKey( key: any )
+    {
+        this.tickerSymbol = key;
+    }
+
     public setCacheError( error: string )
     {
         this.cacheError = error;
@@ -61,4 +66,5 @@ export class StockPriceQuote implements CacheStateContainer<string>
                                     } );
         return crudTableColumns;
     }
+
 }

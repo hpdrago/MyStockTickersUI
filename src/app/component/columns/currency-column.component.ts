@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component
 ({
     selector: 'currency-column',
-    template: `<div align="right">
+    template: `<div style="text-align: right">
                    <currency [currencyValue]="currencyValue">
                    </currency>
                </div>

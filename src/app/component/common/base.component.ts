@@ -3,6 +3,7 @@ import { ToastsManager } from "ng2-toastr";
 import { BaseClass } from "../../common/base-class";
 import { Subscription } from "rxjs/Subscription";
 import { isNullOrUndefined } from 'util';
+import { Subscriptions } from './subscriptions';
 
 /**
  * This is the base class for all application components to contain common methods, services, and data
@@ -10,7 +11,7 @@ import { isNullOrUndefined } from 'util';
  */
 export abstract class BaseComponent extends BaseClass implements OnChanges, OnDestroy
 {
-    private subscriptions: Subscription[] = [];
+    private subscriptions: Subscriptions = new Subscriptions();
 
     protected disabled: boolean = false;
 
@@ -53,9 +54,8 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
      */
     protected unSubscribeAll()
     {
-        this.debug( `unsubscribeAll ${this.subscriptions.length} subscriptions` );
         this.subscriptions
-            .forEach( subscription => subscription.unsubscribe() );
+            .unSubscribeAll();
     }
 
     /**
@@ -66,14 +66,9 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
      */
     protected addSubscription( subjectName: string, subscription: Subscription )
     {
-        const methodName = 'addSubscription';
-        this.debug( methodName + " subscribing to " + subjectName );
-        if ( isNullOrUndefined( subscription ))
-        {
-            throw ReferenceError( "subscription cannot be null or undefined" );
-        }
-        this.subscriptions.push( subscription );
+        this.subscriptions.addSubscription( subjectName, subscription );
     }
+
     /**
      * This method is called by {@code ngOnChanges} for each property that has changed.
      * @param property The name of the property that has changed.

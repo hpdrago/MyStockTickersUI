@@ -19,6 +19,7 @@ import { ModelObjectFactory } from '../../../model/factory/model-object.factory'
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { Observable } from 'rxjs/Rx';
 import { CookieService } from 'ngx-cookie-service';
+import { CrudTableColumn } from './crud-table-column';
 
 
 /**
@@ -53,12 +54,19 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * The last page load event
      */
     protected lastLoadEvent: LazyLoadEvent;
-
     /**
      * The table :-)
      */
     @ViewChild(DataTable)
     protected dataTable: DataTable;
+    /**
+     * Contains the default columns to be displayed as defined by the model object.
+     */
+    protected defaultColumns: CrudTableColumn[];
+    /**
+     * Contains the other columns to be displayed as defined by the model object.
+     */
+    protected otherColumns: CrudTableColumn[];
 
     /**
      * Constructor.
@@ -93,6 +101,14 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         this.debug( "ngOnInit.begin" );
         super.ngOnInit();
+        this.defaultColumns = this.modelObjectFactory
+                                  .newModelObject()
+                                  .getDefaultCrudTableColumns()
+                                  .toArray();
+        this.otherColumns = this.modelObjectFactory
+                                .newModelObject()
+                                .getOtherCrudTableColumns()
+                                .toArray();
         this.subscribeToServiceEvents();
         if ( TableLoadingStrategy.isLoadOnCreate( this.tableLoadingStrategy ))
         {
@@ -343,13 +359,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         if ( this.isCrudUpdateOperation() )
         {
             this.checkModelObjectVersion();
-        }
-        else
-        {
-            /*
-            this.crudController
-                .sendDisplayFormRequestEvent();
-                */
         }
     }
 

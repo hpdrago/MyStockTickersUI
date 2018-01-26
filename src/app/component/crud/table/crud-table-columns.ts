@@ -40,6 +40,26 @@ export class CrudTableColumns
     }
 
     /**
+     * Removes any columns that are in {@code columnsToRemove} from the column list.
+     * @param {CrudTableColumns} columnsToRemove
+     */
+    public removeColumns( columnsToRemove: CrudTableColumns )
+    {
+        columnsToRemove.columns
+                       .forEach( columnToRemove => this.removeColumn( columnToRemove.colId ));
+    }
+
+    /**
+     * Remove the colume for the {@code columnId}
+     * @param {string} columnId
+     */
+    public removeColumn( columnId: string )
+    {
+        this.columns = this.columns
+                           .filter( column => column.colId != columnId );
+    }
+
+    /**
      * Iterator for the crudTableColumns.
      * @return {IterableIterator<CrudTableColumn>}
      */
@@ -78,7 +98,16 @@ export class CrudTableColumns
      */
     public addAll( crudTableColumns: CrudTableColumns )
     {
-        this.columns = this.columns.concat( crudTableColumns.toArray() );
+        this.columns = this.columns.concat( crudTableColumns.columns );
+    }
+
+    /**
+     * Adds all of the columns from {@code crudTableColumns} to the internal column list.
+     * @param {CrudTableColumn[]} crudTableColumns
+     */
+    public addAllFromArray( crudTableColumns: CrudTableColumn[] )
+    {
+        this.columns = this.columns.concat( crudTableColumns );
     }
 
     /**
@@ -90,5 +119,21 @@ export class CrudTableColumns
     {
         let crudTableColumns = JSON.parse( json );
         return new CrudTableColumns( crudTableColumns.columns );
+    }
+
+    /**
+     * Get the column for the {@code columnId}.
+     * @param {string} columnId
+     * @return {CrudTableColumn}
+     */
+    public getColumn( columnId: string ): CrudTableColumn
+    {
+        let filteredColumns = this.columns
+                                  .filter( column => column.colId == columnId );
+        if ( filteredColumns.length == 0 )
+        {
+            return null;
+        }
+        return filteredColumns[0];
     }
 }

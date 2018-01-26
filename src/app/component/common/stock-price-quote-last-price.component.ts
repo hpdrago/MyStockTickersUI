@@ -31,9 +31,11 @@ import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.fa
                        </ng-template>
                        
                        <ng-template #isValidDataTemplate>
-                           <stock-price-gain-loss [amount]="stockPriceQuote.lastPrice"
-                                                  [changeAmount]="getChangeAmount()">
-                           </stock-price-gain-loss>
+                           <div style="text-align: right">
+                               <stock-price-gain-loss [amount]="stockPriceQuote.lastPrice"
+                                                      [changeAmount]="getChangeAmount()">
+                               </stock-price-gain-loss>
+                           </div>
                        </ng-template>
                    </stock-price-quote>
                </stock-quote>

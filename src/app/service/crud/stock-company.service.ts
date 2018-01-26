@@ -11,6 +11,7 @@ import { Observable } from 'rxjs/Observable';
 import { KeyValuePairs } from '../../common/key-value-pairs';
 import { PaginationPage } from '../../common/pagination';
 import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
+import { isNullOrUndefined } from 'util';
 
 @Injectable()
 export class StockCompanyService extends ReadRestService<StockCompany>
@@ -62,6 +63,10 @@ export class StockCompanyService extends ReadRestService<StockCompany>
         {
             keyColumns.addPair( "tickerSymbol", stockCompany.tickerSymbol );
         }
+        else
+        {
+            throw new ReferenceError( 'stockCompany.tickerSymbol cannot be null' );
+        }
         return keyColumns;
     }
 
@@ -91,6 +96,10 @@ export class StockCompanyService extends ReadRestService<StockCompany>
     {
         const methodName = 'getStockCompany';
         this.debug( methodName + ' ' + tickerSymbol );
+       if ( isNullOrUndefined( tickerSymbol ) || tickerSymbol.length == 0 )
+        {
+            throw new ReferenceError( 'tickerSymbol cannot be null to load a stock company' );
+        }
         let stockCompany: StockCompany = this.stockCompanyFactory.newModelObject();
         stockCompany.tickerSymbol = tickerSymbol;
         let url = this.getCompleteURL( this.getContextURLFrom( '/company', stockCompany ), null );

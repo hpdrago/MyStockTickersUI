@@ -1,5 +1,5 @@
 import { BaseComponent } from '../common/base.component';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesCrudActionHandler } from './stock-notes-crud-action-handler';
@@ -9,6 +9,8 @@ import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action
 import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
+import { StockNotesDialogComponent } from './stock-notes-dialog.component';
+import { CrudOperation } from '../crud/common/crud-operation';
 
 /**
  * Component to display the stock notes dialog to create a new note.
@@ -18,14 +20,20 @@ import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
     template: `<stock-notes-dialog [modal]="false"
                                    [showContinuousAddButton]="true"
                                    [showAddButton]="false"
+                                   [displayDialog]="true"
                                    [showCloseButton]="false">
                </stock-notes-dialog>
     `,
     providers: [StockNotesController, StockNotesStateStore, StockNotesCrudActionHandler,
                 StockToBuyController, StockToBuyStateStore, StockToBuyCrudActionHandler]
  })
-export class StockNotesAddComponent extends BaseComponent implements OnInit
+export class StockNotesAddComponent extends BaseComponent implements AfterViewInit
 {
+    /*
+    @ViewChild(StockNotesDialogComponent)
+    private stockNotesDialog: StockNotesDialogComponent;
+    */
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -42,14 +50,18 @@ export class StockNotesAddComponent extends BaseComponent implements OnInit
                         private stockNotesCrudService: StockNotesCrudService,
                         private stockToBuyController: StockToBuyController,
                         private stockToBuyActionHandler: StockToBuyCrudActionHandler,
-                        private stockToBuyCrudService: StockToBuyCrudService )
+                        private stockToBuyCrudService: StockToBuyCrudService,
+                        private stockToBuyStateStore: StockToBuyStateStore )
     {
         super( toaster );
     }
 
-    public ngOnInit(): void
+    public ngAfterViewInit(): void
     {
+        const methodName = 'ngAfterViewInit';
+        this.logMethodBegin( methodName )
         this.stockNotesController
             .sendTableAddButtonClickedEvent();
+        this.logMethodEnd( methodName )
     }
 }

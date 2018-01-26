@@ -54,6 +54,10 @@ export class StockCompanyComponent extends BaseCachedValueComponent implements O
      */
     public ngOnInit(): void
     {
+        if ( isNullOrUndefined( this.tickerSymbol ))
+        {
+            throw new ReferenceError( "tickerSymbol input value cannot be null" );
+        }
         super.addSubscription( 'stockCompanyCache',
             this.stockCompanyCacheService
                 .subscribe( this.tickerSymbol,

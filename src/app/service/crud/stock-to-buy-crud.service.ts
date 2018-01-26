@@ -76,4 +76,14 @@ export class StockToBuyCrudService extends BaseStockService<StockToBuy>
         keyColumns.addPair( "tickerSymbol", stockToBuy.tickerSymbol );
         return keyColumns;
     }
+
+    getPage( modelObject: StockToBuy, lazyLoadEvent: LazyLoadEvent ): Observable<PaginationPage<StockToBuy>>
+    {
+        return super.getPage( modelObject, lazyLoadEvent )
+                    .map( page =>
+                          {
+                              this.log( 'STOCKTOBUY: ' + JSON.stringify( page.content ));
+                              return page;
+                          } )
+    }
 }

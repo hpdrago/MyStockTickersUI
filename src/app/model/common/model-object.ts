@@ -76,10 +76,12 @@ export abstract class ModelObject<T>
     public abstract getPrimaryKeyName(): string;
 
     /**
-     * Get all of the crudTableColumns to display in the table.
+     * Get all of the default columns to display in the table which will be the primitive properties of the  model object.
+     * Whereas, the other crud table columns will include the columns form other model objects contained within the
+     * model object by default, are empty.
      * @return {CrudTableColumns}
      */
-    public getCrudTableColumns(): CrudTableColumns
+    public getDefaultCrudTableColumns(): CrudTableColumns
     {
         let crudTableColumns: CrudTableColumns = new CrudTableColumns( [] );
         crudTableColumns.addColumn( {
@@ -105,7 +107,8 @@ export abstract class ModelObject<T>
      */
     public getOtherCrudTableColumns(): CrudTableColumns
     {
-        return new CrudTableColumns( [] );
+        let crudTableColumns: CrudTableColumns = new CrudTableColumns( [] );
+        return crudTableColumns;
     }
 
     /**

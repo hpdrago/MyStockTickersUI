@@ -31,15 +31,19 @@
     ANALYST PRICE TARGET
     ------------------------------------------------------------------------------------------------------------>
     <div *ngSwitchCase="'percentChangeSinceCreated'">
-        <currency [currencyValue]="modelObject[column.field]">
-        </currency>
+        <div style="text-align: right">
+            <currency-column [currencyValue]="modelObject[column.field]">
+            </currency-column>
+        </div>
     </div>
     <!----------------------------------------------------------------------------------------------------------
     ANALYST AVERAGE UPSIDE PERCENT
     ------------------------------------------------------------------------------------------------------------>
     <div *ngSwitchCase="'avgUpsidePercent'">
-        <stock-average-upside-percent [tickerSymbol]="modelObject.tickerSymbol">
-        </stock-average-upside-percent>
+        <div style="text-align: right">
+            <stock-average-upside-percent [tickerSymbol]="modelObject.tickerSymbol">
+            </stock-average-upside-percent>
+        </div>
     </div>
     <!----------------------------------------------------------------------------------------------------------
     ANALYST AVG PRICE TARGET
@@ -56,6 +60,10 @@
         <stock-company-name [tickerSymbol]="modelObject.tickerSymbol">
         </stock-company-name>
     </div>
+
+    <ng-template #loadingTemplate>
+       Loading...
+    </ng-template>
     <!----------------------------------------------------------------------------------------------------------
     COMMON DATA TYPES
     ------------------------------------------------------------------------------------------------------------>
@@ -65,14 +73,14 @@
         ------------------------------------------------------------------------------------------------------------>
         <div [ngSwitch]="column.cachedDataType">
             <div *ngSwitchCase="CrudTableColumnCachedDataType.STOCK_PRICE_QUOTE">
-                <div *ngIf="modelObject.stockPriceQuote != undefined">
+                <div *ngIf="modelObject.stockPriceQuote; else loadingTemplate">
                     <crud-table-column-by-data-type [modelObject]="modelObject.stockPriceQuote"
                                                     [column]="column">
                     </crud-table-column-by-data-type>
                 </div>
             </div>
             <div *ngSwitchCase="CrudTableColumnCachedDataType.STOCK_QUOTE">
-                <div *ngIf="modelObject.stockQuote != undefined">
+                <div *ngIf="modelObject.stockQuote; else loadingTemplate">
                     <crud-table-column-by-data-type [modelObject]="modelObject.stockQuote"
                                                     [column]="column">
                     </crud-table-column-by-data-type>

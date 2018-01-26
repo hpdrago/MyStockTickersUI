@@ -279,6 +279,8 @@ import { StockQuotePropertyColumnComponent } from './component/stock-table/stock
 import { StockModelObjectCommonColumnsComponent } from './component/stock-table/stock-model-object-common-columns.component';
 import { CrudTableLayoutComponent } from './component/crud/table/crud-table-layout.component';
 import { StockModelObjectTableLayoutComponent } from './component/stock-table/stock-model-object-table-layout.component';
+import { MillifyComponent } from './component/common/millify.component';
+import { MillifyColumnComponent } from './component/columns/millify-column.component';
 
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -531,6 +533,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         CrudTableColumnSelectorDialogComponent,
         TickerSymbolColumnComponent,
         CurrencyColumnComponent,
+        MillifyColumnComponent,
 
         CachedValueComponent,
         StockNotesSourceSelectionComponent,
@@ -541,6 +544,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         TipRanksLinkComponent,
         CurrencyComponent,
         PercentComponent,
+        MillifyComponent,
         GainLossCurrencyComponent,
         GainLossPercentComponent,
         DateComponent,

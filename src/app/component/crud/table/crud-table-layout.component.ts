@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { CrudTableLayoutBaseComponent } from './crud-table-layout-base.component';
 import { CookieService } from 'ngx-cookie-service';
+import { CrudTableColumnSelectorDialogComponent } from './crud-table-column-selector-dialog.component';
 
 /**
  * This component contains the layout (definition) of the crud table using the new PrimeNG turbo table.
@@ -17,6 +18,12 @@ import { CookieService } from 'ngx-cookie-service';
 export class CrudTableLayoutComponent extends CrudTableLayoutBaseComponent
 {
     /**
+     * Column customizer.
+     */
+    @ViewChild(CrudTableColumnSelectorDialogComponent)
+    private _crudTableColumnSelectorDialogComponent: CrudTableColumnSelectorDialogComponent;
+
+    /**
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {CookieService} cookieService
@@ -26,5 +33,15 @@ export class CrudTableLayoutComponent extends CrudTableLayoutBaseComponent
     {
         super( toaster,
                cookieService );
+    }
+
+    protected getCrudTableColumnSelectorDialogComponent(): CrudTableColumnSelectorDialogComponent
+    {
+        return this._crudTableColumnSelectorDialogComponent;
+    }
+
+    public get crudTableColumnSelectorDialogComponent(): CrudTableColumnSelectorDialogComponent
+    {
+        return this._crudTableColumnSelectorDialogComponent;
     }
 }

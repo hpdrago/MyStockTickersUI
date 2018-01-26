@@ -100,10 +100,10 @@ export abstract class CrudDialogComponent<T extends ModelObject<T>> extends Crud
     {
         const methodName = 'subscribeTooControllerEvents';
         this.debug( methodName + ".begin" );
-        this.addSubscription( methodName,
+        this.addSubscription( 'subscribeToFormReadyToDisplay',
                               this.crudController
-                                  .subscribeFormReadyToDisplay( () => this.setDisplayDialog() ));
-        this.addSubscription( methodName,
+                                  .subscribeToFormReadyToDisplay( () => this.setDisplayDialog() ));
+        this.addSubscription( 'subscribeToDialogDisplayEvent',
                               this.crudController
                                   .subscribeToDialogDisplayEvent( () => this.setDisplayDialog() ));
         this.debug( methodName + ".end" );

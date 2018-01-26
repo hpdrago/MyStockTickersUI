@@ -286,6 +286,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
          * Send the model object with the cache state of STALE so the component will display the loading message.
          */
         let modelObject: T = this.modelObjectFactory.newModelObject();
+        modelObject.setKey( key );
         modelObject.setCacheState( CachedValueState.STALE );
         modelObject.setCacheError( '' );
         /*

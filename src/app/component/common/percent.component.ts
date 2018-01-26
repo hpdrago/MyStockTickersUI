@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { BaseComponent } from './base.component';
+import { ToastsManager } from 'ng2-toastr';
 
 /**
  * This component simply formats a number into a two decimal format.
@@ -8,7 +10,7 @@ import { Component, Input } from '@angular/core';
     selector: 'percent',
     template: `{{(percentValue/divideBy) | percent: '1.2-2' }}`
 })
-export class PercentComponent
+export class PercentComponent extends BaseComponent
 {
     /**
      * The percentage modelObjectRows.
@@ -23,4 +25,14 @@ export class PercentComponent
      */
     @Input()
     protected divideBy: number = 1;
+
+    /**
+     * Constructor
+     * @param {ToastsManager} toaster
+     */
+    public constructor( protected toaster: ToastsManager )
+    {
+        super( toaster );
+    }
+
 }

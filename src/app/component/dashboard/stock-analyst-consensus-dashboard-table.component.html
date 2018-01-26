@@ -42,8 +42,10 @@
               [style]="{'width':'40px','text-align':'right'}"
               [sortable]="true">
         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-            <stock-average-upside-percent [tickerSymbol]="stockAnalystConsensus.tickerSymbol">
-            </stock-average-upside-percent>
+            <div style="text-align: right">
+                <stock-average-upside-percent [tickerSymbol]="stockAnalystConsensus.tickerSymbol">
+                </stock-average-upside-percent>
+            </div>
         </ng-template>
     </p-column>
 

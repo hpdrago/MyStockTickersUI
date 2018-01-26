@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import { StockQuoteService } from '../crud/stock-quote.service';
 import { Injectable } from '@angular/core';
 import { StockQuoteContainer } from '../../model/common/stock-quote-container';
+import { isNullOrUndefined } from 'util';
+import { CachedValueState } from '../../common/cached-value-state.enum';
 
 /**
  * This class caches the {@code StockQuote}s.  It fetches the quotes when they are needed and refreshes the quotes
@@ -47,8 +49,18 @@ export class StockQuoteCacheService extends AsyncCacheService<string,StockQuote>
     {
         const methodName = 'extractStockQuotes';
         this.logMethodBegin( methodName );
-        containers.forEach( container => this.addCacheData( container.tickerSymbol,
-                                                                      container.stockQuote ));
+        containers.forEach( container =>
+                            {
+                                this.log( `${methodName} ${container.tickerSymbol} ${JSON.stringify( container.stockQuote )}` );
+                                if ( !isNullOrUndefined( container.stockQuote ) &&
+                                     !isNullOrUndefined( container.stockQuote.cacheState ) &&
+                                    (container.stockQuote.cacheState == CachedValueState.CURRENT ||
+                                     container.stockQuote.cacheState == CachedValueState.STALE ))
+                                {
+                                    this.addCacheData( container.tickerSymbol,
+                                                       container.stockQuote )
+                                }
+                            });
         this.logMethodEnd( methodName );
     }
 }

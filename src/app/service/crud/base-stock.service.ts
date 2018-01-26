@@ -73,6 +73,9 @@ export abstract class BaseStockService<T extends ModelObject<T> & StockQuoteCont
                                       container.stockQuote = this.stockQuoteFactory
                                                                  .newModelObjectFromJSON( container.stockQuote );
                                   })
+                              /*
+                               * Update the cache's with any new information just retrieved from the backend.
+                               */
                               this.stockQuoteCache
                                   .extractStockQuotes( page.content );
                               this.stockPriceQuoteCache

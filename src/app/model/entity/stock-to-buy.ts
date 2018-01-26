@@ -73,9 +73,9 @@ export class StockToBuy extends StockModelObject<StockToBuy> implements StockNot
      * Returns all of the available crudTableColumns.
      * @return {CrudTableColumns}
      */
-    public getCrudTableColumns(): CrudTableColumns
+    public getDefaultCrudTableColumns(): CrudTableColumns
     {
-        let crudTableColumns: CrudTableColumns = super.getCrudTableColumns();
+        let crudTableColumns: CrudTableColumns = super.getDefaultCrudTableColumns();
         crudTableColumns.addColumn( {
                                         colId: 'recordBuy',
                                         header: 'Record Buy',

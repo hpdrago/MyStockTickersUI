@@ -9,6 +9,7 @@ import { isNullOrUndefined } from 'util';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { StockPriceQuoteContainer } from '../../model/common/stock-price-quote-container';
 import { StockQuoteContainer } from '../../model/common/stock-quote-container';
+import { StockCompany } from '../../model/entity/stock-company';
 
 /**
  * This is the base class for CRUD forms that contain StockAutoCompleteComponent that allows the user to search for/select
@@ -43,10 +44,10 @@ export abstract class StockCrudFormComponent<T extends ModelObject<T> & StockPri
      * This method is called when the user selects a stock using the stock/company search input
      * @param stockPriceQuote
      */
-    protected onStockSelected( stockPriceQuote: StockPriceQuote )
+    protected onStockSelected( stockCompany: StockCompany )
     {
-        this.debug( "onStockSelected: " + JSON.stringify( stockPriceQuote ) );
-        this.modelObject.stockPriceQuote = stockPriceQuote;
+        this.debug( "onStockSelected: " + JSON.stringify( stockCompany ) );
+        this.modelObject.stockPriceQuote.lastPrice = stockCompany.lastPrice
     }
 
     /**

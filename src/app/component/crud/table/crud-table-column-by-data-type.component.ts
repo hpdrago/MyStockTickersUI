@@ -16,8 +16,10 @@ import { isNullOrUndefined } from 'util';
     template: `
         <div [ngSwitch]="column.dataType">
             <div *ngSwitchCase="CrudTableColumnType.CURRENCY">
-                <currency [currencyValue]="getProperty( modelObject, column.field )">
-                </currency>
+                <div style="text-align: right">
+                    <currency [currencyValue]="getProperty( modelObject, column.field )">
+                    </currency>
+                </div>
             </div>
             <div *ngSwitchCase="CrudTableColumnType.NOTES_SOURCE">
                 {{modelObject[column.field]}}
@@ -27,14 +29,26 @@ import { isNullOrUndefined } from 'util';
                 </stock-comments>
             </div>
             <div *ngSwitchCase="CrudTableColumnType.NUMBER">
-                "No Def for NUMBER"
+                <div style="text-align: right">
+                    "No Def for NUMBER"
+                </div>
+            </div>
+            <div *ngSwitchCase="CrudTableColumnType.GAIN_LOSS_PERCENT">
+                <gain-loss-percent [percentValue]="getProperty( modelObject, column.field )">
+                </gain-loss-percent>
             </div>
             <div *ngSwitchCase="CrudTableColumnType.PERCENT">
-                <percent [percentValue]="getProperty( modelObject, column.field )">
-                </percent>
+                <div style="text-align: right">
+                    <percent [percentValue]="getProperty( modelObject, column.field )">
+                    </percent>
+                </div>
             </div>
             <div *ngSwitchCase="CrudTableColumnType.STRING">
                 {{getProperty( modelObject, column.field )}}
+            </div>
+            <div *ngSwitchCase="CrudTableColumnType.MARKET_CAP">
+                <millify-column [value]="getProperty( modelObject, column.field )">
+                </millify-column>
             </div>
         </div>
     `
@@ -74,8 +88,10 @@ export class CrudTableColumnByDataTypeComponent extends BaseComponent
     protected getProperty( object: any, property: string ): any
     {
         let value = _.get( object, property );
-        //this.debug( "getProperty object: " + JSON.stringify( object ) );
-        //this.debug( "getProperty object: property: " + property + " modelObjectRows: " + modelObjectRows );
+        /*
+        this.debug( "getProperty object: " + JSON.stringify( object ) );
+        this.debug( "getProperty object: property: " + property + " modelObject: " + JSON.stringify(this.modelObject));
+        */
         return value;
     }
 

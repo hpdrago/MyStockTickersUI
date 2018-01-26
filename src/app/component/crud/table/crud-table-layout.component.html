@@ -15,19 +15,17 @@
     DEFINE THE TABLE
     ------------------------------------------------------------------------------------------------------------>
 
-    <!--
-    [paginator]="paginator"
-    [pageLinks]="pageLinks"
-    [totalRecords]="totalRecords"
-    -->
 
     <p-table class="ui-table"
              [value]="modelObjectRows"
-             [columns]="crudTableColumns"
+             [columns]="displayColumns"
              [rows]="rowsToDisplay"
              [autoLayout]="autoLayout"
              [dataKey]="dataKey"
              [(selection)]="selectedModelObject"
+             [paginator]="paginator"
+             [pageLinks]="pageLinks"
+             [totalRecords]="totalRecords"
              (onRowSelect)="onRowSelect"
              (onRowUnselect)="onRowUnSelect"
              selectionMode="single"
@@ -49,7 +47,7 @@
 
         <ng-template pTemplate="body" let-modelObject let-columns="columns">
             <tr [pSelectableRow]="modelObject">
-                <td *ngFor="let column of crudTableColumns">
+                <td *ngFor="let column of columns">
                     <!-- Display the custom crudTableColumns -->
                     <ng-container *ngTemplateOutlet="columnsTemplate; context: {modelObject: modelObject, column: column}">
                     </ng-container>

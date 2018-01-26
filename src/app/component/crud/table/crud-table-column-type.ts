@@ -8,7 +8,9 @@ export enum CrudTableColumnType
     CURRENCY,
     NUMBER,
     PERCENT,
+    GAIN_LOSS_PERCENT,
     COMMENTS,
     NOTES_SOURCE,
-    CUSTOM
+    CUSTOM,
+    MARKET_CAP
 }

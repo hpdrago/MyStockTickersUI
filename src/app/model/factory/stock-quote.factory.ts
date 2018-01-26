@@ -47,7 +47,6 @@ export class StockQuoteFactory extends ModelObjectFactory<StockQuote>
         stockQuote.peRatio = 0;
         stockQuote.week52High = 0;
         stockQuote.week52Low = 0;
-        stockQuote.week52Change = 0;
         stockQuote.ytdChangePercent = 0;
         stockQuote.lastQuoteRequestDate = new Date();
         stockQuote.discontinuedInd = false;
