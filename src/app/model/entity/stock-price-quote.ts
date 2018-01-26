@@ -50,7 +50,7 @@ export class StockPriceQuote implements CacheStateContainer<string>
 
     public getCrudTableColumns(): CrudTableColumns
     {
-        let crudTableColumns = new CrudTableColumns();
+        let crudTableColumns = new CrudTableColumns( [] );
         crudTableColumns.addColumn( {
                                         colId: 'lastPrice',
                                         header: 'Last Price',

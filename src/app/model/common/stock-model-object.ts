@@ -5,6 +5,7 @@ import { StockPriceQuoteContainer } from './stock-price-quote-container';
 import { StockQuoteContainer } from './stock-quote-container';
 import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
 import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This is the base class for all ModelObjects that contains a ticker symbol, stock quote, and stock price quote
@@ -64,9 +65,11 @@ export abstract class StockModelObject<T extends ModelObject<T>> extends ModelOb
      */
     public getCrudTableColumns(): CrudTableColumns
     {
-        let crudTableColumns = new CrudTableColumns();
-        crudTableColumns.addAll( this.stockQuote.getCrudTableColumns() );
-        crudTableColumns.addAll( this.stockPriceQuote.getCrudTableColumns() );
+        let crudTableColumns = new CrudTableColumns( [] );
+        if ( isNullOrUndefined( this.stockPriceQuote ))
+        {
+            this.stockPriceQuote = new StockPriceQuote();
+        }
         crudTableColumns.addColumn( {
                                         colId: 'tickerSymbol',
                                         header: 'Ticker Symbol',
@@ -74,6 +77,10 @@ export abstract class StockModelObject<T extends ModelObject<T>> extends ModelOb
                                         field: 'tickerSymbol',
                                         sortable: true
                                     } );
+        /*
+         * Add the stock price quote information
+         */
+        crudTableColumns.addAll( this.stockPriceQuote.getCrudTableColumns() );
         crudTableColumns.addColumn( {
                                         colId: 'stockPriceWhenCreated',
                                         header: 'Stock Price When Created',
@@ -99,6 +106,21 @@ export abstract class StockModelObject<T extends ModelObject<T>> extends ModelOb
                                         dataType: CrudTableColumnType.CUSTOM,
                                         sortable: true
                                     } );
+        return crudTableColumns;
+    }
+
+    /**
+     * Get the stock quote columns.
+     * @return {CrudTableColumns}
+     */
+    public getOtherCrudTableColumns(): CrudTableColumns
+    {
+        let crudTableColumns: CrudTableColumns = super.getOtherCrudTableColumns();
+        if ( isNullOrUndefined( this.stockQuote ))
+        {
+            this.stockQuote = new StockQuote();
+        }
+        crudTableColumns.addAll( this.stockQuote.getCrudTableColumns() );
         return crudTableColumns;
     }
 }

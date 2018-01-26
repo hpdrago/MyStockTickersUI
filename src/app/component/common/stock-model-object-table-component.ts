@@ -1,6 +1,5 @@
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
-import { StockModelObject } from "../../model/common/stock-model-object";
 import { StockCompany } from "../../model/entity/stock-company";
 import { TableLoadingStrategy } from "./table-loading-strategy";
 import { CrudStateStore } from '../crud/common/crud-state-store';
@@ -77,6 +76,7 @@ export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & 
     protected onTableLoad( modelObjects: T[] ): void
     {
         this.log( 'onTableLoad subscribing to cache updates')
+        /*
         modelObjects.forEach( modelObject =>
                               {
                                   if ( modelObject.hasOwnProperty( 'stockQuote' ) )
@@ -88,7 +88,7 @@ export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & 
                                                               this.onStockQuoteUpdate( modelObject, stockQuote );
                                                           } ));
                                   }
-                              })
+                              });*/
         super.onTableLoad( modelObjects );
     }
 

@@ -11,7 +11,7 @@ import { Column } from 'primeng/shared';
     selector: 'crud-table-column-selector',
     template: `<p-pickList [source]="availableColumns" 
                            [target]="selectedColumns"
-                           sourceHeader="Available Columns",
+                           sourceHeader="Available Columns"
                            targetHeader="Selected Columns"
                            [dragdrop]="true">
                    <ng-template let-column pTemplate="item">

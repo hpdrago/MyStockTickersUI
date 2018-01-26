@@ -21,6 +21,7 @@ import { Observable } from 'rxjs/Rx';
 import { CrudTableColumns } from './crud-table-columns';
 import { CrudTableColumnType } from './crud-table-column-type';
 import { CrudTableColumnCachedDataType } from './crud-table-column-cached-data-type';
+import { CrudTableColumnSelectorDialogComponent } from './crud-table-column-selector-dialog.component';
 
 
 /**
@@ -72,6 +73,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected dataTable: DataTable;
 
     /**
+     * Column customizer.
+     */
+    @ViewChild(CrudTableColumnSelectorDialogComponent)
+    protected crudTableColumnSelectorDialogComponent: CrudTableColumnSelectorDialogComponent;
+
+    /**
      * These are the columns to be sent to the turbo table.  They are defined as <any> because we are going to send it
      * our columns of type CrudTableColumn.
      * @type {any[]}
@@ -82,25 +89,19 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * Column definitions for the columns that are selected/displayed.
      * @type {any[]}
      */
-    protected selectedColumns: CrudTableColumns = new CrudTableColumns();
+    protected selectedColumns: CrudTableColumns = new CrudTableColumns( [] );
 
     /**
      * Column definitions for columns that have not been selected to be displayed and thus are available.
      * @type {CrudTableColumns}
      */
-    protected availableColumns: CrudTableColumns = new CrudTableColumns();
+    protected availableColumns: CrudTableColumns = new CrudTableColumns( [] );
 
     /**
      * Column definitions for all columns.
      * @type {CrudTableColumns}
      */
-    protected allColumns: CrudTableColumns = new CrudTableColumns();
-
-    /**
-     * Controls the display of the column selection dialog.
-     * @type {boolean}
-     */
-    protected displayColumnSelectorDialog: boolean = false;
+    //protected allColumns: CrudTableColumns = new CrudTableColumns( [] );
 
     /**
      * Constructor.
@@ -143,6 +144,21 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     }
 
     /**
+     * View init completed.
+     */
+    public ngAfterViewInit()
+    {
+        super.ngAfterViewInit();
+        /*
+         * Subscribe to the OK button being clicked to customize the column layout.
+         */
+        this.addSubscription( 'columnsCustomizedEvent',
+                              this.crudTableColumnSelectorDialogComponent
+                                  .subscribeToOkButtonClicked( ()=> this.columnsCustomized() ));
+
+    }
+
+    /**
      * Load all of the columns for type table.  This is based on the type of model object.
      */
     protected loadColumns(): void
@@ -152,8 +168,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         let crudTableColumns: CrudTableColumns = modelObject.getCrudTableColumns();
         if ( !isNullOrUndefined( crudTableColumns ) )
         {
-            this.allColumns.addAll( modelObject.getCrudTableColumns() );
-            this.selectedColumns.addAll( this.allColumns );
+            this.selectedColumns.addAll( modelObject.getCrudTableColumns() )
+            this.availableColumns.addAll( modelObject.getOtherCrudTableColumns() );
             this.columns = this.selectedColumns
                                .toArray();
         }
@@ -203,6 +219,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                         err =>
                         {
                             this.loading = false;
+                            this.logError( err );
                             this.debug( methodName + '.end');
                         } );
         this.lastLoadEvent = event;
@@ -331,18 +348,52 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                 this.crudController
                     .subscribeToTableDeleteButtonClickedEvent( () => this.showFormToDelete() ) );
         }
+        /*
+         * Subscribe to refresh button click
+         */
         this.addSubscription( 'subscribeToRefreshButtonClickedEvent',
             this.crudController
                 .subscribeToRefreshButtonClickedEvent( () => this.refreshTable() ) );
+        /*
+         * Subscribe to customize button click
+         */
         this.addSubscription( 'subscribeToCustomizeButtonClickedEvent',
                               this.crudController
                                   .subscribeToCustomizeButtonClickedEvent( () => this.customizeColumns() ) );
         this.debug( methodName + '.end' );
     }
 
+    /**
+     * This method is called when the user clicks on the customize table button.
+     */
     protected customizeColumns(): void
     {
+        const methodName = 'customizeColumns';
+        this.log( methodName );
+        this.crudTableColumnSelectorDialogComponent
+            .selectedColumns = this.selectedColumns.toColumnArray();
+        this.crudTableColumnSelectorDialogComponent
+            .availableColumns = this.availableColumns.toColumnArray();
+        this.crudTableColumnSelectorDialogComponent
+            .displayDialog = true;
+    }
 
+    /**
+     * This method is called when the use has clicked the ok button on the customize column dialog.
+     */
+    protected columnsCustomized(): void
+    {
+        const methodName = 'columnsCustomized';
+        this.log( methodName + ' selectedColumns ' + JSON.stringify( this.crudTableColumnSelectorDialogComponent
+                                                         .selectedColumns ));
+        this.log( methodName + ' availableColumns ' + JSON.stringify( this.crudTableColumnSelectorDialogComponent
+                                                                          .availableColumns ));
+        this.selectedColumns = new CrudTableColumns( this.crudTableColumnSelectorDialogComponent
+                                                         .selectedColumns );
+        this.availableColumns = new CrudTableColumns( this.crudTableColumnSelectorDialogComponent
+                                                          .availableColumns );
+        this.columns = this.selectedColumns
+                           .toArray();
     }
 
     /**

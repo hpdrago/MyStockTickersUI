@@ -1,6 +1,7 @@
 import { CrudTableColumn } from './crud-table-column';
 import { CrudTableColumnType } from './crud-table-column-type';
 import { isNullOrUndefined } from 'util';
+import { Column } from 'primeng/shared';
 
 /**
  * Manages a list of {@code CrudTableColumns}.
@@ -8,6 +9,20 @@ import { isNullOrUndefined } from 'util';
 export class CrudTableColumns
 {
     private columns: CrudTableColumn[] = [];
+
+    /**
+     * Constructor.
+     * @param {Column[]} columns which are expected to be instances of CrudTableColumn
+     */
+    constructor( columns: any[] )
+    {
+        this.columns = [];
+        if ( !isNullOrUndefined( columns ))
+        {
+            columns.forEach( column => this.columns
+                                           .push( column ) );
+        }
+    }
 
     /**
      * Adds a new column to the end of the list.
@@ -38,6 +53,18 @@ export class CrudTableColumns
      * @return {CrudTableColumn[]}
      */
     public toArray(): CrudTableColumn[]
+    {
+        let returnColumns = [];
+        this.columns
+            .forEach( column => returnColumns.push( column ) );
+        return returnColumns;
+    }
+
+    /**
+     * Convert to a PrimeNg column array.
+     * @return {Column[]}
+     */
+    public toColumnArray(): Column[]
     {
         let returnColumns = [];
         this.columns

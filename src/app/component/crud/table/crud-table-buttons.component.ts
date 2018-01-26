@@ -2,7 +2,7 @@ import { Component, Input, TemplateRef } from "@angular/core";
 
 /**
  * This is the base component class for the buttons on all CRUD enabled tables.
- * Four buttons are managed:
+ * Five buttons are managed:
  *   - Delete button
  *   - Add button
  *   - Edit button
@@ -13,16 +13,18 @@ import { Component, Input, TemplateRef } from "@angular/core";
  */
 @Component({
     selector:'crud-table-buttons',
-    template: `<ng-container *ngTemplateOutlet="editButtonTemplate">
-               </ng-container>
-               <ng-container *ngTemplateOutlet="addButtonTemplate">
-               </ng-container>
-               <ng-container *ngTemplateOutlet="deleteButtonTemplate">
-               </ng-container>
-               <ng-container *ngTemplateOutlet="refreshButtonTemplate">
-               </ng-container>
-               <ng-container *ngTemplateOutlet="customizeButtonTemplate">
-               </ng-container>
+    template: `<div style="text-align: center">
+                   <ng-container *ngTemplateOutlet="editButtonTemplate">
+                   </ng-container>
+                   <ng-container *ngTemplateOutlet="addButtonTemplate">
+                   </ng-container>
+                   <ng-container *ngTemplateOutlet="deleteButtonTemplate">
+                   </ng-container>
+                   <ng-container *ngTemplateOutlet="refreshButtonTemplate">
+                   </ng-container>
+                   <ng-container *ngTemplateOutlet="customizeButtonTemplate">
+                   </ng-container>
+               </div>
               `
 })
 export class CrudTableButtonsComponent

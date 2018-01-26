@@ -1,4 +1,4 @@
-<div style="text-align: center">
+<div style="text-align: center; line-height: 50px; display: block; float: left">
     <ng-template #editButton></ng-template>
     <ng-template #addButton></ng-template>
     <ng-template #deleteButton></ng-template>
@@ -11,5 +11,7 @@
     <ng-container *ngTemplateOutlet="deleteButtonTemplate">
     </ng-container>
     <ng-container *ngTemplateOutlet="refreshButtonTemplate">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="customizeButtonTemplate">
     </ng-container>
 </div>

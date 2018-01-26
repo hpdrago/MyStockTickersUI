@@ -412,6 +412,11 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
             .next( event );
     }
 
+    /**
+     * Components that need to be notified when the customize button is clicked register using this method.
+     * @param {() => any} fn
+     * @return {Subscription}
+     */
     public subscribeToCustomizeButtonClickedEvent( fn: () => any ): Subscription
     {
         var subscription: Subscription = this.tableCustomizeButtonClickedSubject.asObservable().subscribe( fn );

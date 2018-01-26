@@ -83,7 +83,7 @@ export class StockQuote extends ModelObject<StockQuote>
 
     public getCrudTableColumns(): CrudTableColumns
     {
-        let crudTableColumns = new CrudTableColumns();
+        let crudTableColumns = new CrudTableColumns( null );
         crudTableColumns.addColumn( {
                                         colId: 'companyName',
                                         header: 'Company Name',

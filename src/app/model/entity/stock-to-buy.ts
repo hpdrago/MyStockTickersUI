@@ -75,55 +75,41 @@ export class StockToBuy extends StockModelObject<StockToBuy> implements StockNot
      */
     public getCrudTableColumns(): CrudTableColumns
     {
-        let crudTableColumns: CrudTableColumns = new CrudTableColumns();
+        let crudTableColumns: CrudTableColumns = super.getCrudTableColumns();
         crudTableColumns.addColumn( {
-                            colId: 'tickerSymbol',
-                            header: 'Ticker Symbol',
-                            field: 'tickerSymbol',
-                            dataType: CrudTableColumnType.STRING,
-                            sortable: true
-                        } );
+                                        colId: 'tickerSymbol',
+                                        header: 'Ticker Symbol',
+                                        field: 'tickerSymbol',
+                                        dataType: CrudTableColumnType.STRING,
+                                        sortable: true
+                                    } );
         crudTableColumns.addColumn( {
-                            colId: 'recordBuy',
-                            header: 'Record Buy',
-                            dataType: CrudTableColumnType.CUSTOM,
-                            sortable: false
-                        } );
+                                        colId: 'recordBuy',
+                                        header: 'Record Buy',
+                                        dataType: CrudTableColumnType.CUSTOM,
+                                        sortable: false
+                                    } );
         crudTableColumns.addColumn( {
-                            colId: 'stockPriceWhenCreated',
-                            header: 'Price When Created',
-                            dataType: CrudTableColumnType.CURRENCY,
-                            field: 'stockPriceWhenCreated',
-                            sortable: true
-                        } );
+                                        colId: 'notesSourceName',
+                                        header: 'Source',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'notesSourceName',
+                                        sortable: true
+                                    } );
         crudTableColumns.addColumn( {
-                            colId: 'comments',
-                            header: 'Comments',
-                            dataType: CrudTableColumnType.COMMENTS,
-                            field: 'comments',
-                            sortable: false
-                        } );
+                                        colId: 'buySharesUpToPrice',
+                                        header: 'Buy Shares Up To',
+                                        dataType: CrudTableColumnType.CUSTOM,
+                                        field: 'buySharesUpToPrice',
+                                        sortable: false
+                                    } );
         crudTableColumns.addColumn( {
-                            colId: 'buySharesUpToPrice',
-                            header: 'Buy Shares Up To',
-                            dataType: CrudTableColumnType.CUSTOM,
-                            field: 'buySharesUpToPrice',
-                            sortable: false
-                        } );
-        crudTableColumns.addColumn( {
-                            colId: 'notesSourceName',
-                            header: 'Source',
-                            dataType: CrudTableColumnType.STRING,
-                            field: 'notesSourceName',
-                            sortable: true
-                        } );
-        crudTableColumns.addColumn( {
-                            colId: 'buyAfterDate',
-                            header: 'Buy After Date',
-                            dataType: CrudTableColumnType.CUSTOM,
-                            field: 'buyAfterDate',
-                            sortable: true
-                        } );
+                                        colId: 'buyAfterDate',
+                                        header: 'Buy After Date',
+                                        dataType: CrudTableColumnType.CUSTOM,
+                                        field: 'buyAfterDate',
+                                        sortable: true
+                                    } );
         crudTableColumns.addColumn( {
                                         colId: 'tags',
                                         header: 'Tags',
@@ -131,8 +117,13 @@ export class StockToBuy extends StockModelObject<StockToBuy> implements StockNot
                                         field: 'tags',
                                         sortable: false
                                     } );
-        let superTableColumns: CrudTableColumns = super.getCrudTableColumns();
-        crudTableColumns.addAll( superTableColumns );
+        crudTableColumns.addColumn( {
+                                        colId: 'comments',
+                                        header: 'Comments',
+                                        dataType: CrudTableColumnType.COMMENTS,
+                                        field: 'comments',
+                                        sortable: false
+                        } );
         return crudTableColumns;
     }
 }

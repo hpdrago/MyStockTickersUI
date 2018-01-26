@@ -2,7 +2,14 @@ import { BaseComponent } from '../../common/base.component';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { Column } from 'primeng/shared';
+import { CrudController } from '../common/crud-controller';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 
+/**
+ * This component is used to customize the crud table by selecting and ordering the columns allowing the user
+ * to create their own preferences.
+ */
 @Component
 ({
     selector: 'crud-table-column-selector-dialog',
@@ -10,14 +17,15 @@ import { Column } from 'primeng/shared';
 })
 export class CrudTableColumnSelectorDialogComponent extends BaseComponent
 {
-    @Input()
-    protected displayDialog: boolean;
+    protected _displayDialog: boolean;
+    private okButtonClickedSubject = new Subject();
+    private cancelButtonClickedSubject = new Subject();
 
     @Input()
-    protected availableColumns: Column[];
+    protected _availableColumns: Column[];
 
     @Input()
-    protected selectedColumns: Column[];
+    protected _selectedColumns: Column[];
 
     @Output()
     protected cancelButtonClickedEvent: EventEmitter<void> = new EventEmitter<void>();
@@ -26,23 +34,100 @@ export class CrudTableColumnSelectorDialogComponent extends BaseComponent
     protected okButtonClickedEvent: EventEmitter<void> = new EventEmitter<void>();
 
     /**
-     * Constructor
+     * Constructor.
      * @param {ToastsManager} toaster
+     * @param {CrudController<any>} controller
      */
     public constructor( public toaster: ToastsManager )
     {
         super( toaster );
     }
 
+    /**
+     * OK Button clicked handler
+     */
     protected onOkButtonClicked()
     {
-        //this.displayDialog = false;
+        this._displayDialog = false;
         this.okButtonClickedEvent.emit();
+        this.okButtonClickedSubject.next();
     }
 
+    /**
+     * Cancel button clicked handler
+     */
     protected onCancelButtonClicked()
     {
-        //this.displayDialog = false;
+        this._displayDialog = false;
         this.cancelButtonClickedEvent.emit();
+        this.cancelButtonClickedSubject.next();
+    }
+
+    /**
+     * Subscribe to be notified when the OK button is clicked.
+     * @param {() => any} callBack
+     * @return {Subscription}
+     */
+    public subscribeToOkButtonClicked( callBack: () => any ): Subscription
+    {
+        return this.okButtonClickedSubject
+                   .subscribe( callBack );
+    }
+
+    /**
+     * Subscribe to be notified when the Cancel button is clicked.
+     * @param {() => any} callBack
+     * @return {Subscription}
+     */
+    public subscribeToCancelButtonClicked( callBack: () => any ): Subscription
+    {
+        return this.cancelButtonClickedSubject
+                   .subscribe( callBack );
+    }
+
+    /**
+     * Get the selected columns.
+     * @return {Column[]}
+     */
+    public get selectedColumns(): Column[]
+    {
+        return this._selectedColumns;
+    }
+
+    /**
+     * Set the selected columns.
+     * @param {Column[]} value
+     */
+    public set selectedColumns( value: Column[] )
+    {
+        this._selectedColumns = value;
+    }
+
+    /**
+     * Get the available columns
+     * @return {Column[]}
+     */
+    public get availableColumns(): Column[]
+    {
+        return this._availableColumns;
+    }
+
+    /**
+     * Set the available columns.
+     * @param {Column[]} value
+     */
+    public set availableColumns( value: Column[] )
+    {
+        this._availableColumns = value;
+    }
+
+    /**
+     * Control the display of the dialog.
+     * @param {boolean} value
+     */
+    public set displayDialog( value: boolean )
+    {
+        this.debug( "displayDialog " + value );
+        this._displayDialog = value;
     }
 }

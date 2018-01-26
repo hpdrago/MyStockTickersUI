@@ -3,25 +3,35 @@
               [closable]="false"
               [closeOnEscape]="false"
               [responsive]="true"
-              [width]="600"
-              [height]="530"
+              [width]="500"
+              [height]="300"
               [resizable]="false"
-              [(visible)]="displayDialog">
+              [(visible)]="_displayDialog">
         <div>
-            <crud-table-column-selector [availableColumns]="availableColumns"
-                                        [selectedColumns]="selectedColumns">
+            <crud-table-column-selector [availableColumns]="_availableColumns"
+                                        [selectedColumns]="_selectedColumns">
             </crud-table-column-selector>
         </div>
         <p-footer>
-            <button pButton type="button"
-                    (click)="onOkButtonClicked()"
-                    label="OK"
-                    icon="fa-check">
-            </button>
-            <button pButton type="button"
-                    (click)="onCancelButtonClicked()"
-                    label="Cancel"
-                    icon="fa-times">
-            </button>
+            <div style="text-align: center">
+                <div class="crud-table-button">
+                    <button pButton type="button"
+                            style="width: 125px; height: 35px;"
+                            class="crud-table-button"
+                            (click)="onOkButtonClicked()"
+                            label="OK"
+                            icon="fa-check">
+                    </button>
+                </div>
+                <div class="crud-table-button">
+                    <button pButton type="button"
+                            style="width: 125px; height: 35px;"
+                            class="crud-table-button"
+                            (click)="onCancelButtonClicked()"
+                            label="Cancel"
+                            icon="fa-times">
+                    </button>
+                </div>
+            </div>
         </p-footer>
     </p-dialog>

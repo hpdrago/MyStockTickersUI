@@ -74,8 +74,8 @@ export class CrudTableDisplayColumnComponent extends BaseComponent
     protected getProperty( object: any, property: string ): any
     {
         let value = _.get( object, property );
-        this.debug( "getProperty object: " + JSON.stringify( object ) );
-        this.debug( "getProperty object: property: " + property + " value: " + value );
+        //this.debug( "getProperty object: " + JSON.stringify( object ) );
+        //this.debug( "getProperty object: property: " + property + " value: " + value );
         return value;
     }
 

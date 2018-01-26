@@ -81,7 +81,7 @@ export abstract class ModelObject<T>
      */
     public getCrudTableColumns(): CrudTableColumns
     {
-        let crudTableColumns: CrudTableColumns = new CrudTableColumns();
+        let crudTableColumns: CrudTableColumns = new CrudTableColumns( [] );
         crudTableColumns.addColumn( {
                                         colId: 'dateCreated',
                                         field: 'dateCreated',
@@ -97,6 +97,15 @@ export abstract class ModelObject<T>
                                         sortable: true
                                     } );
         return crudTableColumns;
+    }
+
+    /**
+     * Get the columns from other related model objects contained within this model object.
+     * @return {CrudTableColumns}
+     */
+    public getOtherCrudTableColumns(): CrudTableColumns
+    {
+        return new CrudTableColumns( [] );
     }
 
     /**
