@@ -1,16 +1,21 @@
 <div *ngIf="!isCrudNoneOperation()">
-    <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
+    <form [formGroup]="formGroup">
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
             <!----------------------------------------------------------------------------------------------------------
             SOURCE NAME
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="companyNameColumn">Source:</label>
+                    <label class="crud-form" for="name">Source:</label>
                 </div>
-                <div id="companyNameColumn" class="ui-grid-col-10">
-                    {{modelObject.notesSourceName}}
-                </div>
+                <input id="name"
+                       class="crud-form"
+                       formControlName="name"
+                       placeholder="Required"
+                       size="20"
+                       type="text"
+                       pInputText required
+                       [(ngModel)]="modelObject.name"/>
             </div>
         </div>
         <!--

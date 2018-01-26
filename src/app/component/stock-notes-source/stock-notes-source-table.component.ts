@@ -38,7 +38,7 @@ export class StockNotesSourceTableComponent extends CrudTableComponent<StockNote
                  protected stockNotesSourceFactory: StockNotesSourceFactory,
                  protected stockNotesSourceCrudService: StockNotesSourceCrudService )
     {
-        super( TableLoadingStrategy.ALL_ON_DEMAND,
+        super( TableLoadingStrategy.ALL_ON_CREATE,
                toaster,
                stockNotesSourceStateStore,
                stockNotesSourceController,

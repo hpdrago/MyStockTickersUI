@@ -13,11 +13,16 @@
                              (onRowDblclick)="onRowDoubleClick($event)"
                              [responsive]="true">
 
+                    <p-header>
+                        <stock-notes-source-table-buttons>
+                        </stock-notes-source-table-buttons>
+                    </p-header>
+
                     <!----------------------------------------------------------------------------------------------------------
-                    TICKER SYMBOL
+                    SOURCE NAME
                     ------------------------------------------------------------------------------------------------------------>
                     <p-column id="sourceName"
-                              field="sourceName"
+                              field="name"
                               header="Name"
                               [style]="{'width':'80px'}"
                               [sortable]="true">
@@ -32,3 +37,5 @@
         </div>
     </div>
 </div>
+<stock-notes-source-dialog>
+</stock-notes-source-dialog>

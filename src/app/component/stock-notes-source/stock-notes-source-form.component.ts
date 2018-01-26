@@ -14,11 +14,12 @@ import { StockNotesSourceCrudService } from '../../service/crud/stock-notes-sour
  *
  * Created by mike on 10/17/2017.
  */
-@Component( {
-                selector: 'stock-notes-source-form',
-                styleUrls: ['../crud/form/crud-form.component.css'],
-                templateUrl: './stock-notes-source-form.component.html'
-            } )
+@Component
+({
+    selector: 'stock-notes-source-form',
+    styleUrls: ['../crud/form/crud-form.component.css'],
+    templateUrl: './stock-notes-source-form.component.html'
+})
 export class StockNotesSourceFormComponent extends CrudFormComponent<StockNotesSource>
 {
     /**
@@ -58,7 +59,7 @@ export class StockNotesSourceFormComponent extends CrudFormComponent<StockNotesS
         this.debug( "initializeForm " );
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
-                'notesSourceName':     new FormControl( this.modelObject.name, Validators.required )
+                'name':     new FormControl( this.modelObject.name, Validators.required )
             } );
         return stockNoteForm;
     }
