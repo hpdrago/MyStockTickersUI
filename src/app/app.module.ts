@@ -173,9 +173,16 @@ import { StockPositionFactory } from './model/factory/stock-position-factory';
 import { StockPositionCrudService } from './service/crud/stock-position-crud.service';
 import { AppDefaultErrorHandler } from './app.default-error-handler';
 import { StockQuoteLastPriceComponent } from './component/common/stock-quote-last-price.component';
-import { StockQuoteChangeSinceCreatedComponent } from './component/common/stock-quote-change-since-created.component';
+import { StockQuotePercentChangeSinceCreatedComponent } from './component/common/stock-quote-percent-change-since-created.component';
 import { StockQuoteAverageUpsidePercentComponent } from './component/common/stock-quote-average-upside-percent.component';
 import { StockCommentsComponent } from './component/common/stock-comments.component';
+import { StockAnalystConsensusComponent } from './component/common/stock-analyst-consensus.component';
+import { TipRanksLinkComponent } from './component/common/tipranks-link.component';
+import { CurrencyComponent } from './component/common/currency-component';
+import { GainLossCurrencyComponent } from './component/common/gain-loss-currency.component';
+import { GainLossPercentComponent } from './component/common/gain-loss-percent.component';
+import { PercentComponent } from './component/common/percent.component';
+import { StockQuoteDayPercentChangeComponent } from './component/common/stock-quote-day-percent-change.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -327,10 +334,16 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockAutoCompleteComponent,
         StockSearchComponent,
         StockQuoteLastPriceComponent,
-        StockQuoteChangeSinceCreatedComponent,
+        StockQuotePercentChangeSinceCreatedComponent,
         StockQuoteAverageUpsidePercentComponent,
-        StockCommentsComponent
-
+        StockCommentsComponent,
+        StockAnalystConsensusComponent,
+        TipRanksLinkComponent,
+        CurrencyComponent,
+        PercentComponent,
+        GainLossCurrencyComponent,
+        GainLossPercentComponent,
+        StockQuoteDayPercentChangeComponent
     ],
     bootstrap:
     [

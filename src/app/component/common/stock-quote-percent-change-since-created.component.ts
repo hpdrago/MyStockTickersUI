@@ -4,20 +4,15 @@ import { StockQuote } from '../../model/entity/stock-quote';
 import { isNullOrUndefined } from "util";
 
 /**
- * This component displays the amount the price has changed since the model object was created.
+ * This component displays the percent the price has changed since the model object was created.
  * It compares the StockQuoteModelObject.lastPrice with the StockQuoteModelObject.stockPriceWhenCreated.
  */
 @Component(
 {
-    selector: 'stock-quote-change-since-created',
-    template: `<div class="positiveGain" *ngIf="calculatePercentChange( stockQuote ) >= 0.0">
-                  {{calculatePercentChange( stockQuote ) | percent: '1.2-2' }}
-               </div>
-               <div class="negativeGain" *ngIf="calculatePercentChange( stockQuote ) < 0.0">
-                  {{calculatePercentChange( stockQuote ) | percent: '1.2-2' }}
-               </div>`
+    selector: 'stock-quote-percent-change-since-created',
+    template: `<gain-loss-percent [percentValue]="calculatePercentChange(stockQuote)"></gain-loss-percent>`
 })
-export class StockQuoteChangeSinceCreatedComponent
+export class StockQuotePercentChangeSinceCreatedComponent
 {
     @Input()
     private stockQuote: StockQuoteModelObject<any>;

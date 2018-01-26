@@ -7,6 +7,7 @@ export class StockQuote extends ModelObject<StockQuote>
 {
     public tickerSymbol: string;
     public companyName: string;
+    public openPrice: number;
     public lastPrice: number;
     public lastPriceChange: Date;
     public stockQuoteState: number;

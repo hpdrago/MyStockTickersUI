@@ -110,7 +110,7 @@
                   header="% Changed"
                   [style]="{'width':'10px','text-align':'right'}">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                <stock-quote-change-since-created [stockQuote]="stockToBuy"></stock-quote-change-since-created>
+                <stock-quote-percent-change-since-created [stockQuote]="stockToBuy"></stock-quote-percent-change-since-created>
             </ng-template>
         </p-column>
 

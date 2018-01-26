@@ -7,6 +7,7 @@ import { StockModelObject } from "./stock-model-object";
  */
 export abstract class StockQuoteModelObject<T extends StockModelObject<T>> extends StockModelObject<T>
 {
+    public openPrice: number;
     public lastPrice: number;
     public lastPriceChange: Date;
     public stockQuoteState: number;

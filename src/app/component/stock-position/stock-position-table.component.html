@@ -73,10 +73,13 @@
                     <!----------------------------------------------------------------------------------------------------------
                     TODAY GAIN/LOSS PERCENTAGE
                     ------------------------------------------------------------------------------------------------------------>
-                    <p-column id="todayGainLossDollar"
-                              field="todayGainLossDollar"
+                    <p-column id="todayGainLossCurrency"
+                              field="todayGainLossCurrency"
                               header="Today GL$"
                               [style]="{'width':'80px','text-align':'right'}">
+                        <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                            <gain-loss-currency [currencyValue]="stockNotes[field]"></gain-loss-currency>
+                        </ng-template>
                     </p-column>
 
                     <!----------------------------------------------------------------------------------------------------------
@@ -86,8 +89,10 @@
                               field="todayGainLossPercentage"
                               header="Today GL%"
                               [style]="{'width':'80px','text-align':'right'}">
+                        <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                            <gain-loss-percent [percentValue]="stockNotes[field]"></gain-loss-percent>
+                        </ng-template>
                     </p-column>
-
 
                     <!----------------------------------------------------------------------------------------------------------
                     TOTAL GAIN/LOSS DOLLARS
@@ -96,6 +101,9 @@
                               field="totalGainLossDollar"
                               header="Total GL$"
                               [style]="{'width':'80px','text-align':'right'}">
+                        <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                            <gain-loss-currency [currencyValue]="stockNotes[field]"></gain-loss-currency>
+                        </ng-template>
                     </p-column>
 
                     <!----------------------------------------------------------------------------------------------------------
@@ -105,6 +113,9 @@
                               field="totalGainLossPercentage"
                               header="Today GL%"
                               [style]="{'width':'80px','text-align':'right'}">
+                        <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                            <gain-loss-percent [percentValue]="stockNotes[field]"></gain-loss-percent>
+                        </ng-template>
                     </p-column>
 
                     <!----------------------------------------------------------------------------------------------------------
@@ -127,11 +138,7 @@
                               header="Analyst BSH"
                               [style]="{'width':'80px'}">
                         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                            <span class="strongBuy">       {{stockAnalystConsensus['analystStrongBuyCount']}}</span><!--
-                            --><span class="buy">          {{stockAnalystConsensus['analystBuyCount']}}</span><!--
-                            --><span class="hold">         {{stockAnalystConsensus['analystHoldCount']}}</span><!--
-                            --><span class="underPerform"> {{stockAnalystConsensus['analystUnderPerformCount']}}</span><!--
-                            --><span class="sell">         {{stockAnalystConsensus['analystSellCount']}}</span>
+                            <stock-analyst-consensus [stockAnalystConsensus]="stockAnalystConsensus"></stock-analyst-consensus>
                         </ng-template>
                     </p-column>
 
@@ -144,7 +151,7 @@
                               [style]="{'width':'40px','text-align':'right'}"
                               [sortable]="false">
                         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                            {{stockAnalystConsensus[col.field] | currency: 'USD' : true }}
+                            <currency [currencyValue]="stockAnalystConsensus[col.field]"></currency>
                         </ng-template>
                     </p-column>
 
@@ -157,7 +164,7 @@
                               [style]="{'width':'40px','text-align':'right'}"
                               [sortable]="false">
                         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                            {{stockAnalystConsensus[col.field] | currency: 'USD' : true }}
+                            <currency [currencyValue]="stockAnalystConsensus[col.field]"></currency>
                         </ng-template>
                     </p-column>
 
@@ -170,7 +177,7 @@
                               [style]="{'width':'40px','text-align':'right'}"
                               [sortable]="false">
                         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                            {{stockAnalystConsensus[col.field] | currency: 'USD' : true }}
+                            <currency [currencyValue]="stockAnalystConsensus[col.field]"></currency>
                         </ng-template>
                     </p-column>
                     <!----------------------------------------------------------------------------------------------------------

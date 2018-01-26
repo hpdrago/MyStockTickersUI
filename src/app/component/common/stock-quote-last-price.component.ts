@@ -1,5 +1,5 @@
 import { StockQuoteModelObject } from '../../model/entity/stock-quote-modelobject';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { StockQuoteState } from '../../common/stock-quote-state.enum';
 
 /**
@@ -15,15 +15,34 @@ import { StockQuoteState } from '../../common/stock-quote-state.enum';
             Loading...
         </div>
         <div *ngIf="!isFetchingQuote()">
-            {{stockQuote.lastPrice | currency: 'USD': true }}
+            <div class="positiveGain" *ngIf="priceChange >= 0.0">
+                <currency [currencyValue]="stockQuote.lastPrice"></currency>
+            </div>
+            <div class="negativeGain" *ngIf="priceChange < 0.0">
+                <currency [currencyValue]="stockQuote.lastPrice"></currency>
+            </div>
         </div>
     `
 })
-export class StockQuoteLastPriceComponent
+export class StockQuoteLastPriceComponent implements OnInit
 {
     @Input()
     private stockQuote: StockQuoteModelObject<any>;
 
+    private priceChange: number;
+
+    /**
+     * Calculate the difference once.
+     */
+    public ngOnInit()
+    {
+        this.priceChange = this.stockQuote.lastPrice - this.stockQuote.openPrice;
+    }
+
+    /**
+     * Determines if the stock last price is being fetched.
+     * @return {boolean}
+     */
     private isFetchingQuote(): boolean
     {
         return StockQuoteState.isFetchingQuote( this.stockQuote ) ;
