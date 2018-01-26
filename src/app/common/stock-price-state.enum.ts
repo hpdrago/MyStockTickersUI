@@ -1,7 +1,7 @@
 /**
  * Created by mike on 11/4/2017
  */
-import { StockPriceQuoteModelObject } from '../model/entity/stock-price-quote-model-object';
+import { StockPriceQuoteModelObject } from '../model/common/stock-price-quote-model-object';
 
 export enum StockPriceState
 {

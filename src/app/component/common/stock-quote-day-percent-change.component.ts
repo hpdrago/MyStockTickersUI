@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { StockPriceQuoteModelObject } from '../../model/entity/stock-price-quote-model-object';
+import { StockPriceQuoteModelObject } from '../../model/common/stock-price-quote-model-object';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { isNullOrUndefined } from "util";
 

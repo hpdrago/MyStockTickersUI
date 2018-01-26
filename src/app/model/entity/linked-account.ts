@@ -1,6 +1,6 @@
 import { ModelObject } from "./modelobject";
 import { JsonObject, JsonProperty } from "json2typescript";
-import { DateConverter } from "../common/DateConverter";
+import { DateConverter } from "../common/date-converter";
 
 /**
  * This is the child (1 to Many) record of a {@code TradeItAccount}.  It contains the information for a brokerage account

@@ -1,5 +1,5 @@
 import { StockNotesContainer } from "../common/stock-notes-container";
-import { StockPriceQuoteModelObject } from "./stock-price-quote-model-object";
+import { StockPriceQuoteModelObject } from "../common/stock-price-quote-model-object";
 import { StockNotesSourceContainer } from '../common/stock-notes-source-container';
 
 /**

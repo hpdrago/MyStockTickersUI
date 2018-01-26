@@ -10,7 +10,7 @@ import { LinkedAccountFactory } from "../../model/factory/linked-account.factory
 import { RestErrorReporter } from '../rest-error-reporter';
 import { KeyValuePairs } from '../../common/key-value-pairs';
 import { Observable } from 'rxjs/Observable';
-import { LoadingStatus } from '../../model/entity/loading-status';
+import { LoadingStatus } from '../../model/common/loading-status';
 import { HttpClient } from '@angular/common/http';
 
 /**

@@ -11,7 +11,7 @@ import { KeyValuePairs } from '../../common/key-value-pairs';
 import { KeyValuePair } from '../../common/key-value-pair';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { RestErrorReporter } from '../rest-error-reporter';
-import { LoadingStatus } from '../../model/entity/loading-status';
+import { LoadingStatus } from '../../model/common/loading-status';
 import { HttpClient } from '@angular/common/http';
 
 /**

@@ -27,6 +27,10 @@ export class TradeItAPIResult
     @JsonProperty( "longMessages", [String] )
     public longMessages: string[] = [];
 
+    /**
+     * Combines the short and long messages.
+     * @return {string}
+     */
     public getMessages(): string
     {
         var messages: string;

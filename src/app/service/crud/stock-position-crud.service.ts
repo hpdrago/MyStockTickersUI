@@ -11,6 +11,8 @@ import { StockPositionFactory } from '../../model/factory/stock-position-factory
 import { KeyValuePairs } from '../../common/key-value-pairs';
 import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient } from '@angular/common/http';
+import { RankCalculator } from '../../common/rank-calculator';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * This service handles all of the stock position related actions.
@@ -18,6 +20,12 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class StockPositionCrudService extends CrudRestService<StockPosition>
 {
+    /**
+     * Used to calculate the rank for each stock from a set of stocks
+     * @type {RankCalculator}
+     */
+    private rankCalculator: RankCalculator = new RankCalculator();
+
     /**
      * Constructor.
      * @param {Http} http
@@ -59,5 +67,21 @@ export class StockPositionCrudService extends CrudRestService<StockPosition>
         keyColumns.addPair( "linkedAccountId", stockPosition.linkedAccountId );
         keyColumns.addPair( "tradeItAccountId", stockPosition.tradeItAccountId );
         return keyColumns;
+    }
+
+    /**
+     * Retrieves the stock positions.
+     * @param {StockPosition} modelObject
+     * @return {Observable<Array<StockPosition>>}
+     */
+    public getModelObjectList( modelObject: StockPosition ): Observable<Array<StockPosition>>
+    {
+        return super.getModelObjectList( modelObject )
+                    .map( (stockPositions: Array<StockPosition>) =>
+                    {
+                        this.rankCalculator
+                            .calculateRank(stockPositions)
+                        return stockPositions;
+                    });
     }
 }

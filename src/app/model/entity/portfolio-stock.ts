@@ -24,6 +24,8 @@ export class PortfolioStock extends ModelObject<PortfolioStock>
     public stopLossShares: number;
     public profitTakingPrice: number;
     public profitTakingShares: number;
+    private rank: number;
+    private rankPercent: number;
 
     public isEqualPrimaryKey( modelObject: PortfolioStock )
     {
@@ -44,5 +46,59 @@ export class PortfolioStock extends ModelObject<PortfolioStock>
     public getPrimaryKeyName(): string
     {
         return "id";
+    }
+
+    /**
+     * The market value is shares(quantity) * current price
+     * @return {number}
+     */
+    public marketValue(): number
+    {
+        return this.getMarketValue();
+    }
+
+    /**
+     * Returns the market value of the stock (cost basis * quantity).
+     * @return {number}
+     */
+    public getMarketValue(): number
+    {
+        return this.averageUnitCost * this.numberOfShares;
+    }
+
+    /**
+     * Returns the rank of this stock compared to a set of stocks.
+     * @return {number}
+     */
+    public getRank(): number
+    {
+        return this.rank;
+    }
+
+    /**
+     * Returns the rank percent of this stock compared to a set of stocks.
+     * @return {number}
+     */
+    public getRankPercent(): number
+    {
+        return this.rankPercent;
+    }
+
+    /**
+     * Set the rank of this stock compared to a set of stocks.
+     * @param {number} rank
+     */
+    public setRank( rank: number )
+    {
+        this.rank = rank;
+    }
+
+    /**
+     * Set the rank percent of this stock compared to a set of stocks.
+     * @param {number} rankPercent
+     */
+    public setRankPercent( rankPercent: number )
+    {
+        this.rankPercent = rankPercent;
     }
 }

@@ -1,4 +1,4 @@
-import { StockPriceQuoteModelObject } from '../../model/entity/stock-price-quote-model-object';
+import { StockPriceQuoteModelObject } from '../../model/common/stock-price-quote-model-object';
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';

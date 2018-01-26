@@ -3,6 +3,9 @@
  */
 import { StockPriceState } from '../../common/stock-price-state.enum';
 
+/**
+ * This class contains the properties of a price quote.
+ */
 export class StockPriceQuote
 {
     public tickerSymbol: string;
