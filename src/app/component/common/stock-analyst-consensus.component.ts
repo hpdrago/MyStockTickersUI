@@ -6,6 +6,7 @@ import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensu
  */
 @Component({
     selector: 'stock-analyst-consensus',
+    styleUrls: ['../stock-analyst-consensus/stock-analyst-consensus-table.component.css'],
     template: `<span class="strongBuy">       {{stockAnalystConsensus['analystStrongBuyCount']}}</span><!--
                --><span class="buy">          {{stockAnalystConsensus['analystBuyCount']}}</span><!--
                --><span class="hold">         {{stockAnalystConsensus['analystHoldCount']}}</span><!--
