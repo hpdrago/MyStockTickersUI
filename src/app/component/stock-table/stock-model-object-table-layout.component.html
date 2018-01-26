@@ -1,14 +1,15 @@
 <!----------------------------------------------------------------------------------------------------------
 DEFINE THE FILTER TEMPLATE TO INCLUDE THE STOCK SYMBOL SEARCH
------------------------------------------------------------------------------------------------------------->
 <ng-template *ngIf="displayStockSearchFilter" #filterTemplate>
+------------------------------------------------------------------------------------------------------------>
+<ng-template #filterTemplate>
     <div class="crud-form ui-grid-row">
-        <div class="ui-grid-col-6 ui-state-default">
+        <div class="ui-grid-col-8 ui-state-default">
             <stock-search (stockSelected)="onStockSelected( $event )"
                           (resetButtonClick)="onResetButtonClick()">
             </stock-search>
         </div>
-        <div class="ui-grid-col-8 ui-state-default">
+        <div class="ui-grid-col-4 ui-state-default">
         </div>
     </div>
 </ng-template>
@@ -32,12 +33,12 @@ DEFINE THE TABLE LAYOUT
                    [cookieContext]="cookieContext"
                    [modelObjectRows]="modelObjectRows"
                    [rowsToDisplay]="rowsToDisplay"
-                   [rowsPerPageOptions]="rowsPerPageOptions"
                    [(displayColumns)]="displayColumns"
                    [defaultColumns]="defaultColumns"
                    [additionalColumns]="additionalColumns"
                    [paginator]="paginator"
                    [pageLinks]="pageLinks"
+                   [rowsPerPageOptions]="rowsPerPageOptions"
                    [totalRecords]="totalRecords"
                    [loadingData]="loadingData"
                    [(selection)]="selectedModelObject"

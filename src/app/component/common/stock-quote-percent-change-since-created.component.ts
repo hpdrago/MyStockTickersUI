@@ -34,8 +34,9 @@ export class StockQuotePercentChangeSinceCreatedComponent extends BaseComponent
     private stockPriceQuote: StockPriceQuote;
 
     /**
-     * Constructor
+     * Constructor.
      * @param {ToastsManager} toaster
+     * @param {StockPriceQuoteCacheService} stockPriceQuoteCache
      */
     public constructor( protected toaster: ToastsManager,
                         private stockPriceQuoteCache: StockPriceQuoteCacheService )
@@ -45,6 +46,12 @@ export class StockQuotePercentChangeSinceCreatedComponent extends BaseComponent
 
     public ngOnInit(): void
     {
+        this.checkArgument( 'stockModelObject', this.stockModelObject );
+        this.checkArgument( 'stockModelObject.tickerSymbol', this.stockModelObject.tickerSymbol );
+        if ( this.stockModelObject.tickerSymbol.length == 0 )
+        {
+            throw new ReferenceError( 'ticker symbol is empty ' + JSON.stringify( this.stockModelObject ) );
+        }
         this.addSubscription( 'stockPriceQuoteCache',
             this.stockPriceQuoteCache
                 .subscribe( this.stockModelObject.tickerSymbol,
@@ -61,6 +68,7 @@ export class StockQuotePercentChangeSinceCreatedComponent extends BaseComponent
      */
     protected onStockPriceQuoteChange( stockPriceQuote: StockPriceQuote )
     {
+        this.checkArgument( 'stockPriceQuote', this.stockPriceQuote );
         this.log( 'onStockPriceQuoteChange ' + JSON.stringify( stockPriceQuote ));
         this.stockPriceQuote = stockPriceQuote;
     }

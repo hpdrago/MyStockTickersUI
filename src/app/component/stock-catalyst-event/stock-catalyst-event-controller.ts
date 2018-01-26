@@ -6,7 +6,7 @@ import { StockCatalystEvent } from '../../model/entity/stock-catalyst-event';
 import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 import { Injectable } from '@angular/core';
-import { StockCatalystEventActionHandler } from './stock-catalyst-event-action-handler';
+import { StockCatalystEventCrudActionHandler } from './stock-catalyst-event-crud-action-handler.service';
 import { DateOrTimePeriod } from '../../common/date-or-time-period.enum';
 
 /**
@@ -19,11 +19,11 @@ export class StockCatalystEventController extends CrudController<StockCatalystEv
      * Constructor.
      * @param {StockCatalystEventStateStore} stockCatalystEventStateStore
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
-     * @param {StockCatalystEventActionHandler} stockCatalystEventActionHandler
+     * @param {StockCatalystEventCrudActionHandler} stockCatalystEventActionHandler
      */
     constructor( stockCatalystEventStateStore: StockCatalystEventStateStore,
                  stockCatalystEventFactory: StockCatalystEventFactory,
-                 stockCatalystEventActionHandler: StockCatalystEventActionHandler )
+                 stockCatalystEventActionHandler: StockCatalystEventCrudActionHandler )
     {
         super( stockCatalystEventStateStore,
                stockCatalystEventFactory,

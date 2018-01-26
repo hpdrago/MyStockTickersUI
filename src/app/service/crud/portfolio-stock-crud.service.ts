@@ -11,6 +11,7 @@ import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.se
 import { BaseStockService } from './base-stock.service';
 import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
 import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
+import { KeyValuePairs } from '../../common/key-value-pairs';
 
 /**
  * This service manages REST communication for PortfolioStocks.
@@ -57,11 +58,20 @@ export class PortfolioStockCrudService extends BaseStockService<PortfolioStock>
 
     protected getContextBaseURL(): string
     {
-        return '/portfolio';
+        return '/portfolioStock';
+    }
+
+
+    protected getContextURLKeyValues( portfolioStock: PortfolioStock ): KeyValuePairs<string, any>
+    {
+        let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
+        keyColumns.addPair( "tickerSymbol", portfolioStock.tickerSymbol );
+        keyColumns.addPair( "portfolioId", portfolioStock.portfolioId );
+        return keyColumns;
     }
 
     /**
-     * Get the portfoio stock for the customer and portfolio id
+     * Get the portfolio stock for the customer and portfolio id
      * @param customerId
      * @param portfolioId
      * @return {Observable<Array<PortfolioStock>>}
@@ -72,5 +82,15 @@ export class PortfolioStockCrudService extends BaseStockService<PortfolioStock>
         portfolioStock.customerId = customerId;
         portfolioStock.portfolioId = portfolioId;
         return super.getModelObjectList( portfolioStock );
+    }
+
+    public getModelObjectList( modelObject: PortfolioStock ): Observable<Array<PortfolioStock>>
+    {
+        return super.getModelObjectList( modelObject )
+            .map( modelObjects =>
+                  {
+                      this.log( 'getModelObjectList ' + JSON.stringify( modelObjects ) );
+                      return modelObjects;
+                  })
     }
 }

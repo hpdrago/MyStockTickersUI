@@ -6,7 +6,7 @@ import { Portfolio } from '../../model/entity/portfolio';
 import { Injectable } from '@angular/core';
 import { PortfolioStateStore } from './portfolio-state-store';
 import { PortfolioFactory } from '../../model/factory/portfolio.factory';
-import { PortfolioActionHandler } from './portfolio-action-handler';
+import { PortfolioCrudActionHandler } from './portfolio-crud-action-handler.service';
 
 /**
  * This is the controller for Portfolio entity components.
@@ -18,11 +18,11 @@ export class PortfolioController extends CrudController<Portfolio>
      * Constructor.
      * @param {PortfolioStateStore} portfolioStateStore
      * @param {PortfolioFactory} portfolioFactory
-     * @param {PortfolioActionHandler} portfolioActionHandler
+     * @param {PortfolioCrudActionHandler} portfolioActionHandler
      */
     constructor( portfolioStateStore: PortfolioStateStore,
                  portfolioFactory: PortfolioFactory,
-                 portfolioActionHandler: PortfolioActionHandler )
+                 portfolioActionHandler: PortfolioCrudActionHandler )
     {
         super( portfolioStateStore,
                portfolioFactory,

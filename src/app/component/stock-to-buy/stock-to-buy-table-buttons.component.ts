@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
+import { CrudTableButtonsBaseComponent } from '../crud/table/crud-table-buttons-base.component';
 
 /**
+ * Stock to buy table buttons.
  * Created by mike on 8/15/2017.
  */
 @Component({
@@ -24,9 +26,10 @@ import { Component } from "@angular/core";
                <crud-table-buttons [addButtonTemplate]="addButtonTemplate"
                                    [editButtonTemplate]="editButtonTemplate"
                                    [deleteButtonTemplate]="deleteButtonTemplate"
-                                   [refreshButtonTemplate]="refreshButtonTemplate">
+                                   [refreshButtonTemplate]="refreshButtonTemplate"
+                                   [includeCustomizeButton]="includeCustomizeButton">
                </crud-table-buttons>`
 })
-export class StockToBuyTableButtonsComponent
+export class StockToBuyTableButtonsComponent extends CrudTableButtonsBaseComponent
 {
 }

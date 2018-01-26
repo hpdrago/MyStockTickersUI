@@ -1,10 +1,9 @@
 import { BaseComponent } from '../common/base.component';
 import { Component, OnInit } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
-import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
 import { StockCatalystEventController } from './stock-catalyst-event-controller';
 import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
-import { StockCatalystEventActionHandler } from './stock-catalyst-event-action-handler';
+import { StockCatalystEventCrudActionHandler } from './stock-catalyst-event-crud-action-handler.service';
 
 /**
  * Component to display the stock notes dialog to create a new note.
@@ -15,8 +14,7 @@ import { StockCatalystEventActionHandler } from './stock-catalyst-event-action-h
                                             [showContinuousAddButton]="true"
                                             [showAddButton]="false"
                                             [showCloseButton]="false">
-               </stock-catalyst-event-dialog>`,
-    providers: [StockCatalystEventController, StockCatalystEventStateStore, StockCatalystEventActionHandler]
+               </stock-catalyst-event-dialog>`
  })
 export class StockCatalystEventAddComponent extends BaseComponent implements OnInit
 {
@@ -29,7 +27,7 @@ export class StockCatalystEventAddComponent extends BaseComponent implements OnI
      */
     public constructor( protected toaster: ToastsManager,
                         private stockCatalystEventController: StockCatalystEventController,
-                        private stockCatalystEventActionHandler: StockCatalystEventActionHandler,
+                        private stockCatalystEventActionHandler: StockCatalystEventCrudActionHandler,
                         private stockCatalystEventCrudService: StockCatalystEventCrudService )
     {
         super( toaster );

@@ -10,6 +10,7 @@ export class Portfolio extends ModelObject<Portfolio>
 {
     public id: string;
     public customerId: string;
+    public linkedAccountId: string;
     public name: string;
     public realizedGL: number;
     public unrealizedGL: number;

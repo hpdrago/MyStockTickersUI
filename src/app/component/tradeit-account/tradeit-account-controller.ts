@@ -22,6 +22,7 @@ export class TradeItAccountController extends CrudController<TradeItAccount>
      * Constructor.
      * @param {TradeItAccountStateStore} tradeItAccountStateStore
      * @param {TradeItAccountFactory} tradeItAccountFactory
+     * @param {TradeItAccountCrudActionHandler} tradeItAccountActionHandler
      */
     constructor( tradeItAccountStateStore: TradeItAccountStateStore,
                  tradeItAccountFactory: TradeItAccountFactory,

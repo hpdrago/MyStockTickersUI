@@ -4,6 +4,7 @@ import { ToastsManager } from 'ng2-toastr';
 import { BaseService } from '../../../service/base-service';
 import { RestErrorReporter } from '../../../service/rest-error-reporter';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 
 /**
@@ -16,6 +17,10 @@ import { Observable } from 'rxjs/Observable';
  */
 export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseService
 {
+    protected deleteModelObjectSubject: Subject<T> = new Subject<T>();
+    protected addModelObjectSubject: Subject<T> = new Subject<T>();
+    protected saveModelObjectSubject: Subject<T> = new Subject<T>();
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -27,6 +32,36 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
                            protected crudRestService: CrudRestService<T> )
     {
         super();
+    }
+
+    /**
+     * Subscribe to model object delete events.
+     * @param {(modelObject: T) => any} observer
+     */
+    public subscribeToModelObjectDelete( observer: (modelObject: T) => any )
+    {
+        this.deleteModelObjectSubject
+            .subscribe( observer );
+    }
+
+    /**
+     * Subscribe to model object add events.
+     * @param {(modelObject: T) => any} observer
+     */
+    public subscribeToModelObjectAdd( observer: (modelObject: T) => any )
+    {
+        this.addModelObjectSubject
+            .subscribe( observer );
+    }
+
+    /**
+     * Subscribe to model object save events.
+     * @param {(modelObject: T) => any} observer
+     */
+    public subscribeToModelObjectSave( observer: (modelObject: T) => any )
+    {
+        this.saveModelObjectSubject
+            .subscribe( observer );
     }
 
     /**
@@ -44,6 +79,7 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
                    {
                        this.debug( methodName + ' delete successful ' + JSON.stringify( modelObject ));
                        this.showDeleteSuccessful( modelObject );
+                       this.onDeleteModelObject( modelObject );
                    },
                    error =>
                    {
@@ -51,6 +87,16 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
                        let exception = this.restErrorReporter.reportRestError( error );
                        Observable.throw( exception );
                    });
+    }
+
+    /**
+     * This method is called after a successful deletion of a model object.
+     * @param {T} modelObject
+     */
+    protected onDeleteModelObject( modelObject: T )
+    {
+        this.deleteModelObjectSubject
+            .next( modelObject );
     }
 
     /**
@@ -67,7 +113,7 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
                    {
                        this.debug( methodName + ' add successful.  modelObject: ' + JSON.stringify( newModelObject ) );
                        this.showAddSuccessful( newModelObject );
-                       this.onModelObjectAdd( newModelObject );
+                       this.onAddModelObject( newModelObject );
                        return newModelObject;
                    },
                    error =>
@@ -86,8 +132,10 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
      * @param {T} newModelObject
      * @return {T}
      */
-    protected onModelObjectAdd( newModelObject: T )
+    protected onAddModelObject( newModelObject: T )
     {
+        this.addModelObjectSubject
+            .next( newModelObject );
     }
 
     /**
@@ -104,8 +152,8 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
                    .map( ( updatedModelObject: T ) =>
                    {
                        this.debug( methodName + ' saved successful.  modelObject; ' + JSON.stringify( updatedModelObject ) );
-                       this.onSaveModelObject( updatedModelObject );
                        this.showSaveSuccessful( updatedModelObject );
+                       this.onSaveModelObject( updatedModelObject );
                        return updatedModelObject;
                    },
                    error =>
@@ -123,6 +171,8 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
      */
     protected onSaveModelObject( modelObject: T )
     {
+        this.saveModelObjectSubject
+            .next( modelObject );
     }
 
     /*

@@ -13,6 +13,9 @@ import { Subject } from 'rxjs/Subject';
  * This is a generic cache to work with the Async Entity Cache on the backend.  It manages the caching and retrieval
  * of the requested data and notifies subscribers when the cache data changes.  It pushes the data to the components
  * using RxJs subjects.
+ *
+ * <K> - Cache key type.
+ * <T> - Cached type.
  */
 export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> extends BaseService
 {
@@ -44,9 +47,9 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
      */
     public delete( key: K )
     {
+        this.checkKey( key );
         this.cacheSubjectMap
             .delete( key );
-
     }
 
     /**
@@ -60,6 +63,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
     {
         const methodName = 'get';
         this.debug( methodName + ' ' + key );
+        this.checkKey( key );
         let cacheSubject: BehaviorSubject<T> = this.cacheSubjectMap
                                               .get( key );
         let returnObservable: Observable<T>;
@@ -89,7 +93,8 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
     {
         const methodName = "subscribe";
         this.debug( methodName + " " + key  );
-        if ( isNullOrUndefined( key ))
+        this.checkKey( key );
+        if ( isNullOrUndefined( key ) )
         {
             throw new ReferenceError( key + ' is null or undefined' );
         }
@@ -136,6 +141,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
     {
         const methodName = 'getAndCheckDataExpiration';
         this.debug( methodName + '.begin ' + key );
+        this.checkKey( key );
         let returnObservable: Observable<T> = this.workingMap.get( key );
         if ( isNullOrUndefined( returnObservable ))
         {
@@ -189,11 +195,8 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
     protected fetchData( key: K ): Observable<T>
     {
         const methodName = 'fetchData';
-        if ( isNullOrUndefined( key ))
-        {
-            throw new ReferenceError( 'key argument is null or undefined' );
-        }
         this.debug( methodName + ' ' + key );
+        this.checkKey( key );
         this.debug( methodName + ' calling fetchCachedDataFromBackend with ' + key );
         let returnObservable: Observable<T> = this.fetchCachedDataFromBackend( key );
         this.workingMap
@@ -237,6 +240,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
     {
         const methodName = 'sendCachedDataChange';
         this.debug( methodName + ' ' + key + ' ' + JSON.stringify( cachedData ) );
+        this.checkKey( key );
         let subject = this.cacheSubjectMap
                           .get( key );
         if ( isNullOrUndefined( subject ))
@@ -257,6 +261,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
      */
     protected getSubject( key: K ): BehaviorSubject<T>
     {
+        this.checkKey( key );
         let subject = this.cacheSubjectMap
                           .get( key );
         if ( subject == null )
@@ -274,6 +279,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
     {
         let methodName = 'addCacheData';
         this.debug( methodName + ' ' + key )
+        this.checkKey( key );
         let subject: BehaviorSubject<T> = this.cacheSubjectMap
                                               .get( key );
         if ( isNullOrUndefined( subject ))
@@ -293,6 +299,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
     {
         let methodName = 'createCacheEntry';
         this.debug( methodName + ' ' + key )
+        this.checkKey( key );
         /*
          * Send the model object with the cache state of STALE so the component will display the loadingData message.
          */
@@ -307,5 +314,19 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         this.cacheSubjectMap
             .set( key, subject );
         return subject;
+    }
+
+    /**
+     * Determines if the key is valid.
+     * @param {K} key
+     * @return {boolean} false if null or undefined.
+     * @throws ReferenceError if not a valid key.
+     */
+    protected checkKey( key: K ): void
+    {
+        if ( isNullOrUndefined( key ) )
+        {
+            throw ReferenceError( `Key: '${key}' is not valid` );
+        }
     }
 }

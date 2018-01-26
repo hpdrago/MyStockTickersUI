@@ -16,8 +16,7 @@ import { LinkedAccountStateStore } from './linked-account-state-store';
 @Component({
     selector:    'linked-account-form-buttons',
     templateUrl: '../crud/form/crud-form-buttons.component.html',
-    styleUrls:  ['../crud/form/crud-form-buttons.component.css'],
-    providers:  [TradeItAccountOAuthService]
+    styleUrls:  ['../crud/form/crud-form-buttons.component.css']
 })
 export class LinkedAccountFormButtonsComponent extends CrudFormButtonsComponent<LinkedAccount>
 {

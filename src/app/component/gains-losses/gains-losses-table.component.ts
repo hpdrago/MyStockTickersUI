@@ -4,7 +4,6 @@ import { GainsLossesFactory } from '../../model/factory/gains-losses.factory';
 import { GainsLossesStateStore } from './gains-losses-state-store';
 import { GainsLossesController } from './gains-losses-controller';
 import { GainsLossesCrudService } from '../../service/crud/gains-losses-crud.service';
-import { GainsLossesCrudActionHandler } from './gains-losses-action-handler';
 import { CookieService } from 'ngx-cookie-service';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 import { GainsLosses } from '../../model/entity/gains-losses';
@@ -18,8 +17,7 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
 @Component(
     {
         selector:    'gains-losses-table',
-        templateUrl: './gains-losses-table.component.html',
-        providers: [GainsLossesStateStore, GainsLossesController, GainsLossesCrudActionHandler]
+        templateUrl: './gains-losses-table.component.html'
     } )
 export class GainsLossesTableComponent extends StockModelObjectTableComponent<GainsLosses>
 {

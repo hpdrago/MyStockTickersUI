@@ -5,7 +5,6 @@ import { StockPositionController } from './stock-position-controller';
 import { StockPositionStateStore } from './stock-position-state-store';
 import { StockPositionFactory } from '../../model/factory/stock-position-factory';
 import { StockPositionCrudService } from '../../service/crud/stock-position-crud.service';
-import { StockPositionCrudActionHandler } from './stock-position-crud-action-handler';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
@@ -23,8 +22,7 @@ import { LinkedAccount } from '../../model/entity/linked-account';
 {
     selector:    'stock-position-table',
     styleUrls:   ['./stock-position-table.component.css'],
-    templateUrl: './stock-position-table.component.html',
-    providers:   [StockPositionStateStore, StockPositionController, StockPositionCrudActionHandler]
+    templateUrl: './stock-position-table.component.html'
 } )
 export class StockPositionTableComponent extends StockModelObjectTableComponent<StockPosition>
 {

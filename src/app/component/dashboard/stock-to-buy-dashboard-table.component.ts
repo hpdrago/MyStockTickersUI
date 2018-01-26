@@ -7,8 +7,6 @@ import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.serv
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
 import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
-import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action-handler';
-import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
 import { StockToBuyTableComponent } from '../stock-to-buy/stock-to-buy-table.component';
@@ -22,9 +20,8 @@ import { CrudTableColumn } from '../crud/table/crud-table-column';
 @Component
 ({
     selector:    'stock-to-buy-dashboard-table',
+    styleUrls:   ['../stock-to-buy/stock-to-buy-table.component.css'],
     templateUrl: '../stock-to-buy/stock-to-buy-table.component.html',
-    providers: [StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler,
-                StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler]
 })
 export class StockToBuyDashboardTableComponent extends StockToBuyTableComponent
 {

@@ -7,7 +7,7 @@ import { GainsLosses } from './gains-losses';
 import { StockPriceQuote } from './stock-price-quote';
 import { StockQuote } from './stock-quote';
 import { ModelObject } from '../common/model-object';
-import { CommonStockModelObjectColumns } from '../../component/stock-table/common-stock-model-object-columns';
+import { AdditionalStockModelObjectColumns } from '../../component/stock-table/additional-stock-model-object-columns';
 
 /**
  * This class contains the information for a single stock position within a LinkedAccount.
@@ -28,10 +28,6 @@ export class StockPosition extends ModelObject<StockPosition>
     public todayGainLossPercentage: number;
     public totalGainLossAbsolute: number;
     public totalGainLossPercentage: number;
-    public exchange: string;
-    public openPrice: number;
-    public closePrice: number;
-    public version: number;
     public rank: number;
     public rankPercent: number;
     public stockPriceWhenCreated: number;
@@ -141,30 +137,10 @@ export class StockPosition extends ModelObject<StockPosition>
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {
-                                        colId: 'lastPrice',
-                                        header: 'Last Price',
-                                        dataType: CrudTableColumnType.CUSTOM,
-                                        sortable: true
-                                    } );
-        crudTableColumns.addColumn( {
                                         colId: 'costBasis',
                                         header: 'Cost Basis',
                                         dataType: CrudTableColumnType.CURRENCY,
                                         field: 'costBasis',
-                                        sortable: true
-                                    } );
-        crudTableColumns.addColumn( {
-                                        colId: 'openPrice',
-                                        header: 'Open',
-                                        dataType: CrudTableColumnType.CURRENCY,
-                                        field: 'openPrice',
-                                        sortable: true
-                                    } );
-        crudTableColumns.addColumn( {
-                                        colId: 'closePrice',
-                                        header: 'Close',
-                                        dataType: CrudTableColumnType.CURRENCY,
-                                        field: 'closePrice',
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {
@@ -196,6 +172,11 @@ export class StockPosition extends ModelObject<StockPosition>
                                         sortable: true
                                     } );
         return crudTableColumns;
+    }
+
+    public getAdditionalColumns(): CrudTableColumns
+    {
+        return new AdditionalStockModelObjectColumns();
     }
 
     public initializeStockModelObjects()

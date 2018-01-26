@@ -1,4 +1,4 @@
-import { AfterViewInit, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { ModelObject } from '../../../model/common/model-object';
 import { CrudTableColumn } from './crud-table-column';
 import { BaseComponent } from '../../common/base.component';
@@ -75,14 +75,14 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
      * @type {number}
      */
     @Input()
-    protected pageLinks: number = 3;
+    protected pageLinks: number = 5;
 
     /**
      * Paginator rows per page selection list.
      * @type {number[]}
      */
     @Input()
-    protected rowsPerPageOptions: number[] = [20,30,40];
+    protected rowsPerPageOptions: number[] = [10,15,20,25,30,40];
 
     /**
      * Paginator total records.
@@ -105,10 +105,10 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     protected reorderableColumns: boolean = true;
 
     @Input()
-    protected responsive: boolean = true;
+    protected responsive: boolean = false;
 
     @Input()
-    protected rowsToDisplay: number = 20;
+    protected rowsToDisplay: number = 10;
 
     /**
      * The field in the model object on which the selected row is based.
@@ -152,7 +152,13 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
      * Flag to indicate whether the crud table buttons show be displayed on the header (top of table).
      */
     @Input()
-    protected showHeaderButtons: boolean = true;
+    protected showHeaderButtons: boolean = false;
+
+    /**
+     * Flag to indicate whether the crud table buttons show be displayed on the header (top of table).
+     */
+    @Input()
+    protected showFooterButtons: boolean = true;
 
     /**
      * Flag to indicate if the customize table layout button should be used.

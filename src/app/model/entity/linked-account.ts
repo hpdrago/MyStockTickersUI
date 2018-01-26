@@ -113,28 +113,28 @@ export class LinkedAccount extends ModelObject<LinkedAccount>
         crudTableColumns.addColumn( {
                                         colId: 'dayAbsoluteReturn',
                                         header: 'Day Total Gain',
-                                        dataType: CrudTableColumnType.CURRENCY,
+                                        dataType: CrudTableColumnType.GAIN_LOSS_CURRENCY,
                                         field: 'dayAbsoluteReturn',
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {
                                         colId: 'dayPercentReturn',
                                         header: 'Day % Gain',
-                                        dataType: CrudTableColumnType.CURRENCY,
+                                        dataType: CrudTableColumnType.GAIN_LOSS_PERCENT,
                                         field: 'dayPercentReturn',
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {
                                         colId: 'totalAbsoluteReturn',
                                         header: 'Total Gain',
-                                        dataType: CrudTableColumnType.CURRENCY,
+                                        dataType: CrudTableColumnType.GAIN_LOSS_CURRENCY,
                                         field: 'totalAbsoluteReturn',
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {
                                         colId: 'totalPercentReturn',
                                         header: 'Total % Gain',
-                                        dataType: CrudTableColumnType.CURRENCY,
+                                        dataType: CrudTableColumnType.GAIN_LOSS_PERCENT,
                                         field: 'totalPercentReturn',
                                         sortable: true
                                     } );

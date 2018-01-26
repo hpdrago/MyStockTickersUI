@@ -10,7 +10,7 @@ import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service'
  * from the components.
  */
 @Injectable()
-export class PortfolioActionHandler extends CrudActionHandler<Portfolio>
+export class PortfolioCrudActionHandler extends CrudActionHandler<Portfolio>
 {
     /**
      * Constructor.

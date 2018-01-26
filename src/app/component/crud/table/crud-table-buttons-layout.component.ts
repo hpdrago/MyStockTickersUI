@@ -1,4 +1,5 @@
 import { Component, Input, TemplateRef } from "@angular/core";
+import { CrudTableButtonsBaseComponent } from './crud-table-buttons-base.component';
 
 /**
  * This is the base component class for the buttons on all CRUD enabled tables.
@@ -12,8 +13,12 @@ import { Component, Input, TemplateRef } from "@angular/core";
  * Created by mike on 1/2/2017.
  */
 @Component({
-    selector:'crud-table-buttons',
-    template: `<div style="text-align: center">
+    selector: 'crud-table-buttons',
+    template: ` <ng-template #customizeButtonTemplate>
+                    <crud-table-customize-button>
+                    </crud-table-customize-button>
+                </ng-template>
+                <div style="text-align: center">
                    <ng-container *ngTemplateOutlet="editButtonTemplate">
                    </ng-container>
                    <ng-container *ngTemplateOutlet="addButtonTemplate">
@@ -22,25 +27,29 @@ import { Component, Input, TemplateRef } from "@angular/core";
                    </ng-container>
                    <ng-container *ngTemplateOutlet="refreshButtonTemplate">
                    </ng-container>
-                   <ng-container *ngTemplateOutlet="customizeButtonTemplate">
-                   </ng-container>
+                    <!--
+                   <div *ngIf="includeCustomizeButton">
+                       <ng-container *ngTemplateOutlet="customizeButtonTemplate">
+                       </ng-container>
+                   </div>
+                   -->
                </div>
               `
 })
-export class CrudTableButtonsComponent
+export class CrudTableButtonsLayoutComponent
 {
-    @Input('refreshButtonTemplate')
+    @Input()
+    protected includeCustomizeButton: boolean = false;
+
+    @Input()
     protected refreshButtonTemplate: TemplateRef<any>;
 
-    @Input('addButtonTemplate')
+    @Input()
     protected addButtonTemplate: TemplateRef<any>;
 
-    @Input('editButtonTemplate')
+    @Input()
     protected editButtonTemplate: TemplateRef<any>;
 
-    @Input('deleteButtonTemplate')
+    @Input()
     protected deleteButtonTemplate: TemplateRef<any>;
-
-    @Input('customizeButtonTemplate')
-    protected customizeButtonTemplate: TemplateRef<any>;
 }

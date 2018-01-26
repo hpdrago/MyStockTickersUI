@@ -6,8 +6,8 @@ import { PortfolioStock } from '../../model/entity/portfolio-stock';
 import { Injectable } from '@angular/core';
 import { PortfolioStockStateStore } from './portfolio-stock-state-store';
 import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
-import { PortfolioActionHandler } from '../portfolio/portfolio-action-handler';
-import { PortfolioStockActionHandler } from './portfolio-stock-action-handler';
+import { PortfolioCrudActionHandler } from '../portfolio/portfolio-crud-action-handler.service';
+import { PortfolioStockCrudActionHandler } from './portfolio-stock-crud-action-handler.service';
 
 /**
  * This is the controller for Portfolio StockCompany entity components.
@@ -19,11 +19,11 @@ export class PortfolioStockController extends CrudController<PortfolioStock>
      * Constructor.
      * @param {PortfolioStockStateStore} portfolioStockStateStore
      * @param {PortfolioStockFactory} portfolioStockFactory
-     * @param {PortfolioActionHandler} portfolioStockActionHandler
+     * @param {PortfolioCrudActionHandler} portfolioStockActionHandler
      */
     constructor( portfolioStockStateStore: PortfolioStockStateStore,
                  portfolioStockFactory: PortfolioStockFactory,
-                 portfolioStockActionHandler: PortfolioStockActionHandler )
+                 portfolioStockActionHandler: PortfolioStockCrudActionHandler )
     {
         super( portfolioStockStateStore,
                portfolioStockFactory,

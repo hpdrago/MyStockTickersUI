@@ -77,7 +77,6 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
             .clear();
         this.selectedCompanyList
             .addCompany( stockCompany );
-        this.modelObject.lastPrice = stockCompany.lastPrice;
         this.modelObject.tickerSymbol = stockCompany.tickerSymbol;
         this.modelObject.stockQuote.companyName = stockCompany.companyName;
         this.modelObject.stockQuote.latestPrice = stockCompany.lastPrice;

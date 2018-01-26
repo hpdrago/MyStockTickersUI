@@ -9,7 +9,6 @@ import { StockModelObjectTableComponent } from '../common/stock-model-object-tab
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Component } from '@angular/core';
-import { StockAnalystConsensusActionHandler } from './stock-analyst-consensus-action-handler';
 
 /**
  * This is the base class for the tab and dashboard table for StockCompany Analyst Consensus information
@@ -18,8 +17,7 @@ import { StockAnalystConsensusActionHandler } from './stock-analyst-consensus-ac
 ({
     selector: 'stock-analyst-consensus-table',
     styleUrls: ['./stock-analyst-consensus-table.component.css'],
-    templateUrl: './stock-analyst-consensus-table.component.html',
-    providers: [StockAnalystConsensusStateStore, StockAnalystConsensusController, StockAnalystConsensusActionHandler]
+    templateUrl: './stock-analyst-consensus-table.component.html'
 })
 export class StockAnalystConsensusTableComponent extends StockModelObjectTableComponent<StockAnalystConsensus>
 {

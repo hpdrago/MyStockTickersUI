@@ -4,19 +4,10 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { BaseComponent } from "../common/base.component";
 import { TradeItAccountTableComponent } from "./tradeit-account-table.component";
 import { LinkedAccountTableComponent } from "../linked-account/linked-account-table.component";
-import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountController } from './tradeit-account-controller';
-import { LinkedAccountStateStore } from '../linked-account/linked-account-state-store';
 import { LinkedAccountController } from '../linked-account/linked-account-controller';
-import { TradeItAccountCrudActionHandler } from './tradeit-account-crud-action-handler';
-import { LinkedAccountCrudActionHandler } from '../linked-account/linked-account-crud-action-handler';
 import { StockPositionTableComponent } from '../stock-position/stock-position-table.component';
 import { LinkedAccount } from '../../model/entity/linked-account';
-import { PortfolioStateStore } from '../portfolio/portfolio-state-store';
-import { PortfolioController } from '../portfolio/portfolio-controller';
-import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service';
-import { PortfolioFactory } from '../../model/factory/portfolio.factory';
-import { PortfolioActionHandler } from '../portfolio/portfolio-action-handler';
 import { PortfolioTableComponent } from '../portfolio/portfolio-table.component';
 
 /**
@@ -25,11 +16,7 @@ import { PortfolioTableComponent } from '../portfolio/portfolio-table.component'
 @Component(
     {
         selector:    'tradeit-accounts',
-        templateUrl: './tradeit-accounts.component.html',
-        providers: [TradeItAccountStateStore, TradeItAccountController, TradeItAccountCrudActionHandler,
-                    LinkedAccountStateStore, LinkedAccountController, LinkedAccountCrudActionHandler,
-                    PortfolioActionHandler, PortfolioStateStore, PortfolioController, PortfolioFactory,
-                    PortfolioCrudService]
+        templateUrl: './tradeit-accounts.component.html'
     })
 export class TradeItAccountsComponent extends BaseComponent implements OnInit
 {

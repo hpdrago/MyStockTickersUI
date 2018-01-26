@@ -45,13 +45,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * @type {number}
      */
     @Input()
-    protected rowsToDisplay: number = 20;
+    protected rowsToDisplay: number = 10;
     /**
      * Paginator rows per page selection list.
      * @type {number[]}
      */
     @Input()
-    protected rowsPerPageOptions: number[] = [20,30,40];
+    protected rowsPerPageOptions: number[] = [10,15,20,25,30,40];
     /**
      * When specifies, enables horizontal and/or vertical scrolling.
      * @type {boolean}

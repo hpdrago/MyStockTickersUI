@@ -7,8 +7,6 @@ import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.servi
 import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
 import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action-handler';
 import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
-import { StockNotesStateStore } from './stock-notes-state-store';
-import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
 
 /**
  * Component to display the stock notes dialog to create a new note.
@@ -21,17 +19,10 @@ import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
                                    [displayDialog]="true"
                                    [showCloseButton]="false">
                </stock-notes-dialog>
-    `,
-    providers: [StockNotesController, StockNotesStateStore, StockNotesCrudActionHandler,
-                StockToBuyController, StockToBuyStateStore, StockToBuyCrudActionHandler]
+    `
  })
 export class StockNotesAddComponent extends BaseComponent implements AfterViewInit
 {
-    /*
-    @ViewChild(StockNotesDialogComponent)
-    private stockNotesDialog: StockNotesDialogComponent;
-    */
-
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -48,8 +39,7 @@ export class StockNotesAddComponent extends BaseComponent implements AfterViewIn
                         private stockNotesCrudService: StockNotesCrudService,
                         private stockToBuyController: StockToBuyController,
                         private stockToBuyActionHandler: StockToBuyCrudActionHandler,
-                        private stockToBuyCrudService: StockToBuyCrudService,
-                        private stockToBuyStateStore: StockToBuyStateStore )
+                        private stockToBuyCrudService: StockToBuyCrudService )
     {
         super( toaster );
     }

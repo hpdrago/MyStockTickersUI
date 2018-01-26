@@ -68,10 +68,7 @@ export class StockCatalystEventCrudService extends BaseStockService<StockCatalys
     protected getContextURLKeyValues( stockCatalystEvent: StockCatalystEvent ): KeyValuePairs<string,any>
     {
         let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
-        if ( stockCatalystEvent.tickerSymbol )
-        {
-            keyColumns.addPair( "tickerSymbol", stockCatalystEvent.tickerSymbol );
-        }
+        keyColumns.addPair( "tickerSymbol", stockCatalystEvent.tickerSymbol );
         return keyColumns;
     }
 }

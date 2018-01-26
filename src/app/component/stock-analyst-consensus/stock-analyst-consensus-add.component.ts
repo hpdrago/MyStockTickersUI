@@ -2,8 +2,6 @@ import { BaseComponent } from '../common/base.component';
 import { Component, OnInit } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
-import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
-import { StockAnalystConsensusActionHandler } from './stock-analyst-consensus-action-handler';
 
 /**
  * Component to display the stock notes dialog to create a new note.
@@ -14,8 +12,7 @@ import { StockAnalystConsensusActionHandler } from './stock-analyst-consensus-ac
                                                [showContinuousAddButton]="true"
                                                [showAddButton]="false"
                                                [showCloseButton]="false"> 
-               </stock-analyst-consensus-dialog>`,
-    providers: [StockAnalystConsensusController, StockAnalystConsensusStateStore, StockAnalystConsensusActionHandler]
+               </stock-analyst-consensus-dialog>`
  })
 export class StockAnalystConsensusAddComponent extends BaseComponent implements OnInit
 {

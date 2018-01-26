@@ -14,6 +14,9 @@ import { LinkedAccount } from '../../model/entity/linked-account';
 import { LinkedAccountController } from '../linked-account/linked-account-controller';
 import { isNullOrUndefined } from 'util';
 
+/**
+ * The portfolio stock add button is disabled until a linked account has been selected.
+ */
 @Component
 ({
      selector: 'portfolio-stock-table-add-button',

@@ -52,4 +52,17 @@ export class StockPriceQuoteCacheService extends AsyncCacheService<string,StockP
                                                                       container.stockPriceQuote ));
         this.logMethodEnd( methodName );
     }
+
+    /**
+     * Check the key to make sure it's valid
+     * @param {string} key
+     */
+    protected checkKey( key: string ): void
+    {
+        super.checkKey( key );
+        if ( key.length == 0 )
+        {
+            throw ReferenceError( 'Key is empty' );
+        }
+    }
 }

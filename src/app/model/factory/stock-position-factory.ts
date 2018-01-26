@@ -46,7 +46,6 @@ export class StockPositionFactory extends StockModelObjectFactory<StockPosition>
         position.todayGainLossPercentage = 0;
         position.totalGainLossAbsolute = 0;
         position.totalGainLossPercentage = 0;
-        position.exchange = "";
         position.version = 0;
         position.initializeStockModelObjects();
         return position;

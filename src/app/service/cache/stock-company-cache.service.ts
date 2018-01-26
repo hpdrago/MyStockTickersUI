@@ -38,4 +38,17 @@ export class StockCompanyCacheService extends AsyncCacheService<string, StockCom
                    .getStockCompany( tickerSymbol );
     }
 
+
+    /**
+     * Check the key to make sure it's valid
+     * @param {string} key
+     */
+    protected checkKey( key: string ): void
+    {
+        super.checkKey( key );
+        if ( key.length == 0 )
+        {
+            throw ReferenceError( 'Key is empty' );
+        }
+    }
 }

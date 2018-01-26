@@ -25,19 +25,19 @@
              [(selection)]="selectedModelObject"
              [paginator]="paginator"
              [pageLinks]="pageLinks"
+             [rowsPerPageOptions]="rowsPerPageOptions"
              [totalRecords]="totalRecords"
              (onRowSelect)="onRowSelect($event)"
-             (onRowUnselect)="onRowUnSelect($event)"
+             (onRowUnselect)="onRowUnselect($event)"
              selectionMode="single"
              (onLazyLoad)="onLazyLoad()"
              [lazy]="lazy"
-             [rowsPerPageOptions]="rowsPerPageOptions"
              [loading]="loadingData"
              [resizableColumns]="resizableColumns"
              [reorderableColumns]="reorderableColumns"
              [scrollable]="scrollable"
              [scrollHeight]="scrollHeight"
-             [responsive]="true">
+             [responsive]="responsive">
 
         <ng-template pTemplate="header" let-columns>
             <tr>
@@ -81,7 +81,9 @@
     BUTTONS ARE REPEATED
     ------------------------------------------------------------------------------------------------------------>
     <p-footer>
-        <ng-container *ngTemplateOutlet="buttonsTemplate">
-        </ng-container>
+        <div *ngIf="showFooterButtons">
+            <ng-container *ngTemplateOutlet="buttonsTemplate">
+            </ng-container>
+        </div>
     </p-footer>
 </p-panel>

@@ -2,8 +2,6 @@ import { BaseComponent } from '../common/base.component';
 import { Component, OnInit } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { StockToBuyController } from './stock-to-buy-controller';
-import { StockToBuyStateStore } from './stock-to-buy-state-store';
-import { StockToBuyCrudActionHandler } from './stock-to-buy-action-handler';
 
 /**
  * Component to display the stock notes dialog to create a new note.
@@ -14,8 +12,7 @@ import { StockToBuyCrudActionHandler } from './stock-to-buy-action-handler';
                                     [showContinuousAddButton]="true"
                                     [showAddButton]="false"
                                     [showCloseButton]="false">
-               </stock-to-buy-dialog>`,
-    providers: [StockToBuyController, StockToBuyStateStore, StockToBuyCrudActionHandler]
+               </stock-to-buy-dialog>`
  })
 export class StockToBuyAddComponent extends BaseComponent implements OnInit
 {

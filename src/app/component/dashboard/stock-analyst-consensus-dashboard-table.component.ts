@@ -5,7 +5,6 @@ import { StockAnalystConsensusStateStore } from '../stock-analyst-consensus/stoc
 import { StockAnalystConsensusController } from '../stock-analyst-consensus/stock-analyst-consensus-controller';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
-import { StockAnalystConsensusActionHandler } from '../stock-analyst-consensus/stock-analyst-consensus-action-handler';
 import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -20,8 +19,7 @@ import { CrudTableColumn } from '../crud/table/crud-table-column';
 ({
     selector: 'stock-analyst-consensus-dashboard-table',
     styleUrls: ['../stock-analyst-consensus/stock-analyst-consensus-table.component.css'],
-    templateUrl: '../stock-analyst-consensus/stock-analyst-consensus-table.component.html',
-    providers: [StockAnalystConsensusStateStore, StockAnalystConsensusController, StockAnalystConsensusActionHandler]
+    templateUrl: '../stock-analyst-consensus/stock-analyst-consensus-table.component.html'
 })
 export class StockAnalystConsensusDashboardTableComponent extends StockAnalystConsensusTableComponent
 {

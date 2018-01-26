@@ -6,7 +6,6 @@ import { CustomerController } from './customer-controller';
 import { CustomerFactory } from '../../model/factory/customer.factory';
 import { CustomerStateStore } from './customer-state-store';
 import { CustomerCrudService } from '../../service/crud/customer-crud.service';
-import { CustomerCrudActionHandler } from './customer-crud-action-handler';
 
 /**
  * This is the customer form panel.
@@ -14,9 +13,7 @@ import { CustomerCrudActionHandler } from './customer-crud-action-handler';
  */
 @Component({
     selector: 'customer-panel',
-    templateUrl: './customer-panel.component.html',
-    providers: [CustomerStateStore, CustomerController, CustomerFactory, CustomerCrudService,
-                CustomerCrudActionHandler]
+    templateUrl: './customer-panel.component.html'
 })
 export class CustomerPanelComponent extends CrudPanelComponent<Customer>
 {

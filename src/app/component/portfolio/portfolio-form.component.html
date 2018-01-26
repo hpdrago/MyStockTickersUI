@@ -1,5 +1,31 @@
-<form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
+<form [formGroup]="formGroup">
     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+        <!----------------------------------------------------------------------
+         - LINKED ACCOUNT NAME
+         ----------------------------------------------------------------------->
+        <div class="crud-form ui-grid-row">
+            <div class="crud-form-label ui-grid-col-4">
+                <label class="crud-form">Account Name:</label>
+            </div>
+            <div class="crud-form-label ui-grid-col-8">
+                {{linkedAccount.accountName}}
+            </div>
+        </div>
+
+        <!----------------------------------------------------------------------
+         - LINKED ACCOUNT NUMBER
+         ----------------------------------------------------------------------->
+        <div class="crud-form ui-grid-row">
+            <div class="crud-form-label ui-grid-col-4">
+                <label class="crud-form">Account Name:</label>
+            </div>
+            <div class="crud-form-label ui-grid-col-8">
+                {{linkedAccount.accountNumber}}
+            </div>
+        </div>
+        <!----------------------------------------------------------------------
+         - PORTFOLIO NAME
+         ----------------------------------------------------------------------->
         <div class="crud-form ui-grid-row">
             <div class="crud-form-label ui-grid-col-4">
                 <label class="crud-form" for="portfolioName">Portfolio Name:</label>

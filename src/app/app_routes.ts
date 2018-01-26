@@ -10,7 +10,6 @@ import { ProfileComponent } from "./component/profile/profile.component";
 import { AuthGuardService } from "./service/auth-guard.service";
 import { AdminComponent } from "./component/admin/admin.component";
 import { TradeItAccountsComponent } from "./component/tradeit-account/tradeit-accounts.component";
-import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 import { GainsLossesTableComponent } from './component/gains-losses/gains-losses-table.component';
 import { StockNotesAddComponent } from './component/stock-notes/stock-notes-add.component';
 import { StockToBuyAddComponent } from './component/stock-to-buy/stock-to-buy-add.component';

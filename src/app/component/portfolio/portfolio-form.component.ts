@@ -7,6 +7,8 @@ import { PortfolioFactory } from '../../model/factory/portfolio.factory';
 import { PortfolioController } from './portfolio-controller';
 import { PortfolioStateStore } from './portfolio-state-store';
 import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service';
+import { LinkedAccountStateStore } from '../linked-account/linked-account-state-store';
+import { LinkedAccount } from '../../model/entity/linked-account';
 
 /**
  * This is the Portfolio Form Component class.
@@ -20,6 +22,8 @@ import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service'
 })
 export class PortfolioFormComponent extends CrudFormComponent<Portfolio>
 {
+    protected linkedAccount: LinkedAccount;
+
     /**
      * Constructor.
      * @param {ChangeDetectorRef} changeDetector
@@ -29,6 +33,7 @@ export class PortfolioFormComponent extends CrudFormComponent<Portfolio>
      * @param {PortfolioController} portfolioController
      * @param {PortfolioFactory} portfolioFactory
      * @param {PortfolioCrudService} portfolioCrudService
+     * @param {LinkedAccountStateStore} linkedAccountStateStore
      */
     constructor( protected changeDetector: ChangeDetectorRef,
                  protected toaster: ToastsManager,
@@ -36,7 +41,8 @@ export class PortfolioFormComponent extends CrudFormComponent<Portfolio>
                  private portfolioStateStore: PortfolioStateStore,
                  private portfolioController: PortfolioController,
                  private portfolioFactory: PortfolioFactory,
-                 private portfolioCrudService: PortfolioCrudService )
+                 private portfolioCrudService: PortfolioCrudService,
+                 private linkedAccountStateStore: LinkedAccountStateStore )
     {
         super( changeDetector,
                toaster,
@@ -44,6 +50,15 @@ export class PortfolioFormComponent extends CrudFormComponent<Portfolio>
                portfolioController,
                portfolioFactory,
                portfolioCrudService );
+    }
+
+    public ngOnInit(): void
+    {
+        super.ngOnInit();
+        this.linkedAccount = this.linkedAccountStateStore
+                                 .getModelObject();
+        this.checkArgument( 'linkedAccount', this.linkedAccount );
+        this.modelObject.linkedAccountId = this.linkedAccount.id;
     }
 
     protected createFormGroup(): FormGroup

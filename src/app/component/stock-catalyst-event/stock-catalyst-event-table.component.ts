@@ -11,11 +11,6 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Component } from '@angular/core';
-import { StockCatalystEventActionHandler } from './stock-catalyst-event-action-handler';
-import { CrudStateStore } from '../crud/common/crud-state-store';
-import { CrudController } from '../crud/common/crud-controller';
-import { ModelObjectFactory } from '../../model/factory/model-object.factory';
-import { CrudRestService } from '../../service/crud/crud-rest.serivce';
 
 /**
  * This component lists all stock notes
@@ -30,12 +25,7 @@ import { CrudRestService } from '../../service/crud/crud-rest.serivce';
 @Component
 ({
     selector: 'stock-catalyst-event-table',
-    templateUrl: './stock-catalyst-event-table.component.html',
-    providers: [StockCatalystEventStateStore, StockCatalystEventController, StockCatalystEventActionHandler,
-                { provide: CrudStateStore, useValue: StockCatalystEventStateStore },
-                { provide: CrudController, useValue: StockCatalystEventController },
-                { provide: ModelObjectFactory, useValue: StockCatalystEventFactory },
-                { provide: CrudRestService, useValue: StockCatalystEventCrudService }]
+    templateUrl: './stock-catalyst-event-table.component.html'
 })
 export class StockCatalystEventTableComponent extends StockModelObjectTableComponent<StockCatalystEvent>
 {

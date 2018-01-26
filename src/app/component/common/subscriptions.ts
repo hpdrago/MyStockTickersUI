@@ -33,7 +33,7 @@ export class Subscriptions extends BaseClass
     public addSubscription( subjectName: string, subscription: Subscription )
     {
         const methodName = 'addSubscription';
-        this.debug( methodName + " subscribing to " + subjectName );
+        //this.debug( methodName + " subscribing to " + subjectName );
         if ( isNullOrUndefined( subscription ))
         {
             throw ReferenceError( "subscription cannot be null or undefined" );

@@ -4,10 +4,6 @@ import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
-import { StockNotesCrudActionHandler } from './stock-notes-crud-action-handler';
-import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action-handler';
-import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
-import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
 import { CookieService } from 'ngx-cookie-service';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 import { StockNotes } from '../../model/entity/stock-notes';
@@ -24,9 +20,7 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
     {
         selector: 'stock-notes-table',
         styleUrls: ['./stock-notes-table.component.css'],
-        templateUrl: './stock-notes-table.component.html',
-        providers: [StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler,
-                    StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler]
+        templateUrl: './stock-notes-table.component.html'
     } )
 export class StockNotesTableComponent  extends StockModelObjectTableComponent<StockNotes>
 {

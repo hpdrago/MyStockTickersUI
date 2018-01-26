@@ -83,13 +83,13 @@ export class StockAnalystConsensusCrudService extends BaseStockService<StockAnal
      * @param {StockAnalystConsensus} stockAnalystConsensus
      * @return {Observable<StockAnalystConsensus>}
      */
-    getModelObject( stockAnalystConsensus: StockAnalystConsensus ): Observable<StockAnalystConsensus>
+    public getModelObject( stockAnalystConsensus: StockAnalystConsensus ): Observable<StockAnalystConsensus>
     {
         return super.getModelObject( stockAnalystConsensus )
-            .map( stockAnalystConsensus =>
-                {
-                    stockAnalystConsensus.setCacheState( CachedValueState.CURRENT ) ;
-                    return stockAnalystConsensus;
-                });
+                    .map( stockAnalystConsensus =>
+                        {
+                            stockAnalystConsensus.setCacheState( CachedValueState.CURRENT ) ;
+                            return stockAnalystConsensus;
+                        });
     }
 }

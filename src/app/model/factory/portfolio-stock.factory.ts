@@ -35,9 +35,6 @@ export class PortfolioStockFactory extends StockModelObjectFactory<PortfolioStoc
         var portfolioStock = new PortfolioStock();
         portfolioStock.tickerSymbol = '';
         portfolioStock.customerId = this.session.getLoggedInUserId();
-        portfolioStock.numberOfShares = 0;
-        portfolioStock.averageUnitCost = 0;
-        portfolioStock.lastPrice = 0;
         portfolioStock.stopLossPrice = 0;
         portfolioStock.stopLossShares = 0;
         portfolioStock.profitTakingPrice = 0;

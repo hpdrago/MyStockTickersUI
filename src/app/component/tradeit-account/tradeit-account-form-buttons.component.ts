@@ -18,8 +18,7 @@ import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-cr
 @Component({
     selector:    'tradeit-account-form-buttons',
     templateUrl: '../crud/form/crud-form-buttons.component.html',
-    styleUrls: ['../crud/form/crud-form-buttons.component.css'],
-    providers: [TradeItAccountOAuthService]
+    styleUrls: ['../crud/form/crud-form-buttons.component.css']
 })
 export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent<TradeItAccount>
     implements OnDestroy, TradeItOAuthComponent

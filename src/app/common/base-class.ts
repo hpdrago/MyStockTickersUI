@@ -20,7 +20,7 @@ export class BaseClass implements OnDestroy
     constructor( protected toaster?: ToastsManager )
     {
         this.logger = LoggerFactory.getLogger( this.getClassName() );
-        this.debug( "Constructor toaster: " +  toaster );
+        //this.debug( "Constructor toaster: " +  toaster );
     }
 
     public ngOnDestroy(): void

@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockCatalystEventStateStore } from '../stock-catalyst-event/stock-catalyst-event-state-store';
 import { StockCatalystEventController } from '../stock-catalyst-event/stock-catalyst-event-controller';
-import { StockCatalystEventActionHandler } from '../stock-catalyst-event/stock-catalyst-event-action-handler';
 import { StockCatalystEventTableComponent } from '../stock-catalyst-event/stock-catalyst-event-table.component';
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
@@ -18,8 +17,7 @@ import { CrudTableColumn } from '../crud/table/crud-table-column';
 @Component(
     {
         selector: 'stock-catalyst-event-dashboard-table',
-        templateUrl: '../stock-catalyst-event/stock-catalyst-event-table.component.html',
-        providers: [StockCatalystEventStateStore, StockCatalystEventController, StockCatalystEventActionHandler]
+        templateUrl: '../stock-catalyst-event/stock-catalyst-event-table.component.html'
     } )
 export class StockCatalystEventDashboardTableComponent extends StockCatalystEventTableComponent
 {

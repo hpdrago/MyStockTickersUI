@@ -1,7 +1,6 @@
 import { CrudTableAddButtonComponent } from '../crud/table/crud-table-add-button.component';
 import { Portfolio } from '../../model/entity/portfolio';
-import { Component, OnInit } from '@angular/core';
-import { CrudOperation } from '../crud/common/crud-operation';
+import { Component } from '@angular/core';
 import { SessionService } from '../../service/session.service';
 import { ToastsManager } from 'ng2-toastr';
 import { PortfolioStateStore } from './portfolio-state-store';
@@ -12,6 +11,9 @@ import { LinkedAccountController } from '../linked-account/linked-account-contro
 import { LinkedAccount } from '../../model/entity/linked-account';
 import { isNullOrUndefined } from 'util';
 
+/**
+ * A portfolio cannot be added until a linked account has been selected.
+ */
 @Component
 ({
      selector: 'portfolio-table-add-button',

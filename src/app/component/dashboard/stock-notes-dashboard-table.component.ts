@@ -6,10 +6,6 @@ import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
-import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
-import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action-handler';
-import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
-import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
 import { CrudTableColumn } from '../crud/table/crud-table-column';
@@ -22,9 +18,7 @@ import { CrudTableColumn } from '../crud/table/crud-table-column';
 @Component(
 {
     selector: 'stock-notes-dashboard-table',
-    templateUrl: '../stock-notes/stock-notes-table.component.html',
-    providers: [StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler,
-                StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler]
+    templateUrl: '../stock-notes/stock-notes-table.component.html'
 })
 export class StockNotesDashboardTableComponent extends StockNotesTableComponent
 {

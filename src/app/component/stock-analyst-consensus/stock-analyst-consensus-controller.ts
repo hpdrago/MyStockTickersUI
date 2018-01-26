@@ -6,7 +6,7 @@ import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensu
 import { Injectable } from '@angular/core';
 import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
-import { StockAnalystConsensusActionHandler } from './stock-analyst-consensus-action-handler';
+import { StockAnalystConsensusCrudActionHandler } from './stock-analyst-consensus-crud-action-handler.service';
 
 /**
  * This is the Controller for the StockAnalystConsensus entity components.
@@ -18,11 +18,11 @@ export class StockAnalystConsensusController extends CrudController<StockAnalyst
      * Constructor.
      * @param {StockAnalystConsensusStateStore} crudStateStore
      * @param {StockAnalystConsensusFactory} modelObjectFactory
-     * @param {StockAnalystConsensusActionHandler} actionHandler
+     * @param {StockAnalystConsensusCrudActionHandler} actionHandler
      */
     constructor( crudStateStore: StockAnalystConsensusStateStore,
                  modelObjectFactory: StockAnalystConsensusFactory,
-                 actionHandler: StockAnalystConsensusActionHandler )
+                 actionHandler: StockAnalystConsensusCrudActionHandler )
     {
         super( crudStateStore,
                modelObjectFactory,

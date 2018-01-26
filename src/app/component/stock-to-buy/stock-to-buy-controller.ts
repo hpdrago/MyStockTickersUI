@@ -9,7 +9,7 @@ import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockToBuyCrudActionHandler } from './stock-to-buy-action-handler';
 
 /**
- * Crud controller for StockCompany To Buy entitiy components.
+ * Crud controller for StockCompany To Buy entity components.
  */
 @Injectable()
 export class StockToBuyController extends CrudController<StockToBuy>

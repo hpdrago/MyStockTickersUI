@@ -23,10 +23,7 @@ export class PortfolioStock extends ModelObject<PortfolioStock>
     public tickerSymbol: string;
     public portfolioId: string;
     public customerId: string;
-    public numberOfShares: number;
-    public averageUnitCost: number;
     public stockPriceWhenCreated: number;
-    public lastPrice: number;
     public stopLossPrice: number;
     public stopLossShares: number;
     public profitTakingPrice: number;
@@ -62,24 +59,6 @@ export class PortfolioStock extends ModelObject<PortfolioStock>
     public getPrimaryKeyName(): string
     {
         return "id";
-    }
-
-    /**
-     * The market modelObjectRows is shares(quantity) * current price
-     * @return {number}
-     */
-    public marketValue(): number
-    {
-        return this.getMarketValue();
-    }
-
-    /**
-     * Returns the market modelObjectRows of the stock (cost basis * quantity).
-     * @return {number}
-     */
-    public getMarketValue(): number
-    {
-        return this.averageUnitCost * this.numberOfShares;
     }
 
     /**

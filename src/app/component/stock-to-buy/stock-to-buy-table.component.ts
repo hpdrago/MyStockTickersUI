@@ -7,8 +7,6 @@ import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockToBuyStateStore } from './stock-to-buy-state-store';
 import { StockToBuyController } from './stock-to-buy-controller';
 import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
-import { StockToBuyCrudActionHandler } from './stock-to-buy-action-handler';
-import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
 import { StockModelObjectTableLayoutComponent } from '../stock-table/stock-model-object-table-layout.component';
@@ -32,9 +30,7 @@ import { CrudOperation } from '../crud/common/crud-operation';
 {
     selector:    'stock-to-buy-table',
     styleUrls:   ['./stock-to-buy-table.component.css'],
-    templateUrl: './stock-to-buy-table.component.html',
-    providers: [StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler,
-                StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler ]
+    templateUrl: './stock-to-buy-table.component.html'
 })
 export class StockToBuyTableComponent extends StockModelObjectTableComponent<StockToBuy> implements AfterViewInit
 {

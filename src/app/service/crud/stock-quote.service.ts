@@ -52,10 +52,7 @@ export class StockQuoteService extends ReadRestService<StockQuote>
     protected getContextURLKeyValues( stockCompany: StockQuote ): KeyValuePairs<string,any>
     {
         let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
-        if ( stockCompany.tickerSymbol )
-        {
-            keyColumns.addPair( "tickerSymbol", stockCompany.tickerSymbol );
-        }
+        keyColumns.addPair( "tickerSymbol", stockCompany.tickerSymbol );
         return keyColumns;
     }
 

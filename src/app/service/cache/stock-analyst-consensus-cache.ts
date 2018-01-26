@@ -2,9 +2,10 @@ import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensu
 import { Injectable } from '@angular/core';
 import { StockAnalystConsensusCrudService } from '../crud/stock-analyst-consensus-crud.service';
 import { ToastsManager } from 'ng2-toastr';
-import { AsyncCacheService } from './async-cache.service';
 import { Observable } from 'rxjs/Observable';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
+import { AsyncCrudCacheService } from './async-crud-cache.service';
+import { StockAnalystConsensusCrudActionHandler } from '../../component/stock-analyst-consensus/stock-analyst-consensus-crud-action-handler.service';
 
 /**
  * Contains all of the stock analyst consensus entities for a single customer.
@@ -13,40 +14,22 @@ import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-
  * Created by mike on 3/24/2018
  */
 @Injectable()
-export class StockAnalystConsensusCache extends AsyncCacheService<string,StockAnalystConsensus>
+export class StockAnalystConsensusCache extends AsyncCrudCacheService<string,StockAnalystConsensus>
 {
     /**
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
      * @param {StockAnalystConsensusCrudService} stockAnalystConsensusService
+     * @param {StockAnalystConsensusCrudActionHandler} stockAnalystConsensusCrudActionHandler
      */
     public constructor( protected toaster: ToastsManager,
                         protected stockAnalystConsensusFactory: StockAnalystConsensusFactory,
-                        private stockAnalystConsensusService: StockAnalystConsensusCrudService )
+                        private stockAnalystConsensusService: StockAnalystConsensusCrudService,
+                        private stockAnalystConsensusCrudActionHandler: StockAnalystConsensusCrudActionHandler )
     {
-        super( toaster, stockAnalystConsensusFactory );
+        super( toaster, stockAnalystConsensusFactory, stockAnalystConsensusCrudActionHandler );
     }
-    /**
-     * Loads all of the stock analyst consensus records for the logging in customer.
-     */
-    /*public load()
-    {
-        const methodName = 'load';
-        this.debug( methodName + '.begin' );
-        let stockAnalystConsensus: StockAnalystConsensus = new StockAnalystConsensus();
-        stockAnalystConsensus.customerId = this.session.getLoggedInUserId();
-        this.stockAnalystConsensusCrudService
-            .getModelObjectList( stockAnalystConsensus )
-            .subscribe(consensusList =>
-                       {
-                           consensusList.forEach(stockAnalystConsensus =>
-                                                 {
-                                                     this.put( stockAnalystConsensus );
-                                                 } );
-                           this.debug( methodName + '.end loaded ' + consensusList.length );
-                       })
-    }*/
 
     /**
      * Delete the stock analyst consensus from the map.
@@ -71,10 +54,16 @@ export class StockAnalystConsensusCache extends AsyncCacheService<string,StockAn
                    .getModelObject( stockAnalystConsensus );
     }
 
-    /*
-    protected debug( message: string ): void
+    /**
+     * Check the key to make sure it's valid
+     * @param {string} key
+     */
+    protected checkKey( key: string ): void
     {
+        super.checkKey( key );
+        if ( key.length == 0 )
+        {
+            throw ReferenceError( 'Key is empty' );
+        }
     }
-    */
-
 }
