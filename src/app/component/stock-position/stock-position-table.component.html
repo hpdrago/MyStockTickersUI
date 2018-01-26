@@ -34,7 +34,7 @@
                     <p-column id="tickerSymbolColumn"
                               field="tickerSymbol"
                               header="Ticker"
-                              [style]="{'width':'80px'}"
+                              [style]="{'width':'30px'}"
                               [sortable]="true">
                     </p-column>
 
@@ -44,7 +44,7 @@
                     <p-column id="quantity"
                               field="quantity"
                               header="Shares"
-                              [style]="{'width':'80px','text-align':'right'}">
+                              [style]="{'width':'30px','text-align':'right'}">
                     </p-column>
 
                     <!----------------------------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@
                     <p-column id="lastPrice"
                               field="lastPrice"
                               header="Last Price"
-                              [style]="{'width':'80px','text-align':'right'}">
+                              [style]="{'width':'30px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <stock-quote-last-price [stockQuote]="stockPosition">
                             </stock-quote-last-price>
@@ -65,7 +65,7 @@
                     ------------------------------------------------------------------------------------------------------------>
                     <p-column id="purchasePrice"
                               header="Purchase Price"
-                              [style]="{'width':'80px','text-align':'right'}">
+                              [style]="{'width':'40px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <stock-position-purchase-price [stockPosition]="stockPosition">
                             </stock-position-purchase-price>
@@ -120,7 +120,7 @@
                     <p-column id="todayGainLossAbsolute"
                               field="todayGainLossAbsolute"
                               header="Today GL$"
-                              [style]="{'width':'80px','text-align':'right'}">
+                              [style]="{'width':'40px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <gain-loss-currency [currencyValue]="stockPosition[col.field]"></gain-loss-currency>
                         </ng-template>
@@ -132,7 +132,7 @@
                     <p-column id="todayGainLossPercentage"
                               field="todayGainLossPercentage"
                               header="Today GL%"
-                              [style]="{'width':'80px','text-align':'right'}">
+                              [style]="{'width':'40px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <gain-loss-percent [percentValue]="stockPosition[col.field]" [divideBy]="100"></gain-loss-percent>
                         </ng-template>
@@ -144,7 +144,7 @@
                     <p-column id="totalGainLossAbsolute"
                               field="totalGainLossAbsolute"
                               header="Total GL$"
-                              [style]="{'width':'80px','text-align':'right'}">
+                              [style]="{'width':'40px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <gain-loss-currency [currencyValue]="stockPosition[col.field]"></gain-loss-currency>
                         </ng-template>
@@ -156,7 +156,7 @@
                     <p-column id="totalGainLossPercentage"
                               field="totalGainLossPercentage"
                               header="Today GL%"
-                              [style]="{'width':'80px','text-align':'right'}">
+                              [style]="{'width':'40px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <gain-loss-percent [percentValue]="stockPosition[col.field]" [divideBy]="100"></gain-loss-percent>
                         </ng-template>
@@ -167,10 +167,10 @@
                     ------------------------------------------------------------------------------------------------------------>
                     <p-column id="avgUpsidePercent"
                               header="Avg Upside"
-                              [style]="{'width':'40px','text-align':'right'}"
+                              [style]="{'width':'30px','text-align':'right'}"
                               [sortable]="true">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-quote-average-upside-percent [stockQuote]="stockPosition"></stock-quote-average-upside-percent>
+                            <stock-average-upside-percent [stockQuote]="stockPosition"></stock-average-upside-percent>
                         </ng-template>
                     </p-column>
 
@@ -192,7 +192,7 @@
                               header="Analyst Targets"
                               [style]="{'width':'80px'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-price-targets [tickerSymbol]="stockPosition.tickerSymbol"></stock-price-targets>
+                            <stock-analyst-price-targets [tickerSymbol]="stockPosition.tickerSymbol"></stock-analyst-price-targets>
                         </ng-template>
                     </p-column>
 
@@ -205,7 +205,9 @@
                               [style]="{'width':'40px','text-align':'right'}"
                               [sortable]="false">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <currency [currencyValue]="stockPosition[col.field]"></currency>
+                            <stock-analyst-price-target tickerSymbol="stockPosition.tickerSymbol"
+                                                        target="high" >
+                            </stock-analyst-price-target>
                         </ng-template>
                     </p-column>
 
@@ -218,7 +220,9 @@
                               [style]="{'width':'40px','text-align':'right'}"
                               [sortable]="false">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <currency [currencyValue]="stockPosition[col.field]"></currency>
+                            <stock-analyst-price-target tickerSymbol="stockPosition.tickerSymbol"
+                                                        target="avg" >
+                            </stock-analyst-price-target>
                         </ng-template>
                     </p-column>
 
@@ -231,7 +235,9 @@
                               [style]="{'width':'40px','text-align':'right'}"
                               [sortable]="false">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <currency [currencyValue]="stockPosition[col.field]"></currency>
+                            <stock-analyst-price-target tickerSymbol="stockPosition.tickerSymbol"
+                                                        target="low" >
+                            </stock-analyst-price-target>
                         </ng-template>
                     </p-column>
 

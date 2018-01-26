@@ -170,7 +170,7 @@ import { StockPositionCrudService } from './service/crud/stock-position-crud.ser
 import { AppDefaultErrorHandler } from './app.default-error-handler';
 import { StockQuoteLastPriceComponent } from './component/common/stock-quote-last-price.component';
 import { StockQuotePercentChangeSinceCreatedComponent } from './component/common/stock-quote-percent-change-since-created.component';
-import { StockQuoteAverageUpsidePercentComponent } from './component/common/stock-quote-average-upside-percent.component';
+import { StockAverageUpsidePercentComponent } from './component/common/stock-average-upside-percent.component';
 import { StockCommentsComponent } from './component/common/stock-comments.component';
 import { StockAnalystConsensusComponent } from './component/common/stock-analyst-consensus.component';
 import { TipRanksLinkComponent } from './component/common/tipranks-link.component';
@@ -233,7 +233,8 @@ import { StockAnalystConsensusCache } from './service/stock-analyst-consensus-ca
 import { StockPositionMarketValue } from './component/stock-position/stock-position-market-value';
 import { StockPositionPurchasePrice } from './component/stock-position/stock-position-purchase-price';
 import { TableModule } from 'primeng/table';
-import { StockPriceTargetsComponent } from './component/common/stock-price-targets.component';
+import { StockAnalystPriceTargetsComponent } from './component/common/stock-analyst-price-targets.component';
+import { StockAnalystPriceTargetComponent } from './component/common/stock-analyst-price-target.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -435,10 +436,11 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockSearchComponent,
         StockQuoteLastPriceComponent,
         StockQuotePercentChangeSinceCreatedComponent,
-        StockQuoteAverageUpsidePercentComponent,
+        StockAverageUpsidePercentComponent,
         StockCommentsComponent,
         StockAnalystConsensusComponent,
-        StockPriceTargetsComponent,
+        StockAnalystPriceTargetsComponent,
+        StockAnalystPriceTargetComponent,
         TipRanksLinkComponent,
         CurrencyComponent,
         PercentComponent,

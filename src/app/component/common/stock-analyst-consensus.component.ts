@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensus';
+import { Component } from '@angular/core';
 import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
+import { StockAnalystConsensusBaseComponent } from './stock-analyst-consensus-base.component';
+import { ToastsManager } from 'ng2-toastr';
 
 /**
  * This component displays the analyst consensus buy hold etc values.
@@ -20,19 +21,16 @@ import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensu
                <ng-template #notFoundTemplate>
                </ng-template>
               `})
-export class StockAnalystConsensusComponent implements OnInit
+export class StockAnalystConsensusComponent extends StockAnalystConsensusBaseComponent
 {
-    @Input()
-    private tickerSymbol: string;
-    protected stockAnalystConsensus: StockAnalystConsensus;
-
-    constructor( private stockAnalystConsensusCache: StockAnalystConsensusCache )
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
+     */
+    constructor( protected toaster: ToastsManager,
+                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
-    }
-
-    public ngOnInit(): void
-    {
-        this.stockAnalystConsensus = this.stockAnalystConsensusCache
-                                         .get( this.tickerSymbol );
+        super( this.toaster, stockAnalystConsensusCache );
     }
 }

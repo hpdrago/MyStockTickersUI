@@ -4,7 +4,7 @@ import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensu
 
 @Component
 ({
-    selector: 'stock-price-targets',
+    selector: 'stock-analyst-price-targets',
     template: `<div *ngIf="stockAnalystConsensus != null; then foundTemplate else notFoundTemplate">
                </div>
                <ng-template #foundTemplate>
@@ -16,7 +16,7 @@ import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensu
                </ng-template>
     `
 })
-export class StockPriceTargetsComponent implements OnInit
+export class StockAnalystPriceTargetsComponent implements OnInit
 {
     @Input()
     private tickerSymbol: string;
