@@ -166,7 +166,7 @@ import { StockPositionTableButtonsComponent } from './component/stock-position/s
 import { StockPositionFactory } from './model/factory/stock-position-factory';
 import { StockPositionCrudService } from './service/crud/stock-position-crud.service';
 import { AppDefaultErrorHandler } from './app.default-error-handler';
-import { StockQuoteLastPriceComponent } from './component/common/stock-quote-last-price.component';
+import { StockPriceQuoteLastPriceComponent } from './component/common/stock-price-quote-last-price.component';
 import { StockQuotePercentChangeSinceCreatedComponent } from './component/common/stock-quote-percent-change-since-created.component';
 import { StockAverageUpsidePercentComponent } from './component/common/stock-average-upside-percent.component';
 import { StockCommentsComponent } from './component/common/stock-comments.component';
@@ -261,6 +261,7 @@ import { GainsLossesFactory } from './model/factory/gains-losses.factory';
 import { GainsLossesTableImportButtonComponent } from './component/gains-losses/gains-losses-table-import-button.component';
 import { GainsLossesImportDialogComponent } from './component/gains-losses/gains-losses-import-dialog.component';
 import { UploadFileService } from './service/upload-file.service';
+import { StockCompanyNameComponent } from "./component/common/stock-company-name.component";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -476,7 +477,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         TradeItSecurityQuestionDialogComponent,
 
         StockQuoteComponent,
-        StockQuoteLastPriceComponent,
+        StockPriceQuoteLastPriceComponent,
         StockQuotePercentChangeSinceCreatedComponent,
         StockQuoteDayPercentChangeComponent,
         StockPriceGainLossComponent,
@@ -486,6 +487,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockCommentsComponent,
 
         StockCompanyComponent,
+        StockCompanyNameComponent,
         SelectedStockCompaniesComponent,
         StockSearchComponent,
         StockSearchDisplayTickerSymbolComponent,

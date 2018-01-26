@@ -7,6 +7,7 @@ import { CacheStateContainer } from '../../model/common/cache-state-container';
 import { BaseService } from '../base-service';
 import { ModelObjectFactory } from '../../model/factory/model-object.factory';
 import { CachedValueState } from '../../common/cached-value-state.enum';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This is a generic cache to work with the Async Entity Cache on the backend.  It manages the caching and retrieval
@@ -38,6 +39,30 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
     }
 
     /**
+     * Checks the cache to see if there is an entry in the cache, if not or if the entry is stale, new cached data
+     * will be fetched.
+     * @param {K} key
+     * @return {Observable<T extends CacheStateContainer<K>>}
+     */
+    public get( key: K ): Observable<T>
+    {
+        const methodName = 'asyncRequest';
+        this.debug( methodName + ' ' + key );
+        let subject: BehaviorSubject<T> = this.cacheSubjectMap
+                                              .get( key );
+        if ( isNullOrUndefined( subject ))
+        {
+            this.debug( methodName + ' ' + key + ' is not in the map' );
+            subject = this.createCacheEntry( key );
+        }
+        else
+        {
+            this.debug( methodName + ' ' + key + ' is in the map with ' + subject.observers.length + ' observers' );
+        }
+        return subject.asObservable();
+    }
+
+    /**
      * Subscribe to cached data changes.  When calling this method, if the cached data is not
      * in the cache, the receivedCachedData method will be called with a null value but after the cached data
      * has been received, a subsequent call to receivedCachedData will be called with the new cached data value and
@@ -55,82 +80,93 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
             throw new ReferenceError( key + ' is null or undefined' );
         }
         /*
-         * Check to see if the stock price is in the cache
+         * Check to see if the subject/cache entry is already created
          */
-        let subject = this.cacheSubjectMap
-                          .get( key );
-        if ( isNullOrUndefined( subject ))
+        let subject: BehaviorSubject<T> = this.cacheSubjectMap
+                                              .get( key );
+        let subscription: Subscription;
+        if ( isNullOrUndefined( subject ) )
         {
-            this.debug( methodName + " " + key + " is not in the cache.  Fetching..." );
-            /*
-             * Send the model object with the cache state of STALE so the component will display the loading message.
-             */
-            let modelObject: T = this.modelObjectFactory.newModelObject();
-            modelObject.setCacheState( CachedValueState.STALE );
-            modelObject.setCacheError( '' );
-            /*
-             * Add the subject holding the model object to the cache.
-             */
-            this.addCacheData( key, modelObject );
+            this.debug( methodName + " " + key + " is not in the cache.  creating cache entry" );
+            let subject: BehaviorSubject<T> = this.createCacheEntry( key );
+            subscription = subject.subscribe( receiveCachedData );
             /*
              * Notify all subscribers with the initial data values.
              */
-            this.sendCachedDataChange( key, modelObject );
+            this.sendCachedDataChange( key, this.cacheSubjectMap
+                                                .get( key )
+                                                .getValue() );
             /*
-             * Not in the cache, so fetch it and then broadcast the new stock price.
+             * Go get the data.  Don't need the observable since we already subscribed to the subject.
              */
-            if ( this.workingMap.get( key ) )
-            {
-                this.debug( methodName + ' ' + key + ' is already being fetched' );
-            }
-            else
-            {
-                this.fetchData( key );
-            }
+            this.fetchData( key );
         }
         else
         {
-            this.debug( methodName + " " + key + " is the cache" );
+            this.debug( methodName + ' ' + key + ' is in the cache with ' + subject.observers.length + ' observers' );
+            let subscription = subject.subscribe( receiveCachedData );
+            this.checkDataExpiration( key );
         }
-        this.checkDataExpiration( subject, key );
-        return subject.subscribe( receiveCachedData );
+        return subscription;
     }
 
     /**
      * Check to see if the cached data has expired and if so, refresh the data.
+     * @param {BehaviorSubject<T extends CacheStateContainer<K>>} subject
+     * @param {K} key
+     * @return {Observable<T extends CacheStateContainer<K>>}
      */
-    private checkDataExpiration( subject: BehaviorSubject<T>, key: K )
+    private checkDataExpiration( key: K ): void
     {
         const methodName = 'checkDataExpiration';
-        this.debug( methodName + ' ' + key );
-        if ( !isNullOrUndefined( subject ) &&
-             !isNullOrUndefined( subject.getValue() ))
+        this.debug( methodName + '.begin ' + key );
+        if ( this.workingMap.get( key ) )
         {
+            this.debug( methodName + ' ' + key + ' is already being fetched' );
+        }
+        else
+        {
+            let subject: BehaviorSubject<T> = this.cacheSubjectMap
+                                                  .get( key );
             let cachedData: T = subject.getValue();
-            this.debug( methodName + ' ' + JSON.stringify( cachedData ));
-            let expirationTime: Date = cachedData.getExpirationTime();
-            if ( isNullOrUndefined( expirationTime ) )
+            if ( !isNullOrUndefined( cachedData ) )
             {
-                this.debug( methodName + ' expirationTime is null, fetching data' );
-                this.fetchData( key );
+                this.debug( methodName + ' ' + JSON.stringify( cachedData ) );
+                let expirationTime: Date = cachedData.getExpirationTime();
+                if ( isNullOrUndefined( expirationTime ) )
+                {
+                    this.debug( methodName + ' expirationTime is null, fetching data...' );
+                    this.fetchData( key );
+                }
+                else
+                {
+                    if ( expirationTime instanceof Date &&
+                         expirationTime.getTime() < Date.now() )
+                    {
+                        this.debug( methodName + ' ' + key + ' has expired, fetching data...' );
+                        this.fetchData( key );
+                    }
+                    else if ( CachedValueState.isStale( cachedData.getCacheState() ))
+                    {
+                        this.debug( methodName + ' ' + key + ' is stale, fetching data...' );
+                        this.fetchData( key );
+                    }
+                }
             }
             else
             {
-                if ( expirationTime instanceof Date &&
-                     expirationTime.getTime() < Date.now() )
-                {
-                    this.debug( methodName + ' ' + key + ' has expired, updating price...' );
-                    this.fetchData( key );
-                }
+                this.debug( methodName + ' ' + key + ' data is null, fetching data...' );
+                this.fetchData( key );
             }
         }
+        this.debug( methodName + '.end ' + key );
     }
 
     /**
      * Fetches the cached data and updates the cache.
      * @param {K} key
      */
-    private fetchData( key: K )
+    protected fetchData( key: K ): Observable<T>
     {
         const methodName = 'fetchData';
         if ( isNullOrUndefined( key ))
@@ -138,6 +174,12 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
             throw new ReferenceError( 'key argument is null or undefined' );
         }
         this.debug( methodName + ' ' + key );
+        let fetchSubject: Subject<T> = this.cacheSubjectMap
+                                           .get( key );
+        if ( isNullOrUndefined( fetchSubject ))
+        {
+            this.createCacheEntry( key );
+        }
         this.workingMap
             .set( key, true );
         this.fetchCachedDataFromBackend( key )
@@ -151,7 +193,8 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
                 this.sendCachedDataChange( key, cachedData );
                 this.workingMap
                     .delete( key );
-                return cachedData
+                fetchSubject.next( cachedData );
+                fetchSubject.complete();
             },
             error =>
             {
@@ -161,7 +204,9 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
                                         .newModelObject();
                 cachedData.setCacheError( error );
                 this.sendCachedDataChange( key, cachedData );
+                fetchSubject.error( error );
             });
+        return fetchSubject.asObservable();
     }
 
     /**
@@ -188,6 +233,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         }
         else
         {
+            this.debug( methodName + ' sending to ' + subject.observers.length + ' observers' );
             subject.next( cachedData );
         }
     }
@@ -208,13 +254,45 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
     }
 
     /**
-     * Adds the {@code cacheData} to the cache.
+     * Adds the {@code cacheData} to the cache.  Will create a cache entry if it does not exist.
      * @param {T} cacheData
      */
-    public addCacheData( key: K, cacheData: T ): void
+    public addCacheData( key: K, cacheData: T ): BehaviorSubject<T>
     {
-        let subject: BehaviorSubject<T> = new BehaviorSubject<T>( cacheData );
+        let methodName = 'addCacheData';
+        this.debug( methodName + ' ' + key )
+        let subject: BehaviorSubject<T> = this.cacheSubjectMap
+                                              .get( key );
+        if ( isNullOrUndefined( subject ))
+        {
+            subject = this.createCacheEntry( key );
+        }
+        subject.next( cacheData );
+        return subject;
+    }
+
+    /**
+     * Creates a cache entry for the key.
+     * @param {K} key
+     * @return {BehaviorSubject<T extends CacheStateContainer<K>>}
+     */
+    private createCacheEntry( key: K ): BehaviorSubject<T>
+    {
+        let methodName = 'createCacheEntry';
+        this.debug( methodName + ' ' + key )
+        /*
+         * Send the model object with the cache state of STALE so the component will display the loading message.
+         */
+        let modelObject: T = this.modelObjectFactory.newModelObject();
+        modelObject.setCacheState( CachedValueState.STALE );
+        modelObject.setCacheError( '' );
+        /*
+         * Add the subject holding the model object to the cache.
+         */
+        let subject: BehaviorSubject<T> = new BehaviorSubject<T>( modelObject );
         this.cacheSubjectMap
             .set( key, subject );
+        return subject;
     }
+
 }

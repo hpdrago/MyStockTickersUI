@@ -82,6 +82,7 @@ export class StockPriceQuoteService extends BaseService
                            return Observable.throw( restException );
                        }
                        return Observable.throw( restException.message );
-                   });
+                   })
+                   .share();
     }
 }

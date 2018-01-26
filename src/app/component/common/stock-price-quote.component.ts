@@ -4,6 +4,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { StockPriceQuoteCacheService } from '../../service/cache/stock-price-quote-cache.service';
 import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This component displays a single property of a {@code StockPriceQuote} model object.
@@ -51,6 +52,7 @@ export class StockPriceQuoteComponent extends BaseComponent implements OnInit
     {
         super( toaster );
         this.stockPriceQuote = this.stockPriceQuoteFactory.newModelObject();
+        this.stockPriceQuoteChange.emit( this.stockPriceQuote );
     }
 
     /**
@@ -75,7 +77,7 @@ export class StockPriceQuoteComponent extends BaseComponent implements OnInit
     {
         const methodName = 'onReceiveStockPriceQuote';
         this.log( methodName + ' ' + JSON.stringify( stockPriceQuote ));
-        if ( stockPriceQuote != null )
+        if ( !isNullOrUndefined( stockPriceQuote ) )
         {
             this.stockPriceQuote = stockPriceQuote;
             this.stockPriceQuoteChange.emit( stockPriceQuote );

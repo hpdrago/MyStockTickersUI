@@ -5,6 +5,7 @@ import { CachedValueState } from '../../common/cached-value-state.enum';
 import { StockCompany } from '../../model/entity/stock-company';
 import { StockCompanyCacheService } from '../../service/cache/stock-company-cache.service';
 import { isNullOrUndefined } from 'util';
+import { StockCompanyFactory } from '../../model/factory/stock-company-factory';
 
 /**
  * Displays the company of a model object that implements {@code StockCompanyContainer}.
@@ -37,13 +38,20 @@ export class StockCompanyComponent extends BaseCachedValueComponent implements O
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {StockCompanyCacheService} stockCompanyCacheService
+     * @param {StockCompanyFactory} stockCompanyFactory
      */
     constructor( protected toaster: ToastsManager,
-                 private stockCompanyCacheService: StockCompanyCacheService )
+                 private stockCompanyCacheService: StockCompanyCacheService,
+                 private stockCompanyFactory: StockCompanyFactory )
     {
         super( toaster );
+        this.stockCompany = stockCompanyFactory.newModelObject();
+        this.stockCompanyChange.emit( this.stockCompany );
     }
 
+    /**
+     * Initialize.
+     */
     public ngOnInit(): void
     {
         super.addSubscription( 'stockCompanyCache',

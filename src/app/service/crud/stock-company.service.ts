@@ -13,9 +13,7 @@ import { PaginationPage } from '../../common/pagination';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { Subject } from 'rxjs/Subject';
-import { StockPriceQuoteService } from './stock-price-quote.service';
 import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
-import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 
 @Injectable()
 export class StockCompanyService extends ReadRestService<StockCompany>
@@ -32,16 +30,14 @@ export class StockCompanyService extends ReadRestService<StockCompany>
      * @param {AppConfigurationService} appConfig
      * @param {RestErrorReporter} restErrorReporter
      * @param {StockCompanyFactory} stockCompanyFactory
-     * @param {StockPriceQuoteService} stockPriceQuoteService
-     * @param {StockPriceQuoteCacheService} stockPriceCacheService
+     * @param {StockPriceQuoteCacheService} stockPriceQuoteCacheService
      */
     constructor( protected http: HttpClient,
                  protected session: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,
                  protected stockCompanyFactory: StockCompanyFactory,
-                 protected stockPriceQuoteService: StockPriceQuoteService,
-                 protected stockPriceCacheService: StockPriceQuoteCacheService )
+                 protected stockPriceQuoteCacheService: StockPriceQuoteCacheService )
     {
         super( http,
                session,
@@ -97,6 +93,8 @@ export class StockCompanyService extends ReadRestService<StockCompany>
      */
     public getStockCompany( tickerSymbol: string ): Observable<StockCompany>
     {
+        const methodName = 'getStockCompany';
+        this.debug( methodName + ' ' + tickerSymbol );
         let stockCompany: StockCompany = this.stockCompanyFactory.newModelObject();
         stockCompany.tickerSymbol = tickerSymbol;
         let url = this.getCompleteURL( this.getContextURLFrom( 'company', stockCompany ), null );
@@ -105,21 +103,21 @@ export class StockCompanyService extends ReadRestService<StockCompany>
          * Call to get the stock company and the stock price quote
          */
         forkJoin( this.httpRequestModelObject( url ),
-                  this.stockPriceQuoteService
-                      .getStockPriceQuote( tickerSymbol ))
-                      .subscribe( results =>
-                       {
-                            let stockCompany: StockCompany = this.stockCompanyFactory.newModelObjectFromJSON( results[0] );
-                            let stockPriceQuote: StockPriceQuote = results[1];
-                            stockCompany.lastPrice = stockPriceQuote.lastPrice;
-                            subject.next( stockCompany );
-                            subject.complete();
-                            /*
-                             * Update the cache with the new price.
-                             */
-                            this.stockPriceCacheService.sendCachedDataChange( tickerSymbol, stockPriceQuote );
-                       });
-        return subject.asObservable();
+                  this.stockPriceQuoteCacheService
+                      .get( tickerSymbol )
+                 )
+                 .subscribe( results =>
+                 {
+                     let stockCompany: StockCompany = this.stockCompanyFactory.newModelObjectFromJSON( results[0] );
+                     let stockPriceQuote: StockPriceQuote = results[1];
+                     this.debug( methodName + ' received stockCompany: ' + JSON.stringify( stockCompany ));
+                     this.debug( methodName + ' received stockPriceQuote: ' + JSON.stringify( stockPriceQuote ));
+                     stockCompany.lastPrice = stockPriceQuote.lastPrice;
+                     subject.next( stockCompany );
+                     subject.complete();
+                 },
+                 error => Observable.throw( error ));
+        return subject.asObservable().share();
     }
 
 }

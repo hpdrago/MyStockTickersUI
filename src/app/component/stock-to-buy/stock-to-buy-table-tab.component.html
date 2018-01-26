@@ -95,9 +95,8 @@
                   header="Last Price"
                   [style]="{'width':'10px','text-align':'right'}">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                <stock-quote-last-price [stockQuoteContainer]="stockToBuy"
-                                        [stockPriceQuoteContainer]="stockToBuy">
-                </stock-quote-last-price>
+                <stock-price-quote-last-price [tickerSymbol]="stockToBuy.tickerSymbol">
+                </stock-price-quote-last-price>
             </ng-template>
         </p-column>
 
@@ -155,7 +154,8 @@
                   [style]="{'width':'10px','text-align':'right'}"
                   [sortable]="false">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                <stock-average-upside-percent [stockPriceQuoteContainer]="stockToBuy"></stock-average-upside-percent>
+                <stock-average-upside-percent [tickerSymbol]="stockToBuy.tickerSymbol">
+                </stock-average-upside-percent>
             </ng-template>
         </p-column>
 

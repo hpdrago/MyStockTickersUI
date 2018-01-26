@@ -24,12 +24,12 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      * @param {boolean} showContinuousAddButton
      */
-    constructor( protected toaster: ToastsManager,
-                 protected crudStateStore: CrudStateStore<T>,
-                 protected crudController: CrudController<T>,
-                 protected modelObjectFactory: ModelObjectFactory<T>,
-                 protected crudRestService: CrudRestService<T>,
-                 protected showContinuousAddButton: boolean = false )
+    protected constructor( protected toaster: ToastsManager,
+                           protected crudStateStore: CrudStateStore<T>,
+                           protected crudController: CrudController<T>,
+                           protected modelObjectFactory: ModelObjectFactory<T>,
+                           protected crudRestService: CrudRestService<T>,
+                           protected showContinuousAddButton: boolean = false )
     {
         super( toaster,
                crudStateStore,

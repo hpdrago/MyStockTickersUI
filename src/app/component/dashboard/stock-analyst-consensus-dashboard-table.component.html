@@ -29,8 +29,8 @@
               [sortable]="true">
         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
             <tipranks-link [tickerSymbol]="stockAnalystConsensus.tickerSymbol"
-                           [displayValue]="stockAnalystConsensus.tickerSymbol"></tipranks-link>
-
+                           [displayValue]="stockAnalystConsensus.tickerSymbol">
+            </tipranks-link>
         </ng-template>
     </p-column>
 
@@ -42,7 +42,8 @@
               [style]="{'width':'40px','text-align':'right'}"
               [sortable]="true">
         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-            <stock-average-upside-percent [stockPriceQuoteContainer]="stockAnalystConsensus"></stock-average-upside-percent>
+            <stock-average-upside-percent [tickerSymbol]="stockAnalystConsensus.tickerSymbol">
+            </stock-average-upside-percent>
         </ng-template>
     </p-column>
 
@@ -78,7 +79,8 @@
               header="Analyst BSH"
               [style]="{'width':'80px'}">
         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-            <stock-analyst-consensus [tickerSymbol]="stockAnalystConsensus.tickerSymbol"></stock-analyst-consensus>
+            <stock-analyst-consensus [tickerSymbol]="stockAnalystConsensus.tickerSymbol">
+            </stock-analyst-consensus>
         </ng-template>
     </p-column>
 
@@ -104,7 +106,8 @@
               [style]="{'width':'40px','text-align':'right'}"
               [sortable]="false">
         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-            <currency [currencyValue]="stockAnalystConsensus[col.field]"></currency>
+            <currency [currencyValue]="stockAnalystConsensus[col.field]">
+            </currency>
         </ng-template>
     </p-column>
 
@@ -117,7 +120,8 @@
               [style]="{'width':'40px','text-align':'right'}"
               [sortable]="false">
         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-            <currency [currencyValue]="stockAnalystConsensus[col.field]"></currency>
+            <currency [currencyValue]="stockAnalystConsensus[col.field]">
+            </currency>
         </ng-template>
     </p-column>
 
@@ -130,7 +134,8 @@
               [style]="{'width':'40px','text-align':'right'}"
               [sortable]="true">
         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-            <currency [currencyValue]="stockAnalystConsensus[col.field]"></currency>
+            <currency [currencyValue]="stockAnalystConsensus[col.field]">
+            </currency>
         </ng-template>
     </p-column>
 

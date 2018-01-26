@@ -4,6 +4,7 @@ import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.se
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { StockQuote } from '../../model/entity/stock-quote';
 import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This component will obtain a {@code StockQuote} form the {@code StockQuoteCacheService}.  This is not a display
@@ -54,6 +55,7 @@ export class StockQuoteComponent extends BaseComponent implements OnInit
     {
         super( toaster );
         this.stockQuote = this.stockQuoteFactory.newModelObject();
+        this.stockQuoteChange.emit( this.stockQuote );
     }
 
     /**
@@ -78,11 +80,10 @@ export class StockQuoteComponent extends BaseComponent implements OnInit
     {
         const methodName = 'onReceiveStockQuote';
         this.log( methodName + ' ' + JSON.stringify( stockQuote ));
-        if ( stockQuote != null )
+        if ( !isNullOrUndefined( stockQuote ))
         {
             this.stockQuote = stockQuote;
             this.stockQuoteChange.emit( stockQuote );
         }
     }
-
 }

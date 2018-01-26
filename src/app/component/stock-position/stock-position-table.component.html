@@ -79,9 +79,8 @@
                               [sortable]="true"
                               [style]="{'width':'30px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-quote-last-price [stockPriceQuoteContainer]="stockPosition"
-                                                    [stockQuoteContainer]="stockPosition">
-                            </stock-quote-last-price>
+                            <stock-price-quote-last-price [tickerSymbol]="stockPosition.tickerSymbol">
+                            </stock-price-quote-last-price>
                         </ng-template>
                     </p-column>
 
@@ -200,7 +199,8 @@
                               [style]="{'width':'20px','text-align':'right'}"
                               [sortable]="true">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-average-upside-percent [stockPriceQuoteContainer]="stockPosition"></stock-average-upside-percent>
+                            <stock-average-upside-percent [tickerSymbol]="stockPosition.tickerSymbol">
+                            </stock-average-upside-percent>
                         </ng-template>
                     </p-column>
 
@@ -211,7 +211,9 @@
                               header="Analyst BSH"
                               [style]="{'width':'60px'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-analyst-consensus [tickerSymbol]="stockPosition.tickerSymbol"></stock-analyst-consensus>
+                            <stock-analyst-consensus [tickerSymbol]="stockPosition.tickerSymbol">
+
+                            </stock-analyst-consensus>
                         </ng-template>
                     </p-column>
 

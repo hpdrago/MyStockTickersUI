@@ -2,6 +2,7 @@ import { Input, OnChanges, OnDestroy, SimpleChange } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { BaseClass } from "../../common/base-class";
 import { Subscription } from "rxjs/Subscription";
+import { isNullOrUndefined } from 'util';
 
 /**
  * This is the base class for all application components to contain common methods, services, and data
@@ -69,6 +70,10 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
     {
         const methodName = 'addSubscription';
         this.debug( methodName + " subscribing to " + subjectName );
+        if ( isNullOrUndefined( subscription ))
+        {
+            throw ReferenceError( "subscription cannot be null or undefined" );
+        }
         this.subscriptions.push( subscription );
     }
     /**

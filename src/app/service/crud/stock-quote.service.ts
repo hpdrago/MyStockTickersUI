@@ -66,7 +66,8 @@ export class StockQuoteService extends ReadRestService<StockQuote>
      */
     public getStockQuote( tickerSymbol: string ): Observable<StockQuote>
     {
-        this.debug( 'getStockQuote ' + tickerSymbol )
+        const methodName = 'getStockQuote ';
+        this.debug( methodName + ' ' + tickerSymbol );
         if ( isNullOrUndefined( tickerSymbol ))
         {
             throw new ReferenceError( "ticker symbol is null or undefined" )
@@ -80,8 +81,11 @@ export class StockQuoteService extends ReadRestService<StockQuote>
                         /*
                          * Convert the JSON into a Typescript object.
                          */
-                        return this.stockQuoteFactory
-                                   .newModelObjectFromJSON( stockQuote );
-                    });
+                        let stockQuoteObject: StockQuote = this.stockQuoteFactory
+                                                               .newModelObjectFromJSON( stockQuote );
+                        this.debug( methodName + ' ' + JSON.stringify( stockQuoteObject )) ;
+                        return stockQuoteObject;
+                    })
+                   .share();
     }
 }

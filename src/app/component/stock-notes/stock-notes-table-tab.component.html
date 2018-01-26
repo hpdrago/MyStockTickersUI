@@ -59,7 +59,7 @@
                       field="notesSourceName"
                       header="Source"
                       [style]="{'width':'120px'}"
-                      [sortField]="notesSourceId"
+                      [sortField]="notesSourceName"
                       [sortable]="false">
             </p-column>
 
@@ -83,7 +83,8 @@
                       header="Price When Entered"
                       [style]="{'width':'80px','text-align':'right'}">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    {{stockNotes[col.field] | currency: 'USD': true }}
+                    <currency [currencyValue]="stockNotes[col.field]">
+                    </currency>
                 </ng-template>
             </p-column>
 
@@ -95,7 +96,8 @@
                       header="% Change Since Entered"
                       [style]="{'width':'80px','text-align':'right'}">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <stock-quote-percent-change-since-created [stockModelObject]="stockNotes"></stock-quote-percent-change-since-created>
+                    <stock-quote-percent-change-since-created [stockModelObject]="stockNotes">
+                    </stock-quote-percent-change-since-created>
                 </ng-template>
             </p-column>
 
@@ -109,7 +111,7 @@
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
                     <stock-quote [tickerSymbol]="stockNotes.tickerSymbol"
                                  (stockQuote)="stockNotes.setStockQuote($event)">
-                        <currency [currencyValue]="stockNotes.stockQuote.openPrice">
+                        <currency [currencyValue]="!stockNotes.stockQuote ? 0 : stockNotes.stockQuote.openPrice">
                         </currency>
                     </stock-quote>
                 </ng-template>
@@ -123,9 +125,8 @@
                       header="Last Price"
                       [style]="{'width':'80px','text-align':'right'}">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <stock-quote-last-price [stockQuoteContainer]="stockNotes"
-                                            [stockPriceQuoteContainer]="stockNotes">
-                    </stock-quote-last-price>
+                    <stock-price-quote-last-price [tickerSymbol]="stockNotes.tickerSymbol">
+                    </stock-price-quote-last-price>
                 </ng-template>
             </p-column>
 

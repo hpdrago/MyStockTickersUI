@@ -301,7 +301,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                                this.restErrorReporter.reportRestError( error );
                                return Observable.throw( null )
                            } )
-                   .shareReplay();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
+                   .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
     /**
@@ -353,7 +353,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                                this.restErrorReporter.reportRestError( error );
                                return Observable.throw( null )
                            })
-                   .shareReplay();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
+                   .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
     /**
@@ -393,7 +393,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                                this.restErrorReporter.reportRestError( error );
                                return Observable.throw( null );
                            } )
-                   .shareReplay();
+                   .share();
     }
 
     /**

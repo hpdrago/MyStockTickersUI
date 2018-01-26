@@ -3,8 +3,8 @@ import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-co
 import { StockAnalystConsensusBaseComponent } from '../stock-analyst-consensus/stock-analyst-consensus-base.component';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { ToastsManager } from 'ng2-toastr';
-import { StockPriceQuoteContainer } from '../../model/common/stock-price-quote-container';
-import { isNull, isNullOrUndefined } from 'util';
+import { isNullOrUndefined } from 'util';
+import { StockPriceQuoteCacheService } from '../../service/cache/stock-price-quote-cache.service';
 
 /**
  * This component compares the current prices of the stock quote (lastPrice) against the average analyst price target
@@ -18,7 +18,9 @@ import { isNull, isNullOrUndefined } from 'util';
 export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBaseComponent
 {
     @Input()
-    private stockPriceQuoteContainer: StockPriceQuoteContainer;
+    protected tickerSymbol: string;
+
+    private stockPriceQuote: StockPriceQuote;
 
     /**
      * Constructor.
@@ -26,15 +28,34 @@ export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBas
      * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected toaster: ToastsManager,
-                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
+                 protected stockAnalystConsensusCache: StockAnalystConsensusCache,
+                 private stockPriceQuoteCache: StockPriceQuoteCacheService )
     {
         super( toaster, stockAnalystConsensusCache );
     }
 
+    /**
+     * Initialize.
+     */
     public ngOnInit(): void
     {
-        this.tickerSymbol = this.stockPriceQuoteContainer.tickerSymbol;
         super.ngOnInit();
+        this.stockPriceQuoteCache
+            .subscribeToChanges( this.tickerSymbol,  (stockPriceQuote: StockPriceQuote) =>
+            {
+                this.onStockPriceQuoteChange( stockPriceQuote );
+            });
+    }
+
+    /**
+     * This method is called when a stock price quote is fetched for the first time or changes.
+     * @param {StockPriceQuote} stockPriceQuote
+     */
+    private onStockPriceQuoteChange( stockPriceQuote: StockPriceQuote )
+    {
+        const methodName = 'onStockPriceQuoteChange';
+        this.log( methodName + ' ' + JSON.stringify( stockPriceQuote ));
+        this.stockPriceQuote = stockPriceQuote;
     }
 
     /**
@@ -44,18 +65,19 @@ export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBas
      */
     protected calcAvgUpsidePercent(): number
     {
-        if ( !isNullOrUndefined( this.stockPriceQuoteContainer.stockPriceQuote.lastPrice ) &&
+        if ( !isNullOrUndefined( this.stockPriceQuote ) &&
+             !isNullOrUndefined( this.stockPriceQuote.lastPrice ) &&
              !isNullOrUndefined( this.stockAnalystConsensus ) &&
              !isNullOrUndefined( this.stockAnalystConsensus.avgAnalystPriceTarget ) &&
              this.stockAnalystConsensus.avgAnalystPriceTarget > 0.0 )
         {
-            if ( this.stockPriceQuoteContainer.stockPriceQuote.lastPrice < this.stockAnalystConsensus.avgAnalystPriceTarget )
+            if ( this.stockPriceQuote.lastPrice < this.stockAnalystConsensus.avgAnalystPriceTarget )
             {
-                return this.stockPriceQuoteContainer.stockPriceQuote.lastPrice / this.stockAnalystConsensus.avgAnalystPriceTarget;
+                return this.stockPriceQuote.lastPrice / this.stockAnalystConsensus.avgAnalystPriceTarget;
             }
             else
             {
-                return (this.stockAnalystConsensus.avgAnalystPriceTarget / this.stockPriceQuoteContainer.stockPriceQuote.lastPrice);
+                return (this.stockAnalystConsensus.avgAnalystPriceTarget / this.stockPriceQuote.lastPrice);
             }
         }
         else

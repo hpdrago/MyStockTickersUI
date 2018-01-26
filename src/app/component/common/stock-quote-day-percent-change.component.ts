@@ -25,17 +25,17 @@ export class StockQuoteDayPercentChangeComponent
      */
     protected calculatePercentChange( stockPriceQuote: StockPriceQuote, stockQuote: StockQuote ): number
     {
-        if ( isNullOrUndefined( stockQuote ))
+        if ( isNullOrUndefined( stockQuote ) ||
+             isNullOrUndefined( stockPriceQuote ) ||
+             isNullOrUndefined( stockQuote.openPrice ) ||
+             isNullOrUndefined( stockPriceQuote.lastPrice ))
         {
             return 0;
         }
         else
         {
-            if ( stockPriceQuote.lastPrice == null || stockPriceQuote.lastPrice == 0 )
-            {
-                return 0;
-            }
-            if ( stockQuote.openPrice == null || stockQuote.openPrice == 0 )
+            if ( stockPriceQuote.lastPrice == 0 ||
+                 stockQuote.openPrice == 0 )
             {
                 return 0;
             }

@@ -46,17 +46,6 @@
             </ng-template>
         </p-column>
 
-        <!----------------------------------------------------------------------------------------------------------
-        AVG UPSIDE PERCENTAGE
-        ------------------------------------------------------------------------------------------------------------>
-        <p-column id="avgUpsidePercent"
-                  header="Avg Upside"
-                  [style]="{'width':'40px','text-align':'right'}"
-                  [sortable]="true">
-            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                <stock-average-upside-percent [stockPriceQuoteContainer]="stockAnalystConsensus"></stock-average-upside-percent>
-            </ng-template>
-        </p-column>
 
         <!----------------------------------------------------------------------------------------------------------
         COMPANY NAME
@@ -67,10 +56,21 @@
                   [style]="{'width':'150px'}"
                   [sortable]="false">
             <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                <stock-company [tickerSymbol]="stockAnalystConsensus.tickerSymbol"
-                               (stockCompanyChange)="stockAnalystConsensus.setStockCompany($event)">
-                    {{stockAnalystConsensus.stockCompany.companyName}}
-                </stock-company>
+                <stock-company-name [tickerSymbol]="stockAnalystConsensus.tickerSymbol">
+                </stock-company-name>
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        AVG UPSIDE PERCENTAGE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="avgUpsidePercent"
+                  header="Avg Upside"
+                  [style]="{'width':'40px','text-align':'right'}"
+                  [sortable]="true">
+            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                <stock-average-upside-percent [tickerSymbol]="stockAnalystConsensus.tickerSymbol">
+                </stock-average-upside-percent>
             </ng-template>
         </p-column>
 
@@ -170,9 +170,8 @@
                   header="Last Price"
                   [style]="{'width':'40px','text-align':'right'}">
             <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                <stock-quote-last-price [stockQuoteContainer]="stockAnalystConsensus"
-                                        [stockPriceQuoteContainer]="stockAnalystConsensus">
-                </stock-quote-last-price>
+                <stock-price-quote-last-price [tickerSymbol]="stockAnalystConsensus.tickerSymbol">
+                </stock-price-quote-last-price>
             </ng-template>
         </p-column>
 

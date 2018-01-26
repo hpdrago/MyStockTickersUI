@@ -31,6 +31,9 @@ import { CacheStateContainer } from '../../model/common/cache-state-container';
             <div *ngSwitchCase="CachedValueState.NOT_FOUND">
                 {{notFoundMessage}}
             </div>
+            <div *ngSwitchDefault>
+                Invalid Cache State key: {{cachedStateContainer.getKey()}} state: {{cachedStateContainer.getCacheState()}}
+            </div>
         </div>
     `
 })
