@@ -7,7 +7,7 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 import { isNullOrUndefined } from "util";
 import { KeyValuePair } from "../../common/key-value-pair";
-import { ToastsManager } from "ng2-toastr";
+import { RestErrorReporter } from '../rest-error-reporter';
 
 /**
  * Generic Service class for REST CRUD methods
@@ -25,13 +25,19 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
      * @param {SessionService} sessionService
      * @param {AppConfigurationService} appConfig
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     * @param {RestErrorReporter} restErrorReporter
      */
     constructor( protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
+                 protected restErrorReporter: RestErrorReporter,
                  protected modelObjectFactory: ModelObjectFactory<T> )
     {
-        super( http, sessionService, appConfig, modelObjectFactory );
+        super( http,
+               sessionService,
+               appConfig,
+               restErrorReporter,
+               modelObjectFactory );
     }
 
     /**
@@ -108,7 +114,11 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                             this.log( methodName + " newModelObject: " + this.serialize( newModelObject ));
                             return newModelObject;
                         } ) // ...and calling .json() on the response to return data
-                        .catch( ( error: any ) => Observable.throw( error || 'Server error' ) )//...errors if any
+                        .catch( ( error: any ) =>
+                                {
+                                    this.restErrorReporter.reportRestError( error );
+                                    return Observable.throw( error || 'Server error' )
+                                } )//...errors if any
                         .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
@@ -143,7 +153,11 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                             this.log( methodName + " received: " + JSON.stringify( res.json() ));
                             return this.modelObjectFactory.newModelObjectFromJSON( res.json() );
                         } ) // ...and calling .json() on the response to return data
-                        .catch( ( error: any ) => Observable.throw( error || 'Server error' ) ) //...errors if any
+                        .catch( ( error: any ) =>
+                                {
+                                    this.restErrorReporter.reportRestError( error );
+                                    return Observable.throw( error || 'Server error' )
+                                } ) //...errors if any
                         .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
@@ -177,7 +191,11 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                                   }
                                   return;
                               } ) // ...and calling .json() on the response to return data
-                        .catch( ( error: any ) => Observable.throw( error || 'Server Error' )) //...errors if any
+                        .catch( ( error: any ) =>
+                                {
+                                    this.restErrorReporter.reportRestError( error );
+                                    return Observable.throw( error || 'Server Error' );
+                                }) //...errors if any
                         .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 

@@ -9,6 +9,7 @@ import { CrudStateStore } from '../crud/common/crud-state-store';
 import { CrudController } from '../crud/common/crud-controller';
 import { ModelObjectFactory } from '../../model/factory/model-object.factory';
 import { CrudRestService } from '../../service/crud/crud-rest.serivce';
+import { TableLoadingStrategy } from '../common/table-loading-strategy';
 
 /**
  * This is a base class for tables that contain Stock Quote information.  It provides the common methods for updating
@@ -23,6 +24,7 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
 {
     /**
      * Constructor.
+     * @param {TableLoadingStrategy} tableLoadingStrategy
      * @param {ToastsManager} toaster
      * @param {CrudStateStore<T extends StockQuoteModelObject<T>>} stockStateStore
      * @param {CrudController<T extends StockQuoteModelObject<T>>} stockController
@@ -30,14 +32,16 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
      * @param {CrudRestService<T extends StockQuoteModelObject<T>>} stockCrudService
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected tableLoadingStrategy: TableLoadingStrategy,
+                 protected toaster: ToastsManager,
                  protected stockStateStore: CrudStateStore<T>,
                  protected stockController: CrudController<T>,
                  protected stockFactory: ModelObjectFactory<T>,
                  protected stockCrudService: CrudRestService<T>,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
-        super( toaster,
+        super( tableLoadingStrategy,
+               toaster,
                stockStateStore,
                stockController,
                stockFactory,
@@ -45,7 +49,7 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
     }
 
     /**
-     * This method is overriden to evaluate the {@code stockQuoteModelObjects} to see if they need their stock quote
+     * This method is overridden to evaluate the {@code stockQuoteModelObjects} to see if they need their stock quote
      * information refreshed.  The backend will refresh those quote where it already has the information in the cache
      * that is not stale.  Subsequent calls to get the refreshed data is necessary so that the loading of the table
      * is quick and the refreshes can happen in the background.

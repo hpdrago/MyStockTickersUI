@@ -3,13 +3,14 @@ import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockUrlMap } from "../../common/stock-url-map";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
-import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
+import { StockQuoteModelObjectTableComponent } from "../stock-quote/stock-quote-modelobject-table.component";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { BullOrBear } from "../../common/bull-or-bear.enum";
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
+import { TableLoadingStrategy } from '../common/table-loading-strategy';
 
 /**
  * This is the base class for Stock Notes tables.
@@ -38,7 +39,8 @@ export abstract class StockNotesTableComponent extends StockQuoteModelObjectTabl
                  protected stockNotesCrudService: StockNotesCrudService,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
-        super( toaster,
+        super( TableLoadingStrategy.LAZY_ON_CREATE,
+               toaster,
                stockNotesStateStore,
                stockNotesController,
                stockNotesFactory,

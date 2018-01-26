@@ -57,13 +57,7 @@ export class StockTableComponent extends CrudTableComponent<Stock>
             .subscribe( stocksPage =>
             {
                 this.onPageLoad( stocksPage );
-                //alert( JSON.stringify( stocksPage))
-            }, //Bind to view
-            error =>
-            {
-                // Log errors if any
-                this.reportRestError( error );
-            } );
+            });
     }
 
     /*****************************************************************

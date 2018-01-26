@@ -6,6 +6,7 @@ import { CrudRestService } from "./crud-rest.serivce";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { StockToBuyFactory } from "../../model/factory/stock-to-buy.factory";
 import { isNullOrUndefined } from "util";
+import { RestErrorReporter } from '../rest-error-reporter';
 
 /**
  * This class provides all CRUD REST services for Stock To Buy.
@@ -17,12 +18,25 @@ export class StockToBuyCrudService extends CrudRestService<StockToBuy>
 {
     private urlPath = "/stockToBuy"
 
+    /**
+     * Constructor.
+     * @param {Http} http
+     * @param {SessionService} sessionService
+     * @param {AppConfigurationService} appConfig
+     * @param {restErrorReporter} restErrorReporter
+     * @param {StockToBuyFactory} stockToBuyFactory
+     */
     constructor ( protected http: Http,
                   protected sessionService: SessionService,
                   protected appConfig: AppConfigurationService,
+                  protected restErrorReporter: RestErrorReporter,
                   protected stockToBuyFactory: StockToBuyFactory )
     {
-        super( http, sessionService, appConfig, stockToBuyFactory );
+        super( http,
+               sessionService,
+               appConfig,
+               restErrorReporter,
+               stockToBuyFactory );
     }
 
     protected getContextBaseURL(): string

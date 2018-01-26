@@ -5,9 +5,10 @@ import { Http } from "@angular/http";
 import { AppConfigurationService } from "../app-configuration.service";
 import { StockNotesSourceFactory } from "../../model/factory/stock-notes-source.factory";
 import { Observable } from "rxjs/Observable";
-import { StockNotesSourceList } from "../../component/stocknotes/stock-notes-source-list";
+import { StockNotesSourceList } from "../../component/stock-notes/stock-notes-source-list";
 import { Injectable } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
+import { RestErrorReporter } from '../rest-error-reporter';
 
 /**
  * This class contains the CRUD services necessary to create, delete, update, and retrieve source of stock notes.
@@ -23,15 +24,21 @@ export class StockNotesSourceService extends CrudRestService<StockNotesSource>
      * @param {Http} http
      * @param {SessionService} sessionService
      * @param {AppConfigurationService} appConfig
+     * @param {restErrorReporter} restErrorReporter
      * @param {StockNotesSourceFactory} modelObjectFactory
      */
     constructor( protected toaster: ToastsManager,
                  protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
+                 protected restErrorReporter: RestErrorReporter,
                  protected modelObjectFactory: StockNotesSourceFactory )
     {
-        super( http, sessionService, appConfig, modelObjectFactory );
+        super( http,
+               sessionService,
+               appConfig,
+               restErrorReporter,
+               modelObjectFactory );
     }
 
     protected getContextBaseURL(): string

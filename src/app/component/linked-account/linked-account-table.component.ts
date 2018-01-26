@@ -1,6 +1,6 @@
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { LinkedAccount } from "../../model/entity/linked-account";
-import { Component } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
@@ -8,6 +8,13 @@ import { LinkedAccountFactory } from '../../model/factory/linked-account.factory
 import { LinkedAccountController } from './linked-account-controller';
 import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud.service';
 import { LinkedAccountStateStore } from './linked-account-state-store';
+import { TradeItOAuthComponent } from '../tradeit-account/tradeit-oauth-component';
+import { TradeItAccountOAuthService } from '../../service/tradeit/tradeit-account-oauth.service';
+import { TradeItSecurityQuestionDialogComponent } from '../tradeit/tradeit-security-question-dialog.component';
+import { TradeItAuthenticateResult } from '../../service/tradeit/apiresults/tradeit-authenticate-result';
+import { TradeItErrorReporter } from '../tradeit/tradeit-error-reporter';
+import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
+import { TradeItAccountStateStore } from '../tradeit-account/tradeit-account-state-store';
 
 /**
  * This table displays all of the linked account for a TradeItAccount instance.
@@ -19,8 +26,13 @@ import { LinkedAccountStateStore } from './linked-account-state-store';
     templateUrl: './linked-account-table.component.html',
     providers: [LinkedAccountStateStore, LinkedAccountController]
 } )
-export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccount>
+export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccount> implements TradeItOAuthComponent
 {
+    @ViewChild(TradeItSecurityQuestionDialogComponent)
+    private tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent;
+
+    protected tradeItAccount: TradeItAccount;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -28,12 +40,19 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      * @param {LinkedAccountController} linkedAccountController
      * @param {LinkedAccountFactory} linkedAccountFactory
      * @param {LinkedAccountCrudService} linkedAccountCrudService
+     * @param {TradeItAccountOAuthService} tradeItOAuthService
+     * @param {TradeItErrorReporter} tradeItErrorReporter
+     * @param {TradeItAccountController} tradeItAccountController
      */
     constructor( protected toaster: ToastsManager,
                  protected linkedAccountStateStore: LinkedAccountStateStore,
                  protected linkedAccountController: LinkedAccountController,
                  protected linkedAccountFactory: LinkedAccountFactory,
-                 protected linkedAccountCrudService: LinkedAccountCrudService )
+                 protected linkedAccountCrudService: LinkedAccountCrudService,
+                 protected tradeItOAuthService: TradeItAccountOAuthService,
+                 protected tradeItErrorReporter: TradeItErrorReporter,
+                 protected tradeItAccountController: TradeItAccountController,
+                 protected tradeItAccountStateStore: TradeItAccountStateStore )
     {
         super( TableLoadingStrategy.ALL_ON_DEMAND,
                toaster,
@@ -41,6 +60,13 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
                linkedAccountController,
                linkedAccountFactory,
                linkedAccountCrudService );
+    }
+
+    public ngOnInit()
+    {
+        super.ngOnInit();
+        this.tradeItAccountController
+            .subscribeToTableSelectionChangeEvent( (tradeItAccount: TradeItAccount) => this.onTradeItAccountTableSelectionChanged( tradeItAccount ));
     }
 
     /**
@@ -66,11 +92,68 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      * will load the linked accounts related to the {@code TradeItAccount}.
      * @param {TradeItAccount} tradeItAccount
      */
-    public loadAccounts( tradeItAccount: TradeItAccount )
+    public onTradeItAccountTableSelectionChanged( tradeItAccount: TradeItAccount )
     {
-        let methodName = "loadAccounts";
+        let methodName = "onTradeItAccountTableSelectionChanged";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
+        this.tradeItAccount = tradeItAccount;
         this.rows = tradeItAccount.linkedAccounts;
+        this.log( methodName + ".end" );
+    }
+
+    /**
+     * This method is called when the user clicks on a {@code TradeItAccount}.
+     * @param event
+     */
+    protected onRowSelect( event ): void
+    {
+        let methodName = "onRowSelect";
+        this.log( methodName + ".begin " + JSON.stringify( event ));
+        super.onRowSelect( event );
+        this.tradeItOAuthService
+            .checkAuthentication( this.tradeItAccount, this.tradeItSecurityQuestionDialog )
+            .subscribe( (authenticateAccountResult: TradeItAuthenticateResult ) =>
+                        {
+                            this.log( methodName + " checkAuthentication result: " + JSON.stringify( authenticateAccountResult ));
+                            if ( authenticateAccountResult.isSuccess() )
+                            {
+                                this.log( methodName + " account authenticated or kept alive" );
+                                /*
+                                 * Need to update the tradeit account store.
+                                 */
+                                this.tradeItAccountStateStore
+                                    .sendModelObjectChangedEvent( this, authenticateAccountResult.tradeItAccount );
+                                this.tradeItAccount = authenticateAccountResult.tradeItAccount;
+                                this.onModelObjectSelected( this.modelObject );
+                            }
+                            else
+                            {
+                                this.tradeItErrorReporter.reportError( authenticateAccountResult );
+                            }
+                        },
+                        error =>
+                        {
+                            this.reportRestError( error );
+                        });
+        this.log( methodName + ".end" );
+    }
+
+    public getTradeItAccount(): TradeItAccount
+    {
+        return this.tradeItAccount;
+    }
+
+    public notifyAuthenticationSuccess( tradeItAccount: TradeItAccount )
+    {
+        let methodName = "notifyAuthenticationSuccess";
+        this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
+        this.log( methodName + ".end" );
+    }
+
+    public receiveMessage( event: any )
+    {
+        let methodName = "receiveMessage";
+        this.log( methodName + ".begin " + JSON.stringify( event ) );
         this.log( methodName + ".end" );
     }
 }

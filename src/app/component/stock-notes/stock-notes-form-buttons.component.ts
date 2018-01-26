@@ -11,7 +11,7 @@ import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
-import { StockToBuyStateStore } from '../stocktobuy/stock-to-buy-state-store';
+import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
 
 /**
  * Button panel component for the StockNotes dialog.

@@ -10,7 +10,7 @@ import { Stock } from "../../model/entity/stock";
 import { StockNotesTableDashboardComponent } from "./stock-notes-table-dashboard.component";
 import { StockAnalystConsensusDashboardTableComponent } from "./stock-analyst-consensus-dashboard-table.component";
 import { StockToBuyTableDashboardComponent } from "./stock-to-buy-table-dashboard.component";
-import { StockCatalystEventTableComponent } from "../stockcatalystevent/stock-catalyst-event-table.component";
+import { StockCatalystEventTableComponent } from "../stock-catalyst-event/stock-catalyst-event-table.component";
 import { StockSearchComponent } from "../common/stock-search.component";
 
 @Component(

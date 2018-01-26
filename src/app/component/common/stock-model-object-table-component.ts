@@ -16,19 +16,21 @@ export abstract class StockModelObjectTableComponent<T extends StockModelObject<
 {
     /**
      * Constructor.
+     * @param {TableLoadingStrategy} tableLoadingStrategy
      * @param {ToastsManager} toaster
      * @param {CrudStateStore<T extends StockModelObject<T>>} stockStateStore
      * @param {CrudController<T extends StockModelObject<T>>} stockController
      * @param {ModelObjectFactory<T extends StockModelObject<T>>} stockFactory
      * @param {CrudRestService<T extends StockModelObject<T>>} stockCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected tableLoadingStrategy: TableLoadingStrategy,
+                 protected toaster: ToastsManager,
                  protected stockStateStore: CrudStateStore<T>,
                  protected stockController: CrudController<T>,
                  protected stockFactory: ModelObjectFactory<T>,
                  protected stockCrudService: CrudRestService<T> )
     {
-        super( TableLoadingStrategy.LAZY_ON_CREATE, 
+        super( tableLoadingStrategy,
                toaster,
                stockStateStore,
                stockController,

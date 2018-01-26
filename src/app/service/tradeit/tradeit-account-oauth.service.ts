@@ -11,7 +11,7 @@ import { TradeItAPIResult } from "./apiresults/tradeit-api-result";
 import { ToastsManager } from "ng2-toastr";
 import { GetOAuthTokenUpdateURLResult } from "./apiresults/tradeit-get-oath-token-update-url-result";
 import { TradeItOAuthComponent } from "../../component/tradeit-account/tradeit-oauth-component";
-import { BaseTradeItService } from "../../component/tradeit-account/base-tradeit.service";
+import { BaseTradeItService } from "./base-tradeit.service";
 import { RestErrorReporter } from "../rest-error-reporter";
 import { TradeItAPIResultEnum, } from "./apiresults/tradeit-api-result-error-code";
 import { TradeItAccountController } from '../../component/tradeit-account/tradeit-account-controller';

@@ -6,7 +6,7 @@ import { ModelObject } from "../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { SelectItem } from "primeng/primeng";
-import { StockNotesSourceList } from "../stocknotes/stock-notes-source-list";
+import { StockNotesSourceList } from "../stock-notes/stock-notes-source-list";
 import { isNullOrUndefined } from "util";
 import { StockNotesSourceContainer } from "../../common/stock-notes-source-container";
 import { isNumeric } from "rxjs/util/isNumeric";

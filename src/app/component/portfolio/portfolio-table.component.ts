@@ -4,7 +4,7 @@ import { Portfolio } from "../../model/entity/portfolio";
 import { MenuItem } from "primeng/primeng";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
-import { PortfolioStockTableComponent } from "../portfoliostock/portfolio-stock-table.component";
+import { PortfolioStockTableComponent } from "../portfolio-stock/portfolio-stock-table.component";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
 import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service';
 import { PortfolioFactory } from '../../model/factory/portfolio.factory';
@@ -77,10 +77,6 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
                             this.onModelObjectChanged( portfolio );
                             var index: number = this.indexOf( portfolio );
                             this.updateModelObjectTableRow( index, portfolio );
-                        },
-                        error =>
-                        {
-                            this.reportRestError( error );
                         });
     }
 
@@ -117,10 +113,6 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
                 this.logger.log( "loadTable[0]: " + JSON.stringify( this.rows[0] ));
                 this.logger.log( "loadTable[0]: " + this.rows );
                 this.initializeMenuBar();
-            }, //Bind to view
-            err =>
-            {
-                this.reportRestError( err );
             });
     }
 

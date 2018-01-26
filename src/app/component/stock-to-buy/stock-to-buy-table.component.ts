@@ -8,15 +8,16 @@ import { StockNotesSentiment } from "../../common/stock-notes-sentiment.enum";
 import { CrudOperation } from "../crud/common/crud-operation";
 import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { DialogCloseEventType } from "../crud/common/close-button-event";
-import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
+import { StockQuoteModelObjectTableComponent } from "../stock-quote/stock-quote-modelobject-table.component";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { StockToBuyStateStore } from './stock-to-buy-state-store';
 import { StockToBuyController } from './stock-to-buy-controller';
 import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
-import { StockNotesController } from '../stocknotes/stock-notes-controller';
-import { StockNotesStateStore } from '../stocknotes/stock-notes-state-store';
+import { StockNotesController } from '../stock-notes/stock-notes-controller';
+import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
+import { TableLoadingStrategy } from '../common/table-loading-strategy';
 
 /**
  * This component displays a list of Stocks to buy.
@@ -49,7 +50,8 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
                  protected stockNotesFactory: StockNotesFactory,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
-        super( toaster,
+        super( TableLoadingStrategy.LAZY_ON_CREATE,
+               toaster,
                stockToBuyStateStore,
                stockToBuyController,
                stockToBuyFactory,

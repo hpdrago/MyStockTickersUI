@@ -9,7 +9,7 @@ import { StockFactory } from "../../model/factory/stock.factory";
 import { Stock } from "../../model/entity/stock";
 import { StockQuote } from "../../model/entity/stock-quote";
 import { CrudRestService } from "./crud-rest.serivce";
-import { RestException } from "../../common/rest-exception";
+import { RestErrorReporter } from '../rest-error-reporter';
 
 /**
  * This class provides all of the REST communication services for Stocks.
@@ -29,13 +29,19 @@ export class StockCrudService extends CrudRestService<Stock>
      * @param {SessionService} session
      * @param {AppConfigurationService} appConfig
      * @param {StockFactory} stockFactory
+     * @param {RestErrorReporter} restErrorReporter
      */
     constructor( protected http: Http,
                  protected session: SessionService,
                  protected appConfig: AppConfigurationService,
+                 protected restErrorReporter: RestErrorReporter,
                  private stockFactory: StockFactory )
     {
-        super( http, session, appConfig, stockFactory );
+        super( http,
+               session,
+               appConfig,
+               restErrorReporter,
+               stockFactory )
         this.stocksCompaniesLikePaginationUrl = new PaginationURL( appConfig.getBaseURL() + this.stocksCompaniesLikeUrl );
     }
 
@@ -59,7 +65,11 @@ export class StockCrudService extends CrudRestService<Stock>
         this.debug( "getStockCompaniesLike " + searchString )
         return this.http.get( this.stocksCompaniesLikePaginationUrl.getPageWithSearchString( searchString, 0, 20 ) )
                         .map( ( response: Response ) => response.json() )
-                        .catch( ( error: any ) => Observable.throw( error ));
+                        .catch( ( error: any ) =>
+                                {
+                                    this.restErrorReporter.reportRestError( error );
+                                    return Observable.throw( error )
+                                });
     }
 
     /**

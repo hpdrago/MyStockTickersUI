@@ -6,18 +6,32 @@ import { StockNotesCountFactory } from "../../model/factory/stock-note-count.fac
 import { Observable } from "rxjs/Observable";
 import { Injectable } from "@angular/core";
 import { StockNoteCount } from "../../model/entity/stock-note-count";
+import { RestErrorReporter } from '../rest-error-reporter';
 
 @Injectable()
 export class StockNotesCountService extends ReadRestService<StockNoteCount>
 {
     private contextUrl = "/stockNoteCounts"
 
+    /**
+     * Constructor.
+     * @param {Http} http
+     * @param {SessionService} sessionService
+     * @param {AppConfigurationService} appConfigurationService
+     * @param {restErrorReporter} restErrorReporter
+     * @param {StockNotesCountFactory} modelObjectFactory
+     */
     constructor( protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfigurationService: AppConfigurationService,
+                 protected restErrorReporter: RestErrorReporter,
                  protected modelObjectFactory: StockNotesCountFactory )
     {
-        super( http, sessionService, appConfigurationService, modelObjectFactory );
+        super( http,
+               sessionService,
+               appConfigurationService,
+               restErrorReporter,
+               modelObjectFactory );
     }
 
     protected getContextBaseURL(): string

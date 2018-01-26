@@ -1,7 +1,7 @@
-import { BaseService } from "../../service/base-service";
-import { TradeItException } from "../../service/tradeit/tradeit-execption";
+import { BaseService } from "../base-service";
+import { TradeItException } from "./tradeit-execption";
 import { ToastsManager } from "ng2-toastr";
-import { RestErrorReporter } from "../../service/rest-error-reporter";
+import { RestErrorReporter } from "../rest-error-reporter";
 import { RestException } from "../../common/rest-exception";
 
 /**

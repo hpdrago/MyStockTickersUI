@@ -7,7 +7,7 @@ import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.servi
 import { Observable } from 'rxjs/Observable';
 import { StockNotesActionTaken } from '../../common/stock-notes-action-taken.enum';
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
-import { StockToBuyController } from '../stocktobuy/stock-to-buy-controller';
+import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
 import { StockNotesStock } from '../../model/entity/stock-notes-stock';
 
 /**

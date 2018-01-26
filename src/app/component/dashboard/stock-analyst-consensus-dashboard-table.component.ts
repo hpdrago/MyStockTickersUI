@@ -1,12 +1,12 @@
 import { Component } from "@angular/core";
-import { StockAnalystConsensusTableComponent } from "../stockanalystconsensus/stock-analyst-consensus-table.component";
+import { StockAnalystConsensusTableComponent } from "../stock-analyst-consensus/stock-analyst-consensus-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
-import { StockAnalystConsensusStateStore } from '../stockanalystconsensus/stock-analyst-consensus-state-store';
-import { StockAnalystConsensusController } from '../stockanalystconsensus/stock-analyst-consensus-controller';
+import { StockAnalystConsensusStateStore } from '../stock-analyst-consensus/stock-analyst-consensus-state-store';
+import { StockAnalystConsensusController } from '../stock-analyst-consensus/stock-analyst-consensus-controller';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
-import { StockAnalystConsensusActionHandler } from '../stockanalystconsensus/stock-analyst-consensus-action-handler';
+import { StockAnalystConsensusActionHandler } from '../stock-analyst-consensus/stock-analyst-consensus-action-handler';
 
 /**
  * This component lists completed stock analyst consensus information on the Analyst Consensus tab
@@ -16,7 +16,7 @@ import { StockAnalystConsensusActionHandler } from '../stockanalystconsensus/sto
 @Component(
     {
         selector: 'stock-analyst-consensus-dashboard-table',
-        styleUrls: ['../stockanalystconsensus/stock-analyst-consensus-table.component.css'],
+        styleUrls: ['../stock-analyst-consensus/stock-analyst-consensus-table.component.css'],
         templateUrl: './stock-analyst-consensus-dashboard-table.component.html',
         providers: [StockAnalystConsensusStateStore, StockAnalystConsensusController, StockAnalystConsensusActionHandler]
     } )

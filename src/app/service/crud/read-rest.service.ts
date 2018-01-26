@@ -11,7 +11,7 @@ import { PaginationURL } from "../../common/pagination-url";
 import { KeyValuePairs } from "../../common/key-value-pairs";
 import { KeyValuePair } from "../../common/key-value-pair";
 import { LazyLoadEvent } from "primeng/primeng";
-import { ToastsManager } from "ng2-toastr";
+import { RestErrorReporter } from '../rest-error-reporter';
 
 /**
  * Generic class for reading model objects from the database.  Provides a method to read a single entity or a list
@@ -26,10 +26,12 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * @param {SessionService} sessionService
      * @param {AppConfigurationService} appConfig
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     * @param {RestErrorReporter} restErrorReporter
      */
     constructor( protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
+                 protected restErrorReporter: RestErrorReporter,
                  protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super();
@@ -88,7 +90,8 @@ export abstract class ReadRestService<T extends ModelObject<T>>
 
     /**
      * This method customizes the context URL to include the primary key of the model object.  If the model object is
-     * not set (null or undefined), then just the context based url (@code getContextBaseURL) is return.
+     * not set (null or undefined), then just the context based url (@code getContextBaseURL) is return. If the model
+     * object is set, then the non-null values are extracted from the model object and added to the query.
      * @param {T} modelObject
      * @returns {string}
      */
@@ -227,7 +230,11 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                        this.debug( methodName + " received: " + JSON.stringify( response.json() ))
                        return this.modelObjectFactory.newModelObjectFromJSON( response.json() );
                    } ) // ...and calling .json() on the response to return data
-                   .catch( ( error: any ) => Observable.throw( error ) )
+                   .catch( ( error: any ) =>
+                           {
+                               this.restErrorReporter.reportRestError( error );
+                               return Observable.throw( error )
+                           } )
                    .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
@@ -260,7 +267,11 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                        //this.debug( methodName + " " + JSON.stringify( modelObjects ));
                        return modelObjects;
                    })
-                   .catch( ( error: any ) => Observable.throw( error ))
+                   .catch( ( error: any ) =>
+                           {
+                               this.restErrorReporter.reportRestError( error );
+                               return Observable.throw( error )
+                           })
                    .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
@@ -283,6 +294,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                          } )
                    .catch( ( error: any ) =>
                            {
+                               this.restErrorReporter.reportRestError( error );
                                return Observable.throw( error );
                            } );
     }

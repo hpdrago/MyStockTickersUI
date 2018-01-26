@@ -6,6 +6,7 @@ import { CrudRestService } from "./crud-rest.serivce";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { StockAnalystConsensusFactory } from "../../model/factory/stock-analyst-consensus.factory";
 import { KeyValuePairs } from "../../common/key-value-pairs";
+import { RestErrorReporter } from '../rest-error-reporter';
 
 /**
  * This class provides all CRUD REST services for Stock Summary.
@@ -17,12 +18,25 @@ export class StockAnalystConsensusCrudService extends CrudRestService<StockAnaly
 {
     private urlPath = "/stockAnalystConsensus"
 
+    /**
+     * Constructor.
+     * @param {Http} http
+     * @param {SessionService} sessionService
+     * @param {AppConfigurationService} appConfig
+     * @param {restErrorReporter} restErrorReporter
+     * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
+     */
     constructor ( protected http: Http,
                   protected sessionService: SessionService,
                   protected appConfig: AppConfigurationService,
+                  protected restErrorReporter: RestErrorReporter,
                   protected stockAnalystConsensusFactory: StockAnalystConsensusFactory )
     {
-        super( http, sessionService, appConfig, stockAnalystConsensusFactory );
+        super( http,
+               sessionService,
+               appConfig,
+               restErrorReporter,
+               stockAnalystConsensusFactory );
     }
 
     protected getContextBaseURL(): string

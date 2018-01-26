@@ -8,6 +8,7 @@ import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-ev
 import { StockCatalystEventController } from './stock-catalyst-event-controller';
 import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
 import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
+import { TableLoadingStrategy } from '../common/table-loading-strategy';
 
 /**
  * This component lists all stock notes
@@ -34,7 +35,8 @@ export class StockCatalystEventTableComponent extends StockModelObjectTableCompo
                  protected stockCatalystEventFactory: StockCatalystEventFactory,
                  protected stockCatalystEventCrudService: StockCatalystEventCrudService )
     {
-        super( toaster,
+        super( TableLoadingStrategy.LAZY_ON_CREATE,
+               toaster,
                stockCatalystEventStateStore,
                stockCatalystEventController,
                stockCatalystEventFactory,

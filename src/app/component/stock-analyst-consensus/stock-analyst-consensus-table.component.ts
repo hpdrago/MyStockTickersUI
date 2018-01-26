@@ -1,12 +1,13 @@
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { ToastsManager } from "ng2-toastr";
-import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
+import { StockQuoteModelObjectTableComponent } from "../stock-quote/stock-quote-modelobject-table.component";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { StockUrlMap } from "../../common/stock-url-map";
 import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
 import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
+import { TableLoadingStrategy } from '../common/table-loading-strategy';
 
 /**
  * This is the base class for the tab and dashboard table for Stock Analyst Consensus information
@@ -31,7 +32,8 @@ export abstract class StockAnalystConsensusTableComponent extends StockQuoteMode
                  protected stockAnalystConsensusCrudService: StockAnalystConsensusCrudService,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
-        super( toaster,
+        super( TableLoadingStrategy.LAZY_ON_CREATE,
+               toaster,
                stockAnalystConsensusStateStore,
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,

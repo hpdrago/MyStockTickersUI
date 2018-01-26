@@ -2,15 +2,15 @@ import { Component } from "@angular/core";
 import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
-import { StockNotesTableComponent } from "../stocknotes/stock-notes-table.component";
-import { StockNotesStateStore } from '../stocknotes/stock-notes-state-store';
-import { StockNotesController } from '../stocknotes/stock-notes-controller';
+import { StockNotesTableComponent } from "../stock-notes/stock-notes-table.component";
+import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
+import { StockNotesController } from '../stock-notes/stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
-import { StockNotesCrudActionHandler } from '../stocknotes/stock-notes-crud-action-handler';
-import { StockToBuyCrudActionHandler } from '../stocktobuy/stock-to-buy-action-handler';
-import { StockToBuyController } from '../stocktobuy/stock-to-buy-controller';
-import { StockToBuyStateStore } from '../stocktobuy/stock-to-buy-state-store';
+import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
+import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action-handler';
+import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
+import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
 
 /**
  * This is the Stock Notes that displays on the dashboard
@@ -20,7 +20,7 @@ import { StockToBuyStateStore } from '../stocktobuy/stock-to-buy-state-store';
 @Component(
     {
         selector: 'stock-notes-dashboard-table',
-        styleUrls: ['../stocknotes/stock-notes-table.component.css'],
+        styleUrls: ['../stock-notes/stock-notes-table.component.css'],
         templateUrl: './stock-notes-table-dashboard.component.html',
         providers: [StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler,
                     StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler]

@@ -6,7 +6,6 @@ import { Subscription } from "rxjs/Subscription";
 import { isNullOrUndefined } from "util";
 import { RestException } from "../../../common/rest-exception";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
-import { CrudRestErrorReporter } from "../../../service/crud/crud-rest-error-reporter";
 import { CrudStateStore } from "./crud-state-store";
 import { OnInit } from "@angular/core";
 import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
@@ -14,6 +13,7 @@ import { CrudController } from './crud-controller';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { CrudRestErrorReporter } from '../../../service/crud/crud-rest-error-reporter';
 
 /**
  * This class is the base class for all CRUD components
@@ -347,6 +347,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     {
         this.log( "reportRestError: " + JSON.stringify( rawJsonError ) );
         var restException: RestException = this.crudRestErrorReporter.reportRestError( rawJsonError );
+        this.showError( restException.message );
         return restException;
     }
 
@@ -389,8 +390,8 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
                                 return versionCheckSubject.next( false );
                             }
                         },
-                        error => {
-                            this.reportRestError( error );
+                        error =>
+                        {
                             return versionCheckSubject.error( error );
                         } );
         return versionCheckSubject.asObservable();

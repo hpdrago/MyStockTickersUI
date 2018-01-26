@@ -7,6 +7,7 @@ import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 import { CrudRestService } from "./crud-rest.serivce";
 import { KeyValuePairs } from "../../common/key-value-pairs";
+import { RestErrorReporter } from '../rest-error-reporter';
 
 /**
  * This class provides all CRUD REST services for Stock Notes.
@@ -18,13 +19,27 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
 {
     private urlPath = "/stockNotes"
 
+    /**
+     * Constructor.
+     * @param {Http} http
+     * @param {SessionService} sessionService
+     * @param {AppConfigurationService} appConfig
+     * @param {restErrorReporter} restErrorReporter
+     * @param {StockNotesFactory} stockNotesFactory
+     * @param {StockNotesCountFactory} stockNoteCountFactory
+     */
     constructor ( protected http: Http,
                   protected sessionService: SessionService,
                   protected appConfig: AppConfigurationService,
+                  protected restErrorReporter: RestErrorReporter,
                   protected stockNotesFactory: StockNotesFactory,
                   protected stockNoteCountFactory: StockNotesCountFactory )
     {
-        super( http, sessionService, appConfig, stockNotesFactory );
+        super( http,
+               sessionService,
+               appConfig,
+               restErrorReporter,
+               stockNotesFactory );
     }
 
     protected getContextBaseURL(): string

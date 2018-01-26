@@ -6,7 +6,6 @@ import { Stock } from "../../model/entity/stock";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { isNullOrUndefined } from "util";
 import { StockQuote } from "../../model/entity/stock-quote";
-import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
 import { BaseComponent } from "./base.component";
 import { RestErrorReporter } from "../../service/rest-error-reporter";
 
@@ -134,21 +133,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                         this.stockSelected.emit( stockQuote );
                         this.isStockSelected = true;
                     }
-                },
-                ( error ) =>
-                {
-                    /*
-                     * 404 = not found
-                     */
-                    if ( error.status != 404 )
-                    {
-                        this.restErrorReporter.reportRestError( error );
-                    }
-                    else
-                    {
-                        this.showError( this.tickerSymbol + " was not found" );
-                    }
-                })
+                });
         }
     }
 

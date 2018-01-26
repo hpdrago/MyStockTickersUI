@@ -6,6 +6,7 @@ import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.facto
 import { CrudRestService } from "./crud-rest.serivce";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { AppConfigurationService } from "../app-configuration.service";
+import { RestErrorReporter } from '../rest-error-reporter';
 
 /**
  * This service manages REST communication for PortfolioStocks.
@@ -17,12 +18,25 @@ import { AppConfigurationService } from "../app-configuration.service";
 @Injectable()
 export class PortfolioStockCrudService extends CrudRestService<PortfolioStock>
 {
+    /**
+     * Constructor.
+     * @param {Http} http
+     * @param {SessionService} sessionService
+     * @param {AppConfigurationService} appConfig
+     * @param {restErrorReporter} restErrorReporter
+     * @param {PortfolioStockFactory} portfolioStockFactory
+     */
     constructor( protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
+                 protected restErrorReporter: RestErrorReporter,
                  private portfolioStockFactory: PortfolioStockFactory )
     {
-        super( http, sessionService, appConfig, portfolioStockFactory );
+        super( http,
+               sessionService,
+               appConfig,
+               restErrorReporter,
+               portfolioStockFactory );
     }
 
     protected getContextBaseURL(): string

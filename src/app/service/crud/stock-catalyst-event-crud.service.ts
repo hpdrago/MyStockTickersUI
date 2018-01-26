@@ -6,6 +6,7 @@ import { CrudRestService } from "./crud-rest.serivce";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockCatalystEventFactory } from "../../model/factory/stock-catalyst-event.factory";
 import { KeyValuePairs } from "../../common/key-value-pairs";
+import { RestErrorReporter } from '../rest-error-reporter';
 
 /**
  * This class provides all CRUD REST services for Stock Catalyst Events.
@@ -17,12 +18,25 @@ export class StockCatalystEventCrudService extends CrudRestService<StockCatalyst
 {
     private urlPath = "/stockCatalystEvent"
 
+    /**
+     * Constructor.
+     * @param {Http} http
+     * @param {SessionService} sessionService
+     * @param {AppConfigurationService} appConfig
+     * @param {restErrorReporter} restErrorReporter
+     * @param {StockCatalystEventFactory} stockCatalystEventFactory
+     */
     constructor ( protected http: Http,
                   protected sessionService: SessionService,
                   protected appConfig: AppConfigurationService,
+                  protected restErrorReporter: RestErrorReporter,
                   protected stockCatalystEventFactory: StockCatalystEventFactory )
     {
-        super( http, sessionService, appConfig, stockCatalystEventFactory );
+        super( http,
+               sessionService,
+               appConfig,
+               restErrorReporter,
+               stockCatalystEventFactory );
     }
 
     protected getContextBaseURL(): string

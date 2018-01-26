@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockCatalystEventStateStore } from '../stockcatalystevent/stock-catalyst-event-state-store';
-import { StockCatalystEventController } from '../stockcatalystevent/stock-catalyst-event-controller';
-import { StockCatalystEventActionHandler } from '../stockcatalystevent/stock-catalyst-event-action-handler';
-import { StockCatalystEventTableComponent } from '../stockcatalystevent/stock-catalyst-event-table.component';
+import { StockCatalystEventStateStore } from '../stock-catalyst-event/stock-catalyst-event-state-store';
+import { StockCatalystEventController } from '../stock-catalyst-event/stock-catalyst-event-controller';
+import { StockCatalystEventActionHandler } from '../stock-catalyst-event/stock-catalyst-event-action-handler';
+import { StockCatalystEventTableComponent } from '../stock-catalyst-event/stock-catalyst-event-table.component';
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
 

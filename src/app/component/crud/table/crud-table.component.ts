@@ -139,8 +139,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                         err =>
                         {
                             this.loading = false;
-                            // Log errors if any
-                            this.reportRestError( err );
                             this.debug( methodName + '.end');
                         } );
         this.lastLoadEvent = event;
@@ -219,7 +217,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                             error =>
                             {
                                 this.loading = false;
-                                this.reportRestError( error );
                                 this.debug( "loadTable.end" );
                             } );
 
@@ -639,6 +636,14 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             }
         }
         return -1;
+    }
+
+    /**
+     * Removes all rows from the table.
+     */
+    public clearTable()
+    {
+        this.rows = [];
     }
 
     /**

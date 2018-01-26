@@ -94,7 +94,8 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
         if ( (!this.selectedStockQuote || this.selectedStockQuote.tickerSymbol != this.getTickerSymbolFormValue()) &&
               !isNullOrUndefined( this.getTickerSymbolFormValue() ))
         {
-            this.stockCrudService.getStock( this.getTickerSymbolFormValue() )
+            this.stockCrudService
+                .getStock( this.getTickerSymbolFormValue() )
                 .subscribe( (stock) =>
                             {
                                 this.debug( methodName + " found: " + stock.tickerSymbol );
@@ -137,28 +138,6 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
             'profitTakingShares': ''
         } );
         return formGroup;
-    }
-
-    /**
-     * Loads the stock sectors
-     */
-    private loadStockSectorMap()
-    {
-        this.stockSectorService
-            .getStockSectors()
-            .subscribe( ( data ) =>
-                        {
-                            this.debug( 'stock sector data: ' + JSON.stringify( data ) );
-                            this.stockSectorMap.load( data );
-                            this.stockSectors = this.stockSectorMap.getSectorSelectItems();
-                            this.debug( 'stockSectors: ' + JSON.stringify( this.stockSectors ) );
-                            this.dataLoaded = true;
-                        },
-                        error =>
-                        {
-                            this.reportRestError( error );
-                        }
-            );
     }
 
     /**

@@ -54,23 +54,6 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
                tradeItAccountCrudService );
     }
 
-    public ngOnInit(): void
-    {
-        let methodName = "ngOnInit";
-        this.log( methodName + ".begin" );
-        super.ngOnInit();
-        /*
-         * Need to register to get notified when the TradeItAccount has been added successfully.  This occurs after
-         * the user provides the login credentials to the brokerage successfully from the popup url auth call.
-         */
-        /*
-        this.addSubscription( 'subscribeToAddButtonClickCompletedEvent',
-            this.tradeItAccountController
-                .subscribeToAddButtonClickCompletedEvent( () => this.onModelObjectCreated();}));
-                */
-        this.log( methodName + ".end" );
-    }
-
     /**
      * This method is called when the user clicks on a {@code TradeItAccount}.
      * @param event

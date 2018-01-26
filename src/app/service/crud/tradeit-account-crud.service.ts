@@ -8,6 +8,7 @@ import { CrudRestService } from "./crud-rest.serivce";
 import { AppConfigurationService } from "../app-configuration.service";
 import { Http } from "@angular/http";
 import { TradeItAccountFactory } from "../../model/factory/tradeit-account.factory";
+import { RestErrorReporter } from '../rest-error-reporter';
 
 /**
  * This service handles all of the account related actions.
@@ -15,12 +16,25 @@ import { TradeItAccountFactory } from "../../model/factory/tradeit-account.facto
 @Injectable()
 export class TradeItAccountCrudService extends CrudRestService<TradeItAccount>
 {
+    /**
+     * Constructor.
+     * @param {Http} http
+     * @param {SessionService} sessionService
+     * @param {AppConfigurationService} appConfig
+     * @param {restErrorReporter} restErrorReporter
+     * @param {TradeItAccountFactory} customerAccountFactory
+     */
     constructor( protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
+                 protected restErrorReporter: RestErrorReporter,
                  private customerAccountFactory: TradeItAccountFactory )
     {
-        super( http, sessionService, appConfig, customerAccountFactory );
+        super( http,
+               sessionService,
+               appConfig,
+               restErrorReporter,
+               customerAccountFactory );
     }
 
     protected getContextBaseURL(): string

@@ -90,11 +90,6 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
                             {
                                 this.rows = [];
                             }
-                        },
-                        error =>
-                        {
-                            this.reportRestError( error );
-                        }
-            );
+                        });
     }
 }

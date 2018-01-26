@@ -11,6 +11,8 @@ import { LinkedAccountStateStore } from '../linked-account/linked-account-state-
 import { LinkedAccountController } from '../linked-account/linked-account-controller';
 import { TradeItAccountCrudActionHandler } from './tradeit-account-crud-action-handler';
 import { LinkedAccountCrudActionHandler } from '../linked-account/linked-account-crud-action-handler';
+import { StockPositionTableComponent } from '../stock-position/stock-position-table.component';
+import { LinkedAccount } from '../../model/entity/linked-account';
 
 /**
  * Created by mike on 10/8/2016.
@@ -30,6 +32,9 @@ export class TradeItAccountsComponent extends BaseComponent
     @ViewChild(LinkedAccountTableComponent)
     private linkedAccountTableComponent: LinkedAccountTableComponent;
 
+    @ViewChild(StockPositionTableComponent)
+    private stockPositionTableComponent: StockPositionTableComponent;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -41,16 +46,4 @@ export class TradeItAccountsComponent extends BaseComponent
         super( toaster );
     }
 
-    /**
-     * This method is called when the user clicks on an account in the TradeItAccount table (the one on the left).
-     * Subsequently, the LinkedAccountTable is notified to display the linked accounts for the TradeItAccount;
-     * @param {TradeItAccount} tradeItAccount
-     * @constructor
-     */
-    public tradeItAccountSelected( tradeItAccount: TradeItAccount ): void
-    {
-        let methodName = "tradeItAccountSelected";
-        this.log( methodName + " " + JSON.stringify( tradeItAccount ));
-        this.linkedAccountTableComponent.loadAccounts( tradeItAccount );
-    }
 }

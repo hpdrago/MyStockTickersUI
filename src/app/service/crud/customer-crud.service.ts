@@ -1,7 +1,7 @@
 /**
  * Created by mike on 11/11/2017
  */
-import { StockNotesSourceList } from "../../component/stocknotes/stock-notes-source-list";
+import { StockNotesSourceList } from "../../component/stock-notes/stock-notes-source-list";
 import { Injectable } from "@angular/core";
 import { Customer } from "../../model/entity/customer";
 import { SessionService } from "../session.service";
@@ -14,6 +14,7 @@ import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 import { Http, Response } from "@angular/http";
 import { StockNotesSourceService } from './stock-notes-source.service';
+import { RestErrorReporter } from '../rest-error-reporter';
 
 /**
  * This service handles all of the customer related actions.
@@ -28,13 +29,27 @@ export class CustomerCrudService extends CrudRestService<Customer>
      */
     private sourcesLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject( true );
 
+    /**
+     * Constructor.
+     * @param {Http} http
+     * @param {SessionService} sessionService
+     * @param {AppConfigurationService} appConfig
+     * @param {restErrorReporter} restErrorReporter
+     * @param {CustomerFactory} customerFactory
+     * @param {StockNotesSourceService} stockNotesSourceService
+     */
     constructor( protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
+                 protected restErrorReporter: RestErrorReporter,
                  private customerFactory: CustomerFactory,
                  private stockNotesSourceService: StockNotesSourceService )
     {
-        super( http, sessionService, appConfig, customerFactory );
+        super( http,
+               sessionService,
+               appConfig,
+               restErrorReporter,
+               customerFactory );
     }
 
     protected getContextBaseURL()

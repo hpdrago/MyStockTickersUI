@@ -3,14 +3,14 @@ import { ToastsManager } from "ng2-toastr";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { StockToBuyTableComponent } from "./stock-to-buy-table.component";
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
-import { StockNotesController } from '../stocknotes/stock-notes-controller';
-import { StockNotesStateStore } from '../stocknotes/stock-notes-state-store';
+import { StockNotesController } from '../stock-notes/stock-notes-controller';
+import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
 import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockToBuyController } from './stock-to-buy-controller';
 import { StockToBuyStateStore } from './stock-to-buy-state-store';
 import { StockToBuyCrudActionHandler } from './stock-to-buy-action-handler';
-import { StockNotesCrudActionHandler } from '../stocknotes/stock-notes-crud-action-handler';
+import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
 
 /**
  * This component displays a list of Stocks to buy.

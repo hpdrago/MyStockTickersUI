@@ -48,24 +48,6 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
     }
 
     /**
-     * This method is called from the popup window.
-     *
-     * NOTE: This method gets called twice instead of once on a successful login so the requestInProcess,
-     * requestCompleted, and destroyed flags are used to prevent errors showing up as the second call results in a error from TradeIt.
-     * @param event
-     */
-    public receiveMessage( event: any )
-    {
-        let methodName = "receiveMessage";
-        this.log( methodName + ".begin" );
-        /*
-         * Just forward the call back to the OAuth service.
-         */
-        this.tradeItOAuthService.receiveMessage( event );
-        this.log( methodName + ".end" );
-    }
-
-    /**
      * Defines the message to display to the user in the dialog when deleting the model object
      */
     public getDeleteMessage( account: TradeItAccount ): string
@@ -110,6 +92,24 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
         this.tradeItOAuthService.register( this );
         this.tradeItOAuthService
             .openOAuthPopup( this, this.modelObject.brokerage );
+        this.log( methodName + ".end" );
+    }
+
+    /**
+     * This method is called from the popup window.
+     *
+     * NOTE: This method gets called twice instead of once on a successful login so the requestInProcess,
+     * requestCompleted, and destroyed flags are used to prevent errors showing up as the second call results in a error from TradeIt.
+     * @param event
+     */
+    public receiveMessage( event: any )
+    {
+        let methodName = "receiveMessage";
+        this.log( methodName + ".begin" );
+        /*
+         * Just forward the call back to the OAuth service.
+         */
+        this.tradeItOAuthService.receiveMessage( event );
         this.log( methodName + ".end" );
     }
 
