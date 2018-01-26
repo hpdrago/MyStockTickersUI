@@ -185,7 +185,7 @@ import { PercentComponent } from './component/common/percent.component';
 import { StockQuoteDayPercentChangeComponent } from './component/common/stock-quote-day-percent-change.component';
 import { DateComponent } from './component/common/date.component';
 import { DateOrTimePeriodComponent } from './component/common/date-or-timeperiod.component';
-import { LoadingComponent } from './component/common/loading.component';
+import { ModelObjectLoadingComponent } from './component/common/model-object-loading.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -349,7 +349,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockQuoteDayPercentChangeComponent,
         DateComponent,
         DateOrTimePeriodComponent,
-        LoadingComponent
+        ModelObjectLoadingComponent
     ],
     bootstrap:
     [

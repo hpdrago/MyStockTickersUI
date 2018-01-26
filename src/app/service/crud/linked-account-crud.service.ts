@@ -47,7 +47,8 @@ export class LinkedAccountCrudService extends CrudRestService<LinkedAccount>
      */
     public getUpdatedLinkedAccount( linkedAccount: LinkedAccount ): Observable<LinkedAccount>
     {
-        let url = this.getCompleteURL( "/getAccountOverview", this.getCustomerURL() );
+        let url = this.getCompleteURL( this.getContextBaseURL() +  "/getAccountOverview",
+                                       this.getCustomerURL(), linkedAccount );
         return this.httpRequestModelObject( url );
     }
 

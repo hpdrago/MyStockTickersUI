@@ -78,6 +78,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
             if ( tradeItAccount.linkedAccounts )
             {
                 this.rows = tradeItAccount.linkedAccounts;
+                this.updateLinkedAccounts();
             }
             else
             {
@@ -88,6 +89,33 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
         }
         this.log( methodName + ".end" );
     }
+
+    /**
+     * Makes to http requests for  linked accounts, the first will get the initial linked account list and then
+     * it will request
+     * @param {LinkedAccount[]} modelObjects
+     */
+    protected updateLinkedAccounts()
+    {
+        let methodName = 'updateLinkedAccounts'
+        /*
+         * Make a separate HTTP request for each linked account.
+         */
+        this.tradeItAccount
+            .linkedAccounts
+            .forEach( (linkedAccount) =>
+                      {
+                          this.linkedAccountCrudService
+                              .getUpdatedLinkedAccount( linkedAccount )
+                              .subscribe( updatedLinkedAccount =>
+                                          {
+                                              this.log( methodName + " updating " + JSON.stringify( updatedLinkedAccount ))
+                                              this.updateModelObjectRow( updatedLinkedAccount );
+                                          });
+                      });
+
+    }
+
 
     /**
      * This method is called when the user clicks on a {@code TradeItAccount}.
@@ -125,31 +153,6 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
                         });
         this.log( methodName + ".end" );
     }
-
-    /**
-     * Makes to http requests for  linked accounts, the first will get the initial linked account list and then
-     * it will request
-     * @param {LinkedAccount[]} modelObjects
-     */
-    protected onTableLoad( modelObjects: LinkedAccount[] ): void
-    {
-        let methodName = 'onLoadTable.override';
-        this.log( methodName + ".begin")
-        super.onTableLoad( modelObjects );
-        /*
-         * Make a separate HTTP request for each linked account.
-         */
-        modelObjects.forEach( (linkedAccount) =>
-                     {
-                         this.linkedAccountCrudService
-                             .getUpdatedLinkedAccount( linkedAccount )
-                             .subscribe( updatedLinkedAccount =>
-                                         {
-                                             this.updateModelObjectRow( updatedLinkedAccount );
-                                         });
-                     });
-    }
-
     public getTradeItAccount(): TradeItAccount
     {
         return this.tradeItAccount;
@@ -186,4 +189,5 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
     {
         return false;
     }
+
 }

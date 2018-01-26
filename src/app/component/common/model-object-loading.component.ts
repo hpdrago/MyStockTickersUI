@@ -5,20 +5,20 @@ import { Component, Input, OnInit, TemplateRef, ViewChild, ViewContainerRef } fr
 import { ModelObject } from '../../model/entity/modelobject';
 
 /**
- *
+ * This component will displays {@code loadingMessage} if the model object is currently loading, otherwise it will
+ * display the content contained with the selector.
  */
 @Component(
 {
     selector: 'loading',
-    template: `<div *ngIf="modelObject.loadingStatus === 'LOADING'; else notLoadingBlock">{{loadingMessage}}</div>
-               <ng-container *ngTemplateOutlet="notLoadingBlock"> 
-               </ng-container>
+    template: `<div *ngIf="modelObject.loadingStatus === 'LOADING'; else notLoadingBlock">{{loadingMessage}}
+               </div>
                <ng-template #notLoadingBlock>
                    <ng-content></ng-content>
                </ng-template>
               `
 })
-export class LoadingComponent
+export class ModelObjectLoadingComponent
 {
     @Input()
     private modelObject: ModelObject<any>;

@@ -53,7 +53,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         }
         let customerURL = this.getCustomerURL() == null ? '/' : this.getCustomerURL();
         this.debug( methodName + ' contextURL: ' + contextURL + ' customerURL: ' + customerURL );
-        let url = this.getCompleteURL(contextURL, customerURL );
+        let url = this.getCompleteURL( contextURL, customerURL );
         this.debug( methodName + ' url: ' + url );
         return url;
     }
@@ -75,7 +75,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         }
         let customerURL = this.getCustomerURL() == null ? '/' : this.getCustomerURL();
         this.debug( methodName + ' contextURL: ' + contextURL + ' customerURL: ' + customerURL );
-        let url = this.getCompleteURL( contextURL, customerURL );
+        let url = this.getCompleteURL( contextURL, customerURL, modelObject );
         this.debug( methodName + ' url: ' + url );
         return url;
     }
@@ -84,11 +84,14 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * Combines the application base url + context url + customer url
      * @param {string} contextURL
      * @param {string} customerURL
+     * @param {T} modelObject Used to create specific target URL based on model object properties.
      * @return {string}
      */
-    protected getCompleteURL( contextURL: string, customerURL: string )
+    protected getCompleteURL( contextURL: string, customerURL: string, modelObject?: T )
     {
-        let url = this.appConfig.getBaseURL() + contextURL + customerURL;
+        let methodName = 'getCompleteURL';
+        this.debug( `${methodName} contextURL: ${contextURL} customerURL: ${customerURL}` );
+        let url = this.appConfig.getBaseURL() + this.getContextURLFrom( contextURL, modelObject ) + customerURL;
         return url;
     }
 
@@ -102,19 +105,31 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     protected abstract getContextBaseURL(): string;
 
     /**
-     * This method customizes the context URL to include the primary key of the model object.  If the model object is
-     * not set (null or undefined), then just the context based url (@code getContextBaseURL) is return. If the model
-     * object is set, then the non-null values are extracted from the model object and added to the query.
+     * Same as {@code getContextURLFrom( getContextBaseURL(), modelObject );}
      * @param {T} modelObject
-     * @returns {string}
+     * @return {string}
      */
     protected getContextURL( modelObject: T ): string
     {
         let methodName = 'getContextURL';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
-        let contextURL = this.getContextBaseURL();
-        let keyColumnValues: KeyValuePairs<string,any> = this.getContextURLKeyValues( modelObject );
-        keyColumnValues.forEach( (key, value) => contextURL += '/' + key + '/' + value );
+        return this.getContextURLFrom( this.getContextBaseURL(), modelObject );
+    }
+
+    /**
+     * This method customizes the context URL to include the primary key of the model object.  If the model object is
+     * not set (null or undefined), then just the context based url (@code baseContextURL) is return. If the model
+     * object is set, then the non-null values are extracted from the model object and added to the query.
+     * @param {string} contextURL
+     * @param {T} modelObject
+     * @returns {string}
+     */
+    protected getContextURLFrom( contextURL: string, modelObject: T ): string
+    {
+        let methodName = 'getContextURLFrom';
+        this.debug( methodName + ' ' + contextURL + ' ' + JSON.stringify( modelObject ) );
+        let keyColumnValues: KeyValuePairs<string, any> = this.getContextURLKeyValues( modelObject );
+        keyColumnValues.forEach( ( key, value ) => contextURL += '/' + key + '/' + value );
         this.debug( methodName + ' contextURL: ' + contextURL );
         return contextURL;
     }
@@ -255,7 +270,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                          {
                              this.debug( methodName + ' received: ' + JSON.stringify( response.json() ))
                              let modelObject: T = this.modelObjectFactory.newModelObjectFromJSON( response.json() );
-                             this.setLoadingStatus( modelObject );
+                             this.setLoadedStatus( modelObject );
                              return modelObject;
                          } ) // ...and calling .json() on the response to return data
                    .catch( ( error: any ) =>
@@ -347,13 +362,23 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     }
 
     /**
-     * Sets the loading time and loading status.
+     * Sets the loading time and loading status to the initial loading status.
      * @param {T} modelObject
      */
     protected setLoadingStatus( modelObject: T )
     {
         modelObject.loadedTime = Date.now();
         modelObject.loadingStatus = this.getInitialLoadingStatus();
+    }
+
+    /**
+     * Set the status to LOADED and set the load time.
+     * @param {T} modelObject
+     */
+    protected setLoadedStatus( modelObject: T )
+    {
+        modelObject.loadedTime = Date.now();
+        modelObject.loadingStatus = LoadingStatus.getName( LoadingStatus.LOADED );
     }
 
     /**
