@@ -38,8 +38,7 @@ import {
     SliderModule,
     TabMenuModule,
     TabViewModule,
-    TooltipModule,
-    ProgressSpinnerModule
+    TooltipModule
 } from "primeng/primeng";
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";

@@ -4,6 +4,7 @@ import { StockQuote } from "../model/entity/stock-quote";
 import { Observable } from "rxjs/Observable";
 import { StockCrudService } from "./crud/stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This class caches stock quotes by ticker symbol
@@ -66,7 +67,7 @@ export class StockQuoteCache extends BaseService
     {
         let methodName = "getStockQuote";
         this.debug( methodName + " " + tickerSymbol  );
-        if ( this.workingMap.get( tickerSymbol ) == null || forceRefresh  )
+        if ( this.workingMap.get( tickerSymbol ) == null || forceRefresh )
         {
             this.debug( methodName + " " + tickerSymbol + " not in cache" );
             let observable = this.fetchStockQuote( tickerSymbol );
@@ -75,25 +76,25 @@ export class StockQuoteCache extends BaseService
         else
         {
             this.debug( methodName + " " + tickerSymbol + " is already being fetched" );
+            return this.workingMap.get( tickerSymbol );
             /*
              * Check to see if the stock has expired and if so, refresh the quote.
              */
-            this.workingMap
-                .get( tickerSymbol )
-                .subscribe( (stockQuote: StockQuote) =>
-                            {
-                                if ( stockQuote.expiration.getTime() < Date.now() )
-                                {
-                                    this.debug( methodName + " " + stockQuote.tickerSymbol + " has expired, refreshing quote" ) ;
-                                    return this.fetchStockQuote( tickerSymbol );
-                                }
-                                else
-                                {
-                                    return this.workingMap
-                                               .get( tickerSymbol )
-                                }
-                            });
-
+            //let stockQuote = this.quoteMap.get( tickerSymbol );
+            /*
+            if ( stockQuote == null )
+            {
+                if ( stockQuote.expiration.getTime() < Date.now() )
+                {
+                    this.debug( methodName + " " + stockQuote.tickerSymbol + " has expired, refreshing quote" ) ;
+                    return this.fetchStockQuote( tickerSymbol );
+                }
+                else
+                {
+                    return this.workingMap
+                               .get( tickerSymbol )
+                }
+                */
         }
     }
 

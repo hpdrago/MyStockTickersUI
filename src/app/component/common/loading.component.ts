@@ -11,7 +11,9 @@ import { ModelObject } from '../../model/entity/modelobject';
 {
     selector: 'loading',
     template: `<div *ngIf="modelObject.loadingStatus === 'LOADING'; else notLoadingBlock">{{loadingMessage}}</div>
-               <ng-template #notLoadingBlock> 
+               <ng-container *ngTemplateOutlet="notLoadingBlock"> 
+               </ng-container>
+               <ng-template #notLoadingBlock>
                    <ng-content></ng-content>
                </ng-template>
               `
@@ -23,14 +25,5 @@ export class LoadingComponent
 
     @Input()
     private loadingMessage: string = 'Loading...';
-
-    @ViewChild()
-    private notLoadingBlock: TemplateRef<any>;
-
-    constructor(
-        private templateRef: TemplateRef<any>,
-        private viewContainer: ViewContainerRef)
-    {
-    }
 
 }
