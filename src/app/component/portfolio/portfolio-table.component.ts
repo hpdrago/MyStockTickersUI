@@ -27,7 +27,7 @@ import { LinkedAccount } from '../../model/entity/linked-account';
 export class PortfolioTableComponent extends CrudTableComponent<Portfolio> implements OnInit
 {
     @ViewChild(PortfolioStockTableComponent)
-    private portfolioStocksComponent: PortfolioStockTableComponent;
+    private portfolioStocksTableComponent: PortfolioStockTableComponent;
 
     private menuItems: MenuItem[] = [];
     private tradeItAccount: TradeItAccount;
@@ -70,6 +70,8 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
         this.linkedAccount = null;
+        this.portfolioStocksTableComponent
+            .setTradeItAccount( tradeItAccount );
         this.clearTable();
     }
 
@@ -82,6 +84,8 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
         const methodName = 'setLinkedAccount';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ) );
         this.linkedAccount = linkedAccount;
+        this.portfolioStocksTableComponent
+            .setLinkedAccount( linkedAccount );
     }
 
     /**
@@ -91,7 +95,7 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
     {
         super.ngOnInit();
         this.loadTable();
-        this.portfolioStocksComponent
+        this.portfolioStocksTableComponent
             .registerForPortfolioStockChanges( () => this.loadPortfolio() );
     }
 
@@ -119,7 +123,8 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
     {
         this.logger.log( 'onRowSelect ' + JSON.stringify( this.modelObject ));
         super.onRowSelect( portfolio );
-        this.portfolioStocksComponent.loadPortfolio( this.modelObject );
+        this.portfolioStocksTableComponent
+            .loadPortfolio( this.modelObject );
     }
 
     protected isSelectedPortfolio( portfolio: Portfolio )

@@ -149,4 +149,9 @@ export abstract class CrudTableButtonComponent<T extends ModelObject<T>> extends
     {
         this._buttonDivClass = value;
     }
+
+    public isDisabled(): boolean
+    {
+        return this._buttonDisabled;
+    }
 }

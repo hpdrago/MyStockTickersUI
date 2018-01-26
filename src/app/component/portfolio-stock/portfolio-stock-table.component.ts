@@ -11,6 +11,8 @@ import { PortfolioStockStateStore } from './portfolio-stock-state-store';
 import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
 import { PortfolioStockActionHandler } from './portfolio-stock-action-handler';
 import { CookieService } from 'ngx-cookie-service';
+import { TradeItAccount } from '../../model/entity/tradeit-account';
+import { LinkedAccount } from '../../model/entity/linked-account';
 
 /**
  * This component lists all of the stocks for a portfolio
@@ -25,8 +27,10 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioStock>
 {
-    private portfolio: Portfolio;
     private title: string = 'Portfolio Stocks';
+    private portfolio: Portfolio;
+    private tradeItAccount: TradeItAccount;
+    private linkedAccount: LinkedAccount;
 
     /**
      * Constructor.
@@ -95,5 +99,29 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
                                 this.modelObjectRows = [];
                             }
                         });
+    }
+
+    /**
+     * This method is called when the user selects a row on the trade it table accounts.
+     * @param {TradeItAccount} tradeItAccount
+     */
+    public setTradeItAccount( tradeItAccount: TradeItAccount )
+    {
+        const methodName = 'setTradeItAccount';
+        this.log( methodName + " " + JSON.stringify( tradeItAccount ));
+        this.tradeItAccount = tradeItAccount;
+        this.linkedAccount = null;
+        this.clearTable();
+    }
+
+    /**
+     * This method is called when the user changes the linked selected linked account;
+     * @param {LinkedAccount} linkedAccount
+     */
+    public setLinkedAccount( linkedAccount: LinkedAccount )
+    {
+        const methodName = 'setLinkedAccount';
+        this.log( methodName + ".begin " + JSON.stringify( linkedAccount ) );
+        this.linkedAccount = linkedAccount;
     }
 }

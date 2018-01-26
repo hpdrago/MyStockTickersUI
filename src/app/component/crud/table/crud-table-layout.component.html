@@ -27,6 +27,7 @@
              [pageLinks]="pageLinks"
              [totalRecords]="totalRecords"
              (onRowSelect)="onRowSelect($event)"
+             (onRowUnselect)="onRowUnSelect($event)"
              selectionMode="single"
              (onLazyLoad)="onLazyLoad()"
              [lazy]="lazy"

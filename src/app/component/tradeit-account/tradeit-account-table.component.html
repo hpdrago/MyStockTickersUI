@@ -42,6 +42,7 @@ TABLE DEFINITION
                    [totalRecords]="totalRows"
                    [(selection)]="selectedModelObject"
                    (rowSelected)="onRowSelect($event)"
+                   (rowUnselected)="onRowUnSelect($event)"
                    (onLazyLoad)="lazyLoadTable($event)"
                    [lazy]="true"
                    [loadingData]="isLoading()"

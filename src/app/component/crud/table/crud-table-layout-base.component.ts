@@ -175,10 +175,8 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     @Output()
     protected rowSelected = new EventEmitter<any>();
 
-    /*
     @Output()
     protected rowUnselected = new EventEmitter<any>();
-    */
 
     @Output()
     protected lazyLoadTable = new EventEmitter<any>();
@@ -419,5 +417,17 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
         const methodName = 'onRowSelect';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.rowSelected.emit( modelObject );
+    }
+
+    /**
+     * This method is called when the row is deselected.
+     * The selected model object will be emitted to the parent component.
+     * @param modelObject
+     */
+    protected onRowUnselect( modelObject: any )
+    {
+        const methodName = 'onRowUnselect';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        this.rowUnselected.emit( modelObject );
     }
 }
