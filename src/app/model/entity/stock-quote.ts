@@ -85,7 +85,7 @@ export class StockQuote extends ModelObject<StockQuote>
         return this.cacheState;
     }
 
-    public getDefaultCrudTableColumns(): CrudTableColumns
+    public getDefaultColumns(): CrudTableColumns
     {
         let crudTableColumns = new CrudTableColumns( null );
         crudTableColumns.addColumn( {

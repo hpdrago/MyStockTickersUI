@@ -67,6 +67,9 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     @Input()
     protected autoLayout: boolean = true;
 
+    @Input()
+    protected scrollable: boolean = false;
+
     /**
      * Paginator # of page links
      * @type {number}
@@ -138,6 +141,12 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
      */
     @Input()
     protected displayColumns: any[];
+
+    /**
+     * Height of the scroll viewport in fixed pixels or percentage
+     */
+    @Input()
+    protected scrollHeight: string;
 
     /******************************************************************************************************************
      *

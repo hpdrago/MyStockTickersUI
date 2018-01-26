@@ -34,10 +34,10 @@ export class AdditionalStockModelObjectColumns extends CrudTableColumns
                                         sortable: true
                                     } );
         crudTableColumns.addAll( new StockPriceQuote().getDefaultColumns() );
-        crudTableColumns.addAll( new StockQuote().getDefaultCrudTableColumns() );
-        crudTableColumns.addAll( new StockCompany().getDefaultCrudTableColumns() );
-        crudTableColumns.addAll( new GainsLosses().getDefaultCrudTableColumns() );
-        crudTableColumns.addAll( new StockAnalystConsensus().getDefaultCrudTableColumns() );
+        crudTableColumns.addAll( new StockQuote().getDefaultColumns() );
+        crudTableColumns.addAll( new StockCompany().getDefaultColumns() );
+        crudTableColumns.addAll( new GainsLosses().getDefaultColumns() );
+        crudTableColumns.addAll( new StockAnalystConsensus().getDefaultColumns() );
         this.addAll( crudTableColumns );
     }
 

@@ -277,6 +277,10 @@ import { GainsLossesCache } from './service/cache/gains-losses-cache';
 import { CrudTableCustomizeButtonComponent } from './component/crud/table/crud-table-customize-button.component';
 import { StockAnalystConsensusTableComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table.component';
 import { StockCatalystEventTableComponent } from './component/stock-catalyst-event/stock-catalyst-event-table.component';
+import { StockToBuyDashboardTableComponent } from './component/dashboard/stock-to-buy-dashboard-table.component';
+import { StockNotesDashboardTableComponent } from './component/dashboard/stock-notes-dashboard-table.component';
+import { StockCatalystEventDashboardTableComponent } from './component/dashboard/stock-catalyst-event-dashboard-table.component';
+import { StockAnalystConsensusDashboardTableComponent } from './component/dashboard/stock-analyst-consensus-dashboard-table.component';
 
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -431,6 +435,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockNotesAddComponent,
         StockNotesTableComponent,
+        StockNotesDashboardTableComponent,
         StockNotesFormComponent,
         StockNotesDialogComponent,
         StockNotesTableButtonsComponent,
@@ -452,6 +457,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockAnalystConsensusAddComponent,
         StockAnalystConsensusTableComponent,
+        StockAnalystConsensusDashboardTableComponent,
         StockAnalystConsensusFormComponent,
         StockAnalystConsensusDialogComponent,
         StockAnalystConsensusTableButtonsComponent,
@@ -466,6 +472,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockCatalystEventAddComponent,
         StockCatalystEventTableComponent,
+        StockCatalystEventDashboardTableComponent,
         StockCatalystEventFormComponent,
         StockCatalystEventDialogComponent,
         StockCatalystEventTableButtonsComponent,
@@ -477,6 +484,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockToBuyAddComponent,
         StockToBuyTableComponent,
+        StockToBuyDashboardTableComponent,
         StockToBuyFormComponent,
         StockToBuyDialogComponent,
         StockToBuyTableButtonsComponent,

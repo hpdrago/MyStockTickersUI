@@ -72,7 +72,7 @@ export class LinkedAccount extends ModelObject<LinkedAccount>
         return "id";
     }
 
-    public getDefaultCrudTableColumns(): CrudTableColumns
+    public getDefaultColumns(): CrudTableColumns
     {
         let crudTableColumns = new CrudTableColumns( null );
         crudTableColumns.addColumn( {

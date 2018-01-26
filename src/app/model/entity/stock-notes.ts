@@ -10,12 +10,14 @@ import { StockPriceQuote } from './stock-price-quote';
 import { StockQuote } from './stock-quote';
 import { ModelObject } from '../common/model-object';
 import { CommonStockModelObjectColumns } from '../../component/stock-table/common-stock-model-object-columns';
+import { StockDashboardModelObject } from '../common/stock-dashboard-model-object';
 
 /**
  * Defines a single portfolio for a customer
  * Created by mike on 10/23/2016.
  */
-export class StockNotes extends ModelObject<StockNotes> implements StockModelObject
+export class StockNotes extends ModelObject<StockNotes> implements StockModelObject,
+                                                                   StockDashboardModelObject
 {
     public id: string;
     public tickerSymbol: string;
@@ -82,24 +84,10 @@ export class StockNotes extends ModelObject<StockNotes> implements StockModelObj
         return "id";
     }
 
-    public getDefaultCrudTableColumns(): CrudTableColumns
+    public getDefaultColumns(): CrudTableColumns
     {
         let crudTableColumns = new CrudTableColumns([]);
         crudTableColumns.addAll( new CommonStockModelObjectColumns() );
-        crudTableColumns.addColumn( {
-                                        colId: 'notes',
-                                        header: 'Notes',
-                                        dataType: CrudTableColumnType.COMMENTS,
-                                        field: 'notes',
-                                        sortable: true
-                                    } );
-        crudTableColumns.addColumn( {
-                                        colId: 'notesDate',
-                                        header: 'Notes Date',
-                                        dataType: CrudTableColumnType.DATE,
-                                        field: 'notesDate',
-                                        sortable: true
-                                    } );
         crudTableColumns.addColumn( {
                                         colId: 'notesSourceName',
                                         header: 'Notes Source',
@@ -138,8 +126,22 @@ export class StockNotes extends ModelObject<StockNotes> implements StockModelObj
         crudTableColumns.addColumn( {
                                         colId: 'tags',
                                         header: 'Tags',
-                                        dataType: CrudTableColumnType.TAGS,
+                                        dataType: CrudTableColumnType.STRING,
                                         field: 'tags',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'notesDate',
+                                        header: 'Notes Date',
+                                        dataType: CrudTableColumnType.DATE,
+                                        field: 'notesDate',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'notes',
+                                        header: 'Notes',
+                                        dataType: CrudTableColumnType.COMMENTS,
+                                        field: 'notes',
                                         sortable: true
                                     } );
         return crudTableColumns;
@@ -149,10 +151,68 @@ export class StockNotes extends ModelObject<StockNotes> implements StockModelObj
      * Creates a list of the stock columns.
      * @return {CrudTableColumns}
      */
-    public getAdditionalCrudTableColumns(): CrudTableColumns
+    public getAdditionalColumns(): CrudTableColumns
     {
         return new AdditionalStockModelObjectColumns();
     }
+
+    public getDashboardDefaultColumns(): CrudTableColumns
+    {
+        let crudTableColumns = new CrudTableColumns([]);
+        crudTableColumns.addAll( new CommonStockModelObjectColumns() );
+        crudTableColumns.addColumn( {
+                                        colId: 'notesSourceName',
+                                        header: 'Notes Source',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'notesSourceName',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'bullOrBear',
+                                        header: 'Bull or Bear',
+                                        dataType: CrudTableColumnType.BULL_OR_BEAR,
+                                        field: 'bullOrBear',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'notes',
+                                        header: 'Notes',
+                                        dataType: CrudTableColumnType.COMMENTS,
+                                        field: 'notes',
+                                        sortable: true
+                                    } );
+        return crudTableColumns;
+    }
+
+    public getDashboardAdditionalColumns(): CrudTableColumns
+    {
+        let crudTableColumns = new CrudTableColumns([]);
+        crudTableColumns.addAll( new CommonStockModelObjectColumns() );
+        crudTableColumns.addColumn( {
+                                        colId: 'notesRating',
+                                        header: 'Notes Rating',
+                                        dataType: CrudTableColumnType.STAR_RATING,
+                                        field: 'notesRating',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'bullOrBear',
+                                        header: 'Bull or Bear',
+                                        dataType: CrudTableColumnType.BULL_OR_BEAR,
+                                        field: 'bullOrBear',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'notesDate',
+                                        header: 'Notes Date',
+                                        dataType: CrudTableColumnType.DATE,
+                                        field: 'notesDate',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addAll( this.getAdditionalColumns() );
+        return crudTableColumns;
+    }
+
 
     public initializeStockModelObjects()
     {

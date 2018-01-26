@@ -10,6 +10,7 @@ import { StockAnalystConsensus } from './stock-analyst-consensus';
 import { StockCompany } from './stock-company';
 import { GainsLosses } from './gains-losses';
 import { CommonStockModelObjectColumns } from '../../component/stock-table/common-stock-model-object-columns';
+import { StockDashboardModelObject } from '../common/stock-dashboard-model-object';
 
 /**
  * This entity contains the elements for the stock summary
@@ -17,7 +18,7 @@ import { CommonStockModelObjectColumns } from '../../component/stock-table/commo
  * Created 10/17/2017
  */
 export class StockCatalystEvent extends ModelObject<StockCatalystEvent>
-                                implements StockModelObject
+                                implements StockModelObject, StockDashboardModelObject
 {
     public tickerSymbol: string;
     public id: string;
@@ -83,7 +84,7 @@ export class StockCatalystEvent extends ModelObject<StockCatalystEvent>
         this.stockQuote = stockQuote;
     }
 
-    public getDefaultCrudTableColumns(): CrudTableColumns
+    public getDefaultColumns(): CrudTableColumns
     {
         let crudTableColumns = new CrudTableColumns([]);
         crudTableColumns.addAll( new CommonStockModelObjectColumns() );
@@ -122,9 +123,19 @@ export class StockCatalystEvent extends ModelObject<StockCatalystEvent>
      * Creates a list of the stock columns.
      * @return {CrudTableColumns}
      */
-    public getAdditionalCrudTableColumns(): CrudTableColumns
+    public getAdditionalColumns(): CrudTableColumns
     {
         return new AdditionalStockModelObjectColumns();
+    }
+
+    public getDashboardDefaultColumns(): CrudTableColumns
+    {
+        return this.getDefaultColumns();
+    }
+
+    public getDashboardAdditionalColumns(): CrudTableColumns
+    {
+        return this.getAdditionalColumns();
     }
 
     public initializeStockModelObjects()

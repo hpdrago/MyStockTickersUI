@@ -69,7 +69,7 @@ export class GainsLosses extends ModelObject<GainsLosses>
         this.stockCompany = stockCompany;
     }
 
-    public getDefaultCrudTableColumns(): CrudTableColumns
+    public getDefaultColumns(): CrudTableColumns
     {
         let crudTableColumns = new CrudTableColumns( null );
         crudTableColumns.addColumn( {
@@ -117,12 +117,12 @@ export class GainsLosses extends ModelObject<GainsLosses>
         return crudTableColumns;
     }
 
-    public getAdditionalCrudTableColumns(): CrudTableColumns
+    public getAdditionalColumns(): CrudTableColumns
     {
-        let crudTableColumns = super.getAdditionalCrudTableColumns();
-        crudTableColumns.addAll( new LinkedAccount().getDefaultCrudTableColumns() )
-        crudTableColumns.addAll( new StockCompany().getDefaultCrudTableColumns() )
-        crudTableColumns.addAll( new StockQuote().getDefaultCrudTableColumns() )
+        let crudTableColumns = super.getAdditionalColumns();
+        crudTableColumns.addAll( new LinkedAccount().getDefaultColumns() )
+        crudTableColumns.addAll( new StockCompany().getDefaultColumns() )
+        crudTableColumns.addAll( new StockQuote().getDefaultColumns() )
         crudTableColumns.addAll( new StockPriceQuote().getDefaultColumns() )
         return crudTableColumns;
     }

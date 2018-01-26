@@ -35,27 +35,34 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     @ViewChild(DataTable)
     protected dataTable: DataTable;
-
     /**
      * The context in which to store the cookies.
      */
     @Input()
     protected cookieContext: string;
-
     /**
      * Number of rows to display.
      * @type {number}
      */
     @Input()
     protected rowsToDisplay: number = 20;
-
     /**
      * Paginator rows per page selection list.
      * @type {number[]}
      */
     @Input()
     protected rowsPerPageOptions: number[] = [20,30,40];
-
+    /**
+     * When specifies, enables horizontal and/or vertical scrolling.
+     * @type {boolean}
+     */
+    @Input()
+    protected scrollable: boolean = false;
+    /**
+     * Height of the scroll viewport in fixed pixels or percentage.
+     */
+    @Input()
+    protected scrollHeight: string;
     /**
      * The list of model objects displayed.
      * @type {Array}
@@ -126,20 +133,40 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         this.debug( "ngOnInit.begin" );
         super.ngOnInit();
-        this.defaultColumns = this.modelObjectFactory
-                                  .newModelObject()
-                                  .getDefaultCrudTableColumns()
-                                  .toArray();
-        this.additionalColumns = this.modelObjectFactory
-                                     .newModelObject()
-                                     .getAdditionalCrudTableColumns()
-                                     .toArray();
+        this.defaultColumns = this.getDefaultColumns();
+        this.additionalColumns = this.getAdditionalColumns();
         this.subscribeToServiceEvents();
         if ( TableLoadingStrategy.isLoadOnCreate( this.tableLoadingStrategy ))
         {
             this.loadTable();
         }
     }
+
+    /**
+     * Determines the default columns.
+     * @return {CrudTableColumns}
+     */
+    protected getDefaultColumns(): CrudTableColumn[]
+    {
+        return this.modelObjectFactory
+                   .newModelObject()
+                   .getDefaultColumns()
+                   .toArray();
+
+    }
+
+    /**
+     * Determines the additional columns.
+     * @return {CrudTableColumns}
+     */
+    protected getAdditionalColumns(): CrudTableColumn[]
+    {
+        return this.modelObjectFactory
+                   .newModelObject()
+                   .getAdditionalColumns()
+                   .toArray();
+    }
+
     /**
      * Determines if lazy loadingData is enabled.
      * @returns {boolean}

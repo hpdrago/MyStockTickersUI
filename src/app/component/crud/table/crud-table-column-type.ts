@@ -14,7 +14,6 @@ export enum CrudTableColumnType
     NOTES_SOURCE,
     CUSTOM,
     MARKET_CAP,
-    TAGS,
     STAR_RATING,
     BULL_OR_BEAR,
     STOCK_ANALYST_CONSENSUS,

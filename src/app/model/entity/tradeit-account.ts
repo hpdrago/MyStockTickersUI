@@ -67,7 +67,7 @@ export class TradeItAccount extends ModelObject<TradeItAccount>
         }
     }
 
-    public getDefaultCrudTableColumns(): CrudTableColumns
+    public getDefaultColumns(): CrudTableColumns
     {
         let crudTableColumns = new CrudTableColumns([]);
         crudTableColumns.addColumn( {

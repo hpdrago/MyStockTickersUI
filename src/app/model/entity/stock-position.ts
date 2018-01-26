@@ -109,7 +109,7 @@ export class StockPosition extends ModelObject<StockPosition>
         this.rankPercent = rankPercent;
     }
 
-    public getDefaultCrudTableColumns(): CrudTableColumns
+    public getDefaultColumns(): CrudTableColumns
     {
         let crudTableColumns = new CrudTableColumns(null);
         crudTableColumns.addColumn( {

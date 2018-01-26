@@ -65,9 +65,9 @@ export class StockCompany extends ModelObject<StockCompany> implements CacheStat
         return this.tickerSymbol;
     }
 
-    public getDefaultCrudTableColumns(): CrudTableColumns
+    public getDefaultColumns(): CrudTableColumns
     {
-        let crudTableColumns = super.getDefaultCrudTableColumns();
+        let crudTableColumns = super.getDefaultColumns();
         crudTableColumns.addColumn( {
                                         colId: 'companyName',
                                         header: 'Company Name',

@@ -30,7 +30,7 @@ export class StockNotesSource extends ModelObject<StockNotesSource>
         return "id";
     }
 
-    public getDefaultCrudTableColumns(): CrudTableColumns
+    public getDefaultColumns(): CrudTableColumns
     {
         let defaultColumns = new CrudTableColumns([]);
         defaultColumns.addColumn( {

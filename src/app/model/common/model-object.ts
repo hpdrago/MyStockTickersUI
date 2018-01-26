@@ -81,7 +81,7 @@ export abstract class ModelObject<T>
      * model object by default, are empty.
      * @return {CrudTableColumns}
      */
-    public getDefaultCrudTableColumns(): CrudTableColumns
+    public getDefaultColumns(): CrudTableColumns
     {
         let crudTableColumns: CrudTableColumns = new CrudTableColumns( [] );
         crudTableColumns.addColumn( {
@@ -105,7 +105,7 @@ export abstract class ModelObject<T>
      * Get the crudTableColumns from other related model objects contained within this model object.
      * @return {CrudTableColumns}
      */
-    public getAdditionalCrudTableColumns(): CrudTableColumns
+    public getAdditionalColumns(): CrudTableColumns
     {
         let crudTableColumns: CrudTableColumns = new CrudTableColumns( [] );
         return crudTableColumns;

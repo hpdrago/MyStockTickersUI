@@ -117,7 +117,7 @@ export class PortfolioStock extends ModelObject<PortfolioStock>
         this.rankPercent = rankPercent;
     }
 
-    public getDefaultCrudTableColumns(): CrudTableColumns
+    public getDefaultColumns(): CrudTableColumns
     {
         let crudTableColumns = new CrudTableColumns( null );
         crudTableColumns.addAll( new CommonStockModelObjectColumns() );

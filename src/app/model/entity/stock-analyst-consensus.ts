@@ -10,6 +10,7 @@ import { StockPriceQuote } from './stock-price-quote';
 import { StockQuote } from './stock-quote';
 import { ModelObject } from '../common/model-object';
 import { CommonStockModelObjectColumns } from '../../component/stock-table/common-stock-model-object-columns';
+import { StockDashboardModelObject } from '../common/stock-dashboard-model-object';
 
 /**
  * This entity contains the elements for the stock summary
@@ -19,7 +20,8 @@ import { CommonStockModelObjectColumns } from '../../component/stock-table/commo
 export class StockAnalystConsensus extends ModelObject<StockAnalystConsensus>
                                    implements StockNotesContainer,
                                               StockNotesSourceContainer,
-                                              CacheStateContainer<string>
+                                              CacheStateContainer<string>,
+                                              StockDashboardModelObject
 {
     public id: string;
     public tickerSymbol: string;
@@ -93,8 +95,43 @@ export class StockAnalystConsensus extends ModelObject<StockAnalystConsensus>
     {
         this.stockCompany = stockCompany;
     }
+    public getExpirationTime(): Date
+    {
+        // never expires
+        return new Date(8640000000000000);
+    }
 
-    public getDefaultCrudTableColumns(): CrudTableColumns
+    public setKey( key: any )
+    {
+        this.tickerSymbol = key;
+    }
+
+    public getKey(): string
+    {
+        return this.tickerSymbol;
+    }
+
+    public setCacheError( cacheError: string )
+    {
+        this.cacheError = cacheError;
+    }
+
+    public getCacheError(): string
+    {
+        return this.cacheError;
+    }
+
+    public setCacheState( cacheState: CachedValueState )
+    {
+        this.cacheState = cacheState;
+    }
+
+    public getCacheState(): CachedValueState
+    {
+        return this.cacheState;
+    }
+
+    public getDefaultColumns(): CrudTableColumns
     {
         let crudTableColumns: CrudTableColumns = new CrudTableColumns([]);
         crudTableColumns.addAll( new CommonStockModelObjectColumns() );
@@ -146,56 +183,88 @@ export class StockAnalystConsensus extends ModelObject<StockAnalystConsensus>
                                         field: 'notesSource',
                                         sortable: true
                                     } );
+        crudTableColumns.addColumn( {
+                                        colId: 'comments',
+                                        header: 'Comments',
+                                        dataType: CrudTableColumnType.COMMENTS,
+                                        field: 'comments',
+                                        sortable: false
+                                    } );
         return crudTableColumns;
-    }
-
-    public getExpirationTime(): Date
-    {
-        // never expires
-        return new Date(8640000000000000);
-    }
-
-    public setKey( key: any )
-    {
-        this.tickerSymbol = key;
-    }
-
-    public getKey(): string
-    {
-        return this.tickerSymbol;
-    }
-
-    public setCacheError( cacheError: string )
-    {
-        this.cacheError = cacheError;
-    }
-
-    public getCacheError(): string
-    {
-        return this.cacheError;
-    }
-
-    public setCacheState( cacheState: CachedValueState )
-    {
-        this.cacheState = cacheState;
-    }
-
-    public getCacheState(): CachedValueState
-    {
-        return this.cacheState;
     }
 
     /**
      * Creates a list of the stock columns.
      * @return {CrudTableColumns}
      */
-    public getAdditionalCrudTableColumns(): CrudTableColumns
+    public getAdditionalColumns(): CrudTableColumns
     {
-        let additionalColumns = super.getAdditionalCrudTableColumns();
+        let additionalColumns = super.getAdditionalColumns();
         additionalColumns.addAll( new StockPriceQuote().getDefaultColumns() );
-        additionalColumns.addAll( new StockQuote().getDefaultCrudTableColumns() );
-        additionalColumns.addAll( new StockQuote().getDefaultCrudTableColumns() );
-        additionalColumns.addAll( new StockQuote().getDefaultCrudTableColumns() );
+        additionalColumns.addAll( new StockQuote().getDefaultColumns() );
+        additionalColumns.addAll( new StockQuote().getDefaultColumns() );
+        additionalColumns.addAll( new StockQuote().getDefaultColumns() );
         return additionalColumns;
+    }
+
+    public getDashboardDefaultColumns(): CrudTableColumns
+    {
+        let crudTableColumns: CrudTableColumns = new CrudTableColumns([]);
+        crudTableColumns.addAll( new CommonStockModelObjectColumns() );
+        crudTableColumns.addColumn( {
+                                        colId: 'analystPriceTargets',
+                                        header: 'Price Targets (L,Avg,H)',
+                                        dataType: CrudTableColumnType.STOCK_ANALYST_PRICE_TARGETS,
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'notesSource',
+                                        header: 'Source',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'notesSource',
+                                        sortable: true
+                                    } );
+        return crudTableColumns;
+    }
+
+    public getDashboardAdditionalColumns(): CrudTableColumns
+    {
+        let crudTableColumns: CrudTableColumns = new CrudTableColumns([]);
+        crudTableColumns.addColumn( {
+                                        colId: 'analystSentimentDate',
+                                        header: 'Sentiment Date',
+                                        dataType: CrudTableColumnType.DATE,
+                                        field: 'analystSentimentDate',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'lowAnalystPriceTarget',
+                                        header: 'Low Price Target',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        field: 'lowAnalystPriceTarget',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'avgAnalystPriceTarget',
+                                        header: 'Avg Price Target',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        field: 'avgAnalystPriceTarget',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'highAnalystPriceTarget',
+                                        header: 'High Price Target',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        field: 'highAnalystPriceTarget',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'analystPriceDate',
+                                        header: 'Price Date',
+                                        dataType: CrudTableColumnType.DATE,
+                                        field: 'analystPriceDate',
+                                        sortable: true
+                                    } );
+        return crudTableColumns;
     }
 }

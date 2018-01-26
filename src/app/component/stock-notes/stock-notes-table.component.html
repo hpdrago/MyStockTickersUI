@@ -52,6 +52,7 @@ TABLE DEFINITION
                                  [(selection)]="selectedModelObject"
                                  (rowSelected)="onRowSelect($event)"
                                  (onLazyLoad)="lazyLoadTable($event)"
+                                 [scrollable]="scrollable"
                                  [lazy]="true"
                                  [loadingData]="isLoading()"
                                  (onRowDblclick)="onRowDoubleClick($event)">
