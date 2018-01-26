@@ -67,15 +67,23 @@
                               field="openPrice"
                               header="Open Price"
                               [style]="{'width':'80px','text-align':'right'}">
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <currency [currencyValue]="stockPosition[col.field]">
+                            </currency>
+                        </ng-template>
                     </p-column>
 
                     <!----------------------------------------------------------------------------------------------------------
-                    OPEN PRICE
+                    CLOSE PRICE
                     ------------------------------------------------------------------------------------------------------------>
                     <p-column id="closePrice"
                               field="closePrice"
                               header="Close Price"
                               [style]="{'width':'80px','text-align':'right'}">
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <currency [currencyValue]="stockPosition[col.field]">
+                            </currency>
+                        </ng-template>
                     </p-column>
 
                     <!----------------------------------------------------------------------------------------------------------

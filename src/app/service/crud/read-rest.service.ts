@@ -75,7 +75,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         }
         let customerURL = this.getCustomerURL() == null ? '/' : this.getCustomerURL();
         this.debug( methodName + ' contextURL: ' + contextURL + ' customerURL: ' + customerURL );
-        let url = this.getCompleteURL( contextURL, customerURL, modelObject );
+        let url = this.getCompleteURL( contextURL, customerURL );
         this.debug( methodName + ' url: ' + url );
         return url;
     }
@@ -87,11 +87,11 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * @param {T} modelObject Used to create specific target URL based on model object properties.
      * @return {string}
      */
-    protected getCompleteURL( contextURL: string, customerURL: string, modelObject?: T )
+    protected getCompleteURL( contextURL: string, customerURL: string )
     {
         let methodName = 'getCompleteURL';
         this.debug( `${methodName} contextURL: ${contextURL} customerURL: ${customerURL}` );
-        let url = this.appConfig.getBaseURL() + this.getContextURLFrom( contextURL, modelObject ) + customerURL;
+        let url = this.appConfig.getBaseURL() + contextURL + customerURL;
         return url;
     }
 
@@ -113,13 +113,14 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     {
         let methodName = 'getContextURL';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
-        return this.getContextURLFrom( this.getContextBaseURL(), modelObject );
+        let contextURL = this.getContextBaseURL()
+        contextURL = this.addContextURLKeyValues( modelObject, contextURL );
+        return contextURL;
     }
 
     /**
-     * This method customizes the context URL to include the primary key of the model object.  If the model object is
-     * not set (null or undefined), then just the context based url (@code baseContextURL) is return. If the model
-     * object is set, then the non-null values are extracted from the model object and added to the query.
+     * Adds {@code contextURL} to the base context URL and adds the URL key values to the context URL.
+     * This method is provides to additional 'context' to the context url in addition to the key values.
      * @param {string} contextURL
      * @param {T} modelObject
      * @returns {string}
@@ -128,9 +129,22 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     {
         let methodName = 'getContextURLFrom';
         this.debug( methodName + ' ' + contextURL + ' ' + JSON.stringify( modelObject ) );
+        contextURL = this.getContextBaseURL() + contextURL;
+        contextURL = this.addContextURLKeyValues( modelObject, contextURL );
+        this.debug( methodName + ' contextURL: ' + contextURL );
+        return contextURL;
+    }
+
+    /**
+     * Adds the key values to the contextURL
+     * @param {T} modelObject
+     * @param {string} contextURL
+     * @return {string} The contentURL passed in plus the key values based on the non-null values in {@code modelObject}
+     */
+    protected addContextURLKeyValues( modelObject: T, contextURL: string )
+    {
         let keyColumnValues: KeyValuePairs<string, any> = this.getContextURLKeyValues( modelObject );
         keyColumnValues.forEach( ( key, value ) => contextURL += '/' + key + '/' + value );
-        this.debug( methodName + ' contextURL: ' + contextURL );
         return contextURL;
     }
 

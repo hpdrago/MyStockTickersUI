@@ -13,8 +13,16 @@ import { StockPositionFactory } from '../../model/factory/stock-position-factory
 
 @Component
 ({
-     selector: 'stock-position-table-refresh-button',
-     templateUrl: '../crud/table/crud-table-button.component.html'
+    selector: 'stock-position-table-refresh-button',
+    styles: [` 
+                div.synchronize-table-button
+                {
+                    display: inline-block;
+                    width: 140px;
+                    height: 35px;
+                }
+    `],
+    templateUrl: '../crud/table/crud-table-button.component.html'
  })
 export class StockPositionTableRefreshButtonComponent extends CrudTableRefreshButtonComponent<StockPosition>
 {
@@ -46,6 +54,5 @@ export class StockPositionTableRefreshButtonComponent extends CrudTableRefreshBu
         super.ngOnInit();
         this.buttonLabel = 'Synchronize';
         this.buttonDivClass = 'synchronize-table-button';
-        //this.buttonDivClass = "crud-table-button";
     }
 }

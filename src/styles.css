@@ -23,14 +23,18 @@
  ****************************************************/
 .positiveGain
 {
-    color: white;
-    background: green;
+    /*color: white;
+    background: green;*/
+    color: green;
     display: block;
 }
 .negativeGain
 {
+    /*
     color: white;
     background: red;
+    */
+    color: red;
     display: block;
 }
 

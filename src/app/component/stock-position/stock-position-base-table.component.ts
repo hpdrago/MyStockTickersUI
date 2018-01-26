@@ -58,6 +58,7 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
         let methodName = 'setTradeItAccount';
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
+        this.linkedAccount = null;
         this.clearTable();
     }
 
@@ -69,13 +70,13 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
     {
         let methodName = 'setLinkedAccount';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ));
-        this.linkedAccount = linkedAccount;
         /*
          * This method gets called twice, once for the table row click which initiates a keep session alive with TradeIt
          * which then updates the row again
          */
-        if ( this.linkedAccount.id != linkedAccount.id || this.rows.length == 0 )
+        if ( this.linkedAccount == null || this.linkedAccount.id != linkedAccount.id )
         {
+            this.linkedAccount = linkedAccount;
             this.log( methodName + " new linked account detected" );
             /*
              * Create the QBE object to load the positions.
