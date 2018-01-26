@@ -221,7 +221,7 @@ import { StockNotesSourceTableAddButtonComponent } from './component/stock-notes
 import { StockNotesSourceTableButtonsComponent } from './component/stock-notes-source/stock-notes-source-table-buttons.component';
 import { StockNotesSourceDialogComponent } from './component/stock-notes-source/stock-notes-source-dialog.component';
 import { StockNotesSourceFormComponent } from './component/stock-notes-source/stock-notes-source-form.component';
-import { StockNotesSourceComponent } from './component/common/stock-notes-source.component';
+import { StockNotesSourceSelectionComponent } from './component/common/stock-notes-source-selection.component';
 import { StockNotesSourceTableComponent } from './component/stock-notes-source/stock-notes-source-table.component';
 import { StockAnalystConsensusCache } from './service/stock-analyst-consensus-cache';
 import { StockPositionMarketValue } from './component/stock-position/stock-position-market-value';
@@ -237,6 +237,7 @@ import { StockQuoteService } from './service/crud/stock-quote.service';
 import { StockQuoteFactory } from './model/factory/stock-quote.factory';
 import { StockQuoteCacheService } from './service/stock-quote-cache.service';
 import { StockQuoteComponent } from './component/common/stock-quote.component';
+import { SelectedStockCompaniesComponent } from './component/common/selected-stock-companies.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -432,6 +433,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockQuoteDayPercentChangeComponent,
 
         StockCompanyNameComponent,
+        SelectedStockCompaniesComponent,
 
         StockAutoCompleteComponent,
         StockSearchComponent,
@@ -439,7 +441,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockCommentsComponent,
 
         CachedValueComponent,
-        StockNotesSourceComponent,
+        StockNotesSourceSelectionComponent,
         DashboardComponent,
         FormErrorsComponent,
         UppercaseDirective,

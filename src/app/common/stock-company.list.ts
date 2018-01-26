@@ -1,6 +1,6 @@
-import { StockCompanyService } from '../../service/crud/stock-company.service';
-import { StockPriceQuoteService } from '../../service/crud/stock-price-quote.service';
-import { StockCompany } from '../../model/entity/stock-company';
+import { StockCompanyService } from '../service/crud/stock-company.service';
+import { StockPriceQuoteService } from '../service/crud/stock-price-quote.service';
+import { StockCompany } from '../model/entity/stock-company';
 
 /**
  * This class maintains a list of {@code StockCompany} instances.
@@ -30,7 +30,10 @@ export class StockCompanyList
                 .getStockCompany( tickerSymbol )
                 .subscribe( stockCompany =>
                             {
-                                this.addCompanyToList( stockCompany );
+                                if ( !this.containsCompany( stockCompany.tickerSymbol ) )
+                                {
+                                    this.addCompanyToList( stockCompany );
+                                }
                             });
         }
     }
@@ -67,5 +70,13 @@ export class StockCompanyList
     {
         this.stockCompanies
             .push( stockCompany );
+    }
+
+    /**
+     * Removes all of the companies from the list.
+     */
+    public clear()
+    {
+        this.stockCompanies = [];
     }
 }

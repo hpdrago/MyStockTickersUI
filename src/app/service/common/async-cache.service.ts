@@ -166,8 +166,16 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
     {
         let methodName = 'sendCachedDataChange';
         this.debug( methodName + ' ' + key + ' ' + JSON.stringify( cachedData ) );
-        this.getSubject( key )
-            .next( cachedData );
+        let subject = this.cacheSubjectMap
+                          .get( key );
+        if ( isNullOrUndefined( subject ))
+        {
+            this.debug( methodName + ' no subject found' );
+        }
+        else
+        {
+            subject.next( cachedData );
+        }
     }
 
     /**

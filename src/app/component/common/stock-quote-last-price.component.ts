@@ -23,16 +23,16 @@ import { StockQuoteContainer } from '../../model/common/stock-quote-container';
             Loading...
         </ng-template>
         <ng-template #notLoading>
-            <div *ngIf="stockPriceModelObject != null">
+            <div *ngIf="stockQuoteContainer != null">
                 <div *ngIf="isFetchError()">
                     <i pTooltip="{{stockPriceQuote.cacheError}}">ERROR</i>
                 </div>
                 <div *ngIf="!isFetchError()">
                     <div class="positiveGain" *ngIf="priceChange >= 0.0">
-                        <currency [currencyValue]="stockPriceModelObject.getStockPriceQuote().lastPrice"></currency>
+                        <currency [currencyValue]="stockQuoteContainer.getStockPriceQuote().lastPrice"></currency>
                     </div>
                     <div class="negativeGain" *ngIf="priceChange < 0.0">
-                        <currency [currencyValue]="stockPriceModelObject.getStockPriceQuote().lastPrice"></currency>
+                        <currency [currencyValue]="stockQuoteContainer.getStockPriceQuote().lastPrice"></currency>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
      * Reference to the model object for which the price is being displayed.
      */
     @Input()
-    protected stockPriceModelObject: StockPriceQuoteContainer & StockQuoteContainer;
+    protected stockQuoteContainer: StockPriceQuoteContainer & StockQuoteContainer;
 
     /**
      * The amount of price change from the open to the current/last price.
@@ -80,12 +80,25 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
      */
     public ngOnInit()
     {
-        this.debug( "ngOnInit " + JSON.stringify( this.stockPriceModelObject ));
-        super.addSubscription( "getStockPriceChanges",
-            this.subscription =
-                this.stockPriceCache
-                    .subscribeToChanges( this.stockPriceModelObject.getTickerSymbol(),
-                                         stockPriceQuote => this.onStockPriceChange( stockPriceQuote )));
+        this.debug( "ngOnInit " + JSON.stringify( this.stockQuoteContainer ));
+        if ( !isNullOrUndefined( this.stockQuoteContainer ))
+        {
+            super.addSubscription( "getStockPriceChanges",
+                                   this.subscription =
+                                       this.stockPriceCache
+                                           .subscribeToChanges( this.stockQuoteContainer.getTickerSymbol(),
+                                                                stockPriceQuote => this.onStockPriceChange( stockPriceQuote ) ) );
+        }
+    }
+
+    /**
+     * Use this method to set the stock price quote container if it wasn't available during object construction as
+     * an input parameter.
+     * @param {StockPriceQuoteContainer & StockQuoteContainer } stockQuoteContainer
+     */
+    public setStockPriceQuoteContainer( stockQuoteContainer: StockPriceQuoteContainer & StockQuoteContainer )
+    {
+        this.stockQuoteContainer = stockQuoteContainer;
     }
 
     /**
@@ -113,10 +126,10 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
                 else
                 {
                     this.log( methodName + ' ' + JSON.stringify( stockPriceQuote ));
-                    this.stockPriceModelObject
+                    this.stockQuoteContainer
                         .setStockPriceQuote( stockPriceQuote );
-                    this.priceChange = this.stockPriceModelObject.getStockPriceQuote().lastPrice -
-                        this.stockPriceModelObject.getStockQuote().openPrice;
+                    this.priceChange = this.stockQuoteContainer.getStockPriceQuote().lastPrice -
+                        this.stockQuoteContainer.getStockQuote().openPrice;
                 }
             }
         });

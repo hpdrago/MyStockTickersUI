@@ -277,24 +277,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     }
 
     /**
-     * Converts an event object into a model object.  The event object is just a JSON structure not a full class object
-     * instance.
-     * @param event
-     * @return {T}
-     */
-    protected newModelObjectFromEvent( event ): T
-    {
-        if ( event.data )
-        {
-            return this.modelObjectFactory.newModelObjectFromJSON( event.data );
-        }
-        else
-        {
-            return this.modelObjectFactory.newModelObjectFromJSON( event );
-        }
-    }
-
-    /**
      * This method is called when the user clicks on the add button.
      * A dialog will be displayed to allow the user to add a new model object.
      */
@@ -363,9 +345,10 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onModelObjectSaved( modelObject: T )
     {
-        var methodName = "onModelObjectUpdated";
+        var methodName = "onModelObjectSaved";
         this.debug( methodName + ".begin" );
-        this.selectedModelObject = this.modelObject;
+        this.selectedModelObject = modelObject;
+        this.modelObject = modelObject;
         this.updateModelObjectInTable( this.modelObject, true );
         this.crudController
             .sendTableContentChangeEvent();
@@ -381,33 +364,21 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected updateModelObjectInTable( modelObject: T, addIfNotFound: boolean )
     {
         let methodName = "updateModelObjectInTable";
-        this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ) + " " + addIfNotFound );
-        var index = this.indexOf( modelObject );
+        this.debug( methodName + ".begin " + JSON.stringify( modelObject ) + " " + addIfNotFound );
+        this.modelObject = modelObject;
+        var index = this.indexOf( this.modelObject );
         if ( index == -1 )
         {
             if ( addIfNotFound )
             {
-                this.addModelObjectToTable( modelObject );
+                this.addModelObjectToTable( this.modelObject );
             }
         }
         else
         {
-            this.updateModelObjectTableRow( index, modelObject );
+            this.updateModelObjectTableRow( index, this.modelObject );
         }
         this.debug( methodName + ".end" );
-    }
-
-    /**
-     * This method is called when the user has created a new model object that needs to be added to the table.
-     */
-    protected onUserCreatedModelObject(): void
-    {
-        this.debug( 'onUserCreatedModelObject ' + JSON.stringify( this.modelObject ) );
-        //this.setModelObject( modelObject );
-        if ( !isNullOrUndefined( this.modelObject ) )
-        {
-            this.addModelObjectToTable( this.modelObject );
-        }
     }
 
     /**
@@ -454,11 +425,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected addModelObjectToTable( modelObject: T ): void
     {
-        this.debug( "addModelObjectToTable " + JSON.stringify( this.modelObject ) );
+        this.debug( "addModelObjectToTable " + JSON.stringify( modelObject ) );
         /*
          * A new array must be created to trigger a change event
          */
         this.rows = [modelObject, ...this.rows];
+        this.modelObject = modelObject;
     }
 
     /**
@@ -474,7 +446,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         if ( rowIndex == -1 )
         {
             errorBack(
-                new RangeError( "row was not found for model object key: " + JSON.stringify( this.modelObject ) ) );
+                new RangeError( "row was not found for model object key: " + JSON.stringify( modelObject ) ) );
         }
         else
         {
@@ -519,7 +491,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected removeModelObjectFromTable( modelObject: T ): boolean
     {
-        this.debug( "removeModelObjectFromTable " + JSON.stringify( this.modelObject ) );
+        this.debug( "removeModelObjectFromTable " + JSON.stringify( modelObject ) );
         var index = this.indexOf( modelObject );
         if ( index == -1 )
         {
@@ -585,6 +557,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         let methodName = "onModelObjectSelected";
         this.debug( methodName + ".begin " + JSON.stringify( modelObject ) );
+        this.modelObject = modelObject;
         /*
          * must forward change to controller so that it's propagated.
          */

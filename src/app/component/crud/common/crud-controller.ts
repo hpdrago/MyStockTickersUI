@@ -132,7 +132,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToRefreshButtonClickedEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToRefreshButtonClickedEvent' );
-        return this.tableRefreshButtonClickedSubject.asObservable().subscribe( fn );
+        return this.tableRefreshButtonClickedSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -141,7 +143,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendRefreshButtonClickedEvent()
     {
         this.debug( 'sendRefreshButtonClickedEvent' + this.getToObserversMessage( this.tableRefreshButtonClickedSubject ));
-        this.tableRefreshButtonClickedSubject.next();
+        this.tableRefreshButtonClickedSubject
+            .next();
     }
 
     /**
@@ -152,7 +155,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToTableEditButtonClickedEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToTableEditButtonClickedEvent' );
-        return this.tableEditButtonClickedSubject.asObservable().subscribe( fn );
+        return this.tableEditButtonClickedSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -162,8 +167,10 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     {
         let methodName = 'sendTableEditButtonClickedEvent';
         this.debug( methodName );
-        this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.UPDATE );
-        this.tableEditButtonClickedSubject.next();
+        this.crudStateStore
+            .sendCrudOperationChangedEvent( CrudOperation.UPDATE );
+        this.tableEditButtonClickedSubject
+            .next();
     }
 
     /**
@@ -173,7 +180,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToTableSelectionChangeEvent( fn: ( modelObject: T ) => any ): Subscription
     {
         let methodName = 'subscribeToTableSelectionChangeEvent';
-        let subscription = this.tableSelectionChangedSubject.asObservable().subscribe( fn );
+        let subscription = this.tableSelectionChangedSubject
+                               .asObservable()
+                               .subscribe( fn );
         this.debug( methodName + this.getTotalSubscribersMessage( this.tableSelectionChangedSubject ));
         return subscription;
     }
@@ -187,8 +196,10 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     {
         this.debug( 'sendTableSelectionChangeEvent ' + JSON.stringify( modelObject ) +
             this.getToObserversMessage( this.tableSelectionChangedSubject ) );
-        this.crudStateStore.sendModelObjectChangedEvent( this, this.modelObjectFactory.newModelObjectFromJSON( modelObject ));
-        this.tableSelectionChangedSubject.next( modelObject );
+        this.crudStateStore
+            .sendModelObjectChangedEvent( this, this.modelObjectFactory.newModelObjectFromJSON( modelObject ));
+        this.tableSelectionChangedSubject
+            .next( modelObject );
     }
 
     /**
@@ -198,7 +209,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToTableContentChangeEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToTableContentChangeEvent' );
-        return this.tableContentChangedSubject.asObservable().subscribe( fn );
+        return this.tableContentChangedSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -207,7 +220,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendTableContentChangeEvent()
     {
         this.debug( 'sendTableContentChangeEvent' + this.getToObserversMessage( this.tableContentChangedSubject ));
-        this.tableContentChangedSubject.next();
+        this.tableContentChangedSubject
+            .next();
     }
 
     /**
@@ -218,7 +232,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToPanelCancelButtonClickedEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToPanelCancelButtonClickedEvent' );
-        return this.panelCancelButtonClickedSubject.asObservable().subscribe( fn );
+        return this.panelCancelButtonClickedSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -227,7 +243,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendPanelCancelButtonClickedEvent()
     {
         this.debug( 'sendPanelcancelButtonClickedEvent' + this.getToObserversMessage( this.panelCancelButtonClickedSubject ));
-        this.panelCancelButtonClickedSubject.next();
+        this.panelCancelButtonClickedSubject
+            .next();
     }
 
     /**
@@ -236,7 +253,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeFormReadyToDisplay( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToDisplayFormRequestEvent' );
-        return this.formReadyToDisplay.asObservable().subscribe( fn );
+        return this.formReadyToDisplay
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -245,7 +264,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendFormReadyToDisplay()
     {
         this.debug( 'FormReadyToDisplay' + this.getToObserversMessage( this.formReadyToDisplay ));
-        this.formReadyToDisplay.next( null );
+        this.formReadyToDisplay
+            .next( null );
     }
 
     /**
@@ -279,7 +299,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToTableNavigateToModelObjectEvent(): Subscription
     {
         this.debug( 'subscribeToTableNavigateToModelObjectEvent' );
-        var observable: Observable<T> = this.tableNavigateToModelObjectSubject.asObservable();
+        var observable: Observable<T> = this.tableNavigateToModelObjectSubject
+                                            .asObservable();
         return observable.subscribe();
     }
 
@@ -291,8 +312,10 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendTableNavigateToModelObjectEvent( modelObject: T )
     {
         this.debug( 'sendTableNavigateToModelObjectEvent' + this.getToObserversMessage( this.tableNavigateToModelObjectSubject ));
-        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
-        this.tableNavigateToModelObjectSubject.next();
+        this.crudStateStore
+            .sendModelObjectChangedEvent( this, modelObject );
+        this.tableNavigateToModelObjectSubject
+            .next();
     }
 
     /**
@@ -328,7 +351,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToTableAddButtonClickedEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToAddButtonClickedEvent' );
-        return this.tableAddButtonClickedSubject.asObservable().subscribe( fn );
+        return this.tableAddButtonClickedSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -339,10 +364,14 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     {
         let methodName = 'sendTableAddButtonClickedEvent';
         this.debug( methodName + this.getToObserversMessage( this.tableAddButtonClickedSubject ));
-        let modelObject: T = this.modelObjectFactory.newModelObject();
-        this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.CREATE );
-        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
-        this.tableAddButtonClickedSubject.next();
+        let modelObject: T = this.modelObjectFactory
+                                 .newModelObject();
+        this.crudStateStore
+            .sendCrudOperationChangedEvent( CrudOperation.CREATE );
+        this.crudStateStore
+            .sendModelObjectChangedEvent( this, modelObject );
+        this.tableAddButtonClickedSubject
+            .next();
     }
 
     /**
@@ -377,7 +406,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToTableDeleteButtonClickedEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribedToTableDeleteButtonClickedEvent' );
-        return this.tableDeleteButtonClickedSubject.asObservable().subscribe( fn );
+        return this.tableDeleteButtonClickedSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -387,9 +418,12 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendTableDeleteButtonClickedEvent( modelObject: T )
     {
         this.debug( 'sendTableDeleteButtonClickedEvent' + this.getToObserversMessage( this.tableDeleteButtonClickedSubject ));
-        this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.DELETE );
-        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
-        this.tableDeleteButtonClickedSubject.next();
+        this.crudStateStore
+            .sendCrudOperationChangedEvent( CrudOperation.DELETE );
+        this.crudStateStore
+            .sendModelObjectChangedEvent( this, modelObject );
+        this.tableDeleteButtonClickedSubject
+            .next();
     }
 
     /**
@@ -475,7 +509,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToDialogCloseButtonClickedEvent( fn: ( event: DialogCloseEventType ) => any ): Subscription
     {
         var subscription: Subscription = this.dialogCloseButtonClickedSubject.asObservable().subscribe( fn );
-        this.debug( 'subscribeToDialogCloseButtonClickedEvent subscribers: ' + this.dialogCloseButtonClickedSubject.observers.length );
+        this.debug( 'subscribeToDialogCloseButtonClickedEvent subscribers: ' + this.dialogCloseButtonClickedSubject
+                                                                                   .observers
+                                                                                   .length );
         return subscription;
     }
 
@@ -486,7 +522,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     {
         this.debug( 'sendDialogCloseButtonClickedEvent ' + DialogCloseEventType.getName( event ) +
             this.getToObserversMessage( this.dialogCloseButtonClickedSubject ));
-        this.dialogCloseButtonClickedSubject.next( event );
+        this.dialogCloseButtonClickedSubject
+            .next( event );
     }
 
     /**
@@ -497,7 +534,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToDialogDisplayEvent( fn: () => any ): Subscription
     {
         var subscription: Subscription = this.dialogDisplaySubject.asObservable().subscribe( fn );
-        this.debug( 'subscribeToDialogDisplayEvent subscribers: ' + this.dialogDisplaySubject.observers.length );
+        this.debug( 'subscribeToDialogDisplayEvent subscribers: ' + this.dialogDisplaySubject
+                                                                        .observers
+                                                                        .length );
         return subscription;
     }
 
@@ -507,7 +546,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendDialogDisplayEvent()
     {
         this.debug( 'sendDialogDisplayEvent' + this.getToObserversMessage( this.dialogDisplaySubject ));
-        this.dialogDisplaySubject.next();
+        this.dialogDisplaySubject
+            .next();
     }
 
     /**
@@ -516,7 +556,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeFormErrorsEvent( fn: ( errors: string[] ) => any ): Subscription
     {
         this.debug( 'subscribeToFormErrorsEvent' );
-        return this.formErrorsSubject.asObservable().subscribe( fn );
+        return this.formErrorsSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -526,7 +568,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToFormResetEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToFormResetEvent' );
-        return this.formResetSubject.asObservable().subscribe( fn );
+        return this.formResetSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -536,7 +580,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToFormDirtyEvent( fn: ( boolean ) => any ): Subscription
     {
         this.debug( 'subscribeToFormDirtyEvent' );
-        return this.formDirtySubject.asObservable().subscribe( fn );
+        return this.formDirtySubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -546,7 +592,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToFormTouchedEvent( fn: ( boolean ) => any ): Subscription
     {
         this.debug( 'subscribeToFormTouchedEvent' );
-        return this.formTouchedSubject.asObservable().subscribe( fn );
+        return this.formTouchedSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -556,7 +604,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToFormValidEvent( fn: ( boolean ) => any ): Subscription
     {
         this.debug( 'subscribeToFormValidEvent' );
-        return this.formValidSubject.asObservable().subscribe( fn );
+        return this.formValidSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -566,7 +616,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToFormLogStateRequest( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToFormLogState' );
-        return this.formLogStateSubject.asObservable().subscribe( fn );
+        return this.formLogStateSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -576,7 +628,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToFormPrepareToSaveEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToFormPrepareToSaveEvent' + this.getTotalSubscribersMessage( this.formPrepareToDisplaySubject ) );
-        return this.formPrepareToSaveSubject.asObservable().subscribe( fn );
+        return this.formPrepareToSaveSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -601,7 +655,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToFormModelObjectVersionUpdateEvent( fn: ( modelObject: T ) => any ): Subscription
     {
         this.debug( 'subscribeToFormModelObjectVersionUpdateEvent' );
-        return this.formModelObjectVersionUpdateSubject.asObservable().subscribe( fn );
+        return this.formModelObjectVersionUpdateSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /*******************************************************************************************************************
@@ -614,7 +670,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendFormErrors( errors: string[] )
     {
         this.debug( 'sendFormErrors' + this.getToObserversMessage( this.formResetSubject ));
-        this.formErrorsSubject.next( errors );
+        this.formErrorsSubject
+            .next( errors );
     }
 
     /**
@@ -623,7 +680,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendFormResetEvent()
     {
         this.debug( 'sendFormResetEvent' + this.getToObserversMessage( this.formResetSubject ) );
-        this.formResetSubject.next();
+        this.formResetSubject
+            .next();
     }
 
     /**
@@ -635,7 +693,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendFormDirtyEvent( dirty: boolean )
     {
         //this.debug( 'sendFormDirtyEvent ' + dirty );
-        this.formDirtySubject.next( dirty );
+        this.formDirtySubject
+            .next( dirty );
     }
 
     /**
@@ -646,7 +705,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendFormTouchedEvent( touched: boolean )
     {
         //this.debug( 'sendFormTouchedEvent ' + touched );
-        this.formTouchedSubject.next( touched );
+        this.formTouchedSubject
+            .next( touched );
     }
 
     /**
@@ -656,7 +716,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendFormValidEvent( valid: boolean )
     {
         //this.debug( 'sendFormValidEvent ' + valid );
-        this.formValidSubject.next( valid );
+        this.formValidSubject
+            .next( valid );
     }
 
     /**
@@ -665,7 +726,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendFormLogStateRequest()
     {
         //this.debug( 'sendFormLogStateRequest' + valid );
-        this.formLogStateSubject.next();
+        this.formLogStateSubject
+            .next();
     }
 
     /**
@@ -675,7 +737,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendFormPrepareToSaveEvent()
     {
         this.debug( 'sendFormPrepareToSaveEvent' + this.getToObserversMessage( this.formPrepareToDisplaySubject ));
-        this.formPrepareToSaveSubject.next();
+        this.formPrepareToSaveSubject
+            .next();
     }
 
     /**
@@ -699,7 +762,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     {
         this.debug( 'sendFormModelObjectVersionUpdateEvent: ' + JSON.stringify( modelObject ) +
             this.getToObserversMessage( this.formModelObjectVersionUpdateSubject ));
-        this.formModelObjectVersionUpdateSubject.next( modelObject );
+        this.formModelObjectVersionUpdateSubject
+            .next( modelObject );
     }
 
     /**
@@ -727,7 +791,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToModelObjectDeletedEvent( fn: ( T ) => any ): Subscription
     {
         this.debug( 'subscribeToModelObjectDeleted' );
-        return this.modelObjectDeletedSubject.asObservable().subscribe( fn );
+        return this.modelObjectDeletedSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -739,8 +805,10 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         let methodName = 'sendModelObjectDeletedEvent';
         this.debug( methodName + '.begin to' + this.getToObserversMessage( this.modelObjectDeletedSubject ));
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
-        this.modelObjectDeletedSubject.next( modelObject );
-        this.crudStateStore.resetSubjects();
+        this.modelObjectDeletedSubject
+            .next( modelObject );
+        this.crudStateStore
+            .resetSubjects();
         this.debug( methodName + '.end' );
     }
 
@@ -771,7 +839,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToModelObjectAddedEvent( fn: ( T ) => any ): Subscription
     {
         this.debug( 'subscribeToModelObjectAddedEvent' );
-        return this.modelObjectAddedSubject.asObservable().subscribe( fn );
+        return this.modelObjectAddedSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**
@@ -783,8 +853,10 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         let methodName = 'sendModelObjectAddedEvent';
         this.debug( methodName + '.begin' + this.getToObserversMessage( this.modelObjectAddedSubject ));
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
-        this.modelObjectAddedSubject.next( modelObject );
-        this.crudStateStore.resetSubjects();
+        this.modelObjectAddedSubject
+            .next( modelObject );
+        this.crudStateStore
+            .resetSubjects();
         this.debug( methodName + '.end' );
     }
 
@@ -799,13 +871,10 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         return this.crudActionHandler
                    .saveModelObject( modelObject )
-                   .map( ( modelObject: T ) =>
+                   .map( ( updatedModelObject: T ) =>
                          {
-                             //this.sendFormResetEvent();
-                             this.sendModelObjectSavedEvent( modelObject )
-                             //this.crudStateStore
-                             //    .resetSubjects();
-                             return modelObject;
+                             this.sendModelObjectSavedEvent( updatedModelObject )
+                             return updatedModelObject;
                          });
     }
 
@@ -818,8 +887,10 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         let methodName = 'sendModelObjectSavedEvent';
         this.debug( methodName + '.begin' + this.getToObserversMessage( this.modelObjectSavedSubject ));
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
-        this.modelObjectSavedSubject.next( modelObject );
-        this.crudStateStore.resetSubjects();
+        this.modelObjectSavedSubject
+            .next( modelObject );
+        this.crudStateStore
+            .resetSubjects();
         this.debug( methodName + '.end' );
     }
 
@@ -831,7 +902,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToModelObjectSavedEvent( fn: ( T ) => any ): Subscription
     {
         this.debug( 'subscribeToModelSavedEvent' );
-        return this.modelObjectSavedSubject.asObservable().subscribe( fn );
+        return this.modelObjectSavedSubject
+                   .asObservable()
+                   .subscribe( fn );
     }
 
     /**

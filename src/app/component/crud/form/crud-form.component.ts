@@ -311,8 +311,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected onModelObjectChanged( modelObject: T ): void
     {
-        super.onModelObjectChanged( modelObject );
-        this.debug( "onModelObjectChanged " + JSON.stringify( this.modelObject ));
         /*
          * Clear the form fields of any previous model object.
          */
@@ -320,10 +318,12 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         {
             this.resetForm();
         }
+        super.onModelObjectChanged( modelObject );
+        this.debug( "onModelObjectChanged " + JSON.stringify( this.modelObject ));
         this.enableDisableInputs();
-        if ( modelObject )
+        if ( this.modelObject )
         {
-            this.setFormValues( modelObject );
+            this.setFormValues( this.modelObject );
         }
         this.crudController
             .sendFormLogStateRequest();

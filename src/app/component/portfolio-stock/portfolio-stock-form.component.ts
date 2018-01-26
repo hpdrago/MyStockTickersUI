@@ -12,6 +12,9 @@ import { PortfolioStockController } from './portfolio-stock-controller';
 import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
 import { StockPriceQuoteService } from '../../service/crud/stock-price-quote.service';
 import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
+import { StockCompany } from '../../model/entity/stock-company';
+import { SelectedStockCompanyList } from '../common/selected-stock-company.list';
+import { StockCompanyService } from '../../service/crud/stock-company.service';
 
 /**
  * Created by mike on 11/16/2016.
@@ -26,11 +29,12 @@ import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-cr
 export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStock> implements OnInit
 {
     @Input()
-    private portfolio: Portfolio;
-    private stockSubSectors: SelectItem[];
-    private stockSectors: SelectItem[];
-    private dataLoaded: boolean = true;
-    private selectedStockQuote: StockPriceQuote;
+    protected portfolio: Portfolio;
+
+    /**
+     * Will only contain one company, but works with the selected companies component to display the selected stock.
+     */
+    protected selectedCompanyList: SelectedStockCompanyList;
 
     /**
      * Constructor.
@@ -49,14 +53,15 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
                  protected portfolioStockController: PortfolioStockController,
                  protected portfolioStockFactory: PortfolioStockFactory,
                  protected portfolioStockCrudService: PortfolioStockCrudService,
-                 protected stockCrudService: StockPriceQuoteService )
+                 private stockCrudService: StockPriceQuoteService,
+                 private stockCompanyService: StockCompanyService )
     {
         super( toaster,
                portfolioStockStateStore,
                portfolioStockController,
                portfolioStockFactory,
                portfolioStockCrudService );
-
+        this.selectedCompanyList = new SelectedStockCompanyList( stockCompanyService );
         this.continuousAdd = true;
     }
 
@@ -64,45 +69,21 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      * This method is called when the user selects a stock using the stock/company search input
      * @param stock
      */
-    private onStockSelected( stockPriceQuote )
+    private onStockSelected( stockCompany: StockCompany )
     {
-        this.debug( "onStockSelected: " + JSON.stringify( stockPriceQuote ));
-        this.selectedStockQuote = stockPriceQuote;
-        this.modelObject.lastPrice = stockPriceQuote.lastPrice;
-        this.modelObject.tickerSymbol = stockPriceQuote.tickerSymbol;
-        this.modelObject.getStockQuote().companyName = stockPriceQuote.companyName;
-        (<FormControl>this.formGroup.controls['tickerSymbol']).setValue( stockPriceQuote.tickerSymbol );
-        (<FormControl>this.formGroup.controls['companyName']).setValue( stockPriceQuote.companyName );
-        (<FormControl>this.formGroup.controls['lastPrice']).setValue( stockPriceQuote.lastPrice );
-    }
-
-    /**
-     * This method is called when the ticker symbol input loses focus
-     */
-    private onTickerSymbolLostFocus(): void
-    {
-        var methodName = "onTickerSymbolLostFocus";
-        this.debug( methodName + " selectedStock: " + JSON.stringify( this.selectedStockQuote ) );
-        /*
-         * It's possible that the ticker symbol does not exist in the database so load it after the user has
-         * pressed the tab key
-         */
-        if ( (!this.selectedStockQuote || this.selectedStockQuote.tickerSymbol != this.getTickerSymbolFormValue()) &&
-              !isNullOrUndefined( this.getTickerSymbolFormValue() ))
-        {
-            this.stockCrudService
-                .getStockPriceQuote( this.getTickerSymbolFormValue() )
-                .subscribe( (stock) =>
-                            {
-                                this.debug( methodName + " found: " + stock.tickerSymbol );
-                                this.onStockSelected( stock );
-                            },
-                            error =>
-                            {
-                                this.resetForm();
-                                this.reportRestError( error );
-                            });
-        }
+        this.debug( "onStockSelected: " + JSON.stringify( stockCompany ));
+        this.selectedCompanyList
+            .clear();
+        this.selectedCompanyList
+            .addCompany( stockCompany );
+        this.modelObject.lastPrice = stockCompany.lastPrice;
+        this.modelObject.tickerSymbol = stockCompany.tickerSymbol;
+        this.modelObject.stockQuote.companyName = stockCompany.companyName;
+        this.modelObject.stockQuote.latestPrice = stockCompany.lastPrice;
+        this.modelObject.stockQuote.tickerSymbol = stockCompany.tickerSymbol;
+        (<FormControl>this.formGroup.controls['tickerSymbol']).setValue( stockCompany.tickerSymbol );
+        (<FormControl>this.formGroup.controls['companyName']).setValue( stockCompany.companyName );
+        (<FormControl>this.formGroup.controls['lastPrice']).setValue( stockCompany.lastPrice );
     }
 
     private getTickerSymbolFormValue(): string

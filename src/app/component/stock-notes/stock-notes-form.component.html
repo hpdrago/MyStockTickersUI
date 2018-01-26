@@ -20,96 +20,36 @@
                 </div>
                 <div class="crud-form ui-grid-row">
                     <div class="crud-form-label ui-grid-col-2">
-                        <label class="crud-form" for="stockSearch">Stock Search:</label>
+                        <label class="crud-form" for="stockSearchCreate">Stock Search:</label>
                     </div>
                     <div class="ui-grid-col-10">
-                        <stock-autocomplete id="stockSearch"
+                        <stock-autocomplete id="stockSearchCreate"
                                             (stockSelected)="onStockSelected( $event )">
                         </stock-autocomplete>
                     </div>
                 </div>
 
-                <!----------------------------------------------------------------------------------------------------------
-                TICKER SYMBOLS
-                ------------------------------------------------------------------------------------------------------------>
-                <div class="crud-form ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-2">
-                        <label class="crud-form" >Selected Stocks:</label>
-                    </div>
-                    <div class="ui-grid-col-10">
-                        {{stockCompanies.tickerSymbols}}
-                    </div>
-                </div>
-
-                <!----------------------------------------------------------------------------------------------------------
-                LAST PRICE
-                ------------------------------------------------------------------------------------------------------------>
-                <div class="ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-2">
-                        <label class="crud-form" for="lastPriceColumn">Last Price:</label>
-                    </div>
-                    <div class="ui-grid-col-10">
-                        {{stockCompanies.lastPrices}}
-                    </div>
-                </div>
-
-                <div class="ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-2">
-                        <label class="crud-form" for="notes">Company:</label>
-                    </div>
-                    <div class="ui-grid-col-10">
-                        {{stockCompanies.companies}}
-                    </div>
-                </div>
+                <selected-stock-companies [stockCompanies]="stockCompanies">
+                </selected-stock-companies>
             </ng-template>
 
             <!----------------------------------------------------------------------------------------------------------
             IF MODIFYING/DELETING NOTES
             ------------------------------------------------------------------------------------------------------------>
             <ng-template #modifyDiv>
-                <!----------------------------------------------------------------------------------------------------------
-                TICKER SYMBOL
-                ------------------------------------------------------------------------------------------------------------>
                 <div class="crud-form ui-grid-row">
                     <div class="crud-form-label ui-grid-col-2">
-                        <label class="crud-form" for="tickerSymbol">Stock:</label>
-                    </div>
-                    <div class="ui-grid-col-1">
-                        <input id="tickerSymbol"
-                               type="text"
-                               pInputText
-                               required
-                               [(ngModel)]="modelObject.tickerSymbol"
-                               uppercase
-                               maxlength="5"
-                               formControlName="tickerSymbol">
-                    </div>
-                </div>
-
-                <!----------------------------------------------------------------------------------------------------------
-                LAST PRICE/Price when notes was created
-                ------------------------------------------------------------------------------------------------------------>
-                <div class="ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-2">
-                        <label class="crud-form" for="lastPriceColumn">Price when note created:</label>
-                    </div>
-                    <div id="lastPriceColumn" class="ui-grid-col-2">
-                        {{modelObject.stockPriceQuote.lastPrice | currency:'USD': true}}
-                    </div>
-                </div>
-
-                <!----------------------------------------------------------------------------------------------------------
-                COMPANY
-                ------------------------------------------------------------------------------------------------------------>
-                <div class="ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-2">
-                        <label class="crud-form" for="notes">Company:</label>
+                        <label class="crud-form" for="stockSearchModify">Stock Search:</label>
                     </div>
                     <div class="ui-grid-col-10">
-                        {{modelObject.stockQuote.companyName}}
+                        <stock-autocomplete id="stockSearchModify"
+                                            (stockSelected)="onStockSelected( $event )">
+                        </stock-autocomplete>
                     </div>
                 </div>
 
+                <selected-stock-companies [stockCompanies]="stockCompanies">
+                </selected-stock-companies>
             </ng-template>
 
             <!----------------------------------------------------------------------------------------------------------

@@ -1,12 +1,15 @@
-import { StockCompanyList } from './stock-company.list';
+import { StockCompanyList } from '../../common/stock-company.list';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
 import { StockPriceQuoteService } from '../../service/crud/stock-price-quote.service';
 import { StockCompany } from '../../model/entity/stock-company';
 
 /**
- * This class manages the list of ticker symbols, last prices, and company names displayed on the stock notes form.
+ * This class manages the list of ticker symbols, last prices, and company names displayed on forms or other components
+ * to indicate which stocks a user has select.  A list of stock companies is maintained and three string properties that
+ * contain a comma delimited list of ticker symbols, last prices, and company name which can then be used to display
+ * on a form.
  */
-export class StockNotesCompanyList extends StockCompanyList
+export class SelectedStockCompanyList extends StockCompanyList
 {
     /**
      * Comma delimited list of ticker symbols
@@ -54,4 +57,5 @@ export class StockNotesCompanyList extends StockCompanyList
                           this.companies += stockCompany.companyName;
                       });
     }
+
 }

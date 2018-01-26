@@ -27,20 +27,18 @@ import { isNullOrUndefined } from 'util';
                </p-dropdown>`,
     providers: [{
                     provide: NG_VALUE_ACCESSOR,
-                    useExisting: forwardRef(() => StockNotesSourceComponent ),
+                    useExisting: forwardRef(() => StockNotesSourceSelectionComponent ),
                     multi: true
                 }]
 })
-export class StockNotesSourceComponent extends BaseComponent implements OnInit, ControlValueAccessor
+export class StockNotesSourceSelectionComponent extends BaseComponent implements OnInit, ControlValueAccessor
 {
     @Input()
     protected modelObject: StockNotesSourceContainer;
-    @Input()
-    protected formControlName: string;
+
     protected disabled: boolean;
     protected sourceItems: SelectItem[] = [];
     protected notesSourceId: string;
-    //private stockNotesSourceList: StockNotesSourceList = new StockNotesSourceList( [] );
     private sourceAdded: boolean;
 
     /**
@@ -81,7 +79,7 @@ export class StockNotesSourceComponent extends BaseComponent implements OnInit, 
     /**
      * This method is called whenever the notes source changes.  When the user types in a new source, each keystroke
      * will cause a call to this method.  Since we get the source id from the drop down list as the value, we need to
-     * capture the name of any new source that the user types in so we assign that value here to the modelObject.
+     * capture the name of any new source that the user types in so we assign that value here to the stockPriceQuoteContainer.
      *
      * @param event
      */
@@ -95,14 +93,14 @@ export class StockNotesSourceComponent extends BaseComponent implements OnInit, 
         {
             this.debug( "sourcesOnChange: setting notesSourceId= " + event.value );
             this.notesSourceId = event.value;
-            //this.modelObject.setNotesSourceId( event.value );
-            //this.modelObject.setNotesSourceName( this.stockNotesSourceList.getLabel( event.value ));
+            //this.stockPriceQuoteContainer.setNotesSourceId( event.value );
+            //this.stockPriceQuoteContainer.setNotesSourceName( this.stockNotesSourceList.getLabel( event.value ));
         }
         else
         {
             this.debug( "sourcesOnChange: new notesSource= " + event.value );
-            //this.modelObject.setNotesSourceName( event.value.toUpperCase() );
-            //this.modelObject.setNotesSourceId( '' );
+            //this.stockPriceQuoteContainer.setNotesSourceName( event.value.toUpperCase() );
+            //this.stockPriceQuoteContainer.setNotesSourceId( '' );
             this.notesSourceId = event.value.toUpperCase();
             this.sourceAdded = true;
             let selectItem: SelectItem = {
@@ -123,21 +121,6 @@ export class StockNotesSourceComponent extends BaseComponent implements OnInit, 
     {
         return this.sourceItems.filter( sourceItem => sourceItem.value === sourceId ).length > 0;
     }
-
-    /**
-     * This method is called by the parent component when that component is being saved.
-     */
-    /*
-    public save(): void
-    {
-        this.debug( "save");
-        if ( this.sourceAdded )
-        {
-            this.customerCrudService
-                .
-        }
-    }
-    */
 
     public writeValue( notesSourceId: string ): void
     {

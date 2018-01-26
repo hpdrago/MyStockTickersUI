@@ -18,7 +18,7 @@ import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.servi
 import { CrudFormComponent } from '../crud/form/crud-form.component';
 import { StockCompany } from '../../model/entity/stock-company';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
-import { StockNotesCompanyList } from './stock-notes-company.list';
+import { SelectedStockCompanyList } from '../common/selected-stock-company.list';
 
 /**
  * This is the StockCompany Note Form Component class.
@@ -43,7 +43,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     protected stockAutoCompletedComponent: StockAutoCompleteComponent;
 
     protected stockCompany: StockCompany;
-    protected stockCompanies: StockNotesCompanyList;
+    protected stockCompanies: SelectedStockCompanyList;
 
     /**
      * The string the user enters the ticker symbols or company name to search for
@@ -78,7 +78,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                stockNotesController,
                stockNotesFactory,
                stockNotesCrudService )
-        this.stockCompanies = new StockNotesCompanyList( stockCompanyService );
+        this.stockCompanies = new SelectedStockCompanyList( stockCompanyService );
     }
 
     /**
@@ -114,7 +114,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.modelObject.notesDate = new Date( Date.now() );
         this.stockSearch = '';
         this.stockCompany = null;
-        this.stockCompanies = new StockNotesCompanyList( this.stockCompanyService );
+        this.stockCompanies = new SelectedStockCompanyList( this.stockCompanyService );
     }
 
     protected resetForm(): void
@@ -252,6 +252,14 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     public onStockSelected( stockCompany: StockCompany )
     {
         this.log( "onStockSelected: " + JSON.stringify( stockCompany ) );
+        /*
+         * Only one company allowed when modifying, that is, you can change the original company.
+         */
+        if ( this.isCrudUpdateOperation() )
+        {
+            this.stockCompanies
+                .clear();
+        }
         this.stockCompanies
             .addCompany( stockCompany );
         this.modelObject.tickerSymbol = stockCompany.tickerSymbol;

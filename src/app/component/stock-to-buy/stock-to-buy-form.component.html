@@ -26,29 +26,8 @@
                 </div>
             </div>
 
-            <!----------------------------------------------------------------------------------------------------------
-            COMPANY NAME
-            ------------------------------------------------------------------------------------------------------------>
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="companyNameColumn">Company:</label>
-                </div>
-                <div id="companyNameColumn" class="ui-grid-col-10">
-                    {{modelObject.companyName}}
-                </div>
-            </div>
-
-            <!----------------------------------------------------------------------------------------------------------
-            LAST PRICE
-            ------------------------------------------------------------------------------------------------------------>
-            <div class="ui-grid-row">
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="lastPriceColumn">Last Price:</label>
-                </div>
-                <div id="lastPriceColumn" class="ui-grid-col-2">
-                    {{modelObject.lastPrice | currency:'USD': true}}
-                </div>
-            </div>
+            <selected-stock-companies [stockCompanies]="selectedStockCompanies">
+            </selected-stock-companies>
 
             <!----------------------------------------------------------------------------------------------------------
             COMMENTS

@@ -2,7 +2,7 @@ import { BaseComponent } from "./base.component";
 import { Component, EventEmitter, Output, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockAutoCompleteComponent } from "./stock-autocomplete.component";
-import { StockPriceQuote } from '../../model/entity/stock-price-quote';
+import { StockCompany } from '../../model/entity/stock-company';
 
 /**
  * This component displays a label, text input box, and a reset button that enables the user to search for and selected
@@ -27,7 +27,7 @@ import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 export class StockSearchComponent extends BaseComponent
 {
     @Output()
-    private stockSelected: EventEmitter<StockPriceQuote>  = new EventEmitter<StockPriceQuote>();
+    private stockSelected: EventEmitter<StockCompany>  = new EventEmitter<StockCompany>();
     @Output()
     private resetButtonClick: EventEmitter<void>  = new EventEmitter<void>();
 

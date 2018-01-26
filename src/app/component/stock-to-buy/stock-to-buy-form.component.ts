@@ -11,6 +11,9 @@ import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.serv
 import { isNullOrUndefined } from 'util';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { StockCrudFormComponent } from '../common/stock-crud-form.component';
+import { SelectedStockCompanyList } from '../common/selected-stock-company.list';
+import { StockCompanyService } from '../../service/crud/stock-company.service';
+import { StockCompany } from '../../model/entity/stock-company';
 
 /**
  * This is the StockCompany ToBuy Form Component class.
@@ -24,6 +27,8 @@ import { StockCrudFormComponent } from '../common/stock-crud-form.component';
             } )
 export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
 {
+    protected selectedStockCompanies: SelectedStockCompanyList;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -41,13 +46,15 @@ export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
                  private stockToBuyStateStore: StockToBuyStateStore,
                  private stockToBuyController: StockToBuyController,
                  private stockToBuyFactory: StockToBuyFactory,
-                 private stockToBuyCrudService: StockToBuyCrudService )
+                 private stockToBuyCrudService: StockToBuyCrudService,
+                 private stockCompanyService: StockCompanyService )
     {
         super( toaster,
                stockToBuyStateStore,
                stockToBuyController,
                stockToBuyFactory,
                stockToBuyCrudService );
+        this.selectedStockCompanies = new SelectedStockCompanyList( stockCompanyService );
     }
 
     /**
@@ -73,9 +80,9 @@ export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
      * Override to check to see that the user hasn't selected a stock to buy that already exists.
      * @param {StockPriceQuote} stockPriceQuote
      */
-    protected onStockSelected( stockPriceQuote: StockPriceQuote )
+    protected onStockSelected( stockCompany: StockCompany )
     {
-        super.onStockSelected( stockPriceQuote );
+        super.onStockSelected( stockCompany );
         this.crudRestService
             .getModelObject( this.modelObject )
             .subscribe( (existingStockToBuy: StockToBuy) =>
