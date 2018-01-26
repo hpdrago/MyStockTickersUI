@@ -8,6 +8,9 @@ import { LinkedAccountController } from './linked-account-controller';
 import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud.service';
 import { LinkedAccountFactory } from '../../model/factory/linked-account.factory';
 import { LinkedAccount } from '../../model/entity/linked-account';
+import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
+import { TradeItAccount } from '../../model/entity/tradeit-account';
+import { isNullOrUndefined } from 'util';
 
 @Component
 ({
@@ -16,6 +19,8 @@ import { LinkedAccount } from '../../model/entity/linked-account';
  })
 export class LinkedAccountTableAddButtonComponent extends CrudTableAddButtonComponent<LinkedAccount>
 {
+    private tradeItAccount: TradeItAccount;
+
     /**
      * Constructor.
      * @param {SessionService} session
@@ -30,7 +35,8 @@ export class LinkedAccountTableAddButtonComponent extends CrudTableAddButtonComp
                  protected linkedAccountStateStore: LinkedAccountStateStore,
                  protected linkedAccountController: LinkedAccountController,
                  protected linkedAccountFactory: LinkedAccountFactory,
-                 protected linkedAccountCrudService: LinkedAccountCrudService )
+                 protected linkedAccountCrudService: LinkedAccountCrudService,
+                 protected tradeItAccountController: TradeItAccountController )
     {
         super( toaster,
                linkedAccountStateStore,
@@ -39,11 +45,43 @@ export class LinkedAccountTableAddButtonComponent extends CrudTableAddButtonComp
                linkedAccountCrudService );
     }
 
+    /**
+     * Subscribe to the selection of a trade it account so we can determine if this button should be enabled.
+     */
+    public ngOnInit()
+    {
+        super.ngOnInit();
+        this.tradeItAccountController
+            .subscribeToTableSelectionChangeEvent( tradeItAccount =>
+                                                   {
+                                                       return this.onTradeItAccountTableSelectionChange( tradeItAccount );
+                                                   });
+    }
+
     protected onButtonClick(): void
     {
-        let modelObject = this.linkedAccountFactory.newModelObject();
-        this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.CREATE );
-        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
+        if ( isNullOrUndefined( this.tradeItAccount ) || this.tradeItAccount.isTradeItAccount() )
+        {
+            let modelObject = this.linkedAccountFactory.newModelObject();
+            this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.CREATE );
+            this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
+        }
         super.onButtonClick();
+    }
+
+    /**
+     * This method is called when a trade it account is selected on the table.
+     * @param {TradeItAccount} tradeItAccount
+     */
+    private onTradeItAccountTableSelectionChange( tradeItAccount: TradeItAccount )
+    {
+        const methodName = 'onTradeItAccountTableSelectionChange';
+        this.log( methodName + ' ' + JSON.stringify( tradeItAccount ));
+        this.tradeItAccount = tradeItAccount;
+        if ( isNullOrUndefined( this.tradeItAccount ) ||
+             this.tradeItAccount.isTradeItAccount() )
+        {
+            this.disabled = true;
+        }
     }
 }

@@ -64,47 +64,50 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
     {
         const methodName = "onRowSelect";
         this.log( methodName + ".begin " + JSON.stringify( event ));
-        let modelObject: TradeItAccount = this.createModelObjectFromRowSelectionEvent( event );
-        this.loading = true;
-        this.tradeItOAuthService
-            .checkAuthentication( modelObject, this.tradeItSecurityQuestionDialog )
-            .subscribe( (authenticateAccountResult: TradeItAuthenticateResult ) =>
-                        {
-                            this.log( methodName + " checkAuthentication result: " + JSON.stringify( authenticateAccountResult ));
-                            this.loading = false;
-                            if ( isNullOrUndefined( authenticateAccountResult ))
+        let tradeItAccount: TradeItAccount = this.createModelObjectFromRowSelectionEvent( event );
+        if ( tradeItAccount.isTradeItAccount() )
+        {
+            this.loading = true;
+            this.tradeItOAuthService
+                .checkAuthentication( tradeItAccount, this.tradeItSecurityQuestionDialog )
+                .subscribe( ( authenticateAccountResult: TradeItAuthenticateResult ) =>
                             {
-                                this.log( methodName + " authentication is current" );
-                            }
-                            else if ( authenticateAccountResult.isSuccess() )
+                                this.log( methodName + " checkAuthentication result: " + JSON.stringify( authenticateAccountResult ) );
+                                this.loading = false;
+                                if ( isNullOrUndefined( authenticateAccountResult ) )
+                                {
+                                    this.log( methodName + " authentication is current" );
+                                }
+                                else if ( authenticateAccountResult.isSuccess() )
+                                {
+                                    this.log( methodName + " account authenticated or kept alive" );
+                                    /*
+                                     * Need to perform the work the that super class does.  We don't want to call it directly
+                                     * because we have updated information about the account that will not be propagated
+                                     * correctly with call to super.
+                                     */
+                                    this.selectedModelObject = this.createModelObjectFromRowSelectionEvent( event );
+                                    /*
+                                     * Need to update the model object return from the authentication call
+                                     */
+                                    tradeItAccount = authenticateAccountResult.tradeItAccount;
+                                    tradeItAccount.linkedAccounts = authenticateAccountResult.linkedAccounts;
+                                    this.crudStateStore
+                                        .sendModelObjectChangedEvent( this, tradeItAccount );
+                                    this.onModelObjectSelected( tradeItAccount );
+                                }
+                                else
+                                {
+                                    this.onModelObjectSelected( tradeItAccount );
+                                    this.tradeItErrorReporter.reportError( authenticateAccountResult );
+                                }
+                            },
+                            error =>
                             {
-                                this.log( methodName + " account authenticated or kept alive" );
-                                /*
-                                 * Need to perform the work the that super class does.  We don't want to call it directly
-                                 * because we have updated information about the account that will not be propagated
-                                 * correctly with call to super.
-                                 */
-                                this.selectedModelObject = this.createModelObjectFromRowSelectionEvent( event );
-                                /*
-                                 * Need to update the model object return from the authentication call
-                                 */
-                                modelObject = authenticateAccountResult.tradeItAccount;
-                                modelObject.linkedAccounts = authenticateAccountResult.linkedAccounts;
-                                this.crudStateStore
-                                    .sendModelObjectChangedEvent( this, modelObject );
-                                this.onModelObjectSelected( modelObject );
-                            }
-                            else
-                            {
-                                this.onModelObjectSelected( modelObject );
-                                this.tradeItErrorReporter.reportError( authenticateAccountResult );
-                            }
-                        },
-                        error =>
-                        {
-                            this.loading = false;
-                            this.reportRestError( error );
-                        });
+                                this.loading = false;
+                                this.reportRestError( error );
+                            } );
+        }
         this.log( methodName + ".end" );
     }
 
@@ -116,7 +119,11 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
     {
         const methodName = "onAccountAdded";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
+        /*
+         * Remove the account from the table if it is present.
+         */
         super.onModelObjectDeleted( tradeItAccount );
+        if ( tradeItAccount.isTradeItAccount() )
         this.tradeItOAuthService
             .checkAuthentication( tradeItAccount, this.tradeItSecurityQuestionDialog )
             .subscribe( (authenticateAccountResult: TradeItAuthenticateResult) =>
@@ -159,6 +166,10 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
         return this.modelObject;
     }
 
+    /**
+     * This method is called when the authentication is successful.
+     * @param {TradeItAccount} tradeItAccount
+     */
     public notifyAuthenticationSuccess( tradeItAccount: TradeItAccount )
     {
         const methodName = "notifyAuthenticationSuccess";
@@ -166,6 +177,10 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
         this.log( methodName + ".end" );
     }
 
+    /**
+     * This method is called by the TradeIt authentication process.
+     * @param event
+     */
     public receiveMessage( event: any )
     {
         const methodName = "receiveMessage";

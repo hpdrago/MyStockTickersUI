@@ -70,12 +70,15 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
     public ngOnInit()
     {
         super.ngOnInit();
-        this.portfolioController
-            .subscribeToTableSelectionChangeEvent( portfolio => this.onPortfolioChange( portfolio ));
-        this.linkedAccountController
-            .subscribeToTableSelectionChangeEvent( linkedAccount => this.onLinkedAccountChange( linkedAccount ));
-        this.tradeItAccountController
-            .subscribeToTableSelectionChangeEvent( tradeItAccount => this.onTradeItAccountChange( tradeItAccount ));
+        this.addSubscription( 'PortfolioTableSelectionChange',
+            this.portfolioController
+                .subscribeToTableSelectionChangeEvent( portfolio => this.onPortfolioTableSelectionChange( portfolio )));
+        this.addSubscription( 'LinkedAccountTableSelectionChange',
+            this.linkedAccountController
+                .subscribeToTableSelectionChangeEvent( linkedAccount => this.onLinkedAccountTableSelectionChange( linkedAccount )));
+        this.addSubscription( 'TradeItAccountTableSelectionChange',
+            this.tradeItAccountController
+                .subscribeToTableSelectionChangeEvent( tradeItAccount => this.onTradeItAccountTableSelectionChange( tradeItAccount )));
     }
 
     /**
@@ -97,9 +100,9 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
      * This method is called when the user changes the selection on the tradeit account able.
      * @param {TradeItAccount} tradeItAccount
      */
-    public onTradeItAccountChange( tradeItAccount: TradeItAccount )
+    public onTradeItAccountTableSelectionChange( tradeItAccount: TradeItAccount )
     {
-        const methodName = 'onTradeItAccountChange';
+        const methodName = 'onTradeItAccountTableSelectionChange';
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
         this.linkedAccount = null;
@@ -110,9 +113,9 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
      * This method is called when the user changes the selection on the linked account table.
      * @param {LinkedAccount} linkedAccount
      */
-    public onLinkedAccountChange( linkedAccount: LinkedAccount )
+    public onLinkedAccountTableSelectionChange( linkedAccount: LinkedAccount )
     {
-        const methodName = 'onLinkedAccountChange';
+        const methodName = 'onLinkedAccountTableSelectionChange';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ) );
         this.linkedAccount = linkedAccount;
     }
@@ -121,9 +124,9 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
      * This method is called when the user changes the selection on the portfolio table.
      * @param {Portfolio} portfolio
      */
-    public onPortfolioChange( portfolio: Portfolio )
+    public onPortfolioTableSelectionChange( portfolio: Portfolio )
     {
-        const methodName = 'onPortfolioChange';
+        const methodName = 'onPortfolioTableSelectionChange';
         this.log( methodName + ".begin " + JSON.stringify( portfolio ) );
         this.title = portfolio.name + " Portfolio Stocks";
         this.portfolio = portfolio;

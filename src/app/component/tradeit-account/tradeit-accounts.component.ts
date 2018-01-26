@@ -1,14 +1,10 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { BaseComponent } from "../common/base.component";
-import { TradeItAccountTableComponent } from "./tradeit-account-table.component";
-import { LinkedAccountTableComponent } from "../linked-account/linked-account-table.component";
 import { TradeItAccountController } from './tradeit-account-controller';
 import { LinkedAccountController } from '../linked-account/linked-account-controller';
-import { StockPositionTableComponent } from '../stock-position/stock-position-table.component';
 import { LinkedAccount } from '../../model/entity/linked-account';
-import { PortfolioTableComponent } from '../portfolio/portfolio-table.component';
 import { isNullOrUndefined } from 'util';
 
 /**
@@ -21,18 +17,6 @@ import { isNullOrUndefined } from 'util';
     })
 export class TradeItAccountsComponent extends BaseComponent implements OnInit
 {
-    @ViewChild(TradeItAccountTableComponent)
-    private tradeItAccountTableComponent: TradeItAccountTableComponent;
-
-    @ViewChild(LinkedAccountTableComponent)
-    private linkedAccountTableComponent: LinkedAccountTableComponent;
-
-    @ViewChild(StockPositionTableComponent)
-    private stockPositionTableComponent: StockPositionTableComponent;
-
-    @ViewChild(PortfolioTableComponent)
-    private portfolioTableComponent: PortfolioTableComponent;
-
     private tradeItAccount: TradeItAccount;
     private linkedAccount: LinkedAccount;
 
@@ -80,10 +64,6 @@ export class TradeItAccountsComponent extends BaseComponent implements OnInit
         const methodName = 'onTradeItTableSelectionChange';
         this.log( methodName + '.begin ' + JSON.stringify( tradeItAccount ) );
         this.tradeItAccount = tradeItAccount;
-        this.linkedAccountTableComponent
-            .setTradeItAccount( this.tradeItAccount );
-        this.stockPositionTableComponent
-            .clearTable();
         this.log( methodName + '.end' );
     }
 
@@ -97,14 +77,6 @@ export class TradeItAccountsComponent extends BaseComponent implements OnInit
         const methodName = 'onLinkedAccountTableSelectionChange';
         this.log( methodName + '.begin ' + JSON.stringify( linkedAccount ) );
         this.linkedAccount = linkedAccount;
-        this.stockPositionTableComponent
-            .setTradeItAccount( this.tradeItAccount );
-        this.stockPositionTableComponent
-            .setLinkedAccount( this.linkedAccount );
-        this.portfolioTableComponent
-            .setTradeItAccount( this.tradeItAccount );
-        this.portfolioTableComponent
-            .setLinkedAccount( this.linkedAccount );
         this.log( methodName + '.end' );
     }
 }

@@ -1,5 +1,5 @@
 <div *ngIf="!isCrudNoneOperation()">
-    <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
+    <form [formGroup]="formGroup">
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px;">
             <!----------------------------------------------------------------------------------------------------------
             ACCOUNT NAME
@@ -22,23 +22,71 @@
             </div>
 
             <!----------------------------------------------------------------------------------------------------------
-            BROKERAGE
+            TradeIt or Not check.
             ------------------------------------------------------------------------------------------------------------>
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-4">
-                    <label class="crud-form" for="brokerage">Brokerage:</label>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                    <label style="float: right" for="accountSource">Account Source:</label>
                 </div>
                 <div class="ui-grid-col-8">
-                    <p-dropdown id="brokerage"
-                                class="crud-form"
-                                [options]="brokerageItems"
-                                formControlName="brokerage"
-                                [(ngModel)]="modelObject.brokerage"
-                                [style]="{'width':'225px'}"
-                                placeholder="Select a brokerage">
-                    </p-dropdown>
+                    <p-selectButton id="accountSource"
+                                    formControlName="accountSource"
+                                    [options]="accountSources"
+                                    [(ngModel)]="modelObject.tradeItAccountFlag"
+                                    [ngClass]="{'ui-state-disabled': isModelObjectReadOnly()}">
+                    </p-selectButton>
                 </div>
             </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            SELECTION SWITCH
+            ------------------------------------------------------------------------------------------------------------>
+            <ng-container *ngIf="modelObject.isTradeItAccount(); then tradeItTemplate else manualTemplate">
+            </ng-container>
+
+            <!----------------------------------------------------------------------------------------------------------
+            TRADE IT ACCOUNT TEMPLATE
+            ------------------------------------------------------------------------------------------------------------>
+            <ng-template #tradeItTemplate>
+                <div class="crud-form ui-grid-row">
+                    <div class="crud-form-label ui-grid-col-4">
+                        <label class="crud-form" for="brokerage">Brokerage:</label>
+                    </div>
+                    <div class="ui-grid-col-8">
+                        <p-dropdown id="brokerage"
+                                    class="crud-form"
+                                    [options]="brokerageItems"
+                                    formControlName="brokerage"
+                                    [(ngModel)]="modelObject.brokerage"
+                                    [style]="{'width':'225px'}"
+                                    placeholder="Select a brokerage"
+                                    [ngClass]="{'ui-state-disabled': isModelObjectReadOnly()}">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </ng-template>
+
+            <!----------------------------------------------------------------------------------------------------------
+            MANUAL/IMPORT TEMPLATE
+            ------------------------------------------------------------------------------------------------------------>
+            <ng-template #manualTemplate>
+                <div class="crud-form ui-grid-row">
+                    <div class="crud-form-label ui-grid-col-4">
+                        <label class="crud-form" for="manualBrokerage">Brokerage:</label>
+                    </div>
+                    <div class="ui-grid-col-8">
+                        <input id="manualBrokerage"
+                               formControlName="brokerage"
+                               placeholder="Required"
+                               maxlength="20"
+                               required
+                               type="text"
+                               pInputText
+                               [ngClass]="{'ui-state-disabled': isModelObjectReadOnly()}"
+                               [(ngModel)]="modelObject.brokerage"/>
+                    </div>
+                </div>
+            </ng-template>
         </div>
         <!--
         <div *ngIf="displayProgressBar">

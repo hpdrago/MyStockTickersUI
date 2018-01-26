@@ -13,6 +13,8 @@ import { PortfolioStateStore } from './portfolio-state-store';
 import { CookieService } from 'ngx-cookie-service';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
 import { LinkedAccount } from '../../model/entity/linked-account';
+import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
+import { LinkedAccountController } from '../linked-account/linked-account-controller';
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -26,9 +28,6 @@ import { LinkedAccount } from '../../model/entity/linked-account';
 })
 export class PortfolioTableComponent extends CrudTableComponent<Portfolio> implements OnInit
 {
-    @ViewChild(PortfolioStockTableComponent)
-    private portfolioStocksTableComponent: PortfolioStockTableComponent;
-
     private menuItems: MenuItem[] = [];
     private tradeItAccount: TradeItAccount;
     private linkedAccount: LinkedAccount;
@@ -41,6 +40,8 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
      * @param {PortfolioController} portfolioController
      * @param {PortfolioFactory} portfolioFactory
      * @param {PortfolioCrudService} portfolioCrudService
+     * @param {TradeItAccountController} tradeItAccountController
+     * @param {LinkedAccountController} linkedAccountController
      * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
@@ -49,6 +50,8 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
                  protected portfolioController: PortfolioController,
                  protected portfolioFactory: PortfolioFactory,
                  protected portfolioCrudService: PortfolioCrudService,
+                 protected tradeItAccountController: TradeItAccountController,
+                 protected linkedAccountController: LinkedAccountController,
                  protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.ALL_ON_CREATE,
@@ -60,13 +63,26 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
                cookieService );
     }
 
+    public ngOnInit()
+    {
+        super.ngOnInit();
+        this.addSubscription( 'TradeItAccountSelectionChange',
+                                this.tradeItAccountController
+                                    .subscribeToTableSelectionChangeEvent( tradeItAccount =>
+                                                                               this.onTradeItAccountTableSelectionChange( tradeItAccount )));
+        this.addSubscription( 'LinkedAccountSelectionChange',
+                              this.linkedAccountController
+                                  .subscribeToTableSelectionChangeEvent( linkedAccount =>
+                                                                             this.onLinkedAccountTableSelectionChange( linkedAccount )));
+    }
+
     /**
      * This method is called when the user selects a row on the trade it table accounts.
      * @param {TradeItAccount} tradeItAccount
      */
-    public setTradeItAccount( tradeItAccount: TradeItAccount )
+    private onTradeItAccountTableSelectionChange( tradeItAccount: TradeItAccount )
     {
-        const methodName = 'setTradeItAccount';
+        const methodName = 'onTradeItAccountTableSelectionChange';
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
         this.linkedAccount = null;
@@ -77,7 +93,7 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
      * This method is called when the user changes the linked selected linked account;
      * @param {LinkedAccount} linkedAccount
      */
-    public setLinkedAccount( linkedAccount: LinkedAccount )
+    private onLinkedAccountTableSelectionChange( linkedAccount: LinkedAccount )
     {
         const methodName = 'setLinkedAccount';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ) );
@@ -108,10 +124,6 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
             .subscribe( portfolios =>
             {
                 this.modelObjectRows = portfolios;
-                this.logger.log( "loadTable: " + JSON.stringify( this.modelObjectRows ));
-                this.logger.log( "loadTable length: " + this.modelObjectRows.length );
-                this.logger.log( "loadTable[0]: " + JSON.stringify( this.modelObjectRows[0] ));
-                this.logger.log( "loadTable[0]: " + this.modelObjectRows );
                 this.initializeMenuBar();
             });
     }

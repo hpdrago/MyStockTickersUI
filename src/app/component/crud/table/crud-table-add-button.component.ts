@@ -39,6 +39,9 @@ export abstract class CrudTableAddButtonComponent<T extends ModelObject<T>> exte
         this.buttonIcon = 'fa-plus';
     }
 
+    /**
+     * Button click method.
+     */
     protected onButtonClick(): void
     {
         this.debug( "onButtonClick " );

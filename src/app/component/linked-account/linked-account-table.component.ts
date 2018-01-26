@@ -67,13 +67,24 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
     }
 
     /**
+     * Initialize the component.
+     */
+    public ngOnInit()
+    {
+        super.ngOnInit();
+        this.addSubscription( 'tradeItAccountTableSelectionChange',
+            this.tradeItAccountController
+                .subscribeToTableSelectionChangeEvent( tradeItAccount => this.onTradeItAccountTableSelectionChange( tradeItAccount )));
+    }
+
+    /**
      * This method is called when the user clicks on a {@code TradeItAccount} in the left hand table.  This method
      * will load the linked accounts related to the {@code TradeItAccount}.
      * @param {TradeItAccount} tradeItAccount
      */
-    public setTradeItAccount( tradeItAccount: TradeItAccount )
+    private onTradeItAccountTableSelectionChange( tradeItAccount: TradeItAccount )
     {
-        const methodName = "setTradeItAccount";
+        const methodName = "onTradeItAccountTableSelectionChange";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
         if ( !isNullOrUndefined( this.tradeItAccount ))
@@ -98,7 +109,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      * it will request
      * @param {LinkedAccount[]} modelObjects
      */
-    protected updateLinkedAccounts()
+    private updateLinkedAccounts()
     {
         const methodName = 'updateLinkedAccounts'
         this.debug( methodName + ' ' + JSON.stringify( this.tradeItAccount ));
@@ -132,35 +143,38 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
         const methodName = "onRowSelect";
         this.log( methodName + ".begin " + JSON.stringify( event ));
         super.onRowSelect( event );
-        this.tradeItOAuthService
-            .checkAuthentication( this.tradeItAccount, this.tradeItSecurityQuestionDialog )
-            .subscribe( (authenticateAccountResult: TradeItAuthenticateResult ) =>
-                        {
-                            this.log( methodName + " checkAuthentication result: " + JSON.stringify( authenticateAccountResult ));
-                            if ( isNullOrUndefined( authenticateAccountResult ))
+        if ( this.tradeItAccount.isTradeItAccount() )
+        {
+            this.tradeItOAuthService
+                .checkAuthentication( this.tradeItAccount, this.tradeItSecurityQuestionDialog )
+                .subscribe( ( authenticateAccountResult: TradeItAuthenticateResult ) =>
                             {
-                                this.log( methodName + " authentication is current, no action to take." );
-                            }
-                            else if ( authenticateAccountResult.isSuccess() )
+                                this.log( methodName + " checkAuthentication result: " + JSON.stringify( authenticateAccountResult ) );
+                                if ( isNullOrUndefined( authenticateAccountResult ) )
+                                {
+                                    this.log( methodName + " authentication is current, no action to take." );
+                                }
+                                else if ( authenticateAccountResult.isSuccess() )
+                                {
+                                    this.log( methodName + " account authenticated or kept alive" );
+                                    /*
+                                     * Need to update the tradeit account store.
+                                     */
+                                    this.tradeItAccountStateStore
+                                        .sendModelObjectChangedEvent( this, authenticateAccountResult.tradeItAccount );
+                                    this.tradeItAccount = authenticateAccountResult.tradeItAccount;
+                                    this.log( methodName + ".end" );
+                                }
+                                else
+                                {
+                                    this.tradeItErrorReporter.reportError( authenticateAccountResult );
+                                }
+                            },
+                            error =>
                             {
-                                this.log( methodName + " account authenticated or kept alive" );
-                                /*
-                                 * Need to update the tradeit account store.
-                                 */
-                                this.tradeItAccountStateStore
-                                    .sendModelObjectChangedEvent( this, authenticateAccountResult.tradeItAccount );
-                                this.tradeItAccount = authenticateAccountResult.tradeItAccount;
-                                this.log( methodName + ".end" );
-                            }
-                            else
-                            {
-                                this.tradeItErrorReporter.reportError( authenticateAccountResult );
-                            }
-                        },
-                        error =>
-                        {
-                            this.reportRestError( error );
-                        });
+                                this.reportRestError( error );
+                            } );
+        }
         this.log( methodName + ".end" );
     }
 
@@ -189,7 +203,8 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      */
     protected isAllowAdds(): boolean
     {
-        return false;
+        return !isNullOrUndefined( this.tradeItAccount ) &&
+               !this.tradeItAccount.isTradeItAccount();
     }
 
     /**
@@ -198,7 +213,8 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      */
     protected isAllowUpdates(): boolean
     {
-        return false;
+        return !isNullOrUndefined( this.tradeItAccount ) &&
+               !this.tradeItAccount.isTradeItAccount();
     }
 
 }

@@ -32,8 +32,15 @@ export class TradeItAccount extends ModelObject<TradeItAccount>
     @JsonProperty( "authTimestamp", DateConverter )
     public authTimestamp: Date = undefined;
 
+    @JsonProperty( "tradeItAccountFlag", Boolean )
+    public tradeItAccountFlag: boolean = undefined;
+
     public linkedAccounts: LinkedAccount[] = undefined;
 
+    public isTradeItAccount(): boolean
+    {
+        return this.tradeItAccountFlag;
+    }
     public getPrimaryKeyValue(): any
     {
         return this.id;

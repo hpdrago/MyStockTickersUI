@@ -85,12 +85,20 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
     {
         const methodName = "onAddButtonClick";
         this.log( methodName + ".begin" );
-        /*
-         * Need to setup the necessary window listeners so that the authentication (OAuth) window can be popped up.
-         */
-        this.tradeItOAuthService.register( this );
-        this.tradeItOAuthService
-            .openOAuthPopup( this, this.modelObject.brokerage );
+        if ( this.modelObject.isTradeItAccount() )
+        {
+            /*
+             * Need to setup the necessary window listeners so that the authentication (OAuth) window can be popped up.
+             */
+            this.tradeItOAuthService
+                .register( this );
+            this.tradeItOAuthService
+                .openOAuthPopup( this, this.modelObject.brokerage );
+        }
+        else
+        {
+            super.onAddButtonClick( false );
+        }
         this.log( methodName + ".end" );
     }
 

@@ -23,7 +23,9 @@ import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-cr
             } )
 export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccount>
 {
-    private brokerageItems: SelectItem[];
+    protected brokerageItems: SelectItem[];
+    protected accountSources: SelectItem[] = [{ label: 'TradeIt', value: true },
+                                              { label: 'Enter/Import Data', value: false }];
 
     /**
      * Constructor.
@@ -55,7 +57,6 @@ export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccoun
                tradeItCrudService );
     }
 
-
     public ngOnInit(): void
     {
         super.ngOnInit();
@@ -82,11 +83,14 @@ export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccoun
     protected createFormGroup(): FormGroup
     {
         this.debug( "initializeForm " );
+        this.modelObject
+            .tradeItAccountFlag = true;
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
-                'name':               new FormControl( this.modelObject.name, Validators.compose( [Validators.required,
+                'name':           new FormControl( this.modelObject.name, Validators.compose( [Validators.required,
                                                                                                              Validators.maxLength( 20 )])),
-                'brokerage':          new FormControl( this.modelObject.brokerage, Validators.required )
+                'accountSource':  new FormControl( this.modelObject.tradeItAccountFlag, Validators.required ),
+                'brokerage':      new FormControl( this.modelObject.brokerage, Validators.required )
             } );
         return stockNoteForm;
     }

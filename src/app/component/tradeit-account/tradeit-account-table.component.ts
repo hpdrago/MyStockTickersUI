@@ -56,8 +56,14 @@ export class TradeItAccountTableComponent extends TradeItAccountBaseTableCompone
                tradeItOAuthService,
                cookieService );
 
-        this.tradeItAccountController
-            .subscribeToAccountLinkedEvent( (tradeItAccount: TradeItAccount) => { this.onAccountLinkedEvent( tradeItAccount ); });
+    }
+
+    public ngOnInit()
+    {
+        super.ngOnInit();
+        this.addSubscription( 'LinkedAccountEvent',  this.tradeItAccountController
+            .subscribeToAccountLinkedEvent( (tradeItAccount: TradeItAccount) =>
+                                            { this.onAccountLinkedEvent( tradeItAccount ); }));
     }
 
     /**

@@ -22,7 +22,8 @@ import { Component } from "@angular/core";
                    <linked-account-table-refresh-button>
                    </linked-account-table-refresh-button>
                </ng-template>
-               <crud-table-buttons [editButtonTemplate]="editButtonTemplate"
+               <crud-table-buttons [addButtonTemplate]="addButtonTemplate" 
+                                   [editButtonTemplate]="editButtonTemplate"
                                    [deleteButtonTemplate]="deleteButtonTemplate"
                                    [refreshButtonTemplate]="refreshButtonTemplate">
                </crud-table-buttons>`

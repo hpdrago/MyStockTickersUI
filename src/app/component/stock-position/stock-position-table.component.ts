@@ -12,6 +12,8 @@ import { StockPosition } from '../../model/entity/stock-position';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { LinkedAccount } from '../../model/entity/linked-account';
+import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
+import { LinkedAccountController } from '../linked-account/linked-account-controller';
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -46,6 +48,8 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
                  protected stockPositionController: StockPositionController,
                  protected stockPositionFactory: StockPositionFactory,
                  protected stockPositionCrudService: StockPositionCrudService,
+                 protected tradeItAccountController: TradeItAccountController,
+                 protected linkedAccountController: LinkedAccountController,
                  protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.ALL_ON_DEMAND,
@@ -57,13 +61,25 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
                cookieService );
     }
 
+    public ngOnInit()
+    {
+        super.ngOnInit();
+        this.addSubscription( 'TradeItAccountTableSelectionChange',
+                              this.tradeItAccountController
+                                  .subscribeToTableSelectionChangeEvent( tradeItAccount =>
+                                                                             this.onTradeItAccountTableSelectionChange( tradeItAccount )));
+        this.addSubscription( 'LinkedAccountTableSelectionChange',
+                              this.linkedAccountController.subscribeToTableSelectionChangeEvent(
+                                  linkedAccount => this.onLinkedAccountTableSelectionChange( linkedAccount )));
+    }
+
     /**
      * This method is called when the user selects a row on the trade it table accounts.
      * @param {TradeItAccount} tradeItAccount
      */
-    public setTradeItAccount( tradeItAccount: TradeItAccount )
+    private onTradeItAccountTableSelectionChange( tradeItAccount: TradeItAccount )
     {
-        const methodName = 'setTradeItAccount';
+        const methodName = 'onTradeItAccountTableSelectionChange';
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
         this.linkedAccount = null;
@@ -74,10 +90,11 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
      * This method is called when the user changes the linked selected linked account;
      * @param {LinkedAccount} linkedAccount
      */
-    public setLinkedAccount( linkedAccount: LinkedAccount )
+    private onLinkedAccountTableSelectionChange( linkedAccount: LinkedAccount )
     {
-        const methodName = 'setLinkedAccount';
+        const methodName = 'onLinkedAccountTableSelectionChange';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ));
+        this.clearTable();
         /*
          * This method gets called twice, once for the table row click which initiates a keep session alive with TradeIt
          * which then updates the row again

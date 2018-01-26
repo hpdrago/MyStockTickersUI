@@ -4,8 +4,8 @@
             <!----------------------------------------------------------------------------------------------------------
             SEARCH
             ------------------------------------------------------------------------------------------------------------>
-            <stock-search-selected-companies [(ngModel)]="modelObject.tickerSymbol"
-                                             [tickerSymbol]="modelObject.tickerSymbol">
+            <stock-search-selected-companies [tickerSymbol]="modelObject.tickerSymbol"
+                                             (stockSelected)="onStockSelected($event)">
             </stock-search-selected-companies>
 
             <!----------------------------------------------------------------------------------------------------------

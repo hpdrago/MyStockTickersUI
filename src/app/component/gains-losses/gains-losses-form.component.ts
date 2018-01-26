@@ -80,7 +80,6 @@ export class GainsLossesFormComponent extends CrudFormComponent<GainsLosses>
             {
                 'tickerSymbol':     new FormControl( this.modelObject.tickerSymbol, Validators.required ),
                 'linkedAccountId':  new FormControl( this.modelObject.linkedAccount.id, Validators.required ),
-                'stockSearch':      new FormControl(),
                 'gains':            new FormControl( this.modelObject.gains ),
                 'losses':           new FormControl( this.modelObject.losses ),
             } );

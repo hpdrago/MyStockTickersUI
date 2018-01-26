@@ -276,8 +276,8 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
         this.availableColumns = new CrudTableColumns( this.additionalColumns );
         this.availableColumns
             .removeColumns( this.selectedColumns );
-        this.log( methodName + ' available columns: ' + JSON.stringify( this.availableColumns ));
-        this.log( methodName + ' selected columns: ' + JSON.stringify( this.selectedColumns ));
+        //this.log( methodName + ' available columns: ' + JSON.stringify( this.availableColumns ));
+        //this.log( methodName + ' selected columns: ' + JSON.stringify( this.selectedColumns ));
         this.displayColumns = this.selectedColumns
                                   .toArray();
         this.tickThenRun( () =>
@@ -286,7 +286,7 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
                                 .emit( this.displayColumns );
 
                           });
-        this.log( methodName + ' displayColumns: ' + JSON.stringify( this.displayColumns ));
+        //this.log( methodName + ' displayColumns: ' + JSON.stringify( this.displayColumns ));
     }
 
     /**
