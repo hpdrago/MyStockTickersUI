@@ -44,6 +44,6 @@ TABLE DEFINITION
                    (rowSelected)="onRowSelect($event)"
                    (onLazyLoad)="lazyLoadTable($event)"
                    [lazy]="true"
-                   [loadingData]="isLoading()"
+                   [loadingData]="loading"
                    (onRowDblclick)="onRowDoubleClick($event)">
 </crud-table-layout>

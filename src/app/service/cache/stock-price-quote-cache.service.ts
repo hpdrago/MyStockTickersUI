@@ -6,6 +6,7 @@ import { ToastsManager } from "ng2-toastr";
 import { AsyncCacheService } from './async-cache.service';
 import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 import { StockPriceQuoteContainer } from '../../model/common/stock-price-quote-container';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This class caches stock prices by ticker symbol.
@@ -37,7 +38,7 @@ export class StockPriceQuoteCacheService extends AsyncCacheService<string,StockP
         const methodName = 'fetchCachedDataFromBackend';
         this.debug( methodName + ' ' + tickerSymbol );
         return this.stockService
-                   .getStockPriceQuote( tickerSymbol )
+                   .getStockPriceQuote( tickerSymbol );
     }
 
     /**
@@ -48,8 +49,25 @@ export class StockPriceQuoteCacheService extends AsyncCacheService<string,StockP
     {
         const methodName = 'extractStockQuotes';
         this.logMethodBegin( methodName );
-        containers.forEach( container => this.addCacheData( container.tickerSymbol,
-                                                                      container.stockPriceQuote ));
+        containers.forEach( container =>
+                            {
+                                if ( isNullOrUndefined( container.tickerSymbol ))
+                                {
+                                    this.logError( methodName + ' container has null ticker symbol' );
+                                }
+                                else if ( isNullOrUndefined( container.stockPriceQuote ))
+                                {
+                                    let stockPriceQuote = this.stockPriceQuoteFactory.newModelObject();
+                                    stockPriceQuote.tickerSymbol = container.tickerSymbol;
+                                    this.addCacheData( container.tickerSymbol,
+                                                       stockPriceQuote )
+                                }
+                                else
+                                {
+                                    this.addCacheData( container.tickerSymbol,
+                                                       container.stockPriceQuote )
+                                }
+                            });
         this.logMethodEnd( methodName );
     }
 

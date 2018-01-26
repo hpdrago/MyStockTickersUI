@@ -70,8 +70,6 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
         this.linkedAccount = null;
-        this.portfolioStocksTableComponent
-            .setTradeItAccount( tradeItAccount );
         this.clearTable();
     }
 
@@ -84,19 +82,6 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
         const methodName = 'setLinkedAccount';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ) );
         this.linkedAccount = linkedAccount;
-        this.portfolioStocksTableComponent
-            .setLinkedAccount( linkedAccount );
-    }
-
-    /**
-     * Load the portfolios when this component is created
-     */
-    public ngOnInit(): void
-    {
-        super.ngOnInit();
-        this.loadTable();
-        this.portfolioStocksTableComponent
-            .registerForPortfolioStockChanges( () => this.loadPortfolio() );
     }
 
     private loadPortfolio()
@@ -111,25 +96,6 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
                             var index: number = this.indexOf( portfolio );
                             this.updateModelObjectTableRow( index, portfolio );
                         });
-    }
-
-    /**
-     * This method is called when the user has clicked on a portfolio.
-     * The stocks for the portfolio will be retrieved and displayed in
-     * the stocks table
-     * @param portfolio
-     */
-    protected onRowSelect( portfolio: Portfolio ): void
-    {
-        this.logger.log( 'onRowSelect ' + JSON.stringify( this.modelObject ));
-        super.onRowSelect( portfolio );
-        this.portfolioStocksTableComponent
-            .loadPortfolio( this.modelObject );
-    }
-
-    protected isSelectedPortfolio( portfolio: Portfolio )
-    {
-        return this.modelObject != null && this.modelObject.id === portfolio.id;
     }
 
     /**

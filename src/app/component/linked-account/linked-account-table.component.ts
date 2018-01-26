@@ -109,11 +109,13 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
             .linkedAccounts
             .forEach( (linkedAccount) =>
                       {
+                          this.loading = true;
                           this.linkedAccountCrudService
                               .getUpdatedLinkedAccount( linkedAccount )
                               .subscribe( updatedLinkedAccount =>
                                           {
                                               this.log( methodName + " updating " + JSON.stringify( updatedLinkedAccount ))
+                                              this.loading = false;
                                               this.updateModelObjectRow( updatedLinkedAccount );
                                           });
                       });

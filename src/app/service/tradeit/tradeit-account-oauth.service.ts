@@ -127,7 +127,8 @@ export class TradeItAccountOAuthService extends BaseTradeItService
     public handleOAuthResult( event: any ): Observable<TradeItAccount>
     {
         var methodName = "handleOAuthResult";
-        this.log( methodName + " " + JSON.stringify( event ));
+        this.log( `${methodName} + " event.data: ${event.data} requestInProcess: ${this.requestInProcess} 
+                  requestCompleted: ${this.requestCompleted} destroyed: ${this.destroyed}` );
         if ( event.data && !this.requestInProcess && !this.requestCompleted && !this.destroyed )
         {
             this.requestInProcess = true;

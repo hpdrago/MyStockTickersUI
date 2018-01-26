@@ -70,20 +70,6 @@ export class PortfolioStockCrudService extends BaseStockService<PortfolioStock>
         return keyColumns;
     }
 
-    /**
-     * Get the portfolio stock for the customer and portfolio id
-     * @param customerId
-     * @param portfolioId
-     * @return {Observable<Array<PortfolioStock>>}
-     */
-    public getPortfolioStocks( customerId: string, portfolioId: string ): Observable<Array<PortfolioStock>>
-    {
-        var portfolioStock: PortfolioStock = this.portfolioStockFactory.newModelObject();
-        portfolioStock.customerId = customerId;
-        portfolioStock.portfolioId = portfolioId;
-        return super.getModelObjectList( portfolioStock );
-    }
-
     public getModelObjectList( modelObject: PortfolioStock ): Observable<Array<PortfolioStock>>
     {
         return super.getModelObjectList( modelObject )

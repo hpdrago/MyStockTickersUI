@@ -6,7 +6,7 @@
 
 import { ModelObject } from "../../../model/common/model-object";
 import { BaseCrudComponent } from "../common/base-crud.component";
-import { Input, OnInit, ViewChild } from "@angular/core";
+import { EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { isNullOrUndefined } from "util";
 import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
@@ -198,6 +198,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         const methodName = "lazyLoadTable";
         this.debug( methodName + '.begin ' + JSON.stringify( event ) );
+        this.loading = true;
         this.crudRestService
             .getPage( this.modelObject, event )
             .catch( error =>
@@ -309,11 +310,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( "onTableLoad.begin" );
         if ( !isNullOrUndefined( modelObjects ) && modelObjects.length > 0 )
         {
+            this.totalRows = modelObjects.length;
             this.modelObjectRows = modelObjects;
             this.debug( methodName + " loaded " + this.modelObjectRows.length + " modelObjectRows" );
         }
         else
         {
+            this.totalRows = 0;
             this.modelObjectRows = [];
             this.debug( methodName + " loaded 0 modelObjectRows" );
         }
@@ -659,6 +662,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         const methodName = "onRowUnSelect";
         this.debug( methodName + ".begin " + JSON.stringify( event ) );
+        debugger
         this.crudStateStore
             .sendModelObjectChangedEvent( this, null );
         this.crudController
@@ -666,21 +670,10 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( methodName + ".end" );
     }
 
-    /**
-     * This method is called when the user double clicks on a row in the table.
-     * @param event
-     */
     protected onRowDoubleClick( event ): void
     {
         var methodName = "onRowDoubleClick";
         this.debug( methodName + ".begin " + JSON.stringify( event ) + " allowUpdates: " + this.isAllowUpdates() );
-        if ( this.isAllowUpdates() )
-        {
-            //this.onRowSelect( event );
-            //this.showFormToEdit();
-            this.crudController
-                .sendTableEditButtonClickedEvent();
-        }
         this.debug( methodName + ".end" );
     }
 
@@ -737,10 +730,5 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected isAllowUpdates(): boolean
     {
         return true;
-    }
-
-    protected isLoading(): boolean
-    {
-        return this.loading;
     }
 }

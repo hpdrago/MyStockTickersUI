@@ -125,8 +125,8 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         else
         {
             this.debug( methodName + ' ' + key + ' is in the cache with ' + subject.observers.length + ' observers' );
-            subscription = subject.subscribe( receiveCachedData );
             this.getAndCheckDataExpiration( key );
+            subscription = subject.subscribe( receiveCachedData );
         }
         return subscription;
     }
@@ -142,15 +142,39 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         const methodName = 'getAndCheckDataExpiration';
         this.debug( methodName + '.begin ' + key );
         this.checkKey( key );
+        /*
+         * Check to see if the key is currently being loaded.
+         */
         let returnObservable: Observable<T> = this.workingMap.get( key );
         if ( isNullOrUndefined( returnObservable ))
         {
+            this.debug( methodName + ' not loading' );
+            /*
+             * Verify that the cache contains a valid object, if not fetch it
+             */
             let subject: BehaviorSubject<T> = this.cacheSubjectMap
                                                   .get( key );
             let cachedData: T = subject.getValue();
-            if ( !isNullOrUndefined( cachedData ) )
+            if ( isNullOrUndefined( cachedData ) )
             {
-                this.debug( methodName + ' ' + JSON.stringify( cachedData ) );
+                /*
+                 * Create an initial model object, add it to the cache, and send it to the subscriber so that it
+                 * has a valid object (not null/undefined) and thus it won't have to make those type of checks.
+                 */
+                this.debug( methodName + ' ' + key + ' data is null, sending initial model object' );
+                let modelObject = this.createCachedModelObject( key );
+                this.cacheSubjectMap
+                    .get( key )
+                    .next( modelObject );
+                /*
+                 * Fetch the data and return the obervable of the fetch.
+                 */
+                this.debug( methodName + ' ' + key + ' fetching data...' );
+                returnObservable = this.fetchData( key );
+            }
+            else
+            {
+                this.debug( methodName + ' found cached data ' + JSON.stringify( cachedData ) );
                 let expirationTime: Date = cachedData.getExpirationTime();
                 if ( isNullOrUndefined( expirationTime ) )
                 {
@@ -159,6 +183,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
                 }
                 else
                 {
+                    this.debug( methodName + ' data is current' );
                     if ( expirationTime instanceof Date &&
                          expirationTime.getTime() < Date.now() )
                     {
@@ -172,15 +197,24 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
                     }
                     else
                     {
+                        this.debug( methodName + ' valid data ' + key + ' ' + JSON.stringify( cachedData ));
                         returnObservable = Observable.of( cachedData );
                     }
                 }
             }
-            else
+        }
+        else
+        {
+            this.debug( methodName + ' is loading' );
+            let subject: BehaviorSubject<T> = this.cacheSubjectMap
+                                                  .get( key );
+            let cachedData: T = subject.getValue();
+            if ( isNullOrUndefined( cachedData ) )
             {
-                this.debug( methodName + ' ' + key + ' data is null, fetching data...' );
-                returnObservable = this.fetchData( key );
+                this.debug( methodName + ' cache data is null' );
+
             }
+            returnObservable = this.workingMap.get( key );
         }
         this.debug( methodName + '.end ' + key );
         return returnObservable;
@@ -278,8 +312,9 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
     public addCacheData( key: K, cacheData: T ): BehaviorSubject<T>
     {
         let methodName = 'addCacheData';
-        this.debug( methodName + ' ' + key )
+        this.debug( methodName + ' ' + key + ' ' + JSON.stringify( cacheData ) );
         this.checkKey( key );
+        this.checkArgument( 'cachedData', cacheData );
         let subject: BehaviorSubject<T> = this.cacheSubjectMap
                                               .get( key );
         if ( isNullOrUndefined( subject ))
@@ -303,10 +338,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         /*
          * Send the model object with the cache state of STALE so the component will display the loadingData message.
          */
-        let modelObject: T = this.modelObjectFactory.newModelObject();
-        modelObject.setKey( key );
-        modelObject.setCacheState( CachedValueState.STALE );
-        modelObject.setCacheError( '' );
+        let modelObject = this.createCachedModelObject( key );
         /*
          * Add the subject holding the model object to the cache.
          */
@@ -314,6 +346,21 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         this.cacheSubjectMap
             .set( key, subject );
         return subject;
+    }
+
+    /**
+     * Create the cached model object that will be placed in the cache until the complete model object can be retrieved
+     * from the back end.
+     * @param {K} key
+     * @return {T}
+     */
+    private createCachedModelObject( key: K )
+    {
+        let modelObject: T = this.modelObjectFactory.newModelObject();
+        modelObject.setKey( key );
+        modelObject.setCacheState( CachedValueState.STALE );
+        modelObject.setCacheError( '' );
+        return modelObject;
     }
 
     /**
@@ -328,5 +375,10 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         {
             throw ReferenceError( `Key: '${key}' is not valid` );
         }
+    }
+
+    protected debug( message: string ): void
+    {
+        super.debug( message );
     }
 }

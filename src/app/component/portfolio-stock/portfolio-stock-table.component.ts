@@ -12,6 +12,10 @@ import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-cr
 import { CookieService } from 'ngx-cookie-service';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
 import { LinkedAccount } from '../../model/entity/linked-account';
+import { PortfolioController } from '../portfolio/portfolio-controller';
+import { LinkedAccountController } from '../linked-account/linked-account-controller';
+import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This component lists all of the stocks for a portfolio
@@ -38,6 +42,9 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
      * @param {PortfolioStockController} portfolioStockController
      * @param {PortfolioStockFactory} portfolioStockFactory
      * @param {PortfolioStockCrudService} portfolioStockCrudService
+     * @param {PortfolioController} portfolioController
+     * @param {LinkedAccountController} linkedAccountController
+     * @param {TradeItAccountController} tradeItAccountController
      * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
@@ -46,9 +53,12 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
                  protected portfolioStockController: PortfolioStockController,
                  protected portfolioStockFactory: PortfolioStockFactory,
                  protected portfolioStockCrudService: PortfolioStockCrudService,
+                 protected portfolioController: PortfolioController,
+                 protected linkedAccountController: LinkedAccountController,
+                 protected tradeItAccountController: TradeItAccountController,
                  protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.ALL_ON_CREATE,
+        super( TableLoadingStrategy.ALL_ON_DEMAND,
                toaster,
                portfolioStockStateStore,
                portfolioStockController,
@@ -57,55 +67,39 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
                cookieService );
     }
 
-    private getAddButtonText(): string
+    public ngOnInit()
     {
-        return `Add Stock to ${this.portfolio.name} Portfolio`;
+        super.ngOnInit();
+        this.portfolioController
+            .subscribeToTableSelectionChangeEvent( portfolio => this.onPortfolioChange( portfolio ));
+        this.linkedAccountController
+            .subscribeToTableSelectionChangeEvent( linkedAccount => this.onLinkedAccountChange( linkedAccount ));
+        this.tradeItAccountController
+            .subscribeToTableSelectionChangeEvent( tradeItAccount => this.onTradeItAccountChange( tradeItAccount ));
     }
-
-    /**
-     * Receive a notification when the content of the table changes which includes: updates, adds and deletes.
-     * @param observer
-     * @return {any}
-     */
-    public registerForPortfolioStockChanges( observer )
-    {
-        return this.portfolioStockController
-                   .subscribeToTableContentChangeEvent( observer );
-    }
-
-
 
     /**
      * Load the stocks of the portfolio
      * @param portfolio
      */
-    public loadPortfolio( portfolio: Portfolio )
+    /**
+     * This method is called from {@code ngOnInit} and can be overridden by subclasses to load the table with the
+     * model objects.
+     */
+    protected loadTable(): void
     {
-        this.logger.log( 'loadPortfolio ' + JSON.stringify( portfolio ));
-        this.title = portfolio.name + " Portfolio Stocks";
-        this.portfolio = portfolio;
-        this.portfolioStockCrudService
-            .getPortfolioStocks( this.session.getLoggedInUserId(), portfolio.id )
-            .subscribe( (stocks: PortfolioStock[]) =>
-                        {
-                            if ( stocks.length > 0 )
-                            {
-                                this.modelObjectRows = stocks;
-                            }
-                            else
-                            {
-                                this.modelObjectRows = [];
-                            }
-                        });
+        this.modelObject
+            .portfolioId = this.portfolio.id;
+        super.loadTable();
     }
 
     /**
-     * This method is called when the user selects a row on the trade it table accounts.
+     * This method is called when the user changes the selection on the tradeit account able.
      * @param {TradeItAccount} tradeItAccount
      */
-    public setTradeItAccount( tradeItAccount: TradeItAccount )
+    public onTradeItAccountChange( tradeItAccount: TradeItAccount )
     {
-        const methodName = 'setTradeItAccount';
+        const methodName = 'onTradeItAccountChange';
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
         this.linkedAccount = null;
@@ -113,13 +107,33 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
     }
 
     /**
-     * This method is called when the user changes the linked selected linked account;
+     * This method is called when the user changes the selection on the linked account table.
      * @param {LinkedAccount} linkedAccount
      */
-    public setLinkedAccount( linkedAccount: LinkedAccount )
+    public onLinkedAccountChange( linkedAccount: LinkedAccount )
     {
-        const methodName = 'setLinkedAccount';
+        const methodName = 'onLinkedAccountChange';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ) );
         this.linkedAccount = linkedAccount;
+    }
+
+    /**
+     * This method is called when the user changes the selection on the portfolio table.
+     * @param {Portfolio} portfolio
+     */
+    public onPortfolioChange( portfolio: Portfolio )
+    {
+        const methodName = 'onPortfolioChange';
+        this.log( methodName + ".begin " + JSON.stringify( portfolio ) );
+        this.title = portfolio.name + " Portfolio Stocks";
+        this.portfolio = portfolio;
+        if ( !isNullOrUndefined( portfolio ))
+        {
+            this.loadTable();
+        }
+        else
+        {
+            this.clearTable();
+        }
     }
 }

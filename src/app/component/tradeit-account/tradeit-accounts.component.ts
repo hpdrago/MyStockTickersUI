@@ -9,6 +9,7 @@ import { LinkedAccountController } from '../linked-account/linked-account-contro
 import { StockPositionTableComponent } from '../stock-position/stock-position-table.component';
 import { LinkedAccount } from '../../model/entity/linked-account';
 import { PortfolioTableComponent } from '../portfolio/portfolio-table.component';
+import { isNullOrUndefined } from 'util';
 
 /**
  * Created by mike on 10/8/2016.
@@ -61,6 +62,12 @@ export class TradeItAccountsComponent extends BaseComponent implements OnInit
             this.linkedAccountController
                 .subscribeToTableSelectionChangeEvent( (linkedAccount: LinkedAccount) =>
                                                            this.onLinkedAccountTableSelectionChange( linkedAccount )));
+    }
+
+    protected portfolioTabDisabled(): boolean
+    {
+        return isNullOrUndefined( this.linkedAccount ) ||
+               isNullOrUndefined( this.tradeItAccount );
     }
 
     /**

@@ -45,7 +45,7 @@ TABLE DEFINITION
                    (rowUnselected)="onRowUnSelect($event)"
                    (onLazyLoad)="lazyLoadTable($event)"
                    [lazy]="true"
-                   [loadingData]="isLoading()"
+                   [loadingData]="loading"
                    [showCustomizeButton]="false"
                    [showHeaderButtons]="false"
                    (onRowDblclick)="onRowDoubleClick($event)">

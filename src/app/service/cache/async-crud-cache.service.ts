@@ -6,6 +6,10 @@ import { ModelObjectFactory } from '../../model/factory/model-object.factory';
 import { Injectable } from '@angular/core';
 import { ModelObject } from '../../model/common/model-object';
 
+/**
+ * This cache service intercepts CrudActionHandler events and updates the underlying cache based on an add, delete, update
+ * of model objects.
+ */
 @Injectable()
 export abstract class AsyncCrudCacheService<K,T extends CacheStateContainer<K> & ModelObject<T>>  extends AsyncCacheService<K,T>
 {
@@ -40,6 +44,8 @@ export abstract class AsyncCrudCacheService<K,T extends CacheStateContainer<K> &
      */
     protected onModelObjectDelete( modelObject: T )
     {
+        const methodName = 'onModelObjectDelete';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.delete( modelObject.getKey() );
     }
 
@@ -49,6 +55,8 @@ export abstract class AsyncCrudCacheService<K,T extends CacheStateContainer<K> &
      */
     protected onModelObjectSave( modelObject: T )
     {
+        const methodName = 'onModelObjectSave';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.addCacheData( modelObject.getKey(), modelObject );
     }
 
@@ -58,6 +66,8 @@ export abstract class AsyncCrudCacheService<K,T extends CacheStateContainer<K> &
      */
     protected onModelObjectAdd( modelObject: T )
     {
+        const methodName = 'onModelObjectAdd';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.addCacheData( modelObject.getKey(), modelObject );
     }
 }

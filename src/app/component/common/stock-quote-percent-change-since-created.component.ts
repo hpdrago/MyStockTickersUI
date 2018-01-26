@@ -68,8 +68,8 @@ export class StockQuotePercentChangeSinceCreatedComponent extends BaseComponent
      */
     protected onStockPriceQuoteChange( stockPriceQuote: StockPriceQuote )
     {
-        this.checkArgument( 'stockPriceQuote', this.stockPriceQuote );
         this.log( 'onStockPriceQuoteChange ' + JSON.stringify( stockPriceQuote ));
+        this.checkArgument( 'stockPriceQuote', stockPriceQuote );
         this.stockPriceQuote = stockPriceQuote;
     }
 

@@ -65,11 +65,13 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
         const methodName = "onRowSelect";
         this.log( methodName + ".begin " + JSON.stringify( event ));
         let modelObject: TradeItAccount = this.createModelObjectFromRowSelectionEvent( event );
+        this.loading = true;
         this.tradeItOAuthService
             .checkAuthentication( modelObject, this.tradeItSecurityQuestionDialog )
             .subscribe( (authenticateAccountResult: TradeItAuthenticateResult ) =>
                         {
                             this.log( methodName + " checkAuthentication result: " + JSON.stringify( authenticateAccountResult ));
+                            this.loading = false;
                             if ( isNullOrUndefined( authenticateAccountResult ))
                             {
                                 this.log( methodName + " authentication is current" );
@@ -100,6 +102,7 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
                         },
                         error =>
                         {
+                            this.loading = false;
                             this.reportRestError( error );
                         });
         this.log( methodName + ".end" );

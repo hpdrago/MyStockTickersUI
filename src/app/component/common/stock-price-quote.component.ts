@@ -4,7 +4,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { StockPriceQuoteCacheService } from '../../service/cache/stock-price-quote-cache.service';
 import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
-import { isNullOrUndefined } from 'util';
 
 /**
  * This component displays a single property of a {@code StockPriceQuote} model object.
@@ -51,8 +50,6 @@ export class StockPriceQuoteComponent extends BaseComponent implements OnInit
                         private stockPriceQuoteFactory: StockPriceQuoteFactory )
     {
         super( toaster );
-        this.stockPriceQuote = this.stockPriceQuoteFactory.newModelObject();
-        this.stockPriceQuoteChange.emit( this.stockPriceQuote );
     }
 
     /**
@@ -60,12 +57,16 @@ export class StockPriceQuoteComponent extends BaseComponent implements OnInit
      */
     public ngOnInit(): void
     {
+        this.checkArgument( 'tickerSymbol', this.tickerSymbol );
+        this.stockPriceQuote = this.stockPriceQuoteFactory.newModelObject();
+        this.stockPriceQuote.tickerSymbol = this.tickerSymbol;
+        this.stockPriceQuoteChange.emit( this.stockPriceQuote );
         this.tickThenRun( () =>
                           {
                               this.stockPriceQuoteCache
                                   .subscribe( this.tickerSymbol,
                                               (stockPriceQuote: StockPriceQuote) =>
-                                                          this.onReceiveStockPriceQuote( stockPriceQuote ) );
+                                                            this.onReceiveStockPriceQuote( stockPriceQuote ) );
                           })
     }
 
@@ -77,11 +78,8 @@ export class StockPriceQuoteComponent extends BaseComponent implements OnInit
     {
         const methodName = 'onReceiveStockPriceQuote';
         this.log( methodName + ' ' + JSON.stringify( stockPriceQuote ));
-        if ( !isNullOrUndefined( stockPriceQuote ) &&
-             !isNullOrUndefined( stockPriceQuote.tickerSymbol ))
-        {
-            this.stockPriceQuote = stockPriceQuote;
-            this.stockPriceQuoteChange.emit( stockPriceQuote );
-        }
+        this.checkArgument( 'stockPriceQuote', stockPriceQuote );
+        this.stockPriceQuote = stockPriceQuote;
+        this.stockPriceQuoteChange.emit( stockPriceQuote );
     }
 }
