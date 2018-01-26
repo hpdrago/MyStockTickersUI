@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { BaseComponent } from '../common/base.component';
 import { ToastsManager } from 'ng2-toastr';
 import { AppConfigurationService } from '../../service/app-configuration.service';
@@ -18,13 +18,12 @@ import { StringDTO } from '../../model/entity/string-d-t-o';
     styleUrls: ['./gains-losses-import-dialog.component.css'],
     encapsulation: ViewEncapsulation.None
  })
-export class GainsLossesImportDialogComponent extends BaseComponent implements OnInit
+export class GainsLossesImportDialogComponent extends BaseComponent implements OnInit, AfterViewInit
 {
-    //protected formGroup: FormGroup;
     protected importConfiguration: ImportConfiguration = new ImportConfiguration();
 
     /**
-     * Controlls the display/hiding of the dialog
+     * Controls the display/hiding of the dialog
      */
     protected displayDialog: boolean;
 
@@ -50,15 +49,18 @@ export class GainsLossesImportDialogComponent extends BaseComponent implements O
      */
     protected importFormats: SelectItem[] = [];
 
-    private readonly IMPORT_FORMAT_TD_AMERITRADE: string = 'TDAmeritrade';
-    private readonly IMPORT_FORMAT_SCOTTRADE: string = 'Scottrade';
+    protected readonly IMPORT_FORMAT_CUSTOM: string = 'Custom';
+    protected readonly IMPORT_FORMAT_TD_AMERITRADE: string = 'TDAmeritrade';
+    protected readonly IMPORT_FORMAT_SCOTTRADE: string = 'Scottrade';
 
     /**
      * Contains the selected import format.
      */
-    protected importFormat: string = this.IMPORT_FORMAT_TD_AMERITRADE;
+    protected importFormat: string;
 
     protected linkedAccountId: string;
+
+    protected dialogHeight: number;
 
     /**
      * Constructor.
@@ -80,7 +82,6 @@ export class GainsLossesImportDialogComponent extends BaseComponent implements O
         this.debug( "BaseComponent.constructor" );
     }
 
-
     /**
      * Initialize the component.
      */
@@ -88,21 +89,35 @@ export class GainsLossesImportDialogComponent extends BaseComponent implements O
     {
         this.gainsLossesController
             .subscribeToImportButtonClickedEvent( () => this.onDisplay() );
-        //this.importModes.push( { label: 'Add to current gains/losses', modelObjectRows: this.IMPORT_MODE_CUMULATIVE } );
-        //this.importModes.push( { label: 'Replace existing gains/losses', modelObjectRows: this.IMPORT_MODE_REPLACE } );
-        /*
-        this.formGroup = this.formBuilder.group(
+        this.setCustomConfiguration();
+    }
+
+    public ngAfterViewInit(): void
+    {
+        this.importFormat = this.IMPORT_FORMAT_CUSTOM;
+        this.dialogHeight = 600;
+    }
+
+    /**
+     * This method is called whenever the import format changes.
+     * @param event
+     */
+    protected onImportFormatChange(event)
+    {
+        if ( this.importFormat === this.IMPORT_FORMAT_CUSTOM )
         {
-            'clearEntries': new FormControl( 'false' ),
-            'importFormat': new FormControl( this.importFormat )
-        });
-        */
-        //this.formGroup.controls['importFormat'].setValue( this.IMPORT_FORMAT_TD_AMERITRADE );
+            this.dialogHeight = 600;
+        }
+        else
+        {
+            this.dialogHeight = 400;
+        }
     }
 
     private onDisplay(): void
     {
         this.displayDialog = true;
+        this.importFormats.push( { label: 'Custom', value: this.IMPORT_FORMAT_CUSTOM });
         this.importFormats.push( { label: 'TD Ameritrade', value: this.IMPORT_FORMAT_TD_AMERITRADE });
         this.importFormats.push( { label: 'Scottrade', value: this.IMPORT_FORMAT_SCOTTRADE });
     }
@@ -133,6 +148,7 @@ export class GainsLossesImportDialogComponent extends BaseComponent implements O
      */
     private setScottradeConfiguration()
     {
+        this.dialogHeight = 400;
         this.importConfiguration.skipHeaderRows = 6;
         this.importConfiguration.skipFooterRows = 1;
         this.importConfiguration.tickerSymbolEmbeddedWithParens = false;
@@ -147,6 +163,7 @@ export class GainsLossesImportDialogComponent extends BaseComponent implements O
      */
     private setTDAmeritradeConfiguration()
     {
+        this.dialogHeight = 400;
         this.importConfiguration.skipHeaderRows = 1;
         this.importConfiguration.skipFooterRows = 1;
         this.importConfiguration.tickerSymbolEmbeddedWithParens = true;
@@ -154,6 +171,18 @@ export class GainsLossesImportDialogComponent extends BaseComponent implements O
         this.importConfiguration.gainsColumn = -1;
         this.importConfiguration.lossColumn = -1;
         this.importConfiguration.gainsLossColumn = 8;
+    }
+
+    private setCustomConfiguration()
+    {
+        this.dialogHeight = 600;
+        this.importConfiguration.skipHeaderRows = 1;
+        this.importConfiguration.skipFooterRows = 0;
+        this.importConfiguration.tickerSymbolEmbeddedWithParens = false;
+        this.importConfiguration.tickerSymbolColumn = 1;
+        this.importConfiguration.gainsColumn = -1;
+        this.importConfiguration.lossColumn = -1;
+        this.importConfiguration.gainsLossColumn = -1;
     }
 
     /**
@@ -217,5 +246,13 @@ export class GainsLossesImportDialogComponent extends BaseComponent implements O
         this.displayDialog = false;
         this.gainsLossesController
             .sendRefreshButtonClickedEvent();
+    }
+
+    /**
+     * This method is called when the cancel button is clicked. The dialog will be closed.
+     */
+    protected onCancelButtonClick()
+    {
+        this.displayDialog = false;
     }
 }

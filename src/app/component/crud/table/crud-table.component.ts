@@ -20,6 +20,7 @@ import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { Observable } from 'rxjs/Rx';
 import { CookieService } from 'ngx-cookie-service';
 import { CrudTableColumn } from './crud-table-column';
+import { ErrorObservable } from 'rxjs/src/observable/ErrorObservable';
 
 
 /**
@@ -321,8 +322,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                 .catch( error =>
                         {
                             this.setLoading( false );
-                            this.showError( error );
-                            return Observable.throw( error );
+                            return this.onTableLoadError( error );
                         })
                 .subscribe( ( modelObjects: T[] ) =>
                             {
@@ -332,6 +332,17 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                             });
 
         }
+    }
+
+    /**
+     * This method is called when there is an error encountered loading the table.
+     * @param error
+     * @return {ErrorObservable}
+     */
+    protected onTableLoadError( error )
+    {
+        this.showError( error );
+        return Observable.throw( error );
     }
 
     /**

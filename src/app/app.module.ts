@@ -41,6 +41,7 @@ import {
     TabMenuModule,
     TabViewModule,
     ToggleButtonModule,
+    SpinnerModule,
     TooltipModule
 } from "primeng/primeng";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
@@ -394,6 +395,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         ToggleButtonModule,
         ProgressSpinnerModule,
         PickListModule,
+        SpinnerModule,
         // Third Party modules,
         ToastModule.forRoot(),
 

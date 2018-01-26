@@ -43,8 +43,7 @@ TABLE DEFINITION
                    [(selection)]="selectedModelObject"
                    (rowSelected)="onRowSelect($event)"
                    (rowUnselected)="onRowUnSelect($event)"
-                   (onLazyLoad)="lazyLoadTable($event)"
-                   [lazy]="true"
+                   [lazy]="false"
                    [loadingData]="loading"
                    (onLazyLoadEvent)="lazyLoadTable($event)"
                    (onRowDblclick)="onRowDoubleClick($event)">

@@ -73,8 +73,21 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     public ngOnInit()
     {
         const methodName = "ngOnInit";
-        this.debug( methodName + ".begin" );
-        this.debug( methodName + ".end" );
+        //this.debug( methodName + ".begin" );
+        //this.debug( methodName + ".end" );
+    }
+
+    /**
+     * Destroy the instance.
+     */
+    public ngOnDestroy(): void
+    {
+        /*
+         * Detach from change detector to prevent errors from change detection on destroyed views.
+         */
+        this.changeDetector
+            .detach();
+        super.ngOnDestroy();
     }
 
     /**
@@ -84,10 +97,10 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     public ngAfterViewInit(): void
     {
         const methodName = "ngAfterViewInit";
-        this.debug( methodName + ".begin" );
+        //this.debug( methodName + ".begin" );
         this.subscribeToModelObjectChangeEvents();
         this.subscribeToCrudStateStoreEvents();
-        this.debug( methodName + ".end" );
+        //this.debug( methodName + ".end" );
         //this.logMethodEnd( methodName );
     }
 
@@ -149,7 +162,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     private subscribeToModelObjectChangeEvents()
     {
         const methodName = 'subscribeToModelObjectChangeEvents';
-        this.debug( methodName + '.begin' );
+        //this.debug( methodName + '.begin' );
         this.addSubscription( 'subscribeToModelObjectSavedEvent',
             this.crudController
                 .subscribeToModelObjectSavedEvent( (modelObject: T) => this.onModelObjectSaved( modelObject )));
@@ -159,7 +172,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         this.addSubscription( 'subscribeToModelObjectAddedEvent',
             this.crudController
                 .subscribeToModelObjectAddedEvent( ( modelObject: T) => this.onModelObjectCreated( modelObject )));
-        this.debug( methodName + '.end' );
+        //this.debug( methodName + '.end' );
     }
 
     /**
@@ -173,7 +186,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         const methodName = 'isReceivedOurOwnEvent';
         let senderMatches = this === modelObjectChangedEvent.sender;
         let modelObjectMatches = this.modelObject === modelObjectChangedEvent.modelObject;
-        this.debug( `${methodName} senderMatches: ${senderMatches} modelObjectMatches: ${modelObjectMatches}` );
+        //this.debug( `${methodName} senderMatches: ${senderMatches} modelObjectMatches: ${modelObjectMatches}` );
         if ( modelObjectChangedEvent.sender == this && this.modelObject == modelObjectChangedEvent.modelObject )
         {
             this.debug( callingMethodName + " received our own event" );
@@ -348,12 +361,12 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
 
     protected set busyIndicator( busyIndicator: Subscription)
     {
-        this.debug( "busyIndicator setting displayProgressBar to true");
+        //this.debug( "busyIndicator setting displayProgressBar to true");
         this._busyIndicator = busyIndicator;
         this.displayProgressBar = true;
         this._busyIndicator.add( ()=>
                                  {
-                                     this.debug( "busyIndicator setting displayProgressBar to false" );
+                                     //this.debug( "busyIndicator setting displayProgressBar to false" );
                                      this.displayProgressBar = false
                                  })
     }

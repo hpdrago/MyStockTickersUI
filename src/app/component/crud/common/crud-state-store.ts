@@ -181,4 +181,9 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
     {
         return " sending to " + subject.observers.length + " observers";
     }
+
+    // override to eliminate log messages.
+    protected debug( message: string ): void
+    {
+    }
 }

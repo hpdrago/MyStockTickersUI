@@ -16,6 +16,8 @@ import { TradeItAccountController } from '../tradeit-account/tradeit-account-con
 import { LinkedAccountController } from '../linked-account/linked-account-controller';
 import { LazyLoadEvent } from 'primeng/api';
 import { isNullOrUndefined } from 'util';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { RestException } from '../../common/rest-exception';
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -88,7 +90,6 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
         const methodName = 'onTradeItAccountTableSelectionChange';
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
-        this.linkedAccount = null;
         this.resetFilterModelObject();
         this.clearTable();
     }
@@ -101,10 +102,10 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
     {
         const methodName = 'onLinkedAccountTableSelectionChange';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ));
-        this.clearTable();
         if ( isNullOrUndefined( linkedAccount ))
         {
             this.linkedAccount = null;
+            this.clearTable();
         }
         else
         {
@@ -114,6 +115,7 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
              */
             if ( isNullOrUndefined( this.linkedAccount ) || this.linkedAccount.id != linkedAccount.id )
             {
+                this.clearTable();
                 this.linkedAccount = linkedAccount;
                 this.log( methodName + " new linked account detected" );
                 /*
@@ -128,6 +130,23 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
             }
         }
         this.log( methodName + ".end" );
+    }
+
+    protected onTableLoadError( error ): ErrorObservable
+    {
+        if ( error == null )
+        {
+            return super.onTableLoadError( error );
+        }
+        let exception: RestException = new RestException( error );
+        /*
+         * Don't report errors for expired tokens this will be handled by elsewhere
+         */
+        if ( exception.status && exception.status == 422 )
+        {
+            return new ErrorObservable( error );
+        }
+        return super.onTableLoadError( error );
     }
 
     /**

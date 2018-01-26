@@ -81,7 +81,7 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
         {
             let previous = JSON.stringify( previousValue );
             let newValue = JSON.stringify( currentValue );
-            this.debug( `inputPropertyChange property: ${property} ${previous} ==> ${newValue}`)
+            //this.debug( `inputPropertyChange property: ${property} ${previous} ==> ${newValue}`)
         }
         catch ( e )
         {
@@ -104,7 +104,7 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
      */
     public setDisabled( disabled: boolean )
     {
-        this.log( 'setDisabled ' + disabled );
+        //this.log( 'setDisabled ' + disabled );
         this.disabled = disabled;
     }
 

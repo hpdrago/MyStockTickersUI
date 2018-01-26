@@ -374,9 +374,12 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         var methodName = "onDeleteButtonClick";
         this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
         this.checkModelObjectReference();
+        /*
+         * Was causing errors operating on destroyed view during change detection.
         this.busyIndicator = this.crudController
                                  .deleteModelObject( this.modelObject )
                                  .subscribe();
+                                 */
         this.debug( methodName + ".end" );
     }
 

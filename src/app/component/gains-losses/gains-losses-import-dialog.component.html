@@ -4,7 +4,7 @@
           [closeOnEscape]="false"
           [responsive]="true"
           [width]="500"
-          [height]="400"
+          [height]="dialogHeight"
           [resizable]="false"
           [contentStyle]="{'overflow':'visible'}"
           [(visible)]="displayDialog">
@@ -14,11 +14,11 @@
                 <p-progressBar mode="indeterminate"></p-progressBar>
             </div>
             <!----------------------------------------------------------------------------------------------------------
-             DELETE ENTRIES
+            DELETE ENTRIES
             ----------------------------------------------------------------------------------------------------------->
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
-                    <label class="crud-form" for="clearEntries">Delete All Gains/Losses:</label>
+                <div class="crud-form-label ui-grid-col-5">
+                    <label class="crud-form" for="clearEntries">Delete All Existing Gains/Losses:</label>
                 </div>
                 <div class="ui-grid-col-3" id="clearEntries">
                     <p-toggleButton [(ngModel)]="importConfiguration.clearEntries">
@@ -26,10 +26,10 @@
                 </div>
             </div>
             <!----------------------------------------------------------------------------------------------------------
-             LINKED ACCOUNT
+            LINKED ACCOUNT
             ----------------------------------------------------------------------------------------------------------->
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-5">
                     <label class="crud-form" for="account">Account:</label>
                 </div>
                 <div class="ui-grid-col-4" id="account">
@@ -37,18 +37,99 @@
                     </linked-account-selection>
                 </div>
             </div>
+            <!----------------------------------------------------------------------------------------------------------
+            IMPORT FORMAT TYPE
+            ----------------------------------------------------------------------------------------------------------->
             <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-3">
+                <div class="crud-form-label ui-grid-col-5">
                     <label class="crud-form" for="importFormat">Import Format:</label>
                 </div>
                 <div class="ui-grid-col-4" id="importFormat">
                     <p-dropdown [options]="importFormats"
                                 [style]="{'width':'225px'}"
                                 placeholder="Select a Format"
+                                (onChange)="onImportFormatChange($event)"
                                 [(ngModel)]="importFormat">
                     </p-dropdown>
                 </div>
             </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            CUSTOM FORMAT INPUT
+            ----------------------------------------------------------------------------------------------------------->
+            <div *ngIf="importFormat === IMPORT_FORMAT_CUSTOM"
+                 class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid"
+                 style="margin: 10px 0px">
+
+                <div class="crud-form ui-grid-row">
+                    <div class="crud-form-label ui-grid-col-5">
+                        <label class="crud-form" for="skipHeaderRows">Skip header rows:</label>
+                    </div>
+                    <div class="ui-grid-col-2" id="skipHeaderRows">
+                        <p-spinner [(ngModel)]="importConfiguration.skipHeaderRows"
+                                   [min]="0">
+                        </p-spinner>
+                    </div>
+                </div>
+
+                <div class="crud-form ui-grid-row">
+                    <div class="crud-form-label ui-grid-col-5">
+                        <label class="crud-form" for="skipFooterRows">Skip footer rows:</label>
+                    </div>
+                    <div class="ui-grid-col-2" id="skipFooterRows">
+                        <p-spinner [(ngModel)]="importConfiguration.skipFooterRows"
+                                   [min]="0">
+                        </p-spinner>
+                    </div>
+                </div>
+
+                <div class="crud-form ui-grid-row">
+                    <div class="crud-form-label ui-grid-col-5">
+                        <label class="crud-form" for="tickerSymbolColumn">Ticker symbol column:</label>
+                    </div>
+                    <div class="ui-grid-col-2" id="tickerSymbolColumn">
+                        <p-spinner [(ngModel)]="importConfiguration.tickerSymbolColumn"
+                                   [min]="1">
+                        </p-spinner>
+                    </div>
+                </div>
+
+                <div class="crud-form ui-grid-row">
+                    <div class="crud-form-label ui-grid-col-5">
+                        <label class="crud-form" for="gainsColumn">Gains column:</label>
+                    </div>
+                    <div class="ui-grid-col-2" id="gainsColumn">
+                        <p-spinner [(ngModel)]="importConfiguration.gainsColumn"
+                                   [min]="0">
+                        </p-spinner>
+                    </div>
+                </div>
+
+                <div class="crud-form ui-grid-row">
+                    <div class="crud-form-label ui-grid-col-5">
+                        <label class="crud-form" for="lossColumn">Loss column:</label>
+                    </div>
+                    <div class="ui-grid-col-2" id="lossColumn">
+                        <p-spinner [(ngModel)]="importConfiguration.lossColumn"
+                                   [min]="0">
+                        </p-spinner>
+                    </div>
+                </div>
+
+                <div class="crud-form ui-grid-row">
+                    <div class="crud-form-label ui-grid-col-5">
+                        <label class="crud-form" for="gainsLossColumn">Combined Gains/Loss column:</label>
+                    </div>
+                    <div class="ui-grid-col-2" id="gainsLossColumn">
+                        <p-spinner [(ngModel)]="importConfiguration.gainsLossColumn"
+                                   [min]="0">
+                        </p-spinner>
+                    </div>
+                </div>
+            </div>
+            <!----------------------------------------------------------------------------------------------------------
+            FILE UPLOAD
+            ----------------------------------------------------------------------------------------------------------->
             <div class="crud-form ui-grid-row">
                 <div class="ui-grid-col-12">
                     <p-fileUpload name="files"
@@ -79,12 +160,21 @@
                     </div>
                 </div>
             </div>
-            <div class="crud-form-button" style="float: bottom">
-                <button pButton
-                        type="button"
-                        (click)="onOkButtonClick()"
-                        label="OK">
-                </button>
+            <div class="crud-form ui-grid-row" style="margin: 10px;text-align: center">
+                <div class="crud-form-button">
+                    <button pButton
+                            type="button"
+                            (click)="onOkButtonClick()"
+                            label="OK">
+                    </button>
+                </div>
+                <div class="crud-form-button">
+                    <button pButton
+                            type="button"
+                            (click)="onCancelButtonClick()"
+                            label="Cancel">
+                    </button>
+                </div>
             </div>
         </div>
 </p-dialog>
