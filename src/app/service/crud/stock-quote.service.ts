@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { KeyValuePairs } from '../../common/key-value-pairs';
 import { StockQuote } from '../../model/entity/stock-quote';
 import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This service retrieves StockQuotes from the backend.
@@ -66,6 +67,10 @@ export class StockQuoteService extends ReadRestService<StockQuote>
     public getStockQuote( tickerSymbol: string ): Observable<StockQuote>
     {
         this.debug( 'getStockQuote ' + tickerSymbol )
+        if ( isNullOrUndefined( tickerSymbol ))
+        {
+            throw new ReferenceError( "ticker symbol is null or undefined" )
+        }
         let stockQuote: StockQuote = this.stockQuoteFactory.newModelObject();
         stockQuote.tickerSymbol = tickerSymbol;
         let url = this.getCompleteURL( this.getContextURLFrom( 'quote', stockQuote ), null );

@@ -57,7 +57,6 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
      * @param {RestErrorReporter} restErrorReporter
      */
     constructor( protected toaster: ToastsManager,
-                 private stockService: StockPriceQuoteService,
                  private stockCompanyService: StockCompanyService,
                  private stockCompanyFactory: StockCompanyFactory,
                  private restErrorReporter: RestErrorReporter )
@@ -90,7 +89,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
      */
     protected onStockSearch( event ): void
     {
-        let methodName = 'onStockSjarch';
+        let methodName = 'onStockSearch';
         let query: string = event.query;
         this.log( methodName + ' ' + query );
         if ( this.disabledState )
@@ -164,19 +163,18 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     {
         if ( !isNullOrUndefined( this.stockCompany.tickerSymbol ))
         {
-            this.stockService
-                .getStockPriceQuote( this.stockCompany.tickerSymbol )
-                .subscribe( ( stockPriceQuote: StockPriceQuote ) =>
+            this.stockCompanyService
+                .getStockCompany( this.stockCompany.tickerSymbol )
+                .subscribe( ( stockCompany: StockCompany ) =>
                             {
-                                this.log( 'onStockSearchSelected ' + JSON.stringify( stockPriceQuote ) );
-                                if ( CachedValueState.isNotFound( stockPriceQuote.cacheState ))
+                                this.log( 'onStockSearchSelected ' + JSON.stringify( stockCompany ) );
+                                if ( CachedValueState.isNotFound( stockCompany.cacheState ))
                                 {
-                                    this.showError( stockPriceQuote.tickerSymbol + ' was not found' );
+                                    this.showError( stockCompany.tickerSymbol + ' was not found' );
                                 }
                                 else
                                 {
-                                    this.stockCompany.lastPrice = stockPriceQuote.lastPrice;
-                                    this.stockSelected.emit( this.stockCompany );
+                                    this.stockSelected.emit( stockCompany );
                                     this.stockCompany = this.stockCompanyFactory.newModelObject();
                                     this.isStockSelected = true;
                                 }

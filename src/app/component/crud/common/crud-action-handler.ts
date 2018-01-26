@@ -42,12 +42,12 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
                    .deleteModelObject( modelObject )
                    .map( () =>
                    {
-                       this.debug( methodName + " delete successful " + JSON.stringify( modelObject ));
+                       this.debug( methodName + ' delete successful ' + JSON.stringify( modelObject ));
                        this.showDeleteSuccessful( modelObject );
                    },
                    error =>
                    {
-                       this.debug( methodName + " delete failed" );
+                       this.debug( methodName + ' delete failed' );
                        let exception = this.restErrorReporter.reportRestError( error );
                        Observable.throw( exception );
                    });
@@ -59,24 +59,35 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
      */
     public addModelObject( modelObject: T ): Observable<T>
     {
-        var methodName = "addModelObject";
-        this.debug( methodName + " " + JSON.stringify( modelObject ));
+        var methodName = 'addModelObject';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         return this.crudRestService
                    .createModelObject( modelObject )
                    .map( ( newModelObject: T ) =>
                    {
-                       this.debug( methodName + " add successful.  modelObject: " + JSON.stringify( newModelObject ) );
+                       this.debug( methodName + ' add successful.  modelObject: ' + JSON.stringify( newModelObject ) );
                        this.showAddSuccessful( newModelObject );
+                       this.onModelObjectAdd( newModelObject );
                        return newModelObject;
                    },
                    error =>
                    {
-                       this.debug( methodName + " create failed: " + error );
+                       this.debug( methodName + ' create failed: ' + error );
                        var exception = this.restErrorReporter.reportRestError( error );
-                       this.debug( methodName + " exception: " + JSON.stringify( exception ));
+                       this.debug( methodName + ' exception: ' + JSON.stringify( exception ));
                        Observable.throw( exception );
                          //throw new Error( exception.message );
                    });
+    }
+
+    /**
+     * This method is called by {@code addModelObject} after a successful adding of an entity to the database.
+     * Subclasses can override this method to perform additional client side related work after this event.
+     * @param {T} newModelObject
+     * @return {T}
+     */
+    protected onModelObjectAdd( newModelObject: T )
+    {
     }
 
     /**
@@ -86,29 +97,38 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
      */
     public saveModelObject( modelObject: T ): Observable<T>
     {
-        var methodName = "saveModelObject";
-        this.debug( methodName + " " + JSON.stringify( modelObject ));
+        var methodName = 'saveModelObject';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         return this.crudRestService
                    .updateModelObject( modelObject )
                    .map( ( updatedModelObject: T ) =>
                    {
-                       this.debug( methodName + " saved successful.  modelObject; " + JSON.stringify( updatedModelObject ) );
+                       this.debug( methodName + ' saved successful.  modelObject; ' + JSON.stringify( updatedModelObject ) );
+                       this.onSaveModelObject( updatedModelObject );
                        this.showSaveSuccessful( updatedModelObject );
                        return updatedModelObject;
                    },
                    error =>
                    {
-                       this.debug( methodName + " save failed: " + error );
+                       this.debug( methodName + ' save failed: ' + error );
                        var exception = this.restErrorReporter.reportRestError( error );
-                       this.debug( methodName + " exception: " + JSON.stringify( exception ));
+                       this.debug( methodName + ' exception: ' + JSON.stringify( exception ));
                        Observable.throw( exception );
                    });
+    }
+
+    /**
+     * This method is called by {@code saveModelObject} upon a successful save to the database.
+     * @param {T} modelObject
+     */
+    protected onSaveModelObject( modelObject: T )
+    {
     }
 
     /*
 public modelObjectVersionCheck( modelObject: T ): Observable<T>
 {
-    var methodName = "modelObjectVersionCheck";
+    var methodName = 'modelObjectVersionCheck';
     return this.crudRestService
                .getModelObject( modelObject )
                .map( modelObject )
@@ -141,11 +161,11 @@ public modelObjectVersionCheck( modelObject: T ): Observable<T>
     {
         if ( modelObject.tickerSymbol )
         {
-            return modelObject.tickerSymbol + " Deleted Successfully!"
+            return modelObject.tickerSymbol + ' Deleted Successfully!'
         }
         else
         {
-            return "Delete Successful!";
+            return 'Delete Successful!';
         }
     }
 
@@ -157,11 +177,11 @@ public modelObjectVersionCheck( modelObject: T ): Observable<T>
     {
         if ( modelObject.tickerSymbol )
         {
-            return modelObject.tickerSymbol + " Created Successfully!"
+            return modelObject.tickerSymbol + ' Created Successfully!'
         }
         else
         {
-            return "Add Successful!";
+            return 'Add Successful!';
         }
     }
 
@@ -173,11 +193,11 @@ public modelObjectVersionCheck( modelObject: T ): Observable<T>
     {
         if ( modelObject.tickerSymbol )
         {
-            return modelObject.tickerSymbol + " Saved Successfully!"
+            return modelObject.tickerSymbol + ' Saved Successfully!'
         }
         else
         {
-            return "Save Successful!";
+            return 'Save Successful!';
         }
     }
 }

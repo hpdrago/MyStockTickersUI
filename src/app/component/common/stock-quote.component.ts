@@ -1,7 +1,7 @@
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
 import { StockQuoteCacheService } from '../../service/stock-quote-cache.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { StockQuote } from '../../model/entity/stock-quote';
 import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
 
@@ -13,7 +13,7 @@ import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
 ({
     selector: 'stock-quote',
     template: `<cached-value [cachedStateContainer]="stockQuote">
-                {{stockQuote[property]}}
+                    <ng-content></ng-content>
                </cached-value>
     `
 })
@@ -24,14 +24,11 @@ export class StockQuoteComponent extends BaseComponent implements OnInit
      */
     protected stockQuote: StockQuote;
 
+    @Output()
+    private stockQuoteChange: EventEmitter<StockQuote> = new EventEmitter<StockQuote>();
+
     @Input()
     protected  tickerSymbol: string;
-
-    /**
-     * The property to display for the stock quote.
-     */
-    @Input()
-    protected property: string;
 
     public constructor( protected toaster: ToastsManager,
                         private stockQuoteCache: StockQuoteCacheService,
@@ -65,6 +62,7 @@ export class StockQuoteComponent extends BaseComponent implements OnInit
         if ( stockQuote != null )
         {
             this.stockQuote = stockQuote;
+            this.stockQuoteChange.emit( stockQuote );
         }
     }
 

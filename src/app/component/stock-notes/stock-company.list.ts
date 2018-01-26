@@ -1,0 +1,71 @@
+import { StockCompanyService } from '../../service/crud/stock-company.service';
+import { StockPriceQuoteService } from '../../service/crud/stock-price-quote.service';
+import { StockCompany } from '../../model/entity/stock-company';
+
+/**
+ * This class maintains a list of {@code StockCompany} instances.
+ */
+export class StockCompanyList
+{
+    protected stockCompanies: Array<StockCompany> = [];
+
+    /**
+     * Constructor
+     * @param {StockCompanyService} stockCompanyService
+     * @param {StockPriceQuoteService} stockPriceQuoteService
+     */
+    constructor( protected stockCompanyService: StockCompanyService )
+    {
+    }
+
+    /**
+     * Adds a company to the list if not present already.
+     * @param {string} tickerSymbol
+     */
+    public loadCompany( tickerSymbol: string )
+    {
+        if ( !this.containsCompany( tickerSymbol ))
+        {
+            this.stockCompanyService
+                .getStockCompany( tickerSymbol )
+                .subscribe( stockCompany =>
+                            {
+                                this.addCompanyToList( stockCompany );
+                            });
+        }
+    }
+
+    /**
+     * Add the stock company to the list.
+     * @param {StockCompany} stockCompany
+     */
+    public addCompany( stockCompany: StockCompany ): void
+    {
+        if ( !this.containsCompany( stockCompany.tickerSymbol ))
+        {
+            this.addCompanyToList( stockCompany );
+        }
+    }
+
+    /**
+     * Returns true if the company is in the list.
+     * @param {string} tickerSymbol
+     * @return {boolean}
+     */
+    public containsCompany( tickerSymbol: string ): boolean
+    {
+        return this.stockCompanies
+                   .filter( company => company.tickerSymbol === tickerSymbol )
+                   .length > 0;
+    }
+
+    /**
+     * Adds the company to the list -- appends the company to the array.
+     * @param {StockCompany} stockCompany
+     */
+    protected addCompanyToList( stockCompany: StockCompany )
+    {
+        this.stockCompanies
+            .push( stockCompany );
+    }
+}

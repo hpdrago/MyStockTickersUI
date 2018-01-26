@@ -49,7 +49,9 @@
                   [sortable]="false">
             <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
                 <stock-quote [tickerSymbol]="stockCatalystEvent.tickerSymbol"
-                             property="companyName">
+                             (stockQuote)="stockCatalystEvent.stockQuote">
+                    <currency [currencyValue]="stockCatalystEvent.stockQuote.openPrice">
+                    </currency>
                 </stock-quote>
             </ng-template>
         </p-column>

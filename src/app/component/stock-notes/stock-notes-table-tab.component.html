@@ -45,7 +45,7 @@
             <p-column id="notesDateColumn"
                       field="notesDate"
                       header="Date"
-                      [style]="{'width':'80px'}"
+                      [style]="{'width':'90px'}"
                       [sortable]="true">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
                     {{stockNotes[col.field] | date: 'y-MM-dd' }}
@@ -107,8 +107,11 @@
                       header="Open Price"
                       [style]="{'width':'80px','text-align':'right'}">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <currency [currencyValue]="stockNotes.openPrice">
-                    </currency>
+                    <stock-quote [tickerSymbol]="stockNotes.tickerSymbol"
+                                 (stockQuote)="stockNotes.stockQuote">
+                        <currency [currencyValue]="stockNotes.stockQuote.openPrice">
+                        </currency>
+                    </stock-quote>
                 </ng-template>
             </p-column>
 

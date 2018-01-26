@@ -20,8 +20,8 @@ import { StockPriceQuoteCacheService } from '../stock-price-quote-cache.service'
 export class StockCompanyService extends ReadRestService<StockCompany>
 {
     private readonly stocksUrl: string = '/stocks/';
-    private readonly stockCompanyUrl: string = '/' + this.stocksUrl + '/company';
-    private readonly stocksCompaniesLikeUrl: string = '/' + this.stocksUrl + '/companiesLike';
+    private readonly stockCompanyUrl: string = this.stocksUrl + 'company';
+    private readonly stocksCompaniesLikeUrl: string = this.stocksUrl + 'companiesLike';
     private readonly stocksCompaniesLikePaginationUrl: PaginationURL;
 
     /**
@@ -98,8 +98,7 @@ export class StockCompanyService extends ReadRestService<StockCompany>
     {
         let stockCompany: StockCompany = this.stockCompanyFactory.newModelObject();
         stockCompany.tickerSymbol = tickerSymbol;
-        let url = this.getCompleteURL( this.getContextURLFrom( '/company', stockCompany ),
-                                       this.getCustomerURL() );
+        let url = this.getCompleteURL( this.getContextURLFrom( 'company', stockCompany ), null );
         let subject: Subject<StockCompany> = new Subject<StockCompany>();
         /*
          * Call to get the stock company and the stock price quote

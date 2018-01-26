@@ -64,7 +64,7 @@ export class StockPriceQuoteService extends BaseService
             return Observable.of(null);
             //throw new ReferenceError( 'ticker symbol(' + tickerSymbol + ') is not valid' );
         }
-        let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockModelObject/" + tickerSymbol;
+        let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockPriceQuote/" + tickerSymbol;
         return this.http
                    .get<StockPriceQuote>( url )
                    .map( (stockPriceQuote: StockPriceQuote) =>

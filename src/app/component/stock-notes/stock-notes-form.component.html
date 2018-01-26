@@ -37,7 +37,7 @@
                         <label class="crud-form" >Selected Stocks:</label>
                     </div>
                     <div class="ui-grid-col-10">
-                        {{tickerSymbols}}
+                        {{stockCompanies.tickerSymbols}}
                     </div>
                 </div>
 
@@ -49,7 +49,7 @@
                         <label class="crud-form" for="lastPriceColumn">Last Price:</label>
                     </div>
                     <div class="ui-grid-col-10">
-                        {{lastPrices}}
+                        {{stockCompanies.lastPrices}}
                     </div>
                 </div>
 
@@ -58,7 +58,7 @@
                         <label class="crud-form" for="notes">Company:</label>
                     </div>
                     <div class="ui-grid-col-10">
-                        {{companies}}
+                        {{stockCompanies.companies}}
                     </div>
                 </div>
             </ng-template>
@@ -94,7 +94,7 @@
                         <label class="crud-form" for="lastPriceColumn">Price when note created:</label>
                     </div>
                     <div id="lastPriceColumn" class="ui-grid-col-2">
-                        {{modelObject.lastPrice | currency:'USD': true}}
+                        {{modelObject.stockPriceQuote.lastPrice | currency:'USD': true}}
                     </div>
                 </div>
 
@@ -106,7 +106,7 @@
                         <label class="crud-form" for="notes">Company:</label>
                     </div>
                     <div class="ui-grid-col-10">
-                        {{modelObject.companyName}}
+                        {{modelObject.stockQuote.companyName}}
                     </div>
                 </div>
 

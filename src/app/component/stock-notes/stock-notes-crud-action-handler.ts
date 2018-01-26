@@ -1,4 +1,3 @@
-import { CrudActionHandler } from '../crud/common/crud-action-handler';
 import { Injectable } from '@angular/core';
 import { StockNotes } from '../../model/entity/stock-notes';
 import { ToastsManager } from 'ng2-toastr';
@@ -9,13 +8,16 @@ import { StockNotesActionTaken } from '../../common/stock-notes-action-taken.enu
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
 import { StockNotesStock } from '../../model/entity/stock-notes-stock';
+import { StockPriceQuoteCacheService } from '../../service/stock-price-quote-cache.service';
+import { StockQuoteCacheService } from '../../service/stock-quote-cache.service';
+import { StockModelObjectCrudActionHandler } from '../crud/common/stock-model-object-crud-action-handler';
 
 /**
  * Action handler class.  This class is called by the controller to perform the handle the crud operations triggered
  * from the components.
  */
 @Injectable()
-export class StockNotesCrudActionHandler extends CrudActionHandler<StockNotes>
+export class StockNotesCrudActionHandler extends StockModelObjectCrudActionHandler<StockNotes>
 {
     /**
      * Constructor.
@@ -24,16 +26,22 @@ export class StockNotesCrudActionHandler extends CrudActionHandler<StockNotes>
      * @param {StockNotesCrudService} stockNotesCrudService
      * @param {StockToBuyFactory} stockToBuyFactory
      * @param {StockToBuyController} stockToBuyController
+     * @param {StockPriceQuoteCacheService} stockPriceQuoteCacheService
+     * @param {StockQuoteCacheService} stockQuoteCacheService
      */
     constructor( protected toaster: ToastsManager,
                  protected restErrorReporter: RestErrorReporter,
                  protected stockNotesCrudService: StockNotesCrudService,
-                 private stockToBuyFactory: StockToBuyFactory,
-                 private stockToBuyController: StockToBuyController )
+                 protected stockToBuyFactory: StockToBuyFactory,
+                 protected stockToBuyController: StockToBuyController,
+                 protected stockPriceQuoteCacheService: StockPriceQuoteCacheService,
+                 protected stockQuoteCacheService: StockQuoteCacheService )
     {
         super( toaster,
                restErrorReporter,
-               stockNotesCrudService );
+               stockNotesCrudService,
+               stockPriceQuoteCacheService,
+               stockQuoteCacheService )
     }
 
     /**
