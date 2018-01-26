@@ -2,25 +2,21 @@ import { Component, Input, OnInit } from '@angular/core';
 import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensus';
 import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 
-/**
- * This component displays the analyst consensus buy hold etc values.
- */
-@Component({
-    selector: 'stock-analyst-consensus',
-    styleUrls: ['../stock-analyst-consensus/stock-analyst-consensus-table.component.css'],
+@Component
+({
+    selector: 'stock-price-targets',
     template: `<div *ngIf="stockAnalystConsensus != null; then foundTemplate else notFoundTemplate">
                </div>
                <ng-template #foundTemplate>
-                   <span class="strongBuy">{{stockAnalystConsensus.analystStrongBuyCount}}</span><!--
-                   --><span class="buy">{{stockAnalystConsensus.analystBuyCount}}</span><!--
-                   --><span class="hold">{{stockAnalystConsensus.analystHoldCount}}</span><!--
-                   --><span class="underPerform">{{stockAnalystConsensus.analystUnderPerformCount}}</span><!--
-                   --><span class="sell">{{stockAnalystConsensus.analystSellCount}}</span>
+                   <currency [currencyValue]="stockAnalystConsensus.highAnalystPriceTarget"></currency> | 
+                   <currency [currencyValue]="stockAnalystConsensus.avgAnalystPriceTarget"></currency> |
+                   <currency [currencyValue]="stockAnalystConsensus.lowAnalystPriceTarget"></currency> 
                </ng-template>
                <ng-template #notFoundTemplate>
                </ng-template>
-              `})
-export class StockAnalystConsensusComponent implements OnInit
+    `
+})
+export class StockPriceTargetsComponent implements OnInit
 {
     @Input()
     private tickerSymbol: string;
@@ -35,4 +31,5 @@ export class StockAnalystConsensusComponent implements OnInit
         this.stockAnalystConsensus = this.stockAnalystConsensusCache
                                          .get( this.tickerSymbol );
     }
+
 }

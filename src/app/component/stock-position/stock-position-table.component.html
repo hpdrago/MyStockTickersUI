@@ -177,12 +177,22 @@
                     <!----------------------------------------------------------------------------------------------------------
                     ANALYST BUY COUNT
                     ------------------------------------------------------------------------------------------------------------>
-                    <p-column id=""
-                              field="analystByCount"
+                    <p-column id="analystBSH"
                               header="Analyst BSH"
                               [style]="{'width':'80px'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <stock-analyst-consensus [tickerSymbol]="stockPosition.tickerSymbol"></stock-analyst-consensus>
+                        </ng-template>
+                    </p-column>
+
+                    <!----------------------------------------------------------------------------------------------------------
+                    ANALYST PRICE TARGETS
+                    ------------------------------------------------------------------------------------------------------------>
+                    <p-column id="analystPriceTargets"
+                              header="Analyst Targets"
+                              [style]="{'width':'80px'}">
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <stock-price-targets [tickerSymbol]="stockPosition.tickerSymbol"></stock-price-targets>
                         </ng-template>
                     </p-column>
 
