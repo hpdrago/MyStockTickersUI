@@ -4,7 +4,7 @@ import { PaginationPage } from "../../common/pagination";
 import { PaginationURL } from "../../common/pagination-url";
 import { SessionService } from "../session.service";
 import { AppConfigurationService } from "./../app-configuration.service";
-import { StockFactory } from "../../model/factory/stock.factory";
+import { StockPriceQuoteFactory } from "../../model/factory/stock-price-quote.factory";
 import { Stock } from "../../model/entity/stock";
 import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { CrudRestService } from "./crud-rest.serivce";
@@ -13,6 +13,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BaseService } from '../base-service';
 import { ToastsManager } from 'ng2-toastr';
 import { isNullOrUndefined } from 'util';
+import { ReadRestService } from './read-rest.service';
 
 /**
  * This class provides all of the REST communication services for Stocks.
@@ -28,17 +29,19 @@ export class StockInformationService extends BaseService
 
     /**
      * Constructor.
-     * @param {Http} http
+     * @param {ToastsManager} toaster
+     * @param {HttpClient} http
      * @param {SessionService} session
      * @param {AppConfigurationService} appConfig
-     * @param {StockFactory} stockFactory
      * @param {RestErrorReporter} restErrorReporter
+     * @param {StockPriceQuoteFactory} stockPriceModelObjectFactory
      */
     constructor( protected toaster: ToastsManager,
                  protected http: HttpClient,
                  protected session: SessionService,
                  protected appConfig: AppConfigurationService,
-                 protected restErrorReporter: RestErrorReporter )
+                 protected restErrorReporter: RestErrorReporter,
+                 private stockPriceModelObjectFactory: StockPriceQuoteFactory )
     {
         super( toaster );
         this.stocksCompaniesLikePaginationUrl = new PaginationURL( appConfig.getBaseURL() + this.stocksCompaniesLikeUrl );
@@ -89,6 +92,11 @@ export class StockInformationService extends BaseService
         let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockPriceQuote/" + tickerSymbol;
         return this.http
                    .get<StockPriceQuote>( url )
+                   .map( (stockPriceQuote: StockPriceQuote) =>
+                         {
+                             stockPriceQuote = this.stockPriceModelObjectFactory.newModelObjectFromJSON(stockPriceQuote);
+                             return stockPriceQuote;
+                         })
                    .catch( error =>
                    {
                        let restException = this.restErrorReporter.getRestException( error );

@@ -146,9 +146,9 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     {
         this.stockCrudService
             .getStockPriceQuote( this.tickerSymbol )
-            .subscribe( ( stockPriceQuote ) =>
+            .subscribe( ( stockPriceQuote: StockPriceQuote ) =>
                         {
-                            this.log( 'onStockSearchSelected ' + JSON.stringify( stockPriceQuote.tickerSymbol ) );
+                            this.log( 'onStockSearchSelected ' + JSON.stringify( stockPriceQuote ));
                             if ( stockPriceQuote.isNotFound() )
                             {
                                 this.showError( stockPriceQuote.tickerSymbol + ' was not found' );

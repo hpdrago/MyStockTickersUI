@@ -63,7 +63,7 @@ import { UppercaseDirective } from "./directives/uppercase.directive";
 import { PortfolioStockFormComponent } from "./component/portfolio-stock/portfolio-stock-form.component";
 import { PortfolioStockTableComponent } from "./component/portfolio-stock/portfolio-stock-table.component";
 import { PortfolioStockFactory } from "./model/factory/portfolio-stock.factory";
-import { StockFactory } from "./model/factory/stock.factory";
+import { StockPriceQuoteFactory } from "./model/factory/stock-price-quote.factory";
 import { PortfolioFactory } from "./model/factory/portfolio.factory";
 import { StockAutoCompleteComponent } from "./component/common/stock-autocomplete.component";
 import { PortfolioStockDialogComponent } from "./component/portfolio-stock/portfolio-stock-dialog.component";
@@ -468,7 +468,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockInformationService,
         StockExchangeService,
-        StockFactory,
+        StockPriceQuoteFactory,
 
         PortfolioFactory,
         PortfolioCrudService,
