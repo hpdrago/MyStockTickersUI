@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { StockCompanyContainer } from '../../model/common/stock-company-container';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { BaseCachedValueComponent } from './base-cached-value.component';
 import { CachedValueState } from '../../common/cached-value-state.enum';
 import { StockCompany } from '../../model/entity/stock-company';
 import { StockCompanyCacheService } from '../../service/cache/stock-company-cache.service';
+import { isNullOrUndefined } from 'util';
 
 /**
  * Displays the company of a model object that implements {@code StockCompanyContainer}.
@@ -14,9 +14,7 @@ import { StockCompanyCacheService } from '../../service/cache/stock-company-cach
 @Component
 ({
      selector: 'stock-company',
-     template: `<cached-value [cachedStateContainer]="stockCompanyContainer"
-                              [staleMessage]="getStaleMessage()"
-                              [notFoundMessage]="getNotFoundMessage()">
+     template: `<cached-value [cachedStateContainer]="stockCompany">
                    <ng-content>
                    </ng-content>
                 </cached-value>
@@ -24,8 +22,16 @@ import { StockCompanyCacheService } from '../../service/cache/stock-company-cach
  })
 export class StockCompanyComponent extends BaseCachedValueComponent implements OnInit
 {
+    protected stockCompany: StockCompany;
+
+    @Output()
+    protected stockCompanyChange: EventEmitter<StockCompany> = new EventEmitter<StockCompany>();
+
+    /**
+     * Ticker symbol to identify the stock quote to obtain.
+     */
     @Input()
-    protected stockCompanyContainer: StockCompanyContainer;
+    protected tickerSymbol: string;
 
     /**
      * Constructor.
@@ -40,9 +46,10 @@ export class StockCompanyComponent extends BaseCachedValueComponent implements O
 
     public ngOnInit(): void
     {
-        this.stockCompanyCacheService
-            .subscribeToChanges( this.stockCompanyContainer.getTickerSymbol(),
-                                 (stockCompany: StockCompany) => this.onStockCompanyChange( stockCompany ));
+        super.addSubscription( 'stockCompanyCache',
+            this.stockCompanyCacheService
+                .subscribeToChanges( this.tickerSymbol,
+                                     (stockCompany: StockCompany) => this.onStockCompanyChange( stockCompany )));
     }
 
     /**
@@ -53,16 +60,20 @@ export class StockCompanyComponent extends BaseCachedValueComponent implements O
     {
         let methodName = 'onStockCompanyChange';
         this.debug( methodName + ' ' + JSON.stringify( stockCompany ));
-        this.stockCompanyContainer.setStockCompany( stockCompany );
+        if ( !isNullOrUndefined( stockCompany ))
+        {
+            this.stockCompany = stockCompany;
+            this.stockCompanyChange.emit( stockCompany );
+        }
     }
 
     protected getCachedValueState(): CachedValueState
     {
-        return this.stockCompanyContainer.getStockCompanyCacheState();
+        return this.stockCompany.getCacheState();
     }
 
     protected getFailureMessage(): string
     {
-        return this.stockCompanyContainer.getStockCompanyCacheError();
+        return this.stockCompany.getCacheError();
     }
 }

@@ -24,7 +24,7 @@ export class StockQuoteService extends ReadRestService<StockQuote>
      * @param {SessionService} session
      * @param {AppConfigurationService} appConfig
      * @param {RestErrorReporter} restErrorReporter
-     * @param {StockQuoteFactory} stockCompanyFactory
+     * @param {StockQuoteFactory} stockQuoteFactory
      */
     constructor( protected http: HttpClient,
                  protected session: SessionService,
@@ -74,6 +74,14 @@ export class StockQuoteService extends ReadRestService<StockQuote>
         let stockQuote: StockQuote = this.stockQuoteFactory.newModelObject();
         stockQuote.tickerSymbol = tickerSymbol;
         let url = this.getCompleteURL( this.getContextURLFrom( 'quote', stockQuote ), null );
-        return this.httpRequestModelObject( url );
+        return this.httpRequestModelObject( url )
+                   .map( (stockQuote: StockQuote) =>
+                    {
+                        /*
+                         * Convert the JSON into a Typescript object.
+                         */
+                        return this.stockQuoteFactory
+                                   .newModelObjectFromJSON( stockQuote );
+                    });
     }
 }

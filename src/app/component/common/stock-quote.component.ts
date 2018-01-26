@@ -6,8 +6,12 @@ import { StockQuote } from '../../model/entity/stock-quote';
 import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
 
 /**
- * This component displays a single property of a {@code StockQuote} model object.
- * It works with the {@code StockQuoteCacheService} to obtain the stock quote property asynchronously if needed.
+ * This component will obtain a {@code StockQuote} form the {@code StockQuoteCacheService}.  This is not a display
+ * component but rather a component that fetches stock quote information and displaying a 'Loading' message while
+ * the stock quote is retrieved asynchronously.
+ *
+ * This component is used as a wrapper around another component that requires stock quote information.  The event emmitter
+ * will emit the fetch data value and passes it back to the caller in order to save that information to be displayed on a page.
  */
 @Component
 ({
@@ -36,7 +40,7 @@ export class StockQuoteComponent extends BaseComponent implements OnInit
      * Ticker symbol to identify the stock quote to obtain.
      */
     @Input()
-    protected  tickerSymbol: string;
+    protected tickerSymbol: string;
 
     /**
      * Constructor.
@@ -59,9 +63,10 @@ export class StockQuoteComponent extends BaseComponent implements OnInit
     {
         this.tickThenRun( () =>
                           {
-                              this.stockQuoteCache
-                                  .subscribeToChanges( this.tickerSymbol,
-                                                      (stockQuote: StockQuote) => this.onReceiveStockQuote( stockQuote ) );
+                              super.addSubscription( 'stockQuoteCache',
+                                  this.stockQuoteCache
+                                      .subscribeToChanges( this.tickerSymbol,
+                                                          (stockQuote: StockQuote) => this.onReceiveStockQuote( stockQuote ) ));
                           })
     }
 

@@ -77,7 +77,9 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
      */
     protected inputPropertyChange( property: string, previousValue: any, currentValue: any )
     {
-        this.debug( `inputPropertyChange property: ${property} ${previousValue} ==> ${currentValue}`)
+        let previous = JSON.stringify( previousValue );
+        let newValue = JSON.stringify( currentValue );
+        this.debug( `inputPropertyChange property: ${property} ${previous} ==> ${newValue}`)
     }
 
     /**

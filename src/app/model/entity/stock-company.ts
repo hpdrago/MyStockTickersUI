@@ -14,6 +14,8 @@ export class StockCompany extends ModelObject<StockCompany> implements CacheStat
     public cacheError: string;
     public cacheState: CachedValueState;
     public expirationTime: Date;
+    public sector: string;
+    public industry: string;
 
     public getPrimaryKeyValue(): any
     {

@@ -16,8 +16,10 @@ import { StockQuoteContainer } from '../../model/common/stock-quote-container';
 @Component(
 {
     selector: 'stock-quote-last-price',
-    template: `<stock-quote (stockQuoteChange)="stockQuoteContainer.getStockQuote()">
-                   <stock-price-quote (stockPriceQuoteChange)="stockPriceQuoteContainer.getStockPriceQuote()">
+    template: `<stock-quote [tickerSymbol]="stockQuoteContainer.getTickerSymbol()" 
+                            (stockQuoteChange)="stockQuoteContainer.setStockQuote($event)">
+                   <stock-price-quote [tickerSymbol]="stockPriceQuoteContainer.getTickerSymbol()" 
+                                      (stockPriceQuoteChange)="stockPriceQuoteContainer.setStockPriceQuote($event)">
                        <stock-price-gain-loss [amount]="stockPriceQuoteContainer.getStockPriceQuote().lastPrice"
                                               [changeAmount]="getChangeAmount()">
                        </stock-price-gain-loss>

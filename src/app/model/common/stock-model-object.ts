@@ -50,4 +50,10 @@ export abstract class StockModelObject<T extends ModelObject<T>> extends ModelOb
         this.stockQuote = stockQuote;
     }
 
+    public getLastPrice(): number
+    {
+        return this.getStockPriceQuote()
+                   .lastPrice;
+    }
+
 }

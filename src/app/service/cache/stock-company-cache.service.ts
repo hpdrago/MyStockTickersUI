@@ -20,8 +20,8 @@ export class StockCompanyCacheService extends AsyncCacheService<string,StockComp
      * @param {StockCompanyService} stockCompanyService
      */
     public constructor( protected toaster: ToastsManager,
-                           protected stockCompanyFactory: StockCompanyFactory,
-                           protected stockCompanyService: StockCompanyService )
+                        protected stockCompanyFactory: StockCompanyFactory,
+                        protected stockCompanyService: StockCompanyService )
     {
         super( toaster, stockCompanyFactory );
     }

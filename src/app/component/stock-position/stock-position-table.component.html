@@ -200,7 +200,7 @@
                               [style]="{'width':'20px','text-align':'right'}"
                               [sortable]="true">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-average-upside-percent [stockPriceQuote]="stockPosition"></stock-average-upside-percent>
+                            <stock-average-upside-percent [stockPriceQuoteContainer]="stockPosition"></stock-average-upside-percent>
                         </ng-template>
                     </p-column>
 

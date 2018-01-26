@@ -12,6 +12,12 @@ import { StockPriceQuote } from '../entity/stock-price-quote';
 export interface StockPriceQuoteContainer
 {
     /**
+     * Get last stock price.
+     * @return {number}
+     */
+    getLastPrice(): number;
+
+    /**
      * Get the ticker symbol.
      * @return {string}
      */
@@ -29,9 +35,4 @@ export interface StockPriceQuoteContainer
      */
     setStockPriceQuote( stockPriceQuote: StockPriceQuote );
 
-    /**
-     * Get the ticker symbol;
-     * @return {string}
-     */
-    getTickerSymbol(): string;
 }

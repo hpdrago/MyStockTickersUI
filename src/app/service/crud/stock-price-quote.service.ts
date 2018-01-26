@@ -69,6 +69,7 @@ export class StockPriceQuoteService extends BaseService
                    .get<StockPriceQuote>( url )
                    .map( (stockPriceQuote: StockPriceQuote) =>
                          {
+                             this.debug( methodName + ' received: ' + JSON.stringify( stockPriceQuote ));
                              stockPriceQuote = this.stockPriceModelObjectFactory.newModelObjectFromJSON(stockPriceQuote);
                              return stockPriceQuote;
                          })

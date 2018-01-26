@@ -3,6 +3,9 @@ import { StockNotesSourceContainer } from "../common/stock-notes-source-containe
 import { StockQuoteContainer } from '../common/stock-quote-container';
 import { StockPriceQuoteContainer } from '../common/stock-price-quote-container';
 import { StockModelObject } from '../common/stock-model-object';
+import { StockCompanyContainer } from '../common/stock-company-container';
+import { CachedValueState } from '../../common/cached-value-state.enum';
+import { StockCompany } from './stock-company';
 
 /**
  * This entity contains the elements for the stock summary
@@ -13,7 +16,8 @@ export class StockAnalystConsensus extends StockModelObject<StockAnalystConsensu
                                    implements StockNotesContainer,
                                               StockNotesSourceContainer,
                                               StockQuoteContainer,
-                                              StockPriceQuoteContainer
+                                              StockPriceQuoteContainer,
+                                              StockCompanyContainer
 {
     public id: string;
     public customerId: string;
@@ -30,6 +34,7 @@ export class StockAnalystConsensus extends StockModelObject<StockAnalystConsensu
     public analystPriceDate: Date;
     public notesSourceId: string;
     public notesSourceName: string;
+    public stockCompany: StockCompany;
 
     public getNotes(): string
     {
@@ -64,5 +69,15 @@ export class StockAnalystConsensus extends StockModelObject<StockAnalystConsensu
     public getPrimaryKeyName(): string
     {
         return "id";
+    }
+
+    public getStockCompany(): StockCompany
+    {
+        return this.stockCompany;
+    }
+
+    public setStockCompany( stockCompany: StockCompany )
+    {
+        this.stockCompany = stockCompany;
     }
 }

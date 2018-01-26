@@ -12,7 +12,8 @@ import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.fa
 @Component
 ({
     selector: 'stock-price-quote',
-    template: `<cached-value [cachedStateContainer]="stockPriceQuote">
+    template: `<cached-value [cachedStateContainer]="stockPriceQuote" 
+                             staleMessage="Loading...">
                     <ng-content></ng-content>
                </cached-value>
     `

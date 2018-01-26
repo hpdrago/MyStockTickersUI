@@ -27,11 +27,11 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {RestErrorReporter} restErrorReporter
      */
-    constructor( protected http: HttpClient,
-                 protected sessionService: SessionService,
-                 protected appConfig: AppConfigurationService,
-                 protected restErrorReporter: RestErrorReporter,
-                 protected modelObjectFactory: ModelObjectFactory<T> )
+    protected constructor( protected http: HttpClient,
+                           protected sessionService: SessionService,
+                           protected appConfig: AppConfigurationService,
+                           protected restErrorReporter: RestErrorReporter,
+                           protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super( http,
                sessionService,

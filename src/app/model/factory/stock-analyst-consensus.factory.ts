@@ -4,6 +4,7 @@ import { Injectable } from "@angular/core";
 import { StockPriceQuoteFactory } from './stock-price-quote.factory';
 import { StockQuoteFactory } from './stock-quote.factory';
 import { StockModelObjectFactory } from './stock-model-object.factory';
+import { StockCompanyFactory } from './stock-company-factory';
 
 @Injectable()
 export class StockAnalystConsensusFactory extends StockModelObjectFactory<StockAnalystConsensus>
@@ -16,7 +17,8 @@ export class StockAnalystConsensusFactory extends StockModelObjectFactory<StockA
      */
     constructor( protected session: SessionService,
                  protected stockPriceQuoteFactory: StockPriceQuoteFactory,
-                 protected stockQuoteFactory: StockQuoteFactory )
+                 protected stockQuoteFactory: StockQuoteFactory,
+                 protected stockCompanyFactory: StockCompanyFactory )
     {
         super( session, stockQuoteFactory, stockPriceQuoteFactory );
     }

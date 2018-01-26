@@ -221,7 +221,6 @@ import { StockNotesSourceTableAddButtonComponent } from './component/stock-notes
 import { StockNotesSourceTableButtonsComponent } from './component/stock-notes-source/stock-notes-source-table-buttons.component';
 import { StockNotesSourceDialogComponent } from './component/stock-notes-source/stock-notes-source-dialog.component';
 import { StockNotesSourceFormComponent } from './component/stock-notes-source/stock-notes-source-form.component';
-import { StockNotesSourceComponent } from './component/common/stock-notes-source.component';
 import { StockNotesSourceTableComponent } from './component/stock-notes-source/stock-notes-source-table.component';
 import { StockAnalystConsensusCache } from './service/cache/stock-analyst-consensus-cache';
 import { StockPositionMarketValue } from './component/stock-position/stock-position-market-value';
@@ -240,6 +239,8 @@ import { StockQuoteComponent } from './component/common/stock-quote.component';
 import { StockPriceQuoteComponent } from './component/common/stock-price-quote.component';
 import { StockPriceGainLossComponent } from './component/common/stock-price-gain-loss.component';
 import { StockCompanyCacheService } from './service/cache/stock-company-cache.service';
+import { StockNotesSourceSelectionComponent } from './component/common/stock-notes-source-selection.component';
+import { SelectedStockCompaniesComponent } from './component/common/selected-stock-companies.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -436,6 +437,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockPriceGainLossComponent,
 
         StockCompanyComponent,
+        SelectedStockCompaniesComponent,
 
         StockAutoCompleteComponent,
         StockSearchComponent,
@@ -445,7 +447,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockPriceQuoteComponent,
 
         CachedValueComponent,
-        StockNotesSourceComponent,
+        StockNotesSourceSelectionComponent,
         DashboardComponent,
         FormErrorsComponent,
         UppercaseDirective,

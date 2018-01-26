@@ -15,6 +15,7 @@ import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { Subject } from 'rxjs/Subject';
 import { StockPriceQuoteService } from './stock-price-quote.service';
 import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
+import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 
 @Injectable()
 export class StockCompanyService extends ReadRestService<StockCompany>
@@ -32,7 +33,7 @@ export class StockCompanyService extends ReadRestService<StockCompany>
      * @param {RestErrorReporter} restErrorReporter
      * @param {StockCompanyFactory} stockCompanyFactory
      * @param {StockPriceQuoteService} stockPriceQuoteService
-     * @param {StockPriceQuoteCacheService} StockPriceCacheService
+     * @param {StockPriceQuoteCacheService} stockPriceCacheService
      */
     constructor( protected http: HttpClient,
                  protected session: SessionService,
@@ -108,7 +109,7 @@ export class StockCompanyService extends ReadRestService<StockCompany>
                       .getStockPriceQuote( tickerSymbol ))
                       .subscribe( results =>
                        {
-                            let stockCompany: StockCompany = results[0];
+                            let stockCompany: StockCompany = this.stockCompanyFactory.newModelObjectFromJSON( results[0] );
                             let stockPriceQuote: StockPriceQuote = results[1];
                             stockCompany.lastPrice = stockPriceQuote.lastPrice;
                             subject.next( stockCompany );

@@ -10,9 +10,6 @@ import { StockCompany } from '../entity/stock-company';
 export interface StockCompanyContainer
 {
     getTickerSymbol(): string;
-    getStockCompanyCacheState(): CachedValueState;
-    setStockCompanyCacheState( stockCompanyCacheState: CachedValueState );
     getStockCompany(): StockCompany;
     setStockCompany( stockCompany: StockCompany );
-    getStockCompanyCacheError();
 }

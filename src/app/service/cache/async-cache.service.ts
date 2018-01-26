@@ -6,6 +6,7 @@ import { isNullOrUndefined } from 'util';
 import { CacheStateContainer } from '../../model/common/cache-state-container';
 import { BaseService } from '../base-service';
 import { ModelObjectFactory } from '../../model/factory/model-object.factory';
+import { CachedValueState } from '../../common/cached-value-state.enum';
 
 /**
  * This is a generic cache to work with the Async Entity Cache on the backend.  It manages the caching and retrieval
@@ -42,7 +43,8 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
      * has been received, a subsequent call to receivedCachedData will be called with the new cached data value and
      * whenever the cached data value changes, the receivedCachedData method will be called as well.
      * @param {K} key
-     * @returns {Observable<T>}
+     * @param {(cachedData: T) => any} receiveCachedData
+     * @return {Subscription}
      */
     public subscribeToChanges( key: K, receiveCachedData: ( cachedData: T ) => any ): Subscription
     {
@@ -63,6 +65,13 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
             this.debug( methodName + " " + key + " is not in the cache.  Fetching..." );
             this.cacheSubjectMap
                 .set( key, subject );
+            /*
+             * Send the model object with the cache state of STALE so the component will display the loading message.
+             */
+            let modelObject: T = this.modelObjectFactory.newModelObject();
+            modelObject.setCacheState( CachedValueState.STALE );
+            modelObject.setCacheError( '' );
+            this.sendCachedDataChange( key, modelObject );
             /*
              * Not in the cache, so fetch it and then broadcast the new stock price.
              */
@@ -139,10 +148,6 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
             {
                 this.workingMap
                     .delete( key );
-                /*
-                this.restErrorReporter
-                    .reportRestError( error );
-                    */
                 let cachedData: T = this.modelObjectFactory
                                         .newModelObject();
                 cachedData.setCacheError( error );

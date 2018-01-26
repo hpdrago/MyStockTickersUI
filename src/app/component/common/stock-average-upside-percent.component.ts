@@ -3,6 +3,7 @@ import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-co
 import { StockAnalystConsensusBaseComponent } from './stock-analyst-consensus-base.component';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { ToastsManager } from 'ng2-toastr';
+import { StockPriceQuoteContainer } from '../../model/common/stock-price-quote-container';
 
 /**
  * This component compares the current prices of the stock quote (lastPrice) against the average analyst price target
@@ -16,7 +17,7 @@ import { ToastsManager } from 'ng2-toastr';
 export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBaseComponent
 {
     @Input()
-    private stockPriceQuote: StockPriceQuote;
+    private stockPriceQuoteContainer: StockPriceQuoteContainer;
 
     /**
      * Constructor.
@@ -31,7 +32,7 @@ export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBas
 
     public ngOnInit(): void
     {
-        this.tickerSymbol = this.stockPriceQuote.tickerSymbol;
+        this.tickerSymbol = this.stockPriceQuoteContainer.getTickerSymbol();
         super.ngOnInit();
     }
 
@@ -42,18 +43,18 @@ export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBas
      */
     protected calcAvgUpsidePercent(): number
     {
-        if ( this.stockPriceQuote.lastPrice != null &&
+        if ( this.stockPriceQuoteContainer.getLastPrice() != null &&
              this.stockAnalystConsensus != null &&
              this.stockAnalystConsensus.avgAnalystPriceTarget != null &&
              this.stockAnalystConsensus.avgAnalystPriceTarget > 0.0 )
         {
-            if ( this.stockPriceQuote.lastPrice < this.stockAnalystConsensus.avgAnalystPriceTarget )
+            if ( this.stockPriceQuoteContainer.getLastPrice() < this.stockAnalystConsensus.avgAnalystPriceTarget )
             {
-                return this.stockPriceQuote.lastPrice / this.stockAnalystConsensus.avgAnalystPriceTarget;
+                return this.stockPriceQuoteContainer.getLastPrice() / this.stockAnalystConsensus.avgAnalystPriceTarget;
             }
             else
             {
-                return (this.stockAnalystConsensus.avgAnalystPriceTarget / this.stockPriceQuote.lastPrice);
+                return (this.stockAnalystConsensus.avgAnalystPriceTarget / this.stockPriceQuoteContainer.getLastPrice());
             }
         }
         else

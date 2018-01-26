@@ -54,7 +54,7 @@
                   [style]="{'width':'40px','text-align':'right'}"
                   [sortable]="true">
             <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                <stock-average-upside-percent [stockPriceQuote]="stockAnalystConsensus"></stock-average-upside-percent>
+                <stock-average-upside-percent [stockPriceQuoteContainer]="stockAnalystConsensus"></stock-average-upside-percent>
             </ng-template>
         </p-column>
 
@@ -67,11 +67,12 @@
                   [style]="{'width':'150px'}"
                   [sortable]="false">
             <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                <stock-company [stockCompanyContainer]="stockAnalystConsensus">
+                <stock-company [tickerSymbol]="stockAnalystConsensus.tickerSymbol"
+                               (stockCompanyChange)="stockAnalystConsensus.setStockCompany($event)">
+                    {{stockAnalystConsensus.stockCompany.companyName}}
                 </stock-company>
             </ng-template>
         </p-column>
-
 
         <!----------------------------------------------------------------------------------------------------------
         SOURCE
@@ -160,16 +161,18 @@
             </ng-template>
         </p-column>
 
+
         <!----------------------------------------------------------------------------------------------------------
         LAST PRICE
         ------------------------------------------------------------------------------------------------------------>
         <p-column id="lastPrice"
                   field="lastPrice"
                   header="Last Price"
-                  [style]="{'width':'40px','text-align':'right'}"
-                  [sortable]="true">
+                  [style]="{'width':'40px','text-align':'right'}">
             <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                <currency [currencyValue]="stockAnalystConsensus[col.field]"></currency>
+                <stock-quote-last-price [stockQuoteContainer]="stockAnalystConsensus"
+                                        [stockPriceQuoteContainer]="stockAnalystConsensus">
+                </stock-quote-last-price>
             </ng-template>
         </p-column>
 
