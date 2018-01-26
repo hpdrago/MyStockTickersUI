@@ -147,6 +147,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
          */
         this.tickThenRun( () => this.crudController
                                     .sendFormReadyToDisplay() );
+        this.enableDisableInputs()
         this.changeDetector
             .detectChanges();
         this.debug( methodName + '.end' );
@@ -302,17 +303,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * This method is called whenever the crudOperation changes.
-     * @param crudOperation
-     * @override
-     */
-    protected onCrudOperationChanged( crudOperation: CrudOperation ): void
-    {
-        super.onCrudOperationChanged( crudOperation );
-        this.enableDisableInputs();
-    }
-
-    /**
      * This method is called when a new model object is being created or when the reset button is clicked.
      * This method only calls {@code setFormValue} so for subclasses that override this method, set the model object
      * value sand then call {@code super.setDefaultValues()}.
@@ -344,7 +334,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
                 this.setFormValue( property, modelObject[property] );
             }
         }
-        this.enableDisableInputs()
         this.debug( methodName + '.end' );
     }
 
@@ -537,7 +526,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected disableInputs(): void
     {
-        //this.debug( "disableInputs" );
+        this.debug( "disableInputs" );
         if ( this.formGroup )
         {
             for ( let property in this.formGroup.controls )
@@ -554,7 +543,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected disableField( fieldName: string ): void
     {
-        //this.debug( "formGroup.disableField " + fieldName );
+        this.debug( "formGroup.disableField " + fieldName );
         this.formGroup.controls[fieldName].disable();
     }
 
@@ -563,7 +552,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected enableInputs(): void
     {
-        //this.debug( "enableInputs" );
+        this.debug( "enableInputs" );
         if ( this.crudOperation != CrudOperation.NONE &&
              this.crudOperation != CrudOperation.DELETE )
         {
@@ -591,12 +580,12 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
             if ( doEnable )
             {
                 this.formGroup.controls[fieldName].enable();
-                //this.debug( "formGroup.enableField enable: " + fieldName );
+                this.debug( "formGroup.enableField enable: " + fieldName );
             }
             else
             {
                 this.formGroup.controls[fieldName].disable();
-                //this.debug( "formGroup.enableField disable: " + fieldName );
+                this.debug( "formGroup.enableField disable: " + fieldName );
             }
         }
     }

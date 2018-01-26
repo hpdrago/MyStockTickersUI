@@ -13,6 +13,7 @@ import { GainsLossesFactory } from '../../model/factory/gains-losses.factory';
 import { GainsLossesCrudService } from '../../service/crud/gains-losses-crud.service';
 import { CrudFormComponent } from '../crud/form/crud-form.component';
 import { StockAutoCompleteComponent } from '../common/stock-autocomplete.component';
+import { StockSearchSelectedCompaniesComponent } from '../common/stock-search-selected-companies.component';
 
 /**
  * This is the StockCompany ToBuy Form Component class.
@@ -29,6 +30,15 @@ export class GainsLossesFormComponent extends CrudFormComponent<GainsLosses>
 {
     @ViewChild( StockAutoCompleteComponent )
     private stockAutoCompleteComponent: StockAutoCompleteComponent;
+
+    @ViewChild( StockSearchSelectedCompaniesComponent )
+    private stockSearchSelectedCompaniesComponent: StockSearchSelectedCompaniesComponent;
+
+    /**
+     * Set to true when the user enters a ticker symbol that is no longer valid like RLYP, but wants to enter some
+     * gains and losses for it. The user will be prompted for the company name.
+     */
+    protected stockNotFound: boolean;
 
     /**
      * Constructor.
@@ -70,28 +80,11 @@ export class GainsLossesFormComponent extends CrudFormComponent<GainsLosses>
             {
                 'tickerSymbol':     new FormControl( this.modelObject.tickerSymbol, Validators.required ),
                 'linkedAccountId':  new FormControl( this.modelObject.linkedAccount.id, Validators.required ),
+                'stockSearch':      new FormControl(),
                 'gains':            new FormControl( this.modelObject.gains ),
                 'losses':           new FormControl( this.modelObject.losses ),
             } );
         return stockNoteForm;
-    }
-
-    protected disableInputs(): void
-    {
-        super.disableInputs();
-        if ( !isNullOrUndefined( this.stockAutoCompleteComponent ))
-        {
-            this.stockAutoCompleteComponent.setDisabledState( false );
-        }
-    }
-
-    protected enableInputs(): void
-    {
-        super.enableInputs();
-        if ( !isNullOrUndefined( this.stockAutoCompleteComponent ))
-        {
-            this.stockAutoCompleteComponent.setDisabledState( true );
-        }
     }
 
     /**
@@ -101,7 +94,7 @@ export class GainsLossesFormComponent extends CrudFormComponent<GainsLosses>
     protected onStockSelected( stockCompany: StockCompany )
     {
         const methodName = 'onStockSelected';
-        this.logMethodBegin( methodName + ' ' + JSON.stringify( stockCompany ));
+        this.log( methodName + '.begin ' + JSON.stringify( stockCompany ));
         this.modelObject
             .tickerSymbol = stockCompany.tickerSymbol;
         this.setFormValue( 'tickerSymbol', stockCompany.tickerSymbol );
@@ -122,5 +115,17 @@ export class GainsLossesFormComponent extends CrudFormComponent<GainsLosses>
                 }
             });
         this.logMethodEnd( methodName );
+    }
+
+    protected onStockNotFound( tickerSymbol: string )
+    {
+
+    }
+
+    protected resetForm(): void
+    {
+        super.resetForm();
+        this.stockAutoCompleteComponent
+            .reset();
     }
 }

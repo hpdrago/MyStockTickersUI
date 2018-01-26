@@ -1,13 +1,12 @@
 <div *ngIf="!isCrudNoneOperation()">
     <form [formGroup]="formGroup">
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-            <div *ngIf="isCrudCreateOperation(); then createDiv else modifyDiv" class="crud-form ui-grid-row">
-            </div>
             <!----------------------------------------------------------------------------------------------------------
             SEARCH
             ------------------------------------------------------------------------------------------------------------>
             <stock-search-selected-companies (stockSelected)="onStockSelected($event)"
                                              [maxStocks]="10"
+                                             formControlName="stockSearch"
                                              [tickerSymbol]="modelObject.tickerSymbol">
             </stock-search-selected-companies>
 
@@ -153,8 +152,6 @@
                     <input currencyMask
                            [style]="{'width':'60px'}"
                            class="crud-form ui-inputtext ui-widget ui-widget-content ui-corner-all ui-state-filled"
-                           [ngClass]="{'ui-state-disabled': isActionTakenFieldsDisabled(),
-                                       'ui-state-default': !isActionTakenFieldsDisabled() }"
                            formControlName="actionTakenPrice"
                            placeholder="$"/>
                 </div>

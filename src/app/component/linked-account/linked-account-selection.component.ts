@@ -1,11 +1,12 @@
 import { BaseComponent } from '../common/base.component';
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, forwardRef, Input, OnInit } from '@angular/core';
 import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud.service';
 import { ToastsManager } from 'ng2-toastr';
 import { SelectItem } from 'primeng/api';
 import { LinkedAccountFactory } from '../../model/factory/linked-account.factory';
 import { LinkedAccount } from '../../model/entity/linked-account';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { isNullOrUndefined } from 'util';
 
 /**
  * Displays a drop down list of linked account;
@@ -36,6 +37,9 @@ export class LinkedAccountSelectionComponent extends BaseComponent
     protected linkedAccountItems: SelectItem[] = [];
     protected linkedAccountId: string;
 
+    @Input()
+    protected formControlName: string;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -43,6 +47,7 @@ export class LinkedAccountSelectionComponent extends BaseComponent
      * @param {LinkedAccountCrudService} linkedAccountService
      */
     constructor( protected toaster: ToastsManager,
+                 private changeDetector: ChangeDetectorRef,
                  private linkedAccountFactory: LinkedAccountFactory,
                  private linkedAccountService: LinkedAccountCrudService )
     {
@@ -54,18 +59,36 @@ export class LinkedAccountSelectionComponent extends BaseComponent
      */
     public ngOnInit(): void
     {
+        const methodName = 'ngOnInit';
+        this.logMethodBegin( methodName );
         let linkedAccount: LinkedAccount = this.linkedAccountFactory
                                                .newModelObject();
         this.linkedAccountService
             .getModelObjectList( linkedAccount )
             .subscribe( (linkedAccounts: LinkedAccount[]) =>
             {
+                this.log( methodName + ' retrieving linked accounts' );
                 linkedAccounts.forEach( (linkedAccount: LinkedAccount) =>
                                         {
                                             this.linkedAccountItems.push( {label: linkedAccount.accountName,
                                                                            value: linkedAccount.id } );
                                         })
+                if ( !isNullOrUndefined( this.linkedAccountId ))
+                {
+                    this.log( methodName + ' linked account was already set, calling change detector' );
+                    /*
+                     * Force a change detection to get the drop down list box display the correct value.
+                     */
+                    let saveLinkedAccountId = this.linkedAccountId;
+                    this.linkedAccountId = null;
+                    this.changeDetector
+                        .detectChanges();
+                    this.linkedAccountId = saveLinkedAccountId;
+                    this.changeDetector
+                        .detectChanges();
+                }
             });
+        this.logMethodEnd( methodName );
     }
 
     /**
@@ -100,6 +123,7 @@ export class LinkedAccountSelectionComponent extends BaseComponent
 
     public writeValue( linkedAccountId: any ): void
     {
+        this.log( 'writeValue ' + linkedAccountId );
         this.linkedAccountId = linkedAccountId
     }
 }

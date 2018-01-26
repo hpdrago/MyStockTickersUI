@@ -1,4 +1,4 @@
-import { OnChanges, OnDestroy, SimpleChange } from "@angular/core";
+import { Input, OnChanges, OnDestroy, SimpleChange } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { BaseClass } from "../../common/base-class";
 import { Subscription } from "rxjs/Subscription";
@@ -10,6 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 export abstract class BaseComponent extends BaseClass implements OnChanges, OnDestroy
 {
     private subscriptions: Subscription[] = [];
+
     protected disabled: boolean = false;
 
     /**
@@ -105,6 +106,7 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
      */
     public setDisabled( disabled: boolean )
     {
+        this.log( 'setDisabled ' + disabled );
         this.disabled = disabled;
     }
 

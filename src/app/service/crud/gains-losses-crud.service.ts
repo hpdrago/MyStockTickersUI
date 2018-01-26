@@ -9,6 +9,7 @@ import { GainsLosses } from '../../model/entity/gains-losses';
 import { GainsLossesFactory } from '../../model/factory/gains-losses.factory';
 import { Observable } from 'rxjs/Observable';
 import { StringDTO } from '../../model/entity/string-d-t-o';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This class provides all CRUD REST services for StockCompany To Buy.
@@ -53,8 +54,16 @@ export class GainsLossesCrudService extends CrudRestService<GainsLosses>
      */
     protected getContextURLKeyValues( gainsLosses: GainsLosses ): KeyValuePairs<string,any>
     {
-        let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
-        keyColumns.addPair( "tickerSymbol", gainsLosses.tickerSymbol );
+        let keyColumns = super.getContextURLKeyValues( gainsLosses );
+        /*
+         * Add the ticker symbol only if that's set and the id is not.
+         */
+        if ( !isNullOrUndefined( gainsLosses ) &&
+            (isNullOrUndefined( gainsLosses.id ) || gainsLosses.id.length == 0)&&
+            !isNullOrUndefined( gainsLosses.tickerSymbol ))
+        {
+            keyColumns.addPair( "tickerSymbol", gainsLosses.tickerSymbol );
+        }
         return keyColumns;
     }
 

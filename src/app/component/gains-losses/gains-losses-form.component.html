@@ -6,8 +6,26 @@
             ------------------------------------------------------------------------------------------------------------>
             <stock-search-selected-companies (stockSelected)="onStockSelected($event)"
                                              [maxStocks]="1"
+                                             formControlName="stockSearch"
                                              [tickerSymbol]="modelObject.tickerSymbol">
             </stock-search-selected-companies>
+
+            <!--
+            <div *ngIf="stockNotFound">
+                <div class="ui-grid-row">
+                    Stock was not found.  Enter company name.
+                    <div class="crud-form-label ui-grid-col-2">
+                        <label class="crud-form" for="linkedAccountId">Company Name:</label>
+                    </div>
+                    <div class="ui-grid-col-4">
+                        <linked-account-selection id="linkedAccountId"
+                                                  formControlName="linkedAccountId"
+                                                  [(ngModel)]="modelObject.linkedAccountId">
+                        </linked-account-selection>
+                    </div>
+                </div>
+            </div>
+            -->
 
             <!----------------------------------------------------------------------------------------------------------
             LINKED ACCOUNT
@@ -19,7 +37,7 @@
                 <div class="ui-grid-col-4">
                     <linked-account-selection id="linkedAccountId"
                                               formControlName="linkedAccountId"
-                                              [(ngModel)]="modelObject.linkedAccountId">
+                                              [(ngModel)]="modelObject.linkedAccount.id">
                     </linked-account-selection>
                 </div>
             </div>
@@ -31,11 +49,13 @@
                 <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="gains">Gains:</label>
                 </div>
-                <div class="ui-grid-col-2">
+                <div class="ui-grid-col-3">
                     <input currencyMask
                            id="gains"
+                           [ngClass]="{'ui-state-disabled': disabled,
+                                       'ui-state-default': !disabled }"
                            formControlName="gains"
-                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
+                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-filled"
                            [(ngModel)]="modelObject.gains"
                            placeholder="$"/>
                 </div>
@@ -48,11 +68,13 @@
                 <div class="crud-form-label ui-grid-col-2">
                     <label class="crud-form" for="losses">Losses:</label>
                 </div>
-                <div class="ui-grid-col-2">
+                <div class="ui-grid-col-3">
                     <input currencyMask
                            id="losses"
+                           [ngClass]="{'ui-state-disabled': disabled,
+                                       'ui-state-default': !disabled }"
                            formControlName="losses"
-                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
+                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-filled"
                            [(ngModel)]="modelObject.losses"
                            placeholder="$"/>
                 </div>

@@ -173,6 +173,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             'notesDate':         new FormControl( this.modelObject.notesDate, Validators.required ),
             'notesRating':       new FormControl( this.modelObject.notesRating ),
             'tags':              new FormControl( this.modelObject.tags ),
+            'stockSearch':       new FormControl(),
             'bullOrBear':        new FormControl( this.modelObject.bullOrBear ),
             'actionTaken':       new FormControl( this.modelObject.actionTaken ),
             'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
@@ -317,43 +318,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         {
             return this.modelObject.actionTaken == StockNotesActionTaken.NONE ||
                    this.modelObject.actionTaken == StockNotesActionTaken.BUY_LATER;
-        }
-    }
-
-    protected enableInputs(): void
-    {
-        super.enableInputs();
-        if ( !isNullOrUndefined( this.stockSearchSelectedCompaniesComponent ))
-        {
-            this.stockSearchSelectedCompaniesComponent
-                .setDisabled( false );
-        }
-        if ( !isNullOrUndefined( this.stockNotesSourceSelectionComponent ))
-        {
-            this.stockNotesSourceSelectionComponent
-                .setDisabled( false );
-        }
-        /*
-        if ( !isNullOrUndefined( this.stockNotesSourceSelectionComponent ))
-        {
-            this.stockNotesSourceSelectionComponent
-                .setDisabled( false );
-        }
-        */
-    }
-
-    protected disableInputs(): void
-    {
-        super.disableInputs();
-        if ( !isNullOrUndefined( this.stockSearchSelectedCompaniesComponent ))
-        {
-            this.stockSearchSelectedCompaniesComponent
-                .setDisabled( true );
-        }
-        if ( !isNullOrUndefined( this.stockNotesSourceSelectionComponent ))
-        {
-            this.stockNotesSourceSelectionComponent
-                .setDisabled( true );
         }
     }
 }

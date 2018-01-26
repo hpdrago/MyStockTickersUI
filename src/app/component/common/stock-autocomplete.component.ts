@@ -42,6 +42,9 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     @Output()
     private stockSelected: EventEmitter<StockCompany>  = new EventEmitter<StockCompany>();
 
+    @Output()
+    private stockNotFound: EventEmitter<string>  = new EventEmitter<string>();
+
     protected stockSearchResults: string[];
     protected stockCompany: StockCompany;
     protected disabledState: boolean = false;
@@ -181,7 +184,8 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                                 }
                                 else
                                 {
-                                    this.stockSelected.emit( stockCompany );
+                                    this.stockSelected
+                                        .emit( stockCompany );
                                     this.stockCompany = this.stockCompanyFactory.newModelObject();
                                     this.isStockSelected = true;
                                 }
@@ -192,7 +196,18 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                                 let restException = new RestException( error );
                                 if ( restException.isNotFoundError() )
                                 {
-                                    this.showError( this.stockCompany.tickerSymbol + ' was not found' );
+                                    /*
+                                     * Let the registered handler handle the stock not found case.
+                                     */
+                                    if ( this.stockNotFound )
+                                    {
+                                        this.stockNotFound
+                                            .emit( this.stockCompany.tickerSymbol );
+                                    }
+                                    else
+                                    {
+                                        this.showError( this.stockCompany.tickerSymbol + ' was not found' );
+                                    }
                                 }
                                 else
                                 {
@@ -232,13 +247,6 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     {
         this.log( 'Setting disabledState=' + disabledState );
         this.disabledState = disabledState;
-        /*
-        this.tickThenRun( () =>
-                          {
-                              this.log( 'Setting disabledState=' + disabledState );
-                              this.disabledState = disabledState;
-                          });
-                          */
     }
 
 }

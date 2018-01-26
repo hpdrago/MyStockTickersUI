@@ -2,13 +2,14 @@
  * Created by mike on 5/22/2018
  */
 import { BaseComponent } from './base.component';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { StockCompany } from '../../model/entity/stock-company';
 import { ToastsManager } from 'ng2-toastr';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
 import { SelectedStockCompaniesComponent } from './selected-stock-companies.component';
 import { StockAutoCompleteComponent } from './stock-autocomplete.component';
 import { isNullOrUndefined } from 'util';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 /**
  * This component combines the stock search and selection and the display of the selected stock companies.
@@ -16,7 +17,7 @@ import { isNullOrUndefined } from 'util';
 @Component
 ({
     selector: 'stock-search-selected-companies',
-     styleUrls: ['../crud/form/crud-form.component.css'],
+    styleUrls: ['../crud/form/crud-form.component.css'],
     template: `<div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid">
                   <div *ngIf="maxStocks > 1">
                       <div class="crud-form ui-grid-row">
@@ -41,10 +42,18 @@ import { isNullOrUndefined } from 'util';
                   <selected-stock-companies [maxCompanies]="maxStocks">
                   </selected-stock-companies>
                </div>
-              `
+              `,
+    providers: [
+    {
+        provide: NG_VALUE_ACCESSOR,
+        useExisting: forwardRef(() => StockSearchSelectedCompaniesComponent ),
+        multi: true
+    }]
 })
 export class StockSearchSelectedCompaniesComponent extends BaseComponent
-                                                   implements OnInit
+                                                   implements OnInit,
+                                                              ControlValueAccessor
+
 {
     /**
      * Determines how many stocks are allowed to be entered.  Defaults to 1.
@@ -58,6 +67,9 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
      */
     @Input()
     protected tickerSymbol: string;
+
+    @Input()
+    protected formControlName: string;
 
     /**
      * Emits the {@code StockCompany} when it is selected.
@@ -174,12 +186,29 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
      */
     public setDisabled( disabled: boolean ): void
     {
-        this.debug( 'setDisabled: " + disabled: ' + disabled );
+        this.debug( 'setDisabled: ' + disabled );
         super.setDisabled( disabled );
         this.selectedStockCompaniesComponent
             .setDisabled( disabled );
         this.stockAutoCompleteComponent
             .setDisabled( disabled );
+    }
+
+    public registerOnChange( fn: any ): void
+    {
+    }
+
+    public registerOnTouched( fn: any ): void
+    {
+    }
+
+    public setDisabledState( isDisabled: boolean ): void
+    {
+        this.setDisabled( isDisabled );
+    }
+
+    public writeValue( obj: any ): void
+    {
     }
 }
 
