@@ -70,65 +70,6 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
         return 'Stock Note'
     }
 
-    /**
-     * This method is called when the Add button (might be labeled 'Save') is clicked.
-     * Special logic is needed for stock notes because the user can specify multiple stocks when creating a new note.
-     * A separate stock note, containing the same core information, will be created for each stock.
-     */
-    protected onAddButtonClick()
-    {
-        var methodName = "onAddButtonClick.override";
-        this.log( methodName + " " + JSON.stringify( this.modelObject ));
-        this.modelObject
-            .stocks
-            .forEach( stockNotesStock =>
-            {
-                this.modelObject.tickerSymbol = stockNotesStock.tickerSymbol;
-                this.log( methodName + " " + JSON.stringify( this.modelObject ));
-                super.onAddButtonClick();
-                /*
-                 * If the user chose BUY_LATER, then create StocksToBuy records
-                 */
-                if ( this.modelObject.actionTaken == StockNotesActionTaken.BUY_LATER )
-                {
-                    this.log( methodName + " creating stocks to buy for " + this.modelObject.tickerSymbol );
-                    this.createStockToBuy();
-                }
-            });
-    }
-
-    /**
-     * This method will create a stock to buy record from the information contained within the stock note
-     */
-    private createStockToBuy()
-    {
-        var methodName = "createStockToBuy";
-        this.log( methodName + ".begin" ) ;
-        var stockToBuy = this.stockToBuyFactory
-                             .newModelObject();
-        stockToBuy.customerId = this.modelObject.customerId;
-        stockToBuy.tickerSymbol = this.modelObject.tickerSymbol;
-        stockToBuy.tags = this.modelObject.tags;
-        stockToBuy.notesSourceId = this.modelObject.notesSourceId;
-        stockToBuy.notesSourceName = this.modelObject.notesSourceName;
-        stockToBuy.comments = this.modelObject.notes;
-        stockToBuy.completed = false;
-        this.log( methodName + " " + JSON.stringify( stockToBuy ));
-        this.stockToBuyCrudService
-            .createModelObject( stockToBuy )
-            .subscribe( () =>
-                        {
-                            this.showInfo( "Stock To Buy created for " + this.modelObject.tickerSymbol );
-                            this.stockToBuyStateStore
-                                .sendCrudOperationChangedEvent( CrudOperation.CREATE );
-                            this.stockToBuyStateStore
-                                .sendModelObjectChangedEvent( this, stockToBuy )
-                            this.log( methodName + ".end" );
-                        },
-                        error => {
-                            this.reportRestError( error );
-                        } );
-    }
 
     /**
      * This method is called to get the message to display to the user that the mdoel object was saved successfully.

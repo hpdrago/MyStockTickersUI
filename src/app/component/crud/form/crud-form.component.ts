@@ -212,41 +212,12 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
             this.crudController
                 .subscribeToFormResetEvent( () => this.resetForm() ));
         /*
-         * Prepare to save
-         */
-        /*
-        this.addSubscription( 'subscribeToFormPrepareToSaveEvent',
-            this.crudController
-                .subscribeToFormPrepareToSaveEvent( () => this.prepareToSave() ));*/
-        /*
-         * Model Object version update
-         */
-        this.addSubscription( 'subscribeToFormModelObjectVersionUpdateEvent',
-            this.crudController
-                .subscribeToFormModelObjectVersionUpdateEvent( ( modelObject: T ) => this.onModelObjectVersionUpdate( modelObject ) ));
-        /*
-         * Add button clicked
+         * Table Add button clicked
          */
         this.addSubscription( 'subscribeToAddButtonClickedEvent',
             this.crudController
                 .subscribeToTableAddButtonClickedEvent( () => this.onTableAddButtonClicked() ));
 
-        /*
-         * Save button clicked
-         */
-        /*
-        this.addSubscription( 'subscribeToSaveButtonClickedEvent',
-            this.crudController
-                .subscribeToPanelSaveButtonClickedEvent( () => this.onSaveButtonClicked() ));
-    */
-        /*
-         * Save button click completed
-         */
-        /*
-        this.addSubscription( 'subscribeToSaveButtonClickCompletedEvent',
-            this.crudController
-                .subscribeToPanelSaveButtonClickCompletedEvent( () => this.onSaveButtonClickCompleted() ));
-        */
         this.debug( methodName + '.end' );
     }
 
@@ -345,15 +316,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         }
         this.crudController
             .sendFormLogStateRequest();
-    }
-
-    /**
-     * This method is called when a new version of the model object was loaded.
-     * @param {T} modelObject
-     */
-    protected onModelObjectVersionUpdate( modelObject: T ): void
-    {
-        this.debug( "onModelObjectVersionUpdate " + JSON.stringify( modelObject ) );
     }
 
     /**
@@ -734,7 +696,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     {
         //this.debug( "invalidProperty " + propertyName );
     }
-
 
     protected debug( message: string ): void
     {

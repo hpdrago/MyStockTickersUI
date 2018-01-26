@@ -58,7 +58,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     private formValidSubject: Subject<boolean>;
     private formResetSubject: Subject<void>;
     private formLogStateSubject: Subject<void>;
-    //private formPrepareToSaveSubject: Subject<void> = new Subject<void>();
+    private formPrepareToSaveSubject: Subject<void> = new Subject<void>();
     //private formPrepareToDisplaySubject: Subject<void> = new Subject<void>();
     private formModelObjectVersionUpdateSubject: Subject<T>;
     private formReadyToDisplay: Subject<void>;
@@ -116,7 +116,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         this.formValidSubject = new Subject<boolean>();
         this.formResetSubject = new Subject<void>();
         this.formLogStateSubject = new Subject<void>();
-        //this.formPrepareToSaveSubject = new Subject<void>();
+        this.formPrepareToSaveSubject = new Subject<void>();
         //this.formPrepareToDisplaySubject = new Subject<void>();
         this.formModelObjectVersionUpdateSubject = new Subject<T>();
         this.formReadyToDisplay = new Subject<void>();
@@ -719,8 +719,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     {
         let methodName = 'sendModelObjectDeletedEvent';
         this.debug( methodName + '.begin to ' + this.getToObserversMessage( this.modelObjectDeletedSubject ));
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.modelObjectDeletedSubject.next( modelObject );
-        this.crudStateStore.resetSubjects();
+        //this.crudStateStore.resetSubjects();
         this.debug( methodName + '.end' );
     }
 
@@ -762,8 +763,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     {
         let methodName = 'sendModelObjectCreatedEvent';
         this.debug( methodName + '.begin to ' + this.getToObserversMessage( this.modelObjectCreatedSubject ));
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.modelObjectCreatedSubject.next( modelObject );
-        this.crudStateStore.resetSubjects();
+        //this.crudStateStore.resetSubjects();
         this.debug( methodName + '.end' );
     }
 
@@ -782,8 +784,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
                          {
                              this.sendFormResetEvent();
                              this.sendModelObjectSavedEvent( modelObject )
-                             this.crudStateStore
-                                 .resetSubjects();
+                             //this.crudStateStore
+                             //    .resetSubjects();
                              return modelObject;
                          });
     }
@@ -796,8 +798,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     {
         let methodName = 'sendModelObjectSavedEvent';
         this.debug( methodName + '.begin to ' + this.getToObserversMessage( this.modelObjectSavedSubject ));
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.modelObjectSavedSubject.next( modelObject );
-        this.crudStateStore.resetSubjects();
+        //this.crudStateStore.resetSubjects();
         this.debug( methodName + '.end' );
     }
 

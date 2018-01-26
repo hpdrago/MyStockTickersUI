@@ -47,7 +47,7 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
                    .map( ( ) =>
                               {
                                   this.debug( methodName + " delete successful " + JSON.stringify( modelObject ));
-                                  this.showInfo( this.getDeleteSuccessfulMessage( modelObject ) );
+                                  this.showDeleteSuccessful( modelObject );
                               },
                               error =>
                               {
@@ -70,7 +70,7 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
                    .map( ( newModelObject: T ) =>
                          {
                              this.debug( methodName + " add successful.  modelObject: " + JSON.stringify( newModelObject ) );
-                             this.showInfo( this.getCreateSuccessfulMessage( newModelObject ));
+                             this.showAddSuccessful( newModelObject );
                              return newModelObject;
                          },
                          error =>
@@ -104,7 +104,7 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
                    .map( ( updatedModelObject: T ) =>
                           {
                               this.debug( methodName + " saved successful.  modelObject; " + JSON.stringify( updatedModelObject ) );
-                              this.showInfo( this.getSaveSuccessfulMessage( updatedModelObject ) );
+                              this.showSaveSuccessful( updatedModelObject );
                               return updatedModelObject;
                           },
                           error =>
@@ -117,21 +117,38 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
         );
     }
 
-    public modelObjectVersionCheck( modelObject: T ): Observable<T>
+    /*
+public modelObjectVersionCheck( modelObject: T ): Observable<T>
+{
+    var methodName = "modelObjectVersionCheck";
+    return this.crudRestService
+               .getModelObject( modelObject )
+               .map( modelObject )
     {
-        var methodName = "modelObjectVersionCheck";
-        return this.crudRestService
-                   .getModelObject( modelObject )
-                   .map( modelObject )
-        {
 
-        }
+    }
+}
+*/
+
+    protected showSaveSuccessful( updatedModelObject: T )
+    {
+        this.showInfo( this.getSaveSuccessfulMessage( updatedModelObject ) );
     }
 
-    /**
-     * Defines the message to show when a delete was successful.  Override this method to change the message.
-     * @returns {string}
-     */
+    protected showAddSuccessful( newModelObject: T )
+    {
+        this.showInfo( this.getAddSuccessfulMessage( newModelObject ) );
+    }
+
+    protected showDeleteSuccessful( modelObject: T )
+    {
+        this.showInfo( this.getDeleteSuccessfulMessage( modelObject ) );
+    }
+
+/**
+ * Defines the message to show when a delete was successful.  Override this method to change the message.
+ * @returns {string}
+ */
     protected getDeleteSuccessfulMessage( modelObject: any )
     {
         if ( modelObject.tickerSymbol )
@@ -148,7 +165,7 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
      * Defines the message to show when a create was successful.  Override this method to change the message.
      * @returns {string}
      */
-    protected getCreateSuccessfulMessage( modelObject: any )
+    protected getAddSuccessfulMessage( modelObject: any )
     {
         if ( modelObject.tickerSymbol )
         {

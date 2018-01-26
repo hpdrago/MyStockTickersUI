@@ -11,7 +11,7 @@ import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.serv
  * from the components.
  */
 @Injectable()
-export class StockToBuyActionHandler extends CrudActionHandler<StockToBuy>
+export class StockToBuyCrudActionHandler extends CrudActionHandler<StockToBuy>
 {
     /**
      * Constructor.

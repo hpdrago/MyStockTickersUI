@@ -76,4 +76,16 @@ export abstract class ModelObject<T>
     {
         return this.getPrimaryKeyValue() === modelObject.getPrimaryKeyValue();
     }
+
+    /**
+     * Creates a clone of the model object.
+     * @param {T} instance
+     * @return {T}
+     */
+    public clone<T>(instance: T): T
+    {
+        const copy = new (instance.constructor as { new (): T })();
+        Object.assign( copy, instance );
+        return copy;
+    }
 }

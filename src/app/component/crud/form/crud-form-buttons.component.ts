@@ -363,7 +363,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected onAddButtonClick(): void
     {
-        var methodName = "onPanelAddButtonClickCompletedEvent";
+        var methodName = "onAddButtonClick";
         this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
         this.checkModelObjectReference();
         this.busyIndicator = this.crudController
@@ -380,7 +380,9 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         var methodName = "onDeleteButtonClick";
         this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
         this.checkModelObjectReference();
-        this.busyIndicator = this.crudController.deleteModelObject( this.modelObject ).subscribe();
+        this.busyIndicator = this.crudController
+                                 .deleteModelObject( this.modelObject )
+                                 .subscribe();
         this.debug( methodName + ".end" );
     }
 

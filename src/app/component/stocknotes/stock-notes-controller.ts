@@ -6,7 +6,7 @@ import { StockNotes } from '../../model/entity/stock-notes';
 import { Injectable } from '@angular/core';
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
-import { StockNotesActionHandler } from './stock-notes-action-handler';
+import { StockNotesCrudActionHandler } from './stock-notes-crud-action-handler';
 
 /**
  * This is the Controller for StockNotes entity components.
@@ -22,10 +22,10 @@ export class StockNotesController extends CrudController<StockNotes>
      */
     constructor( stockNotesStateStore: StockNotesStateStore,
                  stockNotesFactory: StockNotesFactory,
-                 stockNotesActionHandler: StockNotesActionHandler )
+                 stockNotesCrudActionHandler: StockNotesCrudActionHandler )
     {
         super( stockNotesStateStore,
                stockNotesFactory,
-               stockNotesActionHandler );
+               stockNotesCrudActionHandler );
     }
 }

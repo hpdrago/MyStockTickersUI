@@ -46,14 +46,4 @@ export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<S
         this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
         super.onAddButtonClick();
     }
-
-    protected getAddButtonLabel(): string
-    {
-        return "Add Note";
-    }
-
-    protected getDeleteButtonLabel(): string
-    {
-        return "Delete Note";
-    }
 }

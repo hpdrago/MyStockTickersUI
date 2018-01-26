@@ -9,8 +9,8 @@ import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.serv
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockToBuyController } from '../stocktobuy/stock-to-buy-controller';
 import { StockToBuyStateStore } from '../stocktobuy/stock-to-buy-state-store';
-import { StockToBuyActionHandler } from '../stocktobuy/stock-to-buy-action-handler';
-import { StockNotesActionHandler } from '../stocknotes/stock-notes-action-handler';
+import { StockToBuyCrudActionHandler } from '../stocktobuy/stock-to-buy-action-handler';
+import { StockNotesCrudActionHandler } from '../stocknotes/stock-notes-crud-action-handler';
 
 /**
  * This component displays a list of Stocks to buy.
@@ -22,8 +22,8 @@ import { StockNotesActionHandler } from '../stocknotes/stock-notes-action-handle
         selector:    'stock-to-buy-dashboard-table',
         styleUrls:   ['../stocktobuy/stock-to-buy-table.component.css'],
         templateUrl: './stock-to-buy-table-dashboard.component.html',
-        providers: [StockToBuyStateStore, StockToBuyController, StockToBuyActionHandler,
-                    StockNotesStateStore, StockNotesController, StockNotesActionHandler]
+        providers: [StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler,
+                    StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler]
     } )
 export class StockToBuyTableDashboardComponent extends StockToBuyTableComponent
 {

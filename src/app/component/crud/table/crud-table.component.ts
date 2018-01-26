@@ -502,7 +502,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected onModelObjectDeleted( modelObject: T )
     {
         var methodName = "onModelObjectDeleted";
-        this.debug( methodName + ".begin" );
+        this.debug( methodName + ".begin " + JSON.stringify( modelObject ) );
         this.removeModelObjectFromTable( modelObject );
         this.crudController
             .sendTableContentChangeEvent();
@@ -522,6 +522,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         {
             return false;
         }
+        else
         {
             /*
              * A new array must be created to trigger a change event

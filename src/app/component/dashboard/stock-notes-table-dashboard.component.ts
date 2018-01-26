@@ -7,7 +7,7 @@ import { StockNotesStateStore } from '../stocknotes/stock-notes-state-store';
 import { StockNotesController } from '../stocknotes/stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
-import { StockNotesActionHandler } from '../stocknotes/stock-notes-action-handler';
+import { StockNotesCrudActionHandler } from '../stocknotes/stock-notes-crud-action-handler';
 
 /**
  * This is the Stock Notes that displays on the dashboard
@@ -19,7 +19,7 @@ import { StockNotesActionHandler } from '../stocknotes/stock-notes-action-handle
         selector: 'stock-notes-dashboard-table',
         styleUrls: ['../stocknotes/stock-notes-table.component.css'],
         templateUrl: './stock-notes-table-dashboard.component.html',
-        providers: [StockNotesStateStore, StockNotesController, StockNotesActionHandler]
+        providers: [StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler]
     } )
 export class StockNotesTableDashboardComponent extends StockNotesTableComponent
 {

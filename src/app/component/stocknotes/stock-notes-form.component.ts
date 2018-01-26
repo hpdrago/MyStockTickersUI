@@ -306,12 +306,13 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
         this.modelObject.stockPriceWhenCreated = stockQuote.lastPrice;
         (<FormControl>this.formGroup.controls['tickerSymbol']).setValue( stockQuote.tickerSymbol );
         (<FormControl>this.formGroup.controls['stockSearch']).setValue( '' );
+        this.setStockNoteStocks();
     }
 
     /**
-     * This method is called when the user is saving the form and before the REST call is made to save the model object.
+     * Populates the stockNotStocks on the StockNotes instance.
      */
-    protected prepareToSave()
+    protected setStockNoteStocks()
     {
         this.log( "prepareToSave.begin " + JSON.stringify( this.modelObject ));
         if ( this.isCrudCreateOperation() )
