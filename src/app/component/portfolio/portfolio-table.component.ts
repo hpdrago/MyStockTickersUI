@@ -11,6 +11,8 @@ import { PortfolioFactory } from '../../model/factory/portfolio.factory';
 import { PortfolioController } from './portfolio-controller';
 import { PortfolioStateStore } from './portfolio-state-store';
 import { CookieService } from 'ngx-cookie-service';
+import { TradeItAccount } from '../../model/entity/tradeit-account';
+import { LinkedAccount } from '../../model/entity/linked-account';
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -24,10 +26,12 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class PortfolioTableComponent extends CrudTableComponent<Portfolio> implements OnInit
 {
-    private menuItems: MenuItem[] = [];
-
     @ViewChild(PortfolioStockTableComponent)
     private portfolioStocksComponent: PortfolioStockTableComponent;
+
+    private menuItems: MenuItem[] = [];
+    private tradeItAccount: TradeItAccount;
+    private linkedAccount: LinkedAccount;
 
     /**
      * Constructor.
@@ -57,10 +61,35 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
     }
 
     /**
+     * This method is called when the user selects a row on the trade it table accounts.
+     * @param {TradeItAccount} tradeItAccount
+     */
+    public setTradeItAccount( tradeItAccount: TradeItAccount )
+    {
+        const methodName = 'setTradeItAccount';
+        this.log( methodName + " " + JSON.stringify( tradeItAccount ));
+        this.tradeItAccount = tradeItAccount;
+        this.linkedAccount = null;
+        this.clearTable();
+    }
+
+    /**
+     * This method is called when the user changes the linked selected linked account;
+     * @param {LinkedAccount} linkedAccount
+     */
+    public setLinkedAccount( linkedAccount: LinkedAccount )
+    {
+        const methodName = 'setLinkedAccount';
+        this.log( methodName + ".begin " + JSON.stringify( linkedAccount ) );
+        this.linkedAccount = linkedAccount;
+    }
+
+    /**
      * Load the portfolios when this component is created
      */
     public ngOnInit(): void
     {
+        super.ngOnInit();
         this.loadTable();
         this.portfolioStocksComponent
             .registerForPortfolioStockChanges( () => this.loadPortfolio() );

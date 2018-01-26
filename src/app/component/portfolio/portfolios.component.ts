@@ -27,7 +27,7 @@ import { PortfolioActionHandler } from './portfolio-action-handler';
     })
 export class PortfoliosComponent extends BaseComponent
 {
-    private customerAccount: TradeItAccount;
+    private tradeItAccount: TradeItAccount;
 
     @ViewChild( TradeItAccountSelectionTableComponent )
     private customerAccountSelectionTable: TradeItAccountSelectionTableComponent;
@@ -40,9 +40,9 @@ export class PortfoliosComponent extends BaseComponent
         super( toaster );
     }
 
-    protected customerAccountSelected( customerAccount: TradeItAccount )
+    protected customerAccountSelected( tradeItAccount: TradeItAccount )
     {
-        this.log( "customerAccountSelected: " + JSON.stringify( customerAccount ));
-        this.customerAccount = customerAccount;
+        this.log( "customerAccountSelected: " + JSON.stringify( tradeItAccount ));
+        this.tradeItAccount = tradeItAccount;
     }
 }

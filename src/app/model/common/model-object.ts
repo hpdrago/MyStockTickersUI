@@ -6,9 +6,10 @@
 import { JsonObject, JsonProperty } from "json2typescript";
 import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
 import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
+import { BaseClass } from '../../common/base-class';
 
 @JsonObject
-export abstract class ModelObject<T>
+export abstract class ModelObject<T> extends BaseClass
 {
     @JsonProperty( "version", Number )
     public version: number;

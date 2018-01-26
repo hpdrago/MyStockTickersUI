@@ -88,7 +88,7 @@ export class BaseClass implements OnDestroy
     /**
      * Get the class name of this object
      */
-    protected getClassName(): string
+    public getClassName(): string
     {
         return (<any>this).constructor.name;
     }
@@ -169,6 +169,19 @@ export class BaseClass implements OnDestroy
         {
             this.logError( this.getClassName() + " toaster is null" );
             throw new ReferenceError( "toaster is null" );
+        }
+    }
+
+    /**
+     * Throws ReferenceError if {@code argument} is null or undefined.
+     * @param {string} argumentName
+     * @param argument
+     */
+    protected checkArgument( argumentName: string, argument: any )
+    {
+        if ( isNullOrUndefined( argument ))
+        {
+            throw new ReferenceError( argumentName + ' argument cannot be null or undefined' );
         }
     }
 }

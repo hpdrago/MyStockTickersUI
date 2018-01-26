@@ -1,32 +1,42 @@
-<p-panel header="Portfolio Stocks">
-    <p-dataTable [value]="modelObjectRows"
-                 selectionMode="single"
-                 [(selection)]="selectedModelObject"
-                 (onRowSelect)="onRowSelect($event)"
-                 [paginator]="true"
-                 [pageLinks]="3"
-                 [rowsPerPageOptions]="[20,30,40]"
-                 [rows]="25"
-                 [loading]="loading"
-                 (onRowDblclick)="onRowDoubleClick($event)"
-                 [responsive]="true">
+<!----------------------------------------------------------------------------------------------------------
+BUTTONS TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #buttonsTemplate>
+    <portfolio-stock-table-buttons>
+    </portfolio-stock-table-buttons>
+</ng-template>
 
-        <header>{{title}}</header>
-        <p-column field="tickerSymbol" header="Ticker" [sortable]="true"></p-column>
-        <p-column field="numberOfShares" header="Shares" styleClass="text-right" [sortable]="true"></p-column>
-        <p-column field="lastPrice" header="Last Price" styleClass="text-right" [sortable]="true"></p-column>
-        <p-column field="averageUnitCost" header="Avg Price" styleClass="text-right" [sortable]="true"></p-column>
-        <p-column field="realizedGains" header="Gains" styleClass="text-right" [sortable]="true"></p-column>
-        <p-column field="realizedLosses" header="Losses" styleClass="text-right" [sortable]="true"></p-column>
-        <p-column field="stopLossPrice" header="SL Price" styleClass="text-right" [sortable]="true"></p-column>
-        <p-column field="stopLossShares" header="SL Shares" styleClass="text-right" [sortable]="true"></p-column>
-        <p-column field="profitTakingPrice" header="PT Price" styleClass="text-right" [sortable]="true"></p-column>
-        <p-column field="profitTakingShares" header="PT Shares" styleClass="text-right" [sortable]="true"></p-column>
-        <p-footer>
-            <portfolio-stock-table-buttons [portfolio]="portfolio">
-            </portfolio-stock-table-buttons>
-        </p-footer>
-    </p-dataTable>
-    <portfolio-stock-dialog [portfolio]="portfolio">
-    </portfolio-stock-dialog>
-</p-panel>
+<!----------------------------------------------------------------------------------------------------------
+CUSTOM STOCK TO BUY COLUMNS TEMPLATE
+column and modelObject are parameters to the template
+------------------------------------------------------------------------------------------------------------>
+<ng-template #columnsTemplate let-column="column" let-modelObject="modelObject">
+    <div [ngSwitch]="column.colId">
+        <div *ngSwitchDefault>
+            <stock-model-object-common-columns [modelObject]="modelObject"
+                                               [column]="column">
+            </stock-model-object-common-columns>
+        </div>
+    </div>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+TABLE DEFINITION
+------------------------------------------------------------------------------------------------------------>
+<stock-model-object-table-layout [buttonsTemplate]="buttonsTemplate"
+                                 [columnsTemplate]="columnsTemplate"
+                                 cookieContext="getCookieContext()"
+                                 [modelObjectRows]="modelObjectRows"
+                                 [(displayColumns)]="displayColumns"
+                                 [defaultColumns]="defaultColumns"
+                                 [additionalColumns]="additionalColumns"
+                                 [totalRecords]="totalRows"
+                                 [rowsToDisplay]="rowsToDisplay"
+                                 [rowsPerPageOptions]="rowsPerPageOptions"
+                                 [(selection)]="selectedModelObject"
+                                 (rowSelected)="onRowSelect($event)"
+                                 (onLazyLoad)="lazyLoadTable($event)"
+                                 [lazy]="true"
+                                 [loadingData]="isLoading()"
+                                 (onRowDblclick)="onRowDoubleClick($event)">
+</stock-model-object-table-layout>

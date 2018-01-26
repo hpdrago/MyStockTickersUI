@@ -8,6 +8,7 @@ import { StockPriceQuote } from './stock-price-quote';
 import { StockQuote } from './stock-quote';
 import { ModelObject } from '../common/model-object';
 import { CommonStockModelObjectColumns } from '../../component/stock-table/common-stock-model-object-columns';
+import { AdditionalStockModelObjectColumns } from '../../component/stock-table/additional-stock-model-object-columns';
 
 /**
  * This class defines the information about a single stock that the customer is tracking in
@@ -177,6 +178,15 @@ export class PortfolioStock extends ModelObject<PortfolioStock>
                                         sortable: true
                                     } );
         return crudTableColumns;
+    }
+
+    /**
+     * Creates a list of the stock columns.
+     * @return {CrudTableColumns}
+     */
+    public getAdditionalColumns(): CrudTableColumns
+    {
+        return new AdditionalStockModelObjectColumns();
     }
 
     public initializeStockModelObjects()

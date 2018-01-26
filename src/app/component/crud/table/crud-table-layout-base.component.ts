@@ -1,4 +1,4 @@
-import { EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { AfterViewInit, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { ModelObject } from '../../../model/common/model-object';
 import { CrudTableColumn } from './crud-table-column';
 import { BaseComponent } from '../../common/base.component';
@@ -148,6 +148,19 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     @Input()
     protected scrollHeight: string;
 
+    /**
+     * Flag to indicate whether the crud table buttons show be displayed on the header (top of table).
+     */
+    @Input()
+    protected showHeaderButtons: boolean = true;
+
+    /**
+     * Flag to indicate if the customize table layout button should be used.
+     * @type {boolean}
+     */
+    @Input()
+    protected showCustomizeButton: boolean = true;
+
     /******************************************************************************************************************
      *
      * O U T P U T S
@@ -226,6 +239,8 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     public ngOnInit()
     {
         this.debug( "ngOnInit.begin" );
+        this.checkArgument( 'defaultColumns', this.defaultColumns );
+        this.checkArgument( 'additionalColumns', this.additionalColumns );
         this.loadColumns();
     }
 

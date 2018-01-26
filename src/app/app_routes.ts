@@ -26,13 +26,8 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
     },
     {
-        path: 'linkedAccounts',
+        path: 'tradeItAccounts',
         component: TradeItAccountsComponent,
-        canActivate: [AuthGuardService]
-    },
-    {
-        path: 'portfolios',
-        component: PortfoliosComponent,
         canActivate: [AuthGuardService]
     },
     {

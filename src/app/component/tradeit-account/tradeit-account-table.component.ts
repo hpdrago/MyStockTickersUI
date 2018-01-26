@@ -55,6 +55,7 @@ export class TradeItAccountTableComponent extends TradeItAccountBaseTableCompone
                tradeItService,
                tradeItOAuthService,
                cookieService );
+
         this.tradeItAccountController
             .subscribeToAccountLinkedEvent( (tradeItAccount: TradeItAccount) => { this.onAccountLinkedEvent( tradeItAccount ); });
     }

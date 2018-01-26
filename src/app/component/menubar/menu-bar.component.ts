@@ -71,8 +71,7 @@ export class MenuBarComponent
                                 icon: 'fa-list',
                                 routerLink: ['/stockAnalystConsensus/view']
                             }]},
-                { label: 'Portfolios', icon: 'fa-briefcase', routerLink: ['/portfolios'] },
-                { label: 'Brokerage Accounts', icon: 'fa-briefcase', routerLink: ['/linkedAccounts'] },
+                { label: 'Brokerage Accounts', icon: 'fa-briefcase', routerLink: ['/tradeItAccounts'] },
                 { label: 'Gains & Losses', icon: 'fa-dollar', routerLink: ['/gainsLosses'] },
                 { label: 'Profile', icon: 'fa-gear', routerLink: ['/profile'] }
             ]

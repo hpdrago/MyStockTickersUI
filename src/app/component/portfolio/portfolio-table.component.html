@@ -1,71 +1,67 @@
-<p-panel class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" header="Portfolios">
-    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-12">
-                <p-dataTable [value]="modelObjectRows"
-                             [ngClass]="{'editing-table': !isCrudNoneOperation() }"
-                             selectionMode="single"
-                             [(selection)]="selectedModelObject"
-                             (onRowSelect)="onRowSelect($event)"
-                             (onRowUnselect)="onRowUnSelect($event)"
-                             [totalRecords]="totalRows"
-                             [loading]="loading"
-                             [lazy]="false"
-                             (onRowDblclick)="onRowDoubleClick($event)"
-                             [responsive]="true">
+<!----------------------------------------------------------------------------------------------------------
+BUTTONS TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #buttonsTemplate>
+    <portfolio-table-buttons>
+    </portfolio-table-buttons>
+</ng-template>
 
-                    <!--------------------------------------------------------------------------------------------------
-                    ACCOUNT NUMBER
-                    --------------------------------------------------------------------------------------------------->
-                    <p-column id="accountNumber"
-                              field="accountNumber"
-                              header="Account Number"
-                              [style]="{'width':'60px'}"
-                              [sortable]="true">
-                    </p-column>
+<!----------------------------------------------------------------------------------------------------------
+DIALOG TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #dialogTemplate>
+    <portfolio-dialog>
+    </portfolio-dialog>
+</ng-template>
 
-                    <p-column id="marketValue"
-                              field="marketValue"
-                              header="Market Value"
-                              [style]="{'width':'60px'}"
-                              [sortable]="true">
-                    </p-column>
+<!----------------------------------------------------------------------------------------------------------
+COLUMNS TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #columnsTemplate let-column="column" let-modelObject="modelObject">
+    <crud-table-column-by-data-type [modelObject]="modelObject"
+                                    [column]="column">
+    </crud-table-column-by-data-type>
+</ng-template>
 
-                    <p-column id="unrealizedGL"
-                              field="unrealizedGL"
-                              header="Unrealized G/L"
-                              [style]="{'width':'60px'}"
-                              [sortable]="true">
-                    </p-column>
-
-                    <p-column id="realizedGL"
-                              field="realizedGL"
-                              header="Realized G/L"
-                              [style]="{'width':'60px'}"
-                              [sortable]="true">
-                    </p-column>
-                </p-dataTable>
+<!----------------------------------------------------------------------------------------------------------
+TABLE DEFINITION
+------------------------------------------------------------------------------------------------------------>
+        <p-panel header="Portfolios" [toggleable]="true">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <crud-table-layout [buttonsTemplate]="buttonsTemplate"
+                                       [columnsTemplate]="columnsTemplate"
+                                       [dialogTemplate]="dialogTemplate"
+                                       cookieContext="getCookieContext()"
+                                       [modelObjectRows]="modelObjectRows"
+                                       [(displayColumns)]="displayColumns"
+                                       [defaultColumns]="defaultColumns"
+                                       [additionalColumns]="additionalColumns"
+                                       [totalRecords]="totalRows"
+                                       [rowsToDisplay]="rowsToDisplay"
+                                       [rowsPerPageOptions]="rowsPerPageOptions"
+                                       [(selection)]="selectedModelObject"
+                                       (onRowSelect)="onRowSelect($event)"
+                                       (onLazyLoad)="lazyLoadTable($event)"
+                                       [lazy]="true"
+                                       [showCustomizeButton]="false"
+                                       [showHeaderButtons]="false"
+                                       (onRowDblclick)="onRowDoubleClick($event)">
+                    </crud-table-layout>
+                </div>
             </div>
-        </div>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-12">
-                <portfolio-table-buttons>
-                </portfolio-table-buttons>
-            </div>
-        </div>
-    </div>
-    <!--
-    Portfolio stocks
-    -->
+        </p-panel>
+<!--
+Portfolio stocks
+-->
+<p-panel header="Portfolio Stocks" [toggleable]="true">
     <div class="ui-grid-row">
         <div class="ui-grid-col-12">
             <portfolio-stock-table>
             </portfolio-stock-table>
         </div>
     </div>
-    <!--
-    Add Portfolio Dialog
-    -->
-    <portfolio-dialog>
-    </portfolio-dialog>
 </p-panel>
+<!--
+Add Portfolio Dialog
+-->

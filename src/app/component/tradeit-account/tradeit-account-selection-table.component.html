@@ -1,17 +1,54 @@
-<p-panel class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" header="Accounts" id="account-panel">
-    <div id="account-list">
-        <div *ngFor="let customerAccount of rows">
-            <div class="ui-grid-row">
-                <div class="ui-grid-col-12">
-                    <div class="account-div"
-                         [class.ui-state-active]="isSelectedCustomerAccount(customerAccount)"
-                         (click)="onRowSelect(customerAccount)">
-                        {{customerAccount.name}}
-                    </div>
-                </div>
-            </div>
+<!----------------------------------------------------------------------------------------------------------
+BUTTONS TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #buttonsTemplate>
+    <tradeit-account-table-buttons>
+    </tradeit-account-table-buttons>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+DIALOG TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #dialogTemplate>
+    <tradeit-security-question-dialog>
+    </tradeit-security-question-dialog>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+CUSTOM STOCK ANALYST CONSENSUS COLUMNS TEMPLATE
+column and modelObject are parameters to the template
+------------------------------------------------------------------------------------------------------------>
+<ng-template #columnsTemplate let-column="column" let-modelObject="modelObject">
+    <div [ngSwitch]="column.colId">
+        <div *ngSwitchDefault>
+            <crud-table-column-by-data-type [modelObject]="modelObject"
+                                            [column]="column">
+            </crud-table-column-by-data-type>
         </div>
     </div>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+TABLE DEFINITION
+------------------------------------------------------------------------------------------------------------>
+<p-panel class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" header="Accounts" id="account-panel">
+    <crud-table-layout [buttonsTemplate]="buttonsTemplate"
+                       [columnsTemplate]="columnsTemplate"
+                       [dialogTemplate]="dialogTemplate"
+                       cookieContext="getCookieContext()"
+                       [modelObjectRows]="modelObjectRows"
+                       [(displayColumns)]="displayColumns"
+                       [defaultColumns]="defaultColumns"
+                       [additionalColumns]="additionalColumns"
+                       [totalRecords]="totalRows"
+                       [rowsToDisplay]="rowsToDisplay"
+                       [rowsPerPageOptions]="rowsPerPageOptions"
+                       [(selection)]="selectedModelObject"
+                       (onRowSelect)="onRowSelect($event)"
+                       (onLazyLoad)="lazyLoadTable($event)"
+                       [showHeaderButtons]="false"
+                       [showCustomizeButton]="false"
+                       [lazy]="true"
+                       (onRowDblclick)="onRowDoubleClick($event)">
+    </crud-table-layout>
 </p-panel>
-<tradeit-security-question-dialog>
-</tradeit-security-question-dialog>

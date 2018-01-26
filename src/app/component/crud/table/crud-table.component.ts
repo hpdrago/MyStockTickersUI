@@ -148,11 +148,14 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected getDefaultColumns(): CrudTableColumn[]
     {
-        return this.modelObjectFactory
-                   .newModelObject()
-                   .getDefaultColumns()
-                   .toArray();
-
+        const methodName = 'getDefaultColumns';
+        let modelObject = this.modelObjectFactory
+                              .newModelObject();
+        let crudTableColumns = modelObject.getDefaultColumns()
+                                          .toArray();
+        this.debug( methodName + ' ' + modelObject.getClassName() );
+        this.debug( methodName + ' ' + JSON.stringify( crudTableColumns ));
+        return crudTableColumns;
     }
 
     /**

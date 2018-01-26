@@ -8,7 +8,7 @@
     <!----------------------------------------------------------------------------------------------------------
     ALLOW THE HEADER TO BE DEFINED BY THE USER OF THIS TEMPLATE
     ------------------------------------------------------------------------------------------------------------>
-    <p-header>
+    <p-header *ngIf="showHeaderButtons">
         <ng-container *ngTemplateOutlet="buttonsTemplate">
         </ng-container>
     </p-header>
@@ -58,7 +58,7 @@
             </tr>
         </ng-template>
 
-        <ng-template pTemplate="footer" let-columns>
+        <ng-template *ngIf="showCustomizeButton" pTemplate="footer" let-columns>
             <crud-table-customize-button (buttonClick)="customizeColumns()">
             </crud-table-customize-button>
         </ng-template>

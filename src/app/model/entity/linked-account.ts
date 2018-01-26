@@ -76,17 +76,17 @@ export class LinkedAccount extends ModelObject<LinkedAccount>
     {
         let crudTableColumns = new CrudTableColumns( null );
         crudTableColumns.addColumn( {
-                                        colId: 'tradeItAccountId',
-                                        header: 'Account Id',
-                                        dataType: CrudTableColumnType.STRING,
-                                        field: 'tradeItAccountId',
-                                        sortable: true
-                                    } );
-        crudTableColumns.addColumn( {
                                         colId: 'accountNumber',
                                         header: 'Account Number',
                                         dataType: CrudTableColumnType.STRING,
                                         field: 'accountNumber',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'accountName',
+                                        header: 'Account Name',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'accountName',
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {

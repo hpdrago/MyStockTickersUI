@@ -12,6 +12,12 @@ import { TradeItAccountCrudActionHandler } from './tradeit-account-crud-action-h
 import { LinkedAccountCrudActionHandler } from '../linked-account/linked-account-crud-action-handler';
 import { StockPositionTableComponent } from '../stock-position/stock-position-table.component';
 import { LinkedAccount } from '../../model/entity/linked-account';
+import { PortfolioStateStore } from '../portfolio/portfolio-state-store';
+import { PortfolioController } from '../portfolio/portfolio-controller';
+import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service';
+import { PortfolioFactory } from '../../model/factory/portfolio.factory';
+import { PortfolioActionHandler } from '../portfolio/portfolio-action-handler';
+import { PortfolioTableComponent } from '../portfolio/portfolio-table.component';
 
 /**
  * Created by mike on 10/8/2016.
@@ -21,7 +27,9 @@ import { LinkedAccount } from '../../model/entity/linked-account';
         selector:    'tradeit-accounts',
         templateUrl: './tradeit-accounts.component.html',
         providers: [TradeItAccountStateStore, TradeItAccountController, TradeItAccountCrudActionHandler,
-                    LinkedAccountStateStore, LinkedAccountController, LinkedAccountCrudActionHandler]
+                    LinkedAccountStateStore, LinkedAccountController, LinkedAccountCrudActionHandler,
+                    PortfolioActionHandler, PortfolioStateStore, PortfolioController, PortfolioFactory,
+                    PortfolioCrudService]
     })
 export class TradeItAccountsComponent extends BaseComponent implements OnInit
 {
@@ -33,6 +41,9 @@ export class TradeItAccountsComponent extends BaseComponent implements OnInit
 
     @ViewChild(StockPositionTableComponent)
     private stockPositionTableComponent: StockPositionTableComponent;
+
+    @ViewChild(PortfolioTableComponent)
+    private portfolioTableComponent: PortfolioTableComponent;
 
     private tradeItAccount: TradeItAccount;
     private linkedAccount: LinkedAccount;
@@ -95,6 +106,10 @@ export class TradeItAccountsComponent extends BaseComponent implements OnInit
         this.stockPositionTableComponent
             .setTradeItAccount( this.tradeItAccount );
         this.stockPositionTableComponent
+            .setLinkedAccount( this.linkedAccount );
+        this.portfolioTableComponent
+            .setTradeItAccount( this.tradeItAccount );
+        this.portfolioTableComponent
             .setLinkedAccount( this.linkedAccount );
         this.log( methodName + '.end' );
     }
