@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { BaseComponent } from "../common/base.component";
 import { StockInformationService } from "../../service/crud/stock-information.service";
 import { ToastsManager } from "ng2-toastr";
-import { StockCompany } from "../../model/entity/stockCompany";
+import { StockCompany } from "../../model/entity/stock-company";
 import { StockNotesTableDashboardComponent } from "./stock-notes-table-dashboard.component";
 import { StockAnalystConsensusDashboardTableComponent } from "./stock-analyst-consensus-dashboard-table.component";
 import { StockToBuyTableDashboardComponent } from "./stock-to-buy-table-dashboard.component";

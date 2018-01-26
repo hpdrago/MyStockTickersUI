@@ -8,8 +8,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
 import { isNullOrUndefined } from 'util';
 import { RestErrorReporter } from './rest-error-reporter';
-import { Subject } from 'rxjs/Subject';
-import { ArgumentOutOfRangeError } from 'rxjs/Rx';
 
 /**
  * This class caches stock prices by ticker symbol.

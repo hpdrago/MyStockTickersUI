@@ -1,7 +1,7 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockCompany } from "../../model/entity/stockCompany";
+import { StockCompany } from "../../model/entity/stock-company";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { SessionService } from "../../service/session.service";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";

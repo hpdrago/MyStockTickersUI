@@ -1,4 +1,4 @@
-import { StockCompany } from "../entity/stockCompany";
+import { StockCompany } from "../entity/stock-company";
 import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
 import { SessionService } from "../../service/session.service";

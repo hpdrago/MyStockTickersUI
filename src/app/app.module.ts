@@ -229,6 +229,11 @@ import { StockPositionPurchasePrice } from './component/stock-position/stock-pos
 import { TableModule } from 'primeng/table';
 import { StockAnalystPriceTargetsComponent } from './component/common/stock-analyst-price-targets.component';
 import { StockAnalystPriceTargetComponent } from './component/common/stock-analyst-price-target.component';
+import { StockCompanyNameComponent } from './component/common/stock-company-name.component';
+import { CachedValueComponent } from './component/common/cached-value.component';
+import { BaseCachedValueComponent } from './component/common/base-cached-value.component';
+import { StockCompanyFactory } from './model/factory/stock-company-factory';
+import { StockCompanyService } from './service/crud/stock-company.service';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -415,6 +420,8 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         TradeItSecurityQuestionDialogComponent,
 
+        StockCompanyNameComponent,
+        CachedValueComponent,
         StockNotesSourceComponent,
         DashboardComponent,
         FormErrorsComponent,
@@ -497,6 +504,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockToBuyCrudService,
         StockToBuyFactory,
+
+        StockCompanyFactory,
+        StockCompanyService,
 
         RestErrorReporter,
         SessionService,

@@ -1,7 +1,7 @@
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { StockModelObject } from "../../model/common/stock-model-object";
-import { StockCompany } from "../../model/entity/stockCompany";
+import { StockCompany } from "../../model/entity/stock-company";
 import { TableLoadingStrategy } from "./table-loading-strategy";
 import { CrudStateStore } from '../crud/common/crud-state-store';
 import { CrudController } from '../crud/common/crud-controller';

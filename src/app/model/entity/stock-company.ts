@@ -1,4 +1,5 @@
 import { ModelObject } from "./modelobject";
+import { CachedValueState } from '../../common/cached-value-state.enum';
 
 /**
  * This class defines the fields and methods for a single StockCompany
@@ -6,11 +7,11 @@ import { ModelObject } from "./modelobject";
  */
 export class StockCompany extends ModelObject<StockCompany>
 {
-    public static readonly TICKER_SYMBOL_LEN = 10;
     public tickerSymbol: string;
     public companyName: string;
     public lastPrice: number;
-    public stockExchange: string;
+    public cacheError: string;
+    public cacheState: CachedValueState;
 
     public getPrimaryKeyValue(): any
     {

@@ -14,7 +14,7 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
  *
  * Created by mike on 10/30/2016.
  */
-export class StockCatalystEventTableComponent extends StockModelObjectTableComponent<StockCatalystEvent>
+export abstract class StockCatalystEventTableComponent extends StockModelObjectTableComponent<StockCatalystEvent>
 {
     private DATE_OR_TIMEPERIOD = DateOrTimePeriod;
     private TIME_PERIODS = TimePeriods;
@@ -27,11 +27,11 @@ export class StockCatalystEventTableComponent extends StockModelObjectTableCompo
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
      * @param {StockCatalystEventCrudService} stockCatalystEventCrudService
      */
-    constructor( protected toaster: ToastsManager,
-                 protected stockCatalystEventStateStore: StockCatalystEventStateStore,
-                 protected stockCatalystEventController: StockCatalystEventController,
-                 protected stockCatalystEventFactory: StockCatalystEventFactory,
-                 protected stockCatalystEventCrudService: StockCatalystEventCrudService )
+    protected constructor( protected toaster: ToastsManager,
+                           protected stockCatalystEventStateStore: StockCatalystEventStateStore,
+                           protected stockCatalystEventController: StockCatalystEventController,
+                           protected stockCatalystEventFactory: StockCatalystEventFactory,
+                           protected stockCatalystEventCrudService: StockCatalystEventCrudService )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,

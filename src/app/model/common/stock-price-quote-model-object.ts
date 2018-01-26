@@ -1,5 +1,5 @@
 import { StockModelObject } from "./stock-model-object";
-import { BackendCacheState } from '../../common/stock-price-state.enum';
+import { CachedValueState } from '../../common/cached-value-state.enum';
 
 /**
  * This class contains the common information for a model object that has a ticker symbol and thus can contains
@@ -11,6 +11,6 @@ export abstract class StockPriceQuoteModelObject<T extends StockModelObject<T>> 
     public openPrice: number;
     public lastPrice: number;
     public lastPriceChange: Date;
-    public stockPriceState: BackendCacheState;
+    public stockPriceQuoteCacheState: CachedValueState;
     public stockPriceWhenCreated: number;
 }

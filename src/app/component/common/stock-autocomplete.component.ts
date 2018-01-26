@@ -2,13 +2,14 @@ import { Component, EventEmitter, forwardRef, Output } from "@angular/core";
 import { PaginationPage } from "../../common/pagination";
 import { StockInformationService } from "../../service/crud/stock-information.service";
 import { ToastsManager } from "ng2-toastr";
-import { StockCompany } from "../../model/entity/stockCompany";
+import { StockCompany } from "../../model/entity/stock-company";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { isNullOrUndefined } from "util";
 import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { BaseComponent } from "./base.component";
 import { RestErrorReporter } from "../../service/rest-error-reporter";
 import { RestException } from '../../common/rest-exception';
+import { StockCompanyService } from '../../service/crud/stock-company.service';
 
 /**
  * This component is a text input that finds stocks based on the incremental search of the input
@@ -47,13 +48,15 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     private isStockSelected : boolean;
 
     /**
-     * Constructor
+     * Constructor.
      * @param {ToastsManager} toaster
-     * @param {CrudRestErrorReporter} crudRestErrorReporter
-     * @param {StockInformationService} stockCrudService
+     * @param {StockInformationService} stockService
+     * @param {StockCompanyService} stockCompanyService
+     * @param {RestErrorReporter} restErrorReporter
      */
     constructor( protected toaster: ToastsManager,
-                 private stockCrudService: StockInformationService,
+                 private stockService: StockInformationService,
+                 private stockCompanyService: StockCompanyService,
                  private restErrorReporter: RestErrorReporter )
     {
         super( toaster );
@@ -93,7 +96,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
             return;
         }
         this.propagateChange( query );
-        this.stockCrudService
+        this.stockCompanyService
             .getStockCompaniesLike( query )
             .subscribe( ( data: PaginationPage<StockCompany> ) =>
                         {
@@ -158,7 +161,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     {
         if ( !isNullOrUndefined( this.tickerSymbol ))
         {
-            this.stockCrudService
+            this.stockService
                 .getStockPriceQuote( this.tickerSymbol )
                 .subscribe( ( stockPriceQuote: StockPriceQuote ) =>
                             {

@@ -1,7 +1,7 @@
 /**
  * Created by mike on 11/4/2017
  */
-import { BackendCacheState } from '../../common/stock-price-state.enum';
+import { CachedValueState } from '../../common/cached-value-state.enum';
 
 /**
  * This class contains the properties of a price quote.
@@ -13,8 +13,8 @@ export class StockPriceQuote
     public lastPrice: number;
     public lastPriceChange: Date;
     public companyName: string;
-    public stockPriceCacheState: BackendCacheState;
-    public stockQuoteCacheState: BackendCacheState;
+    public stockPriceCacheState: CachedValueState;
+    public stockQuoteCacheState: CachedValueState;
     public expirationTime: Date;
     public error: string;
 
