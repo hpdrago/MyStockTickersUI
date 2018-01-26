@@ -21,13 +21,16 @@ import { Component } from "@angular/core";
                     <gains-losses-table-refresh-button>
                     </gains-losses-table-refresh-button>
                </ng-template>
+               <ng-template #importButtonTemplate>
+                   <gains-losses-table-import-button>
+                   </gains-losses-table-import-button>
+               </ng-template>
                <crud-table-buttons [addButtonTemplate]="addButtonTemplate"
                                    [editButtonTemplate]="editButtonTemplate"
                                    [deleteButtonTemplate]="deleteButtonTemplate"
-                                   [refreshButtonTemplate]="refreshButtonTemplate">
+                                   [refreshButtonTemplate]="refreshButtonTemplate"
+                                   [importButtonTemplate]="importButtonTemplate">
                </crud-table-buttons>
-               <gains-losses-table-import-button>
-               </gains-losses-table-import-button>
     `
 })
 export class GainsLossesTableButtonsComponent

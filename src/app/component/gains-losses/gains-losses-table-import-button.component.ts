@@ -44,7 +44,7 @@ export class GainsLossesTableImportButtonComponent extends CrudTableButtonCompon
     {
         super.ngOnInit();
         this.buttonLabel = 'Import';
-        this.buttonIcon = 'fa-file-excel-o';
+        this.buttonIcon = 'fa fa-file-excel-o';
     }
 
     protected onButtonClick(): void

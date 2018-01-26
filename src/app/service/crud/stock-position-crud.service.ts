@@ -101,9 +101,11 @@ export class StockPositionCrudService extends BaseStockService<StockPosition>
      */
     public getModelObjectList( modelObject: StockPosition ): Observable<Array<StockPosition>>
     {
+        const methodName = "getModelObjectList";
         return super.getModelObjectList( modelObject )
                     .map( (stockPositions: Array<StockPosition>) =>
                     {
+                        this.debug( methodName + ' calculating position rank' );
                         this.rankCalculator
                             .calculateRank(stockPositions)
                         return stockPositions;

@@ -45,7 +45,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * @type {number}
      */
     @Input()
-    protected rowsToDisplay: number = 10;
+    protected rowsToDisplay: number = 20;
     /**
      * Paginator rows per page selection list.
      * @type {number[]}
@@ -106,6 +106,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected showHeaderButtons: boolean = true;
 
     /**
+     * Model object that contains the current filter values which is used to retrieve the objects from the database.
+     */
+    protected filterModelObject: T;
+
+    /**
      * Constructor.
      * @param {TableLoadingStrategy} tableLoadingStrategy
      * @param {ToastsManager} toaster
@@ -139,11 +144,24 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     public ngOnInit()
     {
         this.debug( "ngOnInit.begin" );
+        this.resetFilterModelObject();
         super.ngOnInit();
         this.defaultColumns = this.getDefaultColumns();
         this.additionalColumns = this.getAdditionalColumns();
     }
 
+    /**
+     * Initializes the filter model object back to an empty model object.
+     */
+    protected resetFilterModelObject()
+    {
+        this.filterModelObject = this.modelObjectFactory
+                                     .newModelObject();
+    }
+
+    /**
+     * This is called after the child components have been created.
+     */
     public ngAfterViewInit(): void
     {
         super.ngAfterViewInit();
@@ -212,7 +230,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( methodName + '.begin ' + JSON.stringify( event ) );
         this.setLoading( true );
         this.crudRestService
-            .getPage( this.modelObject, event )
+            .getPage( this.filterModelObject, event )
             .catch( error =>
                     {
                         this.setLoading( false );
@@ -299,7 +317,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         {
             this.setLoading( true );
             this.crudRestService
-                .getModelObjectList( this.modelObject )
+                .getModelObjectList( this.filterModelObject )
                 .catch( error =>
                         {
                             this.setLoading( false );
@@ -718,6 +736,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     public clearTable()
     {
         this.modelObjectRows = [];
+        this.resetFilterModelObject();
     }
 
     /**

@@ -89,6 +89,7 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
         this.linkedAccount = null;
+        this.resetFilterModelObject();
         this.clearTable();
     }
 
@@ -118,12 +119,11 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
                 /*
                  * Create the QBE object to load the positions.
                  */
-                let stockPosition = this.stockPositionFactory
-                                        .newModelObject();
-                stockPosition.linkedAccountId = linkedAccount.id;
-                stockPosition.tradeItAccountId = this.tradeItAccount.id;
+                this.resetFilterModelObject();
+                this.filterModelObject.linkedAccountId = linkedAccount.id;
+                this.filterModelObject.tradeItAccountId = this.tradeItAccount.id;
                 this.stockPositionStateStore
-                    .sendModelObjectChangedEvent( this, stockPosition );
+                    .sendModelObjectChangedEvent( this, this.filterModelObject );
                 this.loadTable();
             }
         }

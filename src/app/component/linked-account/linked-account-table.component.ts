@@ -107,8 +107,8 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
             }
             else
             {
-                this.modelObject = this.linkedAccountFactory.newModelObject();
-                this.modelObject.tradeItAccountId = tradeItAccount.id;
+                this.resetFilterModelObject();
+                this.filterModelObject.tradeItAccountId = tradeItAccount.id;
                 this.loadTable();
             }
         }
@@ -131,6 +131,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
             .linkedAccounts
             .forEach( (linkedAccount) =>
                       {
+                          this.debug( methodName + ' requesting account summary information for ' + linkedAccount.id );
                           this.loading = true;
                           this.linkedAccountCrudService
                               .getUpdatedLinkedAccount( linkedAccount )
@@ -147,6 +148,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
                                           });
                       });
 
+        this.debug( methodName + '.end' );
     }
 
     /**

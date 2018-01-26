@@ -67,6 +67,10 @@ export class LinkedAccountCrudService extends CrudRestService<LinkedAccount>
             {
                 keyColumns.addPair( "tradeItAccountId", linkedAccount.tradeItAccountId );
             }
+            if ( !isNullOrUndefined( linkedAccount.accountNumber ) )
+            {
+                keyColumns.addPair( "accountNumber", linkedAccount.accountNumber );
+            }
         }
         return keyColumns;
     }

@@ -27,6 +27,8 @@ import { CrudTableButtonsBaseComponent } from './crud-table-buttons-base.compone
                    </ng-container>
                    <ng-container *ngTemplateOutlet="refreshButtonTemplate">
                    </ng-container>
+                    <ng-container *ngTemplateOutlet="importButtonTemplate">
+                    </ng-container>
                     <!--
                    <div *ngIf="includeCustomizeButton">
                        <ng-container *ngTemplateOutlet="customizeButtonTemplate">
@@ -52,4 +54,7 @@ export class CrudTableButtonsLayoutComponent
 
     @Input()
     protected deleteButtonTemplate: TemplateRef<any>;
+
+    @Input()
+    protected importButtonTemplate: TemplateRef<any>;
 }

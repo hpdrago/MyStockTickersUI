@@ -59,9 +59,6 @@ export class LinkedAccount extends ModelObject<LinkedAccount>
     @JsonProperty( "marginCash", Number )
     public marginCash: number = undefined;
 
-    @JsonProperty( "loadingStatus", String )
-    public loadingStatus: string = undefined;
-
     public getPrimaryKeyValue(): any
     {
         return this.id;
