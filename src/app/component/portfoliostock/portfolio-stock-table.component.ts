@@ -9,6 +9,7 @@ import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.facto
 import { PortfolioStockController } from './portfolio-stock-controller';
 import { PortfolioStockStateStore } from './portfolio-stock-state-store';
 import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
+import { PortfolioStockActionHandler } from './portfolio-stock-action-handler';
 
 /**
  * This component lists all of the stocks for a portfolio
@@ -19,7 +20,7 @@ import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-cr
 {
     selector:    'portfolio-stock-table',
     templateUrl: './portfolio-stock-table.component.html',
-    providers: [PortfolioStockStateStore, PortfolioStockController]
+    providers: [PortfolioStockStateStore, PortfolioStockController, PortfolioStockActionHandler]
 })
 export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioStock>
 {

@@ -5,6 +5,7 @@ import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { StockToBuyStateStore } from './stock-to-buy-state-store';
 import { StockToBuyController } from './stock-to-buy-controller';
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
+import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
 
 /**
  * Created by mike on 8/15/2017.
@@ -22,19 +23,22 @@ export class StockToBuyTableButtonsComponent extends CrudTableButtonsComponent<S
      * @param {StockToBuyStateStore} stockToBuyStateStore
      * @param {StockToBuyController} stockToBuyController
      * @param {StockToBuyFactory} stockToBuyFactory
+     * @param {StockToBuyCrudService} stockToBuyCrudService
      */
     constructor( protected toaster: ToastsManager,
                  private stockToBuyStateStore: StockToBuyStateStore,
                  private stockToBuyController: StockToBuyController,
-                 private stockToBuyFactory: StockToBuyFactory )
+                 private stockToBuyFactory: StockToBuyFactory,
+                 private stockToBuyCrudService: StockToBuyCrudService )
     {
         super( toaster,
                stockToBuyStateStore,
                stockToBuyController,
-               stockToBuyFactory );
+               stockToBuyFactory,
+               stockToBuyCrudService );
     }
 
-
+/*
     protected getAddButtonLabel(): string
     {
         return "Add Stock To Buy";
@@ -44,5 +48,5 @@ export class StockToBuyTableButtonsComponent extends CrudTableButtonsComponent<S
     {
         return "Delete Stock To Buy";
     }
-
+*/
 }

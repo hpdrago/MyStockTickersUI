@@ -84,7 +84,8 @@ export class StockCrudService extends CrudRestService<Stock>
         let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockQuote/" + tickerSymbol;
         return this.http
                    .get( url )
-                   .map( ( response: Response ) => response.json() )
+                   .map( ( response: Response ) => response.json() );
+        /*
                    .catch( ( error: any ) =>
                            {
                                let restException = new RestException( error );
@@ -99,5 +100,6 @@ export class StockCrudService extends CrudRestService<Stock>
                                }
                            }
                            );
+                           */
     }
 }

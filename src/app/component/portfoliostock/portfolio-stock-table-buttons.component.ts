@@ -38,7 +38,8 @@ export class PortfolioStockTableButtonsComponent extends CrudTableButtonsCompone
         super( toaster,
                portfolioStockStateStore,
                portfolioStockController,
-               portfolioStockFactory )
+               portfolioStockFactory,
+               portfolioStockCrudService )
     }
 
     /**
@@ -53,16 +54,5 @@ export class PortfolioStockTableButtonsComponent extends CrudTableButtonsCompone
         }
         return super.isAddButtonDisabled();
     }
-
-    protected getAddButtonLabel(): string
-    {
-        return "Add Stock"
-    }
-
-    protected getDeleteButtonLabel(): string
-    {
-        return "Delete Stock"
-    }
-
 }
 

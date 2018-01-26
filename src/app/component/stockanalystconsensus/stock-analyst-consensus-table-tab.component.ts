@@ -11,13 +11,16 @@ import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-
 import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
 import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
+import { StockAnalystConsensusActionHandler } from './stock-analyst-consensus-action-handler';
 
 @Component(
     {
         selector: 'stock-analyst-consensus-tab-table',
         styleUrls: ['./stock-analyst-consensus-table.component.css'],
         templateUrl: './stock-analyst-consensus-table-tab.component.html',
-        providers: [StockAnalystConsensusStateStore, StockAnalystConsensusController]
+        providers: [StockAnalystConsensusStateStore,
+                    StockAnalystConsensusController,
+                    StockAnalystConsensusActionHandler]
     } )
 export class StockAnalystConsensusTableTabComponent extends StockAnalystConsensusTableComponent
 {

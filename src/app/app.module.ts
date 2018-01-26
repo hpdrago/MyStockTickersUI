@@ -163,25 +163,14 @@ import { TradeitAccountOAuthService } from "./component/tradeit-account/tradeit-
 import { RestErrorReporter } from "./service/rest-error-reporter";
 import { TradeItErrorReporter } from "./component/tradeit/tradeit-error-reporter";
 import { CustomerController } from './component/customer/customer-controller';
-import { LinkedAccountController } from './component/linked-account/linked-account-controller';
-import { PortfolioController } from './component/portfolio/portfolio-controller';
-import { StockAnalystConsensusController } from './component/stockanalystconsensus/stock-analyst-consensus-controller';
-import { StockNotesController } from './component/stocknotes/stock-notes-controller';
-import { PortfolioStockController } from './component/portfoliostock/portfolio-stock-controller';
 import { StockToBuy } from './model/entity/stock-to-buy';
 import { StockCatalystEventController } from './component/stockcatalystevent/stock-catalyst-event-controller';
-import { CustomerStateStore } from './component/customer/customer-state-store';
-import { TradeItAccountStateStore } from './component/tradeit-account/tradeit-account-state-store';
-import { LinkedAccountStateStore } from './component/linked-account/linked-account-state-store';
-import { TradeItAccountController } from './component/tradeit-account/tradeit-controller';
-import { StockStateStore } from './component/stock/stock-crud-state-store';
-import { PortfolioStateStore } from './component/portfolio/portfolio-state-store';
-import { PortfolioStockStateStore } from './component/portfoliostock/portfolio-stock-state-store';
-import { StockController } from './component/stock/stock-controller';
-import { StockNotesStateStore } from './component/stocknotes/stock-notes-state-store';
 import { StockCatalystEventStateStore } from './component/stockcatalystevent/stock-catalyst-event-state-store';
-import { StockAnalystConsensusStateStore } from './component/stockanalystconsensus/stock-analyst-consensus-state-store';
 import { StockToBuyStateStore } from './component/stocktobuy/stock-to-buy-state-store';
+import { StockAnalystConsensusController } from './component/stockanalystconsensus/stock-analyst-consensus-controller';
+import { StockNotesController } from './component/stocknotes/stock-notes-controller';
+import { StockToBuyController } from './component/stocktobuy/stock-to-buy-controller';
+import { StockCatalystEventDashboardTableComponent } from './component/dashboard/stock-catalyst-event-dashboard-table.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -304,8 +293,8 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockAnalystConsensusTableButtonsComponent,
         StockAnalystConsensusFormButtonsComponent,
 
-        StockCatalystEventTableComponent,
         StockCatalystEventTableTabComponent,
+        StockCatalystEventDashboardTableComponent,
         StockCatalystEventFormComponent,
         StockCatalystEventDialogComponent,
         StockCatalystEventTableButtonsComponent,
@@ -379,13 +368,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockAnalystConsensusFactory,
 
         StockCatalystEventCrudService,
-        StockCatalystEventStateStore,
-        StockCatalystEventController,
         StockCatalystEventFactory,
 
         StockToBuyCrudService,
-        StockToBuyStateStore,
-        StockToBuy,
         StockToBuyFactory,
 
         RestErrorReporter,

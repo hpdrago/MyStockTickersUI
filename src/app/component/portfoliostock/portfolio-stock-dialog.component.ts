@@ -42,7 +42,8 @@ export class PortfolioStockDialogComponent extends CrudDialogComponent<Portfolio
         super( toaster,
                portfolioStockStateStore,
                portfolioStockController,
-               portfolioStockFactory );
+               portfolioStockFactory,
+               portfolioStockCrudService );
     }
 
     /**

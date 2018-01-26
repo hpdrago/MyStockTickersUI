@@ -10,6 +10,7 @@ import { StockAutoCompleteComponent } from "../common/stock-autocomplete.compone
 import { StockToBuyController } from './stock-to-buy-controller';
 import { StockToBuyStateStore } from './stock-to-buy-state-store';
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
+import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
 
 /**
  * This is the Stock ToBuy Form Component class.
@@ -34,6 +35,7 @@ export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<St
      * @param {StockToBuyStateStore} stockToBuyStateStore
      * @param {StockToBuyController} stockToBuyController
      * @param {StockToBuyFactory} stockToBuyFactory
+     * @param {StockToBuyCrudService} stockToBuyCrudService
      * @param {CustomerCrudService} customerService
      */
     constructor( protected toaster: ToastsManager,
@@ -42,12 +44,14 @@ export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<St
                  private stockToBuyStateStore: StockToBuyStateStore,
                  private stockToBuyController: StockToBuyController,
                  private stockToBuyFactory: StockToBuyFactory,
+                 private stockToBuyCrudService: StockToBuyCrudService,
                  protected customerService: CustomerCrudService)
     {
         super( toaster,
                stockToBuyStateStore,
                stockToBuyController,
                stockToBuyFactory,
+               stockToBuyCrudService,
                customerService );
     }
 
@@ -94,7 +98,10 @@ export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<St
 
     protected resetForm(): void
     {
-        this.stockAutoCompleteComponent.reset();
+        if ( this.stockAutoCompleteComponent )
+        {
+            this.stockAutoCompleteComponent.reset();
+        }
         super.resetForm();
     }
 }

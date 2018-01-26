@@ -5,6 +5,7 @@ import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
+import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
 
 /**
  * Created by mike on 8/15/2017.
@@ -20,16 +21,19 @@ export class StockNotesDialogComponent extends CrudDialogComponent<StockNotes>
      * @param {ToastsManager} toaster
      * @param {StockNotesStateStore} stockNotesCrudStateStore
      * @param {StockNotesController} stockNotesController
-     * @param stockNotesFactory
+     * @param {StockNotesFactory} stockNotesFactory
+     * @param {StockNotesCrudService} stockNotesCrudService
      */
     constructor( protected toaster: ToastsManager,
                  private stockNotesCrudStateStore: StockNotesStateStore,
                  private stockNotesController: StockNotesController,
-                 private stockNotesFactory: StockNotesFactory )
+                 private stockNotesFactory: StockNotesFactory,
+                 private stockNotesCrudService: StockNotesCrudService )
     {
         super( toaster,
                stockNotesCrudStateStore,
                stockNotesController,
-               stockNotesFactory );
+               stockNotesFactory,
+               stockNotesCrudService );
     }
 }

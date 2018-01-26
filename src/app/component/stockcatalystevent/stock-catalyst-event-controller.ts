@@ -7,6 +7,7 @@ import { CrudStateStore } from '../crud/common/crud-state-store';
 import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 import { Injectable } from '@angular/core';
+import { StockCatalystEventActionHandler } from './stock-catalyst-event-action-handler';
 
 /**
  * This is the Controller for the StockCatalystEvent entity components.
@@ -18,10 +19,14 @@ export class StockCatalystEventController extends CrudController<StockCatalystEv
      * Constructor.
      * @param {StockCatalystEventStateStore} stockCatalystEventStateStore
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
+     * @param {StockCatalystEventActionHandler} stockCatalystEventActionHandler
      */
     constructor( stockCatalystEventStateStore: StockCatalystEventStateStore,
-                 stockCatalystEventFactory: StockCatalystEventFactory )
+                 stockCatalystEventFactory: StockCatalystEventFactory,
+                 stockCatalystEventActionHandler: StockCatalystEventActionHandler )
     {
-        super( stockCatalystEventStateStore, stockCatalystEventFactory );
+        super( stockCatalystEventStateStore,
+               stockCatalystEventFactory,
+               stockCatalystEventActionHandler );
     }
 }

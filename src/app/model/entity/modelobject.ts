@@ -31,12 +31,19 @@ export abstract class ModelObject<T>
      */
     public isEqualProperties( otherModelObject: ModelObject<T> ): boolean
     {
-        delete this['__jsonconvert__mapping__'];
-        delete otherModelObject['__jsonconvert__mapping__'];
+        otherModelObject.removeJSONConversionProperties();
         return Object.keys( this ).every( function( prop )
         {
             return otherModelObject.hasOwnProperty( prop );
         });
+    }
+
+    /**
+     * Remove the properties added by the JSON conversion utility.
+     */
+    public removeJSONConversionProperties(): void
+    {
+        delete this['__jsonconvert__mapping__'];
     }
 
     /**

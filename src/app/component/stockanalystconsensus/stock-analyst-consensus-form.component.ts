@@ -9,6 +9,7 @@ import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
 import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
+import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
 
 /**
  * This is the Stock AnalystConsensus Form Component class.
@@ -31,6 +32,7 @@ export class StockAnalystConsensusFormComponent extends CrudFormWithNotesSourceC
      * @param {StockAnalystConsensusStateStore} stockAnalystConsensusStateStore
      * @param {StockAnalystConsensusController} stockAnalystConsensusController
      * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
+     * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
      * @param {CustomerCrudService} customerService
      */
     constructor( protected toaster: ToastsManager,
@@ -39,12 +41,14 @@ export class StockAnalystConsensusFormComponent extends CrudFormWithNotesSourceC
                  private stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
                  private stockAnalystConsensusController: StockAnalystConsensusController,
                  private stockAnalystConsensusFactory: StockAnalystConsensusFactory,
+                 private stockAnalystConsensusCrudService: StockAnalystConsensusCrudService,
                  protected customerService: CustomerCrudService )
     {
         super( toaster,
                stockAnalystConsensusStateStore,
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,
+               stockAnalystConsensusCrudService,
                customerService );
     }
 

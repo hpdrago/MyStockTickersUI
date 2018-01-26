@@ -10,6 +10,7 @@ import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service'
 import { PortfolioFactory } from '../../model/factory/portfolio.factory';
 import { PortfolioController } from './portfolio-controller';
 import { PortfolioStateStore } from './portfolio-state-store';
+import { PortfolioActionHandler } from './portfolio-action-handler';
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -20,7 +21,8 @@ import { PortfolioStateStore } from './portfolio-state-store';
 {
     selector: 'portfolio-table',
     templateUrl: './portfolio-table.component.html',
-    styleUrls: ['./portfolio-table.component.css']
+    styleUrls: ['./portfolio-table.component.css'],
+    providers: [PortfolioController, PortfolioStateStore, PortfolioActionHandler]
 })
 export class PortfolioTableComponent extends CrudTableComponent<Portfolio> implements OnInit
 {

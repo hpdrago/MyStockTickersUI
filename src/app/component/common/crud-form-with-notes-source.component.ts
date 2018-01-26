@@ -15,6 +15,9 @@ import { Observable } from "rxjs/Observable";
 import { ModelObjectFactory } from '../../model/factory/model-object.factory';
 import { CrudController } from '../crud/common/crud-controller';
 import { CrudStateStore } from '../crud/common/crud-state-store';
+import { Customer } from '../../model/entity/customer';
+import { CrudRestService } from '../../service/crud/crud-rest.serivce';
+import { CustomerService } from '../../service/customer.service';
 
 /**
  * This class contains the methods to handle forms for entities with note sources.
@@ -32,18 +35,21 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
      * @param {CrudStateStore<T extends ModelObject<T> & StockNotesSourceContainer>} crudStateStore
      * @param {CrudController<T extends ModelObject<T> & StockNotesSourceContainer>} crudController
      * @param {ModelObjectFactory<T extends ModelObject<T> & StockNotesSourceContainer>} modelObjectFactory
-     * @param {CustomerCrudService} customerService
+     * @param {CrudRestService<T extends ModelObject<T> & StockNotesSourceContainer>} crudRestService
+     * @param {CustomerCrudService} customerCrudService
      */
     constructor( protected toaster: ToastsManager,
                  protected crudStateStore: CrudStateStore<T>,
                  protected crudController: CrudController<T>,
                  protected modelObjectFactory: ModelObjectFactory<T>,
-                 protected customerService: CustomerCrudService )
+                 protected crudRestService: CrudRestService<T>,
+                 protected customerCrudService: CustomerCrudService )
     {
         super( toaster,
                crudStateStore,
                crudController,
-               modelObjectFactory );
+               modelObjectFactory,
+               crudRestService )
 
     }
 
@@ -143,7 +149,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
         super.onSaveButtonClicked();
         if ( this.sourceAdded )
         {
-            this.customerService.stockNoteSourcesChanged();
+            this.customerCrudService.stockNoteSourcesChanged();
         }
     }
 
@@ -154,13 +160,13 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
     {
         this.debug( "CrudFormWithNotesSource.loadResources.begin")
         var sourcesLoadingSubject: BehaviorSubject<boolean> = new BehaviorSubject( false );
-        this.customerService
+        this.customerCrudService
             .subscribeToSourcesLoading( (loading)=>
                                             {
                                                 this.debug( "loadResources customerService is loading: " + loading );
                                                 if ( !loading )
                                                 {
-                                                    this.stockNotesSourceList = this.customerService.getStockNotesSourceList();
+                                                    this.stockNotesSourceList = this.customerCrudService.getStockNotesSourceList();
                                                     this.sourceItems = this.stockNotesSourceList.toSelectItems();
                                                     this.debug( "loadResources source items set " + JSON.stringify( this.sourceItems ) );
                                                     this.debug( "CrudFormWithNotesSource.loadResources.end")

@@ -13,6 +13,9 @@ import { ModelObjectChangedEvent } from "../../../service/crud/model-object-chan
 import { ModelObjectDeletedEvent } from "../../../service/crud/model-object-deleted-event";
 import { ModelObjectCreatedEvent } from "../../../service/crud/model-object-created-event";
 import { CrudController } from './crud-controller';
+import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This class is the base class for all CRUD components
@@ -48,11 +51,13 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
      * @param {CrudController<T extends ModelObject<T>>} crudController
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
     constructor( protected toaster: ToastsManager,
-                 protected crudStateStore?: CrudStateStore<T>,
-                 protected crudController?: CrudController<T>,
-                 protected modelObjectFactory?: ModelObjectFactory<T> )
+                 protected crudStateStore: CrudStateStore<T>,
+                 protected crudController: CrudController<T>,
+                 protected modelObjectFactory: ModelObjectFactory<T>,
+                 protected crudRestService: CrudRestService<T> )
     {
         super( toaster );
         if ( !this.toaster )
@@ -121,76 +126,32 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         let methodName = 'subscribeToModelObjectChangeEvents';
         this.debug( methodName + '.begin' );
         this.addSubscription( 'subscribeToModelObjectChangedEvent',
-            this.crudStateStore
-            .subscribeToModelObjectChangedEvent( (changeEvent: ModelObjectChangedEvent<T>) => this.onModelObjectChangedEvent( changeEvent )));
+            this.crudController
+            .subscribeToModelObjectSavedEvent( (modelObject: T) => this.onModelObjectSaved( modelObject )));
         this.addSubscription( 'subscribeToModelObjectDeletedEvent',
-            this.crudStateStore
-            .subscribeToModelObjectDeletedEvent( (deleteEvent: ModelObjectDeletedEvent<T>) => this.onModelObjectDeletedEvent( deleteEvent )));
+            this.crudController
+            .subscribeToModelObjectDeletedEvent( (modelObject: T) => this.onModelObjectDeleted( modelObject )));
         this.addSubscription( 'subscribeToModelObjectCreatedEvent',
-            this.crudStateStore
-            .subscribeToModelObjectCreatedEvent( (createEvent: ModelObjectCreatedEvent<T>) => this.onModelObjectCreatedEvent( createEvent )));
+            this.crudController
+            .subscribeToModelObjectCreatedEvent( (modelObject: T) => this.onModelObjectCreated( modelObject )));
         this.debug( methodName + '.end' );
     }
 
     /**
-     * This method is called from the {@code CrudStateStore} when a model object has changed.
-     * The change event is evaluated and if the change was not sent by this instance (receiving our own event),
-     * then the change will be propagated.
-     * @param {ModelObjectChangedEvent<T extends ModelObject<T>>} modelObjectChangedEvent
-     */
-    protected onModelObjectChangedEvent( modelObjectChangedEvent: ModelObjectChangedEvent<T> )
-    {
-        let methodName = "onModelObjectChangedEvent";
-        this.debug( methodName + " " + JSON.stringify( modelObjectChangedEvent.modelObject ));
-        if ( !this.isReceivedOurOwnEvent( methodName, modelObjectChangedEvent ))
-        {
-            this.onModelObjectChanged( modelObjectChangedEvent.modelObject ) ;
-        }
-    }
-
-    /**
-     * This method is called from the {@code CrudStateStore} when a model object has been deleted.
-     * The change event is evaluated and if the change was not sent by this instance (receiving our own event),
-     * then the change will be propagated.
-     * @param {ModelObjectDeletedEvent<T extends ModelObject<T>>} modelObjectDeletedEvent
-     */
-    protected onModelObjectDeletedEvent( modelObjectDeletedEvent: ModelObjectDeletedEvent<T> )
-    {
-        let methodName = "onModelObjectDeletedEvent";
-        this.debug( methodName + " " + JSON.stringify( modelObjectDeletedEvent.modelObject ));
-        if ( !this.isReceivedOurOwnEvent( methodName, modelObjectDeletedEvent ))
-        {
-            this.onModelObjectDeleted( modelObjectDeletedEvent.modelObject ) ;
-        }
-    }
-
-    /**
-     * This method is called from the {@code CrudStateStore} when a model object has been created.
-     * The change event is evaluated and if the change was not sent by this instance (receiving our own event),
-     * then the change will be propagated.
-     * @param {ModelObjectCreatedEvent<T extends ModelObject<T>>} modelObjectCreatedEvent
-     */
-    protected onModelObjectCreatedEvent( modelObjectCreatedEvent: ModelObjectCreatedEvent<T> )
-    {
-        let methodName = "onModelObjectCreatedEvent";
-        this.debug( methodName + " " + JSON.stringify( modelObjectCreatedEvent.modelObject ));
-        if ( !this.isReceivedOurOwnEvent( methodName, modelObjectCreatedEvent ))
-        {
-            this.onModelObjectCreated( modelObjectCreatedEvent.modelObject ) ;
-        }
-    }
-
-    /**
      * Determines if the sender of the model object object change event is this class instance.
-     * @param {string} methodName
+     * @param {string} callingMethodName
      * @param {ModelObjectChangedEvent<T extends ModelObject<T>>} modelObjectChangedEvent
      * @return {boolean}
      */
-    protected isReceivedOurOwnEvent( methodName: string, modelObjectChangedEvent: ModelObjectChangedEvent<T> ): boolean
+    protected isReceivedOurOwnEvent( callingMethodName: string, modelObjectChangedEvent: ModelObjectChangedEvent<T> ): boolean
     {
+        let methodName = 'isReceivedOurOwnEvent';
+        let senderMatches = this === modelObjectChangedEvent.sender;
+        let modelObjectMatches = this.modelObject === modelObjectChangedEvent.modelObject;
+        this.debug( `${methodName} senderMatches: ${senderMatches} modelObjectMatches: ${modelObjectMatches}` );
         if ( modelObjectChangedEvent.sender == this && this.modelObject == modelObjectChangedEvent.modelObject )
         {
-            this.debug( methodName + " received our own event" );
+            this.debug( callingMethodName + " received our own event" );
             return true;
         }
         return false;
@@ -216,7 +177,6 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
               * The object might still be initializing so execute on next clock tick
               */
              this.onCrudOperationChanged( newValue );
-             //this.onCrudOperationChanged( newValue );
              break;
 
          case 'modelObject':
@@ -224,7 +184,6 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
                  " previousValue: " + (previousValue ? JSON.stringify( previousValue ) : previousValue ) +
                  " newValue: " + (newValue ? JSON.stringify( newValue ) : newValue ));
              this.onModelObjectChanged( newValue );
-             //this.onModelObjectChanged( newValue );
              break;
 
          //default:
@@ -263,7 +222,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     {
         let methodName = "onModelObjectDeleted";
         this.debug( methodName + " " + JSON.stringify( modelObject ) );
-        this.modelObject = this.modelObject;
+        this.modelObject = modelObject;
     }
 
     /**
@@ -273,9 +232,33 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     protected onModelObjectCreated( modelObject: T ): void
     {
-        let methodName = "onModelObjectDeleted";
+        let methodName = "onModelObjectCreated";
         this.debug( methodName + " " + JSON.stringify( modelObject ) );
-        this.modelObject = this.modelObject;
+        this.modelObject = modelObject;
+    }
+
+    /**
+     * This method is called whenever the model object is saved.
+     * It should only be called from the {@code crudStateStore} as the result of a model object saved event.
+     * @param modelObject
+     */
+    protected onModelObjectSaved( modelObject: T ): void
+    {
+        let methodName = "onModelObjectSaved";
+        this.debug( methodName + " " + JSON.stringify( modelObject ) );
+        this.modelObject = modelObject;
+    }
+
+    /**
+     * Determines if {@code modelObject} is the same as {@code this.modelObject}.
+     * @param {T} modelObject
+     * @return {boolean} true if the model objects are the same as compared by the primary key.
+     */
+    protected isCurrentModelObject( modelObject: T ): boolean
+    {
+        return !isNullOrUndefined( this.modelObject ) &&
+               !isNullOrUndefined( modelObject ) &&
+               this.modelObject.isEqualPrimaryKey( modelObject );
     }
 
     /**
@@ -370,5 +353,42 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     public getDuplicateKeyErrorMessage(): string
     {
         return 'Sorry, you are attempting to create a duplicate entry';
+    }
+
+    /**
+     * Compares the version of {@code this.modelObject} with the version in the database. If the version are different,
+     * the newer model object version is sent to the {@code crudStateStore}.
+     *
+     * This is an asynchronous call.
+     *
+     * @return Oberver<boolean> true if the model object was updated, false otherwise.
+     */
+    protected checkModelObjectVersion(): Observable<boolean>
+    {
+        this.debug( "checkModelObjectVersion.begin" );
+        let versionCheckSubject = new Subject<boolean>();
+        this.crudRestService
+            .getModelObject( this.modelObject )
+            .subscribe( modelObject => {
+                            this.log( "Checking model object version: " + JSON.stringify( modelObject ) );
+                            if ( this.modelObject.isDifferentVersion( modelObject ) )
+                            {
+                                this.log( "The version is different. Updating table and form" );
+                                this.crudStateStore
+                                    .sendModelObjectChangedEvent( this, modelObject );
+                                this.debug( "checkModelObjectVersion.end" );
+                                return versionCheckSubject.next( true );
+                            }
+                            else
+                            {
+                                this.debug( "checkModelObjectVersion.end" );
+                                return versionCheckSubject.next( false );
+                            }
+                        },
+                        error => {
+                            this.reportRestError( error );
+                            return versionCheckSubject.error( error );
+                        } );
+        return versionCheckSubject.asObservable();
     }
 }

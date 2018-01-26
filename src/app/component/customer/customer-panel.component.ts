@@ -6,6 +6,7 @@ import { SessionService } from '../../service/session.service';
 import { CustomerController } from './customer-controller';
 import { CustomerFactory } from '../../model/factory/customer.factory';
 import { CustomerStateStore } from './customer-state-store';
+import { CustomerCrudService } from '../../service/crud/customer-crud.service';
 
 /**
  * This is the customer form panel.
@@ -21,21 +22,22 @@ export class CustomerPanelComponent extends CrudPanelComponent<Customer>
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {SessionService} sessionService
-     * @param customerStateStore
-     * @param CustomerStateStore
+     * @param {CustomerStateStore} customerStateStore
      * @param {CustomerController} customerController
      * @param {CustomerFactory} customerFactory
+     * @param {CustomerCrudService} customerCrudService
      */
     constructor( protected toaster: ToastsManager,
                  private customerStateStore: CustomerStateStore,
                  private customerController: CustomerController,
-                 private customerFactory: CustomerFactory )
+                 private customerFactory: CustomerFactory,
+                 private customerCrudService: CustomerCrudService )
     {
         super( toaster,
                customerStateStore,
                customerController,
-               customerFactory );
+               customerFactory,
+               customerCrudService );
     }
 
     public ngOnInit(): void

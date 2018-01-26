@@ -5,6 +5,7 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountController } from './tradeit-controller';
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
+import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 
 /**
  * Created by mike on 8/15/2017.
@@ -21,15 +22,18 @@ export class TradeItAccountDialogComponent extends CrudDialogComponent<TradeItAc
      * @param {TradeItAccountStateStore} tradeItAccountStateStore
      * @param {TradeItAccountController} tradeItAccountController
      * @param {TradeItAccountFactory} tradeItAccountFactory
+     * @param {TradeItAccountCrudService} tradeItAccountCrudService
      */
     constructor( protected toaster: ToastsManager,
                  private tradeItAccountStateStore: TradeItAccountStateStore,
                  private tradeItAccountController: TradeItAccountController,
-                 private tradeItAccountFactory: TradeItAccountFactory )
+                 private tradeItAccountFactory: TradeItAccountFactory,
+                 private tradeItAccountCrudService: TradeItAccountCrudService )
     {
         super( toaster,
                tradeItAccountStateStore,
                tradeItAccountController,
-               tradeItAccountFactory );
+               tradeItAccountFactory,
+               tradeItAccountCrudService );
     }
 }

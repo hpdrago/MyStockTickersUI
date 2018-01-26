@@ -9,6 +9,7 @@ import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountController } from './tradeit-controller';
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
+import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 
 /**
  * This is the Customer Account Form Component class.
@@ -41,12 +42,14 @@ export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccoun
                  private tradeItAccountStateStore: TradeItAccountStateStore,
                  private tradeItAccountController: TradeItAccountController,
                  private tradeItAccountFactory: TradeItAccountFactory,
+                 private tradeItCrudService: TradeItAccountCrudService,
                  private tradeItService: TradeItService )
     {
         super( toaster,
                tradeItAccountStateStore,
                tradeItAccountController,
-               tradeItAccountFactory );
+               tradeItAccountFactory,
+               tradeItCrudService );
     }
 
 

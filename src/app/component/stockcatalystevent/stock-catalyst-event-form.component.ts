@@ -1,5 +1,5 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
@@ -11,6 +11,9 @@ import { TimePeriods } from "../../common/time-periods.enum";
 import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
 import { StockCatalystEventController } from './stock-catalyst-event-controller';
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
+import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
+import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
+import { StockAutoCompleteComponent } from '../common/stock-autocomplete.component';
 
 /**
  * This is the Stock CatalystEvent Form Component class.
@@ -28,6 +31,9 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
     private timePeriodOptions: SelectItem[];
     private timePeriodYearOptions: SelectItem[];
 
+    @ViewChild( StockAutoCompleteComponent )
+    private stockAutoCompletedComponent: StockAutoCompleteComponent;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -36,18 +42,21 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
      * @param {StockCatalystEventStateStore} stockCatalystEventStateStore
      * @param {StockCatalystEventController} stockCatalystEventController
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
+     * @param {StockCatalystEventCrudService} stockCatalystEventCrudService
      */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private stockCatalystEventStateStore: StockCatalystEventStateStore,
                  private stockCatalystEventController: StockCatalystEventController,
-                 private stockCatalystEventFactory: StockCatalystEventFactory )
+                 private stockCatalystEventFactory: StockCatalystEventFactory,
+                 private stockCatalystEventCrudService: StockCatalystEventCrudService )
     {
         super( toaster,
                stockCatalystEventStateStore,
                stockCatalystEventController,
-               stockCatalystEventFactory );
+               stockCatalystEventFactory,
+               stockCatalystEventCrudService );
     }
 
     /**
@@ -143,5 +152,11 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
     {
         return !this.formGroup.controls['tickerSymbol'].valid &&
                this.formGroup.controls['tickerSymbol'].dirty;
+    }
+
+    protected resetForm(): void
+    {
+        super.resetForm();
+        this.stockAutoCompletedComponent.reset();
     }
 }

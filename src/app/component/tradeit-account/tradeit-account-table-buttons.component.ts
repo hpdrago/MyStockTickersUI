@@ -5,6 +5,7 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountController } from './tradeit-controller';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
+import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 
 /**
  * Created by mike on 8/15/2017.
@@ -22,16 +23,19 @@ export class TradeItAccountTableButtonsComponent extends CrudTableButtonsCompone
      * @param {TradeItAccountStateStore} tradeItAccountStateStore
      * @param {TradeItAccountController} tradeItAccountController
      * @param {TradeItAccountFactory} tradeItAccountFactory
+     * @param {TradeItAccountCrudService} tradeItCrudService
      */
     constructor( protected toaster: ToastsManager,
                  private tradeItAccountStateStore: TradeItAccountStateStore,
                  private tradeItAccountController: TradeItAccountController,
-                 private tradeItAccountFactory: TradeItAccountFactory )
+                 private tradeItAccountFactory: TradeItAccountFactory,
+                 private tradeItCrudService: TradeItAccountCrudService )
     {
         super( toaster,
                tradeItAccountStateStore,
                tradeItAccountController,
-               tradeItAccountFactory )
+               tradeItAccountFactory,
+               tradeItCrudService )
     }
 
     protected getAddButtonLabel(): string

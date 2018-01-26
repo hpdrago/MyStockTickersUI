@@ -6,6 +6,7 @@ import { TradeItAccount } from '../../model/entity/tradeit-account';
 import { Injectable } from '@angular/core';
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
+import { TradeitAccountActionHandler } from './tradeit-account-action-handler';
 
 /**
  * This is the Controller for TradeItAccount entity components.
@@ -19,8 +20,11 @@ export class TradeItAccountController extends CrudController<TradeItAccount>
      * @param {TradeItAccountFactory} tradeItAccountFactory
      */
     constructor( tradeItAccountStateStore: TradeItAccountStateStore,
-                 tradeItAccountFactory: TradeItAccountFactory )
+                 tradeItAccountFactory: TradeItAccountFactory,
+                 tradeItAccountActionHandler: TradeitAccountActionHandler )
     {
-        super( tradeItAccountStateStore, tradeItAccountFactory );
+        super( tradeItAccountStateStore,
+               tradeItAccountFactory,
+               tradeItAccountActionHandler );
     }
 }

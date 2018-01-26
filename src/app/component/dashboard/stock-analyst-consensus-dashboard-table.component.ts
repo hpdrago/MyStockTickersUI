@@ -6,6 +6,7 @@ import { StockAnalystConsensusStateStore } from '../stockanalystconsensus/stock-
 import { StockAnalystConsensusController } from '../stockanalystconsensus/stock-analyst-consensus-controller';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
+import { StockAnalystConsensusActionHandler } from '../stockanalystconsensus/stock-analyst-consensus-action-handler';
 
 /**
  * This component lists completed stock analyst consensus information on the Analyst Consensus tab
@@ -17,7 +18,7 @@ import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analy
         selector: 'stock-analyst-consensus-dashboard-table',
         styleUrls: ['../stockanalystconsensus/stock-analyst-consensus-table.component.css'],
         templateUrl: './stock-analyst-consensus-dashboard-table.component.html',
-        providers: [StockAnalystConsensusStateStore, StockAnalystConsensusController]
+        providers: [StockAnalystConsensusStateStore, StockAnalystConsensusController, StockAnalystConsensusActionHandler]
     } )
 export class StockAnalystConsensusDashboardTableComponent extends StockAnalystConsensusTableComponent
 {

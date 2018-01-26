@@ -7,6 +7,7 @@ import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
+import { StockNotesActionHandler } from './stock-notes-action-handler';
 
 /**
  * This is the Stock Notes that displays in its own tab.
@@ -18,7 +19,7 @@ import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.servi
         selector: 'stock-notes-tab-table',
         styleUrls: ['./stock-notes-table.component.css'],
         templateUrl: './stock-notes-table-tab.component.html',
-        providers: [StockNotesStateStore, StockNotesController]
+        providers: [StockNotesStateStore, StockNotesController, StockNotesActionHandler]
     } )
 export class StockNotesTableTabComponent extends StockNotesTableComponent
 {

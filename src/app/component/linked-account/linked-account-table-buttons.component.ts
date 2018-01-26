@@ -5,6 +5,7 @@ import { LinkedAccount } from "../../model/entity/linked-account";
 import { LinkedAccountStateStore } from './linked-account-state-store';
 import { LinkedAccountController } from './linked-account-controller';
 import { LinkedAccountFactory } from '../../model/factory/linked-account.factory';
+import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud.service';
 
 /**
  * The buttons component for the linked accounts.
@@ -23,26 +24,24 @@ export class LinkedAccountTableButtonsComponent extends CrudTableButtonsComponen
      * @param {LinkedAccountStateStore} linkedAccountStateStore
      * @param {LinkedAccountController} linkedAccountController
      * @param {LinkedAccountFactory} linkedAccountFactory
+     * @param {LinkedAccountCrudService} linkedAccountCrudService
      */
     constructor( protected toaster: ToastsManager,
                  private linkedAccountStateStore: LinkedAccountStateStore,
                  private linkedAccountController: LinkedAccountController,
-                 private linkedAccountFactory: LinkedAccountFactory )
+                 private linkedAccountFactory: LinkedAccountFactory,
+                 private linkedAccountCrudService: LinkedAccountCrudService )
     {
         super( toaster,
                linkedAccountStateStore,
                linkedAccountController,
-               linkedAccountFactory );
+               linkedAccountFactory,
+               linkedAccountCrudService );
     }
 
     protected isShowAddButton(): boolean
     {
         return false;
-    }
-
-    protected getDeleteButtonLabel(): string
-    {
-        return "Delete Account";
     }
 
 }

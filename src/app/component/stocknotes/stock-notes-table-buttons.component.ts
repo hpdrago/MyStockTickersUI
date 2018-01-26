@@ -6,6 +6,7 @@ import { CrudOperation } from "../crud/common/crud-operation";
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
+import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
 
 /**
  * Created by mike on 8/15/2017.
@@ -23,16 +24,19 @@ export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<S
      * @param {StockNotesStateStore} stockNotesCrudStateStore
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
+     * @param {StockNotesCrudService} stockNotesCrudService
      */
     constructor( protected toaster: ToastsManager,
                  private stockNotesCrudStateStore: StockNotesStateStore,
                  private stockNotesController: StockNotesController,
-                 private stockNotesFactory: StockNotesFactory )
+                 private stockNotesFactory: StockNotesFactory,
+                 private stockNotesCrudService: StockNotesCrudService )
     {
         super( toaster,
                stockNotesCrudStateStore,
                stockNotesController,
-               stockNotesFactory );
+               stockNotesFactory,
+               stockNotesCrudService );
     }
 
     protected onAddButtonClick(): void

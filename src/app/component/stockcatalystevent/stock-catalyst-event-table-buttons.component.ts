@@ -5,6 +5,7 @@ import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockCatalystEventController } from './stock-catalyst-event-controller';
 import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
+import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
 
 /**
  * Created by mike on 8/15/2017.
@@ -22,28 +23,19 @@ export class StockCatalystEventTableButtonsComponent extends CrudTableButtonsCom
      * @param {StockCatalystEventStateStore} stockCatalystEventStateStore
      * @param {StockCatalystEventController} stockCatalystEventController
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
+     * @param {StockCatalystEventCrudService} stockCatalystEventCrudServuce
      */
     constructor( protected toaster: ToastsManager,
                  private stockCatalystEventStateStore: StockCatalystEventStateStore,
                  private stockCatalystEventController: StockCatalystEventController,
-                 private stockCatalystEventFactory: StockCatalystEventFactory )
+                 private stockCatalystEventFactory: StockCatalystEventFactory,
+                 private stockCatalystEventCrudServuce: StockCatalystEventCrudService )
     {
         super( toaster,
                stockCatalystEventStateStore,
                stockCatalystEventController,
-               stockCatalystEventFactory );
-               
+               stockCatalystEventFactory,
+               stockCatalystEventCrudServuce );
+
     }
-
-
-    protected getAddButtonLabel(): string
-    {
-        return "Add Event";
-    }
-
-    protected getDeleteButtonLabel(): string
-    {
-        return "Delete Event";
-    }
-
 }

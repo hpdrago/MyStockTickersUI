@@ -70,6 +70,14 @@ export class BaseClass implements OnDestroy
     }
 
     /**
+     * Get the class name of any object.
+     */
+    protected getClassNameOf( object: any ): string
+    {
+        return (<any>object).constructor.name;
+    }
+
+    /**
      * Display an error message to the user for 10 seconds.
      * @param message
      * @return {Promise<Toast>}

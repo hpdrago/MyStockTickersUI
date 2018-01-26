@@ -7,6 +7,7 @@ import { CrudFormComponent } from '../crud/form/crud-form.component';
 import { CustomerStateStore } from './customer-state-store';
 import { CustomerFactory } from '../../model/factory/customer.factory';
 import { CustomerController } from './customer-controller';
+import { CustomerCrudService } from '../../service/crud/customer-crud.service';
 
 /**
  * This is the Customer Form Component class.
@@ -28,18 +29,21 @@ export class CustomerFormComponent extends CrudFormComponent<Customer>
      * @param {CustomerStateStore} customerStateStore
      * @param {CustomerController} customerController
      * @param {CustomerFactory} customerFactory
+     * @param {CustomerCrudService} customerCrudService
      */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  protected customerStateStore: CustomerStateStore,
                  protected customerController: CustomerController,
-                 protected customerFactory: CustomerFactory )
+                 protected customerFactory: CustomerFactory,
+                 protected customerCrudService: CustomerCrudService )
     {
         super( toaster,
                customerStateStore,
                customerController,
-               customerFactory );
+               customerFactory,
+               customerCrudService );
     }
 
     /**

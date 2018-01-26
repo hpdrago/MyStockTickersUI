@@ -36,7 +36,8 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         super( toaster,
                crudStateStore,
                crudController,
-               modelObjectFactory );
+               modelObjectFactory,
+               crudRestService );
     }
 
     /**
@@ -318,63 +319,11 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "onSaveButtonClick";
         this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
-        this.sendSaveButtonClickedEvent();
-        //this.sendFormPrepareToSaveEvent();
-        this.performSaveButtonWork();
-        this.debug( methodName + ".end" );
-    }
-
-    /**
-     * This method is called when the save button is clicked but before the save button work is started.
-     * {@see notifySaveButtonSuccessful}
-     */
-    protected sendSaveButtonClickedEvent()
-    {
-        var methodName = "sendSaveButtonClickedEvent";
-        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
-        this.crudController
-            .sendPanelSaveButtonClickedEvent();
-    }
-
-    /**
-     * This method performs the REST web service calls and handles the success or failure of the request.
-     * @param {string} methodName
-     */
-    protected performSaveButtonWork( )
-    {
-        var methodName = "performSaveButtonWork";
-        this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
         this.checkModelObjectReference();
-        var observable: Observable<T> = this.crudRestService
-                                            .updateModelObject( this.modelObject );
-        observable.subscribe( ( updatedModelObject: T ) =>
-                              {
-                                  this.showInfo( this.getSaveSuccessFulMessage( updatedModelObject ) );
-                                  this.crudStateStore.sendModelObjectChangedEvent( this, updatedModelObject );
-                                  this.debug( methodName + " saved successful.  modelObject; " + JSON.stringify( this.modelObject ) );
-                                  this.notifySaveButtonSuccessful();
-                              },
-                              err => this.reportRestError( err )
-        );
-        this.busyIndicator = observable.subscribe();
+        this.busyIndicator = this.crudController
+                                 .saveModelObject( this.modelObject )
+                                 .subscribe();
         this.debug( methodName + ".end" );
-    }
-
-    /**
-     * Sends the necessary notifications that the save button work completed successfully.
-     */
-    protected notifySaveButtonSuccessful()
-    {
-        this.debug( "notifySaveButtonSuccessful.begin" );
-        this.crudController
-            .sendFormResetEvent();
-        this.crudController
-            .sendPanelSaveButtonClickCompletedEvent( this.modelObject );
-        this.resetCrudOperationAndModelObject();
-        this.sendResetCrudOperationAndModelObject();
-        this.crudStateStore
-            .resetSubjects();
-        this.debug( "notifySaveButtonSuccessful.end" );
     }
 
     /**
@@ -388,17 +337,6 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         return "Save Successful!";
     }
 
-    /**
-     * This method is called when the delete button is clicked but before the delete button work is started.
-     * {@see notifySaveButtonSuccessful}
-     */
-    protected sendDeleteButtonClickedEvent()
-    {
-        var methodName = "sendDeleteButtonClickedEvent";
-        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
-        this.crudController
-            .sendPanelDeleteButtonClickCompletedEvent( this.modelObject );
-    }
 
     /**
      * This method is called when the Continuous Add button is clicked.
@@ -407,6 +345,8 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "onContinuousAddButtonClicked";
         this.debug( methodName + " " + JSON.stringify( this.modelObject ));
+        this.onAddButtonClick();
+        /*
         this.performAddButtonWork( ( modelObject: T ) =>
                                    {
                                        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
@@ -415,6 +355,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                                        this.crudController
                                            .sendPanelContinuousAddButtonClickedEvent( this.modelObject );
                                    });
+                                   */
     }
 
     /**
@@ -424,101 +365,11 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "onPanelAddButtonClickCompletedEvent";
         this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
-        this.sendAddButtonClickedEvent();
-        //this.sendFormPrepareToSaveEvent();
-        this.performAddButtonWork();
-        this.debug( methodName + ".end " + JSON.stringify( this.modelObject ));
-    }
-
-    /**
-     * This method is called when the save button is clicked but before the save button work is started.
-     * {@see notifySaveButtonSuccessful}
-     */
-    protected sendAddButtonClickedEvent()
-    {
-        var methodName = "sendADdButtonClickedEvent";
-        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
-        /*
-        this.crudController
-            .sendPan( this.modelObject );
-            */
-    }
-
-    /**
-     * Sends a notification to the form to perform any necessary work before the model object is saved.
-     */
-    /*
-    protected sendFormPrepareToSaveEvent()
-    {
-        this.debug( "sendFormPrepareToSaveEvent" );
-        this.crudController.sendFormPrepareToSaveEvent();
-    }
-    */
-
-    /**
-     * This method is called when the Add button is clicked.
-     * @param notifySuccess - Callback to perform the work after the modelObject has been saved.  If null, the
-     * notifyAddButtonWorkSuccessful method is called.
-     */
-    protected performAddButtonWork( notifySuccess?: ( modelObject: T ) => any ): void
-    {
-        var methodName = "performAddButtonWork";
         this.checkModelObjectReference();
-        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
-        var observable: Observable<T> = this.crudRestService
-                                            .createModelObject( this.modelObject );
-        observable.subscribe( ( newModelObject: T ) =>
-                   {
-                       this.crudStateStore
-                           .sendModelObjectChangedEvent( this, newModelObject );
-                       this.debug( methodName + " add successful.  modelObject: " +
-                           JSON.stringify( this.modelObject ) );
-                       this.showInfo( this.getSaveSuccessFulMessage( this.modelObject ));
-                       /*
-                        * Check to see if there is a custom notifySuccess method passed in
-                        */
-                       if ( isNullOrUndefined( notifySuccess ))
-                       {
-                           this.notifyAddButtonWorkSuccessful();
-                       }
-                       else
-                       {
-                           notifySuccess( this.modelObject );
-                       }
-                   },
-                   err =>
-                   {
-                       this.debug( methodName + " err: " + err );
-                       var exception = this.reportRestError( err );
-                       this.debug( methodName + " exception: " + JSON.stringify( exception ));
-                       /*
-                        *  If we get a duplicate key, tell the stock table to jump to that stock
-                        */
-                       if ( exception.isDuplicateKeyExists() )
-                       {
-                           this.debug( methodName + " duplicateKeyExists" );
-                           this.crudController
-                               .sendTableNavigateToModelObjectEvent( this.modelObject );
-                       }
-                   }
-            );
-        this.busyIndicator = observable.subscribe();
-    }
-
-    /**
-     * Sends the necessary add button successful notifications
-     */
-    protected notifyAddButtonWorkSuccessful()
-    {
-        this.debug( "notifyAddButtonWorkSuccessful" );
-        this.crudController
-            .sendFormResetEvent();
-        this.crudController
-            .sendPanelAddButtonClickCompletedEvent( this.modelObject );
-        this.resetCrudOperationAndModelObject();
-        this.sendResetCrudOperationAndModelObject();
-        this.crudStateStore
-            .resetSubjects();
+        this.busyIndicator = this.crudController
+                                 .addModelObject( this.modelObject )
+                                 .subscribe();
+        this.debug( methodName + ".end " );
     }
 
     /**
@@ -527,56 +378,12 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected onDeleteButtonClick(): void
     {
         var methodName = "onDeleteButtonClick";
-        this.debug( methodName + " " + JSON.stringify( this.modelObject ));
-        this.sendDeleteButtonClickedEvent()
-        this.performDeleteButtonWork( methodName );
+        this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
+        this.checkModelObjectReference();
+        this.busyIndicator = this.crudController.deleteModelObject( this.modelObject ).subscribe();
+        this.debug( methodName + ".end" );
     }
 
-    /**
-     * This method performs the actual delete of the model object.
-     * @param {string} methodName
-     */
-    protected performDeleteButtonWork( methodName: string )
-    {
-        var observable: Observable<void> = this.crudRestService
-                                               .deleteModelObject( this.modelObject );
-        observable.subscribe( () =>
-                              {
-                                  this.debug( methodName + " delete successful" );
-                                  this.showInfo( this.getDeleteSuccessfulMessage() )
-                                  this.notifyDeleteButtonWorkSuccessful();
-                              },
-                              err =>
-                              {
-                                  this.debug( methodName + " delete failed" );
-                                  this.reportRestError( err );
-                              }
-        );
-        this.busyIndicator = observable.subscribe();
-    }
-
-    /**
-     * Defines the message to show when a delete was successful.  Override this method to change the message.
-     * @returns {string}
-     */
-    protected getDeleteSuccessfulMessage()
-    {
-        return "Delete successful!";
-    }
-
-    /**
-     * Performs the necessary notifications that the delete button work completed successfully.
-     */
-    protected notifyDeleteButtonWorkSuccessful()
-    {
-        this.debug( "notifyDeleteButtonWorkSuccessful" );
-        this.crudController
-            .sendFormResetEvent();
-        this.crudController
-            .sendPanelDeleteButtonClickCompletedEvent( this.modelObject );
-        this.resetCrudOperationAndModelObject();
-        this.sendResetCrudOperationAndModelObject();
-    }
 
     /**
      * This method is called when the user clicks the Close button.  The dialog service is used to send the close

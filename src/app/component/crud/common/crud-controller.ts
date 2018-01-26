@@ -12,6 +12,8 @@ import { DialogCloseEventType } from './close-button-event';
 import { CrudStateStore } from './crud-state-store';
 import { CrudOperation } from './crud-operation';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
+import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
+import { CrudActionHandler } from './crud-action-handler';
 
 /**
  * This is the controller class for a set of CRUD based components.
@@ -36,12 +38,11 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     //private displayDialogRequestSubject: BehaviorSubject<any>;
     private panelCancelButtonClickedSubject: Subject<void>;
-    private panelResetButtonClickedSubject: Subject<void>;
-    private panelAddButtonClickCompletedSubject: Subject<T>;
-    private panelAddAndContinueButtonClickedSubject: Subject<T>;
-    private panelDeleteButtonClickCompletedSubject: Subject<T>;
-    private panelSaveButtonClickedSubject: Subject<T>;
-    private panelSaveButtonClickCompletedSubject: Subject<T>;
+    //private panelResetButtonClickedSubject: Subject<void>;
+    //private panelSaveButtonClickedSubject: Subject<T>;
+    //private panelAddButtonClickCompletedSubject: Subject<T>;
+    //private panelAddAndContinueButtonClickedSubject: Subject<T>;
+    //private panelSaveButtonClickCompletedSubject: Subject<T>;
 
     /*
      * DIALOG Subjects.
@@ -51,22 +52,39 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     /*
      * FORM Subjects
      */
-    private formErrorsSubject: Subject<string[]> = new Subject<string[]>();
-    private formDirtySubject: Subject<boolean> = new Subject<boolean>();
-    private formTouchedSubject: Subject<boolean> = new Subject<boolean>();
-    private formValidSubject: Subject<boolean> = new Subject<boolean>();
-    private formResetSubject: Subject<void> = new Subject<void>();
-    private formLogStateSubject: Subject<void> = new Subject<void>();
+    private formErrorsSubject: Subject<string[]>;
+    private formDirtySubject: Subject<boolean>;
+    private formTouchedSubject: Subject<boolean>;
+    private formValidSubject: Subject<boolean>;
+    private formResetSubject: Subject<void>;
+    private formLogStateSubject: Subject<void>;
     //private formPrepareToSaveSubject: Subject<void> = new Subject<void>();
     //private formPrepareToDisplaySubject: Subject<void> = new Subject<void>();
-    private formModelObjectVersionUpdateSubject: Subject<T> = new Subject<T>();
+    private formModelObjectVersionUpdateSubject: Subject<T>;
+    private formReadyToDisplay: Subject<void>;
 
+    /*
+     * Model Object Subjects
+     */
+    /**
+     * This subject indicates that a model object has been successfully deleted from the database.
+     */
+    private modelObjectDeletedSubject: Subject<T>;
+    /**
+     * This subject indicates that a model object has been successfully saved to the database.
+     */
+    private modelObjectSavedSubject: Subject<T>;
+    /**
+     * This subject indicates that a model object has been succesfully added to the database.
+     */
+    private modelObjectCreatedSubject: Subject<T>;
 
     /**
      * Constructor.
      */
     constructor( protected crudStateStore: CrudStateStore<T>,
-                 protected modelObjectFactory: ModelObjectFactory<T> )
+                 protected modelObjectFactory: ModelObjectFactory<T>,
+                 protected crudActionHandler: CrudActionHandler<T> )
     {
         super();
         this.createSubjects();
@@ -86,12 +104,11 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         this.tableContentChangedSubject = new Subject<void>();
         this.panelCancelButtonClickedSubject = new Subject<void>();
         this.tableAddButtonClickedSubject = new Subject<T>();
-        this.panelAddButtonClickCompletedSubject = new Subject<T>();
-        this.panelAddAndContinueButtonClickedSubject = new Subject<T>();
-        this.panelDeleteButtonClickCompletedSubject = new Subject<T>();
-        this.panelSaveButtonClickedSubject = new Subject<T>();
-        this.panelSaveButtonClickCompletedSubject = new Subject<T>();
-        this.panelResetButtonClickedSubject = new Subject<void>();
+        //this.panelAddButtonClickCompletedSubject = new Subject<T>();
+        //this.panelAddAndContinueButtonClickedSubject = new Subject<T>();
+        //this.panelSaveButtonClickedSubject = new Subject<T>();
+        //this.panelSaveButtonClickCompletedSubject = new Subject<T>();
+        //this.panelResetButtonClickedSubject = new Subject<void>();
         this.dialogCloseButtonClickedSubject = new Subject<DialogCloseEventType>();
         this.formErrorsSubject = new Subject<string[]>();
         this.formDirtySubject = new Subject<boolean>();
@@ -102,6 +119,10 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         //this.formPrepareToSaveSubject = new Subject<void>();
         //this.formPrepareToDisplaySubject = new Subject<void>();
         this.formModelObjectVersionUpdateSubject = new Subject<T>();
+        this.formReadyToDisplay = new Subject<void>();
+        this.modelObjectDeletedSubject = new Subject<T>();
+        this.modelObjectSavedSubject = new Subject<T>();
+        this.modelObjectCreatedSubject = new Subject<T>();
     }
 
     /**
@@ -128,7 +149,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      * button is clicked on the panel.
      * @return Subscription
      */
-    public subscribeToTableEditButtonClickedEvent( fn: ( T ) => any ): Subscription
+    public subscribeToTableEditButtonClickedEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToTableEditButtonClickedEvent' );
         return this.tableEditButtonClickedSubject.asObservable().subscribe( fn );
@@ -137,11 +158,11 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the Edit button.
      */
-    public sendTableEditButtonClickedEvent( modelObject: T )
+    public sendTableEditButtonClickedEvent()
     {
-        this.debug( 'sendTableEditButtonClickedEvent ' + JSON.stringify( modelObject ) );
+        let methodName = 'sendTableEditButtonClickedEvent';
+        this.debug( methodName );
         this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.UPDATE );
-        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
         this.tableEditButtonClickedSubject.next();
     }
 
@@ -208,6 +229,24 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     }
 
     /**
+     * Subscribe to be notified when the form is ready to be displayed.
+     */
+    public subscribeFormReadyToDisplay( fn: () => any ): Subscription
+    {
+        this.debug( 'subscribeToDisplayFormRequestEvent' );
+        return this.formReadyToDisplay.asObservable().subscribe( fn );
+    }
+
+    /**
+     * Send a notification that the form is ready to display.
+     */
+    public sendFormReadyToDisplay()
+    {
+        this.debug( 'FormReadyToDisplay ' + this.getToObserversMessage( this.formReadyToDisplay ));
+        this.formReadyToDisplay.next( null );
+    }
+
+    /**
      * Handle the request to display the form
      */
     /*
@@ -258,16 +297,19 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Add and continue
      * button is clicked on the panel.
      */
+    /*
     public subscribeToPanelContinuousAddButtonClickedEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToPanelContinuousAddButtonClickedEvent' );
         return this.panelAddAndContinueButtonClickedSubject.asObservable().subscribe( fn );
     }
+    */
 
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the Add and continue button.
      * @param modelObject
      */
+    /*
     public sendPanelContinuousAddButtonClickedEvent( modelObject: T )
     {
         this.debug( 'sendPanelContinuousAddButtonClickedEvent ' + this.getToObserversMessage( this.panelAddAndContinueButtonClickedSubject ) );
@@ -275,6 +317,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
         this.panelAddAndContinueButtonClickedSubject.next( modelObject );
     }
+    */
 
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Add
@@ -290,10 +333,11 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      * The {@code CrudPanelComponent will call this method when the user clicks the Add button.
      * @param modelObject
      */
-    public sendTableAddButtonClickedEvent( modelObject: T )
+    public sendTableAddButtonClickedEvent()
     {
         let methodName = 'sendTableAddButtonClickedEvent';
         this.debug( methodName + ' ' + this.getToObserversMessage( this.tableAddButtonClickedSubject ));
+        let modelObject: T = this.modelObjectFactory.newModelObject();
         this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.CREATE );
         this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
         this.tableAddButtonClickedSubject.next();
@@ -303,42 +347,25 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Add
      * button work completed successfully.
      */
+    /*
     public subscribeToPanelAddButtonClickCompletedEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToPanelAddButtonClickCompletedEvent' );
         return this.panelAddButtonClickCompletedSubject.asObservable().subscribe( fn );
     }
+    */
 
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the Add button.
      * @param modelObject
      */
+    /*
     public sendPanelAddButtonClickCompletedEvent( modelObject: T )
     {
         this.debug( 'sendPanelAddButtonClickCompletedEvent ' + this.getToObserversMessage( this.panelAddAndContinueButtonClickedSubject ));
         this.panelAddButtonClickCompletedSubject.next( modelObject );
     }
-
-    /**
-     * The {@code CrudTableComponent} will call this method to register to receive notification when the Delete
-     * button work was completed successfully.
-     * @return {Subscription}
-     */
-    public subscribeToPanelDeleteButtonClickCompletedEvent( fn: ( T ) => any ): Subscription
-    {
-        this.debug( 'subscribedToPanelDeleteButtonClickCompletedEvent' );
-        return this.panelDeleteButtonClickCompletedSubject.asObservable().subscribe( fn );
-    }
-
-    /**
-     * The {@code CrudPanelComponent will call this method when the delete button work completed successfully.
-     * @param modelObject
-     */
-    public sendPanelDeleteButtonClickCompletedEvent( modelObject: T )
-    {
-        this.debug( 'sendPanelDeleteButtonClickCompletedEvent to ' + this.getToObserversMessage( this.panelDeleteButtonClickCompletedSubject ));
-        this.panelDeleteButtonClickCompletedSubject.next( modelObject );
-    }
+    */
 
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Delete
@@ -367,64 +394,76 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      * This method is called when the user saves a model object.
      * @return Subscription
      */
+    /*
     public subscribeToPanelSaveButtonClickedEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToSaveButtonClickedEvent' );
         return this.panelSaveButtonClickedSubject.asObservable().subscribe( fn );
     }
+    */
 
     /**
      * The {@code CrudFormComponent will call this method when the user clicks the Save button.
      * @param modelObject
      */
+    /*
     public sendPanelSaveButtonClickedEvent( )
     {
         this.debug( 'sendPanelSaveButtonClickedEvent ' + this.getToObserversMessage( this.panelSaveButtonClickedSubject ));
         this.panelSaveButtonClickedSubject.next();
     }
+    */
 
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Save
      * button is clicked handling was completed successfully.
      * @return Subscription
      */
+    /*
     public subscribeToPanelSaveButtonClickCompletedEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribed to saveButtonClickCompleted' );
         return this.panelSaveButtonClickCompletedSubject.asObservable().subscribe( fn );
     }
+    */
 
     /**
      * The {@code CrudFormComponent will call this method when the user clicks the Save button and the save button work
      * was completed successfully.
      * @param modelObject
      */
+    /*
     public sendPanelSaveButtonClickCompletedEvent( modelObject: T )
     {
         this.debug( 'sendPanelSaveButtonClickCompletedEvent ' + this.getToObserversMessage( this.panelSaveButtonClickCompletedSubject ));
         this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
         this.panelSaveButtonClickCompletedSubject.next();
     }
+    */
 
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the Reset
      * button is clicked on the panel.
      * @return {Subscription}
      */
+    /*
     public subscribeToPanelResetButtonClickedEvent( fn: ( T ) => any ): Subscription
     {
         this.debug( 'subscribedToPaneResetButtonClicked' );
         return this.panelResetButtonClickedSubject.asObservable().subscribe( fn );
     }
+    */
 
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the Reset button.
      */
+    /*
     public sendPanelResetButtonClickedEvent()
     {
         this.debug( 'sendPanelResetButtonClickedEvent ' + this.getToObserversMessage( this.panelResetButtonClickedSubject ));
         this.panelResetButtonClickedSubject.next();
     }
+    */
 
     /**
      * The {@code CrudTableComponent} will call this method to register to receive notification when the close
@@ -642,6 +681,135 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         this.debug( 'sendFormModelObjectVersionUpdateEvent: ' + JSON.stringify( modelObject ) +
             this.getToObserversMessage( this.formModelObjectVersionUpdateSubject ));
         this.formModelObjectVersionUpdateSubject.next( modelObject );
+    }
+
+    /**
+     * Delete a model object from the database. Forwards request to the {@code crudActionHandler}
+     * @param {T} modelObject
+     * @return {Observable<void>} Observable for the result of the delete.
+     */
+    public deleteModelObject( modelObject: T ): Observable<void>
+    {
+        let methodName = "deleteModelObject";
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        return this.crudActionHandler
+                   .deleteModelObject( modelObject )
+                   .map( () =>
+                         {
+                             this.sendModelObjectDeletedEvent( modelObject );
+                         });
+    }
+
+    /**
+     * The {@code CrudTableComponent} will call this method to register to receive notification when the Delete
+     * button work was completed successfully.
+     * @return {Subscription}
+     */
+    public subscribeToModelObjectDeletedEvent( fn: ( T ) => any ): Subscription
+    {
+        this.debug( 'subscribeToModelObjectDeleted' );
+        return this.modelObjectDeletedSubject.asObservable().subscribe( fn );
+    }
+
+    /**
+     * The {@code CrudPanelComponent will call this method when the delete button work completed successfully.
+     * @param modelObject
+     */
+    public sendModelObjectDeletedEvent( modelObject: T )
+    {
+        let methodName = 'sendModelObjectDeletedEvent';
+        this.debug( methodName + '.begin to ' + this.getToObserversMessage( this.modelObjectDeletedSubject ));
+        this.modelObjectDeletedSubject.next( modelObject );
+        this.crudStateStore.resetSubjects();
+        this.debug( methodName + '.end' );
+    }
+
+    /**
+     * Add the model object to the database.
+     * @param {T} modelObject
+     * @return {Observable<T extends ModelObject<T>>}
+     */
+    public addModelObject( modelObject: T ): Observable<T>
+    {
+        let methodName = "addModelObject";
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        return this.crudActionHandler
+                   .addModelObject( modelObject )
+                   .map( ( modelObject: T ) =>
+                         {
+                             this.sendFormResetEvent();
+                             this.sendModelObjectCreatedEvent( modelObject )
+                             return modelObject;
+                         });
+    }
+
+    /**
+     * The {@code CrudTableComponent} will call this method to register to receive notification when the Delete
+     * button work was completed successfully.
+     * @return {Subscription}
+     */
+    public subscribeToModelObjectCreatedEvent( fn: ( T ) => any ): Subscription
+    {
+        this.debug( 'subscribeToModelObjectCreated' );
+        return this.modelObjectCreatedSubject.asObservable().subscribe( fn );
+    }
+
+    /**
+     * The {@code CrudPanelComponent will call this method when the delete button work completed successfully.
+     * @param modelObject
+     */
+    protected sendModelObjectCreatedEvent( modelObject: T )
+    {
+        let methodName = 'sendModelObjectCreatedEvent';
+        this.debug( methodName + '.begin to ' + this.getToObserversMessage( this.modelObjectCreatedSubject ));
+        this.modelObjectCreatedSubject.next( modelObject );
+        this.crudStateStore.resetSubjects();
+        this.debug( methodName + '.end' );
+    }
+
+    /**
+     * Saves the model object to the database.
+     * @param {T} modelObject
+     * @return {Observable<T extends ModelObject<T>>}
+     */
+    public saveModelObject( modelObject: T ): Observable<T>
+    {
+        let methodName = "saveModelObject";
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        return this.crudActionHandler
+                   .saveModelObject( modelObject )
+                   .map( ( modelObject: T ) =>
+                         {
+                             this.sendFormResetEvent();
+                             this.sendModelObjectSavedEvent( modelObject )
+                             this.crudStateStore
+                                 .resetSubjects();
+                             return modelObject;
+                         });
+    }
+
+    /**
+     * The {@code CrudPanelComponent will call this method when the delete button work completed successfully.
+     * @param modelObject
+     */
+    protected sendModelObjectSavedEvent( modelObject: T )
+    {
+        let methodName = 'sendModelObjectSavedEvent';
+        this.debug( methodName + '.begin to ' + this.getToObserversMessage( this.modelObjectSavedSubject ));
+        this.modelObjectSavedSubject.next( modelObject );
+        this.crudStateStore.resetSubjects();
+        this.debug( methodName + '.end' );
+    }
+
+    /**
+     * The {@code CrudTableComponent} will call this method to register to receive notification when the Delete
+     * button work was completed successfully.
+     * @return {Subscription}
+     */
+    public subscribeToModelObjectSavedEvent( fn: ( T ) => any ): Subscription
+    {
+        this.debug( 'subscribeToModelSavedEvent' );
+        return this.modelObjectSavedSubject.asObservable().subscribe( fn );
     }
 
     /**

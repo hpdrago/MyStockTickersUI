@@ -1,4 +1,14 @@
 <div style="text-align: center">
+    <div class="crud-table-button {{getEditButtonClass()}}" *ngIf="isShowEditButton()">
+        <button class="{{getEditButtonClass()}}"
+                [ngClass]="{'disabled': isEditButtonDisabled()}"
+                pButton type="button"
+                (click)="onEditButtonClick()"
+                label="{{getEditButtonLabel()}}"
+                icon="{{getEditButtonIcon()}}"
+                [disabled]="isEditButtonDisabled()">
+        </button>
+    </div>
     <div class="crud-table-button {{getAddButtonClass()}}" *ngIf="isShowAddButton()">
         <button class="{{getAddButtonClass()}}"
                 [ngClass]="{'disabled': isAddButtonDisabled()}"

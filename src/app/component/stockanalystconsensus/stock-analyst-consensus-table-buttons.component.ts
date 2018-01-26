@@ -5,6 +5,7 @@ import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensu
 import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
 import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
+import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
 
 /**
  * Created by mike on 8/15/2017.
@@ -22,16 +23,19 @@ export class StockAnalystConsensusTableButtonsComponent extends CrudTableButtons
      * @param {StockAnalystConsensusStateStore} stockAnalystConsensusStateStore
      * @param {StockAnalystConsensusController} stockAnalystConsensusController
      * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
+     * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
      */
     constructor( protected toaster: ToastsManager,
                  private stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
                  private stockAnalystConsensusController: StockAnalystConsensusController,
-                 private stockAnalystConsensusFactory: StockAnalystConsensusFactory )
+                 private stockAnalystConsensusFactory: StockAnalystConsensusFactory,
+                 private stockAnalystConsensusCrudService: StockAnalystConsensusCrudService )
     {
         super( toaster,
                stockAnalystConsensusStateStore,
                stockAnalystConsensusController,
-               stockAnalystConsensusFactory );
+               stockAnalystConsensusFactory,
+               stockAnalystConsensusCrudService );
     }
 
     protected getAddButtonLabel(): string

@@ -7,6 +7,7 @@ import { CrudOperation } from "../common/crud-operation";
 import { CrudStateStore } from '../common/crud-state-store';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudController } from '../common/crud-controller';
+import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 
 /**
  * This is the base component class for the buttons on all CRUD enabled tables
@@ -28,13 +29,24 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
      * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
      * @param {CrudController<T extends ModelObject<T>>} crudController
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
     constructor( protected toaster: ToastsManager,
                  protected crudStateStore: CrudStateStore<T>,
                  protected crudController: CrudController<T>,
-                 protected modelObjectFactory: ModelObjectFactory<T> )
+                 protected modelObjectFactory: ModelObjectFactory<T>,
+                 protected crudRestService: CrudRestService<T> )
     {
-        super( toaster, crudStateStore, crudController, modelObjectFactory );
+        super( toaster,
+               crudStateStore,
+               crudController,
+               modelObjectFactory,
+               crudRestService );
+    }
+
+    public ngOnInit()
+    {
+        super.ngOnInit();
         this.subscribeToCrudTableEvents()
     }
 
@@ -103,6 +115,15 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     }
 
     /**
+     * Returns the default Edit button label
+     * @return {string}
+     */
+    protected getEditButtonLabel(): string
+    {
+        return "Edit";
+    }
+
+    /**
      * Determines if the add button should be shown.
      * @return {boolean} true by default
      */
@@ -112,6 +133,16 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     }
 
     /**
+     * Determines if the add button should be shown.
+     * @return {boolean} true by default
+     */
+    protected isShowEditButton(): boolean
+    {
+        return true;
+    }
+
+    /**
+    /**
      * Determines if the Add button should be disabled.
      * It should be disabled when no portfolio is selected
      * @returns {boolean}
@@ -119,6 +150,16 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     protected isAddButtonDisabled(): boolean
     {
         return false;
+    }
+
+    /**
+     * Determines if the Edit button should be disabled.
+     * It should be disabled when no portfolio is selected
+     * @returns {boolean}
+     */
+    protected isEditButtonDisabled(): boolean
+    {
+        return isNullOrUndefined( this.selectedModelObject );
     }
 
     /**
@@ -156,9 +197,19 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     protected onAddButtonClick(): void
     {
         this.debug( "onAddButtonClick " );
-        var modelObject = this.modelObjectFactory.newModelObject();
         this.crudController
-            .sendTableAddButtonClickedEvent( modelObject );
+            .sendTableAddButtonClickedEvent();
+    }
+
+    /**
+     * This method is called when the Edit button is clicked.
+     * It will notify the button service that the button was clicked.
+     */
+    protected onEditButtonClick(): void
+    {
+        this.debug( "onEditButtonClick " );
+        this.crudController
+            .sendTableEditButtonClickedEvent();
     }
 
     /**
@@ -167,21 +218,8 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
      */
     protected onDeleteButtonClick(): void
     {
-        this.debug( "onDeleteButtonClick " + JSON.stringify( this.modelObject ));
-        this.crudController.sendTableDeleteButtonClickedEvent( this.modelObject );
-        /*
-        this.crudStateStore
-            .sendModelObjectChangedEvent( this, this.modelObject );
-        this.crudStateStore
-            .sendCrudOperationChangedEvent( CrudOperation.DELETE );
-            */
-        /*
-        if ( !isNullOrUndefined( this.modelObject ) )
-        {
-            this.crudServiceContainer
-                .crudTableButtonsService.sendDeleteButtonClickedEvent( this.modelObject );
-        }
-        */
+        this.debug( "onDeleteButtonClick " + JSON.stringify( this.selectedModelObject ));
+        this.crudController.sendTableDeleteButtonClickedEvent( this.selectedModelObject );
     }
 
     /**
@@ -204,6 +242,16 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
         return "crud-table-button";
     }
 
+    /**
+     * Defines the CSS class for the Add button
+     * @return {string}
+     */
+    protected getEditButtonClass(): string
+    {
+        return "crud-table-button";
+    }
+
+    /**
     /**
      * Defines the CSS class for the Delete button
      * @return {string}
@@ -229,6 +277,15 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     protected getAddButtonIcon(): string
     {
         return "fa-plus";
+    }
+
+    /**
+     * Defines the icon to be used for the Edit button
+     * @return {string} defaults to fa-edit
+     */
+    protected getEditButtonIcon(): string
+    {
+        return "fa-edit";
     }
 
     /**

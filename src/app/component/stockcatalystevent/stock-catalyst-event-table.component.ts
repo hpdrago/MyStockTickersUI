@@ -1,4 +1,3 @@
-import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockUrlMap } from "../../common/stock-url-map";
@@ -15,12 +14,6 @@ import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst
  *
  * Created by mike on 10/30/2016.
  */
-@Component(
-    {
-        selector: 'stock-catalyst-event-table',
-        styleUrls: ['./stock-catalyst-event-table.component.css'],
-        templateUrl: './stock-catalyst-event-table.component.html'
-    } )
 export class StockCatalystEventTableComponent extends StockModelObjectTableComponent<StockCatalystEvent>
 {
     private urlMap: StockUrlMap = new StockUrlMap();

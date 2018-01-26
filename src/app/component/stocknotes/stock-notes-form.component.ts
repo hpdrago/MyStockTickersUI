@@ -17,6 +17,7 @@ import { StockQuote } from "../../model/entity/stock-quote";
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
+import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
 
 /**
  * This is the Stock Note Form Component class.
@@ -65,6 +66,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      * @param {StockNotesStateStore} stockNotesCrudStateStore
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
+     * @param {StockNotesCrudService} stockNotesCrudService
      */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
@@ -73,12 +75,14 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
                  protected customerService: CustomerCrudService,
                  private stockNotesCrudStateStore: StockNotesStateStore,
                  private stockNotesController: StockNotesController,
-                 private stockNotesFactory: StockNotesFactory )
+                 private stockNotesFactory: StockNotesFactory,
+                 private stockNotesCrudService: StockNotesCrudService )
     {
         super( toaster,
                stockNotesCrudStateStore,
                stockNotesController,
                stockNotesFactory,
+               stockNotesCrudService,
                customerService );
     }
 

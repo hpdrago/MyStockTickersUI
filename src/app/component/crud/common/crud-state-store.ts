@@ -17,8 +17,8 @@ import { ModelObjectFactory } from "../../../model/factory/model-object.factory"
 export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
 {
     private modelObjectChangedSubject: BehaviorSubject<ModelObjectChangedEvent<T>>;
-    private modelObjectDeletedSubject: Subject<ModelObjectDeletedEvent<T>>;
-    private modelObjectCreatedSubject: Subject<ModelObjectCreatedEvent<T>>;
+    //private modelObjectDeletedSubject: Subject<ModelObjectDeletedEvent<T>>;
+    //private modelObjectCreatedSubject: Subject<ModelObjectCreatedEvent<T>>;
     private crudOperationChangedSubject: BehaviorSubject<CrudOperation>;
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
@@ -53,8 +53,8 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
         let modelObject: T = this.modelObjectFactory.newModelObject();
         let modelObjectChangedEvent = new ModelObjectChangedEvent<T>( this, modelObject );
         this.modelObjectChangedSubject = new BehaviorSubject<ModelObjectChangedEvent<T>>( modelObjectChangedEvent );
-        this.modelObjectDeletedSubject = new Subject<ModelObjectDeletedEvent<T>>();
-        this.modelObjectCreatedSubject = new Subject<ModelObjectCreatedEvent<T>>();
+        //this.modelObjectDeletedSubject = new Subject<ModelObjectDeletedEvent<T>>();
+        //this.modelObjectCreatedSubject = new Subject<ModelObjectCreatedEvent<T>>();
         this.crudOperationChangedSubject = new BehaviorSubject<CrudOperation>( CrudOperation.NONE );
     }
 
@@ -88,6 +88,7 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
      * This method is used to register for events when the {@code ModelObject} instance has changed
      * @return Subscription
      */
+    /*
     public subscribeToModelObjectDeletedEvent( fn: ( modelObjectDeletedEvent: ModelObjectDeletedEvent<T> ) => any ): Subscription
     {
         let methodName = "subscribeToModelObjectDeletedEvent";
@@ -97,11 +98,13 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
         this.debug( methodName + ".end " + this.modelObjectDeletedSubject.observers.length + " observers" );
         return subscription;
     }
+    */
 
     /**
      * This method is used to register for events when the {@code ModelObject} instance has been created.
      * @return Subscription
      */
+    /*
     public subscribeToModelObjectCreatedEvent( fn: ( changeEvent: ModelObjectCreatedEvent<T> ) => any ): Subscription
     {
         let methodName = "subscribeToModelObjectCreatedEvent";
@@ -111,6 +114,7 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
         this.debug( methodName + ".end " + this.modelObjectCreatedSubject.observers.length + " observers" );
         return subscription;
     }
+    */
 
     /**
      * This method is used by an observer to be notified as result of a change to the crud operation.
@@ -135,12 +139,24 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
     public sendModelObjectChangedEvent( sender: any, modelObject: T )
     {
         let methodName = "sendModelObjectChangedEvent";
-        if ( modelObject == null )
+        if ( sender === this.modelObjectChangedSubject.getValue().sender &&
+             modelObject.isEqualProperties( this.modelObjectChangedSubject.getValue().modelObject ))
         {
-            modelObject = this.modelObjectFactory.newModelObject();
+            this.debug( methodName + " model object is current not sending." + JSON.stringify( modelObject ));
         }
-        let modelObjectChangedEvent = new ModelObjectChangedEvent( sender, modelObject );
-        this.sendModelObjectEvent( methodName, this.modelObjectChangedSubject, modelObjectChangedEvent );
+        else
+        {
+            if ( modelObject == null )
+            {
+                modelObject = this.modelObjectFactory.newModelObject();
+            }
+            else
+            {
+                modelObject.removeJSONConversionProperties();
+            }
+            let modelObjectChangedEvent = new ModelObjectChangedEvent( sender, modelObject );
+            this.sendModelObjectEvent( methodName, this.modelObjectChangedSubject, modelObjectChangedEvent );
+        }
     }
 
     /**
@@ -149,25 +165,28 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
      * @param sender
      * @param modelObject
      */
+    /*
     public sendModelObjectDeletedEvent( sender: any, modelObject: T )
     {
         let methodName = "sendModelObjectDeletedEvent";
         let modelObjectDeletedEvent = new ModelObjectDeletedEvent( sender, modelObject );
         this.sendModelObjectEvent( methodName, this.modelObjectDeletedSubject, modelObjectDeletedEvent );
     }
-
+*/
     /**
      * This method is used by a notifier of a model object has been deleted.  Any observers to model object deletion event
      * will be notified.
      * @param sender
      * @param modelObject
      */
+    /*
     public sendModelObjectCreatedEvent( sender: any, modelObject: T )
     {
         let methodName = "sendModelObjectCreatedEvent";
         let modelObjectCreatedEvent = new ModelObjectCreatedEvent( sender, modelObject );
         this.sendModelObjectEvent( methodName, this.modelObjectCreatedSubject, modelObjectCreatedEvent );
     }
+    */
 
     /**
      * Private method to log and send model object event.

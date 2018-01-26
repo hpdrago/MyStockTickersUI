@@ -13,6 +13,7 @@ import { PortfolioStockStateStore } from './portfolio-stock-state-store';
 import { PortfolioStockController } from './portfolio-stock-controller';
 import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
 import { StockCrudService } from '../../service/crud/stock-crud.service';
+import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
 
 /**
  * Created by mike on 11/16/2016.
@@ -34,18 +35,31 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
     private dataLoaded: boolean = true;
     private selectedStockQuote: StockQuote;
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {FormBuilder} formBuilder
+     * @param {StockSectorCrudService} stockSectorService
+     * @param {PortfolioStockStateStore} portfolioStockStateStore
+     * @param {PortfolioStockController} portfolioStockController
+     * @param {PortfolioStockFactory} portfolioStockFactory
+     * @param {PortfolioStockCrudService} portfolioStockCrudService
+     * @param {StockCrudService} stockCrudService
+     */
     constructor( protected toaster: ToastsManager,
                  protected formBuilder: FormBuilder,
                  protected stockSectorService: StockSectorCrudService,
                  protected portfolioStockStateStore: PortfolioStockStateStore,
                  protected portfolioStockController: PortfolioStockController,
                  protected portfolioStockFactory: PortfolioStockFactory,
+                 protected portfolioStockCrudService: PortfolioStockCrudService,
                  protected stockCrudService: StockCrudService )
     {
         super( toaster,
                portfolioStockStateStore,
                portfolioStockController,
-               portfolioStockFactory );
+               portfolioStockFactory,
+               portfolioStockCrudService );
 
         this.continuousAdd = true;
     }

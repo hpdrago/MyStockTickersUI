@@ -5,6 +5,7 @@ import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store
 import { StockCatalystEventController } from './stock-catalyst-event-controller';
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
+import { StockCatalystEventActionHandler } from './stock-catalyst-event-action-handler';
 
 /**
  * This component lists all stock notes
@@ -14,9 +15,9 @@ import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst
 @Component(
     {
         selector: 'stock-catalyst-event-table-tab',
-        styleUrls: ['./stock-catalyst-event-table.component.css'],
+        styleUrls: ['../crud/table/crud-table.component.css'],
         templateUrl: './stock-catalyst-event-table-tab.component.html',
-        providers: [StockCatalystEventStateStore, StockCatalystEventController]
+        providers: [StockCatalystEventStateStore, StockCatalystEventController, StockCatalystEventActionHandler]
     } )
 export class StockCatalystEventTableTabComponent extends StockCatalystEventTableComponent
 {

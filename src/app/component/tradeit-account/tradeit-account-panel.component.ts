@@ -6,6 +6,7 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountController } from './tradeit-controller';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
+import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 
 /**
  * This is the customer form panel.
@@ -24,16 +25,19 @@ export class TradeItAccountPanelComponent extends CrudPanelComponent<TradeItAcco
      * @param {TradeItAccountStateStore} tradeItAccountStateStore
      * @param {TradeItAccountController} tradeItAccountController
      * @param {TradeItAccountFactory} tradeItAccountFactory
+     * @param {TradeItAccountCrudService} tradeItCrudService
      */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private tradeItAccountStateStore: TradeItAccountStateStore,
                  private tradeItAccountController: TradeItAccountController,
-                 private tradeItAccountFactory: TradeItAccountFactory )
+                 private tradeItAccountFactory: TradeItAccountFactory,
+                 private tradeItCrudService: TradeItAccountCrudService )
     {
         super( toaster,
                tradeItAccountStateStore,
                tradeItAccountController,
-               tradeItAccountFactory );
+               tradeItAccountFactory,
+               tradeItCrudService );
     }
 }

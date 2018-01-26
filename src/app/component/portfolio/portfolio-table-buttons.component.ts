@@ -5,6 +5,7 @@ import { Portfolio } from "../../model/entity/portfolio";
 import { PortfolioStateStore } from './portfolio-state-store';
 import { PortfolioController } from './portfolio-controller';
 import { PortfolioFactory } from '../../model/factory/portfolio.factory';
+import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service';
 
 /**
  * Created by mike on 1/2/2017.
@@ -22,26 +23,19 @@ export class PortfolioTableButtonsComponent extends CrudTableButtonsComponent<Po
      * @param {PortfolioStateStore} portfolioStateStore
      * @param {PortfolioController} portfolioController
      * @param {PortfolioFactory} portfolioFactory
+     * @param {PortfolioCrudService} portfolioCrudService
      */
     constructor( protected toaster: ToastsManager,
                  protected portfolioStateStore: PortfolioStateStore,
                  protected portfolioController: PortfolioController,
-                 protected portfolioFactory: PortfolioFactory )
+                 protected portfolioFactory: PortfolioFactory,
+                 protected portfolioCrudService: PortfolioCrudService )
 
     {
         super( toaster,
                portfolioStateStore,
                portfolioController,
-               portfolioFactory );
-    }
-
-    protected getAddButtonLabel(): string
-    {
-        return "Add Portfolio";
-    }
-
-    protected getDeleteButtonLabel(): string
-    {
-        return "Delete Portfolio";
+               portfolioFactory,
+               portfolioCrudService );
     }
 }

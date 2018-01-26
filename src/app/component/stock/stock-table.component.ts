@@ -7,6 +7,7 @@ import { StockFactory } from '../../model/factory/stock.factory';
 import { StockController } from './stock-controller';
 import { StockStateStore } from './stock-crud-state-store';
 import { StockCrudService } from '../../service/crud/stock-crud.service';
+import { StockActionHandler } from './stock-action-handler';
 
 /**
  * This component lists the all of the stocks in the database.
@@ -16,7 +17,7 @@ import { StockCrudService } from '../../service/crud/stock-crud.service';
     templateUrl: './stock-table.component.html',
     styleUrls:   ['./stock-table.component.css'],
     outputs: ['modelObject'],
-    providers: [StockStateStore, StockController]
+    providers: [StockStateStore, StockController, StockActionHandler]
 } )
 export class StockTableComponent extends CrudTableComponent<Stock>
 {

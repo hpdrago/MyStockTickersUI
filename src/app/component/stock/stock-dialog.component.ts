@@ -5,6 +5,7 @@ import { Stock } from "../../model/entity/stock";
 import { StockStateStore } from './stock-crud-state-store';
 import { StockController } from './stock-controller';
 import { StockFactory } from '../../model/factory/stock.factory';
+import { StockCrudService } from '../../service/crud/stock-crud.service';
 
 /**
  * This class manages the modal dialog that contains the Stock
@@ -25,16 +26,19 @@ export class StockDialogComponent extends CrudDialogComponent<Stock>
      * @param {StockStateStore} stockStateStore
      * @param {StockController} stockController
      * @param {StockFactory} stockFactory
+     * @param {StockCrudService} stockCrudService
      */
     constructor( protected toaster: ToastsManager,
                  protected stockStateStore: StockStateStore,
                  protected stockController: StockController,
-                 protected stockFactory: StockFactory )
+                 protected stockFactory: StockFactory,
+                 protected stockCrudService: StockCrudService )
     {
         super( toaster,
                stockStateStore,
                stockController,
-               stockFactory );
+               stockFactory,
+               stockCrudService );
     }
 
     /**
