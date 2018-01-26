@@ -65,10 +65,10 @@ export class StockQuoteService extends ReadRestService<StockQuote>
      */
     public getStockQuote( tickerSymbol: string ): Observable<StockQuote>
     {
+        this.debug( 'getStockQuote ' + tickerSymbol )
         let stockQuote: StockQuote = this.stockQuoteFactory.newModelObject();
         stockQuote.tickerSymbol = tickerSymbol;
-        let url = this.getCompleteURL( this.getContextURLFrom( '/stockQuote', stockQuote ),
-                                       this.getCustomerURL() );
+        let url = this.getCompleteURL( this.getContextURLFrom( 'quote', stockQuote ), null );
         return this.httpRequestModelObject( url );
     }
 }

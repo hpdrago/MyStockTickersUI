@@ -47,6 +47,11 @@
                   header="Company Name"
                   [style]="{'width':'150px'}"
                   [sortable]="false">
+            <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
+                <stock-quote [tickerSymbol]="stockCatalystEvent.tickerSymbol"
+                             property="companyName">
+                </stock-quote>
+            </ng-template>
         </p-column>
 
         <!----------------------------------------------------------------------------------------------------------

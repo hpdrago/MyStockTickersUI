@@ -14,7 +14,7 @@ import { StockCompany } from '../../model/entity/stock-company';
 @Component
 ({
      selector: 'stock-company-name',
-     template: `<cached-value [cacheState]="getCachedValueState()"
+     template: `<cached-value [cachedStateContainer]="stockCompany"
                               [failureMessage]="getFailureMessage()"
                               [staleMessage]="getStaleMessage()"
                               [notFoundMessage]="getNotFoundMessage()">

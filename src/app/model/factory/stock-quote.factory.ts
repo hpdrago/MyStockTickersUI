@@ -53,6 +53,7 @@ export class StockQuoteFactory extends ModelObjectFactory<StockQuote>
         stockQuote.discontinuedInd = false;
         stockQuote.cacheState = CachedValueState.STALE;
         stockQuote.cacheError = '';
+        stockQuote.expirationTime = new Date();
         return stockQuote;
     }
 }

@@ -1,10 +1,13 @@
+///<reference path="../common/cache-state-container.ts"/>
 import { CachedValueState } from '../../common/cached-value-state.enum';
 import { ModelObject } from '../common/model-object';
+import { CacheStateContainer } from '../common/cache-state-container';
 
 /**
  * This class contains all of the properties for the Stock Quote.
  */
 export class StockQuote extends ModelObject<StockQuote>
+                        implements CacheStateContainer<string>
 {
     public tickerSymbol: string;
     public companyName: string;
@@ -34,6 +37,7 @@ export class StockQuote extends ModelObject<StockQuote>
     public discontinuedInd;
     public cacheState: CachedValueState;
     public cacheError: string;
+    public expirationTime: Date;
 
     public getPrimaryKeyName(): string
     {
@@ -44,4 +48,34 @@ export class StockQuote extends ModelObject<StockQuote>
     {
         this.tickerSymbol;
     }
+    public getExpirationTime(): Date
+    {
+        return this.expirationTime;
+    }
+
+    public getKey(): string
+    {
+        return this.tickerSymbol;
+    }
+
+    public setCacheError( error: string )
+    {
+        this.cacheError = error;
+    }
+
+    public setCacheState( cacheValueState: CachedValueState )
+    {
+        this.cacheState = cacheValueState;
+    }
+
+    public getCacheError(): string
+    {
+        return this.cacheError
+    }
+
+    public getCacheState(): CachedValueState
+    {
+        return this.cacheState;
+    }
+
 }

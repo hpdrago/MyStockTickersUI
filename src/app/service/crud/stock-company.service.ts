@@ -14,7 +14,7 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { Subject } from 'rxjs/Subject';
 import { StockPriceQuoteService } from './stock-price-quote.service';
-import { StockPriceCacheService } from '../stock-price-cache.service';
+import { StockPriceQuoteCacheService } from '../stock-price-quote-cache.service';
 
 @Injectable()
 export class StockCompanyService extends ReadRestService<StockCompany>
@@ -32,7 +32,7 @@ export class StockCompanyService extends ReadRestService<StockCompany>
      * @param {RestErrorReporter} restErrorReporter
      * @param {StockCompanyFactory} stockCompanyFactory
      * @param {StockPriceQuoteService} stockPriceQuoteService
-     * @param {StockPriceCacheService} StockPriceCacheService
+     * @param {StockPriceQuoteCacheService} StockPriceCacheService
      */
     constructor( protected http: HttpClient,
                  protected session: SessionService,
@@ -40,7 +40,7 @@ export class StockCompanyService extends ReadRestService<StockCompany>
                  protected restErrorReporter: RestErrorReporter,
                  protected stockCompanyFactory: StockCompanyFactory,
                  protected stockPriceQuoteService: StockPriceQuoteService,
-                 protected stockPriceCacheService: StockPriceCacheService )
+                 protected stockPriceCacheService: StockPriceQuoteCacheService )
     {
         super( http,
                session,
@@ -117,7 +117,7 @@ export class StockCompanyService extends ReadRestService<StockCompany>
                             /*
                              * Update the cache with the new price.
                              */
-                            this.stockPriceCacheService.sendStockPriceChange( tickerSymbol, stockPriceQuote );
+                            this.stockPriceCacheService.sendCachedDataChange( tickerSymbol, stockPriceQuote );
                        });
         return subject.asObservable();
     }

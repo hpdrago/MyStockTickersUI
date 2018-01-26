@@ -12,7 +12,7 @@ import { ModelObjectFactory } from '../../model/factory/model-object.factory';
 import { CrudRestService } from '../../service/crud/crud-rest.serivce';
 
 /**
- * This component lists all stock notes
+ * This component displays a table to Stock Catalyst Events.
  *
  * Created by mike on 10/30/2016.
  */

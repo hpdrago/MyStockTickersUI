@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
-import { StockPriceCacheService } from '../../service/stock-price-cache.service';
+import { StockPriceQuoteCacheService } from '../../service/stock-price-quote-cache.service';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { Subscription } from 'rxjs/Subscription';
 import { isNullOrUndefined } from 'util';
@@ -66,10 +66,10 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {StockPriceCacheService} stockPriceCache
+     * @param {StockPriceQuoteCacheService} stockPriceCache
      */
     constructor( protected toaster: ToastsManager,
-                 private stockPriceCache: StockPriceCacheService,
+                 private stockPriceCache: StockPriceQuoteCacheService,
                  private changeDetector: ChangeDetectorRef )
     {
         super( toaster );
@@ -84,8 +84,8 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
         super.addSubscription( "getStockPriceChanges",
             this.subscription =
                 this.stockPriceCache
-                    .getStockPriceChanges( this.stockPriceModelObject.getTickerSymbol(),
-                                           stockPriceQuote => this.onStockPriceChange( stockPriceQuote )));
+                    .subscribeToChanges( this.stockPriceModelObject.getTickerSymbol(),
+                                         stockPriceQuote => this.onStockPriceChange( stockPriceQuote )));
     }
 
     /**

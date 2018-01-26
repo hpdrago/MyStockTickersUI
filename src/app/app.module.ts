@@ -130,7 +130,7 @@ import { AdminRoutingModule } from "./admin-routing.module";
 import { LoginComponent } from "./login.component";
 import { AdminComponent } from "./component/admin/admin.component";
 import { CookieService } from "ngx-cookie-service";
-import { StockPriceCacheService } from "./service/stock-price-cache.service";
+import { StockPriceQuoteCacheService } from "./service/stock-price-quote-cache.service";
 import { TradeItService } from "./service/tradeit/tradeit.service";
 import { TradeItAccountTableButtonsComponent } from "./component/tradeit-account/tradeit-account-table-buttons.component";
 import { TradeItAccountFormButtonsComponent } from "./component/tradeit-account/tradeit-account-form-buttons.component";
@@ -235,6 +235,8 @@ import { StockCompanyFactory } from './model/factory/stock-company-factory';
 import { StockCompanyService } from './service/crud/stock-company.service';
 import { StockQuoteService } from './service/crud/stock-quote.service';
 import { StockQuoteFactory } from './model/factory/stock-quote.factory';
+import { StockQuoteCacheService } from './service/stock-quote-cache.service';
+import { StockQuoteComponent } from './component/common/stock-quote.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -396,6 +398,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockAnalystConsensusTableDeleteButtonComponent,
         StockAnalystConsensusTableEditButtonComponent,
         StockAnalystConsensusTableRefreshButtonComponent,
+        StockAnalystPriceTargetsComponent,
+        StockAnalystPriceTargetComponent,
+        StockAnalystConsensusComponent,
 
         StockCatalystEventTableTabComponent,
         StockCatalystEventDashboardTableComponent,
@@ -421,28 +426,29 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         TradeItSecurityQuestionDialogComponent,
 
+        StockQuoteComponent,
+        StockQuoteLastPriceComponent,
+        StockQuotePercentChangeSinceCreatedComponent,
+        StockQuoteDayPercentChangeComponent,
+
         StockCompanyNameComponent,
+
+        StockAutoCompleteComponent,
+        StockSearchComponent,
+        StockAverageUpsidePercentComponent,
+        StockCommentsComponent,
+
         CachedValueComponent,
         StockNotesSourceComponent,
         DashboardComponent,
         FormErrorsComponent,
         UppercaseDirective,
         UppercaseValueDirective,
-        StockAutoCompleteComponent,
-        StockSearchComponent,
-        StockQuoteLastPriceComponent,
-        StockQuotePercentChangeSinceCreatedComponent,
-        StockAverageUpsidePercentComponent,
-        StockCommentsComponent,
-        StockAnalystConsensusComponent,
-        StockAnalystPriceTargetsComponent,
-        StockAnalystPriceTargetComponent,
         TipRanksLinkComponent,
         CurrencyComponent,
         PercentComponent,
         GainLossCurrencyComponent,
         GainLossPercentComponent,
-        StockQuoteDayPercentChangeComponent,
         DateComponent,
         DateOrTimePeriodComponent,
         ModelObjectLoadingComponent
@@ -456,10 +462,16 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         // Global providers -- singletons
         AuthService,
         AuthGuardService,
+        StockExchangeService,
+
         CookieService,
-        StockPriceCacheService,
+
         TradeItService,
         TradeItErrorReporter,
+
+        StockPriceQuoteCacheService,
+        StockPriceQuoteService,
+        StockPriceQuoteFactory,
 
         CustomerController,
         CustomerService,
@@ -474,11 +486,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         LinkedAccountFactory,
         LinkedAccountController,
 
-        StockPriceQuoteService,
-        StockExchangeService,
-        StockPriceQuoteFactory,
         StockQuoteFactory,
         StockQuoteService,
+        StockQuoteCacheService,
 
         PortfolioFactory,
         PortfolioCrudService,

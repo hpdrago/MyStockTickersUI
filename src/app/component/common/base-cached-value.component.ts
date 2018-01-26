@@ -4,7 +4,7 @@ import { ToastsManager } from 'ng2-toastr';
 
 /**
  * This is the base class for components that display model object information that has the potential of being asynchronously
- * fetched in the backend.  This component, with the use of the {@code CachedValueComponent} which displays the correct value
+ * fetched from the backend.  This component, with the use of the {@code CachedValueComponent} which displays the correct value
  * based on the state of the data, identifies a custom template and abstract methods that subclass must implement as
  * well as default values for the failure, stale, and not found messages.
  */

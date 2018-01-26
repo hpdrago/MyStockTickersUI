@@ -11,6 +11,7 @@ import { RestErrorReporter } from "../../service/rest-error-reporter";
 import { RestException } from '../../common/rest-exception';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
 import { StockCompanyFactory } from '../../model/factory/stock-company-factory';
+import { CachedValueState } from '../../common/cached-value-state.enum';
 
 /**
  * This component is a text input that finds stocks based on the incremental search of the input
@@ -168,7 +169,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                 .subscribe( ( stockPriceQuote: StockPriceQuote ) =>
                             {
                                 this.log( 'onStockSearchSelected ' + JSON.stringify( stockPriceQuote ) );
-                                if ( stockPriceQuote.isNotFound() )
+                                if ( CachedValueState.isNotFound( stockPriceQuote.cacheState ))
                                 {
                                     this.showError( stockPriceQuote.tickerSymbol + ' was not found' );
                                 }
