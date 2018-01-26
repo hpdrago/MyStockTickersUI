@@ -6,10 +6,14 @@
 import { BaseClass } from "../common/base-class";
 import { ToastsManager } from "ng2-toastr";
 
+/**
+ * Base service class.
+ */
 export abstract class BaseService extends BaseClass
 {
     /**
-     * Constructor
+     * Constructor.
+     * @param {ToastsManager} toaster
      */
     protected constructor( protected toaster?: ToastsManager )
     {

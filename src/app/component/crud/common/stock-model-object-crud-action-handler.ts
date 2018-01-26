@@ -41,10 +41,10 @@ export abstract class StockModelObjectCrudActionHandler<T extends StockModelObje
     protected onModelObjectAdd( stockModelObject: StockModelObject<T> )
     {
         this.stockPriceQuoteCacheService
-            .subscribeToChanges( stockModelObject.tickerSymbol, (stockPriceQuote: StockPriceQuote ) =>
+            .subscribe( stockModelObject.tickerSymbol, ( stockPriceQuote: StockPriceQuote ) =>
                 this.onStockPriceQuoteChange( stockModelObject, stockPriceQuote ))
         this.stockQuoteCacheService
-            .subscribeToChanges(stockModelObject.tickerSymbol, (stockQuote: StockQuote) =>
+            .subscribe( stockModelObject.tickerSymbol, ( stockQuote: StockQuote) =>
                 this.onStockQuoteChange( stockModelObject, stockQuote ));
     }
 

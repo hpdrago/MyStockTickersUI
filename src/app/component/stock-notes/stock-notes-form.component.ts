@@ -19,6 +19,7 @@ import { StockCompany } from '../../model/entity/stock-company';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
 import { StockSearchSelectedCompaniesComponent } from '../common/stock-search-selected-companies.component';
 import { StockNotesSourceSelectionComponent } from '../common/stock-notes-source-selection.component';
+import { StockCompanyPriceQuoteService } from '../../service/stock-company-price-quote.service';
 
 /**
  * This is the StockCompany Note Form Component class.
@@ -56,7 +57,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockNotesCrudService} stockNotesCrudService
-     * @param {StockCompanyService} stockCompanyService
+     * @param {StockCompanyPriceQuoteService} stockCompanyPriceQuoteService
      * @param {StockPriceQuoteService} stockPriceQuoteService
      */
     constructor( protected changeDetector: ChangeDetectorRef,
@@ -68,7 +69,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                  private stockNotesController: StockNotesController,
                  private stockNotesFactory: StockNotesFactory,
                  private stockNotesCrudService: StockNotesCrudService,
-                 private stockCompanyService: StockCompanyService,
+                 private stockCompanyPriceQuoteService: StockCompanyPriceQuoteService,
                  private stockPriceQuoteService: StockPriceQuoteService )
     {
         super( changeDetector,
@@ -221,7 +222,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             .forEach( (stockNoteStock: StockNotesStock) =>
                       {
                           this.debug( methodName + " getting stock company: " + stockNoteStock.tickerSymbol );
-                          this.stockCompanyService
+                          this.stockCompanyPriceQuoteService
                               .getStockCompany( stockNoteStock.tickerSymbol )
                               .subscribe( (stockCompany: StockCompany) =>
                                           {

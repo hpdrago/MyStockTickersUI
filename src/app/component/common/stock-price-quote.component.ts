@@ -63,8 +63,8 @@ export class StockPriceQuoteComponent extends BaseComponent implements OnInit
         this.tickThenRun( () =>
                           {
                               this.stockPriceQuoteCache
-                                  .subscribeToChanges( this.tickerSymbol,
-                                                      (stockPriceQuote: StockPriceQuote) =>
+                                  .subscribe( this.tickerSymbol,
+                                              (stockPriceQuote: StockPriceQuote) =>
                                                           this.onReceiveStockPriceQuote( stockPriceQuote ) );
                           })
     }

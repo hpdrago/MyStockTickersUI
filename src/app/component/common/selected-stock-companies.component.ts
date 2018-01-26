@@ -4,6 +4,7 @@ import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
 import { StockCompany } from '../../model/entity/stock-company';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
+import { StockCompanyPriceQuoteService } from '../../service/stock-company-price-quote.service';
 
 /**
  * This component displays the ticker symbols, last prices, and company names vertically based off of stock companies
@@ -89,14 +90,15 @@ export class SelectedStockCompaniesComponent extends BaseComponent
     protected stockCompanies: SelectedStockCompanyList;
 
     /**
-     * Constructor
+     * Constructor.
      * @param {ToastsManager} toaster
+     * @param {StockCompanyPriceQuoteService} stockCompanyPriceQuoteService
      */
     public constructor( protected toaster: ToastsManager,
-                        private stockCompanyService: StockCompanyService )
+                        private stockCompanyPriceQuoteService: StockCompanyPriceQuoteService )
     {
         super( toaster );
-        this.stockCompanies = new SelectedStockCompanyList( stockCompanyService );
+        this.stockCompanies = new SelectedStockCompanyList( stockCompanyPriceQuoteService );
     }
 
     /**

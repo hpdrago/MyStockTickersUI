@@ -2,6 +2,7 @@ import { StockCompanyList } from '../../common/stock-company.list';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
 import { StockPriceQuoteService } from '../../service/crud/stock-price-quote.service';
 import { StockCompany } from '../../model/entity/stock-company';
+import { StockCompanyPriceQuoteService } from '../../service/stock-company-price-quote.service';
 
 /**
  * This class manages the list of ticker symbols, last prices, and company names displayed on forms or other components
@@ -32,9 +33,9 @@ export class SelectedStockCompanyList extends StockCompanyList
      * @param {StockCompanyService} stockCompanyService
      * @param {StockPriceQuoteService} stockPriceQuoteService
      */
-    constructor( protected stockCompanyService: StockCompanyService )
+    constructor( protected stockCompanyPriceQuoteService: StockCompanyPriceQuoteService )
     {
-        super( stockCompanyService )
+        super( stockCompanyPriceQuoteService )
     }
 
     /**

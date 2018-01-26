@@ -83,26 +83,33 @@ export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
     {
         const methodName = 'onStockSelected';
         this.logMethodBegin( methodName + ' ' + JSON.stringify( stockCompany ));
-        super.onStockSelected( stockCompany );
-        this.modelObject
-            .tickerSymbol = stockCompany.tickerSymbol;
-        this.setFormValue( 'tickerSymbol', stockCompany.tickerSymbol );
         /*
-         * There can only one stock to buy for a customer and ticker symbol combination.
+         * Don't process companies that are not valid when the user inputs an incorrect ticker symbol
          */
-        let stockToBuy = this.stockToBuyFactory
-                             .newModelObject();
-        stockToBuy.tickerSymbol = stockCompany.tickerSymbol;
-        this.crudRestService
-            .getModelObject( stockToBuy )
-            .subscribe( (existingStockToBuy: StockToBuy) =>
-            {
-                if ( !isNullOrUndefined( existingStockToBuy ))
-                {
-                    this.toaster.warning( 'A Stock To Buy entry already exists for ' +
-                        existingStockToBuy.getTickerSymbol() );
-                }
-            });
+        if ( !isNullOrUndefined( stockCompany ) &&
+             !isNullOrUndefined( stockCompany.tickerSymbol ))
+        {
+            super.onStockSelected( stockCompany );
+            this.modelObject
+                .tickerSymbol = stockCompany.tickerSymbol;
+            this.setFormValue( 'tickerSymbol', stockCompany.tickerSymbol );
+            /*
+             * There can only one stock to buy for a customer and ticker symbol combination.
+             */
+            let stockToBuy = this.stockToBuyFactory
+                                 .newModelObject();
+            stockToBuy.tickerSymbol = stockCompany.tickerSymbol;
+            this.crudRestService
+                .getModelObject( stockToBuy )
+                .subscribe( ( existingStockToBuy: StockToBuy ) =>
+                            {
+                                if ( !isNullOrUndefined( existingStockToBuy ) )
+                                {
+                                    this.toaster.warning( 'A Stock To Buy entry already exists for ' +
+                                        existingStockToBuy.getTickerSymbol() );
+                                }
+                            } );
+        }
         this.logMethodEnd( methodName );
     }
 }

@@ -15,6 +15,7 @@ import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-cr
 import { StockCompany } from '../../model/entity/stock-company';
 import { SelectedStockCompanyList } from '../common/selected-stock-company.list';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
+import { StockCompanyPriceQuoteService } from '../../service/stock-company-price-quote.service';
 
 /**
  * Created by mike on 11/16/2016.
@@ -46,7 +47,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      * @param {PortfolioStockFactory} portfolioStockFactory
      * @param {PortfolioStockCrudService} portfolioStockCrudService
      * @param {StockPriceQuoteService} stockCrudService
-     * @param {StockCompanyService} stockCompanyService
+     * @param {StockCompanyService} stockCompanyPriceQuoteService
      */
     constructor( protected changeDetector: ChangeDetectorRef,
                  protected toaster: ToastsManager,
@@ -56,7 +57,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
                  protected portfolioStockFactory: PortfolioStockFactory,
                  protected portfolioStockCrudService: PortfolioStockCrudService,
                  private stockCrudService: StockPriceQuoteService,
-                 private stockCompanyService: StockCompanyService )
+                 private stockCompanyPriceQuoteService: StockCompanyPriceQuoteService )
     {
         super( changeDetector,
                toaster,
@@ -64,7 +65,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
                portfolioStockController,
                portfolioStockFactory,
                portfolioStockCrudService );
-        this.selectedCompanyList = new SelectedStockCompanyList( stockCompanyService );
+        this.selectedCompanyList = new SelectedStockCompanyList( stockCompanyPriceQuoteService );
         this.continuousAdd = true;
     }
 

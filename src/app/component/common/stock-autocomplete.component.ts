@@ -11,6 +11,7 @@ import { RestException } from '../../common/rest-exception';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
 import { StockCompanyFactory } from '../../model/factory/stock-company-factory';
 import { CachedValueState } from '../../common/cached-value-state.enum';
+import { StockCompanyPriceQuoteService } from '../../service/stock-company-price-quote.service';
 
 /**
  * This component is a text input that finds stocks based on the incremental search of the input
@@ -20,7 +21,7 @@ import { CachedValueState } from '../../common/cached-value-state.enum';
 {
     selector: 'stock-autocomplete',
     template: ` <p-autoComplete [suggestions]="stockSearchResults"
-                                [(ngModel)]="stockCompany.tickerSymbol"
+                                [(ngModel)]="tickerSymbol"
                                 [minLength]="1"
                                 (completeMethod)="onStockSearch( $event )"
                                 (onSelect)="onStockSearchSelected( $event )"
@@ -46,20 +47,22 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     private stockNotFound: EventEmitter<string>  = new EventEmitter<string>();
 
     protected stockSearchResults: string[];
-    protected stockCompany: StockCompany;
     protected disabledState: boolean = false;
     private isStockSelected : boolean;
     private emittedTickerSymbol = '';
+    protected tickerSymbol;
 
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {StockPriceQuoteService} stockService
      * @param {StockCompanyService} stockCompanyService
+     * @param {StockCompanyPriceQuoteService} stockCompanyPriceQuoteService
+     * @param {StockCompanyFactory} stockCompanyFactory
      * @param {RestErrorReporter} restErrorReporter
      */
     constructor( protected toaster: ToastsManager,
                  private stockCompanyService: StockCompanyService,
+                 private stockCompanyPriceQuoteService: StockCompanyPriceQuoteService,
                  private stockCompanyFactory: StockCompanyFactory,
                  private restErrorReporter: RestErrorReporter )
     {
@@ -69,7 +72,6 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     public ngOnInit()
     {
         this.log( "ngOnInit" );
-        this.stockCompany = this.stockCompanyFactory.newModelObject();
         if ( !this.stockSelected )
         {
             throw new Error( "stockSelected has not been set by Input value" );
@@ -126,14 +128,17 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     protected onBlur( event )
     {
         this.log( "onBlur " + JSON.stringify( event ) +
-                  " tickerSymbol: " + this.stockCompany.tickerSymbol +
+                  " tickerSymbol: " + this.tickerSymbol +
                   " isStockSelected: " + this.isStockSelected );
         if ( !this.disabledState &&
-             !this.isStockSelected &&
-             !isNullOrUndefined( this.stockCompany.tickerSymbol ) &&
-             this.stockCompany.tickerSymbol.length > 0 )
+            !isNullOrUndefined( this.tickerSymbol ) &&
+             this.tickerSymbol.length > 0 )
         {
-            this.getStockCompany();
+            if ( isNullOrUndefined( this.tickerSymbol ) ||
+                 this.tickerSymbol != this.emittedTickerSymbol )
+            {
+                this.getStockCompany();
+            }
         }
     }
 
@@ -148,12 +153,12 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         if ( !this.disabledState )
         {
             var matches = /\[(.*)] (.*)/.exec( event );
-            this.stockCompany.tickerSymbol = matches[1];
+            this.tickerSymbol = matches[1];
             /*
              * Send the change through ngModel
              */
-            this.stockCompany.tickerSymbol = this.stockCompany.tickerSymbol.toUpperCase();
-            this.propagateChange( this.stockCompany.tickerSymbol );
+            this.tickerSymbol = this.tickerSymbol.toUpperCase();
+            this.propagateChange( this.tickerSymbol );
             this.getStockCompany();
         }
     }
@@ -164,17 +169,17 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     private getStockCompany()
     {
         const methodName = 'getStockCompany';
-        this.logMethodBegin( methodName + ' ' + this.stockCompany.tickerSymbol + ' ' + this.emittedTickerSymbol );
-        if ( !isNullOrUndefined( this.stockCompany.tickerSymbol ) &&
-             this.stockCompany.tickerSymbol != this.emittedTickerSymbol ) // prevent duplicate emits caused by onBlur and selection
+        this.logMethodBegin( methodName + ' ' + this.tickerSymbol + ' ' + this.emittedTickerSymbol );
+        if ( !isNullOrUndefined( this.tickerSymbol ) &&
+             this.tickerSymbol != this.emittedTickerSymbol ) // prevent duplicate emits caused by onBlur and selection
         {
             /*
              * Assume we will emit the company since the user is presented with valid companies, we don't expect to
              * get any errors and we want to prevent duplicate searches and subsequent emits of stock companies.
              */
-            this.emittedTickerSymbol = this.stockCompany.tickerSymbol;
-            this.stockCompanyService
-                .getStockCompany( this.stockCompany.tickerSymbol )
+            this.emittedTickerSymbol = this.tickerSymbol;
+            this.stockCompanyPriceQuoteService
+                .getStockCompany( this.tickerSymbol )
                 .subscribe( ( stockCompany: StockCompany ) =>
                             {
                                 this.log( methodName + ' ' + JSON.stringify( stockCompany ) );
@@ -186,7 +191,8 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                                 {
                                     this.stockSelected
                                         .emit( stockCompany );
-                                    this.stockCompany = this.stockCompanyFactory.newModelObject();
+                                    this.emittedTickerSymbol = stockCompany.tickerSymbol;
+                                    this.tickerSymbol = '';
                                     this.isStockSelected = true;
                                 }
                             },
@@ -202,11 +208,11 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                                     if ( this.stockNotFound )
                                     {
                                         this.stockNotFound
-                                            .emit( this.stockCompany.tickerSymbol );
+                                            .emit( this.tickerSymbol );
                                     }
                                     else
                                     {
-                                        this.showError( this.stockCompany.tickerSymbol + ' was not found' );
+                                        this.showError( this.tickerSymbol + ' was not found' );
                                     }
                                 }
                                 else
@@ -226,7 +232,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         this.debug( "writeValue: " + searchString );
         if ( !isNullOrUndefined( searchString ) )
         {
-            this.stockCompany.tickerSymbol = searchString.toUpperCase();
+            this.tickerSymbol = searchString.toUpperCase();
         }
     }
 

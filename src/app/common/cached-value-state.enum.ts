@@ -20,11 +20,11 @@ export enum CachedValueState
     /**
      * The stock ticker symbol was not found
      */
-    NOT_FOUND = 3,
+    NOT_FOUND = 2,
     /**
      * Identifies when there are issues updating the stock quote
       */
-    FAILURE = 4
+    FAILURE = 3
 }
 export namespace CachedValueState
 {

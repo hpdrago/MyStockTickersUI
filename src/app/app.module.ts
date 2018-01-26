@@ -262,6 +262,7 @@ import { GainsLossesTableImportButtonComponent } from './component/gains-losses/
 import { GainsLossesImportDialogComponent } from './component/gains-losses/gains-losses-import-dialog.component';
 import { UploadFileService } from './service/upload-file.service';
 import { StockCompanyNameComponent } from "./component/common/stock-company-name.component";
+import { StockCompanyPriceQuoteService } from './service/stock-company-price-quote.service';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -581,6 +582,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockCompanyFactory,
         StockCompanyService,
         StockCompanyCacheService,
+        StockCompanyPriceQuoteService,
 
         RestErrorReporter,
         SessionService,

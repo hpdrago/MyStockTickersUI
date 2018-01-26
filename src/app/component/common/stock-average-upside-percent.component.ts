@@ -41,7 +41,7 @@ export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBas
     {
         super.ngOnInit();
         this.stockPriceQuoteCache
-            .subscribeToChanges( this.tickerSymbol,  (stockPriceQuote: StockPriceQuote) =>
+            .subscribe( this.tickerSymbol, ( stockPriceQuote: StockPriceQuote) =>
             {
                 this.onStockPriceQuoteChange( stockPriceQuote );
             });

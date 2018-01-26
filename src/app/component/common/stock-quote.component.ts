@@ -67,8 +67,8 @@ export class StockQuoteComponent extends BaseComponent implements OnInit
                           {
                               super.addSubscription( 'stockQuoteCache',
                                   this.stockQuoteCache
-                                      .subscribeToChanges( this.tickerSymbol,
-                                                          (stockQuote: StockQuote) => this.onReceiveStockQuote( stockQuote ) ));
+                                      .subscribe( this.tickerSymbol,
+                                                  (stockQuote: StockQuote) => this.onReceiveStockQuote( stockQuote ) ));
                           })
     }
 

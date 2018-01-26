@@ -1,6 +1,7 @@
 import { StockCompanyService } from '../service/crud/stock-company.service';
 import { StockPriceQuoteService } from '../service/crud/stock-price-quote.service';
 import { StockCompany } from '../model/entity/stock-company';
+import { StockCompanyPriceQuoteService } from '../service/stock-company-price-quote.service';
 
 /**
  * This class maintains a list of {@code StockCompany} instances.
@@ -11,10 +12,9 @@ export class StockCompanyList
 
     /**
      * Constructor
-     * @param {StockCompanyService} stockCompanyService
-     * @param {StockPriceQuoteService} stockPriceQuoteService
+     * @param {StockCompanyPriceQuoteService} stockCompanyPriceQuoteService
      */
-    constructor( protected stockCompanyService: StockCompanyService )
+    constructor( protected stockCompanyPriceQuoteService: StockCompanyPriceQuoteService )
     {
     }
 
@@ -26,7 +26,7 @@ export class StockCompanyList
     {
         if ( !this.containsCompany( tickerSymbol ))
         {
-            this.stockCompanyService
+            this.stockCompanyPriceQuoteService
                 .getStockCompany( tickerSymbol )
                 .subscribe( stockCompany =>
                             {

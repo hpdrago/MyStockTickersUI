@@ -56,8 +56,8 @@ export class StockCompanyComponent extends BaseCachedValueComponent implements O
     {
         super.addSubscription( 'stockCompanyCache',
             this.stockCompanyCacheService
-                .subscribeToChanges( this.tickerSymbol,
-                                     (stockCompany: StockCompany) => this.onStockCompanyChange( stockCompany )));
+                .subscribe( this.tickerSymbol,
+                            (stockCompany: StockCompany) => this.onStockCompanyChange( stockCompany )));
     }
 
     /**

@@ -10,17 +10,14 @@ import { StockCompanyFactory } from '../../model/factory/stock-company-factory';
 import { Observable } from 'rxjs/Observable';
 import { KeyValuePairs } from '../../common/key-value-pairs';
 import { PaginationPage } from '../../common/pagination';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { StockPriceQuote } from '../../model/entity/stock-price-quote';
-import { Subject } from 'rxjs/Subject';
 import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
 
 @Injectable()
 export class StockCompanyService extends ReadRestService<StockCompany>
 {
-    private readonly stocksUrl: string = '/stocks/';
-    private readonly stockCompanyUrl: string = this.stocksUrl + 'company';
-    private readonly stocksCompaniesLikeUrl: string = this.stocksUrl + 'companiesLike';
+    private readonly stocksUrl: string = '/stocks';
+    private readonly stockCompanyUrl: string = this.stocksUrl + '/company';
+    private readonly stocksCompaniesLikeUrl: string = this.stocksUrl + '/companiesLike';
     private readonly stocksCompaniesLikePaginationUrl: PaginationURL;
 
     /**
@@ -52,7 +49,6 @@ export class StockCompanyService extends ReadRestService<StockCompany>
     {
         return this.stocksUrl;
     }
-
 
     /**
      * Check for the ticker symbol being set.
@@ -97,27 +93,7 @@ export class StockCompanyService extends ReadRestService<StockCompany>
         this.debug( methodName + ' ' + tickerSymbol );
         let stockCompany: StockCompany = this.stockCompanyFactory.newModelObject();
         stockCompany.tickerSymbol = tickerSymbol;
-        let url = this.getCompleteURL( this.getContextURLFrom( 'company', stockCompany ), null );
-        let subject: Subject<StockCompany> = new Subject<StockCompany>();
-        /*
-         * Call to get the stock company and the stock price quote
-         */
-        forkJoin( this.httpRequestModelObject( url ),
-                  this.stockPriceQuoteCacheService
-                      .get( tickerSymbol )
-                 )
-                 .subscribe( results =>
-                 {
-                     let stockCompany: StockCompany = this.stockCompanyFactory.newModelObjectFromJSON( results[0] );
-                     let stockPriceQuote: StockPriceQuote = results[1];
-                     this.debug( methodName + ' received stockCompany: ' + JSON.stringify( stockCompany ));
-                     this.debug( methodName + ' received stockPriceQuote: ' + JSON.stringify( stockPriceQuote ));
-                     stockCompany.lastPrice = stockPriceQuote.lastPrice;
-                     subject.next( stockCompany );
-                     subject.complete();
-                 },
-                 error => Observable.throw( error ));
-        return subject.asObservable().share();
+        let url = this.getCompleteURL( this.getContextURLFrom( '/company', stockCompany ), null );
+        return super.httpRequestModelObject( url );
     }
-
 }
