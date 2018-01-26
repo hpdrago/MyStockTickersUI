@@ -37,7 +37,8 @@ TABLE DEFINITION
                                  [(selection)]="selectedModelObject"
                                  (rowSelected)="onRowSelect($event)"
                                  (onLazyLoad)="lazyLoadTable($event)"
-                                 [lazy]="true"
+                                 [lazy]="false"
                                  [loadingData]="loading"
+                                 (onLazyLoadEvent)="lazyLoadTable($event)"
                                  (onRowDblclick)="onRowDoubleClick($event)">
 </stock-model-object-table-layout>

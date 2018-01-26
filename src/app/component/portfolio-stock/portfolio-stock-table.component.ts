@@ -16,6 +16,7 @@ import { PortfolioController } from '../portfolio/portfolio-controller';
 import { LinkedAccountController } from '../linked-account/linked-account-controller';
 import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
 import { isNullOrUndefined } from 'util';
+import { LazyLoadEvent } from 'primeng/api';
 
 /**
  * This component lists all of the stocks for a portfolio
@@ -69,18 +70,30 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
                cookieService );
     }
 
-    public ngOnInit()
+    public ngAfterViewInit()
     {
-        super.ngOnInit();
         this.addSubscription( 'PortfolioTableSelectionChange',
-            this.portfolioController
-                .subscribeToTableSelectionChangeEvent( portfolio => this.onPortfolioTableSelectionChange( portfolio )));
+                              this.portfolioController
+                                  .subscribeToTableSelectionChangeEvent( portfolio => this.onPortfolioTableSelectionChange( portfolio )));
         this.addSubscription( 'LinkedAccountTableSelectionChange',
-            this.linkedAccountController
-                .subscribeToTableSelectionChangeEvent( linkedAccount => this.onLinkedAccountTableSelectionChange( linkedAccount )));
+                              this.linkedAccountController
+                                  .subscribeToTableSelectionChangeEvent( linkedAccount => this.onLinkedAccountTableSelectionChange( linkedAccount )));
         this.addSubscription( 'TradeItAccountTableSelectionChange',
-            this.tradeItAccountController
-                .subscribeToTableSelectionChangeEvent( tradeItAccount => this.onTradeItAccountTableSelectionChange( tradeItAccount )));
+                              this.tradeItAccountController
+                                  .subscribeToTableSelectionChangeEvent( tradeItAccount => this.onTradeItAccountTableSelectionChange( tradeItAccount )));
+    }
+
+    /**
+     * Don't load the table until we know the account information.
+     * @param {LazyLoadEvent} event
+     */
+    protected lazyLoadTable( event: LazyLoadEvent ): void
+    {
+        if ( !isNullOrUndefined( this.tradeItAccount ) &&
+             !isNullOrUndefined( this.linkedAccount ))
+        {
+            super.lazyLoadTable( event );
+        }
     }
 
     /**

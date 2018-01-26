@@ -14,6 +14,8 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { LinkedAccount } from '../../model/entity/linked-account';
 import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
 import { LinkedAccountController } from '../linked-account/linked-account-controller';
+import { LazyLoadEvent } from 'primeng/api';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -65,9 +67,9 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
                cookieService );
     }
 
-    public ngOnInit()
+    public ngAfterViewInit(): void
     {
-        super.ngOnInit();
+        super.ngAfterViewInit();
         this.addSubscription( 'TradeItAccountTableSelectionChange',
                               this.tradeItAccountController
                                   .subscribeToTableSelectionChangeEvent( tradeItAccount =>
@@ -75,6 +77,15 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
         this.addSubscription( 'LinkedAccountTableSelectionChange',
                               this.linkedAccountController.subscribeToTableSelectionChangeEvent(
                                   linkedAccount => this.onLinkedAccountTableSelectionChange( linkedAccount )));
+    }
+
+    protected lazyLoadTable( event: LazyLoadEvent ): void
+    {
+        if ( !isNullOrUndefined( this.tradeItAccount ) &&
+             !isNullOrUndefined( this.linkedAccount ))
+        {
+            super.lazyLoadTable( event );
+        }
     }
 
     /**

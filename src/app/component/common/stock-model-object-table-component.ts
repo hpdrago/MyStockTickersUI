@@ -20,7 +20,7 @@ export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & 
     extends CrudTableComponent<T>
 {
     @Input()
-    protected displayStockSearchFilter: boolean = true;
+    protected displayStockSearchFilter: boolean;
 
     /**
      * Constructor

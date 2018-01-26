@@ -15,6 +15,8 @@ import { TradeItAccount } from '../../model/entity/tradeit-account';
 import { LinkedAccount } from '../../model/entity/linked-account';
 import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
 import { LinkedAccountController } from '../linked-account/linked-account-controller';
+import { LazyLoadEvent } from 'primeng/api';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -65,13 +67,13 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
                cookieService );
     }
 
-    public ngOnInit()
+    public ngAfterViewInit(): void
     {
-        super.ngOnInit();
+        super.ngAfterViewInit();
         this.addSubscription( 'TradeItAccountSelectionChange',
-                                this.tradeItAccountController
-                                    .subscribeToTableSelectionChangeEvent( tradeItAccount =>
-                                                                               this.onTradeItAccountTableSelectionChange( tradeItAccount )));
+                              this.tradeItAccountController
+                                  .subscribeToTableSelectionChangeEvent( tradeItAccount =>
+                                                                             this.onTradeItAccountTableSelectionChange( tradeItAccount )));
         this.addSubscription( 'LinkedAccountSelectionChange',
                               this.linkedAccountController
                                   .subscribeToTableSelectionChangeEvent( linkedAccount =>
@@ -114,6 +116,22 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
                             var index: number = this.indexOf( portfolio );
                             this.updateModelObjectTableRow( index, portfolio );
                         });
+    }
+
+    /**
+     * @param {LazyLoadEvent} event
+     */
+    protected lazyLoadTable( event: LazyLoadEvent ): void
+    {
+        /*
+         * Don't load until we know the accounts.
+         * The PrimeNG table attempts to load the table even when Lazy is off.
+         */
+        if ( !isNullOrUndefined( this.linkedAccount ) &&
+             !isNullOrUndefined( this.tradeItAccount ))
+        {
+            super.lazyLoadTable( event );
+        }
     }
 
     /**

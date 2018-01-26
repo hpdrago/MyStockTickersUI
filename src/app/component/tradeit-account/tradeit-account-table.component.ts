@@ -10,6 +10,8 @@ import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
 import { CookieService } from 'ngx-cookie-service';
+import { LazyLoadEvent } from 'primeng/api';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -60,12 +62,19 @@ export class TradeItAccountTableComponent extends TradeItAccountBaseTableCompone
 
     }
 
-    public ngOnInit()
+    public ngAfterViewInit(): void
     {
-        super.ngOnInit();
-        this.addSubscription( 'LinkedAccountEvent',  this.tradeItAccountController
-            .subscribeToAccountLinkedEvent( (tradeItAccount: TradeItAccount) =>
-                                            { this.onAccountLinkedEvent( tradeItAccount ); }));
+        super.ngAfterViewInit();
+        this.addSubscription( 'LinkedAccountEvent',
+                              this.tradeItAccountController
+                                  .subscribeToAccountLinkedEvent( (tradeItAccount: TradeItAccount) =>
+                                                                      { this.onAccountLinkedEvent( tradeItAccount ); }));
+    }
+
+    protected lazyLoadTable( event: LazyLoadEvent ): void
+    {
+        if ( !isNullOrUndefined( this.tradeItAcc))
+        super.lazyLoadTable( event );
     }
 
     /**

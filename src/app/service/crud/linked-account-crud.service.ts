@@ -12,6 +12,7 @@ import { KeyValuePairs } from '../../common/key-value-pairs';
 import { Observable } from 'rxjs/Observable';
 import { LoadingStatus } from '../../model/common/loading-status';
 import { HttpClient } from '@angular/common/http';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This service handles all of the linked account related CRUD actions.
@@ -60,7 +61,10 @@ export class LinkedAccountCrudService extends CrudRestService<LinkedAccount>
     protected getContextURLKeyValues( linkedAccount: LinkedAccount ): KeyValuePairs<string, any>
     {
         let keyColumns: KeyValuePairs<string,any> = super.getContextURLKeyValues( linkedAccount );
-        keyColumns.addPair( "tradeItAccountId", linkedAccount.tradeItAccountId );
+        if ( !isNullOrUndefined( linkedAccount.tradeItAccountId ))
+        {
+            keyColumns.addPair( "tradeItAccountId", linkedAccount.tradeItAccountId );
+        }
         return keyColumns;
     }
 

@@ -49,6 +49,7 @@ export class StockNotesQuadViewTableComponent extends StockNotesTableComponent
                stockNotesCrudService,
                cookieService );
         this.showHeaderButtons = false;
+        this.displayStockSearchFilter = false;
     }
 
     /**

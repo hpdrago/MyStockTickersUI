@@ -11,16 +11,24 @@ import { StockCompany } from '../../model/entity/stock-company';
 @Component( {
     selector: 'stock-search',
     styleUrls: ['../crud/form/crud-form.component.css'],
-    template: `<div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                   <div class="ui-grid-col-2" style="padding-right: 4px; text-align: right; padding-top: 2px">
+    template: `<div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" 
+                    style="float: left;margin: 10px 0px">
+                   <div class="ui-grid-col-12" 
+                        style="padding-left: 4px; 
+                               text-align: left; 
+                               padding-top: 2px;
+                               float:left;
+                               white-space: nowrap;">
                        <label class="crud-form" for="stockSearch">Stock Search:</label>
-                   </div>
-                   <div class="ui-grid-col-9" style="padding-right: 4px">
                        <stock-autocomplete (stockSelected)="onStockSelected( $event )">
                        </stock-autocomplete>
-                   </div>
-                   <div class="ui-grid-col-1">
-                       <button pButton type="button" class="ui-button-info" label="Reset" (click)="onResetButtonClick()"></button>
+                       <button pButton 
+                               type="button" 
+                               class="ui-button-info" 
+                               label="Reset" 
+                               style="width: 100px"
+                               (click)="onResetButtonClick()">
+                       </button>
                    </div>
                </div>
     `

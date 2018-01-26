@@ -16,6 +16,7 @@ import { StockQuoteCacheService } from '../cache/stock-quote-cache.service';
 import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
 import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
 import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This service handles all of the stock position related actions.
@@ -79,8 +80,14 @@ export class StockPositionCrudService extends BaseStockService<StockPosition>
     protected getContextURLKeyValues( stockPosition: StockPosition ): KeyValuePairs<string,any>
     {
         let keyColumns: KeyValuePairs<string,any> = super.getContextURLKeyValues( stockPosition );
-        keyColumns.addPair( "linkedAccountId", stockPosition.linkedAccountId );
-        keyColumns.addPair( "tradeItAccountId", stockPosition.tradeItAccountId );
+        if ( !isNullOrUndefined( stockPosition.linkedAccountId ))
+        {
+            keyColumns.addPair( "linkedAccountId", stockPosition.linkedAccountId );
+        }
+        if ( !isNullOrUndefined( stockPosition.tradeItAccountId ))
+        {
+            keyColumns.addPair( "tradeItAccountId", stockPosition.tradeItAccountId );
+        }
         return keyColumns;
     }
 

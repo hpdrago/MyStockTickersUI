@@ -47,5 +47,7 @@ TABLE DEFINITION
                                  (onLazyLoad)="lazyLoadTable($event)"
                                  [lazy]="true"
                                  [loadingData]="loading"
+                                 [displayStockSearchFilter]="displayStockSearchFilter"
+                                 (onLazyLoadEvent)="lazyLoadTable($event)"
                                  (onRowDblclick)="onRowDoubleClick($event)">
 </stock-model-object-table-layout>

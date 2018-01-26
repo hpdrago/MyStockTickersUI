@@ -27,13 +27,24 @@ export class StockModelObjectTableLayoutComponent extends CrudTableLayoutBaseCom
     protected crudTableLayoutComponent: CrudTableLayoutComponent;
 
     @Input()
-    protected displayStockSearchFilter: boolean = true;
+    protected displayStockSearchFilter: boolean;
 
+    /**
+     * Emitted when the user selects a stock from the filter.
+     * @type {EventEmitter<StockCompany>}
+     */
     @Output()
     protected stockSelected: EventEmitter<StockCompany> = new EventEmitter<StockCompany>();
 
     @Output()
     protected resetButtonClicked: EventEmitter<void> = new EventEmitter<void>();
+
+    /**
+     * Emitted when the user sorts by a column.
+     * @type {EventEmitter<any>}
+     */
+    @Output()
+    protected onLazyLoadEvent: EventEmitter<any> = new EventEmitter<any>();
 
     /**
      * Constructor.
@@ -45,6 +56,17 @@ export class StockModelObjectTableLayoutComponent extends CrudTableLayoutBaseCom
     {
         super( toaster,
                cookieService );
+    }
+
+    /**
+     * This method will be called when the user sorts by a column.
+     * @param event
+     */
+    protected onLazyLoad( event: any )
+    {
+        const methodName = 'onLazyLoad';
+        this.debug( methodName + ' ' + JSON.stringify( event ));
+        this.onLazyLoadEvent.emit( event );
     }
 
     /**

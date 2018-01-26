@@ -45,9 +45,10 @@ TABLE DEFINITION
                    [(selection)]="selectedModelObject"
                    (rowSelected)="onRowSelect($event)"
                    (onLazyLoad)="lazyLoadTable($event)"
-                   [lazy]="true"
+                   [lazy]="false"
                    [showCustomizeButton]="false"
                    [showHeaderButtons]="false"
                    [loadingData]="loading"
+                   (onLazyLoadEvent)="lazyLoadTable($event)"
                    (onRowDblclick)="onRowDoubleClick($event)">
 </crud-table-layout>

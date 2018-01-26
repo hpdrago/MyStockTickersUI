@@ -409,11 +409,11 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     /**
      * This method is call by the PrimeNG table to load the table.
      */
-    protected onLazyLoad()
+    protected onLazyLoad( event )
     {
         const methodName = 'onLazyLoad';
-        this.debug( methodName );
-        this.onLazyLoadEvent.emit();
+        this.debug( methodName + ' ' + JSON.stringify( event ) );
+        this.onLazyLoadEvent.emit( event );
     }
 
     /**

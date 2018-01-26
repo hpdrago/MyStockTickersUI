@@ -14,6 +14,7 @@ import { BaseStockService } from './base-stock.service';
 import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
 import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
 import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This class provides all CRUD REST services for StockCompany To Buy.
@@ -71,7 +72,10 @@ export class StockToBuyCrudService extends BaseStockService<StockToBuy>
     protected getContextURLKeyValues( stockToBuy: StockToBuy ): KeyValuePairs<string,any>
     {
         let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
-        keyColumns.addPair( "tickerSymbol", stockToBuy.tickerSymbol );
+        if ( !isNullOrUndefined( stockToBuy.tickerSymbol ))
+        {
+            keyColumns.addPair( "tickerSymbol", stockToBuy.tickerSymbol );
+        }
         return keyColumns;
     }
 

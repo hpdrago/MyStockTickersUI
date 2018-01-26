@@ -49,6 +49,8 @@ export class StockNotesTableComponent  extends StockModelObjectTableComponent<St
                stockNotesFactory,
                stockNotesCrudService,
                cookieService );
+        this.showHeaderButtons = true;
+        this.displayStockSearchFilter = true;
     }
 
     protected getActionTaken( actionTaken: string )

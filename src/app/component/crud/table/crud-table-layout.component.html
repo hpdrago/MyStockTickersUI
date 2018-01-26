@@ -30,7 +30,7 @@
              (onRowSelect)="onRowSelect($event)"
              (onRowUnselect)="onRowUnselect($event)"
              selectionMode="single"
-             (onLazyLoad)="onLazyLoad()"
+             (onLazyLoad)="onLazyLoad($event)"
              [lazy]="lazy"
              [loading]="loadingData"
              [resizableColumns]="resizableColumns"
@@ -41,8 +41,9 @@
 
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th *ngFor="let col of columns">
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                     {{col.header}}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
                 </th>
             </tr>
         </ng-template>

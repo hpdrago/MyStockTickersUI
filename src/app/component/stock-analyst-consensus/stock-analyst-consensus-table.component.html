@@ -57,5 +57,7 @@ TABLE DEFINITION
                                  [loadingData]="loading"
                                  [showHeaderButtons]="showHeaderButtons"
                                  [lazy]="true"
+                                 (stockSelected)="onStockSelected($event)"
+                                 (onLazyLoadEvent)="lazyLoadTable($event)"
                                  (onRowDblclick)="onRowDoubleClick($event)">
 </stock-model-object-table-layout>

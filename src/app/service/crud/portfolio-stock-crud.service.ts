@@ -12,6 +12,7 @@ import { BaseStockService } from './base-stock.service';
 import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
 import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 import { KeyValuePairs } from '../../common/key-value-pairs';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This service manages REST communication for PortfolioStocks.
@@ -61,12 +62,17 @@ export class PortfolioStockCrudService extends BaseStockService<PortfolioStock>
         return '/portfolioStock';
     }
 
-
     protected getContextURLKeyValues( portfolioStock: PortfolioStock ): KeyValuePairs<string, any>
     {
         let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
-        keyColumns.addPair( "tickerSymbol", portfolioStock.tickerSymbol );
-        keyColumns.addPair( "portfolioId", portfolioStock.portfolioId );
+        if ( !isNullOrUndefined( portfolioStock.tickerSymbol ))
+        {
+            keyColumns.addPair( "tickerSymbol", portfolioStock.tickerSymbol );
+        }
+        if ( !isNullOrUndefined( portfolioStock.portfolioId ))
+        {
+            keyColumns.addPair( "portfolioId", portfolioStock.portfolioId );
+        }
         return keyColumns;
     }
 

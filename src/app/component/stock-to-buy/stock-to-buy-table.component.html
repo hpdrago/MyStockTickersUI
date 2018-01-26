@@ -80,5 +80,7 @@ TABLE DEFINITION
                                  [lazy]="true"
                                  [loadingData]="loading"
                                  [showHeaderButtons]="showHeaderButtons"
+                                 (stockSelected)="onStockSelected($event)"
+                                 (onLazyLoadEvent)="lazyLoadTable($event)"
                                  (onRowDblclick)="onRowDoubleClick($event)">
 </stock-model-object-table-layout>
