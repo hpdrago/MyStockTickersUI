@@ -232,15 +232,13 @@ export class TradeItAccountOAuthService extends BaseTradeItService
                                 this.log( methodName + " information needed" );
                                 tradeItSecurityQuestionDialog.setCustomerAccount( tradeItAccount );
                                 tradeItSecurityQuestionDialog.setAuthenticationResult( authenticateResult );
+                                tradeItSecurityQuestionDialog.setAuthenticationResultSubject( authenticateResultSubject );
                             }
                             /*
                              * If authentication succeeded, then emit the account selection event.
                              */
                             else
                             {
-                                //let updatedTradeItAccount = authenticateResult.tradeItAccount;
-                                //updatedTradeItAccount.linkedAccounts = authenticateResult.linkedAccounts;
-                                //this.log( methodName + " updatedTradeItAccount: " + JSON.stringify( updatedTradeItAccount ) );
                                 authenticateResultSubject.next( authenticateResult );
                             }
                         },

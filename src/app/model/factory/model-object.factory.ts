@@ -39,18 +39,21 @@ export abstract class ModelObjectFactory<T>
         /*
          * Content will be present if the object from obtained from a Pageable object.
          */
-        if ( isNullOrUndefined( json.content ))
+        if ( !isNullOrUndefined( json ))
         {
-            srcModelObject = json;
-        }
-        else
-        {
-            srcModelObject = json.content[0];
-        }
-        var destModelObject = this.newModelObject();
-        for ( var property in srcModelObject )
-        {
-            this.setModelObjectProperty( property, srcModelObject, destModelObject );
+            if ( json.hasOwnProperty( "content" ) )
+            {
+                srcModelObject = json.content[0];
+            }
+            else
+            {
+                srcModelObject = json;
+            }
+            var destModelObject = this.newModelObject();
+            for ( var property in srcModelObject )
+            {
+                this.setModelObjectProperty( property, srcModelObject, destModelObject );
+            }
         }
         //console.log( "newModelObjectFromJSON " + JSON.stringify( modelObject ) );
         return destModelObject;

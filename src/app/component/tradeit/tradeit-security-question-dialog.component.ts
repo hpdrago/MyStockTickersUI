@@ -5,6 +5,7 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { SelectItem } from "primeng/primeng";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This class defines the dialog that prompts the user for an answer to a security question as received from the
@@ -19,6 +20,7 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
 {
     private authenticateResult: TradeItAuthenticateResult;
     private customerAccount: TradeItAccount;
+    private authenticateResultSubject: Subject<TradeItAuthenticateResult>;
     private showDialog: boolean = false;
 
     constructor( protected toaster: ToastsManager,
@@ -29,8 +31,17 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
 
     @Output()
     private securityChallengeAnswer: EventEmitter<string> = new EventEmitter<string>();
-    private answer: string;
+    private answer: string = "";
     private answers: SelectItem[];
+
+    /**
+     * Set the subject that will be used to notify the completion of the questions answering.
+     * @param {Subject<TradeItAuthenticateResult>} authenticateResultSubject
+     */
+    public setAuthenticationResultSubject( authenticateResultSubject: Subject<TradeItAuthenticateResult> )
+    {
+        this.authenticateResultSubject = authenticateResultSubject;
+    }
 
     /**
      * Set the TradeIt Authentication result
@@ -80,13 +91,16 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
             .subscribe( authenticateResult =>
             {
                 this.answer = "";
-                this.log( methodName + " " + JSON.stringify( this.authenticateResult ) );
+                this.log( methodName + " " + JSON.stringify( authenticateResult ) );
+                this.authenticateResult = authenticateResult;
                 if ( authenticateResult.isInformationNeeded() )
                 {
-                    this.authenticateResult = this.authenticateResult;
+                    this.debug( methodName + "Information is still needed" );
                 }
                 else
                 {
+                    this.debug( methodName + "Authentication completed" );
+                    this.authenticateResultSubject.next( this.authenticateResult );
                     this.showDialog = false;
                 }
             },
@@ -101,6 +115,16 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
     {
         this.showDialog = false;
         this.log( "onCancelButtonClick" );
+    }
+
+    /**
+     * Identifies if the user should reply to a single question or select from a list of options.
+     * @return {boolean}
+     */
+    protected isSingleChoice(): boolean
+    {
+        return this.authenticateResult.securityQuestionOptions == null ||
+               this.authenticateResult.securityQuestionOptions.length == 0;
     }
 
 }
