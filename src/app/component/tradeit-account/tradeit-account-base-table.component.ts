@@ -20,9 +20,6 @@ import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-cr
  */
 export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeItAccount> implements OnInit, TradeItOAuthComponent
 {
-    @Output()
-    private tradeItAccountSelected: EventEmitter<TradeItAccount>  = new EventEmitter<TradeItAccount>();
-
     @ViewChild(TradeItSecurityQuestionDialogComponent)
     private tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent;
 
@@ -73,8 +70,7 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
                                 this.log( methodName + " account authenticated or kept alive" );
                                 this.modelObject = authenticateAccountResult.tradeItAccount;
                                 this.modelObject.linkedAccounts = authenticateAccountResult.linkedAccounts;
-                                this.onModelObjectSelected( authenticateAccountResult.tradeItAccount );
-                                this.tradeItAccountSelected.emit( this.modelObject );
+                                this.onModelObjectSelected( this.modelObject );
                             }
                             else
                             {

@@ -202,7 +202,23 @@ export class TradeItAccountOAuthService extends BaseTradeItService
         else
         {
             this.log( methodName + " user is authenticated sending keep alive message" );
-            observable = this.keepSessionAlive( tradeItAccount, tradeItSecurityQuestionDialog );
+            let authenticationResult = new TradeItAuthenticateResult();
+            /*
+             * Just return success result and don't wait for the keep alive
+             */
+            authenticationResult.status = TradeItAPIResult.SUCCESS;
+            authenticationResult.tradeItAccount = tradeItAccount;
+            authenticationResult.linkedAccounts = tradeItAccount.linkedAccounts;
+            observable = Observable.create( observer =>
+                                            {
+                                                observer.next( authenticationResult );
+                                                observer.complete();
+                                            });
+            /*
+             * We don't care about the result.
+             */
+            this.keepSessionAlive( tradeItAccount, tradeItSecurityQuestionDialog )
+                .subscribe();
         }
         this.log( methodName + ".end" );
         return observable;

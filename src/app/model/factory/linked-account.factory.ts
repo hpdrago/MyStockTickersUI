@@ -24,7 +24,7 @@ export class LinkedAccountFactory extends ModelObjectFactory<LinkedAccount>
     public newModelObject(): LinkedAccount
     {
         let linkedAccount: LinkedAccount = new LinkedAccount();
-
+        linkedAccount.customerId = this.session.getLoggedInUserId();
         return linkedAccount;
     }
 

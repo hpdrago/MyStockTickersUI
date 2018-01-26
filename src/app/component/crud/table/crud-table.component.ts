@@ -551,7 +551,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onRowSelect( event ): void
     {
-        let methodName = "onRowSelect ";
+        let methodName = "onRowSelect";
         this.debug( methodName +  ".begin " + JSON.stringify( event ) );
         if ( event.data )
         {
@@ -561,8 +561,16 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         {
             this.selectedModelObject = event;
         }
-        let modelObject: T = this.newModelObjectFromEvent( event );
-        this.onModelObjectSelected( modelObject );
+        var index = this.indexOf( this.selectedModelObject );
+        if ( index >= 0 )
+        {
+            let modelObject: T = this.rows[index];
+            this.onModelObjectSelected( modelObject );
+        }
+        else
+        {
+            this.logError( "Could not find mode object int rows array" );
+        }
         this.debug( methodName +  ".end" );
     }
 

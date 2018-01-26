@@ -1,4 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
@@ -24,7 +24,7 @@ import { LinkedAccount } from '../../model/entity/linked-account';
         providers: [TradeItAccountStateStore, TradeItAccountController, TradeItAccountCrudActionHandler,
                     LinkedAccountStateStore, LinkedAccountController, LinkedAccountCrudActionHandler]
     })
-export class TradeItAccountsComponent extends BaseComponent
+export class TradeItAccountsComponent extends BaseComponent implements OnInit
 {
     @ViewChild(TradeItAccountTableComponent)
     private tradeItAccountTableComponent: TradeItAccountTableComponent;
@@ -35,15 +35,66 @@ export class TradeItAccountsComponent extends BaseComponent
     @ViewChild(StockPositionTableComponent)
     private stockPositionTableComponent: StockPositionTableComponent;
 
+    private tradeItAccount: TradeItAccount;
+    private linkedAccount: LinkedAccount;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {TradeItAccountCrudServiceContainer} customerAccountCrudServiceContainer
-     * @param {TradeItService} tradeItService
+     * @param {TradeItAccountController} tradeItAccountController
+     * @param {LinkedAccountController} linkedAccountController
      */
-    constructor( protected toaster: ToastsManager )
+    constructor( protected toaster: ToastsManager,
+                 protected tradeItAccountController: TradeItAccountController,
+                 protected linkedAccountController: LinkedAccountController )
     {
         super( toaster );
     }
 
+    /**
+     * Constructor.
+     */
+    public ngOnInit(): void
+    {
+        this.tradeItAccountController
+            .subscribeToTableSelectionChangeEvent( (tradeItAccount: TradeItAccount) =>
+                                                       this.onTradeItTableSelectionChange( tradeItAccount ));
+        this.linkedAccountController
+            .subscribeToTableSelectionChangeEvent( (linkedAccount: LinkedAccount) =>
+                                                       this.onLinkedAccountTableSelectionChange( linkedAccount ));
+    }
+
+    /**
+     * Sets the {@code tradeItAccount}, loads the linked account table with account in the {@code tradeItAccount}
+     * instance, and clears the positions table since no linked account is selected yet.
+     * @param {TradeItAccount} tradeItAccount
+     */
+    private onTradeItTableSelectionChange( tradeItAccount: TradeItAccount )
+    {
+        let methodName = 'onTradeItTableSelectionChange';
+        this.log( methodName + '.begin ' + JSON.stringify( tradeItAccount ) );
+        this.tradeItAccount = tradeItAccount;
+        this.linkedAccountTableComponent
+            .setTradeItAccount( this.tradeItAccount );
+        this.stockPositionTableComponent
+            .clearTable();
+        this.log( methodName + '.end' );
+    }
+
+    /**
+     * Sets the {@code this.linkedAccount} and sends the linked account and TradeIt account to the postions table
+     * triggering it to load the positions.
+     * @param {LinkedAccount} linkedAccount
+     */
+    private onLinkedAccountTableSelectionChange( linkedAccount: LinkedAccount )
+    {
+        let methodName = 'onLinkedAccountTableSelectionChange';
+        this.log( methodName + '.begin ' + JSON.stringify( linkedAccount ) );
+        this.linkedAccount = linkedAccount;
+        this.stockPositionTableComponent
+            .setTradeItAccount( this.tradeItAccount );
+        this.stockPositionTableComponent
+            .setLinkedAccount( this.linkedAccount );
+        this.log( methodName + '.end' );
+    }
 }

@@ -42,10 +42,10 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
         this.log( "setAuthenticationResult " + JSON.stringify( this.authenticateResult ));
         this.answers = [];
         this.answer = "";
-        if ( this.authenticateResult.securityOptions )
+        if ( this.authenticateResult.securityQuestionOptions )
         {
             this.authenticateResult
-                .securityOptions
+                .securityQuestionOptions
                 .forEach( option => this.answers.push(
                     {
                         label: option,

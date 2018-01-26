@@ -15,6 +15,7 @@ import { TradeItAuthenticateResult } from '../../service/tradeit/apiresults/trad
 import { TradeItErrorReporter } from '../tradeit/tradeit-error-reporter';
 import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
 import { TradeItAccountStateStore } from '../tradeit-account/tradeit-account-state-store';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This table displays all of the linked account for a TradeItAccount instance.
@@ -23,8 +24,7 @@ import { TradeItAccountStateStore } from '../tradeit-account/tradeit-account-sta
 {
     selector:    'linked-account-table',
     styleUrls:   ['../crud/table/crud-table.component.css'],
-    templateUrl: './linked-account-table.component.html',
-    providers: [LinkedAccountStateStore, LinkedAccountController]
+    templateUrl: './linked-account-table.component.html'
 } )
 export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccount> implements TradeItOAuthComponent
 {
@@ -43,6 +43,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      * @param {TradeItAccountOAuthService} tradeItOAuthService
      * @param {TradeItErrorReporter} tradeItErrorReporter
      * @param {TradeItAccountController} tradeItAccountController
+     * @param {TradeItAccountStateStore} tradeItAccountStateStore
      */
     constructor( protected toaster: ToastsManager,
                  protected linkedAccountStateStore: LinkedAccountStateStore,
@@ -60,13 +61,6 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
                linkedAccountController,
                linkedAccountFactory,
                linkedAccountCrudService );
-    }
-
-    public ngOnInit()
-    {
-        super.ngOnInit();
-        this.tradeItAccountController
-            .subscribeToTableSelectionChangeEvent( (tradeItAccount: TradeItAccount) => this.onTradeItAccountTableSelectionChanged( tradeItAccount ));
     }
 
     /**
@@ -92,12 +86,24 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      * will load the linked accounts related to the {@code TradeItAccount}.
      * @param {TradeItAccount} tradeItAccount
      */
-    public onTradeItAccountTableSelectionChanged( tradeItAccount: TradeItAccount )
+    public setTradeItAccount( tradeItAccount: TradeItAccount )
     {
-        let methodName = "onTradeItAccountTableSelectionChanged";
+        let methodName = "setTradeItAccount";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
-        this.rows = tradeItAccount.linkedAccounts;
+        if ( !isNullOrUndefined( this.tradeItAccount ))
+        {
+            if ( tradeItAccount.linkedAccounts )
+            {
+                this.rows = tradeItAccount.linkedAccounts;
+            }
+            else
+            {
+                this.modelObject = this.linkedAccountFactory.newModelObject();
+                this.modelObject.tradeItAccountId = tradeItAccount.id;
+                this.loadTable();
+            }
+        }
         this.log( methodName + ".end" );
     }
 

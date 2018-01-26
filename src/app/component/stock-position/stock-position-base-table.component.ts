@@ -21,9 +21,6 @@ import { LinkedAccountController } from '../linked-account/linked-account-contro
 export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableComponent<StockPosition>
     implements OnInit
 {
-    @Output()
-    private stockPositionSelected: EventEmitter<StockPosition>  = new EventEmitter<StockPosition>();
-
     private tradeItAccount: TradeItAccount;
     private linkedAccount: LinkedAccount;
 
@@ -36,8 +33,6 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
      * @param {StockPositionFactory} stockPositionFactory
      * @param {StockPositionCrudService} stockPositionCrudService
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
-     * @param {TradeItAccountController} tradeItAccountController
-     * @param {LinkedAccountController} linkedAccountController
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
@@ -45,9 +40,7 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
                  protected stockPositionController: StockPositionController,
                  protected stockPositionFactory: StockPositionFactory,
                  protected stockPositionCrudService: StockPositionCrudService,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService,
-                 protected tradeItAccountController: TradeItAccountController,
-                 protected linkedAccountController: LinkedAccountController )
+                 protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
         super( TableLoadingStrategy.LAZY_ON_DEMAND,
                toaster,
@@ -58,20 +51,11 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
                stockQuoteRefreshService );
     }
 
-    public ngOnInit(): void
-    {
-        super.ngOnInit();
-        this.tradeItAccountController
-            .subscribeToTableSelectionChangeEvent( (tradeItAccount: TradeItAccount) => this.onTradeItTableSelectionChange( tradeItAccount ));
-        this.linkedAccountController
-            .subscribeToTableSelectionChangeEvent( (linkedAccount: LinkedAccount) => this.onLinkedAccountTableSelectionChange( linkedAccount ));
-    }
-
     /**
      * This method is called when the user selects a row on the trade it table accounts.
      * @param {TradeItAccount} tradeItAccount
      */
-    protected onTradeItTableSelectionChange( tradeItAccount: TradeItAccount )
+    public setTradeItAccount( tradeItAccount: TradeItAccount )
     {
         let methodName = 'onTradeItTableSelectionChange';
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
@@ -83,7 +67,7 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
      * This method is called when the user changes the linked selected linked account;
      * @param {LinkedAccount} linkedAccount
      */
-    public onLinkedAccountTableSelectionChange( linkedAccount: LinkedAccount )
+    public setLinkedAccount( linkedAccount: LinkedAccount )
     {
         let methodName = 'onLinkedAccountTableSelectionChange';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ));
@@ -96,5 +80,23 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
             .sendModelObjectChangedEvent( this, stockPosition );
         this.loadTable();
         this.log( methodName + ".end" );
+    }
+
+    /**
+     * You can't add a positions
+     * @returns false.
+     */
+    protected isAllowAdds(): boolean
+    {
+        return false;
+    }
+
+    /**
+     * Can't update a positions either.
+     * @returns false.
+     */
+    protected isAllowUpdates(): boolean
+    {
+        return false;
     }
 }

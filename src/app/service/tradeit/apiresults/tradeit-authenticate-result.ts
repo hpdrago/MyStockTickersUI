@@ -27,8 +27,8 @@ export class TradeItAuthenticateResult extends TradeItAPIResult
     @JsonProperty( "securityQuestion", String )
     public securityQuestion: string = undefined;
 
-    @JsonProperty( "securityOptions", [String] )
-    public securityOptions: string[] = undefined;
+    @JsonProperty( "securityQuestionOptions", [String] )
+    public securityQuestionOptions: string[] = undefined;
 
     /**
      * Determines if the user should be asked security questions.

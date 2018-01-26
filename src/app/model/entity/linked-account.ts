@@ -15,8 +15,8 @@ export class LinkedAccount extends ModelObject<LinkedAccount>
     @JsonProperty( "customerId", Number )
     public customerId: number = undefined;
 
-    @JsonProperty( "parentAccountId", Number )
-    public parentAccountId: number = undefined;
+    @JsonProperty( "tradeItAccountId", Number )
+    public tradeItAccountId: number = undefined;
 
     @JsonProperty( "accountNumber", String )
     public accountNumber: string = undefined;

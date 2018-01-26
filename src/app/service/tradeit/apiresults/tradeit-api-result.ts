@@ -8,6 +8,7 @@ import { JsonConvert, JsonObject, JsonProperty, OperationMode, ValueCheckingMode
 @JsonObject
 export class TradeItAPIResult
 {
+    public static readonly SUCCESS = 'SUCCESS';
     @JsonProperty( "code", Number )
     public code: number = undefined;
 
@@ -62,6 +63,6 @@ export class TradeItAPIResult
      */
     public isSuccess(): boolean
     {
-        return this.status == "SUCCESS";
+        return this.status == TradeItAPIResult.SUCCESS;
     }
 }

@@ -36,8 +36,6 @@ export class StockPositionTableComponent extends StockPositionBaseTableComponent
      * @param {StockPositionFactory} stockPositionFactory
      * @param {StockPositionCrudService} stockPositionCrudService
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
-     * @param {TradeItAccountController} tradeItAccountController
-     * @param {LinkedAccountController} linkedAccountController
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
@@ -45,9 +43,7 @@ export class StockPositionTableComponent extends StockPositionBaseTableComponent
                  protected stockPositionController: StockPositionController,
                  protected stockPositionFactory: StockPositionFactory,
                  protected stockPositionCrudService: StockPositionCrudService,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService,
-                 protected tradeItAccountController: TradeItAccountController,
-                 protected linkedAccountController: LinkedAccountController )
+                 protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
         super( toaster,
                tradeItErrorReporter,
@@ -55,8 +51,6 @@ export class StockPositionTableComponent extends StockPositionBaseTableComponent
                stockPositionController,
                stockPositionFactory,
                stockPositionCrudService,
-               stockQuoteRefreshService,
-               tradeItAccountController,
-               linkedAccountController )
+               stockQuoteRefreshService )
     }
 }
