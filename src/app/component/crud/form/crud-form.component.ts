@@ -33,7 +33,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     private resourceLoaders: Observable<boolean>[] = [];
 
     /**
-     * Constructor.
+     * Constructor.;
      * @param {ToastsManager} toaster
      * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
      * @param {CrudController<T extends ModelObject<T>>} crudController
@@ -316,10 +316,13 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         /*
          * Clear the form fields of any previous model object.
          */
-        if ( !isNullOrUndefined( this.formGroup ))
-        {
-            this.resetForm();
-        }
+        /*
+          Had to comment this out after upgade to Angular 5 because was getting: 
+         */
+        //if ( !isNullOrUndefined( this.formGroup ))
+        //{
+        //    this.resetForm();
+        //}
         this.enableDisableInputs();
         if ( modelObject )
         {

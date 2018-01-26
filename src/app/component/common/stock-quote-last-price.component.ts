@@ -16,7 +16,7 @@ import { ToastsManager } from 'ng2-toastr';
         <div *ngIf="isFetchingQuote()">
             Loading...
         </div>
-        <div *ngIf="!isFetchingQuote()">
+        <div *ngIf="!isFetchingQuote() && stockQuote != null">
             <div class="positiveGain" *ngIf="priceChange >= 0.0">
                 <currency [currencyValue]="stockQuote.lastPrice"></currency>
             </div>
