@@ -92,7 +92,7 @@ import { StockNotesCrudService } from "./service/crud/stock-notes-crud.service";
 import { StockNotesFactory } from "./model/factory/stock-notes.factory";
 import { StockNotesCountService } from "./service/crud/stock-notes-count.service";
 import { StockNotesCountFactory } from "./model/factory/stock-note-count.factory";
-import { StockNotesSourceService } from "./service/crud/stock-notes-source.service";
+import { StockNotesSourceCrudService } from "./service/crud/stock-notes-source-crud.service";
 import { StockNotesSourceFactory } from "./model/factory/stock-notes-source.factory";
 import { BusyModule } from 'angular2-busy';
 
@@ -468,7 +468,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockNotesCountService,
         StockNotesCountFactory,
 
-        StockNotesSourceService,
+        StockNotesSourceCrudService,
         StockNotesSourceFactory,
 
         StockAnalystConsensusCrudService,

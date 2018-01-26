@@ -42,7 +42,7 @@ export class CrudTableDeleteButtonComponent<T extends ModelObject<T>> extends Cr
     public ngOnInit(): void
     {
         super.ngOnInit();
-        this.buttonLabel = 'Deleted';
+        this.buttonLabel = 'Delete';
         this.buttonIcon = 'fa-trash';
     }
 

@@ -13,7 +13,7 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 import { Http, Response } from "@angular/http";
-import { StockNotesSourceService } from './stock-notes-source.service';
+import { StockNotesSourceCrudService } from './stock-notes-source-crud.service';
 import { RestErrorReporter } from '../rest-error-reporter';
 
 /**
@@ -36,14 +36,14 @@ export class CustomerCrudService extends CrudRestService<Customer>
      * @param {AppConfigurationService} appConfig
      * @param {restErrorReporter} restErrorReporter
      * @param {CustomerFactory} customerFactory
-     * @param {StockNotesSourceService} stockNotesSourceService
+     * @param {StockNotesSourceCrudService} stockNotesSourceService
      */
     constructor( protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,
                  private customerFactory: CustomerFactory,
-                 private stockNotesSourceService: StockNotesSourceService )
+                 private stockNotesSourceService: StockNotesSourceCrudService )
     {
         super( http,
                sessionService,

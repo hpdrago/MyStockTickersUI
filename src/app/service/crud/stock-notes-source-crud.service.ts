@@ -14,7 +14,7 @@ import { RestErrorReporter } from '../rest-error-reporter';
  * This class contains the CRUD services necessary to create, delete, update, and retrieve source of stock notes.
  */
 @Injectable()
-export class StockNotesSourceService extends CrudRestService<StockNotesSource>
+export class StockNotesSourceCrudService extends CrudRestService<StockNotesSource>
 {
     private urlPath = "/stockNotesSource";
 
