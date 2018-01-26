@@ -39,4 +39,14 @@ export namespace StockPriceState
     {
         return modelObject.stockPriceState == StockPriceState.STALE;
     }
+
+    /**
+     * Identifies if the stock was not found.
+     * @param {StockPriceQuoteModelObject<any>} modelObject
+     * @return {boolean}
+     */
+    export function isNotFound( modelObject: StockPriceQuoteModelObject<any> )
+    {
+        return modelObject.stockPriceState == StockPriceState.NOT_FOUND;
+    }
 }

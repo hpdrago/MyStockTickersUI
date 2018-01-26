@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Rx";
+import { ArgumentOutOfRangeError, Observable } from "rxjs/Rx";
 import { PaginationPage } from "../../common/pagination";
 import { PaginationURL } from "../../common/pagination-url";
 import { SessionService } from "../session.service";
@@ -12,6 +12,7 @@ import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BaseService } from '../base-service';
 import { ToastsManager } from 'ng2-toastr';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This class provides all of the REST communication services for Stocks.
@@ -71,16 +72,6 @@ export class StockInformationService extends BaseService
     }
 
     /**
-     * Get a stock by the ticker symbol
-     * @param tickerSymbol
-     * @returns {Observable<StockPriceQuote>}
-     */
-    public getStock( tickerSymbol: string ): Observable<StockPriceQuote>
-    {
-        return this.getStockPriceQuote( tickerSymbol );
-    }
-
-    /**
      * Get a stock quote
      * @param {string} tickerSymbol
      * @return {Observable<StockPriceQuote>}
@@ -89,6 +80,12 @@ export class StockInformationService extends BaseService
     {
         let methodName = "getStockPriceQuote";
         this.debug( methodName + " " + tickerSymbol );
+        if ( isNullOrUndefined( tickerSymbol ) || tickerSymbol.length == 0 )
+        {
+            this.logError( 'ticker symbol(' + tickerSymbol + ') is not valid' );
+            return null;
+            //throw new ReferenceError( 'ticker symbol(' + tickerSymbol + ') is not valid' );
+        }
         let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockPriceQuote/" + tickerSymbol;
         return this.http
                    .get<StockPriceQuote>( url )
@@ -97,7 +94,7 @@ export class StockInformationService extends BaseService
                        let restException = this.restErrorReporter.getRestException( error );
                        if ( restException.status == 404 )
                        {
-                           return Observable.throw( 'Ticker symbol ' + tickerSymbol + ' was not found' );
+                           return Observable.throw( restException );
                        }
                        return Observable.throw( restException.message );
                    });

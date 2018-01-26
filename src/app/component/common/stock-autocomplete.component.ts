@@ -8,6 +8,7 @@ import { isNullOrUndefined } from "util";
 import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { BaseComponent } from "./base.component";
 import { RestErrorReporter } from "../../service/rest-error-reporter";
+import { RestException } from '../../common/rest-exception';
 
 /**
  * This component is a text input that finds stocks based on the incremental search of the input
@@ -116,22 +117,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
              !isNullOrUndefined( this.tickerSymbol ) &&
              this.tickerSymbol.length > 0 )
         {
-            this.stockCrudService
-                .getStockPriceQuote( this.tickerSymbol )
-                .subscribe( ( stockPriceQuote: StockPriceQuote ) =>
-                {
-                    this.log( "onBlur " + JSON.stringify( stockPriceQuote ));
-                    if ( !isNullOrUndefined( stockPriceQuote ))
-                    {
-                        this.log( "emitting stock selected event" );
-                        /*
-                         * Send the change through ngModel
-                         */
-                        this.propagateChange( this.tickerSymbol );
-                        this.stockSelected.emit( stockPriceQuote );
-                        this.isStockSelected = true;
-                    }
-                });
+            this.getStockQuote();
         }
     }
 
@@ -142,22 +128,50 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
      */
     protected onStockSearchSelected( event ): void
     {
-        this.log( "onStockSearchSelected " + JSON.stringify( event ));
+        this.log( 'onStockSearchSelected ' + JSON.stringify( event ));
         var matches = /\[(.*)] (.*)/.exec( event );
         this.tickerSymbol = matches[1];
         /*
          * Send the change through ngModel
          */
-        this.propagateChange( this.tickerSymbol.toUpperCase() );
+        this.tickerSymbol = this.tickerSymbol.toUpperCase();
+        this.propagateChange( this.tickerSymbol );
+        this.getStockQuote();
+    }
+
+    /**
+     * Get a stock quote
+     */
+    private getStockQuote()
+    {
         this.stockCrudService
             .getStockPriceQuote( this.tickerSymbol )
-            .subscribe( ( stockPriceQuote) =>
+            .subscribe( ( stockPriceQuote ) =>
                         {
-                            this.log( "onStockSearchSelected tickerSymbol: " + stockPriceQuote.tickerSymbol );
-                            this.stockSelected.emit( stockPriceQuote );
-                            this.tickerSymbol = "";
-                            this.isStockSelected = true;
-                        });
+                            this.log( 'onStockSearchSelected ' + JSON.stringify( stockPriceQuote.tickerSymbol ) );
+                            if ( stockPriceQuote.isNotFound() )
+                            {
+                                this.showError( stockPriceQuote.tickerSymbol + ' was not found' );
+                            }
+                            else
+                            {
+                                this.stockSelected.emit( stockPriceQuote );
+                                this.tickerSymbol = "";
+                                this.isStockSelected = true;
+                            }
+                        },
+                        error =>
+                        {
+                            let restException = new RestException( error );
+                            if ( restException.isNotFoundError() )
+                            {
+                                this.showError( this.tickerSymbol + ' was not found' );
+                            }
+                            else
+                            {
+                                this.restErrorReporter.reportRestError( restException );
+                            }
+                        } );
     }
 
     private onKeyUp(event)
