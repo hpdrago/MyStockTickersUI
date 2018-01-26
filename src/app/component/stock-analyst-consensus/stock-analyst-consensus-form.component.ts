@@ -10,6 +10,7 @@ import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state
 import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
+import { CrudOperation } from '../crud/common/crud-operation';
 
 /**
  * This is the Stock AnalystConsensus Form Component class.
@@ -85,10 +86,32 @@ export class StockAnalystConsensusFormComponent extends CrudFormWithNotesSourceC
      */
     public onStockSelected( stock: Stock )
     {
-        this.debug( "onStockSelected: " + JSON.stringify( stock ) );
+        let methodName = 'onStockSelected';
+        this.debug( methodName + " " + JSON.stringify( stock ) );
         this.modelObject.companyName = stock.companyName;
         this.modelObject.lastPrice = stock.lastPrice;
         this.modelObject.tickerSymbol = stock.tickerSymbol;
+        /*
+         * Need to check to see if will create a duplicate
+         */
+        let duplicateObject = this.stockAnalystConsensusFactory
+                                  .newModelObject();
+        duplicateObject.tickerSymbol = this.modelObject.tickerSymbol;
+        this.stockAnalystConsensusCrudService
+            .getModelObject( duplicateObject )
+            .subscribe( (currentModelObject: StockAnalystConsensus) =>
+            {
+                this.log( methodName + ' current DB Object: ' + JSON.stringify( currentModelObject ));
+                if ( currentModelObject.tickerSymbol === this.modelObject.tickerSymbol )
+                {
+                    this.showInfo( 'An entry already exists for ' + currentModelObject.tickerSymbol );
+                    this.stockAnalystConsensusStateStore
+                        .sendCrudOperationChangedEvent( CrudOperation.UPDATE );
+                    this.stockAnalystConsensusStateStore
+                        .sendModelObjectChangedEvent( this, currentModelObject );
+                    this.setFormValues( currentModelObject );
+                }
+            });
     }
 
     /**

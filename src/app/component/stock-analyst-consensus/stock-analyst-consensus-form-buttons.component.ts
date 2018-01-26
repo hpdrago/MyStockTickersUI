@@ -41,18 +41,10 @@ export class StockAnalystConsensusFormButtonsComponent extends CrudFormButtonsCo
     }
 
     /**
-     * Defines the message to display to the user in the dialog when deleting the model object
-     */
-    public getDeleteMessage(): string
-    {
-        return 'Are you sure you want to delete?';
-    }
-
-    /**
      * @return {undefined}
      */
     public getDeleteKeyword(): string
     {
-        return 'Stock AnalystConsensus'
+        return 'Stock Analyst Consensus'
     }
 }

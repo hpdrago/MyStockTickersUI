@@ -32,9 +32,21 @@ export abstract class ModelObjectFactory<T>
      * @param srcModelObject
      * @return {T}
      */
-    public newModelObjectFromJSON( srcModelObject: T ): T
+    public newModelObjectFromJSON( json: any ): T
     {
+        let srcModelObject = null;
         //console.log( "newModelObjectFromJSON " + JSON.stringify( object ) );
+        /*
+         * Content will be present if the object from obtained from a Pageable object.
+         */
+        if ( json.content )
+        {
+            srcModelObject = json.content[0];
+        }
+        else
+        {
+            srcModelObject = json;
+        }
         var destModelObject = this.newModelObject();
         for ( var property in srcModelObject )
         {

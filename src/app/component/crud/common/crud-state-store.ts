@@ -103,6 +103,7 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
     public sendModelObjectChangedEvent( sender: any, modelObject: T )
     {
         let methodName = "sendModelObjectChangedEvent";
+        /*
         if ( sender === this.modelObjectChangedSubject.getValue().sender &&
              modelObject.isEqualProperties( this.modelObjectChangedSubject.getValue().modelObject ))
         {
@@ -110,6 +111,7 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
         }
         else
         {
+         */
             if ( modelObject == null )
             {
                 modelObject = this.modelObjectFactory.newModelObject();
@@ -120,7 +122,7 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
             }
             let modelObjectChangedEvent = new ModelObjectChangedEvent( sender, modelObject );
             this.sendModelObjectEvent( methodName, this.modelObjectChangedSubject, modelObjectChangedEvent );
-        }
+        //}
     }
 
     /**
