@@ -6,7 +6,7 @@ import { Customer } from '../../model/entity/customer';
 import { Injectable } from '@angular/core';
 import { CustomerStateStore } from './customer-state-store';
 import { CustomerFactory } from '../../model/factory/customer.factory';
-import { CustomerActionHandler } from './customer-action-handler';
+import { CustomerCrudActionHandler } from './customer-crud-action-handler';
 
 /**
  * This is the CRUD controller for Customer entity components.
@@ -18,12 +18,12 @@ export class CustomerController extends CrudController<Customer>
      * Constructor.
      * @param {CustomerStateStore} customerStateStore
      * @param {CustomerFactory} customerFactory
-     * @param {CustomerActionHandler} customerActionHandler
+     * @param {CustomerCrudActionHandler} customerCrudActionHandler
      */
     constructor( private customerStateStore: CustomerStateStore,
                  private customerFactory: CustomerFactory,
-                 private customerActionHandler: CustomerActionHandler )
+                 private customerCrudActionHandler: CustomerCrudActionHandler )
     {
-        super( customerStateStore, customerFactory, customerActionHandler  );
+        super( customerStateStore, customerFactory, customerCrudActionHandler  );
     }
 }
