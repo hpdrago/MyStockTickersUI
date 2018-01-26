@@ -20,8 +20,7 @@ import { PortfolioActionHandler } from './portfolio-action-handler';
 @Component(
 {
     selector: 'portfolio-table',
-    templateUrl: './portfolio-table.component.html',
-    providers: [PortfolioController, PortfolioStateStore, PortfolioActionHandler]
+    templateUrl: './portfolio-table.component.html'
 })
 export class PortfolioTableComponent extends CrudTableComponent<Portfolio> implements OnInit
 {

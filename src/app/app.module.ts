@@ -263,6 +263,10 @@ import { GainsLossesImportDialogComponent } from './component/gains-losses/gains
 import { UploadFileService } from './service/upload-file.service';
 import { StockCompanyNameComponent } from "./component/common/stock-company-name.component";
 import { StockCompanyPriceQuoteService } from './service/stock-company-price-quote.service';
+import { StockNotesAddComponent } from './component/stock-notes/stock-notes-add.component';
+import { StockCatalystEventAddComponent } from './component/stock-catalyst-event/stock-catalyst-event-add.component';
+import { StockAnalystConsensusAddComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-event-add.component';
+import { StockToBuyAddComponent } from './component/stock-to-buy/stock-to-buy-event-add.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -406,6 +410,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         PortfolioStockTableEditButtonComponent,
         PortfolioStockTableRefreshButtonComponent,
 
+        StockNotesAddComponent,
         StockNotesTableTabComponent,
         StockNotesTableDashboardComponent,
         StockNotesFormComponent,
@@ -427,6 +432,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockNotesSourceTableRefreshButtonComponent,
         StockNotesSourceFormButtonsComponent,
 
+        StockAnalystConsensusAddComponent,
         StockAnalystConsensusTableTabComponent,
         StockAnalystConsensusDashboardTableComponent,
         StockAnalystConsensusFormComponent,
@@ -441,6 +447,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockAnalystPriceTargetComponent,
         StockAnalystConsensusComponent,
 
+        StockCatalystEventAddComponent,
         StockCatalystEventTableTabComponent,
         StockCatalystEventDashboardTableComponent,
         StockCatalystEventFormComponent,
@@ -452,6 +459,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockCatalystEventTableEditButtonComponent,
         StockCatalystEventTableRefreshButtonComponent,
 
+        StockToBuyAddComponent,
         StockToBuyTableTabComponent,
         StockToBuyTableDashboardComponent,
         StockToBuyFormComponent,

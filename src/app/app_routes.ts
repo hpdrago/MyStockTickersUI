@@ -14,6 +14,10 @@ import { StockCatalystEventTableTabComponent } from "./component/stock-catalyst-
 import { TradeItAccountsComponent } from "./component/tradeit-account/tradeit-accounts.component";
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 import { GainsLossesTableTabComponent } from './component/gains-losses/gains-losses-table-tab.component';
+import { StockNotesAddComponent } from './component/stock-notes/stock-notes-add.component';
+import { StockToBuyAddComponent } from './component/stock-to-buy/stock-to-buy-event-add.component';
+import { StockAnalystConsensusAddComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-event-add.component';
+import { StockCatalystEventAddComponent } from './component/stock-catalyst-event/stock-catalyst-event-add.component';
 
 const routes: Routes = [
     {
@@ -37,22 +41,42 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
     },
     {
-        path: 'stockNotes',
+        path: 'stockNotes/add',
+        component: StockNotesAddComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'stockNotes/view',
         component: StockNotesTableTabComponent,
         canActivate: [AuthGuardService]
     },
     {
-        path: 'stockCatalystEvents',
+        path: 'stockCatalystEvents/add',
+        component: StockCatalystEventAddComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'stockCatalystEvents/view',
         component: StockCatalystEventTableTabComponent,
         canActivate: [AuthGuardService]
     },
     {
-        path: 'stockAnalystConsensus',
+        path: 'stockAnalystConsensus/add',
+        component: StockAnalystConsensusAddComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'stockAnalystConsensus/view',
         component: StockAnalystConsensusTableTabComponent,
         canActivate: [AuthGuardService]
     },
     {
-        path: 'stocksToBuy',
+        path: 'stockToBuy/add',
+        component: StockToBuyAddComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'stocksToBuy/view',
         component: StockToBuyTableTabComponent,
         canActivate: [AuthGuardService]
     },

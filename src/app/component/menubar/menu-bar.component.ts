@@ -7,7 +7,7 @@ import { Component } from "@angular/core";
 @Component(
 {
     selector: 'menu-bar',
-    template: `<p-tabMenu [model]="menuItems"></p-tabMenu>`
+    template: `<p-menubar [model]="menuItems"></p-menubar>`
 })
 export class MenuBarComponent
 {
@@ -23,14 +23,58 @@ export class MenuBarComponent
         this.menuItems =
             [
                 { label: 'Dashboard', icon: 'fa-area-chart', routerLink: ['/dashboard'] },
-                { label: 'Stock Notes', icon: 'fa-sticky-note', routerLink: ['/stockNotes'] },
-                { label: 'Stocks To Buy', icon: 'fa-tasks', routerLink: ['/stocksToBuy'] },
-                { label: 'Stock Analyst Consensus', icon: 'fa-tasks', routerLink: ['/stockAnalystConsensus'] },
-                { label: 'Stock Catalyst Events', icon: 'fa-tasks', routerLink: ['/stockCatalystEvents'] },
+                { label: 'Stock Notes',
+                   icon: 'fa-sticky-note',
+                  items: [{
+                            label: 'Create',
+                            icon: 'fa-plus',
+                            routerLink: ['/stockNotes/add']
+                          },
+                          {
+                              label: 'View',
+                              icon: 'fa-list',
+                              routerLink: ['/stockNotes/view']
+                          }]},
+                { label: 'Stocks To Buy',
+                    icon: 'fa-shopping-cart',
+                    items: [{
+                                label: 'Create',
+                                icon: 'fa-plus',
+                                routerLink: ['/stockToBuy/add']
+                            },
+                            {
+                                label: 'View',
+                                icon: 'fa-list',
+                                routerLink: ['/stockToBuy/view']
+                            }]},
+                { label: 'Catalyst Events',
+                    icon: 'fa-calendar',
+                    items: [{
+                                label: 'Create',
+                                icon: 'fa-plus',
+                                routerLink: ['/stockCatalystEvents/add']
+                            },
+                            {
+                                label: 'View',
+                                icon: 'fa-list',
+                                routerLink: ['/stockCatalystEvents/view']
+                            }]},
+                { label: 'Analyst Consensus',
+                    icon: 'fa-user',
+                    items: [{
+                                label: 'Create',
+                                icon: 'fa-plus',
+                                routerLink: ['/stockAnalystConsensus/add']
+                            },
+                            {
+                                label: 'View',
+                                icon: 'fa-list',
+                                routerLink: ['/stockAnalystConsensus/view']
+                            }]},
                 { label: 'Portfolios', icon: 'fa-briefcase', routerLink: ['/portfolios'] },
                 { label: 'Brokerage Accounts', icon: 'fa-briefcase', routerLink: ['/linkedAccounts'] },
                 { label: 'Gains & Losses', icon: 'fa-dollar', routerLink: ['/gainsLosses'] },
-                { label: 'Profile', icon: 'fa-chart', routerLink: ['/profile'] }
+                { label: 'Profile', icon: 'fa-gear', routerLink: ['/profile'] }
             ]
     }
 }
