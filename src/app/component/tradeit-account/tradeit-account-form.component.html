@@ -33,6 +33,7 @@
                                     formControlName="accountSource"
                                     [options]="accountSources"
                                     [(ngModel)]="modelObject.tradeItAccount"
+                                    (onOptionClick)="onOptionClick($event)"
                                     [ngClass]="{'ui-state-disabled': isModelObjectReadOnly()}">
                     </p-selectButton>
                 </div>

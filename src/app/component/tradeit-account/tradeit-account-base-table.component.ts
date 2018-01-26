@@ -7,7 +7,7 @@ import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
 import { TradeItAccountOAuthService } from "../../service/tradeit/tradeit-account-oauth.service";
-import { TradeItOAuthComponent } from "./tradeit-oauth-component";
+import { TradeItOAuthReceiver } from "./trade-it-o-auth-receiver";
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountController } from './tradeit-account-controller';
@@ -15,17 +15,19 @@ import { TradeItAccountFactory } from '../../model/factory/tradeit-account.facto
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 import { isNullOrUndefined } from 'util';
 import { CookieService } from 'ngx-cookie-service';
+import { ConfirmDialogComponent } from '../common/confirm-dialog-component-child.component';
+import { TradeitTokenUpdateOauthReceiver } from '../linked-account/tradeit-token-update-oauth-receiver';
 
 /**
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}
  * it is checked for authentication.
  */
-export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeItAccount>
-                                              implements OnInit,
-                                                         TradeItOAuthComponent
+export abstract class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeItAccount>
+                                                       implements OnInit,
+                                                                  TradeItOAuthReceiver
 {
-    @ViewChild(TradeItSecurityQuestionDialogComponent)
-    private tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent;
+    private tradeItSecurityQuestionDialogChild: TradeItSecurityQuestionDialogComponent;
+    private confirmDialogChild: ConfirmDialogComponent;
 
     /**
      * Constructor.
@@ -39,16 +41,16 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
      * @param {TradeItAccountOAuthService} tradeItOAuthService
      * @param {CookieService} cookieService
      */
-    constructor( protected changeDetector: ChangeDetectorRef,
-                 protected toaster: ToastsManager,
-                 protected tradeItErrorReporter: TradeItErrorReporter,
-                 protected tradeItAccountStateStore: TradeItAccountStateStore,
-                 protected tradeItAccountController: TradeItAccountController,
-                 protected tradeItAccountFactory: TradeItAccountFactory,
-                 protected tradeItAccountCrudService: TradeItAccountCrudService,
-                 protected tradeItService: TradeItService,
-                 protected tradeItOAuthService: TradeItAccountOAuthService,
-                 protected cookieService: CookieService )
+    protected  constructor( protected changeDetector: ChangeDetectorRef,
+                            protected toaster: ToastsManager,
+                            protected tradeItErrorReporter: TradeItErrorReporter,
+                            protected tradeItAccountStateStore: TradeItAccountStateStore,
+                            protected tradeItAccountController: TradeItAccountController,
+                            protected tradeItAccountFactory: TradeItAccountFactory,
+                            protected tradeItAccountCrudService: TradeItAccountCrudService,
+                            protected tradeItService: TradeItService,
+                            protected tradeItOAuthService: TradeItAccountOAuthService,
+                            protected cookieService: CookieService )
     {
         super( changeDetector,
                TableLoadingStrategy.ALL_ON_CREATE,
@@ -58,6 +60,13 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
                tradeItAccountFactory,
                tradeItAccountCrudService,
                cookieService );
+    }
+
+    public ngAfterViewInit(): void
+    {
+        super.ngAfterViewInit();
+        this.checkArgument( 'tradeItSecurityQuestionDialogChild', this.tradeItSecurityQuestionDialogChild );
+        this.checkArgument( 'confirmDialogChild', this.confirmDialogChild );
     }
 
     /**
@@ -72,8 +81,11 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
         if ( tradeItAccount.isTradeItAccount() )
         {
             this.loading = true;
+            let tokenUpdateReceiver: TradeitTokenUpdateOauthReceiver = new TradeitTokenUpdateOauthReceiver(
+                this.tradeItOAuthService, tradeItAccount );
             this.tradeItOAuthService
-                .checkAuthentication( tradeItAccount, this.tradeItSecurityQuestionDialog )
+                .checkAuthentication( tradeItAccount, this.tradeItSecurityQuestionDialogChild, tokenUpdateReceiver,
+                                      this.confirmDialogChild )
                 .subscribe( ( authenticateAccountResult: TradeItAuthenticateResult ) =>
                             {
                                 this.log( methodName + " checkAuthentication result: " + JSON.stringify( authenticateAccountResult ) );
@@ -132,40 +144,45 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
          */
         super.onModelObjectDeleted( tradeItAccount );
         if ( tradeItAccount.isTradeItAccount() )
-        this.tradeItOAuthService
-            .checkAuthentication( tradeItAccount, this.tradeItSecurityQuestionDialog )
-            .subscribe( (authenticateAccountResult: TradeItAuthenticateResult) =>
-            {
-                if ( isNullOrUndefined( authenticateAccountResult ))
-                {
-                    this.log( methodName + " authentication is current" );
-                }
-                else if ( authenticateAccountResult.isSuccess() )
-                {
-                    tradeItAccount.linkedAccounts = authenticateAccountResult.linkedAccounts;
-                    this.log( methodName + " authentication successful: " + JSON.stringify( tradeItAccount ));
-                    /*
-                     * Make sure we send out the updates after authentication.
-                     */
-                    this.crudStateStore
-                        .sendModelObjectChangedEvent( this, tradeItAccount );
-                }
-                else
-                {
-                    this.tradeItErrorReporter.reportError( authenticateAccountResult );
-                }
-            },
-            error =>
-            {
-                if ( error instanceof TradeItAuthenticateResult )
-                {
-                    this.tradeItErrorReporter.reportError( error );
-                }
-                else
-                {
-                    this.reportRestError( error );
-                }
-            });
+        {
+            let tokenUpdateReceiver: TradeitTokenUpdateOauthReceiver = new TradeitTokenUpdateOauthReceiver(
+                this.tradeItOAuthService, tradeItAccount );
+            this.tradeItOAuthService
+                .checkAuthentication( tradeItAccount, this.tradeItSecurityQuestionDialogChild, tokenUpdateReceiver,
+                                      this.confirmDialogChild )
+                .subscribe( ( authenticateAccountResult: TradeItAuthenticateResult ) =>
+                            {
+                                if ( isNullOrUndefined( authenticateAccountResult ) )
+                                {
+                                    this.log( methodName + " authentication is current" );
+                                }
+                                else if ( authenticateAccountResult.isSuccess() )
+                                {
+                                    tradeItAccount.linkedAccounts = authenticateAccountResult.linkedAccounts;
+                                    this.log( methodName + " authentication successful: " + JSON.stringify( tradeItAccount ) );
+                                    /*
+                                     * Make sure we send out the updates after authentication.
+                                     */
+                                    this.crudStateStore
+                                        .sendModelObjectChangedEvent( this, tradeItAccount );
+                                }
+                                else
+                                {
+                                    this.tradeItErrorReporter.reportError( authenticateAccountResult );
+                                }
+                            },
+                            error =>
+                            {
+                                if ( error instanceof TradeItAuthenticateResult )
+                                {
+                                    this.tradeItErrorReporter.reportError( error );
+                                }
+                                else
+                                {
+                                    this.reportRestError( error );
+                                }
+                            } );
+        }
         this.log( methodName + ".end" );
     }
 
@@ -194,5 +211,15 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
         const methodName = "receiveMessage";
         this.log( methodName + ".begin " + JSON.stringify( event ) );
         this.log( methodName + ".end" );
+    }
+
+    public setTradeItSecurityQuestionDialog( value: TradeItSecurityQuestionDialogComponent )
+    {
+        this.tradeItSecurityQuestionDialogChild = value;
+    }
+
+    public setConfirmDialog( value: ConfirmDialogComponent )
+    {
+        this.confirmDialogChild = value;
     }
 }

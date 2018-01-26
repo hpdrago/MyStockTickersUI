@@ -3,7 +3,7 @@ import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItAccountOAuthService } from "../../service/tradeit/tradeit-account-oauth.service";
-import { TradeItOAuthComponent } from "./tradeit-oauth-component";
+import { TradeItOAuthReceiver } from "./trade-it-o-auth-receiver";
 import { CrudOperation } from "../crud/common/crud-operation";
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountController } from './tradeit-account-controller';
@@ -21,7 +21,7 @@ import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-cr
     styleUrls: ['../crud/form/crud-form-buttons.component.css']
 })
 export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent<TradeItAccount>
-    implements OnDestroy, TradeItOAuthComponent
+    implements OnDestroy, TradeItOAuthReceiver
 {
     /**
      * Constructor.
@@ -92,8 +92,6 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
             /*
              * Need to setup the necessary window listeners so that the authentication (OAuth) window can be popped up.
              */
-            this.tradeItOAuthService
-                .register( this );
             this.tradeItOAuthService
                 .openOAuthPopup( this, this.modelObject.brokerage );
         }

@@ -101,24 +101,31 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
         const methodName = 'onLinkedAccountTableSelectionChange';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ));
         this.clearTable();
-        /*
-         * This method gets called twice, once for the table row click which initiates a keep session alive with TradeIt
-         * which then updates the row again
-         */
-        if ( this.linkedAccount == null || this.linkedAccount.id != linkedAccount.id )
+        if ( isNullOrUndefined( linkedAccount ))
         {
-            this.linkedAccount = linkedAccount;
-            this.log( methodName + " new linked account detected" );
+            this.linkedAccount = null;
+        }
+        else
+        {
             /*
-             * Create the QBE object to load the positions.
+             * This method gets called twice, once for the table row click which initiates a keep session alive with TradeIt
+             * which then updates the row again
              */
-            let stockPosition = this.stockPositionFactory
-                                    .newModelObject();
-            stockPosition.linkedAccountId = linkedAccount.id;
-            stockPosition.tradeItAccountId = this.tradeItAccount.id;
-            this.stockPositionStateStore
-                .sendModelObjectChangedEvent( this, stockPosition );
-            this.loadTable();
+            if ( isNullOrUndefined( this.linkedAccount ) || this.linkedAccount.id != linkedAccount.id )
+            {
+                this.linkedAccount = linkedAccount;
+                this.log( methodName + " new linked account detected" );
+                /*
+                 * Create the QBE object to load the positions.
+                 */
+                let stockPosition = this.stockPositionFactory
+                                        .newModelObject();
+                stockPosition.linkedAccountId = linkedAccount.id;
+                stockPosition.tradeItAccountId = this.tradeItAccount.id;
+                this.stockPositionStateStore
+                    .sendModelObjectChangedEvent( this, stockPosition );
+                this.loadTable();
+            }
         }
         this.log( methodName + ".end" );
     }

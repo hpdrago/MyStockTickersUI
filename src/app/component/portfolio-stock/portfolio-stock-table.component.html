@@ -35,6 +35,7 @@ TABLE DEFINITION
                                  [rowsPerPageOptions]="rowsPerPageOptions"
                                  [(selection)]="selectedModelObject"
                                  (rowSelected)="onRowSelect($event)"
+                                 (rowUnselected)="onRowUnSelect($event)"
                                  [lazy]="false"
                                  [loadingData]="loading"
                                  (onLazyLoadEvent)="lazyLoadTable($event)"

@@ -46,6 +46,7 @@ DEFINE THE TABLE LAYOUT
                    [(selection)]="selectedModelObject"
                    [scrollable]="scrollable"
                    (rowSelected)="onRowSelect($event)"
+                   (rowUnselected)="onRowUnSelect($event)"
                    [showHeaderButtons]="showHeaderButtons"
                    (onLazyLoadEvent)="onLazyLoad($event)"
                    [lazy]=lazy>

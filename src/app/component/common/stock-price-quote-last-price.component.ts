@@ -27,7 +27,7 @@ import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.fa
                        </div>
                        
                        <ng-template #noValidDataTemplate>
-                            No SPQ {{stockPriceQuote}} {{stockQuote}}
+                            Not Found
                        </ng-template>
                        
                        <ng-template #isValidDataTemplate>

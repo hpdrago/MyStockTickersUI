@@ -6,6 +6,7 @@ import { SelectItem } from "primeng/primeng";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * This class defines the dialog that prompts the user for an answer to a security question as received from the
@@ -18,10 +19,12 @@ import { Subject } from 'rxjs/Subject';
           })
 export class TradeItSecurityQuestionDialogComponent extends BaseComponent
 {
-    private authenticateResult: TradeItAuthenticateResult;
-    private customerAccount: TradeItAccount;
     private authenticateResultSubject: Subject<TradeItAuthenticateResult>;
-    private showDialog: boolean = false;
+    protected authenticateResult: TradeItAuthenticateResult;
+    protected tradeItAccount: TradeItAccount;
+    protected showDialog: boolean = false;
+    protected answer: string = "";
+    protected answers: SelectItem[];
 
     constructor( protected toaster: ToastsManager,
                  private tradeItService: TradeItService )
@@ -31,26 +34,21 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
 
     @Output()
     private securityChallengeAnswer: EventEmitter<string> = new EventEmitter<string>();
-    private answer: string = "";
-    private answers: SelectItem[];
 
     /**
-     * Set the subject that will be used to notify the completion of the questions answering.
-     * @param {Subject<TradeItAuthenticateResult>} authenticateResultSubject
-     */
-    public setAuthenticationResultSubject( authenticateResultSubject: Subject<TradeItAuthenticateResult> )
-    {
-        this.authenticateResultSubject = authenticateResultSubject;
-    }
-
-    /**
-     * Set the TradeIt Authentication result
+     * Prompts the user with the security questions defined in {@code authenicateResult}.
+     * @param {TradeItAccount} tradeItAccount
      * @param {TradeItAuthenticateResult} authenticateResult
+     * @return {Observable<TradeItAuthenticateResult>}
      */
-    public setAuthenticationResult( authenticateResult: TradeItAuthenticateResult )
+    public askSecurityQuestions( tradeItAccount: TradeItAccount,
+                                 authenticateResult: TradeItAuthenticateResult ): Observable<TradeItAuthenticateResult>
     {
+        this.tradeItAccount = tradeItAccount;
         this.authenticateResult = authenticateResult;
         this.log( "setAuthenticationResult " + JSON.stringify( this.authenticateResult ));
+        this.log( "setAuthenticationResult " + JSON.stringify( this.authenticateResult ));
+        this.authenticateResultSubject = new Subject<TradeItAuthenticateResult>();
         this.answers = [];
         this.answer = "";
         if ( this.authenticateResult.securityQuestionOptions )
@@ -67,16 +65,7 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
         {
             this.showDialog = true;
         }
-    }
-
-    /**
-     * Set the customer account.
-     * @param {TradeItAccount} modelObject
-     */
-    public setCustomerAccount( customerAccount: TradeItAccount )
-    {
-        this.log( "setCustomerAccount: " + JSON.stringify( this.customerAccount ));
-        this.customerAccount = customerAccount;
+        return this.authenticateResultSubject.asObservable();
     }
 
     /**
@@ -87,7 +76,7 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
         const methodName = "onButtonClick";
         this.log( methodName );
         this.tradeItService
-            .answerSecurityQuestion( this.customerAccount.id, this.answer )
+            .answerSecurityQuestion( this.tradeItAccount.id, this.answer )
             .subscribe( authenticateResult =>
             {
                 this.answer = "";
@@ -101,6 +90,7 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
                 {
                     this.debug( methodName + "Authentication completed" );
                     this.authenticateResultSubject.next( this.authenticateResult );
+                    this.authenticateResultSubject.complete();
                     this.showDialog = false;
                 }
             },
@@ -126,5 +116,4 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
         return this.authenticateResult.securityQuestionOptions == null ||
                this.authenticateResult.securityQuestionOptions.length == 0;
     }
-
 }

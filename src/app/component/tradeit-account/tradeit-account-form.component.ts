@@ -75,6 +75,29 @@ export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccoun
                         });
     }
 
+    /**
+     * Creates and identifies the fields for the FormGroup instance for the stock notes form.
+     * @return {FormGroup}
+     */
+    protected createFormGroup(): FormGroup
+    {
+        this.debug( "initializeForm " );
+        if ( this.isCrudCreateOperation() )
+        {
+            this.modelObject
+                .tradeItAccount = true;
+        }
+        var stockNoteForm: FormGroup = this.formBuilder.group(
+            {
+                'name':            new FormControl( this.modelObject.name, Validators.compose( [Validators.required,
+                                                                                                   Validators.maxLength( 20 )])),
+                'accountSource':   new FormControl( this.modelObject.tradeItAccount, Validators.required ),
+                'brokerage':       new FormControl( this.modelObject.brokerage, Validators.required ),
+                'manualBrokerage': new FormControl( this.modelObject.brokerage, Validators.required )
+            } );
+        return stockNoteForm;
+    }
+
     protected enableDisableInputs(): void
     {
         super.enableDisableInputs();
@@ -90,30 +113,26 @@ export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccoun
          */
         if ( this.modelObject.isTradeItAccount() )
         {
-            this.disableField('brokerage' );
+            this.enableField('brokerage' );
+            this.disableField('manualBrokerage' );
         }
-    }
-
-    /**
-     * Creates and identifies the fields for the FormGroup instance for the stock notes form.
-     * @return {FormGroup}
-     */
-    protected createFormGroup(): FormGroup
-    {
-        this.debug( "initializeForm " );
-        if ( this.isCrudCreateOperation() )
+        else
         {
-            this.modelObject
-                .tradeItAccount = true;
+            this.disableField('brokerage' );
+            this.enableField('manualBrokerage' );
         }
-        var stockNoteForm: FormGroup = this.formBuilder.group(
-            {
-                'name':           new FormControl( this.modelObject.name, Validators.compose( [Validators.required,
-                                                                                                             Validators.maxLength( 20 )])),
-                'accountSource':  new FormControl( this.modelObject.tradeItAccount, Validators.required ),
-                'brokerage':      new FormControl( this.modelObject.brokerage, Validators.required )
-            } );
-        return stockNoteForm;
     }
 
+    protected setDefaultValues(): void
+    {
+        this.modelObject.tradeItAccount = true;
+        this.setFormValue( 'accountSource', true );
+        super.setDefaultValues();
+    }
+
+    protected onOptionClick( accountSource: SelectItem )
+    {
+        this.log( 'onOptionClick ' + JSON.stringify( accountSource ));
+        this.log( 'onOptionClick ' + JSON.stringify( this.modelObject ));
+    }
 }

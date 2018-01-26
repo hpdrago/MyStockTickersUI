@@ -8,7 +8,7 @@ import { LinkedAccountFactory } from '../../model/factory/linked-account.factory
 import { LinkedAccountController } from './linked-account-controller';
 import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud.service';
 import { LinkedAccountStateStore } from './linked-account-state-store';
-import { TradeItOAuthComponent } from '../tradeit-account/tradeit-oauth-component';
+import { TradeItOAuthReceiver } from '../tradeit-account/trade-it-o-auth-receiver';
 import { TradeItAccountOAuthService } from '../../service/tradeit/tradeit-account-oauth.service';
 import { TradeItSecurityQuestionDialogComponent } from '../tradeit/tradeit-security-question-dialog.component';
 import { TradeItAuthenticateResult } from '../../service/tradeit/apiresults/tradeit-authenticate-result';
@@ -17,6 +17,8 @@ import { TradeItAccountController } from '../tradeit-account/tradeit-account-con
 import { TradeItAccountStateStore } from '../tradeit-account/tradeit-account-state-store';
 import { isNullOrUndefined } from 'util';
 import { CookieService } from 'ngx-cookie-service';
+import { ConfirmDialogComponent } from '../common/confirm-dialog-component-child.component';
+import { TradeitTokenUpdateOauthReceiver } from './tradeit-token-update-oauth-receiver';
 
 /**
  * This table displays all of the linked account for a TradeItAccount instance.
@@ -26,10 +28,13 @@ import { CookieService } from 'ngx-cookie-service';
     selector:    'linked-account-table',
     templateUrl: './linked-account-table.component.html'
 } )
-export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccount> implements TradeItOAuthComponent
+export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccount> implements TradeItOAuthReceiver
 {
     @ViewChild(TradeItSecurityQuestionDialogComponent)
     private tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent;
+
+    @ViewChild( ConfirmDialogComponent)
+    private confirmDialog: ConfirmDialogComponent;
 
     protected tradeItAccount: TradeItAccount;
 
@@ -89,7 +94,11 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
         const methodName = "onTradeItAccountTableSelectionChange";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
-        if ( !isNullOrUndefined( this.tradeItAccount ))
+        if ( isNullOrUndefined( this.tradeItAccount ))
+        {
+            this.tradeItAccount = null;
+        }
+        else
         {
             if ( tradeItAccount.linkedAccounts )
             {
@@ -135,7 +144,6 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
 
     }
 
-
     /**
      * This method is called when the user clicks on a {@code TradeItAccount}.
      * @param event
@@ -145,10 +153,13 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
         const methodName = "onRowSelect";
         this.log( methodName + ".begin " + JSON.stringify( event ));
         super.onRowSelect( event );
-        if ( this.tradeItAccount.isTradeItAccount() )
+        if ( !isNullOrUndefined( this.tradeItAccount ) && this.tradeItAccount.isTradeItAccount() )
         {
+            let tokenUpdateReceiver: TradeitTokenUpdateOauthReceiver = new TradeitTokenUpdateOauthReceiver(
+                this.tradeItOAuthService, this.tradeItAccount );
             this.tradeItOAuthService
-                .checkAuthentication( this.tradeItAccount, this.tradeItSecurityQuestionDialog )
+                .checkAuthentication( this.tradeItAccount, this.tradeItSecurityQuestionDialog,
+                                      tokenUpdateReceiver, this.confirmDialog )
                 .subscribe( ( authenticateAccountResult: TradeItAuthenticateResult ) =>
                             {
                                 this.log( methodName + " checkAuthentication result: " + JSON.stringify( authenticateAccountResult ) );

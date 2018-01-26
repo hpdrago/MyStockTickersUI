@@ -14,6 +14,9 @@ DIALOG TEMPLATE
     </linked-account-dialog>
     <tradeit-security-question-dialog>
     </tradeit-security-question-dialog>
+    <confirm-dialog>
+    </confirm-dialog>
+
 </ng-template>
 
 <!----------------------------------------------------------------------------------------------------------
@@ -44,6 +47,7 @@ TABLE DEFINITION
                    [totalRecords]="totalRows"
                    [(selection)]="selectedModelObject"
                    (rowSelected)="onRowSelect($event)"
+                   (rowUnselected)="onRowUnSelect($event)"
                    (onLazyLoad)="lazyLoadTable($event)"
                    [lazy]="false"
                    [showCustomizeButton]="false"

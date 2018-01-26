@@ -316,6 +316,7 @@ import { CustomerStateStore } from './component/customer/customer-state-store';
 import { GainsLossesController } from './component/gains-losses/gains-losses-controller';
 import { GainsLossesStateStore } from './component/gains-losses/gains-losses-state-store';
 import { YahooAnalysisLinkComponent } from './component/common/yahoo-analysis-link.component';
+import { ConfirmDialogComponent } from './component/common/confirm-dialog-component-child.component';
 
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -570,6 +571,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         CurrencyColumnComponent,
         MillifyColumnComponent,
 
+        ConfirmDialogComponent,
         CachedValueComponent,
         StockNotesSourceSelectionComponent,
         QuadViewComponent,
@@ -701,6 +703,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         ConfirmationService,
         AppConfigurationService,
         UploadFileService,
+        ConfirmationService, // primeng dialog service
 
         { provide: ToastOptions, useClass: CustomToastOptions },
         ToastsManager,

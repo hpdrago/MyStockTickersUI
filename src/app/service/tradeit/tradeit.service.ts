@@ -30,7 +30,7 @@ export class TradeItService extends BaseService
     private readonly AUTHENTICATE_URL = "/authenticate";
     private readonly ANSWER_SECURITY_QUESTION_URL = "/authenticate";
     private readonly KEEP_SESSION_ALIVE = "/keepSessionAlive";
-    private readonly GET_OAUTH_TOKEN_UPDATE_URL=  "/getOAuthTokenUpdateURL";
+    private readonly GET_OAUTH_TOKEN_UPDATE_URL=  "/getOAuthTokenUpdate";
     private jsonConvert: JsonConvert = new JsonConvert();
 
     /**
@@ -71,7 +71,7 @@ export class TradeItService extends BaseService
                              let authenticate: TradeItAuthenticateResult = this.jsonConvert.deserialize( authenticateResult,
                                                                                                          TradeItAuthenticateResult );
                              this.debug( methodName + ": " + JSON.stringify( authenticate ) );
-                             return  authenticate;
+                             return authenticate;
                          });
                    //.catch( ( error: any ) => Observable.throw( error ))
     }
@@ -101,7 +101,6 @@ export class TradeItService extends BaseService
                              this.debug( methodName + " authenticateAccount: " + JSON.stringify( authenticate ) );
                              return  authenticate;
                          });
-                   //.catch( ( error: any ) => Observable.throw( error ) )
     }
 
     /**
@@ -146,7 +145,6 @@ export class TradeItService extends BaseService
                              this.checkResponse( methodName, tradeItGetOauthPopupURLResult );
                              return tradeItGetOauthPopupURLResult;
                          });
-                   //.catch( ( error: any ) => Observable.throw( error ))
     }
 
     /**
@@ -165,7 +163,6 @@ export class TradeItService extends BaseService
                              this.checkResponse( methodName, brokerListResult );
                              return brokerListResult;
                          });
-                   //.catch( ( error: any ) => Observable.throw( error ))
     }
 
     /**
@@ -240,8 +237,6 @@ export class TradeItService extends BaseService
                              this.debug( methodName + " returning: " + JSON.stringify( getOauthTokenUpdateURLResult ) );
                              return getOauthTokenUpdateURLResult;
                          });
-                   //.catch( ( error: any ) => Observable.throw( error ))
-
     }
 
     /**

@@ -1,5 +1,5 @@
 import { ToastsManager } from "ng2-toastr";
-import { ChangeDetectorRef, Component } from "@angular/core";
+import { ChangeDetectorRef, Component, ViewChild } from "@angular/core";
 import { TradeItAccountBaseTableComponent } from "./tradeit-account-base-table.component";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TradeItAccountOAuthService } from "../../service/tradeit/tradeit-account-oauth.service";
@@ -12,6 +12,8 @@ import { TradeItAccount } from '../../model/entity/tradeit-account';
 import { CookieService } from 'ngx-cookie-service';
 import { LazyLoadEvent } from 'primeng/api';
 import { isNullOrUndefined } from 'util';
+import { TradeItSecurityQuestionDialogComponent } from '../tradeit/tradeit-security-question-dialog.component';
+import { ConfirmDialogComponent } from '../common/confirm-dialog-component-child.component';
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -26,6 +28,12 @@ import { isNullOrUndefined } from 'util';
 } )
 export class TradeItAccountTableComponent extends TradeItAccountBaseTableComponent
 {
+    @ViewChild(TradeItSecurityQuestionDialogComponent)
+    private tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent;
+
+    @ViewChild( ConfirmDialogComponent)
+    private confirmDialog: ConfirmDialogComponent;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -59,11 +67,17 @@ export class TradeItAccountTableComponent extends TradeItAccountBaseTableCompone
                tradeItService,
                tradeItOAuthService,
                cookieService );
-
     }
 
     public ngAfterViewInit(): void
     {
+        this.checkArgument( 'tradeItSecurityQuestionDialog', this.tradeItSecurityQuestionDialog );
+        this.checkArgument( 'confirmDialog', this.confirmDialog );
+        /*
+         * Need to pass the child component instances to the parent class.
+         */
+        super.setTradeItSecurityQuestionDialog( this.tradeItSecurityQuestionDialog );
+        super.setConfirmDialog( this.confirmDialog );
         super.ngAfterViewInit();
         this.addSubscription( 'LinkedAccountEvent',
                               this.tradeItAccountController

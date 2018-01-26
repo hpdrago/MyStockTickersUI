@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from "@angular/core";
+import { ChangeDetectorRef, Component, ViewChild } from "@angular/core";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
@@ -10,6 +10,8 @@ import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 import { CookieService } from 'ngx-cookie-service';
+import { TradeItSecurityQuestionDialogComponent } from '../tradeit/tradeit-security-question-dialog.component';
+import { ConfirmDialogComponent } from '../common/confirm-dialog-component-child.component';
 
 
 /**
@@ -17,13 +19,20 @@ import { CookieService } from 'ngx-cookie-service';
  *
  * Created by mike on 1/9/2018.
  */
-@Component({
-               selector: 'tradeit-account-selection-table',
-               templateUrl: './tradeit-account-selection-table.component.html',
-               styleUrls: ['./tradeit-account-selection-table.component.css']
-           })
+@Component
+({
+    selector: 'tradeit-account-selection-table',
+    templateUrl: './tradeit-account-selection-table.component.html',
+    styleUrls: ['./tradeit-account-selection-table.component.css']
+})
 export class TradeItAccountSelectionTableComponent extends TradeItAccountBaseTableComponent
 {
+    @ViewChild(TradeItSecurityQuestionDialogComponent)
+    private tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent;
+
+    @ViewChild( ConfirmDialogComponent)
+    private confirmDialog: ConfirmDialogComponent;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -57,6 +66,16 @@ export class TradeItAccountSelectionTableComponent extends TradeItAccountBaseTab
                tradeItService,
                tradeItOAuthService,
                cookieService );
+    }
+
+    public ngAfterViewInit(): void
+    {
+        /*
+         * Need to pass the child component instances to the parent class.
+         */
+        super.setTradeItSecurityQuestionDialog( this.tradeItSecurityQuestionDialog );
+        super.setConfirmDialog( this.confirmDialog );
+        super.ngAfterViewInit();
     }
 
     /**

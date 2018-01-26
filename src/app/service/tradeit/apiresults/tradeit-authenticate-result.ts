@@ -2,6 +2,7 @@ import { TradeItAPIResult } from "./tradeit-api-result";
 import { JsonObject, JsonProperty } from "json2typescript";
 import { LinkedAccount } from "../../../model/entity/linked-account";
 import { TradeItAccount } from "../../../model/entity/tradeit-account";
+import { TradeItAPIResultEnum } from './tradeit-api-result-error-code';
 
 /**
  * This class contains the information returned from REST call to authenticate a user's account.
@@ -50,5 +51,14 @@ export class TradeItAuthenticateResult extends TradeItAPIResult
         okResult.status = TradeItAPIResult.SUCCESS;
         okResult.linkedAccounts = [];
         return okResult;
+    }
+
+    /**
+     * Determines if this the error code == 700 which means the token is invalid or has expired.
+     * @return {boolean}
+     */
+    public isTokenExpired(): boolean
+    {
+        return TradeItAPIResultEnum.isTokenInvalidOrExpiredError( this );
     }
 }
