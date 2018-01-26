@@ -734,7 +734,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
                    .addModelObject( modelObject )
                    .map( ( modelObject: T ) =>
                          {
-                             //this.sendFormResetEvent();
+                             this.debug( methodName + ' received: ' + JSON.stringify( modelObject ) )
                              this.sendModelObjectAddedEvent( modelObject );
                              return modelObject;
                          });

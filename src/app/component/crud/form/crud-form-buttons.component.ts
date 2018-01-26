@@ -360,7 +360,10 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
             .sendFormPrepareToSaveEvent();
         this.busyIndicator = this.crudController
                                  .addModelObject( this.modelObject )
-                                 .subscribe();
+                                 .subscribe( modelObject =>
+                                             {
+                                                 this.debug( methodName + ' completed ' + JSON.stringify( modelObject ) );
+                                             });
         this.debug( methodName + ".end " );
     }
 

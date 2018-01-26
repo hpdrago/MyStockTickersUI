@@ -22,9 +22,9 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
      * @param {RestErrorReporter} restErrorReporter
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    constructor( protected toaster: ToastsManager,
-                 protected restErrorReporter: RestErrorReporter,
-                 protected crudRestService: CrudRestService<T> )
+    protected constructor( protected toaster: ToastsManager,
+                           protected restErrorReporter: RestErrorReporter,
+                           protected crudRestService: CrudRestService<T> )
     {
         super();
     }
@@ -50,7 +50,7 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
                                   this.debug( methodName + " delete failed" );
                                   let exception = this.restErrorReporter.reportRestError( error );
                                   Observable.throw( exception );
-                              });
+                              })
     }
 
     /**
@@ -83,7 +83,7 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
                              }
                              Observable.throw( exception );
                              //throw new Error( exception.message );
-                         });
+                         })
     }
 
     /**
@@ -109,8 +109,7 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
                               var exception = this.restErrorReporter.reportRestError( error );
                               this.debug( methodName + " exception: " + JSON.stringify( exception ));
                               Observable.throw( exception );
-                          }
-        );
+                          })
     }
 
     /*

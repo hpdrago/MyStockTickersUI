@@ -31,6 +31,14 @@ export class StockQuoteRefreshService extends BaseService
         return this.stockQuoteCache.refreshStockQuote( stockQuoteModelObject.tickerSymbol )
                                    .map( (stockQuote) =>
                                          {
+                                             /*
+                                              * Update the stock quote model object argument and return the results
+                                              */
+                                             stockQuoteModelObject.companyName = stockQuote.companyName;
+                                             stockQuoteModelObject.stockQuoteState = stockQuote.stockQuoteState;
+                                             stockQuoteModelObject.lastPrice = stockQuote.lastPrice;
+                                             stockQuoteModelObject.lastPriceChange = stockQuote.lastPriceChange;
+                                             stockQuoteModelObject.openPrice = stockQuote.openPrice;
                                              return stockQuote;
                                          });
     }

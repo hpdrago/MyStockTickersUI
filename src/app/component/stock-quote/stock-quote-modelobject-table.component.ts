@@ -103,6 +103,8 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
      */
     private updateStockQuote( stockQuoteModelObject )
     {
+        let methodName = 'updateStockQuote';
+        this.debug( methodName + ' ' + JSON.stringify( stockQuoteModelObject ));
         if ( stockQuoteModelObject.stockQuoteState == StockQuoteState.NOT_CACHED ||
              stockQuoteModelObject.stockQuoteState == StockQuoteState.STALE )
         {
@@ -110,10 +112,6 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
                 .refreshStockQuote( stockQuoteModelObject )
                 .subscribe( ( stockQuote: StockQuote ) => {
                                 //this.debug( 'onTableLoad.overridden stockQuote: ' + JSON.stringify( stockQuote ));
-                                stockQuoteModelObject.companyName = stockQuote.companyName;
-                                stockQuoteModelObject.stockQuoteState = stockQuote.stockQuoteState;
-                                stockQuoteModelObject.lastPrice = stockQuote.lastPrice;
-                                stockQuoteModelObject.lastPriceChange = stockQuote.lastPriceChange;
                             },
                             error => {
                                 stockQuoteModelObject.stockQuoteState = StockQuoteState.FAILURE;

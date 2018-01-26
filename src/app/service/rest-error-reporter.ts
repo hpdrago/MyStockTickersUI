@@ -105,9 +105,7 @@ export class RestErrorReporter extends BaseClass
         this.debug( "status: " + status );
         this.debug( "error: " + error );
         this.debug( "exception: " + exception );
-        /*{
-            message = `Error ${status} - ${error} - ${exception} - ${message}`;
-        }*/
+        message = `Error ${status} - ${error} - ${exception} - ${message}`;
         return message;
     }
 }
