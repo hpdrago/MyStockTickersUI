@@ -11,7 +11,15 @@ import { ToastsManager } from "ng2-toastr";
 @Injectable()
 export class StockQuoteCache extends BaseService
 {
+    /**
+     * Contains the current quote values
+     * @type {Map<any, any>}
+     */
     private quoteMap: Map<string, StockQuote> = new Map();
+    /**
+     * Contains the quotes being updated
+     * @type {Map<any, any>}
+     */
     private workingMap: Map<string, Observable<StockQuote>> = new Map();
 
     /**
