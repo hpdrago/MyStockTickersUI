@@ -1,5 +1,5 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { SessionService } from "../../service/session.service";
@@ -31,6 +31,7 @@ export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
 
     /**
      * Constructor.
+     * @param {ChangeDetectorRef} changeDetector
      * @param {ToastsManager} toaster
      * @param {SessionService} sessionService
      * @param {FormBuilder} formBuilder
@@ -38,9 +39,10 @@ export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
      * @param {StockToBuyController} stockToBuyController
      * @param {StockToBuyFactory} stockToBuyFactory
      * @param {StockToBuyCrudService} stockToBuyCrudService
-     * @param {CustomerCrudService} customerService
+     * @param {StockCompanyService} stockCompanyService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private stockToBuyStateStore: StockToBuyStateStore,
@@ -49,7 +51,8 @@ export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
                  private stockToBuyCrudService: StockToBuyCrudService,
                  private stockCompanyService: StockCompanyService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockToBuyStateStore,
                stockToBuyController,
                stockToBuyFactory,

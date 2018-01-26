@@ -86,16 +86,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( "ngOnInit.begin" );
         super.ngOnInit();
         this.subscribeToServiceEvents();
-        /*
-         * Create a new object instance as it will most likely be nulled by subscribing to events
-         */
-        this.modelObject = this.modelObjectFactory.newModelObject();
         if ( TableLoadingStrategy.isLoadOnCreate( this.tableLoadingStrategy ))
         {
             this.loading = true;
             this.loadTable();
         }
-        this.debug( "ngOnInit.end" );
     }
 
     /**

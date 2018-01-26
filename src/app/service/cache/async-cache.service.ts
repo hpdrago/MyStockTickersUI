@@ -84,6 +84,10 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
                 this.fetchData( key );
             }
         }
+        else
+        {
+            this.debug( methodName + " " + key + " is the cache" );
+        }
         this.checkDataExpiration( subject, key );
         return subject.subscribe( receiveCachedData );
     }
@@ -93,7 +97,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
      */
     private checkDataExpiration( subject: BehaviorSubject<T>, key: K )
     {
-        let methodName = 'checkStockPriceExpiration';
+        let methodName = 'checkDataExpiration';
         this.debug( methodName + ' ' + key );
         if ( !isNullOrUndefined( subject ) &&
              !isNullOrUndefined( subject.getValue() ))
@@ -103,6 +107,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
             let expirationTime: Date = cachedData.getExpirationTime();
             if ( isNullOrUndefined( expirationTime ) )
             {
+                this.debug( methodName + ' expirationTime is null, fetching data' );
                 this.fetchData( key );
             }
             else

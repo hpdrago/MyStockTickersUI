@@ -7,7 +7,7 @@ import { isNullOrUndefined } from "util";
 import { RestException } from "../../../common/rest-exception";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { CrudStateStore } from "./crud-state-store";
-import { OnInit } from "@angular/core";
+import { ChangeDetectorRef, OnInit } from "@angular/core";
 import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
 import { CrudController } from './crud-controller';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
@@ -51,7 +51,8 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor(
+                 protected toaster: ToastsManager,
                  protected crudStateStore: CrudStateStore<T>,
                  protected crudController: CrudController<T>,
                  protected modelObjectFactory: ModelObjectFactory<T>,
@@ -63,12 +64,6 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
             throw new Error( "toaster argument cannot be null" );
         }
         this.crudRestErrorReporter = this.createCrudRestErrorReporter();
-        /*
-         * Initial the values from the state store directly.  Do not call "on" method as that might trigger
-         * additional work that we don't want to do at this time.
-         */
-        this.modelObject = this.crudStateStore.getModelObject();
-        this.crudOperation = this.crudStateStore.getCrudOperation();
     }
 
     /**
@@ -77,10 +72,29 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     public ngOnInit()
     {
         let methodName = "ngOnInit";
-        this.log( methodName + ".begin" );
+        this.debug( methodName + ".begin" );
+        /*
+         * Initial the values from the state store directly.  Do not call "on" method as that might trigger
+         * additional work that we don't want to do at this time.
+         */
+        //this.modelObject = this.crudStateStore.getModelObject();
+        //this.crudOperation = this.crudStateStore.getCrudOperation();
+        //this.debug( methodName + ' modelObject: ' + JSON.stringify( this.modelObject ));
+        //this.debug( methodName + ' crudOperation: ' + CrudOperation.getName( this.crudOperation ));
         this.subscribeToModelObjectChangeEvents();
         this.subscribeToCrudStateStoreEvents();
-        this.log( methodName + ".end" );
+        this.debug( methodName + ".end" );
+    }
+
+    /**
+     * After the component and child components have been created, initialized, and checked,
+     * subscribe to the CRUD change events.
+     */
+    public ngAfterViewInit(): void
+    {
+        let methodName = 'ngAfterViewInit';
+        this.logMethodBegin( methodName )
+        this.logMethodEnd( methodName );
     }
 
     /**
@@ -143,13 +157,13 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         this.debug( methodName + '.begin' );
         this.addSubscription( 'subscribeToModelObjectSavedEvent',
             this.crudController
-            .subscribeToModelObjectSavedEvent( (modelObject: T) => this.onModelObjectSaved( modelObject )));
+                .subscribeToModelObjectSavedEvent( (modelObject: T) => this.onModelObjectSaved( modelObject )));
         this.addSubscription( 'subscribeToModelObjectDeletedEvent',
             this.crudController
-            .subscribeToModelObjectDeletedEvent( (modelObject: T) => this.onModelObjectDeleted( modelObject )));
+                .subscribeToModelObjectDeletedEvent( (modelObject: T) => this.onModelObjectDeleted( modelObject )));
         this.addSubscription( 'subscribeToModelObjectAddedEvent',
-                              this.crudController
-            .subscribeToModelObjectAddedEvent( ( modelObject: T) => this.onModelObjectCreated( modelObject )));
+            this.crudController
+                .subscribeToModelObjectAddedEvent( ( modelObject: T) => this.onModelObjectCreated( modelObject )));
         this.debug( methodName + '.end' );
     }
 
@@ -345,7 +359,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     protected reportRestError( rawJsonError ): RestException
     {
-        this.log( "reportRestError: " + JSON.stringify( rawJsonError ) );
+        this.debug( "reportRestError: " + JSON.stringify( rawJsonError ) );
         var restException: RestException = this.crudRestErrorReporter.reportRestError( rawJsonError );
         return restException;
     }
@@ -374,10 +388,10 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         this.crudRestService
             .getModelObject( this.modelObject )
             .subscribe( modelObject => {
-                            this.log( "Checking model object version: " + JSON.stringify( modelObject ) );
+                            this.debug( "Checking model object version: " + JSON.stringify( modelObject ) );
                             if ( this.modelObject.isDifferentVersion( modelObject ) )
                             {
-                                this.log( "The version is different. Updating table and form" );
+                                this.debug( "The version is different. Updating table and form" );
                                 this.crudStateStore
                                     .sendModelObjectChangedEvent( this, modelObject );
                                 this.debug( "checkModelObjectVersion.end" );

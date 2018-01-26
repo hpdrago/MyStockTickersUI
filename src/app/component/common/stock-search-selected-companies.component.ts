@@ -2,12 +2,13 @@
  * Created by mike on 5/22/2018
  */
 import { BaseComponent } from './base.component';
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { StockCompany } from '../../model/entity/stock-company';
 import { ToastsManager } from 'ng2-toastr';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
 import { SelectedStockCompaniesComponent } from './selected-stock-companies.component';
 import { StockAutoCompleteComponent } from './stock-autocomplete.component';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This component combines the stock search and selection and the display of the selected stock companies.
@@ -16,12 +17,14 @@ import { StockAutoCompleteComponent } from './stock-autocomplete.component';
 ({
     selector: 'stock-search-selected-companies',
      styleUrls: ['../crud/form/crud-form.component.css'],
-    template: `<div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-                  <div class="crud-form ui-grid-row">
-                      <div class="crud-form-label ui-grid-col-2">
-                      </div>
-                      <div class="ui-grid-col-10">
-                          When specifying multiple stocks, the note information will be duplicated for each stock
+    template: `<div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid">
+                  <div *ngIf="maxStocks > 1">
+                      <div class="crud-form ui-grid-row">
+                          <div class="crud-form-label ui-grid-col-2">
+                          </div>
+                          <div class="ui-grid-col-10">
+                              When specifying multiple stocks, the note information will be duplicated for each stock
+                          </div>
                       </div>
                   </div>
                   <div class="crud-form ui-grid-row">
@@ -35,19 +38,33 @@ import { StockAutoCompleteComponent } from './stock-autocomplete.component';
                       </div>
                   </div>
 
-                  <selected-stock-companies>
+                  <selected-stock-companies [maxCompanies]="maxStocks">
                   </selected-stock-companies>
                </div>
               `
 })
 export class StockSearchSelectedCompaniesComponent extends BaseComponent
+                                                   implements OnInit
 {
+    /**
+     * Determines how many stocks are allowed to be entered.  Defaults to 1.
+     * @type {number}
+     */
+    @Input()
+    protected maxStocks: number = 1;
+
+    /**
+     * The ticker symbol for the existing selected stock.
+     */
+    @Input()
+    protected tickerSymbol: string;
+
     /**
      * Emits the {@code StockCompany} when it is selected.
      * @type {EventEmitter<StockCompany>}
      */
     @Output()
-    private stockSelected: EventEmitter<StockCompany>  = new EventEmitter<StockCompany>();
+    protected stockSelected: EventEmitter<StockCompany>  = new EventEmitter<StockCompany>();
 
     /**
      * Get the reference to the stock search component.
@@ -73,15 +90,27 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
         super( toaster );
     }
 
+    public ngOnInit(): void
+    {
+        if ( !isNullOrUndefined( this.tickerSymbol ))
+        {
+            this.selectedStockCompaniesComponent
+                .loadCompany( this.tickerSymbol );
+        }
+    }
+
     /**
      * Reset the component.
      */
     public reset()
     {
+        const methodName = 'reset';
+        this.logMethodBegin( methodName );
         this.stockAutoCompleteComponent
             .reset();
         this.selectedStockCompaniesComponent
             .reset();
+        this.logMethodEnd( methodName );
     }
 
     /**
@@ -90,6 +119,7 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
      */
     public addCompany( stockCompany: StockCompany )
     {
+        this.debug( "addCompany: " + JSON.stringify( stockCompany ))
         this.selectedStockCompaniesComponent
             .addCompany( stockCompany );
     }
@@ -100,6 +130,7 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
      */
     public loadCompany( tickerSymbol: string )
     {
+        this.debug( "loadCompany: " + tickerSymbol );
         this.selectedStockCompaniesComponent
             .loadCompany( tickerSymbol );
     }

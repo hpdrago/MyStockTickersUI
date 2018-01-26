@@ -52,40 +52,6 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     }
 
     /**
-     * This method is called to set the model object and crud operation.
-     * @param {T} modelObject
-     * @param {CrudOperation} crudOperation
-     */
-    //protected displayModelObject( modelObject: T, crudOperation: CrudOperation )
-    protected displayModelObject()
-    {
-        //this.setModelObject( modelObject );
-        //this.setCrudOperation( crudOperation );
-        //var subjectInfo: ModelObjectCrudOperationSubjectInfo = new ModelObjectCrudOperationSubjectInfo();
-        //subjectInfo.crudOperation = crudOperation;
-        //subjectInfo.modelObject = modelObject;
-
-        /*
-         * Tell the buttons and form of the changes
-         */
-        //this.debug( "Sending crud operation and modelObject to Form" );
-        //this.crudServiceContainer
-        //    .crudFormService
-        //    .sendModelObjectCrudOperationChangedEvent( subjectInfo );
-        //this.debug( "Sending crud operation and modelObject to the form buttons" );
-        //this.crudServiceContainer
-        //    .crudFormButtonsService
-        //    .sendCrudOperationChangedEvent( subjectInfo.crudOperation );
-        //this.crudServiceContainer
-        //    .crudFormButtonsService
-        //    .sendModelObjectChangedEvent( subjectInfo.modelObject );
-        /*
-        this.crudController
-            .sendFormPrepareToDisplayEvent();
-            */
-    }
-
-    /**
      * Subscribes to the events received from the CrudFormButtonsService
      */
     protected subscribeToCrudPanelServiceEvents(): void

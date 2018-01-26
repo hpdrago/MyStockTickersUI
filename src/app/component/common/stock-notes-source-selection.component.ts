@@ -92,14 +92,10 @@ export class StockNotesSourceSelectionComponent extends BaseComponent implements
         {
             this.debug( "sourcesOnChange: setting notesSourceId= " + event.value );
             this.notesSourceId = event.value;
-            //this.stockPriceQuoteContainer.setNotesSourceId( event.value );
-            //this.stockPriceQuoteContainer.setNotesSourceName( this.stockNotesSourceList.getLabel( event.value ));
         }
         else
         {
             this.debug( "sourcesOnChange: new notesSource= " + event.value );
-            //this.stockPriceQuoteContainer.setNotesSourceName( event.value.toUpperCase() );
-            //this.stockPriceQuoteContainer.setNotesSourceId( '' );
             this.notesSourceId = event.value.toUpperCase();
             this.sourceAdded = true;
             let selectItem: SelectItem = {
@@ -139,5 +135,7 @@ export class StockNotesSourceSelectionComponent extends BaseComponent implements
     }
 
     public registerOnTouched( fn: any ): void {}
+
+
 
 }

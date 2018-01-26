@@ -227,8 +227,10 @@
             </stock-to-buy-table-buttons>
         </p-footer>
     </p-dataTable>
-    <stock-to-buy-dialog>
-    </stock-to-buy-dialog>
-    <stock-notes-dialog>
-    </stock-notes-dialog>
+    <div *ngIf="!isCrudNoneOperation()">
+        <stock-to-buy-dialog>
+        </stock-to-buy-dialog>
+        <stock-notes-dialog>
+        </stock-notes-dialog>
+    </div>
 </p-panel>

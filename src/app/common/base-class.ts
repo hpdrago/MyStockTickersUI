@@ -41,6 +41,30 @@ export class BaseClass implements OnDestroy
     }
 
     /**
+     * Logs a begin method
+     * @param message
+     */
+    protected logMethodBegin( methodName: string )
+    {
+        if ( this.doLogging )
+        {
+            this.log( methodName + '.begin' );
+        }
+    }
+
+    /**
+     * Logs method end
+     * @param message
+     */
+    protected logMethodEnd( methodName: string )
+    {
+        if ( this.doLogging )
+        {
+            this.log( methodName + '.end' );
+        }
+    }
+
+    /**
      * Logs an info message
      * @param message
      */

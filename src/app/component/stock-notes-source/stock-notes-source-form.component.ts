@@ -1,5 +1,5 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { SessionService } from "../../service/session.service";
@@ -23,6 +23,7 @@ export class StockNotesSourceFormComponent extends CrudFormComponent<StockNotesS
 {
     /**
      * Constructor.
+     * @param {ChangeDetectorRef} changeDetector
      * @param {ToastsManager} toaster
      * @param {SessionService} sessionService
      * @param {FormBuilder} formBuilder
@@ -31,7 +32,8 @@ export class StockNotesSourceFormComponent extends CrudFormComponent<StockNotesS
      * @param {StockNotesSourceFactory} stockNotesSourceFactory
      * @param {StockNotesSourceCrudService} stockNotesSourceCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private stockNotesSourceStateStore: StockNotesSourceStateStore,
@@ -39,7 +41,8 @@ export class StockNotesSourceFormComponent extends CrudFormComponent<StockNotesS
                  private stockNotesSourceFactory: StockNotesSourceFactory,
                  private stockNotesSourceCrudService: StockNotesSourceCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockNotesSourceStateStore,
                stockNotesSourceController,
                stockNotesSourceFactory,

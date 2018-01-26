@@ -68,8 +68,8 @@ export class SelectedStockCompanyList extends StockCompanyList
     public clear(): void
     {
         super.clear();
-        this.tickerSymbols += ''
-        this.lastPrices += ''
-        this.companies += ''
+        this.tickerSymbols = ''
+        this.lastPrices = ''
+        this.companies = ''
     }
 }

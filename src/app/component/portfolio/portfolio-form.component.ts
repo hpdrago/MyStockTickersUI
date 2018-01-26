@@ -1,7 +1,7 @@
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { Portfolio } from "../../model/entity/portfolio";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioFactory } from '../../model/factory/portfolio.factory';
 import { PortfolioController } from './portfolio-controller';
@@ -22,6 +22,7 @@ export class PortfolioFormComponent extends CrudFormComponent<Portfolio>
 {
     /**
      * Constructor.
+     * @param {ChangeDetectorRef} changeDetector
      * @param {ToastsManager} toaster
      * @param {FormBuilder} formBuilder
      * @param {PortfolioStateStore} portfolioStateStore
@@ -29,14 +30,16 @@ export class PortfolioFormComponent extends CrudFormComponent<Portfolio>
      * @param {PortfolioFactory} portfolioFactory
      * @param {PortfolioCrudService} portfolioCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private formBuilder: FormBuilder,
                  private portfolioStateStore: PortfolioStateStore,
                  private portfolioController: PortfolioController,
                  private portfolioFactory: PortfolioFactory,
                  private portfolioCrudService: PortfolioCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                portfolioStateStore,
                portfolioController,
                portfolioFactory,

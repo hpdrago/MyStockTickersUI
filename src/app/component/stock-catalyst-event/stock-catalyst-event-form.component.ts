@@ -1,5 +1,5 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Component, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockCompany } from "../../model/entity/stock-company";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
@@ -35,6 +35,7 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
 
     /**
      * Constructor.
+     * @param {ChangeDetectorRef} changeDetector
      * @param {ToastsManager} toaster
      * @param {SessionService} sessionService
      * @param {FormBuilder} formBuilder
@@ -43,7 +44,8 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
      * @param {StockCatalystEventCrudService} stockCatalystEventCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private stockCatalystEventStateStore: StockCatalystEventStateStore,
@@ -51,7 +53,7 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
                  private stockCatalystEventFactory: StockCatalystEventFactory,
                  private stockCatalystEventCrudService: StockCatalystEventCrudService )
     {
-        super( toaster,
+        super( changeDetector, toaster,
                stockCatalystEventStateStore,
                stockCatalystEventController,
                stockCatalystEventFactory,

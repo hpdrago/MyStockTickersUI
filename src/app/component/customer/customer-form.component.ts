@@ -1,5 +1,5 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { SessionService } from '../../service/session.service';
 import { Customer } from '../../model/entity/customer';
@@ -23,6 +23,7 @@ export class CustomerFormComponent extends CrudFormComponent<Customer>
 {
     /**
      * Constructor.
+     * @param {ChangeDetectorRef} changeDetector
      * @param {ToastsManager} toaster
      * @param {SessionService} sessionService
      * @param {FormBuilder} formBuilder
@@ -31,7 +32,8 @@ export class CustomerFormComponent extends CrudFormComponent<Customer>
      * @param {CustomerFactory} customerFactory
      * @param {CustomerCrudService} customerCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  protected customerStateStore: CustomerStateStore,
@@ -39,7 +41,8 @@ export class CustomerFormComponent extends CrudFormComponent<Customer>
                  protected customerFactory: CustomerFactory,
                  protected customerCrudService: CustomerCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                customerStateStore,
                customerController,
                customerFactory,

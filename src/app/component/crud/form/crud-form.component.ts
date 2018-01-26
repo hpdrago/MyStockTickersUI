@@ -1,4 +1,4 @@
-import { OnInit } from "@angular/core";
+//import { OnInit } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { ValidationService } from "../../../service/validation-service";
 import { CrudOperation } from "../common/crud-operation";
@@ -15,6 +15,7 @@ import { CrudStateStore } from '../common/crud-state-store';
 import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
+import { ChangeDetectorRef, OnInit } from '@angular/core';
 
 /**
  * This class contains the common functionality for a form for a CRUD model object.
@@ -33,14 +34,16 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     private resourceLoaders: Observable<boolean>[] = [];
 
     /**
-     * Constructor
+     * Constructor.
+     * @param {ChangeDetectorRef} changeDetector
      * @param {ToastsManager} toaster
      * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
      * @param {CrudController<T extends ModelObject<T>>} crudController
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    protected constructor( protected toaster: ToastsManager,
+    protected constructor( protected changeDetector: ChangeDetectorRef,
+                           protected toaster: ToastsManager,
                            protected crudStateStore: CrudStateStore<T>,
                            protected crudController: CrudController<T>,
                            protected modelObjectFactory: ModelObjectFactory<T>,
@@ -58,11 +61,23 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     public ngOnInit(): void
     {
-        this.debug( "CrudFormComponent.ngOnInit.begin" );
+        const methodName = 'ngOnInit';
+        this.logMethodBegin( methodName );
         this.resourceLoaders = this.loadResources();
-        this.setDefaultValues();
+        super.ngOnInit();
         this.initializeForm();
+        if ( this.isCrudDeleteOperation() ||
+             this.isCrudUpdateOperation() )
+        {
+            this.setFormValues( this.modelObject );
+        }
+        else
+        {
+            this.setDefaultValues();
+        }
         this.subscribeToCrudFormServiceEvents();
+        this.crudController
+            .sendFormLogStateRequest();
         if ( this.resourceLoaders.length > 0 )
         {
             this.debug( "Waiting for " + this.resourceLoaders.length + " resource loaders" );
@@ -80,9 +95,8 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         else
         {
             this.sendNgOnInitCompletedEvent();
-            this.debug( "CrudFormComponent.ngOnInit.end" );
         }
-        super.ngOnInit();
+        this.logMethodEnd( methodName );
     }
 
     /**
@@ -97,6 +111,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.debug( "sendNgOnInitCompletedEvent.end" );
     }
 
+    /*
     public ngAfterContentInit(): void
     {
         this.debug( 'ngAfterContentInit' );
@@ -106,6 +121,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     {
         this.debug( 'ngAfterContentChecked' );
     }
+    */
 
     /**
      * Complete the initialization after all of the components have been initialized.
@@ -116,44 +132,24 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.debug( methodName + ".begin" );
         this.debug( methodName + " crudOperation: " + this.CrudOperation.getName( this.crudOperation ) );
         this.debug( methodName + " modelObject: " + JSON.stringify( this.modelObject ));
+        super.ngAfterViewInit();
         /*
          * Notify the dialog or panel that the form is ready to be displayed.
          * Need to run this on the next change cycle.
          */
-        this.tickThenRun( () => this.crudController.sendFormReadyToDisplay() )
+        this.crudController
+            .sendFormReadyToDisplay();
         this.crudController
             .sendFormLogStateRequest();
         /*
-         * Need to check and wait for the model object before setting the form values.
+         * Notify the dialog or panel that the form is ready to be displayed.
+         * Need to run this on the next change cycle.
          */
-        if ( isNullOrUndefined( this.modelObject ) )
-        {
-            this.waitForValidModelObject( ( modelObject ) =>
-                                          {
-                                              if ( !isNullOrUndefined( modelObject ) )
-                                              {
-                                                  this.debug( methodName + ' received valid modelObject' );
-                                                  this.setFormValues( modelObject )
-                                              }
-                                          });
-        }
-        else
-        {
-            this.setFormValues( this.modelObject );
-        }
-        if ( this.modelObject )
-        {
-            this.setFormValues( this.modelObject );
-        }
-        this.enableDisableInputs();
+        this.tickThenRun( () => this.crudController
+                                    .sendFormReadyToDisplay() );
+        this.changeDetector
+            .detectChanges();
         this.debug( methodName + '.end' );
-    }
-
-    public ngAfterViewChecked(): void
-    {
-        let methodName = 'ngAfterViewChecked';
-        this.log( methodName + '.begin' );
-        this.log( methodName + '.end' );
     }
 
     /**
@@ -317,33 +313,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * This method is called whenever the modelObject changes
-     * @param modelObject
-     * @override
-     */
-    protected onModelObjectChanged( modelObject: T ): void
-    {
-        /*
-         * Clear the form fields of any previous model object.
-         */
-        if ( !isNullOrUndefined( this.formGroup ))
-        {
-            //this.resetForm();
-        }
-        super.onModelObjectChanged( modelObject );
-        //this.debug( "onModelObjectChanged " + JSON.stringify( this.modelObject ));
-        /*
-        this.enableDisableInputs();
-        if ( this.modelObject )
-        {
-            this.setFormValues( this.modelObject );
-        }
-        this.crudController
-            .sendFormLogStateRequest();
-            */
-    }
-
-    /**
      * This method is called when a new model object is being created or when the reset button is clicked.
      */
     protected setDefaultValues(): void
@@ -358,7 +327,8 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected setFormValues( modelObject: T ): void
     {
-        //this.debug( "setFormValues: " + JSON.stringify( modelObject ));
+        let methodName = 'setFormValues';
+        this.debug( methodName + '.begin: ' + JSON.stringify( modelObject ));
         if ( isNullOrUndefined( this.modelObject ) )
         {
             throw new ReferenceError( "modelObject has not been set'" );
@@ -372,6 +342,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
             }
         }
         this.enableDisableInputs()
+        this.debug( methodName + '.end' );
     }
 
     /**
@@ -419,7 +390,8 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected clearForm(): void
     {
-        this.debug( "clearForm" );
+        let methodName = 'clearForm';
+        this.debug( methodName + '.begin' );
         let modelObject: T = this.modelObjectFactory
                                  .newModelObject();
         this.crudStateStore
@@ -427,6 +399,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.crudStateStore
             .sendModelObjectChangedEvent( this, modelObject );
         this.resetForm();
+        this.debug( methodName + '.end' );
     }
 
     /**
@@ -746,7 +719,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected prepareToDisplay(): void
     {
         this.debug( "prepareToDisplay" );
-        this.setFormValues( this.modelObject );
+        //this.setFormValues( this.modelObject );
     }
 
     /**

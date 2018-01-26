@@ -22,6 +22,8 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
     @Input()
     protected displayDialog: boolean;
 
+    
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -147,7 +149,11 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
         this.crudController
             .sendFormPrepareToDisplayEvent();
             */
-        this.displayDialog = true;
+        this.tickThenRun( () =>
+                          {
+                              this.debug( "setting displayDialog to true" );
+                              this.displayDialog = true
+                          } );
         this.debug( "setDisplayDialog.end" );
     }
 

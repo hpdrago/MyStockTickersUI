@@ -1,5 +1,5 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Component, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { SelectItem } from "primeng/primeng";
 import { StockNotes } from "../../model/entity/stock-notes";
@@ -18,6 +18,7 @@ import { CrudFormComponent } from '../crud/form/crud-form.component';
 import { StockCompany } from '../../model/entity/stock-company';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
 import { StockSearchSelectedCompaniesComponent } from '../common/stock-search-selected-companies.component';
+import { StockNotesSourceSelectionComponent } from '../common/stock-notes-source-selection.component';
 
 /**
  * This is the StockCompany Note Form Component class.
@@ -41,8 +42,12 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     @ViewChild(StockSearchSelectedCompaniesComponent)
     protected stockSearchSelectedCompaniesComponent: StockSearchSelectedCompaniesComponent;
 
+    @ViewChild(StockNotesSourceSelectionComponent)
+    protected stockNotesSourceSelectionComponent = StockNotesSourceSelectionComponent;
+
     /**
      * Constructor.
+     * @param {ChangeDetectorRef} changeDetector
      * @param {ToastsManager} toaster
      * @param {SessionService} sessionService
      * @param {FormBuilder} formBuilder
@@ -54,7 +59,8 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      * @param {StockCompanyService} stockCompanyService
      * @param {StockPriceQuoteService} stockPriceQuoteService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private stockService: StockPriceQuoteService,
@@ -65,7 +71,8 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                  private stockCompanyService: StockCompanyService,
                  private stockPriceQuoteService: StockPriceQuoteService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockNotesCrudStateStore,
                stockNotesController,
                stockNotesFactory,
@@ -97,8 +104,10 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     public ngAfterViewInit(): void
     {
+        this.log( 'ngAfterViewInit.override.begin' );
         super.ngAfterViewInit();
-        if ( this.isCrudUpdateOperation() || this.isCrudDeleteOperation() )
+        if ( (this.isCrudUpdateOperation() || this.isCrudDeleteOperation()) &&
+              !isNullOrUndefined( this.modelObject.tickerSymbol ))
         {
             this.stockSearchSelectedCompaniesComponent
                 .loadCompany( this.modelObject.tickerSymbol );
@@ -109,6 +118,9 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                 .setDisabled( true );
         }
         this.enableDisableActionTakenFields();
+        this.changeDetector
+            .detectChanges();
+        this.log( 'ngAfterViewInit.override.end' );
     }
 
     /**
@@ -117,11 +129,14 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected setDefaultValues()
     {
+        let methodName = 'setDefaultValues';
+        this.log( methodName + '.begin' );
         super.setDefaultValues();
         this.modelObject.notesRating = 3;
         this.modelObject.bullOrBear = 1;
         this.modelObject.actionTaken = StockNotesActionTaken.NONE;
         this.modelObject.notesDate = new Date( Date.now() );
+        this.log( methodName + '.end' );
     }
 
     /**
@@ -129,11 +144,14 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected resetForm(): void
     {
+        let methodName = 'resetForm';
+        this.log( methodName + '.begin' );
         super.resetForm();
         if ( this.stockSearchSelectedCompaniesComponent )
         {
             this.stockSearchSelectedCompaniesComponent.reset();
         }
+        this.log( methodName + '.end' );
     }
 
     /**
@@ -192,6 +210,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     protected prepareToDisplay(): void
     {
         let methodName = "prepareToDisplay";
+        this.log( methodName + '.begin' );
         super.prepareToDisplay();
         /*
          * Need to simulate the entry of the stocks for this stock note
@@ -210,6 +229,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                                           }
                               );
                       } );
+        this.log( methodName + '.end' );
     }
 
     /**
@@ -228,6 +248,8 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected prepareToSave(): void
     {
+        let methodName = 'prepareToSave';
+        this.log( methodName );
         this.stockSearchSelectedCompaniesComponent
             .getCompanies()
             .forEach( (stockCompany: StockCompany) =>
@@ -295,5 +317,39 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             return this.modelObject.actionTaken == StockNotesActionTaken.NONE ||
                    this.modelObject.actionTaken == StockNotesActionTaken.BUY_LATER;
         }
+    }
+
+    protected enableInputs(): void
+    {
+        super.enableInputs();
+        if ( !isNullOrUndefined( this.stockSearchSelectedCompaniesComponent ))
+        {
+            this.stockSearchSelectedCompaniesComponent
+                .setDisabled( false );
+        }
+        /*
+        if ( !isNullOrUndefined( this.stockNotesSourceSelectionComponent ))
+        {
+            this.stockNotesSourceSelectionComponent
+                .setDisabled( false );
+        }
+        */
+    }
+
+    protected disableInputs(): void
+    {
+        super.disableInputs();
+        if ( !isNullOrUndefined( this.stockSearchSelectedCompaniesComponent ))
+        {
+            this.stockSearchSelectedCompaniesComponent
+                .setDisabled( true );
+        }
+        /*
+        if ( !isNullOrUndefined( this.stockNotesSourceSelectionComponent ))
+        {
+            this.stockNotesSourceSelectionComponent
+                .setDisabled( true );
+        }
+        */
     }
 }

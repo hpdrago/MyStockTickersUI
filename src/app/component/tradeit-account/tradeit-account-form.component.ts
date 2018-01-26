@@ -1,5 +1,5 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { SessionService } from "../../service/session.service";
@@ -27,16 +27,18 @@ export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccoun
 
     /**
      * Constructor.
+     * @param {ChangeDetectorRef} changeDetector
      * @param {ToastsManager} toaster
      * @param {SessionService} sessionService
      * @param {FormBuilder} formBuilder
      * @param {TradeItAccountStateStore} tradeItAccountStateStore
      * @param {TradeItAccountController} tradeItAccountController
      * @param {TradeItAccountFactory} tradeItAccountFactory
+     * @param {TradeItAccountCrudService} tradeItCrudService
      * @param {TradeItService} tradeItService
-     * @param {} customerAccountCrudServiceContainer
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private tradeItAccountStateStore: TradeItAccountStateStore,
@@ -45,7 +47,8 @@ export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccoun
                  private tradeItCrudService: TradeItAccountCrudService,
                  private tradeItService: TradeItService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                tradeItAccountStateStore,
                tradeItAccountController,
                tradeItAccountFactory,

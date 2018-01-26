@@ -14,14 +14,19 @@ import { StockCompanyService } from '../../service/crud/stock-company.service';
 ({
     selector: 'selected-stock-companies',
     styleUrls: ['../crud/form/crud-form.component.css'],
-    template: `<div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+    template: `<div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid">
                    <!----------------------------------------------------------------------------------------------------------
                     TICKER SYMBOLS
                     ------------------------------------------------------------------------------------------------------------>
                     <div class="crud-form ui-grid-row">
                         <div class="crud-form-label ui-grid-col-2">
                             <label class="crud-form">
-                                Selected Stocks:
+                                <div *ngIf="maxCompanies == 1">
+                                    Stock:
+                                </div>
+                                <div *ngIf="maxCompanies > 1">
+                                    Stock(s):
+                                </div>
                             </label>
                         </div>
                         <div class="ui-grid-col-10">
@@ -35,7 +40,12 @@ import { StockCompanyService } from '../../service/crud/stock-company.service';
                     <div class="ui-grid-row">
                         <div class="crud-form-label ui-grid-col-2">
                             <label class="crud-form" for="lastPriceColumn">
-                                Last Price:
+                                <div *ngIf="maxCompanies == 1">
+                                    Last Price:
+                                </div>
+                                <div *ngIf="maxCompanies > 1">
+                                    Last Price(s):
+                                </div>
                             </label>
                         </div>
                         <div class="ui-grid-col-10">
@@ -49,7 +59,12 @@ import { StockCompanyService } from '../../service/crud/stock-company.service';
                     <div class="ui-grid-row">
                         <div class="crud-form-label ui-grid-col-2">
                             <label class="crud-form" for="notes">
-                                Company:
+                                <div *ngIf="maxCompanies == 1">
+                                    Company:
+                                </div>
+                                <div *ngIf="maxCompanies > 1">
+                                    Company(s):
+                                </div>
                             </label>
                         </div>
                         <div class="ui-grid-col-10">
@@ -119,6 +134,7 @@ export class SelectedStockCompaniesComponent extends BaseComponent
      */
     public reset()
     {
+        this.debug( 'reset' );
         this.stockCompanies
             .clear();
     }

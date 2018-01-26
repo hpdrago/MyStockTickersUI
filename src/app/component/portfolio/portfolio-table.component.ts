@@ -59,7 +59,6 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
      */
     public ngOnInit(): void
     {
-        super.ngOnInit();
         this.loadTable();
         this.portfolioStocksComponent
             .registerForPortfolioStockChanges( () => this.loadPortfolio() );

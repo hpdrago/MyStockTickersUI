@@ -40,11 +40,4 @@ export class CustomerPanelComponent extends CrudPanelComponent<Customer>
                customerFactory,
                customerCrudService );
     }
-
-    public ngOnInit(): void
-    {
-        super.ngOnInit();
-        this.displayModelObject();
-    }
-
 }

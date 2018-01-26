@@ -20,11 +20,11 @@ export abstract class CrudTableEditButtonComponent<T extends ModelObject<T>> ext
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    constructor( protected toaster: ToastsManager,
-                 protected crudStateStore: CrudStateStore<T>,
-                 protected crudController: CrudController<T>,
-                 protected modelObjectFactory: ModelObjectFactory<T>,
-                 protected crudRestService: CrudRestService<T> )
+    protected constructor( protected toaster: ToastsManager,
+                           protected crudStateStore: CrudStateStore<T>,
+                           protected crudController: CrudController<T>,
+                           protected modelObjectFactory: ModelObjectFactory<T>,
+                           protected crudRestService: CrudRestService<T> )
     {
         super( toaster,
                crudStateStore,
@@ -49,6 +49,18 @@ export abstract class CrudTableEditButtonComponent<T extends ModelObject<T>> ext
 
     public get buttonDisabled(): boolean
     {
-        return isNullOrUndefined( this.selectedModelObject );
+        let disabled = true;
+        if ( !isNullOrUndefined( this.selectedModelObject ) )
+        {
+            if ( isNullOrUndefined( this.selectedModelObject.getPrimaryKeyValue() ))
+            {
+                this.logError( "Selected object primary key is null: " + JSON.stringify( this.selectedModelObject ))
+            }
+            else
+            {
+                disabled = false;
+            }
+        }
+        return disabled;
     }
 }

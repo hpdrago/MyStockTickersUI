@@ -1,5 +1,5 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { SessionService } from "../../service/session.service";
@@ -26,6 +26,7 @@ export class LinkedAccountFormComponent extends CrudFormComponent<LinkedAccount>
 
     /**
      * Constructor.
+     * @param {ChangeDetectorRef} changeDetector
      * @param {ToastsManager} toaster
      * @param {SessionService} sessionService
      * @param {FormBuilder} formBuilder
@@ -34,7 +35,8 @@ export class LinkedAccountFormComponent extends CrudFormComponent<LinkedAccount>
      * @param {LinkedAccountFactory} linkedAccountFactory
      * @param {LinkedAccountCrudService} linkedAccountCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private linkedAccountStateStore: LinkedAccountStateStore,
@@ -42,7 +44,8 @@ export class LinkedAccountFormComponent extends CrudFormComponent<LinkedAccount>
                  private linkedAccountFactory: LinkedAccountFactory,
                  private linkedAccountCrudService: LinkedAccountCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                linkedAccountStateStore,
                linkedAccountController,
                linkedAccountFactory,

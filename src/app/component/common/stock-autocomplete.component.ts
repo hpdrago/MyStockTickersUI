@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, Output } from "@angular/core";
+import { ChangeDetectorRef, Component, EventEmitter, forwardRef, Output } from "@angular/core";
 import { PaginationPage } from "../../common/pagination";
 import { StockPriceQuoteService } from "../../service/crud/stock-price-quote.service";
 import { ToastsManager } from "ng2-toastr";
@@ -25,9 +25,8 @@ import { CachedValueState } from '../../common/cached-value-state.enum';
                                 (completeMethod)="onStockSearch( $event )"
                                 (onSelect)="onStockSearchSelected( $event )"
                                 (onBlur)="onBlur( $event )"
-                                (onKeyUp)="onKeyUp( $event )"
                                 uppercase
-                                [disabled]="disabledState"
+                                [disabled]="disabledState || disabled"
                                 placeholder="Enter company name or ticker symbol. Tab for expanded search">
                </p-autoComplete>
     `,
@@ -45,7 +44,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
 
     protected stockSearchResults: string[];
     protected stockCompany: StockCompany;
-    protected disabledState: boolean;
+    protected disabledState: boolean = false;
     private isStockSelected : boolean;
 
     /**
@@ -66,18 +65,17 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     public ngOnInit()
     {
         this.log( "ngOnInit" );
+        this.stockCompany = this.stockCompanyFactory.newModelObject();
         if ( !this.stockSelected )
         {
             throw new Error( "stockSelected has not been set by Input value" );
         }
-        this.reset();
     }
 
     public reset(): void
     {
         this.log( "reset" );
-        this.stockCompany = this.stockCompanyFactory.newModelObject();
-        this.disabledState = false;
+        this.setDisabledState( false );
         this.isStockSelected = false;
     }
 
@@ -193,13 +191,6 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         }
     }
 
-    private onKeyUp(event)
-    {
-        this.debug( "onChange " + JSON.stringify( event ) );
-        // get value from text area
-        //this.tickerSymbol = this.tickerSymbol.toUpperCase();
-    }
-
     /*
      * The following methods are needed to send the stock information to the component
      * https://medium.com/@tarik.nzl/angular-2-custom-form-control-with-validation-json-input-2b4cf9bc2d73
@@ -230,6 +221,13 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     {
         this.log( 'Setting disabledState=' + disabledState );
         this.disabledState = disabledState;
+        /*
+        this.tickThenRun( () =>
+                          {
+                              this.log( 'Setting disabledState=' + disabledState );
+                              this.disabledState = disabledState;
+                          });
+                          */
     }
 
 }

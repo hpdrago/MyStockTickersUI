@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, Input, OnInit } from "@angular/core";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { SelectItem } from "primeng/components/common/api";
@@ -38,16 +38,18 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
 
     /**
      * Constructor.
+     * @param {ChangeDetectorRef} changeDetector
      * @param {ToastsManager} toaster
      * @param {FormBuilder} formBuilder
-     * @param {StockSectorCrudService} stockSectorService
      * @param {PortfolioStockStateStore} portfolioStockStateStore
      * @param {PortfolioStockController} portfolioStockController
      * @param {PortfolioStockFactory} portfolioStockFactory
      * @param {PortfolioStockCrudService} portfolioStockCrudService
      * @param {StockPriceQuoteService} stockCrudService
+     * @param {StockCompanyService} stockCompanyService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected formBuilder: FormBuilder,
                  protected portfolioStockStateStore: PortfolioStockStateStore,
                  protected portfolioStockController: PortfolioStockController,
@@ -56,7 +58,8 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
                  private stockCrudService: StockPriceQuoteService,
                  private stockCompanyService: StockCompanyService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                portfolioStockStateStore,
                portfolioStockController,
                portfolioStockFactory,

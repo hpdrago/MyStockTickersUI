@@ -1,5 +1,4 @@
 <div *ngIf="!isCrudNoneOperation()">
-    <div [ngBusy]="busyIndicator"></div>
     <form [formGroup]="formGroup">
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
             <div *ngIf="isCrudCreateOperation(); then createDiv else modifyDiv" class="crud-form ui-grid-row">
@@ -7,8 +6,9 @@
             <!----------------------------------------------------------------------------------------------------------
             SEARCH
             ------------------------------------------------------------------------------------------------------------>
-
-            <stock-search-selected-companies (stockSelected)="onStockSelected($event)">
+            <stock-search-selected-companies (stockSelected)="onStockSelected($event)"
+                                             [maxStocks]="10"
+                                             [tickerSymbol]="modelObject.tickerSymbol">
             </stock-search-selected-companies>
 
             <!----------------------------------------------------------------------------------------------------------

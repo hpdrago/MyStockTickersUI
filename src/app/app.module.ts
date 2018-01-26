@@ -210,7 +210,6 @@ import { StockCatalystEventTableDeleteButtonComponent } from './component/stock-
 import { StockCatalystEventTableEditButtonComponent } from './component/stock-catalyst-event/stock-catalyst-event-table-edit-button.component';
 import { CrudTableButtonsComponent } from './component/crud/table/crud-table-buttons.component';
 import { StockPositionTableRefreshButtonComponent } from './component/stock-position/stock-position-table-refresh-button.component';
-import { BusyModule } from 'angular2-busy';
 import { HttpClientModule } from '@angular/common/http';
 import { StockNotesSourceCrudService } from './service/crud/stock-notes-source-crud.service';
 import { StockNotesSourceFormButtonsComponent } from './component/stock-notes-source/stock-notes-source-form-buttons.component';
@@ -313,7 +312,6 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         AccordionModule,
         TableModule,
         // Third Party modules,
-        BusyModule,
         ToastModule.forRoot(),
 
         // StoxTracker Modules
