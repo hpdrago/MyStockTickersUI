@@ -156,7 +156,7 @@
                   header="Avg Upside"
                   field="avgUpsidePercent"
                   [style]="{'width':'10px','text-align':'right'}"
-                  [sortable]="true">
+                  [sortable]="false">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
                 {{calcAvgUpsidePercent( stockToBuy ) | percent:'1.0-0' }}
             </ng-template>
@@ -200,7 +200,7 @@
                   field="notesSourceName"
                   header="Source"
                   [style]="{'width':'40px'}"
-                  [sortable]="true">
+                  [sortable]="false">
         </p-column>
 
         <!----------------------------------------------------------------------------------------------------------
@@ -210,7 +210,7 @@
                   field="tags"
                   header="Tags"
                   [style]="{'width':'40px'}"
-                  [sortable]="true">
+                  [sortable]="false">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
                 {{stockToBuy[col.field] }}
             </ng-template>

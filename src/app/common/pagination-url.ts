@@ -7,6 +7,7 @@
  */
 import { LoggerFactory } from "./logger-factory";
 import { Logger } from "./logger";
+import { LazyLoadEvent } from "primeng/primeng";
 
 export class PaginationURL
 {
@@ -60,17 +61,26 @@ export class PaginationURL
      * Format the URL to make a Spring REST page request
      * @param pageNumber Starting at page number
      * @param rows The number of rows to retrieve
+     *
+     * https://docs.spring.io/spring-data/rest/docs/2.0.0.M1/reference/html/paging-chapter.html
+     *
      * @returns {any}
      */
-    public getPage( rowOffSet: number, rows: number  ): string
+    public getPage( lazyLoadEvent: LazyLoadEvent  ): string
     {
+        let methodName = "getPage";
         /*
          * Need to calculate the page number from the rowOffSet
          */
-        this.logger.log( `getPage rowOffset: ${rowOffSet} rows: ${rows}` )
-        var pageNumber = ((rowOffSet + rows) / rows) - 1;
-        var url = this.url + "?page=" + pageNumber + "&limit=" + rows;
-        this.logger.log( "getPage url: " + url );
+        this.logger.log( methodName + " " + JSON.stringify( lazyLoadEvent ));
+        var pageNumber = ((lazyLoadEvent.first + lazyLoadEvent.rows) / lazyLoadEvent.rows) - 1;
+        var url = this.url + "?page=" + pageNumber + "&limit=" + lazyLoadEvent.rows;
+        if ( lazyLoadEvent.sortField )
+        {
+            url += `&sort=${lazyLoadEvent.sortField},`;
+            url += lazyLoadEvent.sortOrder == 1 ? "asc" : "desc";
+        }
+        this.logger.log( methodName + " url: " + url );
         return url;
     }
 }

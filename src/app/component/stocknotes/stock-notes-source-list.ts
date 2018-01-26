@@ -2,10 +2,17 @@ import { StockNotesSource } from "../../model/entity/stock-notes-source";
 import { SelectItem } from "primeng/primeng";
 import { BaseClass } from "../../common/base-class";
 import { isNullOrUndefined } from "util";
+import { ToastsManager } from "ng2-toastr";
 
 export class StockNotesSourceList extends BaseClass
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockNotesSource[]} stockNotesSources
+     */
     constructor( private stockNotesSources: StockNotesSource[] )
+
     {
         super();
     }

@@ -46,4 +46,22 @@ export class TradeItAPIResult
         let apiResult: TradeItAPIResult = jsonConvert.deserialize( rawJson, TradeItAPIResult );
         return apiResult;
     }
+
+    /**
+     * Determines the result was an error.
+     * @return {boolean}
+     */
+    public isError(): boolean
+    {
+        return this.status == "ERROR";
+    }
+
+    /**
+     * Determines the result was successful.
+     * @return {boolean}
+     */
+    public isSuccess(): boolean
+    {
+        return this.status == "SUCCESS";
+    }
 }

@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { AppConfigurationService } from "./app-configuration.service";
 import { BaseService } from "./base-service";
 import { Customer } from "../model/entity/customer";
+import { ToastsManager } from "ng2-toastr";
 
 /**
  * Created by mike on 10/22/2016.
@@ -11,9 +12,15 @@ export class SessionService extends BaseService
 {
     private _customer: Customer;
 
-    constructor( private config: AppConfigurationService )
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {AppConfigurationService} config
+     */
+    constructor( protected toaster: ToastsManager,
+                 private config: AppConfigurationService )
     {
-        super();
+        super( toaster );
     }
 
     /**

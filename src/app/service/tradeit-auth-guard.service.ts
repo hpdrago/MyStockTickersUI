@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterSt
 import { Observable } from "rxjs/Observable";
 import { BaseClass } from "../common/base-class";
 import { TradeItService } from "./tradeit/tradeit.service";
+import { ToastsManager } from "ng2-toastr";
 
 /**
  * Router Guard to redirect user to login screen.
@@ -13,10 +14,17 @@ import { TradeItService } from "./tradeit/tradeit.service";
 @Injectable()
 export class TradeItAuthGuardService extends BaseClass implements CanActivate, CanActivateChild
 {
-    constructor( private tradeItService: TradeItService,
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {TradeItService} tradeItService
+     * @param {Router} router
+     */
+    constructor( protected toaster: ToastsManager,
+                 private tradeItService: TradeItService,
                  private router: Router )
     {
-        super();
+        super( toaster );
     }
 
     /*

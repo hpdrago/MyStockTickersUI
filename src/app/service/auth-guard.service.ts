@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterSt
 import { AuthService } from './auth.service';
 import { Observable } from "rxjs/Observable";
 import { BaseClass } from "../common/base-class";
+import { ToastsManager } from "ng2-toastr";
 
 /**
  * Router Guard to redirect user to login screen.
@@ -13,10 +14,17 @@ import { BaseClass } from "../common/base-class";
 @Injectable()
 export class AuthGuardService extends BaseClass implements CanActivate, CanActivateChild
 {
-    constructor( private authService: AuthService,
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {AuthService} authService
+     * @param {Router} router
+     */
+    constructor( protected toaster: ToastsManager,
+                 private authService: AuthService,
                  private router: Router )
     {
-        super();
+        super( toaster );
     }
 
     public checkLogin( url: string ): boolean

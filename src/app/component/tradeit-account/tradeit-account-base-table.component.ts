@@ -1,6 +1,6 @@
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
-import { TradeItAuthenticateResult } from "../../service/tradeit/apiresults/authenticate-result";
+import { TradeItAuthenticateResult } from "../../service/tradeit/apiresults/tradeit-authenticate-result";
 import { TradeItSecurityQuestionDialogComponent } from "../tradeit/tradeit-security-question-dialog.component";
 import { EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
@@ -64,12 +64,19 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
         super.onRowSelect( event );
         this.tradeItOAuthService
             .checkAuthentication( this.modelObject, this.tradeItSecurityQuestionDialog )
-            .subscribe( (tradeItAccount: TradeItAccount ) =>
+            .subscribe( (authenticateAccountResult: TradeItAuthenticateResult ) =>
                         {
-                            this.log( methodName + " account authenticated or kept alive" );
-                            this.setModelObject( tradeItAccount );
-                            this.updateModelObjectRow( tradeItAccount );
-                            this.tradeItAccountSelected.emit( this.modelObject );
+                            if ( authenticateAccountResult.isSuccess() )
+                            {
+                                this.log( methodName + " account authenticated or kept alive" );
+                                this.setModelObject( authenticateAccountResult.tradeItAccount );
+                                this.updateModelObjectRow( this.modelObject );
+                                this.tradeItAccountSelected.emit( this.modelObject );
+                            }
+                            else
+                            {
+                                this.reportTradeItError( authenticateAccountResult );
+                            }
                         },
                         error =>
                         {
@@ -89,10 +96,16 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
         this.setModelObject( tradeItAccount );
         this.tradeItOAuthService
             .checkAuthentication( tradeItAccount, this.tradeItSecurityQuestionDialog )
-            .subscribe( (tradeItAccount: TradeItAccount) =>
+            .subscribe( (authenticateAccountResult: TradeItAuthenticateResult) =>
             {
-                this.log( methodName + " authentication successful: " + JSON.stringify( tradeItAccount ));
-                this.setModelObject( tradeItAccount );
+                if ( authenticateAccountResult.isSuccess() )
+                {
+                    this.log( methodName + " authentication successful: " + JSON.stringify( tradeItAccount ));
+                }
+                else
+                {
+                    this.reportTradeItError( authenticateAccountResult );
+                }
             },
             error =>
             {

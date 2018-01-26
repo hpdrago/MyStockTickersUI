@@ -7,6 +7,7 @@ import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 import { StockNotesSourceService } from "../../service/crud/stock-notes-source.service";
 import { ModelObjectChangeService } from "../../service/crud/model-object-change.service";
 import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
+import { ToastsManager } from "ng2-toastr";
 
 /**
  * This is the service container for the StockNotes entity.
@@ -14,6 +15,13 @@ import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
 @Injectable()
 export class StockNotesCrudServiceContainer extends CrudServiceContainer<StockNotes>
 {
+    /**
+     * Constructor.
+     * @param {StockNotesFactory} _stockNoteFactory
+     * @param {StockNotesCrudService} _stockNoteCrudService
+     * @param {StockNotesCountService} _stockNoteCountService
+     * @param {StockNotesSourceService} _stockNoteSourceService
+     */
     constructor( private _stockNoteFactory: StockNotesFactory,
                  private _stockNoteCrudService: StockNotesCrudService,
                  private _stockNoteCountService: StockNotesCountService,

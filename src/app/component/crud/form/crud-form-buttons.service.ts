@@ -3,6 +3,7 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { Observable, Subject } from "rxjs";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { Subscription } from "rxjs/Subscription";
+import { ToastsManager } from "ng2-toastr";
 
 /**
  * This class defines the publish/subscribe (observer pattern) methods from communication
@@ -33,9 +34,15 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     private resetButtonClickedSubject: Subject<void>;
     private navigateToModelObjectSubject: Subject<T>;
 
-    constructor( protected modelObjectFactory: ModelObjectFactory<T> )
+    /**
+     * Constructor
+     * @param {ToastsManager} toaster
+     * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     */
+    constructor( protected modelObjectFactory: ModelObjectFactory<T>,
+                 protected toaster?: ToastsManager )
     {
-        super( modelObjectFactory );
+        super( modelObjectFactory, toaster );
         this.createSubjects();
     }
 

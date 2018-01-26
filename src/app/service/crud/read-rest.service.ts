@@ -10,6 +10,8 @@ import { PaginationPage } from "../../common/pagination";
 import { PaginationURL } from "../../common/pagination-url";
 import { KeyValuePairs } from "../../common/key-value-pairs";
 import { KeyValuePair } from "../../common/key-value-pair";
+import { LazyLoadEvent } from "primeng/primeng";
+import { ToastsManager } from "ng2-toastr";
 
 /**
  * Generic class for reading model objects from the database.  Provides a method to read a single entity or a list
@@ -18,6 +20,13 @@ import { KeyValuePair } from "../../common/key-value-pair";
 export abstract class ReadRestService<T extends ModelObject<T>>
     extends BaseService
 {
+    /**
+     * Constructor.
+     * @param {Http} http
+     * @param {SessionService} sessionService
+     * @param {AppConfigurationService} appConfig
+     * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     */
     constructor( protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
@@ -261,11 +270,11 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * @param rows The numbers of rows per page (rows to return for this page)
      * @returns {Observable<PaginationPage<Stock>>}
      */
-    public getPage( modelObject: T, rowOffSet: number, rows: number ): Observable<PaginationPage<T>>
+    public getPage( modelObject: T, lazyLoadEvent: LazyLoadEvent ): Observable<PaginationPage<T>>
     {
         let methodName = "getPage";
-        let url = new PaginationURL( this.getReadModelObjectListUrl( modelObject ) ).getPage( rowOffSet, rows );
-        this.logger.log( `${methodName} url: ${url} rowOffset: ${rowOffSet} rows: ${rows}` );
+        let url = new PaginationURL( this.getReadModelObjectListUrl( modelObject ) ).getPage( lazyLoadEvent );
+        this.logger.log( `${methodName} url: ${url}` );
         try
         {
             return this.http
@@ -276,8 +285,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                              })
                        .catch( ( error: any ) =>
                                {
-                                   this.reportError( error );
-                                   return Observable.throw( error.json().error || 'Server error' );
+                                   return Observable.throw( error );
                                });
         }
         catch( exception )

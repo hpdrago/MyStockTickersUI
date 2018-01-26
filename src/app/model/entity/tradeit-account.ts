@@ -48,14 +48,19 @@ export class TradeItAccount extends ModelObject<TradeItAccount>
      */
     public isAuthenticated(): boolean
     {
+        let methodName = "isAuthenticated";
+        console.log( methodName + " authTimestamp: " + this.authTimestamp );
         if ( isNullOrUndefined( this.authTimestamp ) )
         {
+            console.log( methodName + " authTimestamp: null returning false" );
             return false;
         }
         else
         {
             let authTimestamp = new Date( this.authTimestamp );
+            console.log( `${methodName} authTimestamp: ${authTimestamp}` );
             var diffMins = authTimestamp.getMilliseconds()/(60 * 1000 * 1000)
+            console.log( `${methodName} diffMines: ${diffMins}` );
             return diffMins < 15;
         }
     }

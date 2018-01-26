@@ -741,7 +741,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onSaveButtonClicked( modelObject: T ): void
     {
         let methodName = "onSaveButtonClicked";
-        this.debug( methodName );
+        this.debug( methodName + " " + JSON.stringify( modelObject ) );
     }
 
     /**
@@ -750,8 +750,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onSaveButtonClickCompleted( modelObject: T ): void
     {
         let methodName = "onSaveButtonClickCompleted";
-        this.debug( methodName );
+        this.debug( methodName + " " + JSON.stringify( modelObject ) );
         this.clearForm();
+        this.crudServiceContainer.crudFormService.resetSubjects();
     }
 
     /**
@@ -761,7 +762,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onAddButtonClicked( modelObject: T ): void
     {
         let methodName = "onAddButtonClicked";
-        this.debug( methodName );
+        this.debug( methodName + " " + JSON.stringify( modelObject ) );
     }
 
     /**
@@ -770,8 +771,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onAddButtonClickCompleted( modelObject: T ): void
     {
         let methodName = "onAddButtonClickCompleted";
-        this.debug( methodName );
+        this.debug( methodName + " " + JSON.stringify( modelObject ) );
         this.clearForm();
+        this.crudServiceContainer.crudFormService.resetSubjects();
     }
 
     /**
@@ -781,7 +783,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onDeleteButtonClicked( modelObject: T ): void
     {
         let methodName = "onDeleteButtonClicked";
-        this.debug( methodName );
+        this.debug( methodName + " " + JSON.stringify( modelObject ) );
     }
 
     /**
@@ -792,7 +794,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected onDeleteButtonClickCompleted( modelObject: T ): void
     {
         let methodName = "onDeleteButtonClickCompleted";
-        this.debug( methodName );
+        this.debug( methodName + " " + JSON.stringify( modelObject ) );
         this.clearForm();
     }
 
@@ -831,5 +833,11 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected invalidProperty( propertyName: string )
     {
         //this.debug( "invalidProperty " + propertyName );
+    }
+
+
+    protected debug( message: string ): void
+    {
+        super.debug( "CrudFormComponent." + message );
     }
 }

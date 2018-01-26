@@ -7,6 +7,8 @@ import { ModelObjectFactory } from "../../../model/factory/model-object.factory"
 import { Subscription } from "rxjs/Subscription";
 import { isNullOrUndefined } from "util";
 import { Subject } from "rxjs/Subject";
+import { ToastsManager } from "ng2-toastr";
+import { BaseService } from "../../../service/base-service";
 
 /**
  * This class services as a base abstract class for CRUD based component services to provide common methods
@@ -14,7 +16,7 @@ import { Subject } from "rxjs/Subject";
  *
  * Created by mike on 12/17/2016.
  */
-export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends BaseClass
+export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends BaseService
 {
     private modelObjectChangedSubject: BehaviorSubject<T>;
     private crudOperationChangedSubject: BehaviorSubject<CrudOperation>;
@@ -24,10 +26,12 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends
     /**
      * Constructor.
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     * @param {ToastsManager} toaster
      */
-    constructor( protected modelObjectFactory: ModelObjectFactory<T> )
+    constructor( protected modelObjectFactory: ModelObjectFactory<T>,
+                 protected toaster?: ToastsManager )
     {
-        super();
+        super( toaster );
         this.createSubjects();
     }
 

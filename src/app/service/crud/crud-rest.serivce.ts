@@ -7,6 +7,7 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 import { isNullOrUndefined } from "util";
 import { KeyValuePair } from "../../common/key-value-pair";
+import { ToastsManager } from "ng2-toastr";
 
 /**
  * Generic Service class for REST CRUD methods
@@ -18,6 +19,13 @@ import { KeyValuePair } from "../../common/key-value-pair";
  */
 export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRestService<T>
 {
+    /**
+     * Constructor.
+     * @param {Http} http
+     * @param {SessionService} sessionService
+     * @param {AppConfigurationService} appConfig
+     * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     */
     constructor( protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
@@ -135,7 +143,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                             this.log( methodName + " received: " + JSON.stringify( res.json() ));
                             return this.modelObjectFactory.newModelObjectFromJSON( res.json() );
                         } ) // ...and calling .json() on the response to return data
-                        .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ) //...errors if any
+                        .catch( ( error: any ) => Observable.throw( error || 'Server error' ) ) //...errors if any
                         .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
@@ -169,7 +177,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                                   }
                                   return;
                               } ) // ...and calling .json() on the response to return data
-                        .catch( ( error: any ) => Observable.throw( error.json().error || 'Server error' ) ) //...errors if any
+                        .catch( ( error: any ) => Observable.throw( error || 'Server Error' )) //...errors if any
                         .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 

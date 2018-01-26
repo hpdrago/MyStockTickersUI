@@ -34,7 +34,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
     protected modelObject: T;
     /**
-     *
+     * Rest error reporting class.
      */
     private crudRestErrorReporter: CrudRestErrorReporter;
 
@@ -60,7 +60,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
     protected createCrudRestErrorReporter(): CrudRestErrorReporter
     {
-        return new CrudRestErrorReporter( this );
+        return new CrudRestErrorReporter( this.toaster, this );
     }
 
     /**
@@ -277,7 +277,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      * This method is called when a 409 HTTP Code is received from a rest call.
      * Override this method to customize the error message
      */
-    getDuplicateKeyErrorMessage(): string
+    public getDuplicateKeyErrorMessage(): string
     {
         return 'Sorry, you are attempting to create a duplicate entry';
     }

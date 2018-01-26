@@ -9,6 +9,7 @@ import { CrudTableService } from "../table/crud-table.service";
 import { ModelObjectChangeService } from "../../../service/crud/model-object-change.service";
 import { CrudPanelService } from "../panel/crud-panel.service";
 import { BaseClass } from "../../../common/base-class";
+import { ToastsManager } from "ng2-toastr";
 
 /**
  * This is a container class for all of the CRUD services and the model object factory.
@@ -18,6 +19,18 @@ export abstract class CrudServiceContainer<T extends ModelObject<T>> extends Bas
 {
     private _crudPanelService: CrudPanelService<T>;
     private _crudDialogService: CrudDialogService<T>;
+
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {ModelObjectChangeService<T extends ModelObject<T>>} _modelObjectChangeService
+     * @param {ModelObjectFactory<T extends ModelObject<T>>} _modelObjectFactory
+     * @param {CrudRestService<T extends ModelObject<T>>} _crudRestService
+     * @param {CrudTableService<T extends ModelObject<T>>} _crudTableService
+     * @param {CrudTableButtonsService<T extends ModelObject<T>>} _crudTableButtonsService
+     * @param {CrudFormButtonsService<T extends ModelObject<T>>} _crudFormButtonsService
+     * @param {CrudFormService<T extends ModelObject<T>>} _crudFormService
+     */
     constructor( private _modelObjectChangeService: ModelObjectChangeService<T>,
                  private _modelObjectFactory: ModelObjectFactory<T>,
                  private _crudRestService: CrudRestService<T>,

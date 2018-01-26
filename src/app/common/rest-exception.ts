@@ -83,4 +83,13 @@ export class RestException
     get statusText(): string { return this._statusText; }
     get error(): string { return this._error; }
     get exception(): string { return this._exception; }
+
+    /**
+     * Determines if the status code returned is 404 - Not Found.
+     * @return {boolean}
+     */
+    public isNotFound(): boolean
+    {
+        return this.status == 404;
+    }
 }

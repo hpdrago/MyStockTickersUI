@@ -7,6 +7,7 @@ import { StockNotesSourceFactory } from "../../model/factory/stock-notes-source.
 import { Observable } from "rxjs/Observable";
 import { StockNotesSourceList } from "../../component/stocknotes/stock-notes-source-list";
 import { Injectable } from "@angular/core";
+import { ToastsManager } from "ng2-toastr";
 
 /**
  * This class contains the CRUD services necessary to create, delete, update, and retrieve source of stock notes.
@@ -16,7 +17,16 @@ export class StockNotesSourceService extends CrudRestService<StockNotesSource>
 {
     private urlPath = "/stockNotesSource";
 
-    constructor( protected http: Http,
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {Http} http
+     * @param {SessionService} sessionService
+     * @param {AppConfigurationService} appConfig
+     * @param {StockNotesSourceFactory} modelObjectFactory
+     */
+    constructor( protected toaster: ToastsManager,
+                 protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected modelObjectFactory: StockNotesSourceFactory )

@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { StockQuote } from "../model/entity/stock-quote";
 import { Observable } from "rxjs/Observable";
 import { StockCrudService } from "./crud/stock-crud.service";
+import { ToastsManager } from "ng2-toastr";
 
 @Injectable()
 export class StockQuoteCache extends BaseService
@@ -10,9 +11,15 @@ export class StockQuoteCache extends BaseService
     private quoteMap: Map<string, StockQuote> = new Map();
     private workingMap: Map<string, Observable<StockQuote>> = new Map();
 
-    constructor( private stockService: StockCrudService )
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockCrudService} stockService
+     */
+    constructor( protected toaster: ToastsManager,
+                 private stockService: StockCrudService )
     {
-        super();
+        super( toaster );
     }
 
     /**

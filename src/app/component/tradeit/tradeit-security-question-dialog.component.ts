@@ -1,6 +1,6 @@
 import { BaseComponent } from "../common/base.component";
 import { Component, EventEmitter, Output } from "@angular/core";
-import { TradeItAuthenticateResult } from "../../service/tradeit/apiresults/authenticate-result";
+import { TradeItAuthenticateResult } from "../../service/tradeit/apiresults/tradeit-authenticate-result";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { SelectItem } from "primeng/primeng";
 import { ToastsManager } from "ng2-toastr";

@@ -13,7 +13,7 @@ export class RestErrorReporter extends BaseClass
      * Constructor.
      * @param {ToastsManager} toaster
      */
-    constructor( protected toaster?: ToastsManager )
+    constructor( protected toaster: ToastsManager )
     {
         super( toaster );
     }

@@ -8,13 +8,14 @@ import { TradeItBrokerListResult } from "./apiresults/tradeit-broker-list-result
 import { TradeItOAuthAccessResult } from "./apiresults/tradeit-oauth-access-result";
 import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
 import { SessionService } from "../session.service";
-import { TradeItAuthenticateResult } from "./apiresults/authenticate-result";
+import { TradeItAuthenticateResult } from "./apiresults/tradeit-authenticate-result";
 import { TradeItGetOauthPopupURLResult } from "./apiresults/tradeit-get-oauth-popup-url-result";
 import { TradeItException } from "./tradeit-execption";
 import { TradeItAPIResult } from "./apiresults/tradeit-api-result";
 import { TradeItKeepSessionAliveResult } from "./apiresults/tradeit-keep-session-alive-result";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { GetOAuthTokenUpdateURLResult } from "./apiresults/tradeit-get-oath-token-update-url-result";
+import { ToastsManager } from "ng2-toastr";
 
 /**
  * This service contains the methods to interface with the Tradeit API
@@ -31,12 +32,20 @@ export class TradeItService extends BaseService
     private readonly KEEP_SESSION_ALIVE = "/keepSessionAlive";
     private readonly GET_OAUTH_TOKEN_UPDATE_URL=  "/getOAuthTokenUpdateURL";
 
-    constructor( protected http: Http,
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {Http} http
+     * @param {SessionService} sessionService
+     * @param {AppConfigurationService} appConfig
+     */
+    constructor( protected toaster: ToastsManager,
+                 protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                )
     {
-        super();
+        super( toaster );
     }
 
     /**

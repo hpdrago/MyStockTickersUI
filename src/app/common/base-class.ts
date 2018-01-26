@@ -2,6 +2,7 @@ import { Logger } from "./logger";
 import { LoggerFactory } from "./logger-factory";
 import { OnDestroy } from "@angular/core";
 import { Toast, ToastsManager } from "ng2-toastr";
+import { isNullOrUndefined } from "util";
 
 /**
  * This is the BaseClass for all classes to provide common logging and other methods that are of value amongst all
@@ -45,6 +46,15 @@ export class BaseClass implements OnDestroy
     }
 
     /**
+     * Logs an info message
+     * @param message
+     */
+    protected logError( message: string )
+    {
+        this.logger.error( message );
+    }
+
+    /**
      * Get the class name of this object
      */
     protected getClassName(): string
@@ -80,6 +90,7 @@ export class BaseClass implements OnDestroy
      */
     protected showErrorWithDelay( message: string, seconds: number ): Promise<Toast>
     {
+        this.checkToasterInstance();
         return this.toaster.error( message, "Error", {toastLife: seconds * 1000 } );
     }
 
@@ -90,6 +101,7 @@ export class BaseClass implements OnDestroy
      */
     protected showWarning( message: string ): Promise<Toast>
     {
+        this.checkToasterInstance();
         return this.toaster.warning( message );
     }
 
@@ -100,7 +112,19 @@ export class BaseClass implements OnDestroy
      */
     protected showInfo( message: string )// : Promise<Toast>
     {
+        this.checkToasterInstance();
         return this.toaster.info( message );
     }
 
+    /**
+     * Check the toaster instance and throw an exception if it hasn't been set.
+     */
+    private checkToasterInstance()
+    {
+        if ( isNullOrUndefined( this.toaster ))
+        {
+            this.logError( this.getClassName() + " toaster is null" );
+            throw new ReferenceError( "toaster is null" );
+        }
+    }
 }

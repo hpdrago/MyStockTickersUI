@@ -150,21 +150,23 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected lazyLoadTable( event: LazyLoadEvent ): void
     {
-        this.debug( 'lazyLoadTable.begin' );
+        let methodName = "lazyLoadTable";
+        this.debug( methodName + '.begin ' + JSON.stringify( event ) );
         this.crudServiceContainer
             .crudRestService
-            .getPage( this.modelObject, event.first, event.rows )
+            .getPage( this.modelObject, event )
             .subscribe( page =>
                         {
                             this.loading = false;
                             this.onPageLoad( page );
-                            this.debug( 'lazyLoadTable.end' );
+                            this.debug( methodName + '.end');
                         },
                         err =>
                         {
-                            // Log errors if any
                             this.loading = false;
+                            // Log errors if any
                             this.reportRestError( err );
+                            this.debug( methodName + '.end');
                         } );
         this.lastLoadEvent = event;
     }

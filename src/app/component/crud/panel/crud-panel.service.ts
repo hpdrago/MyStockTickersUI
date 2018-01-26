@@ -7,6 +7,7 @@ import { ModelObjectCrudOperationSubjectInfo } from "../dialog/modelobject-crudo
 import { Subscription } from "rxjs/Subscription";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Subject } from "rxjs/Subject";
+import { ToastsManager } from "ng2-toastr";
 
 /**
  * This is the base service for CRUD Panel operations.
@@ -24,9 +25,10 @@ export class CrudPanelService<T extends ModelObject<T>> extends BaseCrudComponen
      * @param {CrudFormButtonsService<T extends ModelObject<T>>} crudFormButtonsService
      */
     constructor( protected modelObjectFactory: ModelObjectFactory<T>,
-                 protected crudFormButtonsService: CrudFormButtonsService<T> )
+                 protected crudFormButtonsService: CrudFormButtonsService<T>,
+                 protected toaster?: ToastsManager, )
     {
-        super( modelObjectFactory );
+        super( modelObjectFactory, toaster );
     }
 
     /**

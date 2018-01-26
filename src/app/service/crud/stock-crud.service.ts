@@ -9,6 +9,7 @@ import { StockFactory } from "../../model/factory/stock.factory";
 import { Stock } from "../../model/entity/stock";
 import { StockQuote } from "../../model/entity/stock-quote";
 import { CrudRestService } from "./crud-rest.serivce";
+import { RestException } from "../../common/rest-exception";
 
 /**
  * This class provides all of the REST communication services for Stocks.
@@ -77,6 +78,19 @@ export class StockCrudService extends CrudRestService<Stock>
         return this.http
                    .get( url )
                    .map( ( response: Response ) => response.json() )
-                   .catch( ( error: any ) => Observable.throw( this.reportError( error )) );
+                   .catch( ( error: any ) =>
+                           {
+                               let restException = new RestException( error );
+                               if ( restException.isNotFound() )
+                               {
+                                   this.debug( methodName + " " + tickerSymbol + " was not found" );
+                                   return null;
+                               }
+                               else
+                               {
+                                   Observable.throw( error );
+                               }
+                           }
+                           );
     }
 }
