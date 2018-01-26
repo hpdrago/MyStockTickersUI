@@ -1,0 +1,21 @@
+<div *ngIf="!isCrudNoneOperation()">
+    <p-dialog header="Stock Notes Source"
+              [modal]="true"
+              [closable]="false"
+              [closeOnEscape]="false"
+              [responsive]="true"
+              [width]="300"
+              [height]="230"
+              [resizable]="false"
+              [contentStyle]="{'overflow':'visible'}"
+              [(visible)]="displayDialog">
+            <div>
+                <stock-notes-source-form>
+                </stock-notes-source-form>
+            </div>
+            <p-footer>
+                <stock-notes-source-form-buttons>
+                </stock-notes-source-form-buttons>
+            </p-footer>
+    </p-dialog>
+</div>

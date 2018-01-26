@@ -4,15 +4,12 @@ import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { StockNotesSourceStateStore } from './stock-notes-source-state-store';
 import { StockNotesSourceController } from './stock-notes-source-controller';
 import { StockNotesSource } from '../../model/entity/stock-notes-source';
-import { StockNotesSourceFactory } from '../../model/factory/stock-notes-source-factory';
 import { StockNotesSourceCrudService } from '../../service/crud/stock-notes-source-crud.service';
-import { StockQuoteModelObjectTableComponent } from '../stock-quote/stock-quote-modelobject-table.component';
 import { StockQuoteRefreshService } from '../../service/stock-quote-refresh.service';
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
-import { LinkedAccount } from '../../model/entity/linked-account';
-import { TradeItAccount } from '../../model/entity/tradeit-account';
 import { StockNotesSourceCrudActionHandler } from './stock-notes-source-crud-action-handler';
 import { CrudTableComponent } from '../crud/table/crud-table.component';
+import { StockNotesSourceFactory } from '../../model/factory/stock-notes-source.factory';
 
 /**
  */
@@ -22,7 +19,7 @@ import { CrudTableComponent } from '../crud/table/crud-table.component';
         templateUrl: './stock-notes-source-table.component.html',
         providers:   [StockNotesSourceStateStore, StockNotesSourceController, StockNotesSourceCrudActionHandler]
     } )
-export class StockNotesSourceBaseTableComponent extends CrudTableComponent<StockNotesSource>
+export class StockNotesSourceTableComponent extends CrudTableComponent<StockNotesSource>
     implements OnInit
 {
     /**

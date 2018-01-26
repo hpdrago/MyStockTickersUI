@@ -223,11 +223,11 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
             this.crudController
                 .subscribeToFormResetEvent( () => this.resetForm() ));
         /*
-         * Table Add button clicked
+         * Prepare to save
          */
-        this.addSubscription( 'subscribeToAddButtonClickedEvent',
+        this.addSubscription('subscribeToFormPrepareToSaveEvent',
             this.crudController
-                .subscribeToTableAddButtonClickedEvent( () => this.onTableAddButtonClicked() ));
+                .subscribeToFormPrepareToSaveEvent( () => this.prepareToSave() ));
 
         this.debug( methodName + '.end' );
     }
@@ -657,9 +657,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      * This method is called after the successful completion of the saving of the model object.
      * @param {T} modelObject
      */
-    protected onTableAddButtonClicked(): void
+    protected onAddButtonClicked(): void
     {
-        let methodName = "onTableAddButtonClicked";
+        let methodName = "onAddButtonClicked";
         this.debug( methodName + " " + JSON.stringify( this.modelObject ) );
         this.prepareToDisplay()
     }

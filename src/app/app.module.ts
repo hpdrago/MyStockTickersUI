@@ -220,6 +220,15 @@ import { StockCatalystEventTableDeleteButtonComponent } from './component/stock-
 import { StockCatalystEventTableEditButtonComponent } from './component/stock-catalyst-event/stock-catalyst-event-table-edit-button.component';
 import { CrudTableButtonsComponent } from './component/crud/table/crud-table-buttons.component';
 import { StockPositionTableRefreshButtonComponent } from './component/stock-position/stock-position-table-refresh-button.component';
+import { StockNotesSourceTableAddButtonComponent } from './component/stock-notes-source/stock-notes-source-table-add-button.component';
+import { StockNotesSourceTableDeleteButtonComponent } from './component/stock-notes-source/stock-notes-source-table-delete-button.component';
+import { StockNotesSourceTableRefreshButtonComponent } from './component/stock-notes-source/stock-notes-source-table-refresh-button.component';
+import { StockNotesSourceTableComponent } from './component/stock-notes-source/stock-notes-source-table.component';
+import { StockNotesSourceTableButtonsComponent } from './component/stock-notes-source/stock-notes-source-table-buttons.component';
+import { StockNotesSourceTableEditButtonComponent } from './component/stock-notes-source/stock-notes-source-table-edit-button.component';
+import { StockNotesSourceFormComponent } from './component/stock-notes-source/stock-notes-source-form.component';
+import { StockNotesSourceDialogComponent } from './component/stock-notes-source/stock-notes-source-dialog.component';
+import { StockNotesSourceFormButtonsComponent } from './component/stock-notes-source/stock-notes-source-form-buttons.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -395,6 +404,16 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockToBuyTableDeleteButtonComponent,
         StockToBuyTableEditButtonComponent,
         StockToBuyTableRefreshButtonComponent,
+
+        StockNotesSourceTableComponent,
+        StockNotesSourceTableButtonsComponent,
+        StockNotesSourceTableAddButtonComponent,
+        StockNotesSourceTableDeleteButtonComponent,
+        StockNotesSourceTableEditButtonComponent,
+        StockNotesSourceTableRefreshButtonComponent,
+        StockNotesSourceDialogComponent,
+        StockNotesSourceFormComponent,
+        StockNotesSourceFormButtonsComponent,
 
         TradeItSecurityQuestionDialogComponent,
 

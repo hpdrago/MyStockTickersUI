@@ -312,10 +312,10 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      */
     protected setStockNoteStocks()
     {
-        this.log( "prepareToSave.begin " + JSON.stringify( this.modelObject ));
+        this.log( "setStockNotes.begin " + JSON.stringify( this.modelObject ));
         if ( this.isCrudCreateOperation() )
         {
-            this.log( "prepareToSave tickerSymbols " + this.tickerSymbols );
+            this.log( "setStockNotes tickerSymbols " + this.tickerSymbols );
             /*
              * The ticker symbols should be separated by commas.
              * Each ticker symbol is pushed into the stocks array of the StockNotes model object
@@ -330,7 +330,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
             });
         }
         super.prepareToSave();
-        this.log( "prepareToSave.end " + JSON.stringify( this.modelObject ));
+        this.log( "setStockNotes.end " + JSON.stringify( this.modelObject ));
     }
 
     /**

@@ -1,9 +1,11 @@
 <p-panel>
-    <div class="crud-form ui-grid-row" style="height: 4%">
+    <div class="crud-form ui-grid-row">
         <div class="ui-grid-col-4 ui-state-default">
             <stock-search (stockSelected)="onStockSelected( $event )"
                           (resetButtonClick)="onResetButtonClick()">
             </stock-search>
+        </div>
+        <div class="ui-grid-col-8 ui-state-default">
         </div>
     </div>
     <p-dataTable [value]="rows"
@@ -21,6 +23,11 @@
                  (onLazyLoad)="lazyLoadTable($event)"
                  (onRowDblclick)="onRowDoubleClick($event)"
                  [responsive]="true">
+
+        <p-header>
+            <stock-to-buy-table-buttons>
+            </stock-to-buy-table-buttons>
+        </p-header>
 
         <!----------------------------------------------------------------------------------------------------------
         TICKER SYMBOL
@@ -228,8 +235,6 @@
             </stock-to-buy-table-buttons>
         </p-footer>
     </p-dataTable>
-    <stock-to-buy-dialog>
-    </stock-to-buy-dialog>
     <stock-to-buy-dialog>
     </stock-to-buy-dialog>
 </p-panel>

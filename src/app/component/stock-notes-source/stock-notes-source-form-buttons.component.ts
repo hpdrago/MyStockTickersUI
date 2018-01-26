@@ -1,38 +1,33 @@
-/**
- * Created by mike on 3/10/2018
- */
-import { Component } from '@angular/core';
-import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
-import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
-import { SessionService } from '../../service/session.service';
-import { ToastsManager } from 'ng2-toastr';
-import { CrudTableEditButtonComponent } from '../crud/table/crud-table-edit-button.component';
-import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
-import { StockNotesController } from '../stock-notes/stock-notes-controller';
-import { StockNotesSource } from '../../model/entity/stock-notes-source';
-import { StockNotesSourceStateStore } from './stock-notes-source-state-store';
+import { Component } from "@angular/core";
+import { ToastsManager } from "ng2-toastr";
+import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
+import { StockNotesSource } from "../../model/entity/stock-notes-source";
 import { StockNotesSourceController } from './stock-notes-source-controller';
+import { StockNotesSourceStateStore } from './stock-notes-source-state-store';
 import { StockNotesSourceFactory } from '../../model/factory/stock-notes-source.factory';
 import { StockNotesSourceCrudService } from '../../service/crud/stock-notes-source-crud.service';
 
-@Component
-({
-     selector: 'stock-notes-source-table-edit-button',
-     templateUrl: '../crud/table/crud-table-button.component.html'
- })
-export class StockNotesSourceTableEditButtonComponent extends CrudTableEditButtonComponent<StockNotesSource>
+/**
+ * Button panel component for the StockAnalystConsensus dialog.
+ *
+ * Created by mike on 8/15/2017.
+ */
+@Component({
+    selector:    'stock-notes-source-form-buttons',
+    templateUrl: '../crud/form/crud-form-buttons.component.html',
+    styleUrls: ['../crud/form/crud-form-buttons.component.css']
+})
+export class StockNotesSourceFormButtonsComponent extends CrudFormButtonsComponent<StockNotesSource>
 {
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {SessionService} session
      * @param {StockNotesSourceStateStore} stockNotesSourceStateStore
      * @param {StockNotesSourceController} stockNotesSourceController
      * @param {StockNotesSourceFactory} stockNotesSourceFactory
      * @param {StockNotesSourceCrudService} stockNotesSourceCrudService
      */
     constructor( protected toaster: ToastsManager,
-                 private session: SessionService,
                  private stockNotesSourceStateStore: StockNotesSourceStateStore,
                  private stockNotesSourceController: StockNotesSourceController,
                  private stockNotesSourceFactory: StockNotesSourceFactory,
@@ -43,5 +38,21 @@ export class StockNotesSourceTableEditButtonComponent extends CrudTableEditButto
                stockNotesSourceController,
                stockNotesSourceFactory,
                stockNotesSourceCrudService );
+    }
+
+    /**
+     * Defines the message to display to the user in the dialog when deleting the model object
+     */
+    public getDeleteMessage(): string
+    {
+        return 'Are you sure you want to delete?';
+    }
+
+    /**
+     * @return {undefined}
+     */
+    public getDeleteKeyword(): string
+    {
+        return 'Notes Source'
     }
 }

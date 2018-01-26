@@ -316,8 +316,10 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected onSaveButtonClick(): void
     {
         var methodName = "onSaveButtonClick";
-        this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
+        this.debug( methodName + ".begin" );
         this.checkModelObjectReference();
+        this.crudController
+            .sendFormPrepareToSaveEvent();
         this.busyIndicator = this.crudController
                                  .saveModelObject( this.modelObject )
                                  .subscribe();
@@ -344,16 +346,6 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         var methodName = "onContinuousAddButtonClicked";
         this.debug( methodName + " " + JSON.stringify( this.modelObject ));
         this.onAddButtonClick();
-        /*
-        this.performAddButtonWork( ( modelObject: T ) =>
-                                   {
-                                       this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
-                                       this.crudController
-                                           .sendFormResetEvent();
-                                       this.crudController
-                                           .sendPanelContinuousAddButtonClickedEvent( this.modelObject );
-                                   });
-                                   */
     }
 
     /**
@@ -362,8 +354,10 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected onAddButtonClick(): void
     {
         var methodName = "onAddButtonClick";
-        this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
+        this.debug( methodName + ".begin" );
         this.checkModelObjectReference();
+        this.crudController
+            .sendFormPrepareToSaveEvent();
         this.busyIndicator = this.crudController
                                  .addModelObject( this.modelObject )
                                  .subscribe();

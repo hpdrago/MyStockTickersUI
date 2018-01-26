@@ -122,6 +122,10 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
     {
         this.debug( "prepareToSave checking for added source " + JSON.stringify( this.modelObject ))
         super.prepareToSave();
+        /*
+         * When the user adds new source the component puts the name of the new source in the id field.
+         * Don't like it, but there it is.
+         */
         if ( !isNumeric( this.modelObject.getNotesSourceId() ))
         {
             /*
@@ -129,7 +133,6 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
              * value also goes into the notesSourceName field by the sourcesOnChange event.  We need to make notesSourceId
              * to be numeric so that it can be sent to the backend without JSON parsing errors
              */
-            this.log( "isNumeric: false" );
             this.debug( this.modelObject.getNotesSourceName() + " is a new source" );
             this.modelObject.setNotesSourceName( "" + this.modelObject.getNotesSourceId() );
             this.modelObject.setNotesSourceId( 0 );

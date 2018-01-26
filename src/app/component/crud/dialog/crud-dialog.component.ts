@@ -7,6 +7,7 @@ import { ModelObjectFactory } from '../../../model/factory/model-object.factory'
 import { CrudController } from '../common/crud-controller';
 import { CrudStateStore } from '../common/crud-state-store';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
+import { Input } from '@angular/core';
 
 /**
  * This is the base class for Modal dialogs that provide CRUD operations on a model object.
@@ -18,6 +19,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
     /**
      * Controls the visibility of the dialog
      */
+    @Input()
     protected displayDialog: boolean;
 
     /**
