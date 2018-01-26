@@ -111,13 +111,13 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                             var newModelObject: T =  this.modelObjectFactory.newModelObjectFromJSON( modelObject );
                             this.log( methodName + " newModelObject: " + this.serialize( newModelObject ));
                             return newModelObject;
-                        } ) // ...and calling .json() on the response to return data
+                        })
                         .catch( ( error: any ) =>
-                                {
-                                    this.restErrorReporter.reportRestError( error );
-                                    return Observable.throw( null )
-                                } )//...errors if any
-                        .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
+                        {
+                            this.restErrorReporter.reportRestError( error );
+                            return Observable.throw( null )
+                        })
+                        .shareReplay();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
     /**
@@ -147,12 +147,12 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                         {
                             this.log( methodName + " received: " + JSON.stringify( updatedModelObject ));
                             return this.modelObjectFactory.newModelObjectFromJSON( updatedModelObject );
-                        } ) // ...and calling .json() on the response to return data
+                        })
                         .catch( ( error: any ) =>
-                                {
-                                    this.restErrorReporter.reportRestError( error );
-                                    return Observable.throw( null );
-                                } ) //...errors if any
+                        {
+                            this.restErrorReporter.reportRestError( error );
+                            return Observable.throw( null );
+                        } )
                         .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
@@ -178,15 +178,15 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
         }
         return this.http.delete<T>( url ) // ...using delete request
                         .map( ( modelObject: T ) =>
-                              {
-                                  this.debug( methodName + " res: "+ JSON.stringify( modelObject ));
-                                  return;
-                              } ) // ...and calling .json() on the response to return data
+                        {
+                            this.debug( methodName + " res: "+ JSON.stringify( modelObject ));
+                            return;
+                        } ) // ...and calling .json() on the response to return data
                         .catch( ( error: any ) =>
-                                {
-                                    this.restErrorReporter.reportRestError( error );
-                                    return Observable.throw( null );
-                                }) //...errors if any
+                        {
+                            this.restErrorReporter.reportRestError( error );
+                            return Observable.throw( null );
+                        }) //...errors if any
                         .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 

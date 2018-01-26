@@ -45,37 +45,46 @@ export class StockNotesCrudActionHandler extends CrudActionHandler<StockNotes>
     {
         let methodName = 'addModelObject.override';
         this.debug( methodName + ' ' + JSON.stringify( stockNotes ))
+        let returnObservable: Observable<StockNotes>;
         /*
          * Need to create a clone of the stock notes because the values will be reset on the object
          * after leaving this method.
          */
-        let stockNotesClone = stockNotes.clone( stockNotes );
-        return Observable.from( stockNotesClone.stocks )
-                         .map( (stockNotesStock: StockNotesStock) =>
-                                {
-                                    let stockNotesTickerSymbol = stockNotesStock.tickerSymbol;
-                                    this.debug( methodName + " " + stockNotesTickerSymbol );
-                                    /*
-                                     * Set the ticker symbol and save this entry
-                                     */
-                                    stockNotesClone.tickerSymbol = stockNotesTickerSymbol;
-                                    /*
-                                     * Send each stock note to the subject.
-                                     * Don't need to handle the subscription as any errors will be reported
-                                     * in that method.
-                                     */
-                                    super.addModelObject( stockNotesClone )
-                                         .subscribe();
-                                    /*
-                                     * If the user chose BUY_LATER, then create StocksToBuy records
-                                     */
-                                    if ( stockNotesClone.actionTaken == StockNotesActionTaken.BUY_LATER )
-                                    {
-                                        this.log( methodName + " creating stocks to buy for " + stockNotesTickerSymbol );
-                                        this.createStockToBuy( stockNotes );
-                                    }
-                                    return stockNotes;
-                                });
+        let stockNotesClone: StockNotes = stockNotes.clone( stockNotes );
+        for ( let i = 0; i < stockNotesClone.stocks.length; i++ )
+        {
+            let stockNotesStock: StockNotesStock = stockNotesClone.stocks[i];
+            let stockNotesTickerSymbol = stockNotesStock.tickerSymbol;
+            this.debug( methodName + " " + stockNotesTickerSymbol );
+            /*
+             * Set the ticker symbol and save this entry
+             */
+            stockNotesClone.tickerSymbol = stockNotesTickerSymbol;
+            /*
+             * Send each stock note to the subject.
+             * Don't need to handle the subscription as any errors will be reported in that method.
+             *
+             * For the first stock notes, return that observable, execute the others
+             */
+            if ( i == 0 )
+            {
+                returnObservable = super.addModelObject( stockNotesClone );
+            }
+            else
+            {
+                super.addModelObject( stockNotesClone )
+                     .subscribe();
+            }
+            /*
+             * If the user chose BUY_LATER, then create StocksToBuy records
+             */
+            if ( stockNotesClone.actionTaken == StockNotesActionTaken.BUY_LATER )
+            {
+                this.log( methodName + " creating stocks to buy for " + stockNotesTickerSymbol );
+                this.createStockToBuy( stockNotes );
+            }
+        }
+        return returnObservable;
     }
 
     /**

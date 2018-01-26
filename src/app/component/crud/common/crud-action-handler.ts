@@ -40,17 +40,17 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
         this.debug( methodName + ' ' + JSON.stringify( modelObject ) );
         return this.crudRestService
                    .deleteModelObject( modelObject )
-                   .map( ( ) =>
-                              {
-                                  this.debug( methodName + " delete successful " + JSON.stringify( modelObject ));
-                                  this.showDeleteSuccessful( modelObject );
-                              },
-                              error =>
-                              {
-                                  this.debug( methodName + " delete failed" );
-                                  let exception = this.restErrorReporter.reportRestError( error );
-                                  Observable.throw( exception );
-                              })
+                   .map( () =>
+                   {
+                       this.debug( methodName + " delete successful " + JSON.stringify( modelObject ));
+                       this.showDeleteSuccessful( modelObject );
+                   },
+                   error =>
+                   {
+                       this.debug( methodName + " delete failed" );
+                       let exception = this.restErrorReporter.reportRestError( error );
+                       Observable.throw( exception );
+                   });
     }
 
     /**
@@ -64,26 +64,19 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
         return this.crudRestService
                    .createModelObject( modelObject )
                    .map( ( newModelObject: T ) =>
-                         {
-                             this.debug( methodName + " add successful.  modelObject: " + JSON.stringify( newModelObject ) );
-                             this.showAddSuccessful( newModelObject );
-                             return newModelObject;
-                         },
-                         error =>
-                         {
-                             this.debug( methodName + " create failed: " + error );
-                             var exception = this.restErrorReporter.reportRestError( error );
-                             this.debug( methodName + " exception: " + JSON.stringify( exception ));
-                             /*
-                              *  If we get a duplicate key, tell the stock table to jump to that stock
-                              */
-                             if ( exception.isDuplicateKeyExists() )
-                             {
-                                 this.debug( methodName + " duplicateKeyExists" );
-                             }
-                             Observable.throw( exception );
-                             //throw new Error( exception.message );
-                         })
+                   {
+                       this.debug( methodName + " add successful.  modelObject: " + JSON.stringify( newModelObject ) );
+                       this.showAddSuccessful( newModelObject );
+                       return newModelObject;
+                   },
+                   error =>
+                   {
+                       this.debug( methodName + " create failed: " + error );
+                       var exception = this.restErrorReporter.reportRestError( error );
+                       this.debug( methodName + " exception: " + JSON.stringify( exception ));
+                       Observable.throw( exception );
+                         //throw new Error( exception.message );
+                   });
     }
 
     /**
@@ -98,18 +91,18 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
         return this.crudRestService
                    .updateModelObject( modelObject )
                    .map( ( updatedModelObject: T ) =>
-                          {
-                              this.debug( methodName + " saved successful.  modelObject; " + JSON.stringify( updatedModelObject ) );
-                              this.showSaveSuccessful( updatedModelObject );
-                              return updatedModelObject;
-                          },
-                          error =>
-                          {
-                              this.debug( methodName + " save failed: " + error );
-                              var exception = this.restErrorReporter.reportRestError( error );
-                              this.debug( methodName + " exception: " + JSON.stringify( exception ));
-                              Observable.throw( exception );
-                          })
+                   {
+                       this.debug( methodName + " saved successful.  modelObject; " + JSON.stringify( updatedModelObject ) );
+                       this.showSaveSuccessful( updatedModelObject );
+                       return updatedModelObject;
+                   },
+                   error =>
+                   {
+                       this.debug( methodName + " save failed: " + error );
+                       var exception = this.restErrorReporter.reportRestError( error );
+                       this.debug( methodName + " exception: " + JSON.stringify( exception ));
+                       Observable.throw( exception );
+                   });
     }
 
     /*

@@ -15,8 +15,6 @@ import { RestErrorReporter } from "../../service/rest-error-reporter";
  */
 @Component(
 {
-    /*[(ngModel)]="stockSearch"*/
-    /*formControlName="{{formControlName}}"*/
     selector: 'stock-autocomplete',
     template: ` <p-autoComplete [suggestions]="stockSearchResults"
                                 [(ngModel)]="tickerSymbol"
@@ -26,7 +24,7 @@ import { RestErrorReporter } from "../../service/rest-error-reporter";
                                 (onBlur)="onBlur( $event )"
                                 (onKeyUp)="onKeyUp( $event )"
                                 uppercase
-                                placeholder="Enter company name of ticker symbol">
+                                placeholder="Enter company name or ticker symbol. Tab for expanded search">
                </p-autoComplete>
     `,
     providers: [

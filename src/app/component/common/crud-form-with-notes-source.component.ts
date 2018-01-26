@@ -23,7 +23,7 @@ import { CrudRestService } from '../../service/crud/crud-rest.serivce';
 export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> & StockNotesSourceContainer>
     extends CrudFormComponent<T>
 {
-    private sourceItems: SelectItem[] = [];
+    protected sourceItems: SelectItem[] = [];
     private stockNotesSourceList: StockNotesSourceList = new StockNotesSourceList( [] );
     private sourceAdded: boolean;
 

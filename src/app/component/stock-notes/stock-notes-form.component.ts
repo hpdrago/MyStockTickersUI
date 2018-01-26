@@ -32,27 +32,27 @@ import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.servi
             } )
 export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<StockNotes>
 {
-    private bullOrBearOptions: SelectItem[];
-    private actionTakenOptions: SelectItem[];
+    protected bullOrBearOptions: SelectItem[];
+    protected actionTakenOptions: SelectItem[];
 
     /**
      * Reference to the stock search
      */
     @ViewChild(StockAutoCompleteComponent)
-    private stockAutoCompletedComponent: StockAutoCompleteComponent;
+    protected stockAutoCompletedComponent: StockAutoCompleteComponent;
 
-    private stockQuote: StockQuote;
-    private stockQuotes: StockQuote[];
+    protected stockQuote: StockQuote;
+    protected stockQuotes: StockQuote[];
 
     /**
      * Comma delimited list of ticker symbols
      */
-    private tickerSymbols: string = "";
+    protected tickerSymbols: string = "";
 
     /**
      * The string the user enters the ticker symbols or company name to search for
      */
-    private stockSearch: string = "";
+    protected stockSearch: string = "";
 
     /**
      * Constructor.
