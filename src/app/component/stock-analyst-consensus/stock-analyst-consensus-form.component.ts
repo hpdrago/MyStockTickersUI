@@ -65,7 +65,7 @@ export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockA
                                                                 Validators.minLength( 1 ),
                                                                 Validators.maxLength( 5 )])),
                 'comments':                 new FormControl( this.modelObject.comments, Validators.maxLength( 4000 )),
-                'notesSource':              new FormControl( this.modelObject.notesSourceId ),
+                'notesSourceId':            new FormControl( this.modelObject.notesSourceId ),
                 'analystStrongBuyCount':    new FormControl( this.modelObject.analystStrongBuyCount ),
                 'analystBuyCount':          new FormControl( this.modelObject.analystBuyCount ),
                 'analystHoldCount':         new FormControl( this.modelObject.analystHoldCount ),
