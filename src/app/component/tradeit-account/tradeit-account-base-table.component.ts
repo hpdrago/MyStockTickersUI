@@ -6,7 +6,7 @@ import { EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
-import { TradeItAccountOAuthService } from "./tradeit-account-oauth.service";
+import { TradeItAccountOAuthService } from "../../service/tradeit/tradeit-account-oauth.service";
 import { TradeItOAuthComponent } from "./tradeit-oauth-component";
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { TradeItAccountStateStore } from './tradeit-account-state-store';

@@ -1,20 +1,20 @@
 import { Injectable } from "@angular/core";
-import { TradeItGetOauthPopupURLResult } from "../../service/tradeit/apiresults/tradeit-get-oauth-popup-url-result";
-import { TradeItService } from "../../service/tradeit/tradeit.service";
+import { TradeItGetOauthPopupURLResult } from "./apiresults/tradeit-get-oauth-popup-url-result";
+import { TradeItService } from "./tradeit.service";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
-import { TradeItOAuthAccessResult } from "../../service/tradeit/apiresults/tradeit-oauth-access-result";
+import { TradeItOAuthAccessResult } from "./apiresults/tradeit-oauth-access-result";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
-import { TradeItAuthenticateResult } from "../../service/tradeit/apiresults/tradeit-authenticate-result";
-import { TradeItSecurityQuestionDialogComponent } from "../tradeit/tradeit-security-question-dialog.component";
-import { TradeItAPIResult } from "../../service/tradeit/apiresults/tradeit-api-result";
+import { TradeItAuthenticateResult } from "./apiresults/tradeit-authenticate-result";
+import { TradeItSecurityQuestionDialogComponent } from "../../component/tradeit/tradeit-security-question-dialog.component";
+import { TradeItAPIResult } from "./apiresults/tradeit-api-result";
 import { ToastsManager } from "ng2-toastr";
-import { GetOAuthTokenUpdateURLResult } from "../../service/tradeit/apiresults/tradeit-get-oath-token-update-url-result";
-import { TradeItOAuthComponent } from "./tradeit-oauth-component";
-import { BaseTradeItService } from "./base-tradeit.service";
-import { RestErrorReporter } from "../../service/rest-error-reporter";
-import { TradeItAPIResultEnum, } from "../../service/tradeit/apiresults/tradeit-api-result-error-code";
-import { TradeItAccountController } from './tradeit-account-controller';
+import { GetOAuthTokenUpdateURLResult } from "./apiresults/tradeit-get-oath-token-update-url-result";
+import { TradeItOAuthComponent } from "../../component/tradeit-account/tradeit-oauth-component";
+import { BaseTradeItService } from "../../component/tradeit-account/base-tradeit.service";
+import { RestErrorReporter } from "../rest-error-reporter";
+import { TradeItAPIResultEnum, } from "./apiresults/tradeit-api-result-error-code";
+import { TradeItAccountController } from '../../component/tradeit-account/tradeit-account-controller';
 
 /**
  * This class contains all of the necessary functionality necessary to create and maintain OAuth tokens necessary to

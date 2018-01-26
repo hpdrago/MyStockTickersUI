@@ -158,11 +158,15 @@ import { LinkedAccountFactory } from "./model/factory/linked-account.factory";
 import { LinkedAccountCrudService } from "./service/crud/linked-account-crud.service";
 import { LinkedAccountTableButtonsComponent } from "./component/linked-account/linked-account-table-buttons.component";
 import { LinkedAccountTableComponent } from "./component/linked-account/linked-account-table.component";
-import { TradeItAccountOAuthService } from "./component/tradeit-account/tradeit-account-oauth.service";
+import { TradeItAccountOAuthService } from "./service/tradeit/tradeit-account-oauth.service";
 import { RestErrorReporter } from "./service/rest-error-reporter";
 import { TradeItErrorReporter } from "./component/tradeit/tradeit-error-reporter";
 import { CustomerController } from './component/customer/customer-controller';
 import { StockCatalystEventDashboardTableComponent } from './component/dashboard/stock-catalyst-event-dashboard-table.component';
+import { LinkedAccountController } from './component/linked-account/linked-account-controller';
+import { LinkedAccountDialogComponent } from './component/linked-account/linked-account-dialog.component';
+import { LinkedAccountFormComponent } from './component/linked-account/linked-account-form.component';
+import { LinkedAccountFormButtonsComponent } from './component/linked-account/linked-account-form-buttons.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -251,6 +255,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         LinkedAccountTableComponent,
         LinkedAccountTableButtonsComponent,
+        LinkedAccountDialogComponent,
+        LinkedAccountFormComponent,
+        LinkedAccountFormButtonsComponent,
 
         StockTableComponent,
         StockFormComponent,
@@ -333,6 +340,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         LinkedAccountCrudService,
         LinkedAccountFactory,
+        LinkedAccountController,
 
         StockCrudService,
         StockSectorCrudService,

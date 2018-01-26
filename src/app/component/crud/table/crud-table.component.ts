@@ -220,6 +220,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                             {
                                 this.loading = false;
                                 this.reportRestError( error );
+                                this.debug( "loadTable.end" );
                             } );
 
         }

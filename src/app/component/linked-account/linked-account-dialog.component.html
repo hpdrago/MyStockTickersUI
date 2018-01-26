@@ -1,0 +1,22 @@
+<div *ngIf="!isCrudNoneOperation()">
+    <p-dialog header="Linked Account"
+              [modal]="true"
+              [closable]="false"
+              [closeOnEscape]="false"
+              [responsive]="true"
+              [width]="500"
+              [minWidth]="500"
+              [height]="200"
+              [resizable]="false"
+              [contentStyle]="{'overflow':'visible'}"
+              [(visible)]="displayDialog">
+            <div>
+                <linked-account-form>
+                </linked-account-form>
+            </div>
+            <p-footer>
+                <linked-account-form-buttons>
+                </linked-account-form-buttons>
+            </p-footer>
+    </p-dialog>
+</div>

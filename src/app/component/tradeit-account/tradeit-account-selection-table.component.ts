@@ -3,7 +3,7 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TradeItAccountBaseTableComponent } from "./tradeit-account-base-table.component";
-import { TradeItAccountOAuthService } from "./tradeit-account-oauth.service";
+import { TradeItAccountOAuthService } from "../../service/tradeit/tradeit-account-oauth.service";
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountController } from './tradeit-account-controller';

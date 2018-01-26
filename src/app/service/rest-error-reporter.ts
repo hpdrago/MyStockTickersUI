@@ -30,11 +30,12 @@ export class RestErrorReporter extends BaseClass
         {
             restException = new RestException( rawJsonError );
             var message = this.getExceptionMessage( restException );
+            this.logError( message );
             this.showError( message );
         }
         else
         {
-            this.log( "reportRestError: rawJsonError data does not have a status value" );
+            this.logError( rawJsonError );
             this.showError( rawJsonError );
         }
         return restException;

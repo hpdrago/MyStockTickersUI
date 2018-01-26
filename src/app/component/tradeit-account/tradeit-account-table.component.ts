@@ -2,7 +2,7 @@ import { ToastsManager } from "ng2-toastr";
 import { Component } from "@angular/core";
 import { TradeItAccountBaseTableComponent } from "./tradeit-account-base-table.component";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
-import { TradeItAccountOAuthService } from "./tradeit-account-oauth.service";
+import { TradeItAccountOAuthService } from "../../service/tradeit/tradeit-account-oauth.service";
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountController } from './tradeit-account-controller';

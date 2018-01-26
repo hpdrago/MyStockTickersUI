@@ -18,11 +18,12 @@
                     <p-column id="accountName"           field="accountName"         header="Account Name"    [style]="{'width':'60px'}"                       [sortable]="true"> </p-column>
                     <p-column id="availableCash"         field="availableCash"       header="Available Cash"  [style]="{'width':'10px','text-align':'right'}">                    </p-column>
                     <p-column id="buyingPower"           field="buyingPower"         header="Buying Power"    [style]="{'width':'10px','text-align':'right'}">                    </p-column>
+                    <p-column id="marginCash"            field="marginCash"          header="Margin $"        [style]="{'width':'10px','text-align':'right'}">                    </p-column>
                     <p-column id="totalValue"            field="totalValue"          header="Total Value"     [style]="{'width':'10px','text-align':'right'}">                    </p-column>
-                    <p-column id="dayAbsoluteReturn"     field="dayAbsoluteReturn"   header="Today G/L $"      [style]="{'width':'10px','text-align':'right'}">                    </p-column>
-                    <p-column id="dayPercentReturn"      field="dayPercentReturn"    header="Today %"         [style]="{'width':'10px','text-align':'right'}">                    </p-column>
+                    <p-column id="dayAbsoluteReturn"     field="dayAbsoluteReturn"   header="Today G/L $"     [style]="{'width':'10px','text-align':'right'}">                    </p-column>
+                    <p-column id="dayPercentReturn"      field="dayPercentReturn"    header="Today G/L %"     [style]="{'width':'10px','text-align':'right'}">                    </p-column>
                     <p-column id="totalAbsoluteReturn"   field="totalAbsoluteReturn" header="Total G/L $}"    [style]="{'width':'10px','text-align':'right'}">                    </p-column>
-                    <p-column id="totalPercentReturn"    field="totalPercentReturn"  header="Total %"         [style]="{'width':'10px','text-align':'right'}">                    </p-column>
+                    <p-column id="totalPercentReturn"    field="totalPercentReturn"  header="Total G/L %"     [style]="{'width':'10px','text-align':'right'}">                    </p-column>
                     <p-footer>
                         <linked-account-table-buttons>
                         </linked-account-table-buttons>
@@ -32,3 +33,4 @@
         </div>
     </div>
 </div>
+<linked-account-dialog></linked-account-dialog>
