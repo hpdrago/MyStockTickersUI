@@ -10,6 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 export abstract class BaseComponent extends BaseClass implements OnChanges, OnDestroy
 {
     private subscriptions: Subscription[] = [];
+    protected disabled: boolean = false;
 
     /**
      * Constructor
@@ -41,7 +42,7 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
      */
     public ngOnDestroy(): void
     {
-        this.debug( "ngOnDestroy" );
+        this.debug( 'BaseComponent.ngOnDestroy' );
         this.unSubscribeAll();
     }
 
@@ -96,6 +97,24 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
     protected tickThenRun( fn: () => any )
     {
         setTimeout( fn, 0 );
+    }
+
+    /**
+     * Disable the component.
+     * @param {boolean} disabled
+     */
+    public setDisabled( disabled: boolean )
+    {
+        this.disabled = disabled;
+    }
+
+    /**
+     * Determines if the component is disabled.
+     * @return {boolean}
+     */
+    public isDisabled(): boolean
+    {
+        return this.disabled;
     }
 
 }

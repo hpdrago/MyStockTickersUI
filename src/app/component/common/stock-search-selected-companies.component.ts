@@ -61,7 +61,6 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
     @ViewChild(SelectedStockCompaniesComponent)
     private selectedStockCompaniesComponent: SelectedStockCompaniesComponent;
 
-    protected disabled: boolean = false;
 
     /**
      * Constructor.
@@ -116,6 +115,7 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
         let methodName = 'onStockSelected';
         this.debug( methodName + ' ' + JSON.stringify( stockCompany ) );
         this.stockSelected.emit( stockCompany );
+        this.addCompany( stockCompany );
     }
 
     /**
@@ -128,9 +128,17 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
                    .getCompanies();
     }
 
-    public setDisabled( disabled: boolean )
+    /**
+     * Set the disabled flag on the component.
+     * @param {boolean} disabled
+     */
+    public setDisabled( disabled: boolean ): void
     {
-        this.disabled = disabled
+        super.setDisabled( disabled );
+        this.selectedStockCompaniesComponent
+            .setDisabled( disabled );
+        this.stockAutoCompleteComponent
+            .setDisabled( disabled );
     }
 }
 

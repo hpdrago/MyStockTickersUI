@@ -94,15 +94,22 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     {
         this.debug( "sendNgOnInitCompletedEvent.begin" );
         this.ngOnInitCompletedSubject.next( true );
-        this.postInit();
         this.debug( "sendNgOnInitCompletedEvent.end" );
     }
 
     public ngAfterContentInit(): void
     {
-        this.debug( "ngAfterContentInit" );
+        this.debug( 'ngAfterContentInit' );
     }
 
+    public ngAfterContentChecked(): void
+    {
+        this.debug( 'ngAfterContentChecked' );
+    }
+
+    /**
+     * Complete the initialization after all of the components have been initialized.
+     */
     public ngAfterViewInit(): void
     {
         let methodName = "ngAfterViewInit";
@@ -114,34 +121,39 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
          * Need to run this on the next change cycle.
          */
         this.tickThenRun( () => this.crudController.sendFormReadyToDisplay() )
-        this.debug( methodName + ".end" );
-    }
-
-    /**
-     * This method is called after {@code ngOnInit() and loadResources() have both completed}
-     */
-    protected postInit(): void
-    {
-        this.debug( "postInit.begin" );
+        this.crudController
+            .sendFormLogStateRequest();
         /*
          * Need to check and wait for the model object before setting the form values.
          */
         if ( isNullOrUndefined( this.modelObject ) )
         {
             this.waitForValidModelObject( ( modelObject ) =>
-            {
-                if ( !isNullOrUndefined( modelObject ) )
-                {
-                    this.debug( "postInit received valid modelObject" );
-                    this.setFormValues( modelObject )
-                }
-            });
+                                          {
+                                              if ( !isNullOrUndefined( modelObject ) )
+                                              {
+                                                  this.debug( methodName + ' received valid modelObject' );
+                                                  this.setFormValues( modelObject )
+                                              }
+                                          });
         }
         else
         {
             this.setFormValues( this.modelObject );
         }
-        this.debug( "postInit.end" );
+        if ( this.modelObject )
+        {
+            this.setFormValues( this.modelObject );
+        }
+        this.enableDisableInputs();
+        this.debug( methodName + '.end' );
+    }
+
+    public ngAfterViewChecked(): void
+    {
+        let methodName = 'ngAfterViewChecked';
+        this.log( methodName + '.begin' );
+        this.log( methodName + '.end' );
     }
 
     /**
@@ -316,10 +328,11 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
          */
         if ( !isNullOrUndefined( this.formGroup ))
         {
-            this.resetForm();
+            //this.resetForm();
         }
         super.onModelObjectChanged( modelObject );
-        this.debug( "onModelObjectChanged " + JSON.stringify( this.modelObject ));
+        //this.debug( "onModelObjectChanged " + JSON.stringify( this.modelObject ));
+        /*
         this.enableDisableInputs();
         if ( this.modelObject )
         {
@@ -327,6 +340,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         }
         this.crudController
             .sendFormLogStateRequest();
+            */
     }
 
     /**

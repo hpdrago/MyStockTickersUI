@@ -36,7 +36,6 @@ export class StockNotesSourceSelectionComponent extends BaseComponent implements
     @Input()
     protected modelObject: StockNotesSourceContainer;
 
-    protected disabled: boolean;
     protected sourceItems: SelectItem[] = [];
     protected notesSourceId: string;
     private sourceAdded: boolean;
@@ -141,8 +140,4 @@ export class StockNotesSourceSelectionComponent extends BaseComponent implements
 
     public registerOnTouched( fn: any ): void {}
 
-    public setDisabledState( isDisabled: boolean ): void
-    {
-        this.disabled = isDisabled;
-    }
 }

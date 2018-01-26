@@ -108,6 +108,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             this.stockSearchSelectedCompaniesComponent
                 .setDisabled( true );
         }
+        this.enableDisableActionTakenFields();
     }
 
     /**
@@ -123,6 +124,9 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.modelObject.notesDate = new Date( Date.now() );
     }
 
+    /**
+     * Clear out the form.
+     */
     protected resetForm(): void
     {
         super.resetForm();
@@ -130,17 +134,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         {
             this.stockSearchSelectedCompaniesComponent.reset();
         }
-    }
-
-    /**
-     * This method is called after {@code loadResources() and ngOnInit() have completed}.  At that time, the form
-     * has been built and the source names have been loaded so it's safe to set the source name field.
-     */
-    protected postInit(): void
-    {
-        super.postInit();
-        this.log( "postInit" );
-        this.enableDisableActionTakenFields();
     }
 
     /**
@@ -189,21 +182,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             {
                 modelObject.actionTakenShares = 0;
             }
-            if ( !isNullOrUndefined( modelObject.tickerSymbol ))
-            {
-                this.stockSearchSelectedCompaniesComponent
-                    .loadCompany( modelObject.tickerSymbol );
-            }
         }
-        else
-        {
-            if ( !isNullOrUndefined( modelObject.tickerSymbol ))
-            {
-                this.stockSearchSelectedCompaniesComponent
-                    .loadCompany( modelObject.tickerSymbol );
-            }
-        }
-
         super.setFormValues( modelObject );
     }
 

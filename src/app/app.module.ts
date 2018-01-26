@@ -255,6 +255,16 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     thousands: ","
 };
 
+/**
+    NG2-Toaster Configurations
+ */
+export class CustomToastOptions extends ToastOptions
+{
+    animate = 'flyRight'; // you can override any options available
+    newestOnTop = false;
+    showCloseButton = true;
+}
+
 /*
 const CUSTOM_VALUE_ACCESSOR = new Provider(
     NG_VALUE_ACCESSOR, {useExisting: forwardRef(() => UppercaseValueDirective), multi: true});
@@ -539,7 +549,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         ConfirmationService,
         AppConfigurationService,
 
-        ToastOptions,
+        { provide: ToastOptions, useClass: CustomToastOptions },
         ToastsManager,
         { provide: ErrorHandler, useClass: AppDefaultErrorHandler },
         { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }
