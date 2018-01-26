@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
-import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
+import { StockPriceRefreshService } from "../../service/stock-price-refresh.service";
 import { StockNotesTableComponent } from "../stock-notes/stock-notes-table.component";
 import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
@@ -35,25 +35,19 @@ export class StockNotesTableDashboardComponent extends StockNotesTableComponent
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockNotesCrudService} stockNotesCrudService
-     * @param {StockQuoteRefreshService} stockQuoteRefreshService
-     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected toaster: ToastsManager,
                  protected session: SessionService,
                  protected stockNotesStateStore: StockNotesStateStore,
                  protected stockNotesController: StockNotesController,
                  protected stockNotesFactory: StockNotesFactory,
-                 protected stockNotesCrudService: StockNotesCrudService,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService,
-                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
+                 protected stockNotesCrudService: StockNotesCrudService )
     {
         super( session,
                toaster,
                stockNotesStateStore,
                stockNotesController,
                stockNotesFactory,
-               stockNotesCrudService,
-               stockQuoteRefreshService,
-               stockAnalystConsensusCache );
+               stockNotesCrudService )
     }
 }

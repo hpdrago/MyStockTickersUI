@@ -1,4 +1,5 @@
 import { StockModelObject } from "./stock-model-object";
+import { StockPriceState } from '../../common/stock-price-state.enum';
 
 /**
  * This class contains the common information for a model object that has a ticker symbol and thus can contains
@@ -10,6 +11,6 @@ export abstract class StockPriceModelObject<T extends StockModelObject<T>> exten
     public openPrice: number;
     public lastPrice: number;
     public lastPriceChange: Date;
-    public stockQuoteState: number;
+    public stockPriceState: StockPriceState;
     public stockPriceWhenCreated: number;
 }

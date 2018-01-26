@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { StockPriceModelObject } from '../../model/entity/stock-price-model-object';
-import { StockQuote } from '../../model/entity/stock-quote';
+import { StockPrice } from '../../model/entity/stock-price';
 import { isNullOrUndefined } from "util";
 
 /**
@@ -21,23 +21,23 @@ export class StockQuotePercentChangeSinceCreatedComponent
      * Determines the percent of change from the original price to the last price.
      * @return A percent of change.
      */
-    protected calculatePercentChange( stockQuote: StockQuote ): number
+    protected calculatePercentChange( stockPrice: StockPriceModelObject<any> ): number
     {
-        if ( isNullOrUndefined( stockQuote ))
+        if ( isNullOrUndefined( stockPrice ))
         {
             return 0;
         }
         else
         {
-            if ( stockQuote.lastPrice == null || stockQuote.lastPrice == 0 )
+            if ( stockPrice.lastPrice == null || stockPrice.lastPrice == 0 )
             {
                 return 0;
             }
-            if ( stockQuote.stockPriceWhenCreated == null || stockQuote.stockPriceWhenCreated == 0 )
+            if ( stockPrice.stockPriceWhenCreated == null || stockPrice.stockPriceWhenCreated == 0 )
             {
                 return 0;
             }
-            let percentChanged = 1.0 - ( stockQuote.stockPriceWhenCreated / stockQuote.lastPrice );
+            let percentChanged = 1.0 - ( stockPrice.stockPriceWhenCreated / stockPrice.lastPrice );
             return percentChanged;
         }
     }

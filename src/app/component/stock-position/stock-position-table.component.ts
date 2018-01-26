@@ -4,7 +4,7 @@ import { StockPositionBaseTableComponent } from "./stock-position-base-table.com
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { StockPositionController } from './stock-position-controller';
 import { StockPositionStateStore } from './stock-position-state-store';
-import { StockQuoteRefreshService } from '../../service/stock-quote-refresh.service';
+import { StockPriceRefreshService } from '../../service/stock-price-refresh.service';
 import { StockPositionFactory } from '../../model/factory/stock-position-factory';
 import { StockPositionCrudService } from '../../service/crud/stock-position-crud.service';
 import { StockPositionCrudActionHandler } from './stock-position-crud-action-handler';
@@ -32,25 +32,19 @@ export class StockPositionTableComponent extends StockPositionBaseTableComponent
      * @param {StockPositionController} stockPositionController
      * @param {StockPositionFactory} stockPositionFactory
      * @param {StockPositionCrudService} stockPositionCrudService
-     * @param {StockQuoteRefreshService} stockQuoteRefreshService
-     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
                  protected stockPositionStateStore: StockPositionStateStore,
                  protected stockPositionController: StockPositionController,
                  protected stockPositionFactory: StockPositionFactory,
-                 protected stockPositionCrudService: StockPositionCrudService,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService,
-                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
+                 protected stockPositionCrudService: StockPositionCrudService )
     {
         super( toaster,
                tradeItErrorReporter,
                stockPositionStateStore,
                stockPositionController,
                stockPositionFactory,
-               stockPositionCrudService,
-               stockQuoteRefreshService,
-               stockAnalystConsensusCache )
+               stockPositionCrudService );
     }
 }

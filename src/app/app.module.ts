@@ -111,7 +111,7 @@ import { StockToBuyTableButtonsComponent } from "./component/stock-to-buy/stock-
 import { StockToBuyFormButtonsComponent } from "./component/stock-to-buy/stock-to-buy-form-buttons.component";
 import { StockToBuyFactory } from "./model/factory/stock-to-buy.factory";
 import { StockToBuyCrudService } from "./service/crud/stock-to-buy-crud.service";
-import { StockQuoteRefreshService } from "./service/stock-quote-refresh.service";
+import { StockPriceRefreshService } from "./service/stock-price-refresh.service";
 import { CustomerCrudService } from "./service/crud/customer-crud.service";
 import { CustomerFactory } from "./model/factory/customer.factory";
 import { UppercaseValueDirective } from "./directives/uppercase.value.accessor";
@@ -136,7 +136,7 @@ import { AdminRoutingModule } from "./admin-routing.module";
 import { LoginComponent } from "./login.component";
 import { AdminComponent } from "./component/admin/admin.component";
 import { CookieService } from "ngx-cookie-service";
-import { StockQuoteCache } from "./service/stock-quote-cache";
+import { StockPriceCache } from "./service/stock-price-cache.service";
 import { TradeItService } from "./service/tradeit/tradeit.service";
 import { TradeItAccountTableButtonsComponent } from "./component/tradeit-account/tradeit-account-table-buttons.component";
 import { TradeItAccountFormButtonsComponent } from "./component/tradeit-account/tradeit-account-form-buttons.component";
@@ -461,7 +461,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         AuthService,
         AuthGuardService,
         CookieService,
-        StockQuoteCache,
+        StockPriceCache,
         TradeItService,
         TradeItErrorReporter,
 
@@ -481,7 +481,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockCrudService,
         StockExchangeService,
         StockFactory,
-        StockQuoteRefreshService,
+        StockPriceRefreshService,
 
         PortfolioFactory,
         PortfolioCrudService,

@@ -5,7 +5,7 @@ import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { isNullOrUndefined } from "util";
-import { StockQuote } from "../../model/entity/stock-quote";
+import { StockPrice } from "../../model/entity/stock-price";
 import { BaseComponent } from "./base.component";
 import { RestErrorReporter } from "../../service/rest-error-reporter";
 
@@ -37,7 +37,7 @@ import { RestErrorReporter } from "../../service/rest-error-reporter";
 export class StockAutoCompleteComponent extends BaseComponent implements ControlValueAccessor
 {
     @Output()
-    private stockSelected: EventEmitter<StockQuote>  = new EventEmitter<StockQuote>();
+    private stockSelected: EventEmitter<StockPrice>  = new EventEmitter<StockPrice>();
 
     protected stockSearchResults: string[];
     protected tickerSymbol: string;
@@ -117,8 +117,8 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
              this.tickerSymbol.length > 0 )
         {
             this.stockCrudService
-                .getStockQuote( this.tickerSymbol )
-                .subscribe( ( stockQuote: StockQuote ) =>
+                .getStockPrice( this.tickerSymbol )
+                .subscribe( ( stockQuote: StockPrice ) =>
                 {
                     this.log( "onBlur " + JSON.stringify( stockQuote ));
                     if ( !isNullOrUndefined( stockQuote ))
@@ -150,7 +150,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
          */
         this.propagateChange( this.tickerSymbol.toUpperCase() );
         this.stockCrudService
-            .getStockQuote( this.tickerSymbol )
+            .getStockPrice( this.tickerSymbol )
             .subscribe( (stockQuote) =>
                         {
                             this.log( "onStockSearchSelected tickerSymbol: " + stockQuote.tickerSymbol );

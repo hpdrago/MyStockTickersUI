@@ -6,7 +6,7 @@
 import { Component } from "@angular/core";
 import { StockAnalystConsensusTableComponent } from "./stock-analyst-consensus-table.component";
 import { ToastsManager } from "ng2-toastr";
-import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
+import { StockPriceRefreshService } from "../../service/stock-price-refresh.service";
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
 import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
@@ -32,7 +32,6 @@ export class StockAnalystConsensusTableTabComponent extends StockAnalystConsensu
      * @param {StockAnalystConsensusController} stockAnalystConsensusController
      * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
      * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
-     * @param {StockQuoteRefreshService} stockQuoteRefreshService
      * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected toaster: ToastsManager,
@@ -40,15 +39,12 @@ export class StockAnalystConsensusTableTabComponent extends StockAnalystConsensu
                  protected stockAnalystConsensusController: StockAnalystConsensusController,
                  protected stockAnalystConsensusFactory: StockAnalystConsensusFactory,
                  protected stockAnalystConsensusCrudService: StockAnalystConsensusCrudService,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService,
                  protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
         super( toaster,
                stockAnalystConsensusStateStore,
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,
-               stockAnalystConsensusCrudService,
-               stockQuoteRefreshService,
-               stockAnalystConsensusCache );
+               stockAnalystConsensusCrudService );
     }
 }

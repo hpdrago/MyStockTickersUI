@@ -6,7 +6,7 @@ import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
 import { isNullOrUndefined } from "util";
-import { StockQuote } from "../../model/entity/stock-quote";
+import { StockPrice } from "../../model/entity/stock-price";
 import { PortfolioStockStateStore } from './portfolio-stock-state-store';
 import { PortfolioStockController } from './portfolio-stock-controller';
 import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
@@ -30,7 +30,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
     private stockSubSectors: SelectItem[];
     private stockSectors: SelectItem[];
     private dataLoaded: boolean = true;
-    private selectedStockQuote: StockQuote;
+    private selectedStockQuote: StockPrice;
 
     /**
      * Constructor.
@@ -91,7 +91,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
               !isNullOrUndefined( this.getTickerSymbolFormValue() ))
         {
             this.stockCrudService
-                .getStockQuote( this.getTickerSymbolFormValue() )
+                .getStockPrice( this.getTickerSymbolFormValue() )
                 .subscribe( (stock) =>
                             {
                                 this.debug( methodName + " found: " + stock.tickerSymbol );

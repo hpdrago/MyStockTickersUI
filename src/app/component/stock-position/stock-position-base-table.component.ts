@@ -6,18 +6,16 @@ import { StockPositionController } from './stock-position-controller';
 import { StockPosition } from '../../model/entity/stock-position';
 import { StockPositionFactory } from '../../model/factory/stock-position-factory';
 import { StockPositionCrudService } from '../../service/crud/stock-position-crud.service';
-import { StockQuoteModelObjectTableComponent } from '../stock-quote/stock-quote-modelobject-table.component';
-import { StockQuoteRefreshService } from '../../service/stock-quote-refresh.service';
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { LinkedAccount } from '../../model/entity/linked-account';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
-import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
+import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 
 /**
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}
  * it is checked for authentication.
  */
-export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableComponent<StockPosition>
+export class StockPositionBaseTableComponent extends StockModelObjectTableComponent<StockPosition>
     implements OnInit
 {
     private tradeItAccount: TradeItAccount;
@@ -31,26 +29,20 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
      * @param {StockPositionController} stockPositionController
      * @param {StockPositionFactory} stockPositionFactory
      * @param {StockPositionCrudService} stockPositionCrudService
-     * @param {StockQuoteRefreshService} stockQuoteRefreshService
-     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
                  protected stockPositionStateStore: StockPositionStateStore,
                  protected stockPositionController: StockPositionController,
                  protected stockPositionFactory: StockPositionFactory,
-                 protected stockPositionCrudService: StockPositionCrudService,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService,
-                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
+                 protected stockPositionCrudService: StockPositionCrudService )
     {
         super( TableLoadingStrategy.ALL_ON_DEMAND,
                toaster,
                stockPositionStateStore,
                stockPositionController,
                stockPositionFactory,
-               stockPositionCrudService,
-               stockQuoteRefreshService,
-               stockAnalystConsensusCache );
+               stockPositionCrudService );
     }
 
     /**

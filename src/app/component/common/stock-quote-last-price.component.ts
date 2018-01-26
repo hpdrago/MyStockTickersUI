@@ -1,6 +1,6 @@
 import { StockPriceModelObject } from '../../model/entity/stock-price-model-object';
 import { Component, Input, OnInit } from '@angular/core';
-import { StockQuoteState } from '../../common/stock-quote-state.enum';
+import { StockPriceState } from '../../common/stock-price-state.enum';
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
 
@@ -61,6 +61,6 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
      */
     private isFetchingQuote(): boolean
     {
-        return StockQuoteState.isFetchingQuote( this.stockQuote ) ;
+        return StockPriceState.isFetchingQuote( this.stockQuote ) ;
     }
 }

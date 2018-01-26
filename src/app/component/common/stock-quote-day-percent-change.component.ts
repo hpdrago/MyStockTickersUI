@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { StockPriceModelObject } from '../../model/entity/stock-price-model-object';
-import { StockQuote } from '../../model/entity/stock-quote';
+import { StockPrice } from '../../model/entity/stock-price';
 import { isNullOrUndefined } from "util";
 
 /**
@@ -21,7 +21,7 @@ export class StockQuoteDayPercentChangeComponent
      * Determines the percent of change from the original price to the last price.
      * @return A percent of change.
      */
-    protected calculatePercentChange( stockQuote: StockQuote ): number
+    protected calculatePercentChange( stockQuote: StockPrice ): number
     {
         if ( isNullOrUndefined( stockQuote ))
         {

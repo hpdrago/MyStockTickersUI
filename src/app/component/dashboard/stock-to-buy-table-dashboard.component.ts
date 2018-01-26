@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
+import { StockPriceRefreshService } from "../../service/stock-price-refresh.service";
 import { StockToBuyBaseTableComponent } from "../stock-to-buy/stock-to-buy-base-table.component";
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
@@ -37,8 +37,6 @@ export class StockToBuyTableDashboardComponent extends StockToBuyBaseTableCompon
      * @param {StockNotesStateStore} stockNotesStateStore
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
-     * @param {StockQuoteRefreshService} stockQuoteRefreshService
-     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected toaster: ToastsManager,
                  protected stockToBuyStateStore: StockToBuyStateStore,
@@ -47,9 +45,7 @@ export class StockToBuyTableDashboardComponent extends StockToBuyBaseTableCompon
                  protected stockToBuyCrudService: StockToBuyCrudService,
                  protected stockNotesStateStore: StockNotesStateStore,
                  protected stockNotesController: StockNotesController,
-                 protected stockNotesFactory: StockNotesFactory,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService,
-                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
+                 protected stockNotesFactory: StockNotesFactory )
     {
         super( toaster,
                stockToBuyStateStore,
@@ -58,9 +54,7 @@ export class StockToBuyTableDashboardComponent extends StockToBuyBaseTableCompon
                stockToBuyCrudService,
                stockNotesStateStore,
                stockNotesController,
-               stockNotesFactory,
-               stockQuoteRefreshService,
-               stockAnalystConsensusCache );
+               stockNotesFactory );
 
     }
 

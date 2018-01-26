@@ -3,7 +3,7 @@
  */
 import { StockPriceModelObject } from '../model/entity/stock-price-model-object';
 
-export enum StockQuoteState
+export enum StockPriceState
 {
     /**
      * The stock quote is up to date within the EXPIRATION_TIME
@@ -27,7 +27,7 @@ export enum StockQuoteState
       */
     FAILURE = 4
 }
-export namespace StockQuoteState
+export namespace StockPriceState
 {
     /**
      * Identifies if the stock quote for the model object is being fetched.
@@ -37,7 +37,6 @@ export namespace StockQuoteState
      */
     export function isFetchingQuote( modelObject: StockPriceModelObject<any> )
     {
-        return modelObject.stockQuoteState == StockQuoteState.NOT_CACHED ||
-               modelObject.stockQuoteState == StockQuoteState.STALE;
+        return modelObject.stockPriceState == StockPriceState.STALE;
     }
 }

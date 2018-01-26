@@ -1,6 +1,6 @@
 import { BaseComponent } from "../component/common/base.component";
 
-export class StockQuoteModelObjectComponent extends BaseComponent
+export class StockPriceModelobjectComponent extends BaseComponent
 {
 
 }

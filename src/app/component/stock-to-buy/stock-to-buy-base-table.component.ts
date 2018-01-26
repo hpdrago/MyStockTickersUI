@@ -1,8 +1,7 @@
 import { ToastsManager } from "ng2-toastr";
 import { isNullOrUndefined } from "util";
 import { DialogCloseEventType } from "../crud/common/close-button-event";
-import { StockQuoteModelObjectTableComponent } from "../stock-quote/stock-quote-modelobject-table.component";
-import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
+import { StockPriceRefreshService } from "../../service/stock-price-refresh.service";
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
 import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
@@ -18,13 +17,14 @@ import { StockNotesStock } from '../../model/entity/stock-notes-stock';
 import { CrudOperation } from '../crud/common/crud-operation';
 import { StockNotesSentiment } from '../../common/stock-notes-sentiment.enum';
 import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
+import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 
 /**
  * This component displays a list of Stocks to buy.
  *
  * Created by mike on 10/24/2017.
  */
-export abstract class StockToBuyBaseTableComponent extends StockQuoteModelObjectTableComponent<StockToBuy>
+export abstract class StockToBuyBaseTableComponent extends StockModelObjectTableComponent<StockToBuy>
 {
     /**
      * Constructor.
@@ -36,28 +36,22 @@ export abstract class StockToBuyBaseTableComponent extends StockQuoteModelObject
      * @param {StockNotesStateStore} stockNotesStateStore
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
-     * @param {StockQuoteRefreshService} stockQuoteRefreshService
-     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
-    constructor( protected toaster: ToastsManager,
-                 protected stockToBuyStateStore: StockToBuyStateStore,
-                 protected stockToBuyController: StockToBuyController,
-                 protected stockToBuyFactory: StockToBuyFactory,
-                 protected stockToBuyCrudService: StockToBuyCrudService,
-                 protected stockNotesStateStore: StockNotesStateStore,
-                 protected stockNotesController: StockNotesController,
-                 protected stockNotesFactory: StockNotesFactory,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService,
-                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
+    protected constructor( protected toaster: ToastsManager,
+                           protected stockToBuyStateStore: StockToBuyStateStore,
+                           protected stockToBuyController: StockToBuyController,
+                           protected stockToBuyFactory: StockToBuyFactory,
+                           protected stockToBuyCrudService: StockToBuyCrudService,
+                           protected stockNotesStateStore: StockNotesStateStore,
+                           protected stockNotesController: StockNotesController,
+                           protected stockNotesFactory: StockNotesFactory )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
                stockToBuyStateStore,
                stockToBuyController,
                stockToBuyFactory,
-               stockToBuyCrudService,
-               stockQuoteRefreshService,
-               stockAnalystConsensusCache );
+               stockToBuyCrudService );
     }
 
     /**
