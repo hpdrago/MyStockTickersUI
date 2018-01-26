@@ -4,6 +4,7 @@
     ------------------------------------------------------------------------------------------------------------>
     <ng-container *ngTemplateOutlet="filterTemplate">
     </ng-container>
+
     <!----------------------------------------------------------------------------------------------------------
     ALLOW THE HEADER TO BE DEFINED BY THE USER OF THIS TEMPLATE
     ------------------------------------------------------------------------------------------------------------>
@@ -11,11 +12,10 @@
         <ng-container *ngTemplateOutlet="buttonsTemplate">
         </ng-container>
     </p-header>
+
     <!----------------------------------------------------------------------------------------------------------
     DEFINE THE TABLE
     ------------------------------------------------------------------------------------------------------------>
-
-
     <p-table class="ui-table"
              [value]="modelObjectRows"
              [columns]="displayColumns"
@@ -48,26 +48,28 @@
         <ng-template pTemplate="body" let-modelObject let-columns="columns">
             <tr [pSelectableRow]="modelObject">
                 <td *ngFor="let column of columns">
-                    <!-- Display the custom crudTableColumns -->
+                    <!--
+                    Display the crudTableColumns.  Pass the model object and the column to the template
+                    -->
                     <ng-container *ngTemplateOutlet="columnsTemplate; context: {modelObject: modelObject, column: column}">
                     </ng-container>
-                    <!-- If the column was found in the previous container, check the default container
-                    <ng-container *ngTemplateOutlet="defaultColumnsTemplate; context: {modelObject: modelObject, column: column}">
-                    </ng-container> -->
                 </td>
             </tr>
         </ng-template>
     </p-table>
+
     <!----------------------------------------------------------------------------------------------------------
     ALLOW THE DIALOG TO BE DEFINED BY THE USER OF THIS TEMPLATE
     ------------------------------------------------------------------------------------------------------------>
     <ng-container *ngTemplateOutlet="dialogTemplate">
     </ng-container>
+
     <!----------------------------------------------------------------------------------------------------------
     THE COLUMN CUSTOMIZER IS USED ON ALL TABLES
     ------------------------------------------------------------------------------------------------------------>
     <crud-table-column-selector-dialog>
     </crud-table-column-selector-dialog>
+
     <!----------------------------------------------------------------------------------------------------------
     BUTTONS ARE REPEATED
     ------------------------------------------------------------------------------------------------------------>

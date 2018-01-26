@@ -1,4 +1,4 @@
-import { EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { ModelObject } from '../../../model/common/model-object';
 import { CrudTableColumn } from './crud-table-column';
 import { BaseComponent } from '../../common/base.component';
@@ -15,9 +15,11 @@ import { CrudController } from '../common/crud-controller';
  */
 export abstract class CrudTableLayoutBaseComponent extends BaseComponent
 {
-    /**
+    /******************************************************************************************************************
+     *
      * I N P U T S
-     */
+     *
+     ******************************************************************************************************************/
 
     /**
      * Used to store the cookies for the table which includes the column customization.
@@ -50,6 +52,10 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     @Input()
     protected loading: boolean;
 
+    /**
+     * Lazy loading flag.
+     * @type {boolean}
+     */
     @Input()
     protected lazy: boolean = true;
 
@@ -62,18 +68,37 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     @Input()
     protected autoLayout: boolean = true;
 
+    /**
+     * Paginator # of page links
+     * @type {number}
+     */
     @Input()
     protected pageLinks: number = 3;
 
+    /**
+     * Paginator rows per page selection list.
+     * @type {number[]}
+     */
     @Input()
     protected rowsPerPageOptions: number[] = [20,30,40];
 
+    /**
+     * Paginator total records.
+     */
     @Input()
     protected totalRecords: number;
 
+    /**
+     * Allow the user to resize the columns.
+     * @type {boolean}
+     */
     @Input()
     protected resizableColumns: boolean = true;
 
+    /**
+     * Allow the user eto recorder the columns.
+     * @type {boolean}
+     */
     @Input()
     protected reorderableColumns: boolean = true;
 
@@ -83,6 +108,10 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     @Input()
     protected rowsToDisplay: number = 20;
 
+    /**
+     * The field in the model object on which the selected row is based.
+     * @type {string}
+     */
     @Input()
     protected dataKey: string = "id";
 
@@ -100,7 +129,16 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
      * as contained in the {@code selectedColumns}.
      */
     @Input()
-    protected otherColumns: CrudTableColumn[];
+    protected additionalColumns: CrudTableColumn[];
+
+    /**
+     * These are the columns to be sent to/used by the turbo table.  They are defined as <any> because we are going to send it
+     * our crudTableColumns of type CrudTableColumn whereas the turbo table expects a PrimeNg Column definition.  The
+     * two types are compatible in these two contexts.
+     * @type {any[]}
+     */
+    @Input()
+    protected displayColumns: any[];
 
     /**
      * Column definitions for the crudTableColumns that are selected/displayed.
@@ -114,16 +152,13 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
      */
     protected availableColumns: CrudTableColumns = new CrudTableColumns( [] );
 
-    /**
-     * These are the columns to be sent to/used by the turbo table.  They are defined as <any> because we are going to send it
-     * our crudTableColumns of type CrudTableColumn whereas the turbo table expects a PrimeNg Column definition.
-     * @type {any[]}
-     */
-    protected displayColumns: any[];
 
-    /**
-     * O U T P U T
-     */
+    /******************************************************************************************************************
+     *
+     * O U T P U T S
+     *
+     ******************************************************************************************************************/
+
     @Output()
     protected selectionChange = new EventEmitter<any>();
 
@@ -139,14 +174,28 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     @Output()
     protected onRowDoubleClick = new EventEmitter<any>();
 
+    /**
+     * Emitter when a model object is selected.
+     * @type {EventEmitter<ModelObject<any>>}
+     */
     @Output()
     protected selectedModelObjectChange = new EventEmitter<ModelObject<any>>();
+
+    /**
+     * New selected columns is emitted when the user customizes the columns for the table.
+     * @type {EventEmitter<CrudTableColumns>}
+     */
+    @Output()
+    protected displayColumnsChange = new EventEmitter<CrudTableColumn[]>();
 
     /**
      * Name of the cookie to store the user's selected column.
      */
     private selectedColumnsCookieName: string;
 
+    /**
+     * The controller is passed in by the parent component.
+     */
     private _crudController: CrudController<any>;
 
     /**
@@ -155,7 +204,8 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
      * @param {CookieService} cookieService
      */
     protected constructor( protected toaster: ToastsManager,
-                           protected cookieService: CookieService )
+                           protected cookieService: CookieService,
+                           protected changeDetector: ChangeDetectorRef )
     {
         super( toaster );
     }
@@ -171,7 +221,7 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
 
     /**
      * Loads the columns that will be displayed on the table.  The defaults values from the {@code defaultColumns} and
-     * {@code otherColumns} are used unless there are cookie overrides for these values from customization done by the
+     * {@code additionalColumns} are used unless there are cookie overrides for these values from customization done by the
      * user.
      */
     protected loadColumns(): void
@@ -193,18 +243,24 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
          * We re-calculate them instead of storing them in a cookie because the columns contained within the model
          * object may change in the future.
          */
-        this.availableColumns = new CrudTableColumns( this.otherColumns );
+        this.availableColumns = new CrudTableColumns( this.additionalColumns );
         this.availableColumns
             .removeColumns( this.selectedColumns );
         this.log( methodName + ' available columns: ' + JSON.stringify( this.availableColumns ));
         this.log( methodName + ' selected columns: ' + JSON.stringify( this.selectedColumns ));
         this.displayColumns = this.selectedColumns
                                   .toArray();
+        this.tickThenRun( () =>
+                          {
+                            this.displayColumnsChange
+                                .emit( this.displayColumns );
+
+                          });
         this.log( methodName + ' displayColumns: ' + JSON.stringify( this.displayColumns ));
     }
 
     /**
-     * This method is called when the user clicks on the customize table button.
+     * This method is called when the user clicks on the customize columns table button.
      */
     protected customizeColumns(): void
     {
@@ -220,10 +276,16 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
         this.addSubscription( 'columnsCustomizedEvent',
                               this.getCrudTableColumnSelectorDialogComponent()
                                   .subscribeToOkButtonClicked( () => this.columnsCustomized() ) );
+        /*
+         * Pass the column lists to the dialog.
+         */
         this.getCrudTableColumnSelectorDialogComponent()
             .selectedColumns = this.selectedColumns.toColumnArray();
         this.getCrudTableColumnSelectorDialogComponent()
             .availableColumns = this.availableColumns.toColumnArray();
+        /*
+         * Display the dialog.
+         */
         this.getCrudTableColumnSelectorDialogComponent()
             .displayDialog = true;
     }
@@ -250,6 +312,11 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
             .set( this.selectedColumnsCookieName, JSON.stringify( this.selectedColumns ));
         this.displayColumns = this.selectedColumns
                                   .toArray();
+        /*
+         * Send the columns back to the parent component so that the table is updated dynamically.
+         */
+        this.displayColumnsChange
+            .emit( this.displayColumns );
     }
 
     /**
@@ -304,7 +371,7 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
          */
         let allColumns = new CrudTableColumns( [] );
         allColumns.addAllFromArray( this.defaultColumns );
-        allColumns.addAllFromArray( this.otherColumns );
+        allColumns.addAllFromArray( this.additionalColumns );
         let returnColumns = new CrudTableColumns( [] );
         cookieColumns.toArray()
                      .forEach( cookieColumn =>

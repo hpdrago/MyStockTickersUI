@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { CrudTableLayoutBaseComponent } from './crud-table-layout-base.component';
 import { CookieService } from 'ngx-cookie-service';
@@ -29,10 +29,12 @@ export class CrudTableLayoutComponent extends CrudTableLayoutBaseComponent
      * @param {CookieService} cookieService
      */
     public constructor( protected toaster: ToastsManager,
-                        protected cookieService: CookieService )
+                        protected cookieService: CookieService,
+                        protected changeDetector: ChangeDetectorRef )
     {
         super( toaster,
-               cookieService );
+               cookieService,
+               changeDetector );
     }
 
     protected getCrudTableColumnSelectorDialogComponent(): CrudTableColumnSelectorDialogComponent

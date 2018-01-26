@@ -20,6 +20,7 @@ import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { Observable } from 'rxjs/Rx';
 import { CookieService } from 'ngx-cookie-service';
 import { CrudTableColumn } from './crud-table-column';
+import { CrudTableColumns } from './crud-table-columns';
 
 
 /**
@@ -66,7 +67,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     /**
      * Contains the other columns to be displayed as defined by the model object.
      */
-    protected otherColumns: CrudTableColumn[];
+    protected additionalColumns: CrudTableColumn[];
+
+    /**
+     * This is the array of column definitions that are sent to the PrimeNg Table component.
+     */
+    protected displayColumns: any[];
 
     /**
      * Constructor.
@@ -105,10 +111,10 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                                   .newModelObject()
                                   .getDefaultCrudTableColumns()
                                   .toArray();
-        this.otherColumns = this.modelObjectFactory
-                                .newModelObject()
-                                .getOtherCrudTableColumns()
-                                .toArray();
+        this.additionalColumns = this.modelObjectFactory
+                                     .newModelObject()
+                                     .getOtherCrudTableColumns()
+                                     .toArray();
         this.subscribeToServiceEvents();
         if ( TableLoadingStrategy.isLoadOnCreate( this.tableLoadingStrategy ))
         {

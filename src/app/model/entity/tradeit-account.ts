@@ -6,6 +6,8 @@ import { JsonObject, JsonProperty } from "json2typescript";
 import { isNullOrUndefined } from "util";
 import { LinkedAccount } from "./linked-account";
 import { DateConverter } from "../common/date-converter";
+import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
+import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
 
 /**
  * TradeItLinkedAccount DTO
@@ -63,5 +65,18 @@ export class TradeItAccount extends ModelObject<TradeItAccount>
             console.log( `${methodName} diffMines: ${diffMins}` );
             return diffMins < 15;
         }
+    }
+
+    public getDefaultCrudTableColumns(): CrudTableColumns
+    {
+        let crudTableColumns = super.getDefaultCrudTableColumns();
+        crudTableColumns.addColumn( {
+                                        colId: 'notesSourceName',
+                                        header: 'Source',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'notesSourceName',
+                                        sortable: true
+                                    } );
+        return crudTableColumns;
     }
 }
