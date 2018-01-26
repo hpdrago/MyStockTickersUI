@@ -144,34 +144,37 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
      */
     private getStockQuote()
     {
-        this.stockCrudService
-            .getStockPriceQuote( this.tickerSymbol )
-            .subscribe( ( stockPriceQuote: StockPriceQuote ) =>
-                        {
-                            this.log( 'onStockSearchSelected ' + JSON.stringify( stockPriceQuote ));
-                            if ( stockPriceQuote.isNotFound() )
+        if ( !isNullOrUndefined( this.tickerSymbol ))
+        {
+            this.stockCrudService
+                .getStockPriceQuote( this.tickerSymbol )
+                .subscribe( ( stockPriceQuote: StockPriceQuote ) =>
                             {
-                                this.showError( stockPriceQuote.tickerSymbol + ' was not found' );
-                            }
-                            else
+                                this.log( 'onStockSearchSelected ' + JSON.stringify( stockPriceQuote ) );
+                                if ( stockPriceQuote.isNotFound() )
+                                {
+                                    this.showError( stockPriceQuote.tickerSymbol + ' was not found' );
+                                }
+                                else
+                                {
+                                    this.stockSelected.emit( stockPriceQuote );
+                                    this.tickerSymbol = "";
+                                    this.isStockSelected = true;
+                                }
+                            },
+                            error =>
                             {
-                                this.stockSelected.emit( stockPriceQuote );
-                                this.tickerSymbol = "";
-                                this.isStockSelected = true;
-                            }
-                        },
-                        error =>
-                        {
-                            let restException = new RestException( error );
-                            if ( restException.isNotFoundError() )
-                            {
-                                this.showError( this.tickerSymbol + ' was not found' );
-                            }
-                            else
-                            {
-                                this.restErrorReporter.reportRestError( restException );
-                            }
-                        } );
+                                let restException = new RestException( error );
+                                if ( restException.isNotFoundError() )
+                                {
+                                    this.showError( this.tickerSymbol + ' was not found' );
+                                }
+                                else
+                                {
+                                    this.restErrorReporter.reportRestError( restException );
+                                }
+                            } );
+        }
     }
 
     private onKeyUp(event)

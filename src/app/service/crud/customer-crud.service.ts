@@ -89,22 +89,19 @@ export class CustomerCrudService extends CrudRestService<Customer>
     /**
      * This method will get the user's note source values from the database
      */
-    public loadSources()
+    public loadSources(): Observable<SelectItem[]>
     {
         this.log( 'loadSources.begin' );
-        this.sourcesLoadingSubject.next( true );
-        this.stockNotesSourceService
-            .getStockNoteSources( this.sessionService.getLoggedInUserId() )
-            .subscribe( ( stockNotesSources: StockNotesSourceList ) =>
-                        {
-                            this.stockNotesSources = stockNotesSources;
-                            this.log( 'loadSources.end ' + JSON.stringify( this.stockNotesSources ) );
-                            this.sourcesLoadingSubject.next( false );
-                        },
-                        error =>
-                        {
-                            this.log( "ERROR!!! " + error );
-                        } );
+        //this.sourcesLoadingSubject.next( true );
+        return this.stockNotesSourceService
+                   .getStockNoteSources( this.sessionService.getLoggedInUserId() )
+                   .map( ( stockNotesSources: StockNotesSourceList ) =>
+                               {
+                                   this.stockNotesSources = stockNotesSources;
+                                   this.log( 'loadSources.end ' + JSON.stringify( this.stockNotesSources ) );
+                                   return stockNotesSources.toSelectItems();
+                                   //this.sourcesLoadingSubject.next( false );
+                               });
     }
 
     /**

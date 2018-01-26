@@ -250,13 +250,16 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         else
         {
             this.tickerSymbols = modelObject.tickerSymbol;
-            this.stockService
-                .getStockPriceQuote( modelObject.tickerSymbol )
-                .subscribe( stockPrice =>
-                            {
-                                this.companies = stockPrice.companyName;
-                                this.lastPrices = '' + stockPrice.lastPrice;
-                            });
+            if ( !isNullOrUndefined( modelObject.tickerSymbol ))
+            {
+                this.stockService
+                    .getStockPriceQuote( modelObject.tickerSymbol )
+                    .subscribe( stockPrice =>
+                                {
+                                    this.companies = stockPrice.companyName;
+                                    this.lastPrices = '' + stockPrice.lastPrice;
+                                } );
+            }
         }
         super.setFormValues( modelObject );
     }

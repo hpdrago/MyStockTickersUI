@@ -2,7 +2,6 @@ import { Component, forwardRef, Input, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
-import { StockNotesSourceList } from '../stock-notes/stock-notes-source-list';
 import { CustomerCrudService } from '../../service/crud/customer-crud.service';
 import { StockNotesSourceContainer } from '../../model/common/stock-notes-source-container';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -39,7 +38,7 @@ export class StockNotesSourceComponent extends BaseComponent implements OnInit, 
     protected disabled: boolean;
     protected sourceItems: SelectItem[] = [];
     protected notesSourceId: string;
-    private stockNotesSourceList: StockNotesSourceList = new StockNotesSourceList( [] );
+    //private stockNotesSourceList: StockNotesSourceList = new StockNotesSourceList( [] );
     private sourceAdded: boolean;
 
     constructor( protected toaster: ToastsManager,
@@ -50,10 +49,13 @@ export class StockNotesSourceComponent extends BaseComponent implements OnInit, 
 
     public ngOnInit(): void
     {
-        this.stockNotesSourceList = this.customerCrudService.getStockNotesSourceList();
-        this.sourceItems = this.stockNotesSourceList.toSelectItems();
-        this.debug( "loadResources source items set " + JSON.stringify( this.sourceItems ) );
-        this.debug( "CrudFormWithNotesSource.loadResources.end");
+        this.customerCrudService
+            .loadSources()
+            .subscribe( sourceItems =>
+                        {
+                            this.sourceItems = sourceItems;
+                            this.debug( "loadResources source items set " + JSON.stringify( this.sourceItems ) );
+                        });
     }
 
     /**
@@ -69,7 +71,7 @@ export class StockNotesSourceComponent extends BaseComponent implements OnInit, 
         /*
          * Capture the new values that the user types and put in the source name
          */
-        if ( this.stockNotesSourceList.containsSourceId( event.value ))
+        if ( this.containsSourceId( event.value ))
         {
             this.debug( "sourcesOnChange: setting notesSourceId= " + event.value );
             this.notesSourceId = event.value;
@@ -83,9 +85,39 @@ export class StockNotesSourceComponent extends BaseComponent implements OnInit, 
             //this.modelObject.setNotesSourceId( '' );
             this.notesSourceId = event.value.toUpperCase();
             this.sourceAdded = true;
+            let selectItem: SelectItem = {
+                                           label: this.notesSourceId,
+                                           value: ''
+                                         };
+            this.sourceItems.push( selectItem );
         }
         this.propagateChange( this.notesSourceId );
     }
+
+    /**
+     * Determines if the source id is in the current list of select items.
+     * @param {string} sourceId
+     * @return {boolean}
+     */
+    public containsSourceId( sourceId: string ): boolean
+    {
+        return this.sourceItems.filter( sourceItem => sourceItem.value === sourceId ).length > 0;
+    }
+
+    /**
+     * This method is called by the parent component when that component is being saved.
+     */
+    /*
+    public save(): void
+    {
+        this.debug( "save");
+        if ( this.sourceAdded )
+        {
+            this.customerCrudService
+                .
+        }
+    }
+    */
 
     public writeValue( notesSourceId: string ): void
     {
