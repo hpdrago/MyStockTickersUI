@@ -1,44 +1,46 @@
-import { isNullOrUndefined } from "util";
-import { StockNotesContainer } from './stock-notes-container';
+import { Component, Input, OnInit } from '@angular/core';
+import { StockNotesContainer } from '../../common/stock-notes-container';
 
 /**
- * This class provides a map of URLs keyed by the ticker symbol.  It is meant to be used with classes
- * that allows the user to enter notes that might contain a URL.  This class will extract the URL from the notes
- * and map the URL to the ticker symbol.
+ * This component will display user comments and if the comments contains a URL it will set the HTML such that the
+ * user can click on the notes and go to the URL.
  */
-export class StockUrlMap
+@Component(
 {
-    private urlMap: Map<string, string> = new Map();
+    selector: 'stock-comments',
+    template: `
+        <div *ngIf="notesUrl == null">
+            <div [innerHTML]="truncateNotes( stockNotesContainer.getNotes() )">
+            </div>
+        </div>
+        <div *ngIf="notesUrl != null ">
+            <a href="{{notesUrl}}" target="_blank">
+                <div [innerHTML]="truncateNotes( stockNotesContainer.getNotes() )">
+                </div>
+            </a>
+        </div>
+    `
+})
+export class StockCommentsComponent implements OnInit
+{
+    @Input()
+    private stockNotesContainer: StockNotesContainer;
+
+    @Input()
+    private maxLength: number = 250;
 
     /**
-     * Get the URL for the {@code tickerSymbol}.
-     * @param {string} tickerSymbol
-     * @returns {string} NULL if there is no URL for the ticker symbol.
+     * Contains the URL extracted from the notes.  This will be null if no URL is found.
      */
-    public getURL( tickerSymbol: string ): string
-    {
-        return this.urlMap.get( tickerSymbol );
-    }
+    private notesUrl: string;
+
 
     /**
-     * Extracts the urls from the notes and populates the urlMap with urls that were found
-     * @param {StockNotes[]} stockNotes
+     * Extract the URL
      */
-    public extractURLsFromNotes( noteContainers: StockNotesContainer[] )
+    public ngOnInit()
     {
-        this.urlMap = new Map();
-        if ( !isNullOrUndefined( noteContainers ))
-        {
-            noteContainers.forEach( noteContainer =>
-                                    {
-                                        var url: string = this.extractURLFromNotes( noteContainer.getNotes() );
-                                        if ( !isNullOrUndefined( url ) )
-                                        {
-                                            //console.log( 'extractURLsFromNotes ticker: ' + stockNote.tickerSymbol + ' url: ' + url );
-                                            this.urlMap.set( noteContainer.getTickerSymbol(), url );
-                                        }
-                                    } );
-        }
+        this.notesUrl = this.extractURLFromNotes( this.stockNotesContainer.getNotes() );
     }
 
     /**
@@ -95,6 +97,17 @@ export class StockUrlMap
             }
         }
         return returnValue;
+    }
+
+    /**
+     * Truncates {@code notes} to the max length defined by the return value from {@code getNotesSize()} which defaults
+     * to 250 chars.
+     * @param {string} notes
+     * @return {string}
+     */
+    protected truncateNotes( notes: string )
+    {
+        return notes == null ? "" : notes.substring( 0, Math.min( this.maxLength, notes.length ) );
     }
 
 }

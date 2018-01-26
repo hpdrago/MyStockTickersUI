@@ -1,4 +1,4 @@
-import { StockNoteContainer } from "../../common/stock-note-container";
+import { StockNotesContainer } from "../../common/stock-notes-container";
 import { StockQuoteModelObject } from "./stock-quote-modelobject";
 
 /**
@@ -6,7 +6,7 @@ import { StockQuoteModelObject } from "./stock-quote-modelobject";
  *
  * Created 10/17/2017
  */
-export class StockToBuy extends StockQuoteModelObject<StockToBuy> implements StockNoteContainer
+export class StockToBuy extends StockQuoteModelObject<StockToBuy> implements StockNotesContainer
 {
     public id: number;
     public customerId: number;

@@ -1,6 +1,5 @@
 import { ToastsManager } from "ng2-toastr";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
-import { StockUrlMap } from "../../common/stock-url-map";
 import { DateOrTimePeriod } from "../../common/date-or-time-period.enum";
 import { TimePeriods } from "../../common/time-periods.enum";
 import { StockModelObjectTableComponent } from "../common/stock-model-object-table-component";
@@ -17,7 +16,6 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
  */
 export class StockCatalystEventTableComponent extends StockModelObjectTableComponent<StockCatalystEvent>
 {
-    private urlMap: StockUrlMap = new StockUrlMap();
     private DATE_OR_TIMEPERIOD = DateOrTimePeriod;
     private TIME_PERIODS = TimePeriods;
 
@@ -41,11 +39,5 @@ export class StockCatalystEventTableComponent extends StockModelObjectTableCompo
                stockCatalystEventController,
                stockCatalystEventFactory,
                stockCatalystEventCrudService );
-    }
-
-    protected onTableLoad( modelObjects: StockCatalystEvent[] ): any
-    {
-        this.urlMap.extractURLsFromNotes( modelObjects );
-        return super.onTableLoad( modelObjects );
     }
 }

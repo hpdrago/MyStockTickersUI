@@ -667,26 +667,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     }
 
     /**
-     * Truncates {@code notes} to the max length defined by the return value from {@code getNotesSize()} which defaults
-     * to 250 chars.
-     * @param {string} notes
-     * @return {string}
-     */
-    protected truncateNotes( notes: string )
-    {
-        return notes == null ? "" : notes.substring( 0, Math.min( this.getNotesSize(), notes.length ) );
-    }
-
-    /**
-     * Defines the max number of characters to display in a notes/comments field.
-     * @return {number}
-     */
-    protected getNotesSize(): number
-    {
-        return 250;
-    }
-
-    /**
      * When true, rows can be deleted.
      * @returns {boolean} Default is true
      */

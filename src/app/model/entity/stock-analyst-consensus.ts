@@ -1,5 +1,5 @@
 import { StockQuoteModelObject } from "./stock-quote-modelobject";
-import { StockNoteContainer } from "../../common/stock-note-container";
+import { StockNotesContainer } from "../../common/stock-notes-container";
 import { StockNotesSourceContainer } from "../../common/stock-notes-source-container";
 
 /**
@@ -8,7 +8,7 @@ import { StockNotesSourceContainer } from "../../common/stock-notes-source-conta
  * Created 10/17/2017
  */
 export class StockAnalystConsensus extends StockQuoteModelObject<StockAnalystConsensus>
-                                   implements StockNoteContainer,
+                                   implements StockNotesContainer,
                                               StockNotesSourceContainer
 {
     public id: number;

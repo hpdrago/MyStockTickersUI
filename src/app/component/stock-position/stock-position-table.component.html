@@ -51,13 +51,9 @@
                               field="lastPrice"
                               header="Last Price"
                               [style]="{'width':'80px','text-align':'right'}">
-                        <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                            <div *ngIf="isFetchingQuote( stockNotes )">
-                                Loading...
-                            </div>
-                            <div *ngIf="!isFetchingQuote( stockNotes )">
-                                {{stockNotes[col.field] | currency: 'USD': true }}
-                            </div>
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <stock-quote-last-price [stockQuote]="stockPosition">
+                            </stock-quote-last-price>
                         </ng-template>
                     </p-column>
 
@@ -119,7 +115,7 @@
                               [style]="{'width':'40px','text-align':'right'}"
                               [sortable]="true">
                         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-                            {{calcAvgUpsidePercent( stockAnalystConsensus ) | percent:'1.0-0' }}
+                            <stock-quote-average-upside-percent [stockQuote]="stockAnalystConsensus"></stock-quote-average-upside-percent>
                         </ng-template>
                     </p-column>
 

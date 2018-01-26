@@ -40,7 +40,7 @@
               [style]="{'width':'40px','text-align':'right'}"
               [sortable]="true">
         <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
-            {{calcAvgUpsidePercent( stockAnalystConsensus ) | percent:'1.0-0' }}
+            <stock-quote-average-upside-percent [stockQuote]="stockAnalystConsensus"></stock-quote-average-upside-percent>
         </ng-template>
     </p-column>
 
@@ -64,16 +64,7 @@
               [style]="{'width':'250px'}"
               [sortable]="false">
         <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-            <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) == null">
-                <div [innerHTML]="truncateNotes( stockNotes[col.field] )">
-                </div>
-            </div>
-            <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) != null " >
-                <a href="{{urlMap.getURL( stockNotes.tickerSymbol )}}" target="_blank">
-                    <div [innerHTML]="truncateNotes( stockNotes[col.field] )">
-                    </div>
-                </a>
-            </div>
+            <stock-comments [stockNotesContainer]="stockNotes"></stock-comments>
         </ng-template>
     </p-column>
 

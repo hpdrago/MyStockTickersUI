@@ -1,12 +1,12 @@
 import { ModelObject } from "./modelobject";
-import { StockNoteContainer } from "../../common/stock-note-container";
+import { StockNotesContainer } from "../../common/stock-notes-container";
 
 /**
  * This entity contains the elements for the stock summary
  *
  * Created 10/17/2017
  */
-export class StockCatalystEvent extends ModelObject<StockCatalystEvent> implements StockNoteContainer
+export class StockCatalystEvent extends ModelObject<StockCatalystEvent> implements StockNotesContainer
 {
     public id: number;
     public customerId: number;

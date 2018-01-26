@@ -93,12 +93,8 @@
                       header="Last Price"
                       [style]="{'width':'80px','text-align':'right'}">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <div *ngIf="isFetchingQuote( stockNotes )">
-                        Loading...
-                    </div>
-                    <div *ngIf="!isFetchingQuote( stockNotes )">
-                        {{stockNotes[col.field] | currency: 'USD': true }}
-                    </div>
+                    <stock-quote-last-price [stockQuote]="stockNotes">
+                    </stock-quote-last-price>
                 </ng-template>
             </p-column>
 
@@ -125,12 +121,7 @@
                       header="% Change Since Entered"
                       [style]="{'width':'80px','text-align':'right'}">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <div class="positiveGain" *ngIf="calculatePercentChange( stockNotes ) >= 0.0">
-                        {{calculatePercentChange( stockNotes ) | percent: '1.2-2' }}
-                    </div>
-                    <div class="negativeGain" *ngIf="calculatePercentChange( stockNotes ) < 0.0">
-                        {{calculatePercentChange( stockNotes ) | percent: '1.2-2' }}
-                    </div>
+                    <stock-quote-change-since-created [stockQuote]="stockNotes"></stock-quote-change-since-created>
                 </ng-template>
             </p-column>
 
@@ -187,16 +178,7 @@
                       field="notes"
                       header="Notes">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) == null">
-                        <div [innerHTML]="truncateNotes( stockNotes[col.field] )">
-                        </div>
-                    </div>
-                    <div *ngIf="urlMap.getURL( stockNotes.tickerSymbol ) != null " >
-                        <a href="{{urlMap.getURL( stockNotes.tickerSymbol )}}" target="_blank">
-                            <div [innerHTML]="truncateNotes( stockNotes[col.field] )">
-                            </div>
-                        </a>
-                    </div>
+                    <stock-comments [stockNotesContainer]="stockNotes"></stock-comments>
                 </ng-template>
             </p-column>
 

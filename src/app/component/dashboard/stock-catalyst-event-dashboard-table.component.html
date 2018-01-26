@@ -64,16 +64,7 @@
               header="Description"
               [sortable]="false">
         <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
-            <div *ngIf="urlMap.getURL( stockCatalystEvent.tickerSymbol ) == null">
-                <div [innerHTML]="stockCatalystEvent[col.field]">
-                </div>
-            </div>
-            <div *ngIf="urlMap.getURL( stockCatalystEvent.tickerSymbol ) != null " >
-                <a href="{{urlMap.getURL( stockCatalystEvent.tickerSymbol )}}" target="_blank">
-                    <div [innerHTML]="stockCatalystEvent[col.field]">
-                    </div>
-                </a>
-            </div>
+            <stock-comments [stockNotesContainer]="stockCatalystEvent"></stock-comments>
         </ng-template>
     </p-column>
 

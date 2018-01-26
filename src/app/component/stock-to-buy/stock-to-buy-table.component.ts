@@ -1,6 +1,5 @@
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { ToastsManager } from "ng2-toastr";
-import { StockUrlMap } from "../../common/stock-url-map";
 import { isNullOrUndefined } from "util";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
@@ -26,8 +25,6 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
  */
 export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTableComponent<StockToBuy>
 {
-    private urlMap: StockUrlMap = new StockUrlMap();
-
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -57,17 +54,6 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
                stockToBuyFactory,
                stockToBuyCrudService,
                stockQuoteRefreshService );
-    }
-
-    /**
-     * This method is called after model objects have been loaded form the database.
-     * @param {StockToBuy[]} modelObjects
-     * @returns {any}
-     */
-    protected onTableLoad( modelObjects: StockToBuy[] ): any
-    {
-        this.urlMap.extractURLsFromNotes( modelObjects );
-        return super.onTableLoad( modelObjects );
     }
 
     /**

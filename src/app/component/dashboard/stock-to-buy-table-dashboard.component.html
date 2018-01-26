@@ -185,16 +185,7 @@
               header="Comments"
               [style]="{'width':'175px'}">
         <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-            <div *ngIf="urlMap.getURL( stockToBuy.tickerSymbol ) == null">
-                <div [innerHTML]="truncateNotes( stockToBuy[col.field] )">
-                </div>
-            </div>
-            <div *ngIf="urlMap.getURL( stockToBuy.tickerSymbol ) != null " >
-                <a href="{{urlMap.getURL( stockToBuy.tickerSymbol )}}" target="_blank">
-                    <div [innerHTML]="truncateNotes( stockToBuy[col.field] )">
-                    </div>
-                </a>
-            </div>
+            <stock-comments [stockNotesContainer]="stockToBuy"></stock-comments>
         </ng-template>
     </p-column>
 

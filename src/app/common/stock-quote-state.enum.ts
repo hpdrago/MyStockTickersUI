@@ -1,6 +1,8 @@
 /**
  * Created by mike on 11/4/2017
  */
+import { StockQuoteModelObject } from '../model/entity/stock-quote-modelobject';
+
 export enum StockQuoteState
 {
     /**
@@ -24,4 +26,18 @@ export enum StockQuoteState
      * Identifies when there are issues updating the stock quote
       */
     FAILURE = 4
+}
+export namespace StockQuoteState
+{
+    /**
+     * Identifies if the stock quote for the model object is being fetched.
+     * A quote is fetched if it is stale or if it is not in the cache.
+     * @param {StockQuoteModelObject<any>} modelObject
+     * @return {boolean} true if the quote is being fetch, false otherwise.
+     */
+    export function isFetchingQuote( modelObject: StockQuoteModelObject<any> )
+    {
+        return modelObject.stockQuoteState == StockQuoteState.NOT_CACHED ||
+               modelObject.stockQuoteState == StockQuoteState.STALE;
+    }
 }

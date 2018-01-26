@@ -172,6 +172,10 @@ import { StockPositionTableButtonsComponent } from './component/stock-position/s
 import { StockPositionFactory } from './model/factory/stock-position-factory';
 import { StockPositionCrudService } from './service/crud/stock-position-crud.service';
 import { AppDefaultErrorHandler } from './app.default-error-handler';
+import { StockQuoteLastPriceComponent } from './component/common/stock-quote-last-price.component';
+import { StockQuoteChangeSinceCreatedComponent } from './component/common/stock-quote-change-since-created.component';
+import { StockQuoteAverageUpsidePercentComponent } from './component/common/stock-quote-average-upside-percent.component';
+import { StockCommentsComponent } from './component/common/stock-comments.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -321,7 +325,12 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         UppercaseDirective,
         UppercaseValueDirective,
         StockAutoCompleteComponent,
-        StockSearchComponent
+        StockSearchComponent,
+        StockQuoteLastPriceComponent,
+        StockQuoteChangeSinceCreatedComponent,
+        StockQuoteAverageUpsidePercentComponent,
+        StockCommentsComponent
+
     ],
     bootstrap:
     [

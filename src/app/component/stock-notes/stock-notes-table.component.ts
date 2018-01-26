@@ -1,7 +1,6 @@
 import { StockNotes } from "../../model/entity/stock-notes";
 import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
-import { StockUrlMap } from "../../common/stock-url-map";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { StockQuoteModelObjectTableComponent } from "../stock-quote/stock-quote-modelobject-table.component";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
@@ -19,8 +18,6 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
  */
 export abstract class StockNotesTableComponent extends StockQuoteModelObjectTableComponent<StockNotes>
 {
-    protected urlMap: StockUrlMap = new StockUrlMap();
-
     /**
      * Constructor.
      * @param {SessionService} session
@@ -46,18 +43,6 @@ export abstract class StockNotesTableComponent extends StockQuoteModelObjectTabl
                stockNotesFactory,
                stockNotesCrudService,
                stockQuoteRefreshService );
-    }
-
-    /**
-     * This method is called after stockNotes are loaded from the database.
-     * Once loaded, the stockNotes are expanded, one row per ticker symbol, into the table.
-     * @param {StockNotes[]} stockNotes
-     * @return {any}
-     */
-    protected onTableLoad( stockNotes: StockNotes[] )
-    {
-        this.urlMap.extractURLsFromNotes( stockNotes );
-        super.onTableLoad( stockNotes );
     }
 
     protected getActionTaken( actionTaken: string )
