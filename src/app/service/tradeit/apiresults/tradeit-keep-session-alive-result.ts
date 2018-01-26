@@ -1,6 +1,5 @@
 import { TradeItAPIResult } from "./tradeit-api-result";
-import { JsonConvert, JsonProperty, OperationMode, ValueCheckingMode } from "json2typescript";
-import { TradeItAccount } from "../../../model/entity/tradeit-account";
+import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
 import { TradeItAuthenticateResult } from "./tradeit-authenticate-result";
 
 /**

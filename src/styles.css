@@ -9,6 +9,52 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 
+/****************************************************
+ * CRUD TABLE
+ ****************************************************/
+::ng-deep .ui-datatable-scrollable-view .ui-datatable-scrollable-body
+{
+    max-height: 300px;
+    border: 1px solid #D5D5D5;
+}
+
+/****************************************************
+ * PRICES and TOTALS
+ ****************************************************/
+.positiveGain
+{
+    color: white;
+    background: green;
+    display: block;
+}
+.negativeGain
+{
+    color: white;
+    background: red;
+    display: block;
+}
+
+/****************************************************
+ * CRUD TABLE BUTTONS
+ ****************************************************/
+.crud-table-button
+{
+    margin-right: 10px;
+}
+
+div.crud-table-button
+{
+    display: inline-block;
+    width: 125px;
+    height: 35px;
+}
+
+button.disabled
+{
+    opacity:.35;
+    filter:Alpha(Opacity=35);
+    cursor:default !important;
+}
 /*
  * http://blog.rangle.io/angular-2-ngmodel-and-custom-form-components/
  */
@@ -22,19 +68,6 @@ input.ng-invalid.ng-dirty:not(form)
 {
     border-left: 5px solid #a94442; /* red*/
     /*border: 1px solid red;*/
-}
-
-.positiveGain
-{
-    color: white;
-    background: green;
-    display: block;
-}
-.negativeGain
-{
-    color: white;
-    background: red;
-    display: block;
 }
 
 div.crud-panel-delete-message

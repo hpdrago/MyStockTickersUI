@@ -8,7 +8,6 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { BaseCrudComponent } from "../common/base-crud.component";
 import { OnInit, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { CrudOperation } from "../common/crud-operation";
 import { isNullOrUndefined } from "util";
 import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
 import { DataTable, LazyLoadEvent } from "primeng/primeng";

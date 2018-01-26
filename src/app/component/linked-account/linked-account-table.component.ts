@@ -23,7 +23,6 @@ import { isNullOrUndefined } from 'util';
 @Component(
 {
     selector:    'linked-account-table',
-    styleUrls:   ['../crud/table/crud-table.component.css'],
     templateUrl: './linked-account-table.component.html'
 } )
 export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccount> implements TradeItOAuthComponent

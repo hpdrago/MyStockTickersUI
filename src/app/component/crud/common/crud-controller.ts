@@ -4,7 +4,6 @@
  */
 import { ModelObject } from '../../../model/entity/modelobject';
 import { BaseClass } from '../../../common/base-class';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -12,7 +11,6 @@ import { DialogCloseEventType } from './close-button-event';
 import { CrudStateStore } from './crud-state-store';
 import { CrudOperation } from './crud-operation';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
-import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { CrudActionHandler } from './crud-action-handler';
 
 /**

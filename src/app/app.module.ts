@@ -186,6 +186,12 @@ import { StockQuoteDayPercentChangeComponent } from './component/common/stock-qu
 import { DateComponent } from './component/common/date.component';
 import { DateOrTimePeriodComponent } from './component/common/date-or-timeperiod.component';
 import { ModelObjectLoadingComponent } from './component/common/model-object-loading.component';
+import { CrudTableDeleteButtonComponent } from './component/crud/table/crud-table-delete-button.component';
+import { CrudTableAddButtonComponent } from './component/crud/table/crud-table-add-button.component';
+import { CrudTableRefreshButtonComponent } from './component/crud/table/crud-table-refresh-button.component';
+import { CrudTableEditButtonComponent } from './component/crud/table/crud-table-edit-button.component';
+import { PortfolioStockTableDeleteButtonComponent } from './component/portfolio-stock/portfolio-stock-table-delete-button.component';
+import { StockNotesTableAddButtonComponent } from './component/stock-notes/stock-notes-table-add-button.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -258,6 +264,11 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         LoginComponent,
         MenuBarComponent,
 
+        CrudTableDeleteButtonComponent,
+        CrudTableAddButtonComponent,
+        CrudTableEditButtonComponent,
+        CrudTableRefreshButtonComponent,
+
         CustomerFormComponent,
         CustomerPanelComponent,
         CustomerFormButtonsComponent,
@@ -299,12 +310,14 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         PortfolioStockFormComponent,
         PortfolioStockDialogComponent,
         PortfolioStockFormButtonsComponent,
+        PortfolioStockTableDeleteButtonComponent,
 
         StockNotesTableTabComponent,
         StockNotesTableDashboardComponent,
         StockNotesFormComponent,
         StockNotesDialogComponent,
         StockNotesTableButtonsComponent,
+        StockNotesTableAddButtonComponent,
         StockNotesFormButtonsComponent,
 
         StockAnalystConsensusTableTabComponent,

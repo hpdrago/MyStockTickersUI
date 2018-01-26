@@ -16,8 +16,8 @@ import { StockActionHandler } from './stock-action-handler';
     selector:    'stock-table',
     templateUrl: './stock-table.component.html',
     styleUrls:   ['./stock-table.component.css'],
-    outputs: ['modelObject'],
-    providers: [StockStateStore, StockController, StockActionHandler]
+    outputs:     ['modelObject'],
+    providers:   [StockStateStore, StockController, StockActionHandler]
 } )
 export class StockTableComponent extends CrudTableComponent<Stock>
 {

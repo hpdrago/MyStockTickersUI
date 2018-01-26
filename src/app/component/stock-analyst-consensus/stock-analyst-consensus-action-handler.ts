@@ -1,5 +1,4 @@
 import { CrudActionHandler } from '../crud/common/crud-action-handler';
-import { Customer } from '../../model/entity/customer';
 import { Injectable } from '@angular/core';
 import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensus';
 import { ToastsManager } from 'ng2-toastr';

@@ -4,7 +4,6 @@ import { StockQuote } from "../model/entity/stock-quote";
 import { Observable } from "rxjs/Observable";
 import { StockCrudService } from "./crud/stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
-import { Subject } from 'rxjs/Subject';
 
 /**
  * This class caches stock quotes by ticker symbol

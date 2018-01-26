@@ -270,7 +270,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                          {
                              this.debug( methodName + ' received: ' + JSON.stringify( response.json() ))
                              let modelObject: T = this.modelObjectFactory.newModelObjectFromJSON( response.json() );
-                             this.setLoadedStatus( modelObject );
+                             //this.setLoadedStatus( modelObject );
                              return modelObject;
                          } ) // ...and calling .json() on the response to return data
                    .catch( ( error: any ) =>
@@ -320,7 +320,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                              this.debug( methodName + ' received response' ); //+ JSON.stringify(response) );
                              let modelObjects: T[] = this.modelObjectFactory
                                                          .newModelObjectArray( response.json() );
-                             modelObjects.forEach( modelObject => this.setLoadingStatus( modelObject ) );
+                             //modelObjects.forEach( modelObject => this.setLoadedStatus( modelObject ) );
                              this.debug( methodName + ' ' + modelObjects.length + ' model objects' );
                              //this.debug( methodName + ' ' + JSON.stringify( modelObjects ));
                              return modelObjects;
@@ -350,8 +350,10 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                          {
                              this.debug( 'Received response status: ' + response.statusText )
                              let json: PaginationPage<T> = response.json();
+                             /*
                              json.content
-                                 .forEach( (modelObject) => this.setLoadingStatus( modelObject ) );
+                                 .forEach( (modelObject) => this.setLoadedStatus( modelObject ) );
+                                 */
                              return json;
                          } )
                    .catch( ( error: any ) =>

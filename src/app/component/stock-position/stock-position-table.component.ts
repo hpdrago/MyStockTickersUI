@@ -7,10 +7,7 @@ import { StockPositionStateStore } from './stock-position-state-store';
 import { StockQuoteRefreshService } from '../../service/stock-quote-refresh.service';
 import { StockPositionFactory } from '../../model/factory/stock-position-factory';
 import { StockPositionCrudService } from '../../service/crud/stock-position-crud.service';
-import { LinkedAccount } from '../../model/entity/linked-account';
 import { StockPositionCrudActionHandler } from './stock-position-crud-action-handler';
-import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
-import { LinkedAccountController } from '../linked-account/linked-account-controller';
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -20,8 +17,7 @@ import { LinkedAccountController } from '../linked-account/linked-account-contro
 @Component(
 {
     selector:    'stock-position-table',
-    styleUrls:   ['../crud/table/crud-table.component.css',
-                  './stock-position-table.component.css'],
+    styleUrls:   ['./stock-position-table.component.css'],
     templateUrl: './stock-position-table.component.html',
     providers:   [StockPositionStateStore, StockPositionController, StockPositionCrudActionHandler]
 } )

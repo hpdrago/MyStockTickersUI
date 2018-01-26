@@ -1,7 +1,6 @@
 import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
 import { SessionService } from "../../service/session.service";
-import { TradeItAccount } from "../entity/tradeit-account";
 import { StockPosition } from '../entity/stock-position';
 
 /**

@@ -1,11 +1,11 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
 import { LinkedAccount } from "../../model/entity/linked-account";
-import { LinkedAccountStateStore } from './linked-account-state-store';
-import { LinkedAccountController } from './linked-account-controller';
-import { LinkedAccountFactory } from '../../model/factory/linked-account.factory';
 import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud.service';
+import { LinkedAccountFactory } from '../../model/factory/linked-account.factory';
+import { LinkedAccountController } from './linked-account-controller';
+import { LinkedAccountStateStore } from './linked-account-state-store';
 
 /**
  * The buttons component for the linked accounts.
@@ -13,10 +13,10 @@ import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud
  */
 @Component({
     selector:    'linked-account-table-buttons',
-    styleUrls:   ['../crud/table/crud-table-buttons.component.css'],
     templateUrl: '../crud/table/crud-table-buttons.component.html'
 })
 export class LinkedAccountTableButtonsComponent extends CrudTableButtonsComponent<LinkedAccount>
+                                                implements OnInit
 {
     /**
      * Constructor.
@@ -39,9 +39,8 @@ export class LinkedAccountTableButtonsComponent extends CrudTableButtonsComponen
                linkedAccountCrudService );
     }
 
-    protected isShowAddButton(): boolean
+    public ngOnInit(): void
     {
-        return false;
+        this.addButton.showButton = false;
     }
-
 }

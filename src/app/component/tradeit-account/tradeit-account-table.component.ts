@@ -18,8 +18,7 @@ import { TradeItAccount } from '../../model/entity/tradeit-account';
 @Component(
 {
     selector:    'tradeit-account-table',
-    styleUrls:   ['../crud/table/crud-table.component.css',
-                  './tradeit-account-table.component.css'],
+    styleUrls:   ['./tradeit-account-table.component.css'],
     templateUrl: './tradeit-account-table.component.html'
 } )
 export class TradeItAccountTableComponent extends TradeItAccountBaseTableComponent

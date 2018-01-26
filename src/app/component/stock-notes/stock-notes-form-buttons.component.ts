@@ -3,8 +3,6 @@ import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { SessionService } from "../../service/session.service";
 import { StockNotes } from "../../model/entity/stock-notes";
-import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
-import { CrudOperation } from "../crud/common/crud-operation";
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';

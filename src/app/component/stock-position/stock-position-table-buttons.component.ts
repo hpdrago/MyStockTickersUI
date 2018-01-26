@@ -1,9 +1,9 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
+import { StockPosition } from '../../model/entity/stock-position';
 import { StockPositionStateStore } from './stock-position-state-store';
 import { StockPositionController } from './stock-position-controller';
-import { StockPosition } from '../../model/entity/stock-position';
 import { StockPositionFactory } from '../../model/factory/stock-position-factory';
 import { StockPositionCrudService } from '../../service/crud/stock-position-crud.service';
 
@@ -12,7 +12,6 @@ import { StockPositionCrudService } from '../../service/crud/stock-position-crud
  */
 @Component({
     selector:    'stock-position-table-buttons',
-    styleUrls:   ['../crud/table/crud-table-buttons.component.css'],
     templateUrl: '../crud/table/crud-table-buttons.component.html'
 })
 export class StockPositionTableButtonsComponent extends CrudTableButtonsComponent<StockPosition>

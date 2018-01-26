@@ -14,7 +14,6 @@ import { StockCrudService } from '../../service/crud/stock-crud.service';
  */
 @Component({
     selector:    'stock-table-buttons',
-    styleUrls:   ['../crud/table/crud-table-buttons.component.css'],
     templateUrl: '../crud/table/crud-table-buttons.component.html'
 })
 export class StockTableButtonsComponent extends CrudTableButtonsComponent<Stock>
@@ -40,24 +39,6 @@ export class StockTableButtonsComponent extends CrudTableButtonsComponent<Stock>
                stockController,
                stockFactory,
                stockCrudService );
-    }
-
-    /**
-     * Determines if the Delete button should be disabled.
-     * It should be disabled when no portfolio is selected
-     * @returns {boolean}
-     */
-    protected isDeleteButtonDisabled(): boolean
-    {
-        //this.logger.debug( "isDeleteButtonDisabled " + JSON.stringify( this.modelObject ) );
-        var disabled = true;
-        if ( !isNullOrUndefined( this.modelObject ) &&
-             this.sessionService.getLoggedInUserId() == this.modelObject.createdBy )
-        {
-            //this.logger.debug( "isDeleteButtonDisabled false" );
-            disabled = false;
-        }
-        return disabled;
     }
 }
 

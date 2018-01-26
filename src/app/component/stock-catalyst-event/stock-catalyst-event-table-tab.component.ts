@@ -15,7 +15,6 @@ import { StockCatalystEventActionHandler } from './stock-catalyst-event-action-h
 @Component(
     {
         selector: 'stock-catalyst-event-table-tab',
-        styleUrls: ['../crud/table/crud-table.component.css'],
         templateUrl: './stock-catalyst-event-table-tab.component.html',
         providers: [StockCatalystEventStateStore, StockCatalystEventController, StockCatalystEventActionHandler]
     } )

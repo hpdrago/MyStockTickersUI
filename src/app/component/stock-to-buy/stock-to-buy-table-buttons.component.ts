@@ -12,7 +12,6 @@ import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.serv
  */
 @Component({
     selector:    'stock-to-buy-table-buttons',
-    styleUrls:   ['../crud/table/crud-table-buttons.component.css'],
     templateUrl: '../crud/table/crud-table-buttons.component.html'
 })
 export class StockToBuyTableButtonsComponent extends CrudTableButtonsComponent<StockToBuy>

@@ -1,21 +1,20 @@
-import { Component, Input } from "@angular/core";
-import { ToastsManager } from "ng2-toastr";
-import { Portfolio } from "../../model/entity/portfolio";
-import { PortfolioStock } from "../../model/entity/portfolio-stock";
-import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
+import { CrudTableDeleteButtonComponent } from '../crud/table/crud-table-delete-button.component';
+import { PortfolioStock } from '../../model/entity/portfolio-stock';
+import { Component, Input } from '@angular/core';
+import { Portfolio } from '../../model/entity/portfolio';
 import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
 import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
 import { PortfolioStockController } from './portfolio-stock-controller';
 import { PortfolioStockStateStore } from './portfolio-stock-state-store';
+import { SessionService } from '../../service/session.service';
+import { ToastsManager } from 'ng2-toastr';
 
-/**
- * Created by mike on 1/2/2017.
- */
-@Component({
-    selector:    'portfolio-stock-table-buttons',
-    templateUrl: '../crud/table/crud-table-buttons.component.html'
-})
-export class PortfolioStockTableButtonsComponent extends CrudTableButtonsComponent<PortfolioStock>
+@Component
+({
+     selector: 'portfolio-stock-table-delete-button',
+     templateUrl: '../crud/table/crud-table-button.component.html'
+ })
+export class PortfolioStockTableDeleteButtonComponent extends CrudTableDeleteButtonComponent<PortfolioStock>
 {
     @Input()
     private portfolio: Portfolio;
@@ -23,12 +22,14 @@ export class PortfolioStockTableButtonsComponent extends CrudTableButtonsCompone
     /**
      * Constructor.
      * @param {ToastsManager} toaster
+     * @param {SessionService} session
      * @param {PortfolioStockStateStore} portfolioStockStateStore
      * @param {PortfolioStockController} portfolioStockController
      * @param {PortfolioStockFactory} portfolioStockFactory
      * @param {PortfolioStockCrudService} portfolioStockCrudService
      */
     constructor( protected toaster: ToastsManager,
+                 private session: SessionService,
                  private portfolioStockStateStore: PortfolioStockStateStore,
                  private portfolioStockController: PortfolioStockController,
                  private portfolioStockFactory: PortfolioStockFactory,
@@ -38,8 +39,15 @@ export class PortfolioStockTableButtonsComponent extends CrudTableButtonsCompone
                portfolioStockStateStore,
                portfolioStockController,
                portfolioStockFactory,
-               portfolioStockCrudService )
+               portfolioStockCrudService );
     }
 
+    public get buttonDisabled(): boolean
+    {
+        if ( !this.portfolio )
+        {
+            return true;
+        }
+        return this.buttonDisabled;
+    }
 }
-

@@ -2,7 +2,6 @@ import { CrudPanelComponent } from '../crud/panel/crud-panel.component';
 import { Customer } from '../../model/entity/customer';
 import { Component } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
-import { SessionService } from '../../service/session.service';
 import { CustomerController } from './customer-controller';
 import { CustomerFactory } from '../../model/factory/customer.factory';
 import { CustomerStateStore } from './customer-state-store';

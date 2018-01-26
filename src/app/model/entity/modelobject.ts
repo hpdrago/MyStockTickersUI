@@ -4,7 +4,6 @@
  * Created by mike on 12/8/2016.
  */
 import { JsonObject, JsonProperty } from "json2typescript";
-import { LoadingStatus } from './loading-status';
 
 @JsonObject
 export abstract class ModelObject<T>

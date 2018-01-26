@@ -1,7 +1,7 @@
 /**
  * Created by mike on 3/4/2018
  */
-import { Component, Input, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ModelObject } from '../../model/entity/modelobject';
 
 /**

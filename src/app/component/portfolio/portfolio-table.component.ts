@@ -21,7 +21,6 @@ import { PortfolioActionHandler } from './portfolio-action-handler';
 {
     selector: 'portfolio-table',
     templateUrl: './portfolio-table.component.html',
-    styleUrls: ['./portfolio-table.component.css'],
     providers: [PortfolioController, PortfolioStateStore, PortfolioActionHandler]
 })
 export class PortfolioTableComponent extends CrudTableComponent<Portfolio> implements OnInit

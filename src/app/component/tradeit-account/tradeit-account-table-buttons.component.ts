@@ -12,7 +12,6 @@ import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-cr
  */
 @Component({
     selector:    'tradeit-account-table-buttons',
-    styleUrls:   ['../crud/table/crud-table-buttons.component.css'],
     templateUrl: '../crud/table/crud-table-buttons.component.html'
 })
 export class TradeItAccountTableButtonsComponent extends CrudTableButtonsComponent<TradeItAccount>

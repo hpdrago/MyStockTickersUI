@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { BaseComponent } from "../common/base.component";
 import { TradeItAccountTableComponent } from "./tradeit-account-table.component";

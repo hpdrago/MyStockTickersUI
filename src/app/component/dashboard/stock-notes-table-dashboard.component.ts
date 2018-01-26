@@ -20,7 +20,6 @@ import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
 @Component(
     {
         selector: 'stock-notes-dashboard-table',
-        styleUrls: ['../stock-notes/stock-notes-table.component.css'],
         templateUrl: './stock-notes-table-dashboard.component.html',
         providers: [StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler,
                     StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler]

@@ -1,4 +1,4 @@
-import { EventEmitter, OnInit, Output } from "@angular/core";
+import { OnInit } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { StockPositionStateStore } from './stock-position-state-store';
@@ -11,8 +11,6 @@ import { StockQuoteRefreshService } from '../../service/stock-quote-refresh.serv
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { LinkedAccount } from '../../model/entity/linked-account';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
-import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
-import { LinkedAccountController } from '../linked-account/linked-account-controller';
 
 /**
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}

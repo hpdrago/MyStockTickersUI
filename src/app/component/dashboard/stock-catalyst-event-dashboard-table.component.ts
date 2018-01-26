@@ -15,7 +15,6 @@ import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst
 @Component(
     {
         selector: 'stock-catalyst-event-dashboard-table',
-        styleUrls: ['../crud/table/crud-table.component.css'],
         templateUrl: './stock-catalyst-event-dashboard-table.component.html',
         providers: [StockCatalystEventStateStore, StockCatalystEventController, StockCatalystEventActionHandler]
     } )

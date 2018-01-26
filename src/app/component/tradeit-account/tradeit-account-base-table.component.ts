@@ -2,7 +2,7 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItAuthenticateResult } from "../../service/tradeit/apiresults/tradeit-authenticate-result";
 import { TradeItSecurityQuestionDialogComponent } from "../tradeit/tradeit-security-question-dialog.component";
-import { EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
+import { OnInit, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";

@@ -20,7 +20,6 @@ import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-act
 @Component(
     {
         selector:    'stock-to-buy-dashboard-table',
-        styleUrls:   ['../stock-to-buy/stock-to-buy-table.component.css'],
         templateUrl: './stock-to-buy-table-dashboard.component.html',
         providers: [StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler,
                     StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler]

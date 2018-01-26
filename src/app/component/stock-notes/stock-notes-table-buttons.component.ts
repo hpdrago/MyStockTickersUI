@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
 import { StockNotes } from "../../model/entity/stock-notes";
-import { CrudOperation } from "../crud/common/crud-operation";
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
@@ -13,7 +12,6 @@ import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.servi
  */
 @Component({
     selector:    'stock-notes-table-buttons',
-    styleUrls:   ['../crud/table/crud-table-buttons.component.css'],
     templateUrl: '../crud/table/crud-table-buttons.component.html'
 })
 export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<StockNotes>
@@ -37,13 +35,5 @@ export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<S
                stockNotesController,
                stockNotesFactory,
                stockNotesCrudService );
-    }
-
-    protected onAddButtonClick(): void
-    {
-        let modelObject = this.stockNotesFactory.newModelObject();
-        this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.CREATE );
-        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
-        super.onAddButtonClick();
     }
 }

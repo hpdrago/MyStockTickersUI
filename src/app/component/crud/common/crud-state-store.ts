@@ -6,8 +6,6 @@ import { BaseClass } from "../../../common/base-class";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
 import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
-import { ModelObjectDeletedEvent } from "../../../service/crud/model-object-deleted-event";
-import { ModelObjectCreatedEvent } from "../../../service/crud/model-object-created-event";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 
 /**

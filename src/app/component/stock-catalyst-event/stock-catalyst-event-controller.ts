@@ -3,7 +3,6 @@
  */
 import { CrudController } from '../crud/common/crud-controller';
 import { StockCatalystEvent } from '../../model/entity/stock-catalyst-event';
-import { CrudStateStore } from '../crud/common/crud-state-store';
 import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 import { Injectable } from '@angular/core';

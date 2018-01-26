@@ -15,9 +15,7 @@ import { Observable } from "rxjs/Observable";
 import { ModelObjectFactory } from '../../model/factory/model-object.factory';
 import { CrudController } from '../crud/common/crud-controller';
 import { CrudStateStore } from '../crud/common/crud-state-store';
-import { Customer } from '../../model/entity/customer';
 import { CrudRestService } from '../../service/crud/crud-rest.serivce';
-import { CustomerService } from '../../service/customer.service';
 
 /**
  * This class contains the methods to handle forms for entities with note sources.

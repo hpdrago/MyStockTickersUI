@@ -11,6 +11,10 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
 {
     private subscriptions: Subscription[] = [];
 
+    /**
+     * Constructor
+     * @param {ToastsManager} toaster
+     */
     constructor( protected toaster: ToastsManager )
     {
         super( toaster );
