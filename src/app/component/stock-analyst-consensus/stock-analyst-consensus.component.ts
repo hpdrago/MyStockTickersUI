@@ -8,7 +8,7 @@ import { ToastsManager } from 'ng2-toastr';
  */
 @Component({
     selector: 'stock-analyst-consensus',
-    styleUrls: ['../stock-analyst-consensus/stock-analyst-consensus-table.component.css'],
+    styleUrls: ['./stock-analyst-consensus-table.component.css'],
     template: `<div *ngIf="stockAnalystConsensus != null; then foundTemplate else notFoundTemplate">
                </div>
                <ng-template #foundTemplate>

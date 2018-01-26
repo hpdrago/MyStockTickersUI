@@ -37,7 +37,8 @@ import {
     SliderModule,
     TabMenuModule,
     TabViewModule,
-    TooltipModule
+    TooltipModule,
+    FileUploadModule, ToggleButtonModule
 } from "primeng/primeng";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
 import { AutoCompleteModule } from "primeng/components/autocomplete/autocomplete";
@@ -166,7 +167,7 @@ import { StockQuoteLastPriceComponent } from './component/common/stock-quote-las
 import { StockQuotePercentChangeSinceCreatedComponent } from './component/common/stock-quote-percent-change-since-created.component';
 import { StockAverageUpsidePercentComponent } from './component/common/stock-average-upside-percent.component';
 import { StockCommentsComponent } from './component/common/stock-comments.component';
-import { StockAnalystConsensusComponent } from './component/common/stock-analyst-consensus.component';
+import { StockAnalystConsensusComponent } from './component/stock-analyst-consensus/stock-analyst-consensus.component';
 import { TipRanksLinkComponent } from './component/common/tipranks-link.component';
 import { CurrencyComponent } from './component/common/currency-component';
 import { GainLossCurrencyComponent } from './component/common/gain-loss-currency.component';
@@ -225,8 +226,8 @@ import { StockAnalystConsensusCache } from './service/cache/stock-analyst-consen
 import { StockPositionMarketValue } from './component/stock-position/stock-position-market-value';
 import { StockPositionPurchasePrice } from './component/stock-position/stock-position-purchase-price';
 import { TableModule } from 'primeng/table';
-import { StockAnalystPriceTargetsComponent } from './component/common/stock-analyst-price-targets.component';
-import { StockAnalystPriceTargetComponent } from './component/common/stock-analyst-price-target.component';
+import { StockAnalystPriceTargetsComponent } from './component/stock-analyst-consensus/stock-analyst-price-targets.component';
+import { StockAnalystPriceTargetComponent } from './component/stock-analyst-consensus/stock-analyst-price-target.component';
 import { StockCompanyComponent } from './component/common/stock-company.component';
 import { CachedValueComponent } from './component/common/cached-value.component';
 import { StockCompanyFactory } from './model/factory/stock-company-factory';
@@ -242,6 +243,21 @@ import { StockNotesSourceSelectionComponent } from './component/common/stock-not
 import { SelectedStockCompaniesComponent } from './component/common/selected-stock-companies.component';
 import { StockSearchSelectedCompaniesComponent } from './component/common/stock-search-selected-companies.component';
 import { StockSearchDisplayTickerSymbolComponent } from './component/common/stock-search-display-ticker-symbol.component';
+import { LinkedAccountSelectionComponent } from './component/linked-account/linked-account-selection.component';
+import { GainsLossesTableAddButtonComponent } from './component/gains-losses/gains-losses-table-add-button.component';
+import { GainsLossesTableEditButtonComponent } from './component/gains-losses/gains-losses-table-edit-button.component';
+import { GainsLossesTableRefreshButtonComponent } from './component/gains-losses/gains-losses-table-refresh-button.component';
+import { GainsLossesTableDeleteButtonComponent } from './component/gains-losses/gains-losses-table-delete-button.component';
+import { GainsLossesFormButtonsComponent } from './component/gains-losses/gains-losses-form-buttons.component';
+import { GainsLossesTableButtonsComponent } from './component/gains-losses/gains-losses-table-buttons.component';
+import { GainsLossesDialogComponent } from './component/gains-losses/gains-losses-dialog.component';
+import { GainsLossesFormComponent } from './component/gains-losses/gains-losses-form.component';
+import { GainsLossesTableTabComponent } from './component/gains-losses/gains-losses-table-tab.component';
+import { GainsLossesCrudService } from './service/crud/gains-losses-crud.service';
+import { GainsLossesFactory } from './model/factory/gains-losses.factory';
+import { GainsLossesTableImportButtonComponent } from './component/gains-losses/gains-losses-table-import-button.component';
+import { GainsLossesImportDialogComponent } from './component/gains-losses/gains-losses-import-dialog.component';
+import { UploadFileService } from './service/upload-file.service';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -311,6 +327,8 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         ListboxModule,
         AccordionModule,
         TableModule,
+        FileUploadModule,
+        ToggleButtonModule,
         // Third Party modules,
         ToastModule.forRoot(),
 
@@ -344,6 +362,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         TradeItAccountTableRefreshButtonComponent,
         TradeItAccountsComponent,
 
+        LinkedAccountSelectionComponent,
         LinkedAccountTableComponent,
         LinkedAccountTableButtonsComponent,
         LinkedAccountDialogComponent,
@@ -437,6 +456,18 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockToBuyTableDeleteButtonComponent,
         StockToBuyTableEditButtonComponent,
         StockToBuyTableRefreshButtonComponent,
+
+        GainsLossesImportDialogComponent,
+        GainsLossesTableTabComponent,
+        GainsLossesFormComponent,
+        GainsLossesDialogComponent,
+        GainsLossesTableButtonsComponent,
+        GainsLossesFormButtonsComponent,
+        GainsLossesTableImportButtonComponent,
+        GainsLossesTableAddButtonComponent,
+        GainsLossesTableDeleteButtonComponent,
+        GainsLossesTableEditButtonComponent,
+        GainsLossesTableRefreshButtonComponent,
 
         TradeItSecurityQuestionDialogComponent,
 
@@ -538,6 +569,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockToBuyCrudService,
         StockToBuyFactory,
 
+        GainsLossesCrudService,
+        GainsLossesFactory,
+
         StockCompanyFactory,
         StockCompanyService,
         StockCompanyCacheService,
@@ -546,6 +580,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         SessionService,
         ConfirmationService,
         AppConfigurationService,
+        UploadFileService,
 
         { provide: ToastOptions, useClass: CustomToastOptions },
         ToastsManager,

@@ -7,11 +7,13 @@ import { CrudStateStore } from '../crud/common/crud-state-store';
 import { CrudController } from '../crud/common/crud-controller';
 import { ModelObjectFactory } from '../../model/factory/model-object.factory';
 import { CrudRestService } from '../../service/crud/crud-rest.serivce';
+import { ModelObject } from '../../model/common/model-object';
+import { TickerSymbolContainer } from '../../model/common/ticker-symbol-container';
 
 /**
  * This is a base class for all tables that contain model objects containing a ticker symbol
  */
-export abstract class StockModelObjectTableComponent<T extends StockModelObject<T>>
+export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & TickerSymbolContainer>
     extends CrudTableComponent<T>
 {
     /**
@@ -47,7 +49,7 @@ export abstract class StockModelObjectTableComponent<T extends StockModelObject<
         this.debug( "loadTableForTickerSymbol " + tickerSymbol );
         this.modelObject = this.stockFactory
                                .newModelObject();
-        this.modelObject.tickerSymbol = tickerSymbol;
+        this.modelObject.setTickerSymbol( tickerSymbol );
         this.loadTable();
     }
 

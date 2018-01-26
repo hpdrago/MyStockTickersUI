@@ -27,8 +27,6 @@ import { StockCompany } from '../../model/entity/stock-company';
             } )
 export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
 {
-    protected selectedStockCompanies: SelectedStockCompanyList;
-
     /**
      * Constructor.
      * @param {ChangeDetectorRef} changeDetector
@@ -48,8 +46,7 @@ export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
                  private stockToBuyStateStore: StockToBuyStateStore,
                  private stockToBuyController: StockToBuyController,
                  private stockToBuyFactory: StockToBuyFactory,
-                 private stockToBuyCrudService: StockToBuyCrudService,
-                 private stockCompanyService: StockCompanyService )
+                 private stockToBuyCrudService: StockToBuyCrudService )
     {
         super( changeDetector,
                toaster,
@@ -57,7 +54,6 @@ export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
                stockToBuyController,
                stockToBuyFactory,
                stockToBuyCrudService );
-        this.selectedStockCompanies = new SelectedStockCompanyList( stockCompanyService );
     }
 
     /**

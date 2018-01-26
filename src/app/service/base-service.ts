@@ -11,7 +11,7 @@ export abstract class BaseService extends BaseClass
     /**
      * Constructor
      */
-    constructor( protected toaster?: ToastsManager )
+    protected constructor( protected toaster?: ToastsManager )
     {
         super( toaster );
     }

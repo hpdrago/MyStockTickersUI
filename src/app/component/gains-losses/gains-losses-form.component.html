@@ -1,0 +1,73 @@
+<div *ngIf="!isCrudNoneOperation()">
+    <form [formGroup]="formGroup">
+        <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+            <!----------------------------------------------------------------------------------------------------------
+            TICKER SYMBOL
+            ------------------------------------------------------------------------------------------------------------>
+            <stock-search-selected-companies (stockSelected)="onStockSelected($event)"
+                                             [maxStocks]="1"
+                                             [tickerSymbol]="modelObject.tickerSymbol">
+            </stock-search-selected-companies>
+
+            <!----------------------------------------------------------------------------------------------------------
+            LINKED ACCOUNT
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="ui-grid-row">
+                <div class="crud-form-label ui-grid-col-2">
+                    <label class="crud-form" for="linkedAccountId">Account:</label>
+                </div>
+                <div class="ui-grid-col-4">
+                    <linked-account-selection id="linkedAccountId"
+                                              formControlName="linkedAccountId"
+                                              [(ngModel)]="modelObject.linkedAccountId">
+                    </linked-account-selection>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            GAINS
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="ui-grid-row">
+                <div class="crud-form-label ui-grid-col-2">
+                    <label class="crud-form" for="gains">Gains:</label>
+                </div>
+                <div class="ui-grid-col-2">
+                    <input currencyMask
+                           id="gains"
+                           formControlName="gains"
+                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
+                           [(ngModel)]="modelObject.gains"
+                           placeholder="$"/>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            LOSSES
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="ui-grid-row">
+                <div class="crud-form-label ui-grid-col-2">
+                    <label class="crud-form" for="losses">Losses:</label>
+                </div>
+                <div class="ui-grid-col-2">
+                    <input currencyMask
+                           id="losses"
+                           formControlName="losses"
+                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
+                           [(ngModel)]="modelObject.losses"
+                           placeholder="$"/>
+                </div>
+            </div>
+        </div>
+        <!--
+        <div *ngIf="displayProgressBar">
+            <md-progress-bar mode="indeterminate"></md-progress-bar>
+        </div>
+        <div *ngIf="displayProgressBar == true">
+            <h1>Progress XXX</h1>
+        </div>
+        <div *ngIf="!displayProgressBar">
+            <h1>Progress BAR</h1>
+        </div>
+        -->
+    </form>
+</div>

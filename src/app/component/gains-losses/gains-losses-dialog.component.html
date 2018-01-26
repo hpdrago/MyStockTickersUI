@@ -1,0 +1,21 @@
+<div *ngIf="!isCrudNoneOperation()">
+    <p-dialog header="Stock To Buy"
+              [modal]="true"
+              [closable]="false"
+              [closeOnEscape]="false"
+              [responsive]="true"
+              [width]="500"
+              [height]="400"
+              [resizable]="false"
+              [contentStyle]="{'overflow':'visible'}"
+              [(visible)]="displayDialog">
+            <div>
+                <gains-losses-form>
+                </gains-losses-form>
+            </div>
+            <p-footer>
+                <gains-losses-form-buttons>
+                </gains-losses-form-buttons>
+            </p-footer>
+    </p-dialog>
+</div>

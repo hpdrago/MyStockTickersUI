@@ -149,11 +149,12 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
      * This method is called when the user selects a stock using the stock/company search input
      * @param stock
      */
-    public onStockSelected( stock: StockCompany )
+    public onStockSelected( stockCompany: StockCompany )
     {
-        this.debug( "onStockSelected: " + JSON.stringify( stock ) );
-        this.modelObject.stockQuote.companyName = stock.companyName;
-        this.modelObject.tickerSymbol = stock.tickerSymbol;
+        this.debug( "onStockSelected: " + JSON.stringify( stockCompany ) );
+        this.modelObject.stockQuote.companyName = stockCompany.companyName;
+        this.modelObject.tickerSymbol = stockCompany.tickerSymbol;
+        this.setFormValue( 'tickerSymbol', stockCompany.tickerSymbol );
     }
 
     /**

@@ -1,12 +1,13 @@
+
 @import "../node_modules/font-awesome/css/font-awesome.min.css";
 @import "../node_modules/font-awesome/css/font-awesome.css";
 
 /*@import "jquery-style/jquery-ui.css";*/
 /*@import "primng-afterdark-theme.css";*/
 
-@import "../node_modules/primeng/resources/themes/darkness/theme.css";
 /*@import "../node_modules/primeng/resources/themes/cruze/theme.css";*/
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "../node_modules/primeng/resources/themes/darkness/theme.css";
 
 
 .root__container {
@@ -173,3 +174,13 @@ body{
 .datatable.vertical-scroll {
     height:70vh;
 }*/
+
+
+/*
+ * Need to increase the width of the buttons to avoid the icon being runover by the label.
+ */
+.ui-fileupload-buttonbar .ui-button
+{
+    width: 120px !important;
+}
+

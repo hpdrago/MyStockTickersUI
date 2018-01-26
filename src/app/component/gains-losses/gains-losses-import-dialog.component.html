@@ -1,0 +1,49 @@
+<p-dialog header="Import Gains and Losses"
+          [modal]="true"
+          [closable]="true"
+          [closeOnEscape]="false"
+          [responsive]="true"
+          [width]="500"
+          [height]="400"
+          [resizable]="false"
+          [contentStyle]="{'overflow':'visible'}"
+          [(visible)]="displayDialog">
+
+        <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="clearEntries">Delete All Gains/Losses:</label>
+                </div>
+                <div class="ui-grid-col-3" id="clearEntries">
+                    <p-toggleButton [(ngModel)]="importConfiguration.clearEntries">
+                    </p-toggleButton>
+                </div>
+            </div>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="importFormat">Import Format:</label>
+                </div>
+                <div class="ui-grid-col-4" id="importFormat">
+                    <p-dropdown [options]="importFormats"
+                                [(ngModel)]="importFormat">
+                    </p-dropdown>
+                </div>
+            </div>
+            <div class="crud-form ui-grid-row">
+                <div class="ui-grid-col-12">
+                    <p-fileUpload name="files"
+                                  url="{{gainsLossesService.getFileUploadURL()}}"
+                                  accept=".xls,.xlsx"
+                                  maxFileSize="10000000"
+                                  [multiple]="true"
+                                  mode="advanced"
+                                  (onBeforeUpload)="onBeforeUpload($event)"
+                                  (onUpload)="onUpload($event)"
+                                  (onSelect)="onSelect($event)"
+                                  (onProgress)="onProgress($event)"
+                                  (onError)="onError($event)">
+                    </p-fileUpload>
+                </div>
+            </div>
+        </div>
+</p-dialog>

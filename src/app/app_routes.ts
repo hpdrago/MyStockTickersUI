@@ -13,6 +13,7 @@ import { AdminComponent } from "./component/admin/admin.component";
 import { StockCatalystEventTableTabComponent } from "./component/stock-catalyst-event/stock-catalyst-event-table-tab.component";
 import { TradeItAccountsComponent } from "./component/tradeit-account/tradeit-accounts.component";
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
+import { GainsLossesTableTabComponent } from './component/gains-losses/gains-losses-table-tab.component';
 
 const routes: Routes = [
     {
@@ -53,6 +54,11 @@ const routes: Routes = [
     {
         path: 'stocksToBuy',
         component: StockToBuyTableTabComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'gainsLosses',
+        component: GainsLossesTableTabComponent,
         canActivate: [AuthGuardService]
     },
     /* for the future

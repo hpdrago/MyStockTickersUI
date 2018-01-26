@@ -241,6 +241,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.log( "onStockSelected: " + JSON.stringify( stockCompany ) );
         this.modelObject.tickerSymbol = stockCompany.tickerSymbol;
         this.modelObject.stockPriceWhenCreated = stockCompany.lastPrice;
+        this.setFormValue( 'tickerSymbol', stockCompany.tickerSymbol );
     }
 
     /**

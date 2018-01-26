@@ -29,6 +29,7 @@ export class MenuBarComponent
                 { label: 'Stock Catalyst Events', icon: 'fa-tasks', routerLink: ['/stockCatalystEvents'] },
                 { label: 'Portfolios', icon: 'fa-briefcase', routerLink: ['/portfolios'] },
                 { label: 'Brokerage Accounts', icon: 'fa-briefcase', routerLink: ['/linkedAccounts'] },
+                { label: 'Gains & Losses', icon: 'fa-dollar', routerLink: ['/gainsLosses'] },
                 { label: 'Profile', icon: 'fa-chart', routerLink: ['/profile'] }
             ]
     }
