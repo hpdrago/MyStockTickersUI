@@ -55,8 +55,8 @@
                     <div class="crud-form-label ui-grid-col-2">
                         <label class="crud-form" for="lastPriceColumn">Last Price:</label>
                     </div>
-                    <div *ngFor="let stock of stocks; let i = index">
-                        {{stock.lastPrice | currency:'USD': true}}
+                    <div *ngFor="let stockQuote of stockQuotes">
+                        {{stockQuote.lastPrice | currency:'USD': true}}
                     </div>
                 </div>
 
@@ -64,8 +64,8 @@
                     <div class="crud-form-label ui-grid-col-2">
                         <label class="crud-form" for="notes">Company:</label>
                     </div>
-                    <div *ngFor="let stock of stocks; let i = index">
-                        {{stock.companyName}}
+                    <div *ngFor="let stockQuote of stockQuotes">
+                        {{stockQuote.companyName}}
                     </div>
                 </div>
             </ng-template>

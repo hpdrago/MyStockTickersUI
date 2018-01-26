@@ -487,6 +487,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected updateModelObjectInTable( modelObject: T, addIfNotFound: boolean )
     {
+        let methodName = "updateModelObjectInTable";
+        this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ) + " " + addIfNotFound );
         var index = this.indexOf( modelObject );
         if ( index == -1 )
         {
@@ -499,6 +501,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         {
             this.updateModelObjectTableRow( index, modelObject );
         }
+        this.debug( methodName + ".end" );
     }
 
     /**

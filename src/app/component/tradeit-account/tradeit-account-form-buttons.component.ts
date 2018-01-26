@@ -82,10 +82,10 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
                                                        }
                                                        else
                                                        {
-                                                           this.setModelObject( oAuthAccess.customerAccount );
-                                                           this.notifySaveButtonSuccessful();
+                                                           this.setModelObject( oAuthAccess.tradeItAccount );
+                                                           this.notifyAddButtonWorkSuccessful();
                                                            this.log( methodName + " added account: " + JSON.stringify( this.modelObject ) );
-                                                           this.showInfo( oAuthAccess.customerAccount.name + " was successfully linked." )
+                                                           this.showInfo( oAuthAccess.tradeItAccount.name + " was successfully linked." )
                                                            this.requestCompleted = true;
                                                        }
                                                    }

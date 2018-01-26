@@ -1,5 +1,6 @@
 import { ModelObject } from "./modelobject";
 import { JsonObject, JsonProperty } from "json2typescript";
+import { DateConverter } from "../common/DateConverter";
 
 /**
  * This is the child (1 to Many) record of a {@code TradeItAccount}.  It contains the information for a brokerage account
@@ -9,52 +10,52 @@ import { JsonObject, JsonProperty } from "json2typescript";
 export class LinkedAccount extends ModelObject<LinkedAccount>
 {
     @JsonProperty( "id", Number )
-    public id: number;
+    public id: number = undefined;
 
     @JsonProperty( "customerId", Number )
-    public customerId: number;
+    public customerId: number = undefined;
 
     @JsonProperty( "parentAccountId", Number )
-    public parentAccountId: number;
+    public parentAccountId: number = undefined;
 
     @JsonProperty( "accountNumber", String )
-    public accountNumber: string;
+    public accountNumber: string = undefined;
 
     @JsonProperty( "accountName", String )
-    public accountName: string;
+    public accountName: string = undefined;
 
     @JsonProperty( "accountIndex", Number )
-    public accountIndex: number;
+    public accountIndex: number = undefined;
 
-    @JsonProperty( "createDate", Date )
-    public createDate: Date;
+    @JsonProperty( "createDate", DateConverter )
+    public createDate: Date = undefined;
 
-    @JsonProperty( "updateDate", Date )
-    public updateDate: Date;
+    @JsonProperty( "updateDate", DateConverter )
+    public updateDate: Date = undefined;
 
     @JsonProperty( "availableCash", Number )
-    public availableCash: number;
+    public availableCash: number = undefined;
 
     @JsonProperty( "buyingPower", Number )
-    public buyingPower: number;
+    public buyingPower: number = undefined;
 
     @JsonProperty( "totalValue", Number )
-    public totalValue: number;
+    public totalValue: number = undefined;
 
     @JsonProperty( "dayAbsoluteReturn", Number )
-    public dayAbsoluteReturn: number;
+    public dayAbsoluteReturn: number = undefined;
 
     @JsonProperty( "dayPercentReturn", Number )
-    public dayPercentReturn: number;
+    public dayPercentReturn: number = undefined;
 
     @JsonProperty( "totalAbsoluteReturn", Number )
-    public totalAbsoluteReturn: number;
+    public totalAbsoluteReturn: number = undefined;
 
     @JsonProperty( "totalPercentReturn", Number )
-    public totalPercentReturn: number;
+    public totalPercentReturn: number = undefined;
 
     @JsonProperty( "marginCash", Number )
-    public marginCash: number;
+    public marginCash: number = undefined;
 
     public getPrimaryKeyValue(): any
     {

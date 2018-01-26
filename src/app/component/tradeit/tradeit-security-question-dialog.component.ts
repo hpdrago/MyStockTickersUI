@@ -68,6 +68,9 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
         this.customerAccount = customerAccount;
     }
 
+    /**
+     * This method is called when the user has answered the security question and clicked ok.
+     */
     protected onOkButtonClick(): void
     {
         let methodName = "onButtonClick";

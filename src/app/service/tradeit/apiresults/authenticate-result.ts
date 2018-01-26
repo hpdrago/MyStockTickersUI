@@ -1,6 +1,6 @@
 import { TradeItAPIResult } from "./tradeit-api-result";
-import { TradeItLinkedAccount } from "../types/tradeit-linked-account";
 import { JsonObject, JsonProperty } from "json2typescript";
+import { LinkedAccount } from "../../../model/entity/linked-account";
 
 /**
  * This class contains the information returned from REST call to authenticate a user's account.
@@ -11,8 +11,8 @@ export class TradeItAuthenticateResult extends TradeItAPIResult
     /*
      * status == SUCCESS
      */
-    @JsonProperty( "linkedAccounts", [TradeItLinkedAccount] )
-    public linkedAccounts: TradeItLinkedAccount[] = undefined;
+    @JsonProperty( "linkedAccounts", [LinkedAccount] )
+    public linkedAccounts: LinkedAccount[] = undefined;
 
     /*
      * status = INFORMATION_NEEDED

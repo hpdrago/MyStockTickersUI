@@ -8,6 +8,6 @@ import { TradeItAccount } from "../../../model/entity/tradeit-account";
 @JsonObject
 export class TradeItOAuthAccessResult extends TradeItAPIResult
 {
-    @JsonProperty( "customerAccount", TradeItAccount )
-    public customerAccount: TradeItAccount = undefined;
+    @JsonProperty( "tradeItAccount", TradeItAccount )
+    public tradeItAccount: TradeItAccount = undefined;
 }

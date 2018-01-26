@@ -2,9 +2,9 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { LinkedAccount } from "../../model/entity/linked-account";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { LinkedAccountCrudServiceContainer } from "./linked-account-crud-service-container";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
+import { TradeItAccount } from "../../model/entity/tradeit-account";
 
 /**
  * This table displays all of the linked account for a TradeItAccount instance.
@@ -18,8 +18,7 @@ import { TableLoadingStrategy } from "../common/table-loading-strategy";
 export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccount>
 {
     constructor( protected toaster: ToastsManager,
-                 protected linkedAccountCrudServiceContainer: LinkedAccountCrudServiceContainer,
-                 private tradeItService: TradeItService )
+                 protected linkedAccountCrudServiceContainer: LinkedAccountCrudServiceContainer )
     {
         super( TableLoadingStrategy.FULL_ON_DEMAND, toaster, linkedAccountCrudServiceContainer );
     }
@@ -40,5 +39,15 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
     protected isAllowUpdates(): boolean
     {
         return false;
+    }
+
+    /**
+     * This method is called when the user clicks on a {@code TradeItAccount} in the left hand table.  This method
+     * will load the linked accounts related to the {@code TradeItAccount}.
+     * @param {TradeItAccount} tradeItAccount
+     */
+    public loadAccounts( tradeItAccount: TradeItAccount )
+    {
+        this.rows = tradeItAccount.linkedAccounts;
     }
 }

@@ -6,6 +6,7 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { Subscription } from "rxjs/Subscription";
 import { isNullOrUndefined } from "util";
+import { Subject } from "rxjs/Subject";
 
 /**
  * This class services as a base abstract class for CRUD based component services to provide common methods
@@ -29,7 +30,7 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends
     /**
      * Resets the behaviour subjects to their initial values so that the previous values will no longer be returned.
      */
-    public resetSubjects(): void
+     resetSubjects(): void
     {
         let methodName = "resetSubjects";
         this.debug( methodName + ".begin" )
@@ -141,5 +142,15 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends
     {
         //setTimeout( fn, 0 );
         fn();
+    }
+
+    /**
+     * Simply creates to # observers messaged based on the number of observers on the subject.
+     * @param {Subject<any>} subject
+     * @return {string}
+     */
+    protected getToObserversMessage( subject: Subject<any> ): string
+    {
+        return " to " + subject.observers.length + " observers";
     }
 }

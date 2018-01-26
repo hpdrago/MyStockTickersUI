@@ -12,7 +12,6 @@ import { TradeItAuthenticateResult } from "./apiresults/authenticate-result";
 import { TradeItGetOauthPopupURLResult } from "./apiresults/tradeit-get-oauth-popup-url-result";
 import { TradeItException } from "./tradeit-execption";
 import { TradeItAPIResult } from "./apiresults/tradeit-api-result";
-import { TradeItLinkedAccount } from "./types/tradeit-linked-account";
 import { TradeItKeepSessionAliveResult } from "./apiresults/tradeit-keep-session-alive-result";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 
@@ -60,7 +59,7 @@ export class TradeItService extends BaseService
                              jsonConvert.operationMode = OperationMode.LOGGING;
                              jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
                              let authenticate: TradeItAuthenticateResult = jsonConvert.deserialize( response.json(), TradeItAuthenticateResult );
-                             this.debug( methodName + " authenticateAccount: " + JSON.stringify( authenticate ) );
+                             this.debug( methodName + ": " + JSON.stringify( authenticate ) );
                              return  authenticate;
                          })
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )

@@ -4,6 +4,7 @@
 import { ModelObject } from "./modelobject";
 import { JsonObject, JsonProperty } from "json2typescript";
 import { isNullOrUndefined } from "util";
+import { LinkedAccount } from "./linked-account";
 
 /**
  * TradeItLinkedAccount DTO
@@ -27,6 +28,8 @@ export class TradeItAccount extends ModelObject<TradeItAccount>
 
     @JsonProperty( "authTimestamp", String )
     public authTimestamp: Date = undefined;
+
+    public linkedAccounts: LinkedAccount[] = undefined;
 
     public getPrimaryKeyValue(): any
     {

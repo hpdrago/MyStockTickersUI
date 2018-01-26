@@ -72,6 +72,11 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
             this.sendNgOnInitCompletedEvent();
             this.debug( "CrudFormComponent.ngOnInit.end" );
         }
+        /*
+         * ngOnInit is only called once when the component is created.  So we need to call this method now.  It is called
+         * through the crud form service for subsequent displaying of forms.
+         */
+        this.onPrepareToDisplay();
     }
 
     /**

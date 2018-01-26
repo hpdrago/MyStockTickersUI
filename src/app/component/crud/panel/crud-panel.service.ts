@@ -98,8 +98,9 @@ export class CrudPanelService<T extends ModelObject<T>> extends BaseCrudComponen
     public sendDisplayFormRequestEvent( modelObject: T, crudOperation: CrudOperation )
     {
         var subjectInfo: ModelObjectCrudOperationSubjectInfo = this.createDisplayFormRequestSubjectInfo( modelObject, crudOperation );
-        this.debug( "sendDisplayFormRequestEvent " + JSON.stringify( subjectInfo ));
-        this.tickThenRun( () => this.displayDialogRequestSubject.next( subjectInfo ));
+        this.debug( "sendDisplayFormRequestEvent " + JSON.stringify( subjectInfo ) + " to observers" +
+            this.displayDialogRequestSubject.observers.length );
+        this.displayDialogRequestSubject.next( subjectInfo )
     }
 
 }
