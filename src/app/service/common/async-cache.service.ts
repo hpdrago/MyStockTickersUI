@@ -55,7 +55,8 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         /*
          * Check to see if the stock price is in the cache
          */
-        let subject = this.cacheSubjectMap.get( key );
+        let subject = this.cacheSubjectMap
+                          .get( key );
         if ( isNullOrUndefined( subject ))
         {
             subject = new BehaviorSubject<T>( null );
@@ -65,7 +66,14 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
             /*
              * Not in the cache, so fetch it and then broadcast the new stock price.
              */
-            this.fetchData( key );
+            if ( this.workingMap.get( key ) )
+            {
+                this.debug( methodName + ' ' + key + ' is already being fetched' );
+            }
+            else
+            {
+                this.fetchData( key );
+            }
         }
         this.checkDataExpiration( subject, key );
         return subject.subscribe( receiveCachedData );
@@ -111,10 +119,17 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         {
             throw new ReferenceError( key + ' is null or undefined' );
         }
+        this.debug( methodName + ' ' + key );
+        this.workingMap
+            .set( key, true );
         this.fetchCachedDataFromBackend( key )
             .subscribe( ( cachedData: T ) =>
             {
                 this.debug( methodName + ' ' + key + ' retrieved ' + JSON.stringify( cachedData ) );
+                if ( isNullOrUndefined( cachedData.getCacheState() ))
+                {
+                    this.logError( "Received null cached state" );
+                }
                 this.sendCachedDataChange( key, cachedData );
                 this.workingMap
                     .delete( key );
@@ -122,7 +137,8 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
             },
             error =>
             {
-                this.workingMap.delete( key );
+                this.workingMap
+                    .delete( key );
                 /*
                 this.restErrorReporter
                     .reportRestError( error );
@@ -132,8 +148,6 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
                 cachedData.setCacheError( error );
                 this.sendCachedDataChange( key, cachedData );
             });
-        this.workingMap
-            .set( key, true );
     }
 
     /**

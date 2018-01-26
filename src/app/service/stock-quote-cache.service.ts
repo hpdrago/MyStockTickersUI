@@ -33,6 +33,7 @@ export class StockQuoteCacheService extends AsyncCacheService<string,StockQuote>
      */
     protected fetchCachedDataFromBackend( tickerSymbol: string ): Observable<StockQuote>
     {
+        this.debug( 'fetchCachedDataFromBackend ' + tickerSymbol );
         return this.stockQuoteService
                    .getStockQuote( tickerSymbol );
     }

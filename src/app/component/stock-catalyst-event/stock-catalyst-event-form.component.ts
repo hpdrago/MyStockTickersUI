@@ -111,8 +111,25 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
 
     protected onDateOrTimePeriodChange( event )
     {
+        let methodName = 'onDateOrTimePeriodChange';
+        this.log( methodName + ' ' + JSON.stringify( event ));
         this.modelObject.dateOrTimePeriod = event.value;
-        if ( event.value == DateOrTimePeriod.TIMER_PERIOD )
+        this.enableDisableDateAndTimerPeriodFields();
+    }
+
+    /**
+     * Set the default values.
+     */
+    protected setDefaultValues(): void
+    {
+        super.setDefaultValues();
+        this.modelObject.dateOrTimePeriod = DateOrTimePeriod.DATE;
+        this.enableDisableDateAndTimerPeriodFields();
+    }
+
+    private enableDisableDateAndTimerPeriodFields(): void
+    {
+        if ( this.modelObject.dateOrTimePeriod == DateOrTimePeriod.TIMER_PERIOD )
         {
             this.enableField( 'timePeriod' );
             this.enableField( 'timePeriodYear' );
@@ -124,12 +141,6 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
             this.disableField( 'timePeriodYear' );
             this.enableField( 'catalystDate' );
         }
-    }
-
-    protected setDefaultValues(): void
-    {
-        super.setDefaultValues();
-        this.modelObject.dateOrTimePeriod = DateOrTimePeriod.DATE;
     }
 
     /**

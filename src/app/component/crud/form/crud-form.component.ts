@@ -590,21 +590,24 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected enableField( fieldName: string ): void
     {
-        var doEnable = true;
-        if ( this.crudOperation == CrudOperation.UPDATE &&
-             this.isPrimaryKeyField( fieldName ) )
+        if ( !isNullOrUndefined( this.formGroup ) && !isNullOrUndefined( this.formGroup.controls ))
         {
-            doEnable = false;
-        }
-        if ( doEnable )
-        {
-            this.formGroup.controls[fieldName].enable();
-            //this.debug( "formGroup.enableField enable: " + fieldName );
-        }
-        else
-        {
-            this.formGroup.controls[fieldName].disable();
-            //this.debug( "formGroup.enableField disable: " + fieldName );
+            let doEnable = true;
+            if ( this.crudOperation == CrudOperation.UPDATE &&
+                this.isPrimaryKeyField( fieldName ) )
+            {
+                doEnable = false;
+            }
+            if ( doEnable )
+            {
+                this.formGroup.controls[fieldName].enable();
+                //this.debug( "formGroup.enableField enable: " + fieldName );
+            }
+            else
+            {
+                this.formGroup.controls[fieldName].disable();
+                //this.debug( "formGroup.enableField disable: " + fieldName );
+            }
         }
     }
 
