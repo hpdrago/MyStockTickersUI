@@ -13,7 +13,7 @@ import { StockCrudService } from "../../service/crud/stock-crud.service";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
 import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
-import { StockPrice } from "../../model/entity/stock-price";
+import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
@@ -41,8 +41,8 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
     @ViewChild(StockAutoCompleteComponent)
     protected stockAutoCompletedComponent: StockAutoCompleteComponent;
 
-    protected stockPrice: StockPrice;
-    protected stockPrices: StockPrice[] = [];
+    protected stockPrice: StockPriceQuote;
+    protected stockPrices: StockPriceQuote[] = [];
 
     /**
      * Comma delimited list of ticker symbols
@@ -226,11 +226,11 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
             if ( !isNullOrUndefined( modelObject.tickerSymbol ))
             {
                 this.stockService
-                    .getStockPrice( modelObject.tickerSymbol )
-                    .subscribe( (stockQuote) =>
+                    .getStockPriceQuote( modelObject.tickerSymbol )
+                    .subscribe( (stockPriceQuote) =>
                                 {
-                                    this.log( methodName + " found: " + stockQuote.tickerSymbol );
-                                    modelObject.stockPriceWhenCreated = stockQuote.lastPrice;
+                                    this.log( methodName + " found: " + stockPriceQuote.tickerSymbol );
+                                    modelObject.stockPriceWhenCreated = stockPriceQuote.lastPrice;
 
                                 },
                                 error =>
@@ -244,7 +244,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
         {
             this.tickerSymbols = modelObject.tickerSymbol;
             this.stockService
-                .getStockPrice( modelObject.tickerSymbol )
+                .getStockPriceQuote( modelObject.tickerSymbol )
                 .subscribe( stockPrice =>
                             {
                                 this.companies = stockPrice.companyName;
@@ -270,11 +270,11 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
                       {
                           this.debug( methodName + " getting stock quote: " + stockNoteStock.tickerSymbol );
                           this.stockService
-                              .getStockPrice( stockNoteStock.tickerSymbol )
-                              .subscribe( (stockQuote: StockPrice) =>
+                              .getStockPriceQuote( stockNoteStock.tickerSymbol )
+                              .subscribe( (stockPriceQuote: StockPriceQuote) =>
                                           {
                                               this.debug( methodName + " getting stock quote: " + stockNoteStock.tickerSymbol );
-                                              this.onStockSelected( stockQuote )
+                                              this.onStockSelected( stockPriceQuote )
                                           }
                               );
                       } );
@@ -284,32 +284,32 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      * This method is called when the user selects a stock using the stock/company search input
      * @param stock
      */
-    public onStockSelected( stockQuote: StockPrice )
+    public onStockSelected( stockPriceQuote: StockPriceQuote )
     {
-        this.log( "onStockSelected: " + JSON.stringify( stockQuote ) );
-        let index = this.tickerSymbols.indexOf( stockQuote.tickerSymbol );
+        this.log( "onStockSelected: " + JSON.stringify( stockPriceQuote ) );
+        let index = this.tickerSymbols.indexOf( stockPriceQuote.tickerSymbol );
         if ( index == -1 )
         {
-            this.stockPrices.push( stockQuote );
+            this.stockPrices.push( stockPriceQuote );
             if ( this.tickerSymbols.length > 0 )
             {
                 this.tickerSymbols += ', '
                 this.lastPrices += ', '
                 this.companies += ', '
             }
-            this.tickerSymbols += stockQuote.tickerSymbol;
-            this.lastPrices += stockQuote.lastPrice;
-            this.companies += stockQuote.companyName;
+            this.tickerSymbols += stockPriceQuote.tickerSymbol;
+            this.lastPrices += stockPriceQuote.lastPrice;
+            this.companies += stockPriceQuote.companyName;
         }
         else
         {
-            this.stockPrices[index] = stockQuote;
+            this.stockPrices[index] = stockPriceQuote;
         }
-        this.modelObject.tickerSymbol = stockQuote.tickerSymbol;
-        this.stockPrice = stockQuote;
+        this.modelObject.tickerSymbol = stockPriceQuote.tickerSymbol;
+        this.stockPrice = stockPriceQuote;
         this.stockSearch = '';
-        this.modelObject.stockPriceWhenCreated = stockQuote.lastPrice;
-        (<FormControl>this.formGroup.controls['tickerSymbol']).setValue( stockQuote.tickerSymbol );
+        this.modelObject.stockPriceWhenCreated = stockPriceQuote.lastPrice;
+        (<FormControl>this.formGroup.controls['tickerSymbol']).setValue( stockPriceQuote.tickerSymbol );
         (<FormControl>this.formGroup.controls['stockSearch']).setValue( '' );
         this.setStockNoteStocks();
     }

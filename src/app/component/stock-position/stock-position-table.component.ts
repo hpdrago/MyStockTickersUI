@@ -4,11 +4,9 @@ import { StockPositionBaseTableComponent } from "./stock-position-base-table.com
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { StockPositionController } from './stock-position-controller';
 import { StockPositionStateStore } from './stock-position-state-store';
-import { StockPriceRefreshService } from '../../service/stock-price-refresh.service';
 import { StockPositionFactory } from '../../model/factory/stock-position-factory';
 import { StockPositionCrudService } from '../../service/crud/stock-position-crud.service';
 import { StockPositionCrudActionHandler } from './stock-position-crud-action-handler';
-import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 
 /**
  * This component display the list of the customer's brokerage accounts

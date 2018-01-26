@@ -6,7 +6,7 @@ import { SessionService } from "../session.service";
 import { AppConfigurationService } from "./../app-configuration.service";
 import { StockFactory } from "../../model/factory/stock.factory";
 import { Stock } from "../../model/entity/stock";
-import { StockPrice } from "../../model/entity/stock-price";
+import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { CrudRestService } from "./crud-rest.serivce";
 import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -74,25 +74,25 @@ export class StockCrudService extends CrudRestService<Stock>
     /**
      * Get a stock by the ticker symbol
      * @param tickerSymbol
-     * @returns {Observable<StockPrice>}
+     * @returns {Observable<StockPriceQuote>}
      */
-    public getStock( tickerSymbol: string ): Observable<StockPrice>
+    public getStock( tickerSymbol: string ): Observable<StockPriceQuote>
     {
-        return this.getStockPrice( tickerSymbol );
+        return this.getStockPriceQuote( tickerSymbol );
     }
 
     /**
      * Get a stock quote
      * @param {string} tickerSymbol
-     * @return {Observable<StockPrice>}
+     * @return {Observable<StockPriceQuote>}
      */
-    public getStockPrice( tickerSymbol: string ): Observable<StockPrice>
+    public getStockPriceQuote( tickerSymbol: string ): Observable<StockPriceQuote>
     {
-        let methodName = "getStockPrice";
+        let methodName = "getStockPriceQuote";
         this.debug( methodName + " " + tickerSymbol );
         let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockPrice/" + tickerSymbol;
         return this.http
-                   .get<StockPrice>( url )
+                   .get<StockPriceQuote>( url )
                    .catch( error =>
                    {
                        let restException = this.restErrorReporter.getRestException( error );

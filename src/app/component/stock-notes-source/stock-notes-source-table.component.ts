@@ -5,7 +5,6 @@ import { StockNotesSourceStateStore } from './stock-notes-source-state-store';
 import { StockNotesSourceController } from './stock-notes-source-controller';
 import { StockNotesSource } from '../../model/entity/stock-notes-source';
 import { StockNotesSourceCrudService } from '../../service/crud/stock-notes-source-crud.service';
-import { StockPriceRefreshService } from '../../service/stock-price-refresh.service';
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockNotesSourceCrudActionHandler } from './stock-notes-source-crud-action-handler';
 import { CrudTableComponent } from '../crud/table/crud-table.component';

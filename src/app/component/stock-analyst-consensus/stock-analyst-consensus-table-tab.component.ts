@@ -6,7 +6,6 @@
 import { Component } from "@angular/core";
 import { StockAnalystConsensusTableComponent } from "./stock-analyst-consensus-table.component";
 import { ToastsManager } from "ng2-toastr";
-import { StockPriceRefreshService } from "../../service/stock-price-refresh.service";
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
 import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';

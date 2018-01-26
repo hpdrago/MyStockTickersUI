@@ -61,7 +61,7 @@
               header="Last Price"
               [style]="{'width':'80px','text-align':'right'}">
         <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-            <stock-quote-last-price [stockQuote]="stockNotes">
+            <stock-quote-last-price [stockPriceModelObject]="stockNotes">
             </stock-quote-last-price>
         </ng-template>
     </p-column>
@@ -89,7 +89,7 @@
               header="% Change Since Entered"
               [style]="{'width':'80px','text-align':'right'}">
         <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-            <stock-quote-percent-change-since-created [stockQuote]="stockNotes"></stock-quote-percent-change-since-created>
+            <stock-quote-percent-change-since-created [stockPriceQuote]="stockNotes"></stock-quote-percent-change-since-created>
         </ng-template>
     </p-column>
 

@@ -6,7 +6,7 @@ import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
 import { isNullOrUndefined } from "util";
-import { StockPrice } from "../../model/entity/stock-price";
+import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { PortfolioStockStateStore } from './portfolio-stock-state-store';
 import { PortfolioStockController } from './portfolio-stock-controller';
 import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
@@ -30,7 +30,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
     private stockSubSectors: SelectItem[];
     private stockSectors: SelectItem[];
     private dataLoaded: boolean = true;
-    private selectedStockQuote: StockPrice;
+    private selectedStockQuote: StockPriceQuote;
 
     /**
      * Constructor.
@@ -64,16 +64,16 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      * This method is called when the user selects a stock using the stock/company search input
      * @param stock
      */
-    private onStockSelected( stockQuote )
+    private onStockSelected( stockPriceQuote )
     {
-        this.debug( "onStockSelected: " + JSON.stringify( stockQuote ));
-        this.selectedStockQuote = stockQuote;
-        this.modelObject.lastPrice = stockQuote.lastPrice;
-        this.modelObject.tickerSymbol = stockQuote.tickerSymbol;
-        this.modelObject.companyName = stockQuote.companyName;
-        (<FormControl>this.formGroup.controls['tickerSymbol']).setValue( stockQuote.tickerSymbol );
-        (<FormControl>this.formGroup.controls['companyName']).setValue( stockQuote.companyName );
-        (<FormControl>this.formGroup.controls['lastPrice']).setValue( stockQuote.lastPrice );
+        this.debug( "onStockSelected: " + JSON.stringify( stockPriceQuote ));
+        this.selectedStockQuote = stockPriceQuote;
+        this.modelObject.lastPrice = stockPriceQuote.lastPrice;
+        this.modelObject.tickerSymbol = stockPriceQuote.tickerSymbol;
+        this.modelObject.companyName = stockPriceQuote.companyName;
+        (<FormControl>this.formGroup.controls['tickerSymbol']).setValue( stockPriceQuote.tickerSymbol );
+        (<FormControl>this.formGroup.controls['companyName']).setValue( stockPriceQuote.companyName );
+        (<FormControl>this.formGroup.controls['lastPrice']).setValue( stockPriceQuote.lastPrice );
     }
 
     /**
@@ -91,7 +91,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
               !isNullOrUndefined( this.getTickerSymbolFormValue() ))
         {
             this.stockCrudService
-                .getStockPrice( this.getTickerSymbolFormValue() )
+                .getStockPriceQuote( this.getTickerSymbolFormValue() )
                 .subscribe( (stock) =>
                             {
                                 this.debug( methodName + " found: " + stock.tickerSymbol );

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 import { StockAnalystConsensusBaseComponent } from './stock-analyst-consensus-base.component';
-import { StockPrice } from '../../model/entity/stock-price';
+import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { ToastsManager } from 'ng2-toastr';
 
 /**
@@ -16,7 +16,7 @@ import { ToastsManager } from 'ng2-toastr';
 export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBaseComponent
 {
     @Input()
-    private stockQuote: StockPrice;
+    private stockPriceQuote: StockPriceQuote;
 
     /**
      * Constructor.
@@ -31,7 +31,7 @@ export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBas
 
     public ngOnInit(): void
     {
-        this.tickerSymbol = this.stockQuote.tickerSymbol;
+        this.tickerSymbol = this.stockPriceQuote.tickerSymbol;
         super.ngOnInit();
     }
 
@@ -42,18 +42,18 @@ export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBas
      */
     protected calcAvgUpsidePercent(): number
     {
-        if ( this.stockQuote.lastPrice != null &&
+        if ( this.stockPriceQuote.lastPrice != null &&
              this.stockAnalystConsensus != null &&
              this.stockAnalystConsensus.avgAnalystPriceTarget != null &&
              this.stockAnalystConsensus.avgAnalystPriceTarget > 0.0 )
         {
-            if ( this.stockQuote.lastPrice < this.stockAnalystConsensus.avgAnalystPriceTarget )
+            if ( this.stockPriceQuote.lastPrice < this.stockAnalystConsensus.avgAnalystPriceTarget )
             {
-                return this.stockQuote.lastPrice / this.stockAnalystConsensus.avgAnalystPriceTarget;
+                return this.stockPriceQuote.lastPrice / this.stockAnalystConsensus.avgAnalystPriceTarget;
             }
             else
             {
-                return (this.stockAnalystConsensus.avgAnalystPriceTarget / this.stockQuote.lastPrice);
+                return (this.stockAnalystConsensus.avgAnalystPriceTarget / this.stockPriceQuote.lastPrice);
             }
         }
         else

@@ -1,26 +1,29 @@
 import { BaseService } from "./base-service";
 import { Injectable } from "@angular/core";
-import { StockPrice } from "../model/entity/stock-price";
+import { StockPriceQuote } from "../model/entity/stock-price-quote";
 import { Observable } from "rxjs/Observable";
 import { StockCrudService } from "./crud/stock-crud.service";
 import { ToastsManager } from "ng2-toastr";
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
- * This class caches stock quotes by ticker symbol
+ * This class caches stock prices by ticker symbol.
+ * The cache contains BehaviourSubject's so that price change updates are automatic for all subscribers.
  */
 @Injectable()
-export class StockPriceCache extends BaseService
+export class StockPriceCacheService extends BaseService
 {
     /**
      * Contains the current quote values
      * @type {Map<any, any>}
      */
-    private stockPriceMap: Map<string, StockPrice> = new Map();
+    private stockPriceSubjectMap: Map<string, BehaviorSubject<StockPriceQuote>> = new Map();
     /**
      * Contains the quotes being updated
      * @type {Map<any, any>}
      */
-    private workingMap: Map<string, Observable<StockPrice>> = new Map();
+    private workingMap: Map<string, Observable<StockPriceQuote>> = new Map();
 
     /**
      * Constructor.
@@ -35,77 +38,99 @@ export class StockPriceCache extends BaseService
     }
 
     /**
-     * This method will get a new stock price for {@code tickerSymbol}.
-     * Multiple requests to this method for the same ticker symbol will not result in subsequent quote requests but
-     * the multiple request will be serviced by a single stock quote query.
+     * Subscribe to stock price changes for a ticker symbol.  When calling this method, if the stock price is not
+     * in the cache, the stockPriceChange method will be called with a null stockPrice value but after the stock price
+     * has been received, a subsequent call to stockPriceChange will be called with the new stock price value and
+     * whenever the stock price changes, the stockPriceChange method will be called as well.
      * @param {string} tickerSymbol
-     * @returns {Observable<StockPrice>}
+     * @returns {Observable<StockPriceQuote>}
      */
-    public getStockPrice( tickerSymbol: string ): Observable<StockPrice>
+    public getStockPriceChanges( tickerSymbol: string,
+                                 stockPriceChange: ( stockPrice: StockPriceQuote ) => any ): Subscription
     {
-        let methodName = "refreshStockPrice";
+        let methodName = "getStockPriceChanges";
         this.debug( methodName + " " + tickerSymbol  );
         /*
-         * Check to see if the stock price is already being fetched
+         * Check to see if the stock price is in the cache
          */
-        let observable: Observable<StockPrice> = this.workingMap.get( tickerSymbol );
-        if ( observable != null )
+        let stockPriceSubject = this.stockPriceSubjectMap.get( tickerSymbol );
+        if ( stockPriceSubject == null )
         {
-            this.debug( methodName + " " + tickerSymbol + " is already being fetched" );
-            return this.workingMap.get( tickerSymbol );
-        }
-        else
-        {
-            this.debug( methodName + " " + tickerSymbol + " not being fetched" );
+            stockPriceSubject = new BehaviorSubject<StockPriceQuote>( null );
+            this.debug( methodName + " " + tickerSymbol + " is not in the cache.  Fetching..." );
+            this.stockPriceSubjectMap
+                .set( tickerSymbol, stockPriceSubject );
             /*
-             * Check to see if the stock price is in the cache
+             * Not in the cache, so fetch it and then broadcast the new stock price.
              */
-            let stockPrice = this.stockPriceMap.get( tickerSymbol );
-            if ( stockPrice == null )
-            {
-                /*
-                 * Not in the cache, so fetch it.
-                 */
-                observable = this.fetchStockPrice( tickerSymbol );
-            }
-            else
-            {
-                /*
-                 * Check to see if the stock has expired and if so, refresh the quote.
-                 */
-                if ( stockPrice.expiration.getTime() < Date.now() )
-                {
-                    this.debug( methodName + " " + stockPrice.tickerSymbol + " has expired, refreshing quote" );
-                    observable = this.fetchStockPrice( tickerSymbol );
-                }
-                else
-                {
-                    observable = Observable.of( stockPrice );
-                }
-            }
+            this.fetchStockPrice( tickerSymbol );
         }
-        return observable;
+        this.checkStockPriceExpiration( stockPriceSubject, tickerSymbol );
+        return stockPriceSubject.subscribe( stockPriceChange );
+    }
+
+    /**
+     * Check to see if the stock has expired and if so, refresh the price.
+     */
+    private checkStockPriceExpiration( stockPriceSubject, tickerSymbol: string )
+    {
+        let methodName = 'checkStockPriceExpiration';
+        if ( stockPriceSubject != null &&
+             stockPriceSubject.getValue() != null &&
+             stockPriceSubject.getValue()
+                              .expiration.getTime() < Date.now() )
+        {
+            this.debug( methodName + ' ' + tickerSymbol + ' has expired, updating price...' );
+            this.fetchStockPrice( tickerSymbol );
+        }
     }
 
     /**
      * Fetches the stock quote and updates the cache with the quote.
      * @param {string} tickerSymbol
-     * @return {Observable<StockPrice>}
+     * @return {Observable<StockPriceQuote>}
      */
-    private fetchStockPrice( tickerSymbol: string ): Observable<StockPrice>
+    private fetchStockPrice( tickerSymbol: string )
     {
         let methodName = 'fetchStockPrice';
-        let observable: Observable<StockPrice> = this.stockService
-                                                     .getStockPrice( tickerSymbol )
-                                                     .map( ( stockPrice ) =>
-                                                           {
-                                                               this.debug( methodName + " " + tickerSymbol + " price retrieved " + JSON.stringify( stockPrice ) );
-                                                               this.stockPriceMap.set( tickerSymbol, stockPrice );
-                                                               this.workingMap.delete( tickerSymbol );
-                                                               return stockPrice
-                                                           } )
-                                                     .share();
+        let observable = this.stockService
+                             .getStockPriceQuote( tickerSymbol )
+                             .map( ( stockPrice ) =>
+                             {
+                                   this.debug( methodName + ' ' + tickerSymbol +
+                                       ' price retrieved ' + JSON.stringify( stockPrice ) );
+                                   this.sendStockPriceChange( tickerSymbol, stockPrice );
+                                   this.workingMap.delete( tickerSymbol );
+                                   return stockPrice
+                             })
         this.workingMap.set( tickerSymbol, observable );
         return observable;
+    }
+
+    /**
+     * Send the stock price to all subscribers of the ticker symbol.
+     * @param {string} tickerSymbol
+     * @param {StockPriceQuote} stockPrice
+     */
+    private sendStockPriceChange( tickerSymbol: string, stockPrice: StockPriceQuote )
+    {
+        let methodName = 'sendStockPriceChange';
+        this.debug( methodName + ' ' + tickerSymbol + ' ' + stockPrice );
+        this.getStockPriceSubject( tickerSymbol )
+            .next( stockPrice );
+    }
+
+    /**
+     * Get the stock price subject and throw and exception if it doesn't exist.
+     * @param {string} tickerSymbol
+     */
+    private getStockPriceSubject( tickerSymbol: string ): BehaviorSubject<StockPriceQuote>
+    {
+        let stockPriceSubject = this.stockPriceSubjectMap.get( tickerSymbol );
+        if ( stockPriceSubject == null )
+        {
+            throw new Error( "There are no registrations for " + tickerSymbol );
+        }
+        return stockPriceSubject;
     }
 }

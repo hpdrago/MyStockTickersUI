@@ -56,7 +56,7 @@
                               [sortable]="true"
                               [style]="{'width':'30px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-quote-last-price [stockQuote]="stockPosition">
+                            <stock-quote-last-price [stockPriceModelObject]="stockPosition">
                             </stock-quote-last-price>
                         </ng-template>
                     </p-column>
@@ -176,7 +176,7 @@
                               [style]="{'width':'20px','text-align':'right'}"
                               [sortable]="true">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-average-upside-percent [stockQuote]="stockPosition"></stock-average-upside-percent>
+                            <stock-average-upside-percent [stockPriceQuote]="stockPosition"></stock-average-upside-percent>
                         </ng-template>
                     </p-column>
 

@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
-import { StockPriceRefreshService } from "../../service/stock-price-refresh.service";
 import { StockNotesTableComponent } from "../stock-notes/stock-notes-table.component";
 import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
@@ -11,7 +10,6 @@ import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-act
 import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action-handler';
 import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
 import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
-import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 
 /**
  * This is the Stock Notes that displays on the dashboard

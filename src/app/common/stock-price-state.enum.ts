@@ -1,7 +1,7 @@
 /**
  * Created by mike on 11/4/2017
  */
-import { StockPriceModelObject } from '../model/entity/stock-price-model-object';
+import { StockPriceQuoteModelObject } from '../model/entity/stock-price-quote-model-object';
 
 export enum StockPriceState
 {
@@ -32,10 +32,10 @@ export namespace StockPriceState
     /**
      * Identifies if the stock quote for the model object is being fetched.
      * A quote is fetched if it is stale or if it is not in the cache.
-     * @param {StockPriceModelObject<any>} modelObject
+     * @param {StockPriceQuoteModelObject<any>} modelObject
      * @return {boolean} true if the quote is being fetch, false otherwise.
      */
-    export function isFetchingQuote( modelObject: StockPriceModelObject<any> )
+    export function isFetchingQuote( modelObject: StockPriceQuoteModelObject<any> )
     {
         return modelObject.stockPriceState == StockPriceState.STALE;
     }

@@ -2,14 +2,12 @@ import { StockNotes } from "../../model/entity/stock-notes";
 import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
-import { StockPriceRefreshService } from "../../service/stock-price-refresh.service";
 import { BullOrBear } from "../../common/bull-or-bear.enum";
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
-import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 
 /**

@@ -6,7 +6,7 @@ import { StockPriceState } from '../../common/stock-price-state.enum';
  * stock quote information.
  * Created 11/4/2017
  */
-export abstract class StockPriceModelObject<T extends StockModelObject<T>> extends StockModelObject<T>
+export abstract class StockPriceQuoteModelObject<T extends StockModelObject<T>> extends StockModelObject<T>
 {
     public openPrice: number;
     public lastPrice: number;

@@ -2,7 +2,7 @@
  * Created by mike on 11/4/2017
  */
 
-export class StockPrice
+export class StockPriceQuote
 {
     public tickerSymbol: string;
     public openPrice: number;

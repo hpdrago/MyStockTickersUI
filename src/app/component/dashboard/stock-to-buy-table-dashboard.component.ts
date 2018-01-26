@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockPriceRefreshService } from "../../service/stock-price-refresh.service";
 import { StockToBuyBaseTableComponent } from "../stock-to-buy/stock-to-buy-base-table.component";
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
@@ -11,7 +10,6 @@ import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
 import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
 import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action-handler';
 import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
-import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 
 /**
  * This component displays a list of Stocks to buy.

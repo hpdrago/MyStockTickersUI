@@ -1,13 +1,13 @@
 import { StockNotesStock } from "./stock-notes-stock";
 import { StockNotesContainer } from "../../common/stock-notes-container";
-import { StockPriceModelObject } from "./stock-price-model-object";
+import { StockPriceQuoteModelObject } from "./stock-price-quote-model-object";
 import { StockNotesSourceContainer } from "../../common/stock-notes-source-container";
 
 /**
  * Defines a single portfolio for a customer
  * Created by mike on 10/23/2016.
  */
-export class StockNotes extends StockPriceModelObject<StockNotes> implements StockNotesContainer,
+export class StockNotes extends StockPriceQuoteModelObject<StockNotes> implements StockNotesContainer,
                                                                              StockNotesSourceContainer
 {
     public id: number;

@@ -5,7 +5,7 @@ import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { isNullOrUndefined } from "util";
-import { StockPrice } from "../../model/entity/stock-price";
+import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { BaseComponent } from "./base.component";
 import { RestErrorReporter } from "../../service/rest-error-reporter";
 
@@ -37,7 +37,7 @@ import { RestErrorReporter } from "../../service/rest-error-reporter";
 export class StockAutoCompleteComponent extends BaseComponent implements ControlValueAccessor
 {
     @Output()
-    private stockSelected: EventEmitter<StockPrice>  = new EventEmitter<StockPrice>();
+    private stockSelected: EventEmitter<StockPriceQuote>  = new EventEmitter<StockPriceQuote>();
 
     protected stockSearchResults: string[];
     protected tickerSymbol: string;
@@ -117,18 +117,18 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
              this.tickerSymbol.length > 0 )
         {
             this.stockCrudService
-                .getStockPrice( this.tickerSymbol )
-                .subscribe( ( stockQuote: StockPrice ) =>
+                .getStockPriceQuote( this.tickerSymbol )
+                .subscribe( ( stockPriceQuote: StockPriceQuote ) =>
                 {
-                    this.log( "onBlur " + JSON.stringify( stockQuote ));
-                    if ( !isNullOrUndefined( stockQuote ))
+                    this.log( "onBlur " + JSON.stringify( stockPriceQuote ));
+                    if ( !isNullOrUndefined( stockPriceQuote ))
                     {
                         this.log( "emitting stock selected event" );
                         /*
                          * Send the change through ngModel
                          */
                         this.propagateChange( this.tickerSymbol );
-                        this.stockSelected.emit( stockQuote );
+                        this.stockSelected.emit( stockPriceQuote );
                         this.isStockSelected = true;
                     }
                 });
@@ -150,11 +150,11 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
          */
         this.propagateChange( this.tickerSymbol.toUpperCase() );
         this.stockCrudService
-            .getStockPrice( this.tickerSymbol )
-            .subscribe( (stockQuote) =>
+            .getStockPriceQuote( this.tickerSymbol )
+            .subscribe( ( stockPriceQuote) =>
                         {
-                            this.log( "onStockSearchSelected tickerSymbol: " + stockQuote.tickerSymbol );
-                            this.stockSelected.emit( stockQuote );
+                            this.log( "onStockSearchSelected tickerSymbol: " + stockPriceQuote.tickerSymbol );
+                            this.stockSelected.emit( stockPriceQuote );
                             this.tickerSymbol = "";
                             this.isStockSelected = true;
                         });

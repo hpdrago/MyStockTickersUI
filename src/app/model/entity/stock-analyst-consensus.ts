@@ -1,4 +1,4 @@
-import { StockPriceModelObject } from "./stock-price-model-object";
+import { StockPriceQuoteModelObject } from "./stock-price-quote-model-object";
 import { StockNotesContainer } from "../../common/stock-notes-container";
 import { StockNotesSourceContainer } from "../../common/stock-notes-source-container";
 
@@ -7,7 +7,7 @@ import { StockNotesSourceContainer } from "../../common/stock-notes-source-conta
  *
  * Created 10/17/2017
  */
-export class StockAnalystConsensus extends StockPriceModelObject<StockAnalystConsensus>
+export class StockAnalystConsensus extends StockPriceQuoteModelObject<StockAnalystConsensus>
                                    implements StockNotesContainer,
                                               StockNotesSourceContainer
 {

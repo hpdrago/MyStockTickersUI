@@ -1,7 +1,6 @@
 import { ToastsManager } from "ng2-toastr";
 import { isNullOrUndefined } from "util";
 import { DialogCloseEventType } from "../crud/common/close-button-event";
-import { StockPriceRefreshService } from "../../service/stock-price-refresh.service";
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
 import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
