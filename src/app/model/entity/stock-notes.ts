@@ -34,25 +34,6 @@ export class StockNotes extends StockQuoteModelObject<StockNotes> implements Sto
         return this.notes;
     }
 
-    /**
-     * Returns a comma delimeted string of the ticker symbols
-     * @return {string}
-     */
-    public getTickerSymbols(): string
-    {
-        let tickerSymbols: string = '';
-        this.stocks
-            .forEach( stockNotesStock =>
-                      {
-                          if ( tickerSymbols.length > 0 )
-                          {
-                              tickerSymbols += ', ';
-                          }
-                          tickerSymbols += stockNotesStock.tickerSymbol;
-                      } );
-        return tickerSymbols;
-    }
-
     public getNotesSourceId(): number
     {
         return this.notesSourceId;

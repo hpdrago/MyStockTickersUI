@@ -91,7 +91,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
               !isNullOrUndefined( this.getTickerSymbolFormValue() ))
         {
             this.stockCrudService
-                .getStock( this.getTickerSymbolFormValue() )
+                .getStockQuote( this.getTickerSymbolFormValue() )
                 .subscribe( (stock) =>
                             {
                                 this.debug( methodName + " found: " + stock.tickerSymbol );

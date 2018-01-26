@@ -50,21 +50,26 @@ export class StockNotesCrudActionHandler extends CrudActionHandler<StockNotes>
          * Need to create a clone of the stock notes because the values will be reset on the object
          * after leaving this method.
          */
-        let stockNotesClone: StockNotes = stockNotes.clone( stockNotes );
-        for ( let i = 0; i < stockNotesClone.stocks.length; i++ )
+        let saveStockNotes: StockNotes = stockNotes.clone( stockNotes );
+        for ( let i = 0; i < saveStockNotes.stocks.length; i++ )
         {
-            let stockNotesStock: StockNotesStock = stockNotesClone.stocks[i];
+            /*
+             * Get the next stock note stock
+             */
+            let stockNotesStock: StockNotesStock = saveStockNotes.stocks[i];
+            /*
+             * Create a clone and change the ticker symbol
+             */
+            let stockNotesClone: StockNotes = saveStockNotes.cloneSelf();
             let stockNotesTickerSymbol = stockNotesStock.tickerSymbol;
             this.debug( methodName + " " + stockNotesTickerSymbol );
-            /*
-             * Set the ticker symbol and save this entry
-             */
             stockNotesClone.tickerSymbol = stockNotesTickerSymbol;
             /*
              * Send each stock note to the subject.
              * Don't need to handle the subscription as any errors will be reported in that method.
              *
-             * For the first stock notes, return that observable, execute the others
+             * If there is more than one note to add, synchronously add all but the last one because we are using the
+             * same object instance to insert but changing the ticker symbol so there's i
              */
             if ( i == 0 )
             {
@@ -81,7 +86,7 @@ export class StockNotesCrudActionHandler extends CrudActionHandler<StockNotes>
             if ( stockNotesClone.actionTaken == StockNotesActionTaken.BUY_LATER )
             {
                 this.log( methodName + " creating stocks to buy for " + stockNotesTickerSymbol );
-                this.createStockToBuy( stockNotes );
+                this.createStockToBuy( stockNotesClone );
             }
         }
         return returnObservable;

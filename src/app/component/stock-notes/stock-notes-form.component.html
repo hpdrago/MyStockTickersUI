@@ -38,13 +38,6 @@
                     </div>
                     <div class="ui-grid-col-10">
                         {{tickerSymbols}}
-                        <!--<input id="tickerSymbols"
-                               type="text"
-                               pInputText
-                               uppercase
-                               [(ngModel)]="tickerSymbols"
-                               placeholder="Comma delimited ticker symbols"
-                               formControlName="tickerSymbols">-->
                     </div>
                 </div>
 
@@ -55,8 +48,8 @@
                     <div class="crud-form-label ui-grid-col-2">
                         <label class="crud-form" for="lastPriceColumn">Last Price:</label>
                     </div>
-                    <div *ngFor="let stockQuote of stockQuotes">
-                        {{stockQuote.lastPrice | currency:'USD': true}}
+                    <div class="ui-grid-col-10">
+                        {{lastPrices}}
                     </div>
                 </div>
 
@@ -64,8 +57,8 @@
                     <div class="crud-form-label ui-grid-col-2">
                         <label class="crud-form" for="notes">Company:</label>
                     </div>
-                    <div *ngFor="let stockQuote of stockQuotes">
-                        {{stockQuote.companyName}}
+                    <div class="ui-grid-col-10">
+                        {{companies}}
                     </div>
                 </div>
             </ng-template>

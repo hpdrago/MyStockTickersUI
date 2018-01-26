@@ -42,12 +42,14 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
     protected stockAutoCompletedComponent: StockAutoCompleteComponent;
 
     protected stockQuote: StockQuote;
-    protected stockQuotes: StockQuote[];
+    protected stockQuotes: StockQuote[] = [];
 
     /**
      * Comma delimited list of ticker symbols
      */
     protected tickerSymbols: string = "";
+    protected lastPrices: string = "";
+    protected companies: string = "";
 
     /**
      * The string the user enters the ticker symbols or company name to search for
@@ -116,6 +118,8 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
         this.modelObject.actionTaken = StockNotesActionTaken.NONE;
         this.modelObject.notesDate = new Date( Date.now() );
         this.tickerSymbols = '';
+        this.lastPrices = '';
+        this.companies = '';
         this.stockSearch = '';
         this.stockQuote = null;
         this.stockQuotes = [];
@@ -238,7 +242,14 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
         }
         else
         {
-            this.tickerSymbols = modelObject.getTickerSymbols();
+            this.tickerSymbols = modelObject.tickerSymbol;
+            this.stockService
+                .getStockQuote( modelObject.tickerSymbol )
+                .subscribe( stockQuote =>
+                            {
+                                this.companies = stockQuote.companyName;
+                                this.lastPrices = '' + stockQuote.lastPrice;
+                            });
         }
         super.setFormValues( modelObject );
     }
@@ -276,11 +287,6 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
     public onStockSelected( stockQuote: StockQuote )
     {
         this.log( "onStockSelected: " + JSON.stringify( stockQuote ) );
-        if ( !this.tickerSymbols )
-        {
-            this.tickerSymbols = '';
-            this.stockQuotes = [];
-        }
         let index = this.tickerSymbols.indexOf( stockQuote.tickerSymbol );
         if ( index == -1 )
         {
@@ -288,8 +294,12 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
             if ( this.tickerSymbols.length > 0 )
             {
                 this.tickerSymbols += ', '
+                this.lastPrices += ', '
+                this.companies += ', '
             }
             this.tickerSymbols += stockQuote.tickerSymbol;
+            this.lastPrices += stockQuote.lastPrice;
+            this.companies += stockQuote.companyName;
         }
         else
         {
@@ -334,7 +344,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      * This method is called when the user changes the action taken drop down list box value.
      * @param event
      */
-    private onActionTakenChange( event )
+    protected onActionTakenChange( event )
     {
         this.log( 'onActionTakenChange event: ' + JSON.stringify( event ))
         if ( !isNullOrUndefined( this.modelObject ))

@@ -93,4 +93,15 @@ export abstract class ModelObject<T>
         Object.assign( copy, instance );
         return copy;
     }
+
+    /**
+     *
+     * @return {T}
+     */
+    public cloneSelf<T>()
+    {
+        const copy = new (this.constructor as { new (): T })();
+        Object.assign( copy, this );
+        return copy;
+    }
 }

@@ -91,13 +91,12 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
     public createModelObject( modelObject: T ): Observable<T>
     {
         var methodName = "createModelObject";
-        modelObject.createdBy = this.sessionService.getLoggedInUserId();
-        var bodyString = this.serialize( modelObject ); // Stringify payload
-        this.log( methodName + " modelObject: " + bodyString );
+        this.log( methodName + " modelObject: " + JSON.stringify( modelObject ));
         if ( isNullOrUndefined( modelObject ) )
         {
             throw new ReferenceError( "modelObject is null or undefined" );
         }
+        modelObject.createdBy = this.sessionService.getLoggedInUserId();
         var url = this.getCreateModelObjectUrl();
         if ( isNullOrUndefined( url ) )
         {
