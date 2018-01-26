@@ -21,6 +21,8 @@ export class SessionService extends BaseService
                  private config: AppConfigurationService )
     {
         super( toaster );
+        this.customer = new Customer();
+        this.customer.id = 1;
     }
 
     /**

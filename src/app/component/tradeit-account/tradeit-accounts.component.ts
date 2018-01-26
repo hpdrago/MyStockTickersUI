@@ -42,6 +42,8 @@ export class TradeItAccountsComponent extends BaseComponent
      */
     public tradeItAccountSelected( tradeItAccount: TradeItAccount ): void
     {
+        let methodName = "tradeItAccountSelected";
+        this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         this.linkedAccountTableComponent.loadAccounts( tradeItAccount );
     }
 }

@@ -97,6 +97,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     public ngOnInit()
     {
         this.debug( "ngOnInit.begin" );
+        super.ngOnInit();
         this.subscribeToServiceEvents();
         /*
          * Create a new object instance as it will most likely be nulled by subscribing to events
@@ -629,7 +630,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onRowSelect( event ): void
     {
-        this.debug( "onRowSelect " + JSON.stringify( event ) );
+        let methodName = "onRowSelect ";
+        this.debug( methodName +  ".begin " + JSON.stringify( event ) );
         if ( event.data )
         {
             this.selectedModelObject = event.data;
@@ -638,23 +640,42 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         {
             this.selectedModelObject = event;
         }
-        this.setModelObject( this.newModelObjectFromEvent( event ) );
-        this.crudServiceContainer
-            .crudTableService
-            .sendTableSelectionChangeEvent( this.modelObject );
+        let modelObject: T = this.newModelObjectFromEvent( event );
+        this.onModelObjectSelected( modelObject );
+        this.debug( methodName +  ".end" );
     }
 
     /**
-     * This method is called when the user unselects the rows
+     * This method sends a model object change event and a table selection change event containing the model object.
+     * @param {T} modelObject
+     */
+    protected onModelObjectSelected( modelObject: T )
+    {
+        let methodName = "onModelObjectSelected";
+        this.debug( methodName + ".begin " + JSON.stringify( modelObject ) );
+        this.crudStateStore
+            .sendModelObjectChangedEvent( this, modelObject );
+        this.crudServiceContainer
+            .crudTableService
+            .sendTableSelectionChangeEvent( this.modelObject );
+        this.debug( methodName + ".end " );
+    }
+
+    /**
+     * This method is called when the user un-selects a row.
+     * It sends out a model object change event and a table selection change event.
      * @param event
      */
     protected onRowUnSelect( event ): void
     {
-        this.debug( "onRowUnSelect " + JSON.stringify( event ) );
-        this.setModelObject( this.newModelObjectFromEvent( event ) );
+        let methodName = "onRowUnSelect";
+        this.debug( methodName + ".begin " + JSON.stringify( event ) );
+        this.crudStateStore
+            .sendModelObjectChangedEvent( this, null );
         this.crudServiceContainer
             .crudTableService
             .sendTableSelectionChangeEvent( null );
+        this.debug( methodName + ".end" );
     }
 
     /**
@@ -666,9 +687,10 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         if ( this.isAllowUpdates() )
         {
             var methodName = "onRowDoubleClick";
-            this.debug( methodName + " " + JSON.stringify( event ) );
-            this.setModelObject( this.newModelObjectFromEvent( event ) );
+            this.debug( methodName + ".begin " + JSON.stringify( event ) );
+            this.onRowSelect( event );
             this.showFormToEdit( this.modelObject );
+            this.debug( methodName + ".end" );
         }
     }
 
@@ -697,63 +719,78 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * @param modelObject
      * @return {undefined}
      */
-    public setModelObject( modelObject: T ): void
-    {
-        this.debug( "setModelObject modelObject: " + JSON.stringify( modelObject ) +
-                    " this.modelObject: " + JSON.stringify( this.modelObject ));
-        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
-        /*
-         * Only send the event if they have changed.
-         */
-        if ( isNullOrUndefined( this.modelObject ) )
-        {
-            /*
-             * If they are different
-             */
-            if ( !isNullOrUndefined( modelObject ) )
-            {
-                this.crudServiceContainer
-                    .crudTableButtonsService
-                    .sendModelObjectChangedEvent( this, modelObject );
-            }
-        }
-        else
-        {
-            /*
-             * If they are different
-             */
-            if ( !this.modelObject.isEqualProperties( this.modelObject ) )
-            {
-                this.crudServiceContainer
-                    .crudTableButtonsService
-                    .sendModelObjectChangedEvent( this, modelObject );
-            }
-        }
-    }
+    // public setModelObject( modelObject: T ): void
+    // {
+    //     this.debug( "setModelObject modelObject: " + JSON.stringify( modelObject ) +
+    //                 " this.modelObject: " + JSON.stringify( this.modelObject ));
+    //     this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
+    //     /*
+    //      * Only send the event if they have changed.
+    //      */
+    //     if ( isNullOrUndefined( this.modelObject ) )
+    //     {
+    //         /*
+    //          * If they are different
+    //          */
+    //         if ( !isNullOrUndefined( modelObject ) )
+    //         {
+    //             this.crudStateStore
+    //                 .sendModelObjectChangedEvent( this, modelObject );
+    //         }
+    //     }
+    //     else
+    //     {
+    //         /*
+    //          * If they are different
+    //          */
+    //         if ( !this.modelObject.isEqualProperties( this.modelObject ) )
+    //         {
+    //             this.crudStateStore
+    //                 .sendModelObjectChangedEvent( this, modelObject );
+    //         }
+    //     }
+    // }
 
     /**
      * This method is called when a modelObject of type T is changed.  This method will determine if the event is
      * from itself or another component and if so, make any necessary changes.
      * @param {ModelObjectChangedEvent<T extends ModelObject<T>>} modelObjectChangeEvent
      */
-    protected onModelObjectChangedEvent( modelObjectChangeEvent: ModelObjectChangedEvent<T> )
+    // protected onModelObjectChangedEvent( modelObjectChangeEvent: ModelObjectChangedEvent<T> )
+    // {
+    //     var methodName = "onModelObjectChangedEvent";
+    //     this.debug( methodName + ".begin modelObject: " + JSON.stringify( modelObjectChangeEvent.modelObject ) );
+    //     this.debug( methodName + " sender: " + (<any>modelObjectChangeEvent.sender).constructor.name );
+    //     /*
+    //      * Ignore if generated form this component
+    //      */
+    //     if ( modelObjectChangeEvent.sender === this ||
+    //          modelObjectChangeEvent.sender === this.crudServiceContainer.crudTableService )
+    //     {
+    //         this.debug( methodName + " received our own change...ignoring" );
+    //     }
+    //     else
+    //     {
+    //         this.updateModelObjectInTable( modelObjectChangeEvent.modelObject, false );
+    //     }
+    //     this.debug( methodName + ".end" );
+    // }
+
+    /**
+     * This method is called when a modelObject of type T is changed.  This method will determine if the event is
+     * from itself or another component and if so, make any necessary changes.
+     * @param {ModelObjectChangedEvent<T extends ModelObject<T>>} modelObjectChangeEvent
+     */
+    protected isReceivedOurOwnEvent( methodName: string, modelObjectChangedEvent: ModelObjectChangedEvent<T> )
     {
-        var methodName = "onModelObjectChangedEvent";
-        this.debug( methodName + ".begin object: " + JSON.stringify( modelObjectChangeEvent.modelObject ) );
-        this.debug( methodName + " sender: " + (<any>modelObjectChangeEvent.sender).constructor.name );
-        /*
-         * Ignore if generated form this component
-         */
-        if ( modelObjectChangeEvent.sender === this ||
-             modelObjectChangeEvent.sender === this.crudServiceContainer.crudTableService )
+        let returnValue = false;
+        if ( super.isReceivedOurOwnEvent( methodName, modelObjectChangedEvent ) ||
+             modelObjectChangedEvent.sender === this.crudServiceContainer.crudTableService )
         {
-            this.debug( methodName + " received our own change...ignoring" );
+            this.debug( methodName + " received our own event" );
+            returnValue = true;
         }
-        else
-        {
-            this.updateModelObjectInTable( modelObjectChangeEvent.modelObject, false );
-        }
-        this.debug( methodName + ".end" );
+        return returnValue;
     }
 
     /**
@@ -762,9 +799,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onModelObjectDeleted( modelObject: T )
     {
-        var methodName = "onModelObjectChangeEvent";
+        var methodName = "onModelObjectDeleted";
+        this.debug( methodName + ".begin" );
         super.onModelObjectDeleted( modelObject );
         this.removeModelObjectFromTable( modelObject );
+        this.debug( methodName + ".end" );
     }
 
     /**
@@ -773,8 +812,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onModelObjectCreated( modelObject: T )
     {
+        var methodName = "onModelObjectCreated";
+        this.debug( methodName + ".begin" );
         super.onModelObjectCreated( modelObject );
         this.addModelObjectToTable( modelObject );
+        this.debug( methodName + ".end" );
     }
 
     /**

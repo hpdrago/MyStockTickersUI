@@ -1,6 +1,9 @@
 import { ModelObjectChangedEvent } from "./model-object-changed.event";
 import { ModelObject } from "../../model/entity/modelobject";
 
+/**
+ * This event is created when a model object is created.
+ */
 export class ModelObjectCreatedEvent<T extends ModelObject<T>> extends ModelObjectChangedEvent<T>
 {
     /**

@@ -10,6 +10,7 @@ import { Subject } from "rxjs/Subject";
 import { ToastsManager } from "ng2-toastr";
 import { BaseService } from "../../../service/base-service";
 import { CrudStateStore } from "./crud-state-store";
+import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
 
 /**
  * This class services as a base abstract class for CRUD based component services to provide common methods
@@ -55,49 +56,6 @@ export abstract class BaseCrudComponentService<T extends ModelObject<T>> extends
         this.debug( methodName + ".begin" )
         this.componentInitializedSubject.next( false );
         this.debug( methodName + ".end" )
-    }
-
-    /**
-     * This method is used to register for events when the {@code ModelObject} instance has changed
-     * @return Subscription
-     */
-    public subscribeToModelObjectChangedEvent( fn: ( ModelObject ) => any ): Subscription
-    {
-        this.debug( "subscribeToModelObjectChangedEvent" );
-        return this.crudStateStore.subscribeToModelObjectChangedEvent( fn );
-    }
-
-    /**
-     * This method is used by an observer to be notified as result of a change to the crud operation.
-     * @return Subscription instance
-     */
-    public subscribeToCrudOperationChangeEvent( fn: ( CrudOperation ) => any ): Subscription
-    {
-        this.debug( "subscribeToCrudOperationChangeEvent" );
-        return this.crudStateStore.subscribeToModelObjectChangedEvent( fn );
-    }
-
-    /**
-     * This method is used by a notifier of a model object change.  Any observers to model object changes
-     * will be notified.
-     * @param sender
-     * @param modelObject
-     */
-    public sendModelObjectChangedEvent( sender: any, modelObject: T )
-    {
-        this.debug( "sendModelObjectChangedEvent " + JSON.stringify( modelObject ));
-        this.crudStateStore.sendModelObjectChangedEvent( sender, modelObject );
-    }
-
-    /**
-     * This method is used by a notifier of a crud operation change.  Any observers of crud operation changes
-     * will be notified.
-     * @param crudOperation
-     */
-    public sendCrudOperationChangedEvent( crudOperation: CrudOperation )
-    {
-        this.debug( "sendCrudOperationChangedEvent " + CrudOperation.getName( crudOperation ));
-        this.crudStateStore.sendCrudOperationChangedEvent( crudOperation );
     }
 
     /**

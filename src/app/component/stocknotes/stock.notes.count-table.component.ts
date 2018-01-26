@@ -46,6 +46,7 @@ export class StockNotesCountTableComponent extends CrudTableComponent<StockNotes
      */
     public ngOnInit(): void
     {
+        super.ngOnInit();
         this.loadTable();
     }
 

@@ -40,7 +40,7 @@ export abstract class CrudServiceContainer<T extends ModelObject<T>> extends Bas
                  private _crudFormService?: CrudFormService<T> )
     {
         super();
-        this._crudStateStore = new CrudStateStore<T>();
+        this._crudStateStore = new CrudStateStore<T>( _modelObjectFactory );
         if ( !_crudTableService )
         {
             this._crudTableService = new CrudTableService<T>( _modelObjectFactory, this._crudStateStore );

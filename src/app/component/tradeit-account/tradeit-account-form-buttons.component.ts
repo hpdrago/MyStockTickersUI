@@ -119,7 +119,7 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
     {
         let methodName = "notifyAuthenticationSuccess";
         this.log( methodName + ".begin" )
-        this.setModelObject( tradeItAccount );
+        this.crudStateStore.sendModelObjectChangedEvent( this, tradeItAccount );
         this.notifyAddButtonWorkSuccessful();
         this.log( methodName + ".end" )
     }

@@ -43,15 +43,6 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
     }
 
     /**
-     * Component initialization
-     */
-    public ngOnInit()
-    {
-        super.ngOnInit();
-        //this.loadStockSectorMap();
-    }
-
-    /**
      * This method is called when the user selects a stock using the stock/company search input
      * @param stock
      */

@@ -72,14 +72,6 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
             this.crudServiceContainer
             .crudDialogService
             .subscribeToDisplayFormRequestEvent( () => this.setDisplayDialog() ));
-        this.addSubscription(
-            this.crudServiceContainer
-            .crudDialogService
-            .subscribeToCrudOperationChangeEvent(( crudOperation: CrudOperation ) => this.onCrudOperationChanged( crudOperation ) ));
-        this.addSubscription(
-            this.crudServiceContainer
-            .crudDialogService
-            .subscribeToModelObjectChangedEvent(( modelObject: T ) => this.onModelObjectChanged( modelObject ) ));
         this.log( "subscribeToCrudDialogServiceEvents.end" );
     }
 

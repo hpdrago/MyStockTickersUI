@@ -33,6 +33,7 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     public ngOnInit()
     {
         this.log( "CrudPanelComponent.ngOnInit.begin" );
+        super.ngOnInit();
         if ( !this.crudServiceContainer.crudPanelService )
         {
             throw new Error( "crudPanelService has not been set by Input value" );

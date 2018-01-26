@@ -59,7 +59,7 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
             .subscribe( (portfolio) =>
                         {
                             this.debug( "loadPortfolio received" );
-                            this.setModelObject( portfolio );
+                            this.onModelObjectChanged( portfolio );
                             var index: number = this.indexOf( portfolio );
                             this.updateModelObjectTableRow( index, portfolio );
                         },
@@ -77,8 +77,8 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
      */
     protected onRowSelect( portfolio: Portfolio ): void
     {
-        this.setModelObject( portfolio );
         this.logger.log( 'onRowSelect ' + JSON.stringify( this.modelObject ));
+        super.onRowSelect( portfolio );
         this.portfolioStocksComponent.loadPortfolio( this.modelObject );
     }
 

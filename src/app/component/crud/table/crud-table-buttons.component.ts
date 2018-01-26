@@ -4,6 +4,7 @@ import { Component } from "@angular/core";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { BaseCrudComponent } from "../common/base-crud.component";
 import { isNullOrUndefined } from "util";
+import { CrudOperation } from "../common/crud-operation";
 
 /**
  * This is the base component class for the buttons on all CRUD enabled tables
@@ -17,6 +18,8 @@ import { isNullOrUndefined } from "util";
            })
 export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
+    private selectedModelObject: T;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -54,7 +57,7 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     private handleTableSelectionChangeEvent( modelObject: T )
     {
         this.debug( "handleTableSelectionChangeEvent modelObject: " + JSON.stringify( modelObject ));
-        //this.setModelObject( modelObject );
+        this.selectedModelObject = modelObject;
     }
 
     /**
@@ -63,13 +66,11 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     public ngOnInit()
     {
         this.debug( "ngOnInit.begin" );
+        super.ngOnInit();
         if ( !this.crudServiceContainer.crudTableButtonsService )
         {
             throw new Error( "crudTableButtonsService has not been set by Input value" );
         }
-        this.crudServiceContainer
-            .crudTableButtonsService
-            .subscribeToModelObjectChangedEvent(( modelObject: T) => this.onModelObjectChanged( modelObject ) );
         this.debug( "ngOnInit.end" );
     }
 
@@ -154,7 +155,7 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
      */
     protected isDeleteButtonDisabled(): boolean
     {
-        return isNullOrUndefined( this.modelObject );
+        return isNullOrUndefined( this.selectedModelObject );
     }
 
     /**
@@ -163,11 +164,19 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
      */
     protected onAddButtonClick(): void
     {
-        var modelObject = this.crudServiceContainer.modelObjectFactory.newModelObject();
         this.debug( "onAddButtonClick " );
+        var modelObject = this.crudServiceContainer.modelObjectFactory.newModelObject();
+        this.crudServiceContainer
+            .crudStateStore
+            .sendModelObjectChangedEvent( this, modelObject );
+        this.crudServiceContainer
+            .crudStateStore
+            .sendCrudOperationChangedEvent( CrudOperation.CREATE );
+        /*
         this.crudServiceContainer
             .crudTableButtonsService
             .sendAddButtonClickedEvent( modelObject );
+            */
     }
 
     /**
@@ -177,11 +186,19 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     protected onDeleteButtonClick(): void
     {
         this.debug( "onDeleteButtonClick " + JSON.stringify( this.modelObject ));
+        this.crudServiceContainer
+            .crudStateStore
+            .sendModelObjectChangedEvent( this, this.modelObject );
+        this.crudServiceContainer
+            .crudStateStore
+            .sendCrudOperationChangedEvent( CrudOperation.DELETE );
+        /*
         if ( !isNullOrUndefined( this.modelObject ) )
         {
             this.crudServiceContainer
                 .crudTableButtonsService.sendDeleteButtonClickedEvent( this.modelObject );
         }
+        */
     }
 
     /**

@@ -1,7 +1,6 @@
 /**
  * Created by mike on 11/12/2017
  */
-import { CrudOperation } from "../../component/crud/common/crud-operation";
 import { ModelObject } from "../../model/entity/modelobject";
 
 /**
@@ -17,8 +16,7 @@ export class ModelObjectChangedEvent<T extends ModelObject<T>>
      * @param sender
      * @param {T} modelObject
      */
-    constructor( sender: any,
-                 modelObject: T )
+    constructor( sender: any, modelObject: T )
     {
         this.sender = sender;
         this.modelObject = modelObject;

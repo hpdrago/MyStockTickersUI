@@ -8,6 +8,7 @@ import { Subject } from "rxjs/Subject";
 import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
 import { ModelObjectDeletedEvent } from "../../../service/crud/model-object-deleted-event";
 import { ModelObjectCreatedEvent } from "../../../service/crud/model-object-created-event";
+import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 
 /**
  * This class manages the CRUD state which includes the CrudOperation and the ModelObject.
@@ -15,21 +16,40 @@ import { ModelObjectCreatedEvent } from "../../../service/crud/model-object-crea
  */
 export class CrudStateStore<T extends ModelObject<T>> extends BaseClass
 {
-    private modelObjectChangedSubject: BehaviorSubject<ModelObjectChangedEvent<T>> = new BehaviorSubject<ModelObjectChangedEvent<T>>( null );
-    private modelObjectDeletedSubject: BehaviorSubject<ModelObjectDeletedEvent<T>> = new BehaviorSubject<ModelObjectDeletedEvent<T>>( null );
-    private modelObjectCreatedSubject: BehaviorSubject<ModelObjectCreatedEvent<T>> = new BehaviorSubject<ModelObjectCreatedEvent<T>>( null );
-    private crudOperationChangedSubject: BehaviorSubject<CrudOperation> = new BehaviorSubject<CrudOperation>( CrudOperation.NONE );
+    private modelObjectChangedSubject: BehaviorSubject<ModelObjectChangedEvent<T>>;
+    private modelObjectDeletedSubject: Subject<ModelObjectDeletedEvent<T>>;
+    private modelObjectCreatedSubject: Subject<ModelObjectCreatedEvent<T>>;
+    private crudOperationChangedSubject: BehaviorSubject<CrudOperation>;
+
+    constructor( protected modelObjectFactory: ModelObjectFactory<T> )
+    {
+        super();
+        this.createSubjects();
+    }
+
+    /**
+     * Create the subjects.
+     */
+    protected createSubjects(): void
+    {
+        let modelObject: T = this.modelObjectFactory.newModelObject();
+        let modelObjectChangedEvent = new ModelObjectChangedEvent<T>( this, modelObject );
+        this.modelObjectChangedSubject = new BehaviorSubject<ModelObjectChangedEvent<T>>( modelObjectChangedEvent );
+        this.modelObjectDeletedSubject = new Subject<ModelObjectDeletedEvent<T>>();
+        this.modelObjectCreatedSubject = new Subject<ModelObjectCreatedEvent<T>>();
+        this.crudOperationChangedSubject = new BehaviorSubject<CrudOperation>( CrudOperation.NONE );
+    }
 
     /**
      * Sets the subjects to the default values.
      */
     public resetSubjects(): void
     {
+        let modelObject: T = this.modelObjectFactory.newModelObject();
+        let modelObjectChangedEvent = new ModelObjectChangedEvent<T>( this, modelObject );
         this.debug( "resetSubjects" );
-        this.modelObjectChangedSubject.next( null );
+        this.modelObjectChangedSubject.next( modelObjectChangedEvent );
         this.crudOperationChangedSubject.next( CrudOperation.NONE );
-        this.modelObjectDeletedSubject.next( null );
-        this.modelObjectCreatedSubject.next( null );
     }
 
     /**
@@ -56,7 +76,7 @@ export class CrudStateStore<T extends ModelObject<T>> extends BaseClass
         this.debug( methodName + ".begin" );
         var observable: Observable<ModelObjectDeletedEvent<T>> = this.modelObjectDeletedSubject.asObservable();
         var subscription: Subscription = observable.subscribe( fn );
-        this.debug( methodName + ".end" + this.modelObjectDeletedSubject.observers.length + " observers" );
+        this.debug( methodName + ".end " + this.modelObjectDeletedSubject.observers.length + " observers" );
         return subscription;
     }
 
@@ -70,7 +90,7 @@ export class CrudStateStore<T extends ModelObject<T>> extends BaseClass
         this.debug( methodName + ".begin" );
         var observable: Observable<ModelObjectCreatedEvent<T>> = this.modelObjectCreatedSubject.asObservable();
         var subscription: Subscription = observable.subscribe( fn );
-        this.debug( methodName + ".end" + this.modelObjectCreatedSubject.observers.length + " observers" );
+        this.debug( methodName + ".end " + this.modelObjectCreatedSubject.observers.length + " observers" );
         return subscription;
     }
 
@@ -97,8 +117,12 @@ export class CrudStateStore<T extends ModelObject<T>> extends BaseClass
     public sendModelObjectChangedEvent( sender: any, modelObject: T )
     {
         let methodName = "sendModelObjectChangedEvent";
+        if ( modelObject == null )
+        {
+            modelObject = this.modelObjectFactory.newModelObject();
+        }
         let modelObjectChangedEvent = new ModelObjectChangedEvent( sender, modelObject );
-        this.sendModelObjectEvent( sender, methodName, this.modelObjectChangedSubject, modelObjectChangedEvent );
+        this.sendModelObjectEvent( methodName, this.modelObjectChangedSubject, modelObjectChangedEvent );
     }
 
     /**
@@ -109,8 +133,9 @@ export class CrudStateStore<T extends ModelObject<T>> extends BaseClass
      */
     public sendModelObjectDeletedEvent( sender: any, modelObject: T )
     {
+        let methodName = "sendModelObjectDeletedEvent";
         let modelObjectDeletedEvent = new ModelObjectDeletedEvent( sender, modelObject );
-        this.sendModelObjectEvent( sender,"sendModelObjectDeletedEvent", this.modelObjectDeletedSubject, modelObjectDeletedEvent );
+        this.sendModelObjectEvent( methodName, this.modelObjectDeletedSubject, modelObjectDeletedEvent );
     }
 
     /**
@@ -121,8 +146,9 @@ export class CrudStateStore<T extends ModelObject<T>> extends BaseClass
      */
     public sendModelObjectCreatedEvent( sender: any, modelObject: T )
     {
+        let methodName = "sendModelObjectCreatedEvent";
         let modelObjectCreatedEvent = new ModelObjectCreatedEvent( sender, modelObject );
-        this.sendModelObjectEvent( sender,"sendModelObjectCreated", this.modelObjectCreatedSubject, modelObjectCreatedEvent );
+        this.sendModelObjectEvent( methodName, this.modelObjectCreatedSubject, modelObjectCreatedEvent );
     }
 
     /**
@@ -133,14 +159,12 @@ export class CrudStateStore<T extends ModelObject<T>> extends BaseClass
      * @param {BehaviorSubject<T extends ModelObject<T>>} subject
      * @param {T} modelObject
      */
-    private sendModelObjectEvent( sender: any,
-                                  callingMethod: string,
-                                  subject: BehaviorSubject<any>,
+    private sendModelObjectEvent( callingMethod: string,
+                                  subject: Subject<any>,
                                   changeEvent: any )
     {
         this.debug( callingMethod + " modelObject: " + JSON.stringify( changeEvent.modelObject ) );
-        this.debug( callingMethod + " " + this.getToObserversMessage( subject ));
-        changeEvent.sender = sender;
+        this.debug( callingMethod + this.getToObserversMessage( subject ));
         subject.next( changeEvent );
         this.debug( callingMethod + ".end" );
     }
@@ -154,7 +178,7 @@ export class CrudStateStore<T extends ModelObject<T>> extends BaseClass
     {
         let methodName = "sendCrudOperationChangedEvent";
         this.debug( methodName + " " + CrudOperation.getName( crudOperation ));
-        this.debug( methodName + " " + this.getToObserversMessage( this.modelObjectChangedSubject ));
+        this.debug( methodName + this.getToObserversMessage( this.modelObjectChangedSubject ));
         this.crudOperationChangedSubject.next( crudOperation );
     }
 

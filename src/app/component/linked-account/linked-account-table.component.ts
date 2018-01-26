@@ -53,6 +53,9 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      */
     public loadAccounts( tradeItAccount: TradeItAccount )
     {
+        let methodName = "loadAccounts";
+        this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
         this.rows = tradeItAccount.linkedAccounts;
+        this.log( methodName + ".end" );
     }
 }

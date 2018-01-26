@@ -59,13 +59,19 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
             throw new Error( "toaster argument cannot be null" );
         }
         this.crudRestErrorReporter = this.createCrudRestErrorReporter();
+        this.modelObject = modelObjectFactory.newModelObject();
     }
 
+    /**
+     * Initialize the instance.
+     */
     public ngOnInit()
     {
         let methodName = "ngOnInit";
         this.log( methodName + ".begin" );
         this.subscribeToModelObjectChangeEvents();
+        this.crudStateStore
+            .subscribeToCrudOperationChangeEvent( (crudOperation: CrudOperation) => this.crudOperationChangedEvent( crudOperation ));
         this.log( methodName + ".end" );
     }
 
@@ -123,8 +129,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     protected onModelObjectChangedEvent( modelObjectChangedEvent: ModelObjectChangedEvent<T> )
     {
         let methodName = "onModelObjectChangedEvent";
-        this.debug( methodName + " " + JSON.stringify( modelObjectChangedEvent ));
-        this.crudOperation = CrudOperation.UPDATE;
+        this.debug( methodName + " " + JSON.stringify( modelObjectChangedEvent.modelObject ));
         if ( !this.isReceivedOurOwnEvent( methodName, modelObjectChangedEvent ))
         {
             this.onModelObjectChanged( modelObjectChangedEvent.modelObject ) ;
@@ -140,8 +145,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     protected onModelObjectDeletedEvent( modelObjectDeletedEvent: ModelObjectDeletedEvent<T> )
     {
         let methodName = "onModelObjectDeletedEvent";
-        this.debug( methodName + " " + JSON.stringify( modelObjectDeletedEvent ));
-        this.crudOperation = CrudOperation.DELETE;
+        this.debug( methodName + " " + JSON.stringify( modelObjectDeletedEvent.modelObject ));
         if ( !this.isReceivedOurOwnEvent( methodName, modelObjectDeletedEvent ))
         {
             this.onModelObjectDeleted( modelObjectDeletedEvent.modelObject ) ;
@@ -157,8 +161,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     protected onModelObjectCreatedEvent( modelObjectCreatedEvent: ModelObjectCreatedEvent<T> )
     {
         let methodName = "onModelObjectCreatedEvent";
-        this.debug( methodName + " " + JSON.stringify( modelObjectCreatedEvent ));
-        this.crudOperation = CrudOperation.CREATE;
+        this.debug( methodName + " " + JSON.stringify( modelObjectCreatedEvent.modelObject ));
         if ( !this.isReceivedOurOwnEvent( methodName, modelObjectCreatedEvent ))
         {
             this.onModelObjectCreated( modelObjectCreatedEvent.modelObject ) ;
@@ -171,7 +174,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      * @param {ModelObjectChangedEvent<T extends ModelObject<T>>} modelObjectChangedEvent
      * @return {boolean}
      */
-    private isReceivedOurOwnEvent( methodName: string, modelObjectChangedEvent: ModelObjectChangedEvent<T> ): boolean
+    protected isReceivedOurOwnEvent( methodName: string, modelObjectChangedEvent: ModelObjectChangedEvent<T> ): boolean
     {
         if ( modelObjectChangedEvent.sender == this && this.modelObject == modelObjectChangedEvent.modelObject )
         {
@@ -264,6 +267,17 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     }
 
     /**
+     * This method is called when crud state store receives a crud operation change.
+     * @param {CrudOperation} crudOperation
+     */
+    private crudOperationChangedEvent( crudOperation: CrudOperation )
+    {
+        let methodName = "crudOperationChangedEvent";
+        this.debug( methodName + " change " + CrudOperation.getName( crudOperation ) );
+        this.onCrudOperationChanged( crudOperation );
+    }
+
+    /**
     * This method is called whenever the crudOperation changes.
     * @param crudOperation
     */
@@ -345,5 +359,4 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     {
         return 'Sorry, you are attempting to create a duplicate entry';
     }
-
 }

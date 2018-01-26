@@ -26,7 +26,7 @@ export class CustomerPanelComponent extends CrudPanelComponent<Customer>
     public ngOnInit(): void
     {
         super.ngOnInit();
-        this.displayModelObject( this.sessionService.customer, CrudOperation.UPDATE );
+        this.displayModelObject();
     }
 
 }

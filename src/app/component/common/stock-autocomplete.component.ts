@@ -6,8 +6,9 @@ import { Stock } from "../../model/entity/stock";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { isNullOrUndefined } from "util";
 import { StockQuote } from "../../model/entity/stock-quote";
-import { BaseCrudComponent } from "../crud/common/base-crud.component";
 import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
+import { BaseComponent } from "./base.component";
+import { RestErrorReporter } from "../../service/rest-error-reporter";
 
 /**
  * This component is a text input that finds stocks based on the incremental search of the input
@@ -36,7 +37,7 @@ import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-report
         multi: true
     }]
 } )
-export class StockAutoCompleteComponent extends BaseCrudComponent<Stock> implements ControlValueAccessor
+export class StockAutoCompleteComponent extends BaseComponent implements ControlValueAccessor
 {
     @Output()
     private stockSelected: EventEmitter<StockQuote>  = new EventEmitter<StockQuote>();
@@ -53,7 +54,8 @@ export class StockAutoCompleteComponent extends BaseCrudComponent<Stock> impleme
      * @param {StockCrudService} stockCrudService
      */
     constructor( protected toaster: ToastsManager,
-                 private stockCrudService: StockCrudService )
+                 private stockCrudService: StockCrudService,
+                 private restErrorReporter: RestErrorReporter )
     {
         super( toaster );
     }
@@ -97,7 +99,7 @@ export class StockAutoCompleteComponent extends BaseCrudComponent<Stock> impleme
                         },
                         err =>
                         {
-                            this.reportRestError( err );
+                            this.restErrorReporter.reportRestError( err );
                         }
             );
     }
@@ -140,7 +142,7 @@ export class StockAutoCompleteComponent extends BaseCrudComponent<Stock> impleme
                      */
                     if ( error.status != 404 )
                     {
-                        this.reportRestError( error );
+                        this.restErrorReporter.reportRestError( error );
                     }
                     else
                     {
@@ -175,7 +177,7 @@ export class StockAutoCompleteComponent extends BaseCrudComponent<Stock> impleme
                         },
                         error =>
                         {
-                            this.reportRestError( error );
+                            this.restErrorReporter.reportRestError( error );
                         });
     }
 

@@ -50,9 +50,11 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
          * Need to register to get notified when the TradeItAccount has been added successfully.  This occurs after
          * the user provides the login credentials to the brokerage successfully from the popup url auth call.
          */
+        /*
         this.tradeItAccountCrudServiceContainer
             .crudFormButtonsService
             .subscribeToAddButtonClickCompletedEvent( tradeItAccount => { this.onAccountAdded( tradeItAccount );});
+            */
         this.log( methodName + ".end" );
     }
 
@@ -69,11 +71,13 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
             .checkAuthentication( this.modelObject, this.tradeItSecurityQuestionDialog )
             .subscribe( (authenticateAccountResult: TradeItAuthenticateResult ) =>
                         {
+                            this.log( methodName + " checkAuthentication result: " + JSON.stringify( authenticateAccountResult ));
                             if ( authenticateAccountResult.isSuccess() )
                             {
                                 this.log( methodName + " account authenticated or kept alive" );
-                                this.setModelObject( authenticateAccountResult.tradeItAccount );
-                                //this.updateModelObjectRow( this.modelObject );
+                                this.modelObject = authenticateAccountResult.tradeItAccount;
+                                this.modelObject.linkedAccounts = authenticateAccountResult.linkedAccounts;
+                                this.onModelObjectSelected( authenticateAccountResult.tradeItAccount );
                                 this.tradeItAccountSelected.emit( this.modelObject );
                             }
                             else
@@ -92,18 +96,24 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
      * This method is called when a new account is added.
      * @param {TradeItAccount} tradeItAccount
      */
-    private onAccountAdded( tradeItAccount: TradeItAccount )
+    protected onModelObjectCreated( tradeItAccount: TradeItAccount )
     {
         let methodName = "onAccountAdded";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
-        this.setModelObject( tradeItAccount );
+        super.onModelObjectDeleted( tradeItAccount );
         this.tradeItOAuthService
             .checkAuthentication( tradeItAccount, this.tradeItSecurityQuestionDialog )
             .subscribe( (authenticateAccountResult: TradeItAuthenticateResult) =>
             {
                 if ( authenticateAccountResult.isSuccess() )
                 {
+                    tradeItAccount.linkedAccounts = authenticateAccountResult.linkedAccounts;
                     this.log( methodName + " authentication successful: " + JSON.stringify( tradeItAccount ));
+                    /*
+                     * Make sure we send out the updates after authentication.
+                     */
+                    this.crudStateStore
+                        .sendModelObjectChangedEvent( this, tradeItAccount );
                 }
                 else
                 {
