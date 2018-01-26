@@ -56,12 +56,14 @@ export class TradeItAccountsComponent extends BaseComponent implements OnInit
      */
     public ngOnInit(): void
     {
-        this.tradeItAccountController
-            .subscribeToTableSelectionChangeEvent( (tradeItAccount: TradeItAccount) =>
-                                                       this.onTradeItTableSelectionChange( tradeItAccount ));
-        this.linkedAccountController
-            .subscribeToTableSelectionChangeEvent( (linkedAccount: LinkedAccount) =>
-                                                       this.onLinkedAccountTableSelectionChange( linkedAccount ));
+        this.addSubscription( 'tradeItAccountController.tableSelectionChange',
+            this.tradeItAccountController
+                .subscribeToTableSelectionChangeEvent( (tradeItAccount: TradeItAccount) =>
+                                                       this.onTradeItTableSelectionChange( tradeItAccount )));
+        this.addSubscription(  'linkedAccountController.tableSelectionChange',
+            this.linkedAccountController
+                .subscribeToTableSelectionChangeEvent( (linkedAccount: LinkedAccount) =>
+                                                           this.onLinkedAccountTableSelectionChange( linkedAccount )));
     }
 
     /**

@@ -170,10 +170,12 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      * Subscribe to get notified when the user has selected a table row
      * @param {(T) => any} fn
      */
-    public subscribeToTableSelectionChangeEvent( fn: ( modelObject: T ) => any )
+    public subscribeToTableSelectionChangeEvent( fn: ( modelObject: T ) => any ): Subscription
     {
-        this.debug( 'subscribeToTableSelectionChangeEvent' );
-        this.tableSelectionChangedSubject.asObservable().subscribe( fn );
+        let methodName = 'subscribeToTableSelectionChangeEvent';
+        let subscription = this.tableSelectionChangedSubject.asObservable().subscribe( fn );
+        this.debug( methodName + this.getTotalSubscribersMessage( this.tableSelectionChangedSubject ));
+        return subscription;
     }
 
     /**
@@ -193,10 +195,10 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      * Subscribe to get notified when the user has selected a table row
      * @param {(T) => any} fn
      */
-    public subscribeToTableContentChangeEvent( fn: () => any )
+    public subscribeToTableContentChangeEvent( fn: () => any ): Subscription
     {
         this.debug( 'subscribeToTableContentChangeEvent' );
-        this.tableContentChangedSubject.asObservable().subscribe( fn );
+        return this.tableContentChangedSubject.asObservable().subscribe( fn );
     }
 
     /**
@@ -825,4 +827,13 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         return ' sending to ' + subject.observers.length + ' observers';
     }
 
+    /**
+     * Creates a string identifying the number of observers.
+     * @param {Subject<any>} subject
+     * @return {string}
+     */
+    private getTotalSubscribersMessage( subject: Subject<any> ): string
+    {
+        return ' ' + subject.observers.length + ' observers';
+    }
 }

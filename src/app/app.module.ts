@@ -4,7 +4,7 @@
 /**
  * Angular Imports
  */
-import { NgModule } from "@angular/core";
+import { ErrorHandler, NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
@@ -171,6 +171,7 @@ import { StockPositionTableComponent } from './component/stock-position/stock-po
 import { StockPositionTableButtonsComponent } from './component/stock-position/stock-position-table-buttons.component';
 import { StockPositionFactory } from './model/factory/stock-position-factory';
 import { StockPositionCrudService } from './service/crud/stock-position-crud.service';
+import { AppDefaultErrorHandler } from './app.default-error-handler';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -390,6 +391,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         ToastOptions,
         ToastsManager,
+        { provide: ErrorHandler, useClass: AppDefaultErrorHandler },
         { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }
     ]
 })

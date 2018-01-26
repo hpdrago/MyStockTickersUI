@@ -8,6 +8,7 @@
 import { LoggerFactory } from "./logger-factory";
 import { Logger } from "./logger";
 import { LazyLoadEvent } from "primeng/primeng";
+import { isNullOrUndefined } from 'util';
 
 export class PaginationURL
 {
@@ -73,6 +74,10 @@ export class PaginationURL
          * Need to calculate the page number from the rowOffSet
          */
         this.logger.log( methodName + " " + JSON.stringify( lazyLoadEvent ));
+        if ( isNullOrUndefined( lazyLoadEvent ))
+        {
+            throw ReferenceError( "lazyLoadEvent is null.  Cannot create getPage URL" );
+        }
         var pageNumber = ((lazyLoadEvent.first + lazyLoadEvent.rows) / lazyLoadEvent.rows) - 1;
         var url = this.url + "?page=" + pageNumber + "&limit=" + lazyLoadEvent.rows;
         if ( lazyLoadEvent.sortField )
