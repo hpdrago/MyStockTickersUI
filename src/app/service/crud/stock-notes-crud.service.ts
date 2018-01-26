@@ -8,6 +8,7 @@ import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
 import { CrudRestService } from "./crud-rest.serivce";
 import { KeyValuePairs } from "../../common/key-value-pairs";
 import { RestErrorReporter } from '../rest-error-reporter';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This class provides all CRUD REST services for Stock Notes.
@@ -54,8 +55,13 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
      */
     protected getContextURLKeyValues( stockNotes: StockNotes ): KeyValuePairs<string,any>
     {
-        let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
-        if ( stockNotes.tickerSymbol )
+        let keyColumns = super.getContextURLKeyValues( stockNotes );
+        /*
+         * Add the ticker symbol only if that's set and the id is not.
+         */
+        if ( !isNullOrUndefined( stockNotes ) &&
+              isNullOrUndefined( stockNotes.id ) &&
+             !isNullOrUndefined( stockNotes.tickerSymbol ))
         {
             keyColumns.addPair( "tickerSymbol", stockNotes.tickerSymbol );
         }

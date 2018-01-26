@@ -91,7 +91,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     {
         let methodName = 'getCompleteURL';
         this.debug( `${methodName} contextURL: ${contextURL} customerURL: ${customerURL}` );
-        let url = this.appConfig.getBaseURL() + this.getContextURLFrom( contextURL, modelObject ) + customerURL;
+        let url = this.appConfig.getBaseURL() + contextURL + customerURL;
         return url;
     }
 
@@ -153,6 +153,8 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getContextURLKeyValues( modelObject: T ): KeyValuePairs<string,any>
     {
+        let methodName = 'getContextURLKeyValues';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         let primaryKeyValue: any = null;
 
         let keyValuePairs: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
@@ -161,6 +163,8 @@ export abstract class ReadRestService<T extends ModelObject<T>>
          */
         if ( !isNullOrUndefined( modelObject ) )
         {
+            this.debug( methodName + ' primaryKeyName: ' + modelObject.getPrimaryKeyName() );
+            this.debug( methodName + ' primaryKeyValue: ' + modelObject.getPrimaryKeyValue() );
             if ( isNumber( modelObject.getPrimaryKeyValue() ) )
             {
                 if ( modelObject.getPrimaryKeyValue() > 0 )
@@ -177,6 +181,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         {
             keyValuePairs.addPair( modelObject.getPrimaryKeyName(), primaryKeyValue );
         }
+        this.debug( methodName + ' ' + JSON.stringify( keyValuePairs ) );
         return keyValuePairs;
     }
 
