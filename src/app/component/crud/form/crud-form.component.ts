@@ -334,7 +334,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected setDefaultValues(): void
     {
-        this.debug( "setDefaultValue" );
+        this.debug( "setDefaultValues" );
     }
 
     /**
@@ -665,25 +665,45 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * This is called when a model object is created.
+     * This is called after a model object has been added to the database.
+     * We must decouple the model object from the state store model object because this method will change the values
+     * of the model object.
      * @param {T} modelObject
      */
     protected onModelObjectCreated( modelObject: T ): void
     {
-        super.onModelObjectCreated( modelObject );
+        let methodName = 'onModelObjectCreated';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        //super.onModelObjectCreated( modelObject );
+        this.modelObject = this.modelObjectFactory.newModelObject();
         this.setDefaultValues();
     }
 
+    /**
+     * This method is called after a model object has been saved to the database.  At this point, we must decouple the
+     * model object from the state store since we are going to reset the values.
+     * @param {T} modelObject
+     */
     protected onModelObjectSaved( modelObject: T ): void
     {
-        super.onModelObjectSaved( modelObject );
+        let methodName = 'onModelObjectSaved';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        //super.onModelObjectSaved( modelObject );
         //this.clearForm();
+        this.modelObject = this.modelObjectFactory.newModelObject();
         this.setDefaultValues();
     }
 
+    /**
+     * This method is called after a model object has been deleted from the database.
+     * @param {T} modelObject
+     */
     protected onModelObjectDeleted( modelObject: T ): void
     {
-        super.onModelObjectDeleted( modelObject );
+        let methodName = 'onModelObjectDeleted';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        //super.onModelObjectDeleted( modelObject );
+        this.modelObject = this.modelObjectFactory.newModelObject();
         this.clearForm();
     }
 

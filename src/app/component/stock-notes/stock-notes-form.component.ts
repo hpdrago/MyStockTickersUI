@@ -111,17 +111,14 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
     protected setDefaultValues()
     {
         super.setDefaultValues();
-        if ( this.modelObject )
-        {
-            this.modelObject.notesRating = 3;
-            this.modelObject.bullOrBear = 1;
-            this.modelObject.actionTaken = StockNotesActionTaken.NONE;
-            this.modelObject.notesDate = new Date( Date.now() );
-            this.tickerSymbols = '';
-            this.stockSearch = '';
-            this.stockQuote = null;
-            this.stockQuotes = [];
-        }
+        this.modelObject.notesRating = 3;
+        this.modelObject.bullOrBear = 1;
+        this.modelObject.actionTaken = StockNotesActionTaken.NONE;
+        this.modelObject.notesDate = new Date( Date.now() );
+        this.tickerSymbols = '';
+        this.stockSearch = '';
+        this.stockQuote = null;
+        this.stockQuotes = [];
     }
 
     protected resetForm(): void
