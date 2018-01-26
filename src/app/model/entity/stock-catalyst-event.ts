@@ -5,6 +5,8 @@ import { StockPriceQuote } from './stock-price-quote';
 import { StockPriceQuoteContainer } from '../common/stock-price-quote-container';
 import { StockQuoteContainer } from '../common/stock-quote-container';
 import { StockModelObject } from '../common/stock-model-object';
+import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
+import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
 
 /**
  * This entity contains the elements for the stock summary
@@ -71,5 +73,47 @@ export class StockCatalystEvent extends StockModelObject<StockCatalystEvent>
     public setStockQuote( stockQuote: StockQuote )
     {
         this.stockQuote = stockQuote;
+    }
+
+    public getDefaultCrudTableColumns(): CrudTableColumns
+    {
+        let crudTableColumns = super.getDefaultCrudTableColumns();
+        /*
+    public dateOrTimePeriod: DateOrTimePeriod;
+    public timePeriod: number;
+    public timePeriodYear: number;
+    public catalystDate: Date;
+    public stockPriceQuote: StockPriceQuote;
+    public stockQuote: StockQuote;
+    */
+        crudTableColumns.addColumn( {
+                                        colId: 'catalystDesc',
+                                        header: 'Description',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'catalystDesc',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'dateOrTimePeriod',
+                                        header: 'Date/Period',
+                                        dataType: CrudTableColumnType.CUSTOM,
+                                        field: 'dateOrTimePeriod',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'timePeriod',
+                                        header: 'Time Period',
+                                        dataType: CrudTableColumnType.NUMBER,
+                                        field: 'timePeriod',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'catalystDate',
+                                        header: 'Catalyst Date',
+                                        dataType: CrudTableColumnType.DATE,
+                                        field: 'catalystDate',
+                                        sortable: true
+                                    } );
+        return crudTableColumns;
     }
 }

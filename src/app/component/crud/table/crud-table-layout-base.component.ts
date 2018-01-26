@@ -166,7 +166,7 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     protected onRowSelect = new EventEmitter<any>();
 
     @Output()
-    protected onRowUnSelect = new EventEmitter<any>();
+    protected onRowUnselect = new EventEmitter<any>();
 
     @Output()
     protected lazyLoadTable = new EventEmitter<any>();
@@ -204,8 +204,7 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
      * @param {CookieService} cookieService
      */
     protected constructor( protected toaster: ToastsManager,
-                           protected cookieService: CookieService,
-                           protected changeDetector: ChangeDetectorRef )
+                           protected cookieService: CookieService )
     {
         super( toaster );
     }

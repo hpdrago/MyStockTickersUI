@@ -39,6 +39,17 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
     }
 
     /**
+     * Delete the cache entry for {@code key}.
+     * @param {K} key
+     */
+    public delete( key: K )
+    {
+        this.cacheSubjectMap
+            .delete( key );
+
+    }
+
+    /**
      * Checks the cache to see if there is an entry in the cache, if not or if the entry is stale, new cached data
      * will be fetched.  This method does not subscribe to future changes of the cached item, it is a one-time use
      * method to obtain the cached data.

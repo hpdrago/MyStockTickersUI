@@ -5,8 +5,6 @@ import { Injectable } from '@angular/core';
 import { StockCompany } from '../../model/entity/stock-company';
 import { StockCompanyFactory } from '../../model/factory/stock-company-factory';
 import { StockCompanyService } from '../crud/stock-company.service';
-import { StockCompanyPriceQuoteService } from '../stock-company-price-quote.service';
-import { tick } from '@angular/core/testing';
 
 /**
  * This class caches the {@code StockCompany}s.  It fetches the quotes when they are needed and refreshes the quotes

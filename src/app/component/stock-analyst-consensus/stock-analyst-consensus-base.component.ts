@@ -35,7 +35,12 @@ export class StockAnalystConsensusBaseComponent extends BaseComponent implements
         {
             throw new Error( 'tickerSymbol cannot be null' );
         }
-        this.stockAnalystConsensus = this.stockAnalystConsensusCache
-                                         .get( this.tickerSymbol );
+        this.stockAnalystConsensusCache
+            .subscribe( this.tickerSymbol, (stockAnalystConsensus) => this.stockAnalystConsensusChange( stockAnalystConsensus ));
+    }
+
+    private stockAnalystConsensusChange( stockAnalystConsensus: StockAnalystConsensus )
+    {
+        this.stockAnalystConsensus = stockAnalystConsensus;
     }
 }

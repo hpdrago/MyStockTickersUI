@@ -2,8 +2,8 @@ import { Input, OnChanges, OnDestroy, SimpleChange } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { BaseClass } from "../../common/base-class";
 import { Subscription } from "rxjs/Subscription";
-import { isNullOrUndefined } from 'util';
 import { Subscriptions } from './subscriptions';
+import * as _ from "lodash";
 
 /**
  * This is the base class for all application components to contain common methods, services, and data
@@ -22,7 +22,7 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
     protected constructor( protected toaster: ToastsManager )
     {
         super( toaster );
-        this.debug( "BaseComponent.constructor" );
+        //this.debug( "BaseComponent.constructor" );
     }
 
     /**
@@ -45,7 +45,7 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
      */
     public ngOnDestroy(): void
     {
-        this.debug( 'BaseComponent.ngOnDestroy' );
+        //this.debug( 'BaseComponent.ngOnDestroy' );
         this.unSubscribeAll();
     }
 
@@ -126,4 +126,21 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
     {
         return JSON.stringify( object );
     }
+
+    /**
+     * Using Lodash to extract a property from an object where the property can include a full dot path to other objects.
+     * @param object
+     * @param {string} property
+     * @return {undefined}
+     */
+    protected getProperty( object: any, property: string ): any
+    {
+        let value = _.get( object, property );
+        /*
+        this.debug( "getProperty object: " + JSON.stringify( object ) );
+        this.debug( "getProperty object: property: " + property + " modelObject: " + JSON.stringify(this.modelObject));
+        */
+        return value;
+    }
+
 }

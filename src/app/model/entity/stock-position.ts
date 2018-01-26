@@ -2,6 +2,8 @@ import { StockTableEntry } from '../common/stock-table-entry';
 import { StockModelObject } from '../common/stock-model-object';
 import { StockQuoteContainer } from '../common/stock-quote-container';
 import { StockPriceQuoteContainer } from '../common/stock-price-quote-container';
+import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
+import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
 
 /**
  * This class contains the information for a single stock position within a LinkedAccount.
@@ -92,5 +94,88 @@ export class StockPosition extends StockModelObject<StockPosition>
     public setRankPercent( rankPercent: number )
     {
         this.rankPercent = rankPercent;
+    }
+
+    public getDefaultCrudTableColumns(): CrudTableColumns
+    {
+        let crudTableColumns = super.getDefaultCrudTableColumns();
+        crudTableColumns.addColumn( {
+                                        colId: 'costBasis',
+                                        header: 'Cost Basis',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        field: 'costBasis',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'quantity',
+                                        header: 'Shares',
+                                        dataType: CrudTableColumnType.NUMBER,
+                                        field: 'quantity',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'todayGainLossAbsolute',
+                                        header: 'Day G/L $',
+                                        dataType: CrudTableColumnType.GAIN_LOSS_CURRENCY,
+                                        field: 'todayGainLossAbsolute',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'todayGainLossPercentage',
+                                        header: 'Day G/L %',
+                                        dataType: CrudTableColumnType.GAIN_LOSS_CURRENCY,
+                                        field: 'todayGainLossPercentage',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'totalGainLossAbsolute',
+                                        header: 'G/L $',
+                                        dataType: CrudTableColumnType.GAIN_LOSS_CURRENCY,
+                                        field: 'totalGainLossAbsolute',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'totalGainLossPercentage',
+                                        header: 'G/L %',
+                                        dataType: CrudTableColumnType.GAIN_LOSS_CURRENCY,
+                                        field: 'totalGainLossPercentage',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'exchange',
+                                        header: 'Exchange',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'exchange',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'openPrice',
+                                        header: 'Open',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        field: 'openPrice',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'closePrice',
+                                        header: 'Close',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        field: 'closePrice',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'rank',
+                                        header: 'Rank',
+                                        dataType: CrudTableColumnType.NUMBER,
+                                        field: 'rank',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'rankPercent',
+                                        header: 'Rank %',
+                                        dataType: CrudTableColumnType.PERCENT,
+                                        field: 'rankPercent',
+                                        sortable: true
+                                    } );
+        return crudTableColumns;
     }
 }

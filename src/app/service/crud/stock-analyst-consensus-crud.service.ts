@@ -12,6 +12,8 @@ import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.se
 import { BaseStockService } from './base-stock.service';
 import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
 import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
+import { Observable } from 'rxjs/Observable';
+import { CachedValueState } from '../../common/cached-value-state.enum';
 
 /**
  * This class provides all CRUD REST services for StockCompany Summary.
@@ -74,5 +76,21 @@ export class StockAnalystConsensusCrudService extends BaseStockService<StockAnal
             keyColumns.addPair( "tickerSymbol", stockAnalystConsensus.tickerSymbol );
         }
         return keyColumns;
+    }
+
+    /**
+     * Override to set the cache state to current since the consensus information is not cached in the backend but
+     * resided in the analyst consensus table.  It is however cached on the client side so the values are always current.
+     * @param {StockAnalystConsensus} stockAnalystConsensus
+     * @return {Observable<StockAnalystConsensus>}
+     */
+    getModelObject( stockAnalystConsensus: StockAnalystConsensus ): Observable<StockAnalystConsensus>
+    {
+        return super.getModelObject( stockAnalystConsensus )
+            .map( stockAnalystConsensus =>
+                {
+                    stockAnalystConsensus.setCacheState( CachedValueState.CURRENT ) ;
+                    return stockAnalystConsensus;
+                });
     }
 }

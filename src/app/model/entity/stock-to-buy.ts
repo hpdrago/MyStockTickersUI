@@ -5,8 +5,6 @@ import { StockQuoteContainer } from '../common/stock-quote-container';
 import { StockModelObject } from '../common/stock-model-object';
 import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
 import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
-import { StockQuote } from './stock-quote';
-import { StockPriceQuote } from './stock-price-quote';
 
 /**
  * This entity contains the elements for the stock to buy

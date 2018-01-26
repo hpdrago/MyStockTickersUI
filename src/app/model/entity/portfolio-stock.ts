@@ -1,4 +1,6 @@
 import { StockModelObject } from '../common/stock-model-object';
+import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
+import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
 
 /**
  * This class defines the information about a single stock that the customer is tracking in
@@ -14,16 +16,12 @@ export class PortfolioStock extends StockModelObject<PortfolioStock>
     public numberOfShares: number;
     public averageUnitCost: number;
     public lastPrice: number;
-    public sector: string;
-    public subSector: string;
-    public realizedGains: number;
-    public realizedLosses: number;
     public stopLossPrice: number;
     public stopLossShares: number;
     public profitTakingPrice: number;
     public profitTakingShares: number;
-    private rank: number;
-    private rankPercent: number;
+    public rank: number;
+    public rankPercent: number;
 
     public isEqualPrimaryKey( modelObject: PortfolioStock )
     {
@@ -98,5 +96,36 @@ export class PortfolioStock extends StockModelObject<PortfolioStock>
     public setRankPercent( rankPercent: number )
     {
         this.rankPercent = rankPercent;
+    }
+
+    /*public numberOfShares: number;
+    public averageUnitCost: number;
+    public lastPrice: number;
+    public realizedGains: number;
+    public realizedLosses: number;
+    public stopLossPrice: number;
+    public stopLossShares: number;
+    public profitTakingPrice: number;
+    public profitTakingShares: number;
+    private rank: number;
+    private rankPercent: number;
+    */
+    public getDefaultCrudTableColumns(): CrudTableColumns
+    {
+        let crudTableColumns = new CrudTableColumns( null );
+        crudTableColumns.addColumn( {
+                                        colId: 'numberOfShares',
+                                        header: 'Qty',
+                                        dataType: CrudTableColumnType.NUMBER,
+                                        field: 'numberOfShares',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'averageUnitCost',
+                                        header: 'Avg Price',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        sortable: true
+                                    } );
+        return crudTableColumns;
     }
 }

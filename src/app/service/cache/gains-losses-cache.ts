@@ -1,9 +1,11 @@
 import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensus';
 import { Injectable } from '@angular/core';
-import { StockAnalystConsensusCrudService } from '../crud/stock-analyst-consensus-crud.service';
-import { SessionService } from '../session.service';
-import { BaseClass } from '../../common/base-class';
 import { ToastsManager } from 'ng2-toastr';
+import { AsyncCacheService } from './async-cache.service';
+import { GainsLosses } from '../../model/entity/gains-losses';
+import { GainsLossesFactory } from '../../model/factory/gains-losses.factory';
+import { Observable } from 'rxjs/Observable';
+import { GainsLossesCrudService } from '../crud/gains-losses-crud.service';
 
 /**
  * Contains all of the gains/losses for a single customer.
@@ -12,30 +14,26 @@ import { ToastsManager } from 'ng2-toastr';
  * Created by mike on 3/24/2018
  */
 @Injectable()
-export class GainsLossesCache extends BaseClass
+export class GainsLossesCache extends AsyncCacheService<string, GainsLosses>
 {
     /**
-     * Contains the current stock analyst consensus information for each stock.
-     * @type {Map<any, any>}
-     */
-    private consensusMap: Map<string,StockAnalystConsensus> = new Map();
-
-    /**
      * Constructor.
-     * @param {SessionService} session
-     * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
+     * @param {ToastsManager} toaster
+     * @param {GainsLossesFactory} gainsLossesFactory
+     * @param {GainsLossesCrudService} gainsLossesCrudService
      */
-    constructor( protected toaster: ToastsManager,
-                 private session: SessionService,
-                 private stockAnalystConsensusCrudService: StockAnalystConsensusCrudService )
+    public constructor( protected toaster: ToastsManager,
+                        protected gainsLossesFactory: GainsLossesFactory,
+                        protected gainsLossesCrudService: GainsLossesCrudService )
     {
-        super( toaster );
-        this.load();
+        super( toaster,
+               gainsLossesFactory );
     }
 
     /**
      * Loads all of the stock analyst consensus records for the logging in customer.
      */
+    /*
     public load()
     {
         const methodName = 'load';
@@ -53,43 +51,34 @@ export class GainsLossesCache extends BaseClass
                            this.debug( methodName + '.end loaded ' + consensusList.length );
                        })
     }
-
-    /**
-     * Get the consensus information for a single stock.
-     * @param {string} tickerSymbol
-     * @return {StockAnalystConsensus} null if the ticker symbol not in the cache.
-     */
-    public get( tickerSymbol: string ): StockAnalystConsensus
-    {
-        this.debug( 'get ' + tickerSymbol );
-        return this.consensusMap
-                   .get( tickerSymbol );
-    }
+    */
 
     /**
      * Adds or replaces stock analyst consensus map entry.
      * @param {StockAnalystConsensus} stockAnalystConsensus
      */
-    public put( stockAnalystConsensus: StockAnalystConsensus )
+    public put( gainsLosses: GainsLosses  )
     {
-        this.debug( 'put ' + JSON.stringify( stockAnalystConsensus ));
-        this.consensusMap
-            .set( stockAnalystConsensus.tickerSymbol,
-                  stockAnalystConsensus );
+        this.debug( 'put ' + JSON.stringify( gainsLosses ));
+        this.addCacheData( gainsLosses.tickerSymbol, gainsLosses );
     }
 
     /**
-     * Delete the stock analyst consensus from the map.
-     * @param {StockAnalystConsensus} stockAnalystConsensus
+     * Get the gains and losses from the backend.
+     * @param {string} tickerSymbol
+     * @return {Observable<GainsLosses>}
      */
-    public delete( stockAnalystConsensus: StockAnalystConsensus )
+    protected fetchCachedDataFromBackend( tickerSymbol: string ): Observable<GainsLosses>
     {
-        this.debug( 'delete ' + JSON.stringify( stockAnalystConsensus ));
-        this.consensusMap
-            .delete( stockAnalystConsensus.tickerSymbol );
+        let gainsLosses = new GainsLosses();
+        gainsLosses.tickerSymbol = tickerSymbol;
+        return this.gainsLossesCrudService
+                   .getModelObject( gainsLosses );
     }
 
+    /*
     protected debug( message: string ): void
     {
     }
+    */
 }

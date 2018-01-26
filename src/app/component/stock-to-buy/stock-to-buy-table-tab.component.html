@@ -15,15 +15,6 @@ DIALOG TEMPLATE
 </ng-template>
 
 <!----------------------------------------------------------------------------------------------------------
-DEFAULT COLUMN DEFINITION
------------------------------------------------------------------------------------------------------------->
-<ng-template #defaultColumnsTemplate let-column="column" let-modelObject="modelObject">
-    <crud-table-column-by-data-type [column]="column"
-                                    [modelObject]="modelObject">
-    </crud-table-column-by-data-type>
-</ng-template>
-
-<!----------------------------------------------------------------------------------------------------------
 CUSTOM STOCK TO BUY COLUMNS TEMPLATE
 column and modelObject are parameters to the template
 ------------------------------------------------------------------------------------------------------------>
@@ -65,10 +56,6 @@ column and modelObject are parameters to the template
             <stock-model-object-common-columns [modelObject]="modelObject"
                                                [column]="column">
             </stock-model-object-common-columns>
-
-            <!--
-            <ng-container *ngTemplateOutlet="defaultColumnsTemplate; context: {modelObject: modelObject, column: column}">
-            </ng-container> -->
         </div>
     </div>
 </ng-template>
@@ -79,7 +66,6 @@ TABLE DEFINITION
 <stock-model-object-table-component [buttonsTemplate]="buttonsTemplate"
                                     [columnsTemplate]="columnsTemplate"
                                     [dialogTemplate]="dialogTemplate"
-                                    [defaultColumnsTemplate]="defaultColumnsTemplate"
                                     cookieContext="stockToBuyTableTabComponent"
                                     [modelObjectRows]="modelObjectRows"
                                     [(displayColumns)]="displayColumns"
@@ -88,7 +74,7 @@ TABLE DEFINITION
                                     [totalRecords]="totalRows"
                                     [(selection)]="selectedModelObject"
                                     (onRowSelect)="onRowSelect($event)"
-                                    (onRowUnSelect)="onRowUnSelect($event)"
+                                    (onRowUnselect)="onRowUnSelect($event)"
                                     (onLazyLoad)="lazyLoadTable($event)"
                                     [lazy]="true"
                                     (onRowDblclick)="onRowDoubleClick($event)">

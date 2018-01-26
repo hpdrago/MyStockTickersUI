@@ -38,10 +38,6 @@ export class PortfolioStockFactory extends StockModelObjectFactory<PortfolioStoc
         portfolioStock.numberOfShares = 0;
         portfolioStock.averageUnitCost = 0;
         portfolioStock.lastPrice = 0;
-        portfolioStock.sector = '';
-        portfolioStock.subSector = '';
-        portfolioStock.realizedGains = 0;
-        portfolioStock.realizedLosses = 0;
         portfolioStock.stopLossPrice = 0;
         portfolioStock.stopLossShares = 0;
         portfolioStock.profitTakingPrice = 0;

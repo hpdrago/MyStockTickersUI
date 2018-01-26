@@ -29,12 +29,10 @@ export class CrudTableLayoutComponent extends CrudTableLayoutBaseComponent
      * @param {CookieService} cookieService
      */
     public constructor( protected toaster: ToastsManager,
-                        protected cookieService: CookieService,
-                        protected changeDetector: ChangeDetectorRef )
+                        protected cookieService: CookieService )
     {
         super( toaster,
-               cookieService,
-               changeDetector );
+               cookieService );
     }
 
     protected getCrudTableColumnSelectorDialogComponent(): CrudTableColumnSelectorDialogComponent

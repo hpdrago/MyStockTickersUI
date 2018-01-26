@@ -2,6 +2,8 @@ import { StockNotesStock } from "./stock-notes-stock";
 import { StockNotesContainer } from "../common/stock-notes-container";
 import { StockNotesSourceContainer } from "../common/stock-notes-source-container";
 import { StockModelObject } from '../common/stock-model-object';
+import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
+import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
 
 /**
  * Defines a single portfolio for a customer
@@ -62,5 +64,67 @@ export class StockNotes extends StockModelObject<StockNotes> implements StockNot
     public getPrimaryKeyName(): string
     {
         return "id";
+    }
+
+    public getDefaultCrudTableColumns(): CrudTableColumns
+    {
+        let crudTableColumns = super.getDefaultCrudTableColumns();
+        crudTableColumns.addColumn( {
+                                        colId: 'notes',
+                                        header: 'Notes',
+                                        dataType: CrudTableColumnType.NOTES,
+                                        field: 'notes',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'notesDate',
+                                        header: 'Notes Date',
+                                        dataType: CrudTableColumnType.DATE,
+                                        field: 'notesDate',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'notesSourceName',
+                                        header: 'Notes Source',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'notesSourceName',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'notesRating',
+                                        header: 'Notes Rating',
+                                        dataType: CrudTableColumnType.STAR_RATING,
+                                        field: 'notesRating',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'bullOrBear',
+                                        header: 'Bull or Bear',
+                                        dataType: CrudTableColumnType.BULL_OR_BEAR,
+                                        field: 'bullOrBear',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'actionTaken',
+                                        header: 'Action Taken',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'actionTaken',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'actionTakenShares',
+                                        header: 'Action Shares',
+                                        dataType: CrudTableColumnType.NUMBER,
+                                        field: 'actionTakenShares',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'tags',
+                                        header: 'Tags',
+                                        dataType: CrudTableColumnType.TAGS,
+                                        field: 'tags',
+                                        sortable: true
+                                    } );
+        return crudTableColumns;
     }
 }

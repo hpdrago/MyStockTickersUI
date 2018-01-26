@@ -281,6 +281,8 @@ import { CrudTableLayoutComponent } from './component/crud/table/crud-table-layo
 import { StockModelObjectTableLayoutComponent } from './component/stock-table/stock-model-object-table-layout.component';
 import { MillifyComponent } from './component/common/millify.component';
 import { MillifyColumnComponent } from './component/columns/millify-column.component';
+import { GainsLossesCache } from './service/cache/gains-losses-cache';
+import { StockAnalystConsensusTableCustomizeButtonComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table-customize-button.component';
 
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -465,6 +467,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockAnalystConsensusTableDeleteButtonComponent,
         StockAnalystConsensusTableEditButtonComponent,
         StockAnalystConsensusTableRefreshButtonComponent,
+        StockAnalystConsensusTableCustomizeButtonComponent,
         StockAnalystPriceTargetsComponent,
         StockAnalystPriceTargetComponent,
         StockAnalystConsensusComponent,
@@ -618,6 +621,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         GainsLossesCrudService,
         GainsLossesFactory,
+        GainsLossesCache,
 
         StockCompanyFactory,
         StockCompanyService,

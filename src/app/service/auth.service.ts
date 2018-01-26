@@ -81,7 +81,7 @@ export class AuthService extends BaseService
         this.isLoggedIn = true;
         this.sessionService.customer = customer;
         this.customerService.onLogin( this.sessionService.customer );
-        this.stockAnalystConsensusCache.load();
+        //this.stockAnalystConsensusCache.load();
     }
 
     public logout(): void

@@ -1,6 +1,9 @@
 import { ModelObject } from "../common/model-object";
 import { CachedValueState } from '../../common/cached-value-state.enum';
 import { CacheStateContainer } from '../common/cache-state-container';
+import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
+import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
+import { CrudTableColumnCachedDataType } from '../../component/crud/table/crud-table-column-cached-data-type';
 
 /**
  * This class defines the fields and methods for a single StockCompany
@@ -60,5 +63,35 @@ export class StockCompany extends ModelObject<StockCompany> implements CacheStat
     public setKey( key: any )
     {
         return this.tickerSymbol;
+    }
+
+    public getDefaultCrudTableColumns(): CrudTableColumns
+    {
+        let crudTableColumns = super.getDefaultCrudTableColumns();
+        crudTableColumns.addColumn( {
+                                        colId: 'companyName',
+                                        header: 'Company Name',
+                                        dataType: CrudTableColumnType.STRING,
+                                        cachedDataType: CrudTableColumnCachedDataType.STOCK_COMPANY,
+                                        field: 'companyName',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'sector',
+                                        header: 'Sector',
+                                        dataType: CrudTableColumnType.STRING,
+                                        cachedDataType: CrudTableColumnCachedDataType.STOCK_COMPANY,
+                                        field: 'sector',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'industry',
+                                        header: 'Industry',
+                                        dataType: CrudTableColumnType.STRING,
+                                        cachedDataType: CrudTableColumnCachedDataType.STOCK_COMPANY,
+                                        field: 'industry',
+                                        sortable: true
+                                    } );
+        return crudTableColumns;
     }
 }

@@ -71,10 +71,17 @@ export class TradeItAccount extends ModelObject<TradeItAccount>
     {
         let crudTableColumns = super.getDefaultCrudTableColumns();
         crudTableColumns.addColumn( {
-                                        colId: 'notesSourceName',
-                                        header: 'Source',
+                                        colId: 'accountName',
+                                        header: 'Account Name',
                                         dataType: CrudTableColumnType.STRING,
-                                        field: 'notesSourceName',
+                                        field: 'name',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'brokerAge',
+                                        header: 'Brokerage',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'brokerage',
                                         sortable: true
                                     } );
         return crudTableColumns;

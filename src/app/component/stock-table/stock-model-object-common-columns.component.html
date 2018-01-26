@@ -32,8 +32,8 @@
     ------------------------------------------------------------------------------------------------------------>
     <div *ngSwitchCase="'percentChangeSinceCreated'">
         <div style="text-align: right">
-            <currency-column [currencyValue]="modelObject[column.field]">
-            </currency-column>
+            <gain-loss-currency [currencyValue]="modelObject[column.field]">
+            </gain-loss-currency>
         </div>
     </div>
     <!----------------------------------------------------------------------------------------------------------
@@ -52,6 +52,13 @@
         <stock-analyst-price-target [tickerSymbol]="modelObject.tickerSymbol"
                                     [target]="'avg'">
         </stock-analyst-price-target>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------
+    ANALYST CONSENSUS COMPONENT
+    ------------------------------------------------------------------------------------------------------------>
+    <div *ngSwitchCase="'analystConsensus'">
+        <stock-analyst-consensus [tickerSymbol]="modelObject.tickerSymbol">
+        </stock-analyst-consensus>
     </div>
     <!----------------------------------------------------------------------------------------------------------
     COMPANY NAME
@@ -73,26 +80,49 @@
         ------------------------------------------------------------------------------------------------------------>
         <div [ngSwitch]="column.cachedDataType">
             <div *ngSwitchCase="CrudTableColumnCachedDataType.STOCK_PRICE_QUOTE">
-                <div *ngIf="modelObject.stockPriceQuote; else loadingTemplate">
+                <div *ngIf="modelObject.stockPriceQuote.cacheState === CachedValueState.CURRENT; else loadingTemplate">
                     <crud-table-column-by-data-type [modelObject]="modelObject.stockPriceQuote"
                                                     [column]="column">
                     </crud-table-column-by-data-type>
                 </div>
             </div>
             <div *ngSwitchCase="CrudTableColumnCachedDataType.STOCK_QUOTE">
-                <div *ngIf="modelObject.stockQuote; else loadingTemplate">
+                <div *ngIf="modelObject.stockQuote.cacheState === CachedValueState.CURRENT; else loadingTemplate">
                     <crud-table-column-by-data-type [modelObject]="modelObject.stockQuote"
                                                     [column]="column">
                     </crud-table-column-by-data-type>
                 </div>
             </div>
+            <div *ngSwitchCase="CrudTableColumnCachedDataType.STOCK_COMPANY">
+                <div *ngIf="modelObject.stockCompany.cacheState === CachedValueState.CURRENT; else loadingTemplate">
+                    <crud-table-column-by-data-type [modelObject]="modelObject.stockCompany"
+                                                    [column]="column">
+                    </crud-table-column-by-data-type>
+                </div>
+            </div>
+            <div *ngSwitchCase="CrudTableColumnCachedDataType.STOCK_ANALYST_CONSENSUS">
+                <div *ngIf="modelObject.stockAnalystConsensus.cacheState === CachedValueState.CURRENT; else loadingTemplate">
+                    <crud-table-column-by-data-type [modelObject]="modelObject.stockAnalystConsensus"
+                                                    [column]="column">
+                    </crud-table-column-by-data-type>
+                </div>
+            </div>
+            <div *ngSwitchCase="CrudTableColumnCachedDataType.STOCK_GAINS_LOSSES">
+                <div *ngIf="modelObject.stockAnalystConsensus.cacheState === CachedValueState.CURRENT; else loadingTemplate">
+                    <crud-table-column-by-data-type [modelObject]="modelObject.stockGainsLosses"
+                                                    [column]="column">
+                    </crud-table-column-by-data-type>
+                </div>
+            </div>
             <div *ngSwitchDefault>
-                <!----------------------------------------------------------------------------------------------------------
-                NON CACHED DATA
-                ------------------------------------------------------------------------------------------------------------>
-                <crud-table-column-by-data-type [modelObject]="modelObject"
-                                                [column]="column">
-                </crud-table-column-by-data-type>
+                <div *ngSwitchDefault>
+                    <!----------------------------------------------------------------------------------------------------------
+                    NON CACHED DATA / NON STOCK DATA
+                    ------------------------------------------------------------------------------------------------------------>
+                    <crud-table-column-by-data-type [modelObject]="modelObject"
+                                                    [column]="column">
+                    </crud-table-column-by-data-type>
+                </div>
             </div>
         </div>
     </div>

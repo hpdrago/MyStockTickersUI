@@ -6,11 +6,17 @@ export enum CrudTableColumnType
     DATE,
     STRING,
     CURRENCY,
+    GAIN_LOSS_CURRENCY,
     NUMBER,
     PERCENT,
     GAIN_LOSS_PERCENT,
     COMMENTS,
+    NOTES,
     NOTES_SOURCE,
     CUSTOM,
-    MARKET_CAP
+    MARKET_CAP,
+    TAGS,
+    STAR_RATING,
+    BULL_OR_BEAR,
+    STOCK_ANALYST_CONSENSUS
 }

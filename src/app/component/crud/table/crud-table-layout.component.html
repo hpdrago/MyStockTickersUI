@@ -27,7 +27,7 @@
              [pageLinks]="pageLinks"
              [totalRecords]="totalRecords"
              (onRowSelect)="onRowSelect"
-             (onRowUnselect)="onRowUnSelect"
+             (onRowUnselect)="onRowUnselect"
              selectionMode="single"
              (onLazyLoad)="lazyLoadTable"
              [lazy]="lazy"
@@ -35,6 +35,7 @@
              [loading]="loading"
              [resizableColumns]="resizableColumns"
              [reorderableColumns]="reorderableColumns"
+             [scrollable]="false"
              [responsive]="true">
 
         <ng-template pTemplate="header" let-columns>

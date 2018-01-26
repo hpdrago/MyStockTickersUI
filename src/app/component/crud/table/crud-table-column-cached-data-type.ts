@@ -5,5 +5,8 @@
 export enum CrudTableColumnCachedDataType
 {
     STOCK_QUOTE,
-    STOCK_PRICE_QUOTE
+    STOCK_PRICE_QUOTE,
+    STOCK_COMPANY,
+    STOCK_GAINS_LOSSES,
+    STOCK_ANALYST_CONSENSUS
 }

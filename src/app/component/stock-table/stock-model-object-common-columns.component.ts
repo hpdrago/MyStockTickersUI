@@ -9,6 +9,13 @@ import { StockPriceQuoteCacheService } from '../../service/cache/stock-price-quo
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { StockQuote } from '../../model/entity/stock-quote';
 import { CachedValueState } from '../../common/cached-value-state.enum';
+import { StockCompanyCacheService } from '../../service/cache/stock-company-cache.service';
+import { StockCompany } from '../../model/entity/stock-company';
+import { GainsLossesCache } from '../../service/cache/gains-losses-cache';
+import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
+import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
+import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensus';
+import { GainsLosses } from '../../model/entity/gains-losses';
 
 /**
  * This component will check the column and model object to see if it is a standard stock model object field that is
@@ -23,6 +30,9 @@ import { CachedValueState } from '../../common/cached-value-state.enum';
 })
 export class StockModelObjectCommonColumnsComponent extends BaseComponent implements OnInit
 {
+    protected CrudTableColumnType = CrudTableColumnType;
+    protected CachedValueState = CachedValueState;
+
     @Input()
     protected column: CrudTableColumn;
 
@@ -34,12 +44,18 @@ export class StockModelObjectCommonColumnsComponent extends BaseComponent implem
     /**
      * Constructor.
      * @param {ToastsManager} toaster
+     * @param {StockCompanyCacheService} stockCompanyCache
      * @param {StockQuoteCacheService} stockQuoteCache
      * @param {StockPriceQuoteCacheService} stockPriceQuoteCache
+     * @param {GainsLossesCache} stockGainsLossesCache
+     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     public constructor( protected toaster: ToastsManager,
+                        protected stockCompanyCache: StockCompanyCacheService,
                         protected stockQuoteCache: StockQuoteCacheService,
-                        protected stockPriceQuoteCache: StockPriceQuoteCacheService )
+                        protected stockPriceQuoteCache: StockPriceQuoteCacheService,
+                        protected stockGainsLossesCache: GainsLossesCache,
+                        protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
         super( toaster );
     }
@@ -66,6 +82,26 @@ export class StockModelObjectCommonColumnsComponent extends BaseComponent implem
                     .subscribe( this.modelObject.tickerSymbol,
                                 (stockQuote) => this.onStockQuoteChanged( stockQuote ) )
                 break;
+
+            case CrudTableColumnCachedDataType.STOCK_COMPANY:
+                this.debug( `${methodName} registering ${this.modelObject.tickerSymbol} for stock company change` );
+                this.stockCompanyCache
+                    .subscribe( this.modelObject.tickerSymbol,
+                                (stockCompany) => this.onStockCompanyChanged( stockCompany ) )
+                break;
+
+            case CrudTableColumnCachedDataType.STOCK_GAINS_LOSSES:
+                this.debug( `${methodName} retrieving ${this.modelObject.tickerSymbol} for stock gains` );
+                this.stockGainsLossesCache
+                    .subscribe( this.modelObject.tickerSymbol, (gainsLosses) => this.gainsLossesChanged( gainsLosses ) );
+                break;
+
+            case CrudTableColumnCachedDataType.STOCK_ANALYST_CONSENSUS:
+                this.debug( `${methodName} retrieving ${this.modelObject.tickerSymbol} for stock analyst consensus` );
+                this.stockAnalystConsensusCache
+                    .subscribe( this.modelObject.tickerSymbol,
+                                (stockAnalystConsensus) => this.onStockAnalystConsensusChange( stockAnalystConsensus ) )
+                break;
         }
     }
 
@@ -89,5 +125,34 @@ export class StockModelObjectCommonColumnsComponent extends BaseComponent implem
         const methodName = 'onStockQuoteChanged';
         this.debug( `${methodName} ${this.column.colId} ${stockQuote.tickerSymbol} ${CachedValueState.getName(stockQuote.cacheState)}` );
         this.modelObject.stockQuote = <any>stockQuote;
+    }
+
+    /**
+     * This method is called when the stock company changes.
+     * @param {StockCompany} stockCompany
+     */
+    private onStockCompanyChanged( stockCompany: StockCompany )
+    {
+        const methodName = 'onStockCompanyChanged';
+        this.debug( `${methodName} ${this.column.colId} ${stockCompany.tickerSymbol} ${CachedValueState.getName(stockCompany.cacheState)}` );
+        this.modelObject.stockCompany = <any>stockCompany;
+    }
+
+    /**
+     * This method is called when the stock analyst consensus changes.
+     * @param {StockCompany} stockCompany
+     */
+    private onStockAnalystConsensusChange( stockAnalystConsensus: StockAnalystConsensus )
+    {
+        const methodName = 'onStockAnalystConsensusChanged';
+        this.debug( `${methodName} ${this.column.colId} ${stockAnalystConsensus.tickerSymbol} ${CachedValueState.getName(stockAnalystConsensus.getCacheState())}` );
+        this.modelObject.stockAnalystConsensus = <any>stockAnalystConsensus;
+    }
+
+    private gainsLossesChanged( gainsLosses: GainsLosses )
+    {
+        const methodName = 'onGainsLossesChanged';
+        this.debug( `${methodName} ${this.column.colId} ${gainsLosses.tickerSymbol} ${CachedValueState.getName(gainsLosses.getCacheState())}` );
+        this.modelObject.stockGainsLosses = <any>gainsLosses;
     }
 }

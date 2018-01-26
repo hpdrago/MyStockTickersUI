@@ -1,10 +1,9 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { StockCompany } from '../../model/entity/stock-company';
 import { StockSearchComponent } from '../common/stock-search.component';
 import { CrudTableLayoutBaseComponent } from '../crud/table/crud-table-layout-base.component';
 import { ToastsManager } from 'ng2-toastr';
 import { CookieService } from 'ngx-cookie-service';
-import { CrudTableColumn } from '../crud/table/crud-table-column';
 import { CrudTableColumnSelectorDialogComponent } from '../crud/table/crud-table-column-selector-dialog.component';
 import { CrudTableLayoutComponent } from '../crud/table/crud-table-layout.component';
 
@@ -39,12 +38,10 @@ export class StockModelObjectTableLayoutComponent extends CrudTableLayoutBaseCom
      * @param {CookieService} cookieService
      */
     public constructor( protected toaster: ToastsManager,
-                        protected cookieService: CookieService,
-                        protected changeDetector: ChangeDetectorRef )
+                        protected cookieService: CookieService )
     {
         super( toaster,
-               cookieService,
-               changeDetector );
+               cookieService );
     }
 
     /**

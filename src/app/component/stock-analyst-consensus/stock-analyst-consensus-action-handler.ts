@@ -19,6 +19,7 @@ export class StockAnalystConsensusActionHandler extends CrudActionHandler<StockA
      * @param {ToastsManager} toaster
      * @param {RestErrorReporter} restErrorReporter
      * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
+     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected toaster: ToastsManager,
                  protected restErrorReporter: RestErrorReporter,
@@ -38,7 +39,7 @@ export class StockAnalystConsensusActionHandler extends CrudActionHandler<StockA
     public addModelObject( stockAnalystConsensus: StockAnalystConsensus ): Observable<StockAnalystConsensus>
     {
         this.stockAnalystConsensusCache
-            .put( stockAnalystConsensus );
+            .addCacheData( stockAnalystConsensus.tickerSymbol, stockAnalystConsensus );
         return super.addModelObject( stockAnalystConsensus );
     }
 
@@ -50,7 +51,7 @@ export class StockAnalystConsensusActionHandler extends CrudActionHandler<StockA
     public saveModelObject( stockAnalystConsensus: StockAnalystConsensus ): Observable<StockAnalystConsensus>
     {
         this.stockAnalystConsensusCache
-            .put( stockAnalystConsensus );
+            .addCacheData( stockAnalystConsensus.tickerSymbol, stockAnalystConsensus );
         return super.saveModelObject( stockAnalystConsensus );
     }
 
@@ -62,7 +63,7 @@ export class StockAnalystConsensusActionHandler extends CrudActionHandler<StockA
     public deleteModelObject( stockAnalystConsensus: StockAnalystConsensus ): Observable<void>
     {
         this.stockAnalystConsensusCache
-            .delete( stockAnalystConsensus );
+            .delete( stockAnalystConsensus.tickerSymbol );
         return super.deleteModelObject( stockAnalystConsensus );
     }
 }

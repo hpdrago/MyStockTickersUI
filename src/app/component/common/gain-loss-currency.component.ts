@@ -8,17 +8,18 @@ import { Component, Input } from '@angular/core';
 @Component(
 {
     selector: 'gain-loss-currency',
-    template: `
-        <div class="positiveGain" *ngIf="currencyValue >= 0.0">
-            <currency [currencyValue]="currencyValue" 
-                      [currencyType]="currencyType">
-            </currency>
-        </div>
-        <div class="negativeGain" *ngIf="currencyValue < 0.0">
-            <currency [currencyValue]="currencyValue" 
-                      [currencyType]="currencyType">
-            </currency>
-        </div>`
+    template: `<div style="text-align: right">
+                   <div class="positiveGain" *ngIf="currencyValue >= 0.0">
+                       <currency [currencyValue]="currencyValue" 
+                                 [currencyType]="currencyType">
+                       </currency>
+                   </div>
+                   <div class="negativeGain" *ngIf="currencyValue < 0.0">
+                       <currency [currencyValue]="currencyValue" 
+                                 [currencyType]="currencyType">
+                       </currency>
+                   </div>
+               </div>`
 })
 export class GainLossCurrencyComponent
 {

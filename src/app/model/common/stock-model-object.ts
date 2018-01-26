@@ -6,18 +6,28 @@ import { StockQuoteContainer } from './stock-quote-container';
 import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
 import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
 import { isNullOrUndefined } from 'util';
+import { StockCompany } from '../entity/stock-company';
+import { StockCompanyContainer } from './stock-company-container';
+import { GainsLosses } from '../entity/gains-losses';
+import { StockAnalystConsensus } from '../entity/stock-analyst-consensus';
+import { StockAnalystConsensusContainer } from './stock-analyst-consensus-container';
 
 /**
  * This is the base class for all ModelObjects that contains a ticker symbol, stock quote, and stock price quote
  */
 export abstract class StockModelObject<T extends ModelObject<T>> extends ModelObject<T>
                                                                  implements StockPriceQuoteContainer,
-                                                                            StockQuoteContainer
+                                                                            StockQuoteContainer,
+                                                                            StockCompanyContainer,
+                                                                            StockAnalystConsensusContainer
 {
     public tickerSymbol: string;
     public stockPriceWhenCreated: number;
     public stockPriceQuote: StockPriceQuote;
     public stockQuote: StockQuote;
+    public stockCompany: StockCompany;
+    public stockGainsLosses: GainsLosses;
+    public stockAnalystConsensus: StockAnalystConsensus;
 
     /**
      * Get the ticker symbol
@@ -106,6 +116,12 @@ export abstract class StockModelObject<T extends ModelObject<T>> extends ModelOb
                                         dataType: CrudTableColumnType.CUSTOM,
                                         sortable: true
                                     } );
+        crudTableColumns.addColumn( {
+                                        colId: 'analystConsensus',
+                                        header: 'Analyst Consensus',
+                                        dataType: CrudTableColumnType.CUSTOM,
+                                        sortable: true
+                                    } );
         return crudTableColumns;
     }
 
@@ -121,6 +137,16 @@ export abstract class StockModelObject<T extends ModelObject<T>> extends ModelOb
             this.stockQuote = new StockQuote();
         }
         crudTableColumns.addAll( this.stockQuote.getDefaultCrudTableColumns() );
+        if ( isNullOrUndefined( this.stockCompany ))
+        {
+            this.stockCompany = new StockCompany();
+        }
+        crudTableColumns.addAll( this.stockCompany.getDefaultCrudTableColumns() );
+        if ( isNullOrUndefined( this.stockGainsLosses ))
+        {
+            this.stockGainsLosses = new GainsLosses();
+        }
+        crudTableColumns.addAll( this.stockGainsLosses.getDefaultCrudTableColumns() );
         return crudTableColumns;
     }
 }

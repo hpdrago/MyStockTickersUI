@@ -31,8 +31,13 @@ export class StockAnalystPriceTargetsComponent implements OnInit
 
     public ngOnInit(): void
     {
-        this.stockAnalystConsensus = this.stockAnalystConsensusCache
-                                         .get( this.tickerSymbol );
+        this.stockAnalystConsensusCache
+            .subscribe( this.tickerSymbol, (stockAnalystConsensus) =>
+                this.onStockAnalystConsensusChange( stockAnalystConsensus ) );
     }
 
+    private onStockAnalystConsensusChange( stockAnalystConsensus: StockAnalystConsensus )
+    {
+        this.stockAnalystConsensus = stockAnalystConsensus;
+    }
 }

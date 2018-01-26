@@ -4,7 +4,6 @@ import { ModelObject } from '../../../model/common/model-object';
 import { CrudTableColumn } from './crud-table-column';
 import { CrudTableColumnType } from './crud-table-column-type';
 import { ToastsManager } from 'ng2-toastr';
-import * as _ from "lodash";
 import { isNullOrUndefined } from 'util';
 
 /**
@@ -21,6 +20,12 @@ import { isNullOrUndefined } from 'util';
                     </currency>
                 </div>
             </div>
+            <div *ngSwitchCase="CrudTableColumnType.GAIN_LOSS_CURRENCY">
+                <div style="text-align: right">
+                    <gain-loss-currency [currencyValue]="getProperty( modelObject, column.field )">
+                    </gain-loss-currency>
+                </div>
+            </div>
             <div *ngSwitchCase="CrudTableColumnType.NOTES_SOURCE">
                 {{modelObject[column.field]}}
             </div>
@@ -30,12 +35,8 @@ import { isNullOrUndefined } from 'util';
             </div>
             <div *ngSwitchCase="CrudTableColumnType.NUMBER">
                 <div style="text-align: right">
-                    "No Def for NUMBER"
+                    {{modelObject[column.field]}}
                 </div>
-            </div>
-            <div *ngSwitchCase="CrudTableColumnType.GAIN_LOSS_PERCENT">
-                <gain-loss-percent [percentValue]="getProperty( modelObject, column.field )">
-                </gain-loss-percent>
             </div>
             <div *ngSwitchCase="CrudTableColumnType.PERCENT">
                 <div style="text-align: right">
@@ -43,12 +44,23 @@ import { isNullOrUndefined } from 'util';
                     </percent>
                 </div>
             </div>
+            <div *ngSwitchCase="CrudTableColumnType.GAIN_LOSS_PERCENT">
+                <gain-loss-percent [percentValue]="getProperty( modelObject, column.field )">
+                </gain-loss-percent>
+            </div>
             <div *ngSwitchCase="CrudTableColumnType.STRING">
                 {{getProperty( modelObject, column.field )}}
             </div>
             <div *ngSwitchCase="CrudTableColumnType.MARKET_CAP">
                 <millify-column [value]="getProperty( modelObject, column.field )">
                 </millify-column>
+            </div>
+            <div *ngSwitchCase="CrudTableColumnType.STOCK_ANALYST_CONSENSUS">
+                <stock-analyst-consensus [tickerSymbol]="getProperty( modelObject, 'tickerSymbol' )">
+                </stock-analyst-consensus>
+            </div>
+            <div *ngSwitchDefault>
+                No switch case for data type {{column.dataType}}
             </div>
         </div>
     `
@@ -77,22 +89,6 @@ export class CrudTableColumnByDataTypeComponent extends BaseComponent
     public constructor( protected toaster: ToastsManager )
     {
         super( toaster );
-    }
-
-    /**
-     * Using Lodash to extract a property from an object where the property can include a full dot path to other objects.
-     * @param object
-     * @param {string} property
-     * @return {undefined}
-     */
-    protected getProperty( object: any, property: string ): any
-    {
-        let value = _.get( object, property );
-        /*
-        this.debug( "getProperty object: " + JSON.stringify( object ) );
-        this.debug( "getProperty object: property: " + property + " modelObject: " + JSON.stringify(this.modelObject));
-        */
-        return value;
     }
 
     protected isValidProperty( object: any ): boolean

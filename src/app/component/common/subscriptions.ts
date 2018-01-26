@@ -15,7 +15,7 @@ export class Subscriptions extends BaseClass
     public unSubscribeAll()
     {
         const methodName = 'unsubscribeAll';
-        this.debug( `${methodName} ${this.subscriptions.size} subscriptions` );
+        //this.debug( `${methodName} ${this.subscriptions.size} subscriptions` );
         this.subscriptions
             .forEach( (subscription, name) =>
                       {

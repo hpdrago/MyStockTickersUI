@@ -4,6 +4,11 @@ import { StockAnalystConsensusCrudService } from '../crud/stock-analyst-consensu
 import { SessionService } from '../session.service';
 import { BaseClass } from '../../common/base-class';
 import { ToastsManager } from 'ng2-toastr';
+import { AsyncCacheService } from './async-cache.service';
+import { StockQuote } from '../../model/entity/stock-quote';
+import { Observable } from 'rxjs/Observable';
+import { ModelObjectFactory } from '../../model/factory/model-object.factory';
+import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 
 /**
  * Contains all of the stock analyst consensus entities for a single customer.
@@ -12,31 +17,24 @@ import { ToastsManager } from 'ng2-toastr';
  * Created by mike on 3/24/2018
  */
 @Injectable()
-export class StockAnalystConsensusCache extends BaseClass
+export class StockAnalystConsensusCache extends AsyncCacheService<string,StockAnalystConsensus>
 {
     /**
-     * Contains the current stock analyst consensus information for each stock.
-     * @type {Map<any, any>}
-     */
-    private consensusMap: Map<string,StockAnalystConsensus> = new Map();
-
-    /**
      * Constructor.
-     * @param {SessionService} session
-     * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
+     * @param {ToastsManager} toaster
+     * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
+     * @param {StockAnalystConsensusCrudService} stockAnalystConsensusService
      */
-    constructor( protected toaster: ToastsManager,
-                 private session: SessionService,
-                 private stockAnalystConsensusCrudService: StockAnalystConsensusCrudService )
+    public constructor( protected toaster: ToastsManager,
+                        protected stockAnalystConsensusFactory: StockAnalystConsensusFactory,
+                        private stockAnalystConsensusService: StockAnalystConsensusCrudService )
     {
-        super( toaster );
-        this.load();
+        super( toaster, stockAnalystConsensusFactory );
     }
-
     /**
      * Loads all of the stock analyst consensus records for the logging in customer.
      */
-    public load()
+    /*public load()
     {
         const methodName = 'load';
         this.debug( methodName + '.begin' );
@@ -52,44 +50,35 @@ export class StockAnalystConsensusCache extends BaseClass
                                                  } );
                            this.debug( methodName + '.end loaded ' + consensusList.length );
                        })
-    }
-
-    /**
-     * Get the consensus information for a single stock.
-     * @param {string} tickerSymbol
-     * @return {StockAnalystConsensus} null if the ticker symbol not in the cache.
-     */
-    public get( tickerSymbol: string ): StockAnalystConsensus
-    {
-        this.debug( 'get ' + tickerSymbol );
-        return this.consensusMap
-                   .get( tickerSymbol );
-    }
-
-    /**
-     * Adds or replaces stock analyst consensus map entry.
-     * @param {StockAnalystConsensus} stockAnalystConsensus
-     */
-    public put( stockAnalystConsensus: StockAnalystConsensus )
-    {
-        this.debug( 'put ' + JSON.stringify( stockAnalystConsensus ));
-        this.consensusMap
-            .set( stockAnalystConsensus.tickerSymbol,
-                  stockAnalystConsensus );
-    }
+    }*/
 
     /**
      * Delete the stock analyst consensus from the map.
      * @param {StockAnalystConsensus} stockAnalystConsensus
      */
-    public delete( stockAnalystConsensus: StockAnalystConsensus )
+    public deleteConsensus( stockAnalystConsensus: StockAnalystConsensus )
     {
         this.debug( 'delete ' + JSON.stringify( stockAnalystConsensus ));
-        this.consensusMap
-            .delete( stockAnalystConsensus.tickerSymbol );
+        this.delete( stockAnalystConsensus.tickerSymbol );
     }
 
+    /**
+     * Fetch the stock analyst consensus information.
+     * @param {string} tickerSymbol
+     * @return {Observable<StockAnalystConsensus>}
+     */
+    protected fetchCachedDataFromBackend( tickerSymbol: string ): Observable<StockAnalystConsensus>
+    {
+        let stockAnalystConsensus: StockAnalystConsensus = new StockAnalystConsensus();
+        stockAnalystConsensus.tickerSymbol = tickerSymbol;
+        return this.stockAnalystConsensusService
+                   .getModelObject( stockAnalystConsensus );
+    }
+
+    /*
     protected debug( message: string ): void
     {
     }
+    */
+
 }

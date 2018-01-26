@@ -38,8 +38,8 @@ DEFINE THE TABLE LAYOUT
                    [pageLinks]="pageLinks"
                    [totalRecords]="totalRecords"
                    [(selection)]="selectedModelObject"
-                   (rowSelect)="onRowSelect"
-                   (rowUnselect)="onRowUnSelect"
+                   (onRowSelect)="onRowSelect"
+                   (onRowUnselect)="onRowUnselect"
                    (onLazyLoad)="lazyLoadTable"
                    [lazy]="true"
                    (onRowDblclick)="onRowDoubleClick">
