@@ -232,6 +232,7 @@ import { StockNotesSourceTableComponent } from './component/stock-notes-source/s
 import { StockAnalystConsensusCache } from './service/stock-analyst-consensus-cache';
 import { StockPositionMarketValue } from './component/stock-position/stock-position-market-value';
 import { StockPositionPurchasePrice } from './component/stock-position/stock-position-purchase-price';
+import { TableModule } from 'primeng/table';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -290,6 +291,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         TooltipModule,
         ListboxModule,
         AccordionModule,
+        TableModule,
         // Third Party modules,
         BusyModule,
         ToastModule.forRoot(),

@@ -14,7 +14,7 @@ export class AppDefaultErrorHandler implements ErrorHandler
         if ( !isNullOrUndefined( error ))
         {
             const toaster: ToastsManager = this.injector.get( ToastsManager );
-            console.error( error );
+            console.error( "Default Error handler: " + error );
             toaster.error( error, "Error", { toastLife: 20 * 1000 } );
         }
         throw error;

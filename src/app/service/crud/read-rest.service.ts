@@ -67,7 +67,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     protected getReadModelObjectURL( modelObject: T ): string
     {
         let methodName = 'getReadModelObjectURL';
-        let contextURL = this.getContextURL( modelObject );
+        let contextURL = this.getContextURL( modelObject, false );
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         if ( isNullOrUndefined( contextURL ) )
         {
@@ -109,11 +109,11 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * @param {T} modelObject
      * @return {string}
      */
-    protected getContextURL( modelObject: T ): string
+    protected getContextURL( modelObject: T, pageable: boolean = false ): string
     {
         let methodName = 'getContextURL';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
-        let contextURL = this.getContextBaseURL()
+        let contextURL = this.getContextBaseURL() + (pageable ? "/page" : "" );
         contextURL = this.addContextURLKeyValues( modelObject, contextURL );
         return contextURL;
     }
@@ -125,11 +125,11 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * @param {T} modelObject
      * @returns {string}
      */
-    protected getContextURLFrom( contextURL: string, modelObject: T ): string
+    protected getContextURLFrom( contextURL: string, modelObject: T, pageable: boolean = false ): string
     {
         let methodName = 'getContextURLFrom';
         this.debug( methodName + ' ' + contextURL + ' ' + JSON.stringify( modelObject ) );
-        contextURL = this.getContextBaseURL() + contextURL;
+        contextURL = this.getContextBaseURL() + (pageable ? "/page" : "" ) + contextURL;
         contextURL = this.addContextURLKeyValues( modelObject, contextURL );
         this.debug( methodName + ' contextURL: ' + contextURL );
         return contextURL;
@@ -222,7 +222,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
             throw new ReferenceError( 'getCustomerURL cannot return a null or undefined value' );
         }
         this.debug( methodName + ' customerURL: ' + customerURL );
-        let contextURL = this.getContextURL( modelObject );
+        let contextURL = this.getContextURL( modelObject, pageable );
         let url: string = '';
         if ( isNullOrUndefined( contextURL ) )
         {
@@ -230,7 +230,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         }
         else
         {
-            url = this.appConfig.getBaseURL() + contextURL + (pageable ? "/page" : "" ) + customerURL
+            url = this.appConfig.getBaseURL() + contextURL + customerURL
         }
         this.debug( methodName + ' contextURL: ' + contextURL + ' customerURL: ' + customerURL );
         this.debug( methodName + ' url: ' + url );
