@@ -317,6 +317,9 @@ import { GainsLossesController } from './component/gains-losses/gains-losses-con
 import { GainsLossesStateStore } from './component/gains-losses/gains-losses-state-store';
 import { YahooAnalysisLinkComponent } from './component/common/yahoo-analysis-link.component';
 import { ConfirmDialogComponent } from './component/common/confirm-dialog-component-child.component';
+import { StockPositionTableAddButtonComponent } from './component/stock-position/stock-position-table-add-button.component';
+import { StockPositionTableDeleteButtonComponent } from './component/stock-position/stock-position-table-delete-button.component';
+import { StockPositionTableEditButtonComponent } from './component/stock-position/stock-position-table-edit-button.component';
 
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -443,6 +446,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         LinkedAccountFormButtonsComponent,
 
         StockPositionTableRefreshButtonComponent,
+        StockPositionTableAddButtonComponent,
+        StockPositionTableEditButtonComponent,
+        StockPositionTableDeleteButtonComponent,
         StockPositionTableComponent,
         StockPositionTableButtonsComponent,
         StockPositionMarketValue,
