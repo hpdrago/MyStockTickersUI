@@ -105,7 +105,7 @@ export abstract class ModelObject<T>
      * Get the crudTableColumns from other related model objects contained within this model object.
      * @return {CrudTableColumns}
      */
-    public getOtherCrudTableColumns(): CrudTableColumns
+    public getAdditionalCrudTableColumns(): CrudTableColumns
     {
         let crudTableColumns: CrudTableColumns = new CrudTableColumns( [] );
         return crudTableColumns;

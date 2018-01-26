@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 import { StockAnalystConsensusBaseComponent } from '../stock-analyst-consensus/stock-analyst-consensus-base.component';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
@@ -17,15 +17,13 @@ import { StockPriceQuoteCacheService } from '../../service/cache/stock-price-quo
 })
 export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBaseComponent
 {
-    @Input()
-    protected tickerSymbol: string;
-
     private stockPriceQuote: StockPriceQuote;
 
     /**
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
+     * @param {StockPriceQuoteCacheService} stockPriceQuoteCache
      */
     constructor( protected toaster: ToastsManager,
                  protected stockAnalystConsensusCache: StockAnalystConsensusCache,

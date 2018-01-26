@@ -1,7 +1,6 @@
 import { CrudTableAddButtonComponent } from '../crud/table/crud-table-add-button.component';
 import { StockNotes } from '../../model/entity/stock-notes';
 import { Component } from '@angular/core';
-import { CrudOperation } from '../crud/common/crud-operation';
 import { SessionService } from '../../service/session.service';
 import { ToastsManager } from 'ng2-toastr';
 import { StockNotesStateStore } from './stock-notes-state-store';

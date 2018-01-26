@@ -68,7 +68,7 @@ export class LinkedAccountCrudService extends CrudRestService<LinkedAccount>
     }
 
     /**
-     * Override the loading status modelObjectRows because we need to retrieve the updated linked account that contains the
+     * Override the loadingData status modelObjectRows because we need to retrieve the updated linked account that contains the
      * account overview information.
      * @return {LoadingStatus}
      */

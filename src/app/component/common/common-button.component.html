@@ -1,0 +1,10 @@
+<div class="{{buttonDivClass}}" *ngIf="showButton">
+    <button class="{{buttonClass}}"
+            [ngClass]="{'disabled': buttonDisabled}"
+            pButton type="button"
+            (click)="onButtonClick()"
+            label="{{buttonLabel}}"
+            icon="{{buttonIcon}}"
+            [disabled]="buttonDisabled">
+    </button>
+</div>

@@ -3,7 +3,6 @@ import { SelectedStockCompanyList } from './selected-stock-company.list';
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
 import { StockCompany } from '../../model/entity/stock-company';
-import { StockCompanyService } from '../../service/crud/stock-company.service';
 import { StockCompanyPriceQuoteService } from '../../service/stock-company-price-quote.service';
 
 /**

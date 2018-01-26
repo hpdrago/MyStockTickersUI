@@ -10,7 +10,6 @@ import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service'
 import { PortfolioFactory } from '../../model/factory/portfolio.factory';
 import { PortfolioController } from './portfolio-controller';
 import { PortfolioStateStore } from './portfolio-state-store';
-import { PortfolioActionHandler } from './portfolio-action-handler';
 import { CookieService } from 'ngx-cookie-service';
 
 /**

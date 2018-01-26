@@ -9,6 +9,7 @@ import { CrudTableColumns } from '../../component/crud/table/crud-table-columns'
 import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
 import { CacheStateContainer } from '../common/cache-state-container';
 import { CachedValueState } from '../../common/cached-value-state.enum';
+import { StockPriceQuote } from './stock-price-quote';
 
 /**
  * This entity contains the elements for gains and losses.
@@ -99,15 +100,30 @@ export class GainsLosses extends ModelObject<GainsLosses>
                                         field: 'totalGainsLosses',
                                         sortable: true
                                     } );
+        crudTableColumns.addColumn( {
+                                        colId: 'accountName',
+                                        header: 'Account Name',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'linkedAccount.accountName',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'accountNumber',
+                                        header: 'Account Number',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'linkedAccount.accountNumber',
+                                        sortable: true
+                                    } );
         return crudTableColumns;
     }
 
-    public getOtherCrudTableColumns(): CrudTableColumns
+    public getAdditionalCrudTableColumns(): CrudTableColumns
     {
-        let crudTableColumns = super.getOtherCrudTableColumns();
+        let crudTableColumns = super.getAdditionalCrudTableColumns();
         crudTableColumns.addAll( new LinkedAccount().getDefaultCrudTableColumns() )
         crudTableColumns.addAll( new StockCompany().getDefaultCrudTableColumns() )
         crudTableColumns.addAll( new StockQuote().getDefaultCrudTableColumns() )
+        crudTableColumns.addAll( new StockPriceQuote().getDefaultColumns() )
         return crudTableColumns;
     }
 

@@ -1,4 +1,4 @@
-import { Input, OnChanges, OnDestroy, SimpleChange } from "@angular/core";
+import { OnChanges, OnDestroy, SimpleChange } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { BaseClass } from "../../common/base-class";
 import { Subscription } from "rxjs/Subscription";

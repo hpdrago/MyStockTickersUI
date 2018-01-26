@@ -1,18 +1,25 @@
 import { StockNotesStock } from "./stock-notes-stock";
-import { StockNotesContainer } from "../common/stock-notes-container";
-import { StockNotesSourceContainer } from "../common/stock-notes-source-container";
 import { StockModelObject } from '../common/stock-model-object';
 import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
 import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
+import { AdditionalStockModelObjectColumns } from '../../component/stock-table/additional-stock-model-object-columns';
+import { StockAnalystConsensus } from './stock-analyst-consensus';
+import { StockCompany } from './stock-company';
+import { GainsLosses } from './gains-losses';
+import { StockPriceQuote } from './stock-price-quote';
+import { StockQuote } from './stock-quote';
+import { ModelObject } from '../common/model-object';
+import { CommonStockModelObjectColumns } from '../../component/stock-table/common-stock-model-object-columns';
 
 /**
  * Defines a single portfolio for a customer
  * Created by mike on 10/23/2016.
  */
-export class StockNotes extends StockModelObject<StockNotes> implements StockNotesContainer,
-                                                                        StockNotesSourceContainer
+export class StockNotes extends ModelObject<StockNotes> implements StockModelObject
 {
     public id: string;
+    public tickerSymbol: string;
+    public stockPriceWhenCreated: number;
     public customerId: string;
     public notes: string;
     public notesDate: Date;
@@ -26,6 +33,15 @@ export class StockNotes extends StockModelObject<StockNotes> implements StockNot
     public actionTakenPrice: number;
     public tags: string[];
     public stocks: Array<StockNotesStock>;
+
+    /*
+     * Stock model object properties.
+     */
+    public stockAnalystConsensus: StockAnalystConsensus;
+    public stockCompany: StockCompany;
+    public stockGainsLosses: GainsLosses;
+    public stockPriceQuote: StockPriceQuote;
+    public stockQuote: StockQuote;
 
     /**
      * Get the notes
@@ -68,11 +84,12 @@ export class StockNotes extends StockModelObject<StockNotes> implements StockNot
 
     public getDefaultCrudTableColumns(): CrudTableColumns
     {
-        let crudTableColumns = super.getDefaultCrudTableColumns();
+        let crudTableColumns = new CrudTableColumns([]);
+        crudTableColumns.addAll( new CommonStockModelObjectColumns() );
         crudTableColumns.addColumn( {
                                         colId: 'notes',
                                         header: 'Notes',
-                                        dataType: CrudTableColumnType.NOTES,
+                                        dataType: CrudTableColumnType.COMMENTS,
                                         field: 'notes',
                                         sortable: true
                                     } );
@@ -107,7 +124,7 @@ export class StockNotes extends StockModelObject<StockNotes> implements StockNot
         crudTableColumns.addColumn( {
                                         colId: 'actionTaken',
                                         header: 'Action Taken',
-                                        dataType: CrudTableColumnType.STRING,
+                                        dataType: CrudTableColumnType.CUSTOM,
                                         field: 'actionTaken',
                                         sortable: true
                                     } );
@@ -126,5 +143,23 @@ export class StockNotes extends StockModelObject<StockNotes> implements StockNot
                                         sortable: true
                                     } );
         return crudTableColumns;
+    }
+
+    /**
+     * Creates a list of the stock columns.
+     * @return {CrudTableColumns}
+     */
+    public getAdditionalCrudTableColumns(): CrudTableColumns
+    {
+        return new AdditionalStockModelObjectColumns();
+    }
+
+    public initializeStockModelObjects()
+    {
+        this.stockPriceQuote = new StockPriceQuote();
+        this.stockQuote = new StockQuote();
+        this.stockCompany = new StockCompany();
+        this.stockGainsLosses = new GainsLosses();
+        this.stockAnalystConsensus = new StockAnalystConsensus();
     }
 }

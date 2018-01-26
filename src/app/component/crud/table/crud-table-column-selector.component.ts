@@ -1,5 +1,5 @@
 import { BaseComponent } from '../../common/base.component';
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { Column } from 'primeng/shared';
 

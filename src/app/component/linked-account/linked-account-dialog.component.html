@@ -6,7 +6,7 @@
               [responsive]="true"
               [width]="700"
               [minWidth]="700"
-              [height]="300"
+              [height]="isCrudDeleteOperation() ? 100 : 300"
               [resizable]="false"
               [contentStyle]="{'overflow':'visible'}"
               [(visible)]="displayDialog">

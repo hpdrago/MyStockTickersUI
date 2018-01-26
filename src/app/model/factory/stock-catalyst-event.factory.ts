@@ -29,6 +29,7 @@ export class StockCatalystEventFactory extends StockModelObjectFactory<StockCata
         catalystEvent.tickerSymbol = '';
         catalystEvent.catalystDate = null;
         catalystEvent.catalystDesc = '';
+        catalystEvent.initializeStockModelObjects();
         return catalystEvent;
     }
 }

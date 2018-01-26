@@ -397,7 +397,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     }
 
     /**
-     * Sets the loading time and loading status to the initial loading status.
+     * Sets the loadingData time and loadingData status to the initial loadingData status.
      * @param {T} modelObject
      */
     protected setLoadingStatus( modelObject: T )
@@ -417,7 +417,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     }
 
     /**
-     * After a model object is loaded from the backend, its loading status is set by the return result of this method.
+     * After a model object is loaded from the backend, its loadingData status is set by the return result of this method.
      * Services that handle model objects that are not completely loaded when fetched, should override this method and
      * set the return modelObjectRows to LOADING to indicate that a subsequent backend request is required to retrieve the rest
      * of the model object information.

@@ -37,7 +37,7 @@ export class StockModelObjectCommonColumnsComponent extends BaseComponent implem
     protected column: CrudTableColumn;
 
     @Input()
-    protected modelObject: StockModelObject<any>;
+    protected modelObject: StockModelObject;
 
     protected CrudTableColumnCachedDataType = CrudTableColumnCachedDataType;
 
@@ -111,8 +111,8 @@ export class StockModelObjectCommonColumnsComponent extends BaseComponent implem
      */
     private onStockPriceQuoteChanged( stockPriceQuote: StockPriceQuote )
     {
-        const methodName = 'onStockPriceQuoteChanged';
-        this.debug( `${methodName} ${this.column.colId} ${stockPriceQuote.tickerSymbol} ${CachedValueState.getName(stockPriceQuote.cacheState)}` );
+        //const methodName = 'onStockPriceQuoteChanged';
+        //this.debug( `${methodName} ${this.column.colId} ${stockPriceQuote.tickerSymbol} ${CachedValueState.getName(stockPriceQuote.cacheState)}` );
         this.modelObject.stockPriceQuote = <any>stockPriceQuote;
     }
 
@@ -122,8 +122,8 @@ export class StockModelObjectCommonColumnsComponent extends BaseComponent implem
      */
     private onStockQuoteChanged( stockQuote: StockQuote )
     {
-        const methodName = 'onStockQuoteChanged';
-        this.debug( `${methodName} ${this.column.colId} ${stockQuote.tickerSymbol} ${CachedValueState.getName(stockQuote.cacheState)}` );
+        //const methodName = 'onStockQuoteChanged';
+        //this.debug( `${methodName} ${this.column.colId} ${stockQuote.tickerSymbol} ${CachedValueState.getName(stockQuote.cacheState)}` );
         this.modelObject.stockQuote = <any>stockQuote;
     }
 
@@ -133,8 +133,8 @@ export class StockModelObjectCommonColumnsComponent extends BaseComponent implem
      */
     private onStockCompanyChanged( stockCompany: StockCompany )
     {
-        const methodName = 'onStockCompanyChanged';
-        this.debug( `${methodName} ${this.column.colId} ${stockCompany.tickerSymbol} ${CachedValueState.getName(stockCompany.cacheState)}` );
+        //const methodName = 'onStockCompanyChanged';
+        //this.debug( `${methodName} ${this.column.colId} ${stockCompany.tickerSymbol} ${CachedValueState.getName(stockCompany.cacheState)}` );
         this.modelObject.stockCompany = <any>stockCompany;
     }
 
@@ -144,15 +144,15 @@ export class StockModelObjectCommonColumnsComponent extends BaseComponent implem
      */
     private onStockAnalystConsensusChange( stockAnalystConsensus: StockAnalystConsensus )
     {
-        const methodName = 'onStockAnalystConsensusChanged';
-        this.debug( `${methodName} ${this.column.colId} ${stockAnalystConsensus.tickerSymbol} ${CachedValueState.getName(stockAnalystConsensus.getCacheState())}` );
+        //const methodName = 'onStockAnalystConsensusChanged';
+        //this.debug( `${methodName} ${this.column.colId} ${stockAnalystConsensus.tickerSymbol} ${CachedValueState.getName(stockAnalystConsensus.getCacheState())}` );
         this.modelObject.stockAnalystConsensus = <any>stockAnalystConsensus;
     }
 
     private gainsLossesChanged( gainsLosses: GainsLosses )
     {
-        const methodName = 'onGainsLossesChanged';
-        this.debug( `${methodName} ${this.column.colId} ${gainsLosses.tickerSymbol} ${CachedValueState.getName(gainsLosses.getCacheState())}` );
+        //const methodName = 'onGainsLossesChanged';
+        //this.debug( `${methodName} ${this.column.colId} ${gainsLosses.tickerSymbol} ${CachedValueState.getName(gainsLosses.getCacheState())}` );
         this.modelObject.stockGainsLosses = <any>gainsLosses;
     }
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { CrudTableLayoutBaseComponent } from './crud-table-layout-base.component';
 import { CookieService } from 'ngx-cookie-service';

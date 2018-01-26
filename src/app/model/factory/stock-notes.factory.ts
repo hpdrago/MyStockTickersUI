@@ -32,23 +32,24 @@ export class StockNotesFactory extends StockModelObjectFactory<StockNotes>
      */
     public newModelObject(): StockNotes
     {
-        var stockNote = new StockNotes();
-        stockNote.id = '';
-        stockNote.customerId = this.session.getLoggedInUserId();
-        stockNote.notes = '';
-        stockNote.notesDate = new Date();
-        stockNote.notesSourceId = '';
-        stockNote.notesSourceName = "";
-        stockNote.notesRating = 0;
-        stockNote.publicInd = false;
-        stockNote.bullOrBear = 0;
-        stockNote.notesRating = 0;
-        stockNote.actionTaken = StockNotesActionTaken.NONE;
-        stockNote.actionTakenShares = 0;
-        stockNote.actionTakenPrice = 0;
-        stockNote.tags = [];
-        stockNote.stocks = [];
-        return stockNote;
+        var stockNotes = new StockNotes();
+        stockNotes.id = '';
+        stockNotes.customerId = this.session.getLoggedInUserId();
+        stockNotes.notes = '';
+        stockNotes.notesDate = new Date();
+        stockNotes.notesSourceId = '';
+        stockNotes.notesSourceName = "";
+        stockNotes.notesRating = 0;
+        stockNotes.publicInd = false;
+        stockNotes.bullOrBear = 0;
+        stockNotes.notesRating = 0;
+        stockNotes.actionTaken = StockNotesActionTaken.NONE;
+        stockNotes.actionTakenShares = 0;
+        stockNotes.actionTakenPrice = 0;
+        stockNotes.tags = [];
+        stockNotes.stocks = [];
+        stockNotes.initializeStockModelObjects();
+        return stockNotes;
     }
 
     /**

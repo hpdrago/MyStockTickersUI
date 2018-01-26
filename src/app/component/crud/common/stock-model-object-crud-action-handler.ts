@@ -8,12 +8,13 @@ import { StockQuoteCacheService } from '../../../service/cache/stock-quote-cache
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { StockQuote } from '../../../model/entity/stock-quote';
 import { isNullOrUndefined } from 'util';
+import { ModelObject } from '../../../model/common/model-object';
 
 /**
  * This class provide automatic registration with the stock information caches to receive up to date stock information
  * including stock price quotes and stock quotes.
  */
-export abstract class StockModelObjectCrudActionHandler<T extends StockModelObject<T>>  extends CrudActionHandler<T>
+export abstract class StockModelObjectCrudActionHandler<T extends ModelObject<T> & StockModelObject> extends CrudActionHandler<T>
 {
     /**
      * Constructor.
@@ -38,7 +39,7 @@ export abstract class StockModelObjectCrudActionHandler<T extends StockModelObje
      * Register with the caches for stock information updates.
      * @param {StockNotes} stockNotes
      */
-    protected onModelObjectAdd( stockModelObject: StockModelObject<T> )
+    protected onModelObjectAdd( stockModelObject: StockModelObject )
     {
         this.stockPriceQuoteCacheService
             .subscribe( stockModelObject.tickerSymbol, ( stockPriceQuote: StockPriceQuote ) =>
@@ -53,7 +54,7 @@ export abstract class StockModelObjectCrudActionHandler<T extends StockModelObje
      * @param {StockModelObject<T extends StockModelObject<T>>} stockModelObject
      * @param {StockPriceQuote} stockPriceQuote
      */
-    protected onStockPriceQuoteChange( stockModelObject: StockModelObject<T>, stockPriceQuote: StockPriceQuote )
+    protected onStockPriceQuoteChange( stockModelObject: StockModelObject, stockPriceQuote: StockPriceQuote )
     {
         if ( !isNullOrUndefined( stockPriceQuote ))
         {
@@ -68,7 +69,7 @@ export abstract class StockModelObjectCrudActionHandler<T extends StockModelObje
      * @param {StockModelObject<any>} stockModelObject
      * @param {StockQuote} stockQuote
      */
-    protected onStockQuoteChange( stockModelObject: StockModelObject<T>, stockQuote: StockQuote )
+    protected onStockQuoteChange( stockModelObject: StockModelObject, stockQuote: StockQuote )
     {
         if ( !isNullOrUndefined( stockQuote ))
         {

@@ -104,8 +104,8 @@ export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockA
         {
             return;
         }
-        this.modelObject.getStockQuote().companyName = stockCompany.companyName;
-        this.modelObject.getStockPriceQuote().lastPrice = stockCompany.lastPrice;
+        this.modelObject.stockCompany.companyName = stockCompany.companyName;
+        this.modelObject.stockPriceQuote.lastPrice = stockCompany.lastPrice;
         this.modelObject.tickerSymbol = stockCompany.tickerSymbol;
         this.setFormValue( 'tickerSymbol', stockCompany.tickerSymbol );
         /*

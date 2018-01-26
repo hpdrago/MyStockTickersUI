@@ -2,8 +2,16 @@
 BUTTONS TEMPLATE
 ------------------------------------------------------------------------------------------------------------>
 <ng-template #buttonsTemplate>
-    <stock-position-table-buttons>
-    </stock-position-table-buttons>
+    <gains-losses-table-buttons>
+    </gains-losses-table-buttons>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+DIALOG TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #dialogTemplate>
+    <gains-losses-dialog>
+    </gains-losses-dialog>
 </ng-template>
 
 <!----------------------------------------------------------------------------------------------------------
@@ -25,14 +33,15 @@ TABLE DEFINITION
 ------------------------------------------------------------------------------------------------------------>
 <stock-model-object-table-layout [buttonsTemplate]="buttonsTemplate"
                                  [columnsTemplate]="columnsTemplate"
+                                 [dialogTemplate]="dialogTemplate"
                                  cookieContext="getCookieContext()"
                                  [modelObjectRows]="modelObjectRows"
                                  [(displayColumns)]="displayColumns"
                                  [defaultColumns]="defaultColumns"
                                  [additionalColumns]="additionalColumns"
-                                 [totalRecords]="totalRows"
                                  [rowsToDisplay]="rowsToDisplay"
                                  [rowsPerPageOptions]="rowsPerPageOptions"
+                                 [totalRecords]="totalRows"
                                  [(selection)]="selectedModelObject"
                                  (rowSelected)="onRowSelect($event)"
                                  (onLazyLoad)="lazyLoadTable($event)"

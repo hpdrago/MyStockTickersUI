@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { StockCompany } from '../../model/entity/stock-company';
 import { StockSearchComponent } from '../common/stock-search.component';
 import { CrudTableLayoutBaseComponent } from '../crud/table/crud-table-layout-base.component';
@@ -12,7 +12,7 @@ import { CrudTableLayoutComponent } from '../crud/table/crud-table-layout.compon
  */
 @Component
 ({
-    selector: 'stock-model-object-table-component',
+    selector: 'stock-model-object-table-layout',
     templateUrl: './stock-model-object-table-layout.component.html'
  })
 export class StockModelObjectTableLayoutComponent extends CrudTableLayoutBaseComponent
@@ -25,6 +25,9 @@ export class StockModelObjectTableLayoutComponent extends CrudTableLayoutBaseCom
      */
     @ViewChild(CrudTableLayoutComponent)
     protected crudTableLayoutComponent: CrudTableLayoutComponent;
+
+    @Input()
+    protected displayStockSearchFilter: boolean = true;
 
     @Output()
     protected stockSelected: EventEmitter<StockCompany> = new EventEmitter<StockCompany>();
@@ -61,6 +64,17 @@ export class StockModelObjectTableLayoutComponent extends CrudTableLayoutBaseCom
     {
         this.resetButtonClicked
             .emit();
+    }
+
+    /**
+     * This method is called when the row is selected.
+     * @param modelObject
+     */
+    protected onRowSelect( modelObject: any ): void
+    {
+        const methodName = "onRowSelect";
+        this.debug( methodName + " " + JSON.stringify( modelObject ));
+        this.rowSelected.emit( modelObject );
     }
 
     /**

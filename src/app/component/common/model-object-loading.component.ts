@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
 import { ModelObject } from '../../model/common/model-object';
 
 /**
- * This component will displays {@code loadingMessage} if the model object is currently loading, otherwise it will
+ * This component will displays {@code loadingMessage} if the model object is currently loadingData, otherwise it will
  * display the content contained with the selector.
  */
 @Component(

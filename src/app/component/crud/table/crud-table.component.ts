@@ -6,7 +6,7 @@
 
 import { ModelObject } from "../../../model/common/model-object";
 import { BaseCrudComponent } from "../common/base-crud.component";
-import { OnInit, ViewChild } from "@angular/core";
+import { Input, OnInit, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { isNullOrUndefined } from "util";
 import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
@@ -20,7 +20,6 @@ import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { Observable } from 'rxjs/Rx';
 import { CookieService } from 'ngx-cookie-service';
 import { CrudTableColumn } from './crud-table-column';
-import { CrudTableColumns } from './crud-table-columns';
 
 
 /**
@@ -31,6 +30,32 @@ import { CrudTableColumns } from './crud-table-columns';
  */
 export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseCrudComponent<T> implements OnInit
 {
+    /**
+     * The table :-)
+     */
+    @ViewChild(DataTable)
+    protected dataTable: DataTable;
+
+    /**
+     * The context in which to store the cookies.
+     */
+    @Input()
+    protected cookieContext: string;
+
+    /**
+     * Number of rows to display.
+     * @type {number}
+     */
+    @Input()
+    protected rowsToDisplay: number = 20;
+
+    /**
+     * Paginator rows per page selection list.
+     * @type {number[]}
+     */
+    @Input()
+    protected rowsPerPageOptions: number[] = [20,30,40];
+
     /**
      * The list of model objects displayed.
      * @type {Array}
@@ -47,7 +72,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected selectedModelObject: T;
     /**
-     * This is true when the table is loading and false otherwise.
+     * This is true when the table is loading data and false otherwise.
      * @type {boolean}
      */
     protected loading: boolean = false;
@@ -56,11 +81,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected lastLoadEvent: LazyLoadEvent;
     /**
-     * The table :-)
-     */
-    @ViewChild(DataTable)
-    protected dataTable: DataTable;
-    /**
      * Contains the default columns to be displayed as defined by the model object.
      */
     protected defaultColumns: CrudTableColumn[];
@@ -68,7 +88,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * Contains the other columns to be displayed as defined by the model object.
      */
     protected additionalColumns: CrudTableColumn[];
-
     /**
      * This is the array of column definitions that are sent to the PrimeNg Table component.
      */
@@ -113,17 +132,16 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                                   .toArray();
         this.additionalColumns = this.modelObjectFactory
                                      .newModelObject()
-                                     .getOtherCrudTableColumns()
+                                     .getAdditionalCrudTableColumns()
                                      .toArray();
         this.subscribeToServiceEvents();
         if ( TableLoadingStrategy.isLoadOnCreate( this.tableLoadingStrategy ))
         {
-            this.loading = true;
             this.loadTable();
         }
     }
     /**
-     * Determines if lazy loading is enabled.
+     * Determines if lazy loadingData is enabled.
      * @returns {boolean}
      */
     protected isLazyLoading(): boolean
@@ -154,6 +172,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             .getPage( this.modelObject, event )
             .catch( error =>
                     {
+                        this.loading = false;
                         this.showError( error );
                         return Observable.throw( error );
                     })
@@ -236,6 +255,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                 .getModelObjectList( this.modelObject )
                 .catch( error =>
                         {
+                            this.loading = false;
                             this.showError( error );
                             return Observable.throw( error );
                         })
@@ -687,5 +707,10 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected isAllowUpdates(): boolean
     {
         return true;
+    }
+
+    protected isLoading(): boolean
+    {
+        return this.loading;
     }
 }

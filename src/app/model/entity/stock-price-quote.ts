@@ -53,7 +53,7 @@ export class StockPriceQuote implements CacheStateContainer<string>
         this.cacheState = cacheValueState;
     }
 
-    public getCrudTableColumns(): CrudTableColumns
+    public getDefaultColumns(): CrudTableColumns
     {
         let crudTableColumns = new CrudTableColumns( [] );
         crudTableColumns.addColumn( {

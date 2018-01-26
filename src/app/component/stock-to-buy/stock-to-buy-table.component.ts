@@ -1,31 +1,46 @@
+import { AfterViewInit, Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { isNullOrUndefined } from "util";
-import { DialogCloseEventType } from "../crud/common/close-button-event";
-import { TableLoadingStrategy } from '../common/table-loading-strategy';
+import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
 import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
-import { StockToBuy } from '../../model/entity/stock-to-buy';
 import { StockToBuyStateStore } from './stock-to-buy-state-store';
 import { StockToBuyController } from './stock-to-buy-controller';
-import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
-import { StockNotesActionTaken } from '../../common/stock-notes-action-taken.enum';
-import { StockNotes } from '../../model/entity/stock-notes';
-import { StockNotesStock } from '../../model/entity/stock-notes-stock';
-import { CrudOperation } from '../crud/common/crud-operation';
-import { StockNotesSentiment } from '../../common/stock-notes-sentiment.enum';
-import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
+import { StockToBuyCrudActionHandler } from './stock-to-buy-action-handler';
+import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
+import { StockModelObjectTableLayoutComponent } from '../stock-table/stock-model-object-table-layout.component';
+import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
+import { StockToBuy } from '../../model/entity/stock-to-buy';
+import { isNullOrUndefined } from 'util';
+import { TableLoadingStrategy } from '../common/table-loading-strategy';
+import { StockNotes } from '../../model/entity/stock-notes';
+import { StockNotesActionTaken } from '../../common/stock-notes-action-taken.enum';
+import { StockNotesSentiment } from '../../common/stock-notes-sentiment.enum';
+import { StockNotesStock } from '../../model/entity/stock-notes-stock';
+import { DialogCloseEventType } from '../crud/common/close-button-event';
+import { CrudOperation } from '../crud/common/crud-operation';
 
 /**
  * This component displays a list of Stocks to buy.
  *
- * Created by mike on 10/24/2017.
+ * Created by mike on 07/10/2018.
  */
-export abstract class StockToBuyBaseTableComponent extends StockModelObjectTableComponent<StockToBuy>
+@Component(
 {
+    selector:    'stock-to-buy-table',
+    styleUrls:   ['./stock-to-buy-table.component.css'],
+    templateUrl: './stock-to-buy-table.component.html',
+    providers: [StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler,
+                StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler ]
+})
+export class StockToBuyTableComponent extends StockModelObjectTableComponent<StockToBuy> implements AfterViewInit
+{
+    @ViewChild(StockModelObjectTableLayoutComponent)
+    private stockModelObjectTableLayoutComponent: StockModelObjectTableLayoutComponent;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -39,16 +54,16 @@ export abstract class StockToBuyBaseTableComponent extends StockModelObjectTable
      * @param {StockQuoteCacheService} stockQuoteCacheService
      * @param {CookieService} cookieService
      */
-    protected constructor( protected toaster: ToastsManager,
-                           protected stockToBuyStateStore: StockToBuyStateStore,
-                           protected stockToBuyController: StockToBuyController,
-                           protected stockToBuyFactory: StockToBuyFactory,
-                           protected stockToBuyCrudService: StockToBuyCrudService,
-                           protected stockNotesStateStore: StockNotesStateStore,
-                           protected stockNotesController: StockNotesController,
-                           protected stockNotesFactory: StockNotesFactory,
-                           protected stockQuoteCacheService: StockQuoteCacheService,
-                           protected cookieService: CookieService )
+    public constructor( protected toaster: ToastsManager,
+                        protected stockToBuyStateStore: StockToBuyStateStore,
+                        protected stockToBuyController: StockToBuyController,
+                        protected stockToBuyFactory: StockToBuyFactory,
+                        protected stockToBuyCrudService: StockToBuyCrudService,
+                        protected stockNotesStateStore: StockNotesStateStore,
+                        protected stockNotesController: StockNotesController,
+                        protected stockNotesFactory: StockNotesFactory,
+                        protected stockQuoteCacheService: StockQuoteCacheService,
+                        protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
@@ -56,7 +71,6 @@ export abstract class StockToBuyBaseTableComponent extends StockModelObjectTable
                stockToBuyController,
                stockToBuyFactory,
                stockToBuyCrudService,
-               stockQuoteCacheService,
                cookieService );
     }
 
@@ -99,7 +113,7 @@ export abstract class StockToBuyBaseTableComponent extends StockModelObjectTable
         stockNotes.tags = stockToBuy.tags;
         let stockNoteStock: StockNotesStock = new StockNotesStock();
         stockNoteStock.tickerSymbol = stockNotes.tickerSymbol;
-        stockNoteStock.stockPrice = stockToBuy.getStockPriceQuote().lastPrice;
+        stockNoteStock.stockPrice = stockToBuy.stockPriceQuote.lastPrice;
         stockNoteStock.customerId = stockToBuy.customerId;
         stockNotes.stocks = [stockNoteStock];
         this.log( "StockNotes: " + JSON.stringify( stockNotes ));
@@ -109,14 +123,14 @@ export abstract class StockToBuyBaseTableComponent extends StockModelObjectTable
          */
         this.stockNotesController
             .subscribeToDialogCloseButtonClickedEvent( ( event: DialogCloseEventType ) =>
-                                                     {
-                                                         this.log( methodName + " stock notes closed button clicked event: " + event );
-                                                         if ( event != DialogCloseEventType.CANCEL_BUTTON )
-                                                         {
-                                                             this.stockToBuyController
-                                                                 .sendTableDeleteButtonClickedEvent( stockToBuy );
-                                                         }
-                                                     })
+                                                       {
+                                                           this.log( methodName + " stock notes closed button clicked event: " + event );
+                                                           if ( event != DialogCloseEventType.CANCEL_BUTTON )
+                                                           {
+                                                               this.stockToBuyController
+                                                                   .sendTableDeleteButtonClickedEvent( stockToBuy );
+                                                           }
+                                                       })
         /*
          * Display the stock notes dialog.
          */
@@ -127,5 +141,4 @@ export abstract class StockToBuyBaseTableComponent extends StockModelObjectTable
         this.stockNotesController
             .sendDialogDisplayEvent();
     }
-
 }

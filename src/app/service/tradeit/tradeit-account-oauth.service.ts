@@ -134,34 +134,41 @@ export class TradeItAccountOAuthService extends BaseTradeItService
             this.log( methodName + " setting requestInProcess: " + this.requestInProcess );
             this.log( methodName + " requestInProcess: " + this.requestInProcess );
             this.log( methodName + " event: " + JSON.stringify( event ) );
-            var data = JSON.parse( event.data );
-            var oAuthVerifier = data.oAuthVerifier;
-            this.log( methodName + " oAuthVerifier: " + oAuthVerifier );
-            this.log( methodName + " getting OAuthAccessToken" )
-            let tradeItAccount: TradeItAccount = this.oAuthComponent.getTradeItAccount();
-            this.log( methodName + " tradeItAccount " + JSON.stringify( tradeItAccount ));
-            return this.tradeItService
-                       .getOAuthAccessToken( tradeItAccount.brokerage, tradeItAccount.name, oAuthVerifier )
-                       .map( ( oAuthAccessResult: TradeItOAuthAccessResult ) =>
-                           {
-                                this.log( methodName + " oAuthAccessResult: " + JSON.stringify( oAuthAccessResult ) +
-                                    " requestCompleted: " + this.requestCompleted +
-                                    " requestInProcess: " + this.requestInProcess );
-                                if ( !this.requestCompleted && !this.destroyed )
-                                {
-                                    if ( oAuthAccessResult.status == "ERROR" )
-                                    {
-                                        Observable.throw( oAuthAccessResult.errorMessage );
-                                        //this.oAuthResultSubject.error( oAuthAccessResult );
-                                    }
-                                    else
-                                    {
-                                        ///this.oAuthResultSubject.next( oAuthAccessResult.tradeItAccount );
-                                        this.requestCompleted = true;
-                                        return oAuthAccessResult.tradeItAccount;
-                                    }
-                                }
-                            });
+            try
+            {
+                var data = JSON.parse( event.data );
+                var oAuthVerifier = data.oAuthVerifier;
+                this.log( methodName + " oAuthVerifier: " + oAuthVerifier );
+                this.log( methodName + " getting OAuthAccessToken" )
+                let tradeItAccount: TradeItAccount = this.oAuthComponent.getTradeItAccount();
+                this.log( methodName + " tradeItAccount " + JSON.stringify( tradeItAccount ) );
+                return this.tradeItService
+                           .getOAuthAccessToken( tradeItAccount.brokerage, tradeItAccount.name, oAuthVerifier )
+                           .map( ( oAuthAccessResult: TradeItOAuthAccessResult ) =>
+                                 {
+                                     this.log( methodName + " oAuthAccessResult: " + JSON.stringify( oAuthAccessResult ) +
+                                         " requestCompleted: " + this.requestCompleted +
+                                         " requestInProcess: " + this.requestInProcess );
+                                     if ( !this.requestCompleted && !this.destroyed )
+                                     {
+                                         if ( oAuthAccessResult.status == "ERROR" )
+                                         {
+                                             Observable.throw( oAuthAccessResult.errorMessage );
+                                             //this.oAuthResultSubject.error( oAuthAccessResult );
+                                         }
+                                         else
+                                         {
+                                             ///this.oAuthResultSubject.next( oAuthAccessResult.tradeItAccount );
+                                             this.requestCompleted = true;
+                                             return oAuthAccessResult.tradeItAccount;
+                                         }
+                                     }
+                                 } );
+            }
+            catch( error )
+            {
+                this.logError( methodName + ' ' + error );
+            }
         }
         else
         {

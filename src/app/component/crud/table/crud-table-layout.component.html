@@ -26,13 +26,12 @@
              [paginator]="paginator"
              [pageLinks]="pageLinks"
              [totalRecords]="totalRecords"
-             (onRowSelect)="onRowSelect"
-             (onRowUnselect)="onRowUnselect"
+             (onRowSelect)="onRowSelect($event)"
              selectionMode="single"
-             (onLazyLoad)="lazyLoadTable"
+             (onLazyLoad)="onLazyLoad()"
              [lazy]="lazy"
              [rowsPerPageOptions]="rowsPerPageOptions"
-             [loading]="loading"
+             [loading]="loadingData"
              [resizableColumns]="resizableColumns"
              [reorderableColumns]="reorderableColumns"
              [scrollable]="false"
@@ -56,6 +55,11 @@
                     </ng-container>
                 </td>
             </tr>
+        </ng-template>
+
+        <ng-template pTemplate="footer" let-columns>
+            <crud-table-customize-button (buttonClick)="customizeColumns()">
+            </crud-table-customize-button>
         </ng-template>
     </p-table>
 

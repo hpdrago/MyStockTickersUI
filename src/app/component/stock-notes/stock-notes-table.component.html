@@ -2,8 +2,16 @@
 BUTTONS TEMPLATE
 ------------------------------------------------------------------------------------------------------------>
 <ng-template #buttonsTemplate>
-    <stock-position-table-buttons>
-    </stock-position-table-buttons>
+    <stock-notes-table-buttons>
+    </stock-notes-table-buttons>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+DIALOG TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #dialogTemplate>
+    <stock-notes-dialog>
+    </stock-notes-dialog>
 </ng-template>
 
 <!----------------------------------------------------------------------------------------------------------
@@ -12,6 +20,13 @@ column and modelObject are parameters to the template
 ------------------------------------------------------------------------------------------------------------>
 <ng-template #columnsTemplate let-column="column" let-modelObject="modelObject">
     <div [ngSwitch]="column.colId">
+        <!----------------------------------------------------------------------------------------------------------
+        ACTION TAKEN
+        ------------------------------------------------------------------------------------------------------------>
+        <div *ngSwitchCase="'actionTaken'">
+            {{getActionTaken( modelObject[column.field] )}}
+        </div>
+
         <div *ngSwitchDefault>
             <stock-model-object-common-columns [modelObject]="modelObject"
                                                [column]="column">
@@ -25,6 +40,7 @@ TABLE DEFINITION
 ------------------------------------------------------------------------------------------------------------>
 <stock-model-object-table-layout [buttonsTemplate]="buttonsTemplate"
                                  [columnsTemplate]="columnsTemplate"
+                                 [dialogTemplate]="dialogTemplate"
                                  cookieContext="getCookieContext()"
                                  [modelObjectRows]="modelObjectRows"
                                  [(displayColumns)]="displayColumns"

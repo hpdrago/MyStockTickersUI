@@ -10,9 +10,8 @@ import { ModelObject } from '../../model/common/model-object';
 import { TickerSymbolContainer } from '../../model/common/ticker-symbol-container';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { StockQuoteContainer } from '../../model/common/stock-quote-container';
-import { StockQuote } from '../../model/entity/stock-quote';
-import { isNullOrUndefined } from 'util';
 import { CookieService } from 'ngx-cookie-service';
+import { Input } from '@angular/core';
 
 /**
  * This is a base class for all tables that contain model objects containing a ticker symbol
@@ -20,6 +19,9 @@ import { CookieService } from 'ngx-cookie-service';
 export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & TickerSymbolContainer & StockQuoteContainer>
     extends CrudTableComponent<T>
 {
+    @Input()
+    protected displayStockSearchFilter: boolean = true;
+
     /**
      * Constructor
      * @param {TableLoadingStrategy} tableLoadingStrategy
@@ -37,7 +39,6 @@ export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & 
                            protected stockController: CrudController<T>,
                            protected stockFactory: ModelObjectFactory<T>,
                            protected stockCrudService: CrudRestService<T>,
-                           protected stockQuoteCacheService: StockQuoteCacheService,
                            protected cookieService: CookieService )
     {
         super( tableLoadingStrategy,
@@ -74,44 +75,6 @@ export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & 
     }
 
     /**
-     * This method is called after the modelObjects have been retrieved from the database
-     * @param {T[]} modelObjects
-     */
-    protected onTableLoad( modelObjects: T[] ): void
-    {
-        this.log( 'onTableLoad subscribing to cache updates')
-        /*
-        modelObjects.forEach( modelObject =>
-                              {
-                                  if ( modelObject.hasOwnProperty( 'stockQuote' ) )
-                                  {
-                                      this.addSubscription( modelObject.tickerSymbol + '.stockQuoteSubscription',
-                                          this.stockQuoteCacheService
-                                              .subscribe( modelObject.tickerSymbol, (stockQuote: StockQuote ) =>
-                                                          {
-                                                              this.onStockQuoteUpdate( modelObject, stockQuote );
-                                                          } ));
-                                  }
-                              });*/
-        super.onTableLoad( modelObjects );
-    }
-
-    /**
-     * This method is called when a stock quote is receive from the stock quote cache.
-     * @param {T} modelObject Will be updated with the new stock quote
-     * @param {StockQuote} stockQuote
-     */
-    protected onStockQuoteUpdate( modelObject: T, stockQuote: StockQuote )
-    {
-        if ( !isNullOrUndefined( stockQuote ))
-        {
-            const methodName = 'onStockQuoteUpdate';
-            this.log( `${methodName} ${modelObject.tickerSymbol} => ` + JSON.stringify( stockQuote ) );
-            modelObject.stockQuote = stockQuote;
-        }
-    }
-
-    /**
      * This method is called when the user enters a ticker symbol in the search box
      * @param {StockCompany} stock
      */
@@ -129,4 +92,14 @@ export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & 
         this.debug( "onResetButtonClick" );
         this.resetTable();
     }
+
+    /**
+     * Identifies the cookie context to use for storing the customized column list.
+     * @return {string}
+     */
+    protected getCookieContext(): string
+    {
+        return this.getClassName();
+    }
+
 }

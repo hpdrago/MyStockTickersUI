@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { SessionService } from "../session.service";
 import { AppConfigurationService } from "../app-configuration.service";
-import { CrudRestService } from "./crud-rest.serivce";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { StockToBuyFactory } from "../../model/factory/stock-to-buy.factory";
 import { RestErrorReporter } from '../rest-error-reporter';
@@ -11,7 +10,6 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Observable } from 'rxjs/Observable';
 import { PaginationPage } from '../../common/pagination';
 import { StockQuoteCacheService } from '../cache/stock-quote-cache.service';
-import { StockQuoteContainer } from '../../model/common/stock-quote-container';
 import { BaseStockService } from './base-stock.service';
 import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
 import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';

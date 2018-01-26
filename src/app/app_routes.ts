@@ -4,20 +4,20 @@
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { PortfolioStockFormComponent } from "./component/portfolio-stock/portfolio-stock-form.component";
-import { StockNotesTableTabComponent } from "./component/stock-notes/stock-notes-table-tab.component";
-import { StockToBuyTableTabComponent } from "./component/stock-to-buy/stock-to-buy-table-tab.component";
-import { StockAnalystConsensusTableTabComponent } from "./component/stock-analyst-consensus/stock-analyst-consensus-table-tab.component";
+import { StockNotesTableComponent } from "./component/stock-notes/stock-notes-table.component";
+import { StockToBuyTableComponent } from "./component/stock-to-buy/stock-to-buy-table.component";
 import { ProfileComponent } from "./component/profile/profile.component";
 import { AuthGuardService } from "./service/auth-guard.service";
 import { AdminComponent } from "./component/admin/admin.component";
-import { StockCatalystEventTableTabComponent } from "./component/stock-catalyst-event/stock-catalyst-event-table-tab.component";
 import { TradeItAccountsComponent } from "./component/tradeit-account/tradeit-accounts.component";
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
-import { GainsLossesTableTabComponent } from './component/gains-losses/gains-losses-table-tab.component';
+import { GainsLossesTableComponent } from './component/gains-losses/gains-losses-table.component';
 import { StockNotesAddComponent } from './component/stock-notes/stock-notes-add.component';
 import { StockToBuyAddComponent } from './component/stock-to-buy/stock-to-buy-add.component';
 import { StockAnalystConsensusAddComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-add.component';
 import { StockCatalystEventAddComponent } from './component/stock-catalyst-event/stock-catalyst-event-add.component';
+import { StockAnalystConsensusTableComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table.component';
+import { StockCatalystEventTableComponent } from './component/stock-catalyst-event/stock-catalyst-event-table.component';
 
 const routes: Routes = [
     {
@@ -47,12 +47,12 @@ const routes: Routes = [
     },
     {
         path: 'stockNotes',
-        component: StockNotesTableTabComponent,
+        component: StockNotesTableComponent,
         canActivate: [AuthGuardService]
     },
     {
         path: 'stockNotes/view',
-        component: StockNotesTableTabComponent,
+        component: StockNotesTableComponent,
         canActivate: [AuthGuardService]
     },
     {
@@ -62,7 +62,7 @@ const routes: Routes = [
     },
     {
         path: 'stockCatalystEvents/view',
-        component: StockCatalystEventTableTabComponent,
+        component: StockCatalystEventTableComponent,
         canActivate: [AuthGuardService]
     },
     {
@@ -72,7 +72,7 @@ const routes: Routes = [
     },
     {
         path: 'stockAnalystConsensus/view',
-        component: StockAnalystConsensusTableTabComponent,
+        component: StockAnalystConsensusTableComponent,
         canActivate: [AuthGuardService]
     },
     {
@@ -82,12 +82,12 @@ const routes: Routes = [
     },
     {
         path: 'stockToBuy/view',
-        component: StockToBuyTableTabComponent,
+        component: StockToBuyTableComponent,
         canActivate: [AuthGuardService]
     },
     {
         path: 'gainsLosses',
-        component: GainsLossesTableTabComponent,
+        component: GainsLossesTableComponent,
         canActivate: [AuthGuardService]
     },
     /* for the future

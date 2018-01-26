@@ -1,151 +1,51 @@
-<div id="customerAccountTableDiv" ngStyle="">
-    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-12">
-                <p-dataTable [value]="modelObjectRows"
-                             [ngClass]="{'editing-table': !isCrudNoneOperation() }"
-                             selectionMode="single"
-                             [(selection)]="selectedModelObject"
-                             (onRowSelect)="onRowSelect($event)"
-                             (onRowUnselect)="onRowUnSelect($event)"
-                             [totalRecords]="totalRows"
-                             [loading]="loading"
-                             [lazy]="false"
-                             (onRowDblclick)="onRowDoubleClick($event)"
-                             [responsive]="true">
+<!----------------------------------------------------------------------------------------------------------
+BUTTONS TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #buttonsTemplate>
+    <linked-account-table-buttons>
+    </linked-account-table-buttons>
+</ng-template>
 
-                    <!--------------------------------------------------------------------------------------------------
-                    ACCOUNT NUMBER
-                    --------------------------------------------------------------------------------------------------->
-                    <p-column id="accountNumber"
-                              field="accountNumber"
-                              header="Account Number"
-                              [style]="{'width':'60px'}"
-                              [sortable]="true">
-                    </p-column>
+<!----------------------------------------------------------------------------------------------------------
+DIALOG TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #dialogTemplate>
+    <linked-account-dialog>
+    </linked-account-dialog>
+    <tradeit-security-question-dialog>
+    </tradeit-security-question-dialog>
+</ng-template>
 
-                    <!--------------------------------------------------------------------------------------------------
-                    ACCOUNT NAME
-                    --------------------------------------------------------------------------------------------------->
-                    <p-column id="accountName"
-                              field="accountName"
-                              header="Account Name"
-                              [style]="{'width':'60px'}"
-                              [sortable]="true">
-                    </p-column>
-
-                    <!--------------------------------------------------------------------------------------------------
-                    AVAILABLE CASH
-                    --------------------------------------------------------------------------------------------------->
-                    <p-column id="availableCash"
-                              field="availableCash"
-                              header="Available Cash"
-                              [style]="{'width':'10px','text-align':'right'}">
-                        <ng-template let-col let-linkedAccount="rowData" pTemplate="body">
-                            <loading [modelObject]="linkedAccount">
-                                <currency [currencyValue]="linkedAccount[col.field]"></currency>
-                            </loading>
-                        </ng-template>
-                    </p-column>
-
-                    <!--------------------------------------------------------------------------------------------------
-                    BUYING POWER
-                    --------------------------------------------------------------------------------------------------->
-                    <p-column id="buyingPower"
-                              field="buyingPower"
-                              header="Buying Power"
-                              [style]="{'width':'10px','text-align':'right'}">
-                        <ng-template let-col let-linkedAccount="rowData" pTemplate="body">
-                            <loading [modelObject]="linkedAccount">
-                                <currency [currencyValue]="linkedAccount[col.field]"></currency>
-                            </loading>
-                        </ng-template>
-                    </p-column>
-
-                    <!--------------------------------------------------------------------------------------------------
-                    MARGIN CASH
-                    --------------------------------------------------------------------------------------------------->
-                    <p-column id="marginCash"
-                              field="marginCash"
-                              header="Margin $"
-                              [style]="{'width':'10px','text-align':'right'}">
-                        <ng-template let-col let-linkedAccount="rowData" pTemplate="body">
-                            <loading [modelObject]="linkedAccount">
-                                <currency [currencyValue]="linkedAccount[col.field]"></currency>
-                            </loading>
-                        </ng-template>
-                    </p-column>
-
-                    <!--------------------------------------------------------------------------------------------------
-                    TOTAL VALUE
-                    --------------------------------------------------------------------------------------------------->
-                    <p-column id="totalValue"
-                              field="totalValue"
-                              header="Total Value"
-                              [style]="{'width':'10px','text-align':'right'}">
-                        <ng-template let-col let-linkedAccount="rowData" pTemplate="body">
-                            <currency [currencyValue]="linkedAccount[col.field]"></currency>
-                        </ng-template>
-                    </p-column>
-
-                    <!--------------------------------------------------------------------------------------------------
-                    DAY ABSOLUTE RETURN
-                    --------------------------------------------------------------------------------------------------->
-                    <p-column id="dayAbsoluteReturn"
-                              field="dayAbsoluteReturn"
-                              header="Today G/L $"
-                              [style]="{'width':'10px','text-align':'right'}">
-                        <ng-template let-col let-linkedAccount="rowData" pTemplate="body">
-                            <gain-loss-currency [currencyValue]="linkedAccount[col.field]"></gain-loss-currency>
-                        </ng-template>
-                    </p-column>
-
-                    <!--------------------------------------------------------------------------------------------------
-                    DAY PERCENT RETURN
-                    --------------------------------------------------------------------------------------------------->
-                    <p-column id="dayPercentReturn"
-                              field="dayPercentReturn"
-                              header="Today G/L %"
-                              [style]="{'width':'10px','text-align':'right'}">
-                        <ng-template let-col let-linkedAccount="rowData" pTemplate="body">
-                            <gain-loss-percent [percentValue]="linkedAccount[col.field]"></gain-loss-percent>
-                        </ng-template>
-                    </p-column>
-
-                    <!--------------------------------------------------------------------------------------------------
-                    TOTAL ABSOLUTE RETURN
-                    --------------------------------------------------------------------------------------------------->
-                    <p-column id="totalAbsoluteReturn"
-                              field="totalAbsoluteReturn"
-                              header="Total G/L $}"
-                              [style]="{'width':'10px','text-align':'right'}">
-                        <ng-template let-col let-linkedAccount="rowData" pTemplate="body">
-                            <gain-loss-currency [currencyValue]="linkedAccount[col.field]"></gain-loss-currency>
-                        </ng-template>
-                    </p-column>
-
-                    <!--------------------------------------------------------------------------------------------------
-                    TOTAL PERCENT RETURN
-                    --------------------------------------------------------------------------------------------------->
-                    <p-column id="totalPercentReturn"
-                              field="totalPercentReturn"
-                              header="Total G/L %"
-                              [style]="{'width':'10px','text-align':'right'}">
-                        <ng-template let-col let-linkedAccount="rowData" pTemplate="body">
-                            <gain-loss-percent [percentValue]="linkedAccount[col.field]"></gain-loss-percent>
-                        </ng-template>
-                    </p-column>
-
-                    <p-footer>
-                        <linked-account-table-buttons>
-                        </linked-account-table-buttons>
-                    </p-footer>
-                </p-dataTable>
-            </div>
+<!----------------------------------------------------------------------------------------------------------
+CUSTOM STOCK TO BUY COLUMNS TEMPLATE
+column and modelObject are parameters to the template
+------------------------------------------------------------------------------------------------------------>
+<ng-template #columnsTemplate let-column="column" let-modelObject="modelObject">
+    <div [ngSwitch]="column.colId">
+        <div *ngSwitchDefault>
+            <crud-table-column-by-data-type [modelObject]="modelObject"
+                                            [column]="column">
+            </crud-table-column-by-data-type>
         </div>
     </div>
-</div>
-<linked-account-dialog>
-</linked-account-dialog>
-<tradeit-security-question-dialog>
-</tradeit-security-question-dialog>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+TABLE DEFINITION
+------------------------------------------------------------------------------------------------------------>
+<crud-table-layout [buttonsTemplate]="buttonsTemplate"
+                   [columnsTemplate]="columnsTemplate"
+                   [dialogTemplate]="dialogTemplate"
+                   cookieContext="getCookieContext()"
+                   [modelObjectRows]="modelObjectRows"
+                   [(displayColumns)]="displayColumns"
+                   [defaultColumns]="defaultColumns"
+                   [additionalColumns]="additionalColumns"
+                   [totalRecords]="totalRows"
+                   [(selection)]="selectedModelObject"
+                   (rowSelected)="onRowSelect($event)"
+                   (onLazyLoad)="lazyLoadTable($event)"
+                   [lazy]="true"
+                   [loadingData]="isLoading()"
+                   (onRowDblclick)="onRowDoubleClick($event)">
+</crud-table-layout>

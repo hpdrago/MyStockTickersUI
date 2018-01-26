@@ -3,6 +3,7 @@ import { GainsLosses } from '../entity/gains-losses';
 import { Injectable } from '@angular/core';
 import { SessionService } from '../../service/session.service';
 import { LinkedAccountFactory } from './linked-account.factory';
+import { StockCompany } from '../entity/stock-company';
 
 @Injectable()
 export class GainsLossesFactory extends ModelObjectFactory<GainsLosses>
@@ -24,6 +25,7 @@ export class GainsLossesFactory extends ModelObjectFactory<GainsLosses>
         gainsLosses.id = '';
         gainsLosses.customerId = this.session.getLoggedInUserId();
         gainsLosses.linkedAccount = this.linkedAccountFactory.newModelObject();
+        gainsLosses.stockCompany = new StockCompany();
         gainsLosses.losses = 0;
         gainsLosses.tickerSymbol = '';
         gainsLosses.totalGainsLosses = 0;

@@ -1,5 +1,3 @@
-import { TradeItAPIResult } from "./tradeit-api-result";
-import { JsonConvert, OperationMode, ValueCheckingMode } from "json2typescript";
 import { TradeItAuthenticateResult } from './tradeit-authenticate-result';
 
 /**

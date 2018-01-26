@@ -1,23 +1,28 @@
 import { StockNotesContainer } from "../common/stock-notes-container";
 import { StockNotesSourceContainer } from "../common/stock-notes-source-container";
-import { StockModelObject } from '../common/stock-model-object';
 import { StockCompany } from './stock-company';
 import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
 import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
 import { CacheStateContainer } from '../common/cache-state-container';
 import { CachedValueState } from '../../common/cached-value-state.enum';
+import { GainsLosses } from './gains-losses';
+import { StockPriceQuote } from './stock-price-quote';
+import { StockQuote } from './stock-quote';
+import { ModelObject } from '../common/model-object';
+import { CommonStockModelObjectColumns } from '../../component/stock-table/common-stock-model-object-columns';
 
 /**
  * This entity contains the elements for the stock summary
  *
  * Created 10/17/2017
  */
-export class StockAnalystConsensus extends StockModelObject<StockAnalystConsensus>
+export class StockAnalystConsensus extends ModelObject<StockAnalystConsensus>
                                    implements StockNotesContainer,
                                               StockNotesSourceContainer,
                                               CacheStateContainer<string>
 {
     public id: string;
+    public tickerSymbol: string;
     public customerId: string;
     public comments: string;
     public analystStrongBuyCount: number;
@@ -34,6 +39,15 @@ export class StockAnalystConsensus extends StockModelObject<StockAnalystConsensu
     public notesSourceName: string;
     public cacheState: CachedValueState;
     public cacheError: string;
+
+    /*
+     * Stock model object properties.
+     */
+    public stockAnalystConsensus: StockAnalystConsensus;
+    public stockCompany: StockCompany;
+    public stockGainsLosses: GainsLosses;
+    public stockPriceQuote: StockPriceQuote;
+    public stockQuote: StockQuote;
 
     public getNotes(): string
     {
@@ -82,7 +96,14 @@ export class StockAnalystConsensus extends StockModelObject<StockAnalystConsensu
 
     public getDefaultCrudTableColumns(): CrudTableColumns
     {
-        let crudTableColumns: CrudTableColumns = super.getDefaultCrudTableColumns();
+        let crudTableColumns: CrudTableColumns = new CrudTableColumns([]);
+        crudTableColumns.addAll( new CommonStockModelObjectColumns() );
+        crudTableColumns.addColumn( {
+                                        colId: 'analystPriceTargets',
+                                        header: 'Price Targets (L,Avg,H)',
+                                        dataType: CrudTableColumnType.STOCK_ANALYST_PRICE_TARGETS,
+                                        sortable: true
+                                    } );
         crudTableColumns.addColumn( {
                                         colId: 'analystSentimentDate',
                                         header: 'Sentiment Date',
@@ -164,4 +185,17 @@ export class StockAnalystConsensus extends StockModelObject<StockAnalystConsensu
         return this.cacheState;
     }
 
+    /**
+     * Creates a list of the stock columns.
+     * @return {CrudTableColumns}
+     */
+    public getAdditionalCrudTableColumns(): CrudTableColumns
+    {
+        let additionalColumns = super.getAdditionalCrudTableColumns();
+        additionalColumns.addAll( new StockPriceQuote().getDefaultColumns() );
+        additionalColumns.addAll( new StockQuote().getDefaultCrudTableColumns() );
+        additionalColumns.addAll( new StockQuote().getDefaultCrudTableColumns() );
+        additionalColumns.addAll( new StockQuote().getDefaultCrudTableColumns() );
+        return additionalColumns;
+    }
 }

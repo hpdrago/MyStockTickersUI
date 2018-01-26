@@ -29,8 +29,7 @@ export class StockToBuyFactory extends StockModelObjectFactory<StockToBuy>
         stockToBuy.tickerSymbol = '';
         stockToBuy.comments = '';
         stockToBuy.buySharesUpToPrice = 0;
-        stockToBuy.setStockPriceQuote( this.stockPriceQuoteFactory.newModelObject() );
-        stockToBuy.setStockQuote( this.stockQuoteFactory.newModelObject() );
+        stockToBuy.initializeStockModelObjects();
         return stockToBuy;
     }
 }

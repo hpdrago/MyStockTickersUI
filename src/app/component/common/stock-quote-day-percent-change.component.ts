@@ -20,7 +20,7 @@ import { StockQuote } from '../../model/entity/stock-quote';
 export class StockQuoteDayPercentChangeComponent
 {
     @Input()
-    protected stockModelObject: StockModelObject<any>;
+    protected stockModelObject: StockModelObject;
 
     /**
      * Determines the percent of change from the original price to the last price.

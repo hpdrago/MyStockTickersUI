@@ -1,12 +1,9 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from "@angular/core";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { SelectItem } from "primeng/components/common/api";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
-import { isNullOrUndefined } from "util";
-import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { PortfolioStockStateStore } from './portfolio-stock-state-store';
 import { PortfolioStockController } from './portfolio-stock-controller';
 import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';

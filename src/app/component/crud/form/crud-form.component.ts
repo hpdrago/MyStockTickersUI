@@ -175,7 +175,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     /**
      * This method is called at the beginning of the {@code ngOnInit}.  It is provided to provide subclasses a place
      * to load external data required for the form. Override this method and return a {@code BehaviourSubject} for each
-     * resource loading task.  Be sure to add the parents jobs to the returned array --> super.loadResources()
+     * resource loadingData task.  Be sure to add the parents jobs to the returned array --> super.loadResources()
      */
     protected loadResources(): Observable<boolean>[]
     {
@@ -183,7 +183,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * This method sends any subscribers a true message to indicate the resource loading has completed.
+     * This method sends any subscribers a true message to indicate the resource loadingData has completed.
      * process.
      */
     protected onLoadResourcesCompleted(): void

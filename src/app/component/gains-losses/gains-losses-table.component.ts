@@ -1,13 +1,14 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { GainsLossesBaseTableComponent } from "./gains-losses-base-table.component";
 import { GainsLossesFactory } from '../../model/factory/gains-losses.factory';
 import { GainsLossesStateStore } from './gains-losses-state-store';
 import { GainsLossesController } from './gains-losses-controller';
 import { GainsLossesCrudService } from '../../service/crud/gains-losses-crud.service';
 import { GainsLossesCrudActionHandler } from './gains-losses-action-handler';
-import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
+import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
+import { GainsLosses } from '../../model/entity/gains-losses';
+import { TableLoadingStrategy } from '../common/table-loading-strategy';
 
 /**
  * This component displays a list of gains/losses.
@@ -16,11 +17,11 @@ import { CookieService } from 'ngx-cookie-service';
  */
 @Component(
     {
-        selector:    'gains-losses-tab-table',
-        templateUrl: './gains-losses-table-tab.component.html',
+        selector:    'gains-losses-table',
+        templateUrl: './gains-losses-table.component.html',
         providers: [GainsLossesStateStore, GainsLossesController, GainsLossesCrudActionHandler]
     } )
-export class GainsLossesTableTabComponent extends GainsLossesBaseTableComponent
+export class GainsLossesTableComponent extends StockModelObjectTableComponent<GainsLosses>
 {
     /**
      * Constructor.
@@ -29,7 +30,6 @@ export class GainsLossesTableTabComponent extends GainsLossesBaseTableComponent
      * @param {GainsLossesController} gainsLossesController
      * @param {GainsLossesFactory} gainsLossesFactory
      * @param {GainsLossesCrudService} gainsLossesCrudService
-     * @param {StockQuoteCacheService} stockQuoteCacheService
      * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
@@ -37,15 +37,14 @@ export class GainsLossesTableTabComponent extends GainsLossesBaseTableComponent
                  protected gainsLossesController: GainsLossesController,
                  protected gainsLossesFactory: GainsLossesFactory,
                  protected gainsLossesCrudService: GainsLossesCrudService,
-                 protected stockQuoteCacheService: StockQuoteCacheService,
                  protected cookieService: CookieService )
     {
-        super( toaster,
+        super( TableLoadingStrategy.LAZY_ON_CREATE,
+               toaster,
                gainsLossesStateStore,
                gainsLossesController,
                gainsLossesFactory,
                gainsLossesCrudService,
-               stockQuoteCacheService,
                cookieService );
     }
 }

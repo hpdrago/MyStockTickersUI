@@ -27,22 +27,21 @@ import {
     DialogModule,
     DropdownModule,
     EditorModule,
+    FileUploadModule,
     InputTextareaModule,
     InputTextModule,
     ListboxModule,
     MenubarModule,
     PanelModule,
+    PickListModule,
+    ProgressSpinnerModule,
     RatingModule,
     SelectButtonModule,
     SliderModule,
     TabMenuModule,
     TabViewModule,
-    TooltipModule,
-    FileUploadModule,
     ToggleButtonModule,
-    ProgressSpinnerModule,
-    PickListModule,
-    ProgressBarModule
+    TooltipModule
 } from "primeng/primeng";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
 import { AutoCompleteModule } from "primeng/components/autocomplete/autocomplete";
@@ -114,13 +113,9 @@ import { StockToBuyCrudService } from "./service/crud/stock-to-buy-crud.service"
 import { CustomerCrudService } from "./service/crud/customer-crud.service";
 import { CustomerFactory } from "./model/factory/customer.factory";
 import { UppercaseValueDirective } from "./directives/uppercase.value.accessor";
-import { StockNotesTableTabComponent } from "./component/stock-notes/stock-notes-table-tab.component";
-import { StockNotesTableDashboardComponent } from "./component/dashboard/stock-notes-table-dashboard.component";
-import { StockToBuyTableDashboardComponent } from "./component/dashboard/stock-to-buy-table-dashboard.component";
-import { StockToBuyTableTabComponent } from "./component/stock-to-buy/stock-to-buy-table-tab.component";
+import { StockNotesTableComponent } from "./component/stock-notes/stock-notes-table.component";
+import { StockToBuyTableComponent } from "./component/stock-to-buy/stock-to-buy-table.component";
 import { FormErrorsComponent } from "./component/common/form-errors.component";
-import { StockAnalystConsensusDashboardTableComponent } from "./component/dashboard/stock-analyst-consensus-dashboard-table.component";
-import { StockAnalystConsensusTableTabComponent } from "./component/stock-analyst-consensus/stock-analyst-consensus-table-tab.component";
 import { TradeItAccountFactory } from "./model/factory/tradeit-account.factory";
 import { TradeItAccountCrudService } from "./service/crud/tradeit-account-crud.service";
 import { CustomerFormComponent } from "./component/customer/customer-form.component";
@@ -143,7 +138,6 @@ import { TradeItAccountDialogComponent } from "./component/tradeit-account/trade
 import { TradeItAccountFormComponent } from "./component/tradeit-account/tradeit-account-form.component";
 import { TradeItAccountTableComponent } from "./component/tradeit-account/tradeit-account-table.component";
 import { StockSearchComponent } from "./component/common/stock-search.component";
-import { StockCatalystEventTableTabComponent } from "./component/stock-catalyst-event/stock-catalyst-event-table-tab.component";
 import { TradeItAccountsComponent } from "./component/tradeit-account/tradeit-accounts.component";
 import { TradeItAccountPanelComponent } from "./component/tradeit-account/tradeit-account-panel.component";
 import { TradeItAccountSelectionTableComponent } from "./component/tradeit-account/tradeit-account-selection-table.component";
@@ -157,7 +151,6 @@ import { TradeItAccountOAuthService } from "./service/tradeit/tradeit-account-oa
 import { RestErrorReporter } from "./service/rest-error-reporter";
 import { TradeItErrorReporter } from "./component/tradeit/tradeit-error-reporter";
 import { CustomerController } from './component/customer/customer-controller';
-import { StockCatalystEventDashboardTableComponent } from './component/dashboard/stock-catalyst-event-dashboard-table.component';
 import { LinkedAccountController } from './component/linked-account/linked-account-controller';
 import { LinkedAccountDialogComponent } from './component/linked-account/linked-account-dialog.component';
 import { LinkedAccountFormComponent } from './component/linked-account/linked-account-form.component';
@@ -256,7 +249,7 @@ import { GainsLossesFormButtonsComponent } from './component/gains-losses/gains-
 import { GainsLossesTableButtonsComponent } from './component/gains-losses/gains-losses-table-buttons.component';
 import { GainsLossesDialogComponent } from './component/gains-losses/gains-losses-dialog.component';
 import { GainsLossesFormComponent } from './component/gains-losses/gains-losses-form.component';
-import { GainsLossesTableTabComponent } from './component/gains-losses/gains-losses-table-tab.component';
+import { GainsLossesTableComponent } from './component/gains-losses/gains-losses-table.component';
 import { GainsLossesCrudService } from './service/crud/gains-losses-crud.service';
 import { GainsLossesFactory } from './model/factory/gains-losses.factory';
 import { GainsLossesTableImportButtonComponent } from './component/gains-losses/gains-losses-table-import-button.component';
@@ -271,7 +264,6 @@ import { StockToBuyAddComponent } from './component/stock-to-buy/stock-to-buy-ad
 import { TickerSymbolColumnComponent } from './component/columns/ticker-symbol-column.component';
 import { CurrencyColumnComponent } from './component/columns/currency-column.component';
 import { CrudTableColumnSelectorComponent } from './component/crud/table/crud-table-column-selector.component';
-import { StockToBuyTableCustomizeButtonComponent } from './component/stock-to-buy/stock-to-buy-table-customize-button.component';
 import { CrudTableColumnSelectorDialogComponent } from './component/crud/table/crud-table-column-selector-dialog.component';
 import { CrudTableColumnByDataTypeComponent } from './component/crud/table/crud-table-column-by-data-type.component';
 import { StockPriceQuotePropertyColumnComponent } from './component/stock-table/stock-price-quote-property-column.component';
@@ -282,7 +274,9 @@ import { StockModelObjectTableLayoutComponent } from './component/stock-table/st
 import { MillifyComponent } from './component/common/millify.component';
 import { MillifyColumnComponent } from './component/columns/millify-column.component';
 import { GainsLossesCache } from './service/cache/gains-losses-cache';
-import { StockAnalystConsensusTableCustomizeButtonComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table-customize-button.component';
+import { CrudTableCustomizeButtonComponent } from './component/crud/table/crud-table-customize-button.component';
+import { StockAnalystConsensusTableComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table.component';
+import { StockCatalystEventTableComponent } from './component/stock-catalyst-event/stock-catalyst-event-table.component';
 
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -379,6 +373,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         CrudTableButtonsComponent,
         CrudTableLayoutComponent,
+        CrudTableCustomizeButtonComponent,
 
         StockModelObjectCommonColumnsComponent,
         StockModelObjectTableLayoutComponent,
@@ -435,8 +430,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         PortfolioStockTableRefreshButtonComponent,
 
         StockNotesAddComponent,
-        StockNotesTableTabComponent,
-        StockNotesTableDashboardComponent,
+        StockNotesTableComponent,
         StockNotesFormComponent,
         StockNotesDialogComponent,
         StockNotesTableButtonsComponent,
@@ -457,8 +451,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockNotesSourceFormButtonsComponent,
 
         StockAnalystConsensusAddComponent,
-        StockAnalystConsensusTableTabComponent,
-        StockAnalystConsensusDashboardTableComponent,
+        StockAnalystConsensusTableComponent,
         StockAnalystConsensusFormComponent,
         StockAnalystConsensusDialogComponent,
         StockAnalystConsensusTableButtonsComponent,
@@ -467,14 +460,12 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockAnalystConsensusTableDeleteButtonComponent,
         StockAnalystConsensusTableEditButtonComponent,
         StockAnalystConsensusTableRefreshButtonComponent,
-        StockAnalystConsensusTableCustomizeButtonComponent,
         StockAnalystPriceTargetsComponent,
         StockAnalystPriceTargetComponent,
         StockAnalystConsensusComponent,
 
         StockCatalystEventAddComponent,
-        StockCatalystEventTableTabComponent,
-        StockCatalystEventDashboardTableComponent,
+        StockCatalystEventTableComponent,
         StockCatalystEventFormComponent,
         StockCatalystEventDialogComponent,
         StockCatalystEventTableButtonsComponent,
@@ -485,8 +476,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockCatalystEventTableRefreshButtonComponent,
 
         StockToBuyAddComponent,
-        StockToBuyTableTabComponent,
-        StockToBuyTableDashboardComponent,
+        StockToBuyTableComponent,
         StockToBuyFormComponent,
         StockToBuyDialogComponent,
         StockToBuyTableButtonsComponent,
@@ -495,10 +485,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockToBuyTableDeleteButtonComponent,
         StockToBuyTableEditButtonComponent,
         StockToBuyTableRefreshButtonComponent,
-        StockToBuyTableCustomizeButtonComponent,
 
         GainsLossesImportDialogComponent,
-        GainsLossesTableTabComponent,
+        GainsLossesTableComponent,
         GainsLossesFormComponent,
         GainsLossesDialogComponent,
         GainsLossesTableButtonsComponent,

@@ -1,32 +1,22 @@
-import { CrudTableButtonComponent } from './crud-table-button.component';
-import { ModelObject } from '../../../model/common/model-object';
-import { ToastsManager } from 'ng2-toastr';
-import { CrudStateStore } from '../common/crud-state-store';
-import { CrudController } from '../common/crud-controller';
-import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
-import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { CommonButtonComponent } from '../../common/common-button.component';
 
-export abstract class CrudTableCustomizeButtonComponent<T extends ModelObject<T>> extends CrudTableButtonComponent<T>
+@Component
+({
+     selector: 'crud-table-customize-button',
+     templateUrl: './crud-table-button.component.html'
+ })
+export class CrudTableCustomizeButtonComponent extends CommonButtonComponent
 {
+    @Output()
+    protected buttonClick = new EventEmitter<any>();
+
     /**
      * Constructor.
-     * @param {ToastsManager} toaster
-     * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
-     * @param {CrudController<T extends ModelObject<T>>} crudController
-     * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
-     * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    protected constructor( protected toaster: ToastsManager,
-                           protected crudStateStore: CrudStateStore<T>,
-                           protected crudController: CrudController<T>,
-                           protected modelObjectFactory: ModelObjectFactory<T>,
-                           protected crudRestService: CrudRestService<T> )
+    public constructor()
     {
-        super( toaster,
-               crudStateStore,
-               crudController,
-               modelObjectFactory,
-               crudRestService );
+        super();
     }
 
     public ngOnInit(): void
@@ -42,8 +32,6 @@ export abstract class CrudTableCustomizeButtonComponent<T extends ModelObject<T>
      */
     protected onButtonClick(): void
     {
-        this.debug( 'onCustomizeButtonClick' );
-        this.crudController
-            .sendTableCustomizeButtonClickedEvent();
+        this.buttonClick.emit();
     }
 }

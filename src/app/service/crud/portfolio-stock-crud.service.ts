@@ -9,8 +9,6 @@ import { HttpClient } from '@angular/common/http';
 import { StockQuoteCacheService } from '../cache/stock-quote-cache.service';
 import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
 import { BaseStockService } from './base-stock.service';
-import { StockQuoteService } from './stock-quote.service';
-import { StockPriceQuoteService } from './stock-price-quote.service';
 import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
 import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 

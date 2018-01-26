@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, EventEmitter, forwardRef, Output } from "@angular/core";
+import { Component, EventEmitter, forwardRef, Output } from "@angular/core";
 import { PaginationPage } from "../../common/pagination";
-import { StockPriceQuoteService } from "../../service/crud/stock-price-quote.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockCompany } from "../../model/entity/stock-company";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";

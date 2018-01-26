@@ -3,7 +3,6 @@ import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { SessionService } from "../../service/session.service";
-import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { StockToBuyController } from './stock-to-buy-controller';
 import { StockToBuyStateStore } from './stock-to-buy-state-store';
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
@@ -11,7 +10,6 @@ import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.serv
 import { isNullOrUndefined } from 'util';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { StockCrudFormComponent } from '../common/stock-crud-form.component';
-import { SelectedStockCompanyList } from '../common/selected-stock-company.list';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
 import { StockCompany } from '../../model/entity/stock-company';
 
@@ -106,7 +104,7 @@ export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
                                 if ( !isNullOrUndefined( existingStockToBuy ) )
                                 {
                                     this.toaster.warning( 'A Stock To Buy entry already exists for ' +
-                                        existingStockToBuy.getTickerSymbol() );
+                                        existingStockToBuy.tickerSymbol );
                                 }
                             } );
         }

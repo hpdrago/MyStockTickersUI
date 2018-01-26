@@ -42,8 +42,7 @@ export class PortfolioStockFactory extends StockModelObjectFactory<PortfolioStoc
         portfolioStock.stopLossShares = 0;
         portfolioStock.profitTakingPrice = 0;
         portfolioStock.profitTakingShares = 0;
-        portfolioStock.setStockPriceQuote( this.stockPriceQuoteFactory.newModelObject() );
-        portfolioStock.setStockQuote( this.stockQuoteFactory.newModelObject() );
+        portfolioStock.initializeStockModelObjects();
         return portfolioStock;
     }
 

@@ -1,11 +1,9 @@
 import { Injectable } from "@angular/core";
-import { Http } from "@angular/http";
 import { SessionService } from "../session.service";
 import { AppConfigurationService } from "../app-configuration.service";
 import { StockNotesCountFactory } from "../../model/factory/stock-note-count.factory";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesFactory } from "../../model/factory/stock-notes.factory";
-import { CrudRestService } from "./crud-rest.serivce";
 import { KeyValuePairs } from "../../common/key-value-pairs";
 import { RestErrorReporter } from '../rest-error-reporter';
 import { isNullOrUndefined } from 'util';

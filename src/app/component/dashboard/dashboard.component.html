@@ -12,24 +12,40 @@
         <div class="ui-grid-row" style="height: 48%">
             <div class="ui-grid-col-6" style="overflow:auto;">
                 <p-panel header="Notes">
-                    <stock-notes-dashboard-table></stock-notes-dashboard-table>
+                    <stock-notes-table cookieContext="StockNotesDashboardTable"
+                                       [rowsToDisplay]="3"
+                                       [rowsPerPageOptions]="[3,9,12]"
+                                       [displayStockSearchFilter]="false">
+                    </stock-notes-table>
                 </p-panel>
             </div>
             <div class="ui-grid-col-6" style="overflow:auto;">
                 <p-panel header="Stocks to Buy">
-                    <stock-to-buy-dashboard-table></stock-to-buy-dashboard-table>
+                    <stock-to-buy-table cookieContext="StockToBuyDashboardTable"
+                                        [rowsToDisplay]="3"
+                                        [rowsPerPageOptions]="[3,9,12]"
+                                        [displayStockSearchFilter]="false">
+                    </stock-to-buy-table>
                 </p-panel>
             </div>
         </div>
         <div class="ui-grid-row" style="height: 48%">
             <div class=" ui-grid-col-6" style="overflow: auto">
                 <p-panel header="Analyst Consensus">
-                    <stock-analyst-consensus-dashboard-table></stock-analyst-consensus-dashboard-table>
+                    <stock-analyst-consensus-table cookieContext="StockAnalystConsensusDashboardTable"
+                                                   [rowsToDisplay]="3"
+                                                   [rowsPerPageOptions]="[3,9,12]"
+                                                   [displayStockSearchFilter]="false">
+                    </stock-analyst-consensus-table>
                 </p-panel>
             </div>
             <div class="ui-grid-col-6" style="overflow: auto">
                 <p-panel header="Catalyst Events">
-                    <stock-catalyst-event-dashboard-table></stock-catalyst-event-dashboard-table>
+                    <stock-catalyst-event-table cookieContext="StockCatalystEventDashboardTable"
+                                                [rowsToDisplay]="3"
+                                                [rowsPerPageOptions]="[3,9,12]"
+                                                [displayStockSearchFilter]="false">
+                    </stock-catalyst-event-table>
                 </p-panel>
             </div>
         </div>

@@ -6,7 +6,6 @@ import { ModelObject } from '../../model/common/model-object';
 import { ViewChild } from '@angular/core';
 import { StockAutoCompleteComponent } from './stock-autocomplete.component';
 import { isNullOrUndefined } from 'util';
-import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { StockPriceQuoteContainer } from '../../model/common/stock-price-quote-container';
 import { StockQuoteContainer } from '../../model/common/stock-quote-container';
 import { StockCompany } from '../../model/entity/stock-company';

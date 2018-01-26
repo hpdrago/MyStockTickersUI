@@ -1,23 +1,23 @@
-import { StockNotesContainer } from "../common/stock-notes-container";
 import { DateOrTimePeriod } from '../../common/date-or-time-period.enum';
 import { StockQuote } from './stock-quote';
 import { StockPriceQuote } from './stock-price-quote';
-import { StockPriceQuoteContainer } from '../common/stock-price-quote-container';
-import { StockQuoteContainer } from '../common/stock-quote-container';
 import { StockModelObject } from '../common/stock-model-object';
 import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
 import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
+import { AdditionalStockModelObjectColumns } from '../../component/stock-table/additional-stock-model-object-columns';
+import { ModelObject } from '../common/model-object';
+import { StockAnalystConsensus } from './stock-analyst-consensus';
+import { StockCompany } from './stock-company';
+import { GainsLosses } from './gains-losses';
+import { CommonStockModelObjectColumns } from '../../component/stock-table/common-stock-model-object-columns';
 
 /**
  * This entity contains the elements for the stock summary
  *
  * Created 10/17/2017
  */
-export class StockCatalystEvent extends StockModelObject<StockCatalystEvent>
-                                implements StockNotesContainer,
-                                           StockPriceQuoteContainer,
-                                           StockQuoteContainer
-
+export class StockCatalystEvent extends ModelObject<StockCatalystEvent>
+                                implements StockModelObject
 {
     public tickerSymbol: string;
     public id: string;
@@ -32,8 +32,16 @@ export class StockCatalystEvent extends StockModelObject<StockCatalystEvent>
     public timePeriod: number;
     public timePeriodYear: number;
     public catalystDate: Date;
+
+    /*
+     * Stock model object properties.
+     */
+    public stockAnalystConsensus: StockAnalystConsensus;
+    public stockCompany: StockCompany;
+    public stockGainsLosses: GainsLosses;
     public stockPriceQuote: StockPriceQuote;
     public stockQuote: StockQuote;
+    public stockPriceWhenCreated: number;
 
     public getNotes(): string
     {
@@ -77,15 +85,8 @@ export class StockCatalystEvent extends StockModelObject<StockCatalystEvent>
 
     public getDefaultCrudTableColumns(): CrudTableColumns
     {
-        let crudTableColumns = super.getDefaultCrudTableColumns();
-        /*
-    public dateOrTimePeriod: DateOrTimePeriod;
-    public timePeriod: number;
-    public timePeriodYear: number;
-    public catalystDate: Date;
-    public stockPriceQuote: StockPriceQuote;
-    public stockQuote: StockQuote;
-    */
+        let crudTableColumns = new CrudTableColumns([]);
+        crudTableColumns.addAll( new CommonStockModelObjectColumns() );
         crudTableColumns.addColumn( {
                                         colId: 'catalystDesc',
                                         header: 'Description',
@@ -115,5 +116,23 @@ export class StockCatalystEvent extends StockModelObject<StockCatalystEvent>
                                         sortable: true
                                     } );
         return crudTableColumns;
+    }
+
+    /**
+     * Creates a list of the stock columns.
+     * @return {CrudTableColumns}
+     */
+    public getAdditionalCrudTableColumns(): CrudTableColumns
+    {
+        return new AdditionalStockModelObjectColumns();
+    }
+
+    public initializeStockModelObjects()
+    {
+        this.stockPriceQuote = new StockPriceQuote();
+        this.stockQuote = new StockQuote();
+        this.stockCompany = new StockCompany();
+        this.stockGainsLosses = new GainsLosses();
+        this.stockAnalystConsensus = new StockAnalystConsensus();
     }
 }

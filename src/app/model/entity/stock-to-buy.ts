@@ -1,22 +1,25 @@
-import { StockNotesContainer } from "../common/stock-notes-container";
-import { StockNotesSourceContainer } from '../common/stock-notes-source-container';
-import { StockPriceQuoteContainer } from '../common/stock-price-quote-container';
-import { StockQuoteContainer } from '../common/stock-quote-container';
 import { StockModelObject } from '../common/stock-model-object';
 import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
 import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
+import { ModelObject } from '../common/model-object';
+import { StockAnalystConsensus } from './stock-analyst-consensus';
+import { GainsLosses } from './gains-losses';
+import { StockCompany } from './stock-company';
+import { StockPriceQuote } from './stock-price-quote';
+import { StockQuote } from './stock-quote';
+import { AdditionalStockModelObjectColumns } from '../../component/stock-table/additional-stock-model-object-columns';
+import { CommonStockModelObjectColumns } from '../../component/stock-table/common-stock-model-object-columns';
 
 /**
  * This entity contains the elements for the stock to buy
  *
  * Created 10/17/2017
  */
-export class StockToBuy extends StockModelObject<StockToBuy> implements StockNotesContainer,
-                                                                        StockNotesSourceContainer,
-                                                                        StockPriceQuoteContainer,
-                                                                        StockQuoteContainer
+export class StockToBuy extends ModelObject<StockToBuy>
+                        implements StockModelObject
 {
     public id: string;
+    public tickerSymbol: string;
     public customerId: string;
     public comments: string;
     public buySharesUpToPrice: number;
@@ -26,6 +29,15 @@ export class StockToBuy extends StockModelObject<StockToBuy> implements StockNot
     public completed: boolean;
     public buyAfterDate: Date;
     public tags: string[];
+
+    /*
+     * Stock model object properties.
+     */
+    public stockAnalystConsensus: StockAnalystConsensus;
+    public stockCompany: StockCompany;
+    public stockGainsLosses: GainsLosses;
+    public stockPriceQuote: StockPriceQuote;
+    public stockQuote: StockQuote;
 
     public getNotes(): string
     {
@@ -73,7 +85,8 @@ export class StockToBuy extends StockModelObject<StockToBuy> implements StockNot
      */
     public getDefaultCrudTableColumns(): CrudTableColumns
     {
-        let crudTableColumns: CrudTableColumns = super.getDefaultCrudTableColumns();
+        let crudTableColumns: CrudTableColumns = new CrudTableColumns([] );
+        crudTableColumns.addAll( new CommonStockModelObjectColumns() );
         crudTableColumns.addColumn( {
                                         colId: 'recordBuy',
                                         header: 'Record Buy',
@@ -116,5 +129,23 @@ export class StockToBuy extends StockModelObject<StockToBuy> implements StockNot
                                         sortable: false
                         } );
         return crudTableColumns;
+    }
+
+    /**
+     * Creates a list of the stock columns.
+     * @return {CrudTableColumns}
+     */
+    public getAdditionalCrudTableColumns(): CrudTableColumns
+    {
+        return new AdditionalStockModelObjectColumns();
+    }
+
+    public initializeStockModelObjects()
+    {
+        this.stockPriceQuote = new StockPriceQuote();
+        this.stockQuote = new StockQuote();
+        this.stockCompany = new StockCompany();
+        this.stockGainsLosses = new GainsLosses();
+        this.stockAnalystConsensus = new StockAnalystConsensus();
     }
 }

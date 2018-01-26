@@ -14,6 +14,17 @@ import { isNullOrUndefined } from 'util';
     selector: 'crud-table-column-by-data-type',
     template: `
         <div [ngSwitch]="column.dataType">
+            <div *ngSwitchCase="CrudTableColumnType.STRING">
+                {{getProperty( modelObject, column.field )}}
+            </div>
+            <div *ngSwitchCase="CrudTableColumnType.STAR_RATING">
+                <p-rating [ngModel]="getProperty( modelObject, column.field )">
+                </p-rating>
+            </div>
+            <div *ngSwitchCase="CrudTableColumnType.DATE">
+                <date [dateValue]="getProperty( modelObject, column.field )">
+                </date>
+            </div>
             <div *ngSwitchCase="CrudTableColumnType.CURRENCY">
                 <div style="text-align: right">
                     <currency [currencyValue]="getProperty( modelObject, column.field )">
@@ -48,9 +59,6 @@ import { isNullOrUndefined } from 'util';
                 <gain-loss-percent [percentValue]="getProperty( modelObject, column.field )">
                 </gain-loss-percent>
             </div>
-            <div *ngSwitchCase="CrudTableColumnType.STRING">
-                {{getProperty( modelObject, column.field )}}
-            </div>
             <div *ngSwitchCase="CrudTableColumnType.MARKET_CAP">
                 <millify-column [value]="getProperty( modelObject, column.field )">
                 </millify-column>
@@ -58,6 +66,10 @@ import { isNullOrUndefined } from 'util';
             <div *ngSwitchCase="CrudTableColumnType.STOCK_ANALYST_CONSENSUS">
                 <stock-analyst-consensus [tickerSymbol]="getProperty( modelObject, 'tickerSymbol' )">
                 </stock-analyst-consensus>
+            </div>
+            <div *ngSwitchCase="CrudTableColumnType.STOCK_ANALYST_PRICE_TARGETS">
+                <stock-analyst-price-targets [tickerSymbol]="getProperty( modelObject, 'tickerSymbol' )">
+                </stock-analyst-price-targets>
             </div>
             <div *ngSwitchDefault>
                 No switch case for data type {{column.dataType}}

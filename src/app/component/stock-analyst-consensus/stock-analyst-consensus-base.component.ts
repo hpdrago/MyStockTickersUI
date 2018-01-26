@@ -3,6 +3,7 @@ import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensu
 import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 import { BaseComponent } from '../common/base.component';
 import { ToastsManager } from 'ng2-toastr';
+import { isNullOrUndefined } from 'util';
 
 /**
  * Base class for components that get their information from the StockAnalystConsensusCache.
@@ -31,9 +32,9 @@ export class StockAnalystConsensusBaseComponent extends BaseComponent implements
     public ngOnInit(): void
     {
         this.debug( 'tickerSymbol: ' + this.tickerSymbol );
-        if ( this.tickerSymbol == null )
+        if ( isNullOrUndefined( this.tickerSymbol ))
         {
-            throw new Error( 'tickerSymbol cannot be null' );
+            throw new Error( 'tickerSymbol cannot be null or undefined' );
         }
         this.stockAnalystConsensusCache
             .subscribe( this.tickerSymbol, (stockAnalystConsensus) => this.stockAnalystConsensusChange( stockAnalystConsensus ));

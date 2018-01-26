@@ -1,7 +1,7 @@
 <!----------------------------------------------------------------------------------------------------------
 DEFINE THE FILTER TEMPLATE TO INCLUDE THE STOCK SYMBOL SEARCH
 ------------------------------------------------------------------------------------------------------------>
-<ng-template #filterTemplate>
+<ng-template *ngIf="displayStockSearchFilter" #filterTemplate>
     <div class="crud-form ui-grid-row">
         <div class="ui-grid-col-6 ui-state-default">
             <stock-search (stockSelected)="onStockSelected( $event )"
@@ -31,16 +31,16 @@ DEFINE THE TABLE LAYOUT
                    [filterTemplate]="filterTemplate"
                    [cookieContext]="cookieContext"
                    [modelObjectRows]="modelObjectRows"
+                   [rowsToDisplay]="rowsToDisplay"
+                   [rowsPerPageOptions]="rowsPerPageOptions"
                    [(displayColumns)]="displayColumns"
                    [defaultColumns]="defaultColumns"
                    [additionalColumns]="additionalColumns"
                    [paginator]="paginator"
                    [pageLinks]="pageLinks"
                    [totalRecords]="totalRecords"
+                   [loadingData]="loadingData"
                    [(selection)]="selectedModelObject"
-                   (onRowSelect)="onRowSelect"
-                   (onRowUnselect)="onRowUnselect"
-                   (onLazyLoad)="lazyLoadTable"
-                   [lazy]="true"
-                   (onRowDblclick)="onRowDoubleClick">
+                   (rowSelected)="onRowSelect($event)"
+                   [lazy]="true">
 </crud-table-layout>

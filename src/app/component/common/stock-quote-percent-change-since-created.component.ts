@@ -26,7 +26,7 @@ export class StockQuotePercentChangeSinceCreatedComponent extends BaseComponent
      * The stock model object from which the ticker symbol is used to register for stock price quote changes.
      */
     @Input()
-    protected stockModelObject: StockModelObject<any>;
+    protected stockModelObject: StockModelObject
 
     /**
      * Set from the {@code StockPriceQuoteComponent}.

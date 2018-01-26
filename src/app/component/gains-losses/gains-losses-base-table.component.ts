@@ -6,7 +6,6 @@ import { GainsLosses } from '../../model/entity/gains-losses';
 import { GainsLossesFactory } from '../../model/factory/gains-losses.factory';
 import { GainsLossesCrudService } from '../../service/crud/gains-losses-crud.service';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
-import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
 
 /**
@@ -23,7 +22,6 @@ export abstract class GainsLossesBaseTableComponent extends StockModelObjectTabl
      * @param {GainsLossesController} gainsLossesController
      * @param {GainsLossesFactory} gainsLossesFactory
      * @param {GainsLossesCrudService} gainsLossesCrudService
-     * @param {StockQuoteCacheService} stockQuoteCacheService
      * @param {CookieService} cookieService
      */
     protected constructor( protected toaster: ToastsManager,
@@ -31,7 +29,6 @@ export abstract class GainsLossesBaseTableComponent extends StockModelObjectTabl
                            protected gainsLossesController: GainsLossesController,
                            protected gainsLossesFactory: GainsLossesFactory,
                            protected gainsLossesCrudService: GainsLossesCrudService,
-                           protected stockQuoteCacheService: StockQuoteCacheService,
                            protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
@@ -40,7 +37,6 @@ export abstract class GainsLossesBaseTableComponent extends StockModelObjectTabl
                gainsLossesController,
                gainsLossesFactory,
                gainsLossesCrudService,
-               stockQuoteCacheService,
                cookieService );
     }
 

@@ -77,7 +77,7 @@ export class CustomerCrudService extends CrudRestService<Customer>
     }
 
     /**
-     * Before calling {@code getSourceSelectedItems}, call this method to check to see if they are currently loading.
+     * Before calling {@code getSourceSelectedItems}, call this method to check to see if they are currently loadingData.
      * @param {(boolean) => any} fn
      * @return {Subscription}
      */

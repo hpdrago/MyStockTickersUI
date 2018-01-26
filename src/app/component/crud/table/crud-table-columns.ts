@@ -1,5 +1,4 @@
 import { CrudTableColumn } from './crud-table-column';
-import { CrudTableColumnType } from './crud-table-column-type';
 import { isNullOrUndefined } from 'util';
 import { Column } from 'primeng/shared';
 
@@ -30,12 +29,14 @@ export class CrudTableColumns
      */
     public addColumn( column: CrudTableColumn )
     {
+        /*
         if ( column.dataType != CrudTableColumnType.CUSTOM &&
              isNullOrUndefined( column.field ) )
         {
             throw new ReferenceError( "Non custom fields must have a field property set: " +
                 JSON.stringify( column ) );
         }
+        */
         this.columns.push( column );
     }
 
@@ -98,7 +99,17 @@ export class CrudTableColumns
      */
     public addAll( crudTableColumns: CrudTableColumns )
     {
-        this.columns = this.columns.concat( crudTableColumns.columns );
+        crudTableColumns.columns
+                        .forEach(column =>
+                                 {
+                                     /*
+                                      * don't add duplicates.
+                                      */
+                                     if ( this.getColumn( column.colId ) == null )
+                                     {
+                                         this.columns = this.columns.concat( crudTableColumns.columns );
+                                     }
+                                 })
     }
 
     /**

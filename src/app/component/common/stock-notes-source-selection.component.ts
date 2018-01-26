@@ -63,7 +63,7 @@ export class StockNotesSourceSelectionComponent extends BaseComponent implements
                             this.sourceItems = sourceItems;
                             this.debug( "loadResources source items set " + JSON.stringify( this.sourceItems ) );
                             /*
-                             * force a change of source id if one is set.  It was probably set before loading of
+                             * force a change of source id if one is set.  It was probably set before loadingData of
                              * the source items so we need to make it look like it is an new modelObjectRows.
                              */
                             if ( !isNullOrUndefined( this.notesSourceId ))

@@ -1,5 +1,5 @@
 import { BaseComponent } from '../common/base.component';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesCrudActionHandler } from './stock-notes-crud-action-handler';
@@ -9,8 +9,6 @@ import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action
 import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
-import { StockNotesDialogComponent } from './stock-notes-dialog.component';
-import { CrudOperation } from '../crud/common/crud-operation';
 
 /**
  * Component to display the stock notes dialog to create a new note.

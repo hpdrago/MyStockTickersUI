@@ -1,6 +1,13 @@
 import { StockModelObject } from '../common/stock-model-object';
 import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
 import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
+import { StockAnalystConsensus } from './stock-analyst-consensus';
+import { StockCompany } from './stock-company';
+import { GainsLosses } from './gains-losses';
+import { StockPriceQuote } from './stock-price-quote';
+import { StockQuote } from './stock-quote';
+import { ModelObject } from '../common/model-object';
+import { CommonStockModelObjectColumns } from '../../component/stock-table/common-stock-model-object-columns';
 
 /**
  * This class defines the information about a single stock that the customer is tracking in
@@ -8,13 +15,16 @@ import { CrudTableColumnType } from '../../component/crud/table/crud-table-colum
  *
  * Created by mike on 11/1/2016.
  */
-export class PortfolioStock extends StockModelObject<PortfolioStock>
+export class PortfolioStock extends ModelObject<PortfolioStock>
+                            implements StockModelObject
 {
     public id: string;
+    public tickerSymbol: string;
     public portfolioId: string;
     public customerId: string;
     public numberOfShares: number;
     public averageUnitCost: number;
+    public stockPriceWhenCreated: number;
     public lastPrice: number;
     public stopLossPrice: number;
     public stopLossShares: number;
@@ -22,6 +32,15 @@ export class PortfolioStock extends StockModelObject<PortfolioStock>
     public profitTakingShares: number;
     public rank: number;
     public rankPercent: number;
+
+    /*
+     * Stock model object properties.
+     */
+    public stockAnalystConsensus: StockAnalystConsensus;
+    public stockCompany: StockCompany;
+    public stockGainsLosses: GainsLosses;
+    public stockPriceQuote: StockPriceQuote;
+    public stockQuote: StockQuote;
 
     public isEqualPrimaryKey( modelObject: PortfolioStock )
     {
@@ -98,21 +117,10 @@ export class PortfolioStock extends StockModelObject<PortfolioStock>
         this.rankPercent = rankPercent;
     }
 
-    /*public numberOfShares: number;
-    public averageUnitCost: number;
-    public lastPrice: number;
-    public realizedGains: number;
-    public realizedLosses: number;
-    public stopLossPrice: number;
-    public stopLossShares: number;
-    public profitTakingPrice: number;
-    public profitTakingShares: number;
-    private rank: number;
-    private rankPercent: number;
-    */
     public getDefaultCrudTableColumns(): CrudTableColumns
     {
         let crudTableColumns = new CrudTableColumns( null );
+        crudTableColumns.addAll( new CommonStockModelObjectColumns() );
         crudTableColumns.addColumn( {
                                         colId: 'numberOfShares',
                                         header: 'Qty',
@@ -126,6 +134,57 @@ export class PortfolioStock extends StockModelObject<PortfolioStock>
                                         dataType: CrudTableColumnType.CURRENCY,
                                         sortable: true
                                     } );
+        crudTableColumns.addColumn( {
+                                        colId: 'averageUnitCost',
+                                        header: 'Avg Price',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'stopLossPrice',
+                                        header: 'Stop Loss Price',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'stopLossShares',
+                                        header: 'Stop Loss Shares',
+                                        dataType: CrudTableColumnType.NUMBER,
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'profitTakingPrice',
+                                        header: 'Profit Taking Price',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'profitTakingShares',
+                                        header: 'Profit Taking Shares',
+                                        dataType: CrudTableColumnType.NUMBER,
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'rank',
+                                        header: 'Rank',
+                                        dataType: CrudTableColumnType.NUMBER,
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'rankPercent',
+                                        header: 'Rank Percent',
+                                        dataType: CrudTableColumnType.PERCENT,
+                                        sortable: true
+                                    } );
         return crudTableColumns;
+    }
+
+    public initializeStockModelObjects()
+    {
+        this.stockPriceQuote = new StockPriceQuote();
+        this.stockQuote = new StockQuote();
+        this.stockCompany = new StockCompany();
+        this.stockGainsLosses = new GainsLosses();
+        this.stockAnalystConsensus = new StockAnalystConsensus();
     }
 }

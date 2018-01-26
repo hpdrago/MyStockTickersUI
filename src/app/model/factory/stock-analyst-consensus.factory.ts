@@ -40,8 +40,8 @@ export class StockAnalystConsensusFactory extends StockModelObjectFactory<StockA
         stockAnalystConsensus.lowAnalystPriceTarget = 0;
         stockAnalystConsensus.highAnalystPriceTarget = 0;
         stockAnalystConsensus.analystPriceDate = null;
-        stockAnalystConsensus.setStockPriceQuote( this.stockPriceQuoteFactory.newModelObject() );
-        stockAnalystConsensus.setStockQuote( this.stockQuoteFactory.newModelObject() );
+        //stockAnalystConsensus.setStockPriceQuote( this.stockPriceQuoteFactory.newModelObject() );
+        //stockAnalystConsensus.setStockQuote( this.stockQuoteFactory.newModelObject() );
         return stockAnalystConsensus;
     }
 }

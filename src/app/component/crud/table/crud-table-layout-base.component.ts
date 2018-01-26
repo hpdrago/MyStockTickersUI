@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { ModelObject } from '../../../model/common/model-object';
 import { CrudTableColumn } from './crud-table-column';
 import { BaseComponent } from '../../common/base.component';
@@ -7,7 +7,6 @@ import { CrudTableColumnSelectorDialogComponent } from './crud-table-column-sele
 import { CrudTableColumns } from './crud-table-columns';
 import { CookieService } from 'ngx-cookie-service';
 import { isNullOrUndefined } from 'util';
-import { CrudController } from '../common/crud-controller';
 
 /**
  * This abstract base class defines the input and output parameters for the crud table.  As a standalone class, it
@@ -50,10 +49,10 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     protected selection: any;
 
     @Input()
-    protected loading: boolean;
+    protected loadingData: boolean;
 
     /**
-     * Lazy loading flag.
+     * Lazy loadingData flag.
      * @type {boolean}
      */
     @Input()
@@ -140,39 +139,35 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     @Input()
     protected displayColumns: any[];
 
-    /**
-     * Column definitions for the crudTableColumns that are selected/displayed.
-     * @type {any[]}
-     */
-    protected selectedColumns: CrudTableColumns = new CrudTableColumns( [] );
-
-    /**
-     * Column definitions for crudTableColumns that have not been selected to be displayed and thus are available.
-     * @type {CrudTableColumns}
-     */
-    protected availableColumns: CrudTableColumns = new CrudTableColumns( [] );
-
-
     /******************************************************************************************************************
      *
      * O U T P U T S
      *
      ******************************************************************************************************************/
 
+    /*
     @Output()
     protected selectionChange = new EventEmitter<any>();
+    */
 
     @Output()
-    protected onRowSelect = new EventEmitter<any>();
+    protected rowSelected = new EventEmitter<any>();
 
+    /*
     @Output()
-    protected onRowUnselect = new EventEmitter<any>();
+    protected rowUnselected = new EventEmitter<any>();
+    */
 
     @Output()
     protected lazyLoadTable = new EventEmitter<any>();
 
     @Output()
-    protected onRowDoubleClick = new EventEmitter<any>();
+    protected onLazyLoadEvent = new EventEmitter<any>();
+
+    /*
+    @Output()
+    protected onRowDoubleClick;// = new EventEmitter<any>();
+    */
 
     /**
      * Emitter when a model object is selected.
@@ -194,9 +189,16 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     private selectedColumnsCookieName: string;
 
     /**
-     * The controller is passed in by the parent component.
+     * Column definitions for the crudTableColumns that are selected/displayed.
+     * @type {any[]}
      */
-    private _crudController: CrudController<any>;
+    protected selectedColumns: CrudTableColumns = new CrudTableColumns( [] );
+
+    /**
+     * Column definitions for crudTableColumns that have not been selected to be displayed and thus are available.
+     * @type {CrudTableColumns}
+     */
+    protected availableColumns: CrudTableColumns = new CrudTableColumns( [] );
 
     /**
      * Constructor.
@@ -237,6 +239,7 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
             this.selectedColumns
                 .addAllFromArray( this.defaultColumns );
         }
+
         /*
          * Recalculate the available columns by adding all other columns and then removing selected columns.
          * We re-calculate them instead of storing them in a cookie because the columns contained within the model
@@ -331,23 +334,6 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     }
 
     /**
-     * Set crud controller.
-     * @param {CrudController<any>} crudController
-     */
-    public set crudController( crudController: CrudController<any> )
-    {
-        const methodName = 'setCrudController';
-        this.log( methodName )
-        this._crudController = crudController;
-        /*
-         * Subscribe to customize button click
-         */
-        this.addSubscription( 'subscribeToCustomizeButtonClickedEvent',
-                              this._crudController
-                                  .subscribeToCustomizeButtonClickedEvent( () => this.customizeColumns() ) );
-    }
-
-    /**
      * Subclasses must create a ViewChild component and provide the reference to this parent class.
      * @return {CrudTableColumnSelectorDialogComponent}
      */
@@ -387,5 +373,27 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
                                })
         this.debug( methodName + '.end ' + JSON.stringify( returnColumns.toArray() ));
         return returnColumns;
+    }
+
+    /**
+     * This method is call by the PrimeNG table to load the table.
+     */
+    protected onLazyLoad()
+    {
+        const methodName = 'onLazyLoad';
+        this.debug( methodName );
+        this.onLazyLoadEvent.emit();
+    }
+
+    /**
+     * This method is called when the row is selected.
+     * The selected model object will be emitted to the parent component.
+     * @param modelObject
+     */
+    protected onRowSelect( modelObject: any )
+    {
+        const methodName = 'onRowSelect';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        this.rowSelected.emit( modelObject );
     }
 }

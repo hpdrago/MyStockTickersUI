@@ -3,9 +3,7 @@
  */
 import { Injectable } from "@angular/core";
 import { SessionService } from "../session.service";
-import { CrudRestService } from "./crud-rest.serivce";
 import { AppConfigurationService } from "../app-configuration.service";
-import { Http } from "@angular/http";
 import { StockPosition } from '../../model/entity/stock-position';
 import { StockPositionFactory } from '../../model/factory/stock-position-factory';
 import { KeyValuePairs } from '../../common/key-value-pairs';

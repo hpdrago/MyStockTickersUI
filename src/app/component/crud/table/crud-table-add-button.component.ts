@@ -5,7 +5,6 @@ import { CrudStateStore } from '../common/crud-state-store';
 import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
-import { CrudOperation } from '../common/crud-operation';
 
 /**
  * Add button for standard CRUD based table

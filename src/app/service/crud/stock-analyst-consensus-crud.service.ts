@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { SessionService } from "../session.service";
 import { AppConfigurationService } from "../app-configuration.service";
-import { CrudRestService } from "./crud-rest.serivce";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { StockAnalystConsensusFactory } from "../../model/factory/stock-analyst-consensus.factory";
 import { KeyValuePairs } from "../../common/key-value-pairs";

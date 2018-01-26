@@ -2,16 +2,14 @@
  * Created by mike on 9/19/2016.
  */
 import { Component, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { BaseComponent } from "../common/base.component";
-import { StockPriceQuoteService } from "../../service/crud/stock-price-quote.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockCompany } from "../../model/entity/stock-company";
-import { StockNotesTableDashboardComponent } from "./stock-notes-table-dashboard.component";
-import { StockAnalystConsensusDashboardTableComponent } from "./stock-analyst-consensus-dashboard-table.component";
-import { StockToBuyTableDashboardComponent } from "./stock-to-buy-table-dashboard.component";
 import { StockSearchComponent } from "../common/stock-search.component";
-import { StockCatalystEventDashboardTableComponent } from './stock-catalyst-event-dashboard-table.component';
+import { StockNotesTableComponent } from '../stock-notes/stock-notes-table.component';
+import { StockAnalystConsensusTableComponent } from '../stock-analyst-consensus/stock-analyst-consensus-table.component';
+import { StockToBuyTableComponent } from '../stock-to-buy/stock-to-buy-table.component';
+import { StockCatalystEventTableComponent } from '../stock-catalyst-event/stock-catalyst-event-table.component';
 
 /**
  * This component displays four tables: stock notes, stock catalyst events, stocks to buy, and stock analyst consensus
@@ -24,20 +22,22 @@ import { StockCatalystEventDashboardTableComponent } from './stock-catalyst-even
 })
 export class DashboardComponent extends BaseComponent
 {
-    @ViewChild(StockNotesTableDashboardComponent)
-    private stockNotesTableDashboardComponent: StockNotesTableDashboardComponent;
-    @ViewChild(StockAnalystConsensusDashboardTableComponent)
-    private stockAnalystConsensusDashboardTableComponent: StockAnalystConsensusDashboardTableComponent;
-    @ViewChild(StockToBuyTableDashboardComponent)
-    private stockToBuyTableDashboardComponent: StockToBuyTableDashboardComponent
-    @ViewChild(StockCatalystEventDashboardTableComponent)
-    private stockCatalystEventDashboardTableComponent: StockCatalystEventDashboardTableComponent;
+    @ViewChild(StockNotesTableComponent)
+    private stockNotesTableComponent: StockNotesTableComponent;
+
+    @ViewChild(StockAnalystConsensusTableComponent)
+    private stockAnalystConsensusTableComponent: StockAnalystConsensusTableComponent;
+
+    @ViewChild(StockToBuyTableComponent)
+    private stockToBuyTableComponent: StockToBuyTableComponent
+
+    @ViewChild(StockCatalystEventTableComponent)
+    private stockCatalystEventTableComponent: StockCatalystEventTableComponent;
+
     @ViewChild(StockSearchComponent)
     private stockSearchComponent: StockSearchComponent;
 
-    constructor( protected toaster: ToastsManager,
-                 private router: Router,
-                 private stockService: StockPriceQuoteService )
+    constructor( protected toaster: ToastsManager )
     {
         super( toaster );
     }
@@ -48,10 +48,10 @@ export class DashboardComponent extends BaseComponent
      */
     protected onStockSelected( stock: StockCompany )
     {
-        this.stockNotesTableDashboardComponent.loadTableForTickerSymbol( stock.tickerSymbol );
-        this.stockToBuyTableDashboardComponent.loadTableForTickerSymbol( stock.tickerSymbol );
-        this.stockAnalystConsensusDashboardTableComponent.loadTableForTickerSymbol( stock.tickerSymbol );
-        this.stockCatalystEventDashboardTableComponent.loadTableForTickerSymbol( stock.tickerSymbol );
+        this.stockNotesTableComponent.loadTableForTickerSymbol( stock.tickerSymbol );
+        this.stockToBuyTableComponent.loadTableForTickerSymbol( stock.tickerSymbol );
+        this.stockAnalystConsensusTableComponent.loadTableForTickerSymbol( stock.tickerSymbol );
+        this.stockCatalystEventTableComponent.loadTableForTickerSymbol( stock.tickerSymbol );
     }
 
     /**
@@ -59,10 +59,10 @@ export class DashboardComponent extends BaseComponent
      */
     protected onResetButtonClick()
     {
-        this.stockNotesTableDashboardComponent.refreshTable();
-        this.stockToBuyTableDashboardComponent.refreshTable();
-        this.stockAnalystConsensusDashboardTableComponent.refreshTable();
-        this.stockCatalystEventDashboardTableComponent.refreshTable();
+        this.stockNotesTableComponent.refreshTable();
+        this.stockToBuyTableComponent.refreshTable();
+        this.stockAnalystConsensusTableComponent.refreshTable();
+        this.stockCatalystEventTableComponent.refreshTable();
     }
 }
 

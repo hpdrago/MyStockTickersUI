@@ -1,49 +1,49 @@
-<div id="customerAccountTableDiv" ngStyle="">
-    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-12">
-                <p-dataTable [value]="modelObjectRows"
-                             [ngClass]="{'editing-table': crudOperation != CrudOperation.NONE }"
-                             selectionMode="single"
-                             [(selection)]="selectedModelObject"
-                             (onRowSelect)="onRowSelect($event)"
-                             (onRowUnselect)="onRowUnSelect($event)"
-                             [totalRecords]="totalRows"
-                             [loading]="loading"
-                             [lazy]="false"
-                             (onRowDblclick)="onRowDoubleClick($event)"
-                             [responsive]="true">
+<!----------------------------------------------------------------------------------------------------------
+BUTTONS TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #buttonsTemplate>
+    <tradeit-account-table-buttons>
+    </tradeit-account-table-buttons>
+</ng-template>
 
-                    <!----------------------------------------------------------------------------------------------------------
-                    NAME
-                    ------------------------------------------------------------------------------------------------------------>
-                    <p-column id="name"
-                              field="name"
-                              header="Name"
-                              [style]="{'width':'60px'}"
-                              [sortable]="true">
-                    </p-column>
+<!----------------------------------------------------------------------------------------------------------
+DIALOG TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #dialogTemplate>
+    <tradeit-account-dialog>
+    </tradeit-account-dialog>
+</ng-template>
 
-                    <!----------------------------------------------------------------------------------------------------------
-                    BROKER
-                    ------------------------------------------------------------------------------------------------------------>
-                    <p-column id="broker"
-                              field="brokerage"
-                              header="Broker"
-                              [style]="{'width':'60px'}"
-                              [sortable]="true">
-                    </p-column>
-
-                    <p-footer>
-                        <tradeit-account-table-buttons>
-                        </tradeit-account-table-buttons>
-                    </p-footer>
-                </p-dataTable>
-            </div>
+<!----------------------------------------------------------------------------------------------------------
+CUSTOM STOCK TO BUY COLUMNS TEMPLATE
+column and modelObject are parameters to the template
+------------------------------------------------------------------------------------------------------------>
+<ng-template #columnsTemplate let-column="column" let-modelObject="modelObject">
+    <div [ngSwitch]="column.colId">
+        <div *ngSwitchDefault>
+            <crud-table-column-by-data-type [modelObject]="modelObject"
+                                            [column]="column">
+            </crud-table-column-by-data-type>
         </div>
     </div>
-</div>
-<tradeit-security-question-dialog>
-</tradeit-security-question-dialog>
-<tradeit-account-dialog>
-</tradeit-account-dialog>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+TABLE DEFINITION
+------------------------------------------------------------------------------------------------------------>
+<crud-table-layout [buttonsTemplate]="buttonsTemplate"
+                   [columnsTemplate]="columnsTemplate"
+                   [dialogTemplate]="dialogTemplate"
+                   cookieContext="getCookieContext()"
+                   [modelObjectRows]="modelObjectRows"
+                   [(displayColumns)]="displayColumns"
+                   [defaultColumns]="defaultColumns"
+                   [additionalColumns]="additionalColumns"
+                   [totalRecords]="totalRows"
+                   [(selection)]="selectedModelObject"
+                   (rowSelected)="onRowSelect($event)"
+                   (onLazyLoad)="lazyLoadTable($event)"
+                   [lazy]="true"
+                   [loadingData]="isLoading()"
+                   (onRowDblclick)="onRowDoubleClick($event)">
+</crud-table-layout>

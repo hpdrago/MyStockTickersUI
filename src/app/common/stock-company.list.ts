@@ -1,5 +1,3 @@
-import { StockCompanyService } from '../service/crud/stock-company.service';
-import { StockPriceQuoteService } from '../service/crud/stock-price-quote.service';
 import { StockCompany } from '../model/entity/stock-company';
 import { StockCompanyPriceQuoteService } from '../service/stock-company-price-quote.service';
 

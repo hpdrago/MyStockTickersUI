@@ -8,11 +8,20 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
+import { Component } from '@angular/core';
+import { StockAnalystConsensusActionHandler } from './stock-analyst-consensus-action-handler';
 
 /**
  * This is the base class for the tab and dashboard table for StockCompany Analyst Consensus information
  */
-export abstract class StockAnalystConsensusTableComponent extends StockModelObjectTableComponent<StockAnalystConsensus>
+@Component
+({
+    selector: 'stock-analyst-consensus-table',
+    styleUrls: ['./stock-analyst-consensus-table.component.css'],
+    templateUrl: './stock-analyst-consensus-table.component.html',
+    providers: [StockAnalystConsensusStateStore, StockAnalystConsensusController, StockAnalystConsensusActionHandler]
+})
+export class StockAnalystConsensusTableComponent extends StockModelObjectTableComponent<StockAnalystConsensus>
 {
     /**
      * Constructor.
@@ -24,13 +33,12 @@ export abstract class StockAnalystConsensusTableComponent extends StockModelObje
      * @param {StockQuoteCacheService} stockQuoteCacheService
      * @param {CookieService} cookieService
      */
-    protected constructor( protected toaster: ToastsManager,
-                           protected stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
-                           protected stockAnalystConsensusController: StockAnalystConsensusController,
-                           protected stockAnalystConsensusFactory: StockAnalystConsensusFactory,
-                           protected stockAnalystConsensusCrudService: StockAnalystConsensusCrudService,
-                           protected stockQuoteCacheService: StockQuoteCacheService,
-                           protected cookieService: CookieService )
+    public constructor( protected toaster: ToastsManager,
+                        protected stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
+                        protected stockAnalystConsensusController: StockAnalystConsensusController,
+                        protected stockAnalystConsensusFactory: StockAnalystConsensusFactory,
+                        protected stockAnalystConsensusCrudService: StockAnalystConsensusCrudService,
+                        protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
@@ -38,7 +46,6 @@ export abstract class StockAnalystConsensusTableComponent extends StockModelObje
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,
                stockAnalystConsensusCrudService,
-               stockQuoteCacheService,
                cookieService );
     }
 }

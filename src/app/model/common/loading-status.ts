@@ -3,8 +3,8 @@
  */
 
 /**
- * This enum defines the loading status values for entities.  Some entities are loading asynchronously and this enum
- * defines the status of the loading.
+ * This enum defines the loadingData status values for entities.  Some entities are loadingData asynchronously and this enum
+ * defines the status of the loadingData.
  */
 export enum LoadingStatus
 {

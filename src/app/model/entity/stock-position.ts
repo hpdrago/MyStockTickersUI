@@ -1,19 +1,22 @@
-import { StockTableEntry } from '../common/stock-table-entry';
 import { StockModelObject } from '../common/stock-model-object';
-import { StockQuoteContainer } from '../common/stock-quote-container';
-import { StockPriceQuoteContainer } from '../common/stock-price-quote-container';
 import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
 import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
+import { StockAnalystConsensus } from './stock-analyst-consensus';
+import { StockCompany } from './stock-company';
+import { GainsLosses } from './gains-losses';
+import { StockPriceQuote } from './stock-price-quote';
+import { StockQuote } from './stock-quote';
+import { ModelObject } from '../common/model-object';
+import { CommonStockModelObjectColumns } from '../../component/stock-table/common-stock-model-object-columns';
 
 /**
  * This class contains the information for a single stock position within a LinkedAccount.
  */
-export class StockPosition extends StockModelObject<StockPosition>
-                           implements StockTableEntry,
-                                      StockQuoteContainer,
-                                      StockPriceQuoteContainer
+export class StockPosition extends ModelObject<StockPosition>
+                           implements StockModelObject
 {
     public id: string;
+    public tickerSymbol: string;
     public customerId: string;
     public tradeItAccountId: string;
     public linkedAccountId: string;
@@ -31,6 +34,16 @@ export class StockPosition extends StockModelObject<StockPosition>
     public version: number;
     public rank: number;
     public rankPercent: number;
+    public stockPriceWhenCreated: number;
+
+    /*
+     * Stock model object properties.
+     */
+    public stockAnalystConsensus: StockAnalystConsensus;
+    public stockCompany: StockCompany;
+    public stockGainsLosses: GainsLosses;
+    public stockPriceQuote: StockPriceQuote;
+    public stockQuote: StockQuote;
 
     public getPrimaryKeyValue(): any
     {
@@ -98,7 +111,41 @@ export class StockPosition extends StockModelObject<StockPosition>
 
     public getDefaultCrudTableColumns(): CrudTableColumns
     {
-        let crudTableColumns = super.getDefaultCrudTableColumns();
+        let crudTableColumns = new CrudTableColumns(null);
+        crudTableColumns.addColumn( {
+                                        colId: 'tickerSymbol',
+                                        header: 'Ticker Symbol',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'tickerSymbol',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'quantity',
+                                        header: 'Shares',
+                                        dataType: CrudTableColumnType.NUMBER,
+                                        field: 'quantity',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'rank',
+                                        header: 'Rank',
+                                        dataType: CrudTableColumnType.NUMBER,
+                                        field: 'rank',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'rankPercent',
+                                        header: 'Rank %',
+                                        dataType: CrudTableColumnType.PERCENT,
+                                        field: 'rankPercent',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'lastPrice',
+                                        header: 'Last Price',
+                                        dataType: CrudTableColumnType.CUSTOM,
+                                        sortable: true
+                                    } );
         crudTableColumns.addColumn( {
                                         colId: 'costBasis',
                                         header: 'Cost Basis',
@@ -107,10 +154,17 @@ export class StockPosition extends StockModelObject<StockPosition>
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {
-                                        colId: 'quantity',
-                                        header: 'Shares',
-                                        dataType: CrudTableColumnType.NUMBER,
-                                        field: 'quantity',
+                                        colId: 'openPrice',
+                                        header: 'Open',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        field: 'openPrice',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'closePrice',
+                                        header: 'Close',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        field: 'closePrice',
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {
@@ -141,41 +195,15 @@ export class StockPosition extends StockModelObject<StockPosition>
                                         field: 'totalGainLossPercentage',
                                         sortable: true
                                     } );
-        crudTableColumns.addColumn( {
-                                        colId: 'exchange',
-                                        header: 'Exchange',
-                                        dataType: CrudTableColumnType.STRING,
-                                        field: 'exchange',
-                                        sortable: true
-                                    } );
-        crudTableColumns.addColumn( {
-                                        colId: 'openPrice',
-                                        header: 'Open',
-                                        dataType: CrudTableColumnType.CURRENCY,
-                                        field: 'openPrice',
-                                        sortable: true
-                                    } );
-        crudTableColumns.addColumn( {
-                                        colId: 'closePrice',
-                                        header: 'Close',
-                                        dataType: CrudTableColumnType.CURRENCY,
-                                        field: 'closePrice',
-                                        sortable: true
-                                    } );
-        crudTableColumns.addColumn( {
-                                        colId: 'rank',
-                                        header: 'Rank',
-                                        dataType: CrudTableColumnType.NUMBER,
-                                        field: 'rank',
-                                        sortable: true
-                                    } );
-        crudTableColumns.addColumn( {
-                                        colId: 'rankPercent',
-                                        header: 'Rank %',
-                                        dataType: CrudTableColumnType.PERCENT,
-                                        field: 'rankPercent',
-                                        sortable: true
-                                    } );
         return crudTableColumns;
+    }
+
+    public initializeStockModelObjects()
+    {
+        this.stockPriceQuote = new StockPriceQuote();
+        this.stockQuote = new StockQuote();
+        this.stockCompany = new StockCompany();
+        this.stockGainsLosses = new GainsLosses();
+        this.stockAnalystConsensus = new StockAnalystConsensus();
     }
 }
