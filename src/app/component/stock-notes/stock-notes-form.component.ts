@@ -209,8 +209,10 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     {
         var methodName = "setFormValues";
         this.log( methodName + " modelObject: " + JSON.stringify( modelObject ));
+        this.log( methodName + " crudOperation: " + CrudOperation.getName( this.crudOperation ) );
         if ( this.isCrudCreateOperation() )
         {
+            this.tickerSymbols = modelObject.tickerSymbol;
             this.log( methodName + " tickerSymbols: " + JSON.stringify( this.tickerSymbols ));
             this.setFormValue( 'tickerSymbols', isNullOrUndefined( this.tickerSymbols ) ? "" : this.tickerSymbols );
             if ( isNullOrUndefined( modelObject.actionTaken ))
@@ -236,6 +238,8 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                                     {
                                         this.log( methodName + " found: " + stockPriceQuote.tickerSymbol );
                                         modelObject.stockPriceWhenCreated = stockPriceQuote.lastPrice;
+                                        this.companies = stockPriceQuote.companyName;
+                                        this.lastPrices = '' + stockPriceQuote.lastPrice;
                                     }
 
                                 },
@@ -253,10 +257,10 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             {
                 this.stockService
                     .getStockPriceQuote( modelObject.tickerSymbol )
-                    .subscribe( stockPrice =>
+                    .subscribe( stockPriceQuote =>
                                 {
-                                    this.companies = stockPrice.companyName;
-                                    this.lastPrices = '' + stockPrice.lastPrice;
+                                    this.companies = stockPriceQuote.companyName;
+                                    this.lastPrices = '' + stockPriceQuote.lastPrice;
                                 } );
             }
         }

@@ -91,6 +91,8 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
      */
     private onStockPriceChange( stockPriceQuote: StockPriceQuote )
     {
+        let methodName = 'onStockPriceChange';
+        this.log( methodName + ' ' + JSON.stringify( stockPriceQuote ));
         /*
          * Due to change detection errors since this can be called while in ngInit, run it on the next
          * change cycle.
@@ -102,10 +104,11 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
             {
                 if ( stockPriceQuote.error )
                 {
-                    //
+                    this.logError( methodName + ' ' + stockPriceQuote.error );
                 }
                 else
                 {
+                    this.log( methodName + ' ' + JSON.stringify( stockPriceQuote ));
                     this.stockPriceModelObject
                         .lastPrice = stockPriceQuote.lastPrice;
                     this.stockPriceModelObject

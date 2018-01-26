@@ -46,6 +46,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      * DIALOG Subjects.
      */
     private dialogCloseButtonClickedSubject: Subject<DialogCloseEventType>;
+    private dialogDisplaySubject: Subject<void>;
 
     /*
      * FORM Subjects
@@ -108,6 +109,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         //this.panelSaveButtonClickCompletedSubject = new Subject<T>();
         //this.panelResetButtonClickedSubject = new Subject<void>();
         this.dialogCloseButtonClickedSubject = new Subject<DialogCloseEventType>();
+        this.dialogDisplaySubject = new Subject<void>();
         this.formErrorsSubject = new Subject<string[]>();
         this.formDirtySubject = new Subject<boolean>();
         this.formTouchedSubject = new Subject<boolean>();
@@ -485,6 +487,27 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         this.debug( 'sendDialogCloseButtonClickedEvent ' + DialogCloseEventType.getName( event ) +
             this.getToObserversMessage( this.dialogCloseButtonClickedSubject ));
         this.dialogCloseButtonClickedSubject.next( event );
+    }
+
+    /**
+     * The {@code CrudTableComponent} will call this method to register to receive notification when the close
+     * button is clicked on the panel.
+     * @return Subscription
+     */
+    public subscribeToDialogDisplayEvent( fn: () => any ): Subscription
+    {
+        var subscription: Subscription = this.dialogDisplaySubject.asObservable().subscribe( fn );
+        this.debug( 'subscribeToDialogDisplayEvent subscribers: ' + this.dialogDisplaySubject.observers.length );
+        return subscription;
+    }
+
+    /**
+     * The {@code CrudPanelComponent will call this method when the user clicks the close button.
+     */
+    public sendDialogDisplayEvent()
+    {
+        this.debug( 'sendDialogDisplayEvent' + this.getToObserversMessage( this.dialogDisplaySubject ));
+        this.dialogDisplaySubject.next();
     }
 
     /**

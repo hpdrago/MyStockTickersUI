@@ -99,6 +99,9 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
         this.addSubscription( methodName,
                               this.crudController
                                   .subscribeFormReadyToDisplay( () => this.setDisplayDialog() ));
+        this.addSubscription( methodName,
+                              this.crudController
+                                  .subscribeToDialogDisplayEvent( () => this.setDisplayDialog() ));
         this.debug( methodName + ".end" );
     }
 

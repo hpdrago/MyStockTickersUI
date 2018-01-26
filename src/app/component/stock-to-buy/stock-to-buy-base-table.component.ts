@@ -87,11 +87,15 @@ export abstract class StockToBuyBaseTableComponent extends StockModelObjectTable
         stockNotes.notes = stockToBuy.comments;
         stockNotes.actionTaken = StockNotesActionTaken.BUY;
         stockNotes.bullOrBear = StockNotesSentiment.BULL;
+        stockNotes.setNotesSourceId( stockToBuy.notesSourceId );
+        stockNotes.setNotesSourceName( stockToBuy.notesSourceName );
+        stockNotes.tags = stockToBuy.tags;
         let stockNoteStock: StockNotesStock = new StockNotesStock();
         stockNoteStock.tickerSymbol = stockNotes.tickerSymbol;
         stockNoteStock.stockPrice = stockToBuy.lastPrice;
         stockNoteStock.customerId = stockToBuy.customerId;
         stockNotes.stocks = [stockNoteStock];
+        this.log( "StockNotes: " + JSON.stringify( stockNotes ));
         /*
          * Register to get notified when the user closes the stock notes dialog to determine if the user should
          * be prompted to delete the stock to buy entry.
@@ -109,14 +113,12 @@ export abstract class StockToBuyBaseTableComponent extends StockModelObjectTable
         /*
          * Display the stock notes dialog.
          */
-        this.stockToBuyStateStore
+        this.stockNotesStateStore
             .sendCrudOperationChangedEvent( CrudOperation.CREATE );
-        this.stockToBuyStateStore
-            .sendModelObjectChangedEvent( this, stockToBuy );
-        /*
-        this.stockToBuyController
-            .sendDisplayFormRequestEvent();
-            */
+        this.stockNotesStateStore
+            .sendModelObjectChangedEvent( this, stockNotes );
+        this.stockNotesController
+            .sendDialogDisplayEvent();
     }
 
 }

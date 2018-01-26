@@ -17,25 +17,23 @@ export abstract class StockCrudFormComponent<T extends ModelObject<T> & StockPri
 {
     @ViewChild( StockAutoCompleteComponent )
     private stockAutoCompleteComponent: StockAutoCompleteComponent;
-    private resettingForm: boolean = false;
 
-    /**
-     * Override to set the stock auto complete appropriately.
-     */
-    protected enableDisableInputs(): void
+    protected disableInputs(): void
     {
+        super.disableInputs();
         if ( !isNullOrUndefined( this.stockAutoCompleteComponent ))
         {
-            if ( this.shouldDisable() && !this.resettingForm )
-            {
-                this.stockAutoCompleteComponent.setDisabledState( true );
-            }
-            else
-            {
-                this.stockAutoCompleteComponent.setDisabledState( false );
-            }
+            this.stockAutoCompleteComponent.setDisabledState( false );
         }
-        super.enableDisableInputs();
+    }
+
+    protected enableInputs(): void
+    {
+        super.enableInputs();
+        if ( !isNullOrUndefined( this.stockAutoCompleteComponent ))
+        {
+            this.stockAutoCompleteComponent.setDisabledState( true );
+        }
     }
 
     /**

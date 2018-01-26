@@ -5,6 +5,7 @@ import { ToastsManager } from 'ng2-toastr';
 import { CustomerCrudService } from '../../service/crud/customer-crud.service';
 import { StockNotesSourceContainer } from '../../model/common/stock-notes-source-container';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { isNullOrUndefined } from 'util';
 
 /**
  * Drop down list box component for stock notes sources.
@@ -16,6 +17,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
                            class="crud-form"
                            [options]="sourceItems"
                            (onChange)="sourcesOnChange($event)"
+                           [(ngModel)]="notesSourceId"
                            [style]="{'width':'225px'}"
                            maxlength="20"
                            uppercase
@@ -41,12 +43,20 @@ export class StockNotesSourceComponent extends BaseComponent implements OnInit, 
     //private stockNotesSourceList: StockNotesSourceList = new StockNotesSourceList( [] );
     private sourceAdded: boolean;
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {CustomerCrudService} customerCrudService
+     */
     constructor( protected toaster: ToastsManager,
                  private customerCrudService: CustomerCrudService )
     {
         super( toaster );
     }
 
+    /**
+     * Initialization.
+     */
     public ngOnInit(): void
     {
         this.customerCrudService
@@ -55,6 +65,16 @@ export class StockNotesSourceComponent extends BaseComponent implements OnInit, 
                         {
                             this.sourceItems = sourceItems;
                             this.debug( "loadResources source items set " + JSON.stringify( this.sourceItems ) );
+                            /*
+                             * force a change of source id if one is set.  It was probably set before loading of
+                             * the source items so we need to make it look like it is an new value.
+                             */
+                            if ( !isNullOrUndefined( this.notesSourceId ))
+                            {
+                                let saveSourceId = this.notesSourceId;
+                                this.notesSourceId = null;
+                                this.tickThenRun( () => this.notesSourceId = saveSourceId );
+                            }
                         });
     }
 

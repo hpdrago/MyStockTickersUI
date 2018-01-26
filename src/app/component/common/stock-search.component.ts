@@ -1,6 +1,5 @@
 import { BaseComponent } from "./base.component";
 import { Component, EventEmitter, Output, ViewChild } from "@angular/core";
-import { StockCompany } from "../../model/entity/stockCompany";
 import { ToastsManager } from "ng2-toastr";
 import { StockAutoCompleteComponent } from "./stock-autocomplete.component";
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';

@@ -18,7 +18,7 @@ export class StockNotesController extends CrudController<StockNotes>
      * Constructor.
      * @param {StockNotesStateStore} stockNotesStateStore
      * @param {StockNotesFactory} stockNotesFactory
-     * @param {StockNotesActionHandler} stockNotesActionHandler
+     * @param {StockNotesCrudActionHandler} stockNotesCrudActionHandler
      */
     constructor( stockNotesStateStore: StockNotesStateStore,
                  stockNotesFactory: StockNotesFactory,

@@ -22,7 +22,7 @@ export class RankCalculator
         let totalMarketValue = this.calculateTotalMarketValue( stocks );
         stocks.forEach( ( stockTableEntry: StockTableEntry ) =>
                         {
-                            stockTableEntry.setRankPercent( (stockTableEntry.getMarketValue() / totalMarketValue) * 100 );
+                            stockTableEntry.setRankPercent( stockTableEntry.getMarketValue() / totalMarketValue );
                         } );
     }
 
