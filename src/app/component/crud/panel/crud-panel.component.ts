@@ -17,6 +17,11 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
     extends BaseCrudComponent<T>
     implements OnInit
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {CrudServiceContainer<T extends ModelObject<T>>} crudServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {

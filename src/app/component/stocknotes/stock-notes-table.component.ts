@@ -7,6 +7,7 @@ import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enu
 import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { BullOrBear } from "../../common/bull-or-bear.enum";
+import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
 
 /**
  * This is the base class for Stock Notes tables.
@@ -17,6 +18,14 @@ export abstract class StockNotesTableComponent extends StockQuoteModelObjectTabl
 {
     protected urlMap: StockUrlMap = new StockUrlMap();
 
+    /**
+     * Constructor.
+     * @param {SessionService} session
+     * @param {ToastsManager} toaster
+     * @param {CrudRestErrorReporter} crudRestErrorReporter
+     * @param {StockNotesCrudServiceContainer} stockNotesServiceContainer
+     * @param {StockQuoteRefreshService} stockQuoteRefreshService
+     */
     constructor( protected session: SessionService,
                  protected toaster: ToastsManager,
                  protected stockNotesServiceContainer: StockNotesCrudServiceContainer,

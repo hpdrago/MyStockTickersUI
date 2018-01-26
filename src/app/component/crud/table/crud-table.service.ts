@@ -10,16 +10,36 @@ import { CrudOperation } from "../common/crud-operation";
  */
 export class CrudTableService <T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
-    private tableSelectionChangedSubject: Subject<T> = new Subject();
-    private tableContentChangedSubject: Subject<void> = new Subject<void>();
-    private tableRowAddedSubject: Subject<T> = new Subject();
-    private tableRowUpdatedSubject: Subject<T> = new Subject();
-    private tableRowDeletedSubject: Subject<T> = new Subject();
+    private tableSelectionChangedSubject: Subject<T>;
+    private tableContentChangedSubject: Subject<void>;
+    private tableRowAddedSubject: Subject<T>;
+    private tableRowUpdatedSubject: Subject<T>;
+    private tableRowDeletedSubject: Subject<T>;
 
+    /**
+     * Constructor
+     * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     * @param {ModelObjectChangeService<T extends ModelObject<T>>} modelObjectChangeService
+     */
     constructor( protected modelObjectFactory: ModelObjectFactory<T>,
                  protected modelObjectChangeService: ModelObjectChangeService<T> )
     {
         super( modelObjectFactory );
+
+
+    }
+
+    /**
+     * Creates the table service subjects.
+     */
+    protected createSubjects(): void
+    {
+        super.createSubjects();
+        this.tableSelectionChangedSubject = new Subject<T>();
+        this.tableContentChangedSubject = new Subject<void>();
+        this.tableRowAddedSubject = new Subject<T>();
+        this.tableRowUpdatedSubject = new Subject<T>();
+        this.tableRowDeletedSubject = new Subject<T>();
     }
 
     /**

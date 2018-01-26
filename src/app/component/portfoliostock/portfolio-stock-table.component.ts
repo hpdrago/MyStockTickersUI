@@ -22,11 +22,17 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
     private portfolio: Portfolio;
     private title: string = 'Portfolio Stocks';
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {SessionService} session
+     * @param {PortfolioStockCrudServiceContainer} portfolioStockCrudServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,
                  protected portfolioStockCrudServiceContainer: PortfolioStockCrudServiceContainer )
     {
-        super( TableLoadingStrategy.FULL_ON_CREATE, toaster, portfolioStockCrudServiceContainer );
+        super( TableLoadingStrategy.ALL_ON_CREATE, toaster, portfolioStockCrudServiceContainer );
     }
 
     private getAddButtonText(): string

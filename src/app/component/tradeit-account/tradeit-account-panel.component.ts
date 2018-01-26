@@ -4,7 +4,7 @@ import { ToastsManager } from "ng2-toastr";
 import { SessionService } from "../../service/session.service";
 import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
-import { CrudOperation } from "../crud/common/crud-operation";
+import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
 
 /**
  * This is the customer form panel.
@@ -16,18 +16,17 @@ import { CrudOperation } from "../crud/common/crud-operation";
             } )
 export class TradeItAccountPanelComponent extends CrudPanelComponent<TradeItAccount>
 {
-    private CrudOperation = CrudOperation;
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {CrudRestErrorReporter} crudRestErrorReporter
+     * @param {SessionService} sessionService
+     * @param {TradeItAccountCrudServiceContainer} customerAccountCrudServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  protected customerAccountCrudServiceContainer: TradeItAccountCrudServiceContainer )
     {
         super( toaster, customerAccountCrudServiceContainer );
     }
-
-    public ngOnInit(): void
-    {
-        super.ngOnInit();
-        //this.displayModelObject( this.sessionService.customer, CrudOperation.UPDATE );
-    }
-
 }

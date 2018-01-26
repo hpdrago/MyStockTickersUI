@@ -31,7 +31,7 @@ export class PortfolioStockDialogComponent extends CrudDialogComponent<Portfolio
     /**
      * This method is called when a 409 HTTP Code is received from a rest call.
      */
-    protected getDuplicateKeyErrorMessage(): string
+    public getDuplicateKeyErrorMessage(): string
     {
         return this.modelObject.tickerSymbol + " already exists in portfolio";
     }

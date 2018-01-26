@@ -21,6 +21,15 @@ import { TradeItService } from "../../service/tradeit/tradeit.service";
 export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccount>
 {
     private brokerageItems: SelectItem[];
+
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {SessionService} sessionService
+     * @param {TradeItService} tradeItService
+     * @param {FormBuilder} formBuilder
+     * @param {TradeItAccountCrudServiceContainer} customerAccountCrudServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private tradeItService: TradeItService,

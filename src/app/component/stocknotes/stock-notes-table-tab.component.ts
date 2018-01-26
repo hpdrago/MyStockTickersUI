@@ -18,6 +18,13 @@ import { StockNotesTableComponent } from "./stock-notes-table.component";
     } )
 export class StockNotesTableTabComponent extends StockNotesTableComponent
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockNotesCrudServiceContainer} stockNotesServiceContainer
+     * @param {SessionService} session
+     * @param {StockQuoteRefreshService} stockQuoteRefreshService
+     */
     constructor( protected toaster: ToastsManager,
                  protected stockNotesServiceContainer: StockNotesCrudServiceContainer,
                  protected session: SessionService,

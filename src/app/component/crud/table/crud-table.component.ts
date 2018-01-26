@@ -15,6 +15,7 @@ import { ModelObjectChangeEvent } from "../../../service/crud/model-object-chang
 import { DataTable, LazyLoadEvent } from "primeng/primeng";
 import { PaginationPage } from "../../../common/pagination";
 import { TableLoadingStrategy } from "../../common/table-loading-strategy";
+import { CrudRestErrorReporter } from "../../../service/crud/crud-rest-error-reporter";
 
 /**
  * This is the base class for CRUD enabled tables.
@@ -52,6 +53,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     @ViewChild(DataTable)
     protected dataTable: DataTable;
 
+    /**
+     * Constructor.
+     * @param {TableLoadingStrategy} tableLoadingStrategy
+     * @param {ToastsManager} toaster
+     * @param {CrudRestErrorReporter} crudRestErrorReporter
+     * @param {CrudServiceContainer<T extends ModelObject<T>>} crudServiceContainer
+     */
     constructor( protected tableLoadingStrategy: TableLoadingStrategy,
                  protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )

@@ -14,6 +14,11 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 })
 export class TradeItAccountTableButtonsComponent extends CrudTableButtonsComponent<TradeItAccount>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {TradeItAccountCrudServiceContainer} customerAccountServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  protected customerAccountServiceContainer: TradeItAccountCrudServiceContainer )
     {

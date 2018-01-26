@@ -17,6 +17,11 @@ import { isNullOrUndefined } from "util";
            })
 export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {CrudServiceContainer<T extends ModelObject<T>>} crudServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {

@@ -11,6 +11,11 @@ import { TableLoadingStrategy } from "./table-loading-strategy";
 export abstract class StockModelObjectTableComponent<T extends StockModelObject<T>>
     extends CrudTableComponent<T>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {CrudServiceContainer<T extends StockModelObject<T>>} crudServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {

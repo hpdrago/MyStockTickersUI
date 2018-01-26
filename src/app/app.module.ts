@@ -18,9 +18,26 @@ import { MatProgressBarModule, MatSliderModule } from '@angular/material';
  * PrimeNG
  */
 import {
-    ButtonModule, CalendarModule, CheckboxModule, ChipsModule, ConfirmationService, ConfirmDialogModule,
-    DataTableModule, DialogModule, DropdownModule, EditorModule, InputTextareaModule, InputTextModule, ListboxModule,
-    MenubarModule, PanelModule, RatingModule, SelectButtonModule, SliderModule, TabMenuModule, TabViewModule,
+    ButtonModule,
+    CalendarModule,
+    CheckboxModule,
+    ChipsModule,
+    ConfirmationService,
+    ConfirmDialogModule,
+    DataTableModule,
+    DialogModule,
+    DropdownModule,
+    EditorModule,
+    InputTextareaModule,
+    InputTextModule,
+    ListboxModule,
+    MenubarModule,
+    PanelModule,
+    RatingModule,
+    SelectButtonModule,
+    SliderModule,
+    TabMenuModule,
+    TabViewModule,
     TooltipModule
 } from "primeng/primeng";
 import { CurrencyMaskModule } from "ng2-currency-mask";
@@ -152,6 +169,8 @@ import { LinkedAccountFactory } from "./model/factory/linked-account.factory";
 import { LinkedAccountCrudService } from "./service/crud/linked-account-crud.service";
 import { LinkedAccountTableButtonsComponent } from "./component/linked-account/linked-account-table-buttons.component";
 import { LinkedAccountTableComponent } from "./component/linked-account/linked-account-table.component";
+import { TradeitAccountOAuthService } from "./component/tradeit-account/tradeit-account-oauth.service";
+import { RestErrorReporter } from "./service/rest-error-reporter";
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -318,6 +337,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         TradeItAccountCrudServiceContainer,
         TradeItAccountCrudService,
         TradeItAccountFactory,
+        TradeitAccountOAuthService,
 
         LinkedAccountCrudServiceContainer,
         LinkedAccountCrudService,
@@ -361,6 +381,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockToBuyCrudServiceContainer,
         StockToBuyFactory,
 
+        RestErrorReporter,
         SessionService,
         ConfirmationService,
         AppConfigurationService,

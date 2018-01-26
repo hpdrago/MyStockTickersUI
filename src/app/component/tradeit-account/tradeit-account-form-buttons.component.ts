@@ -1,11 +1,13 @@
-import { ChangeDetectorRef, Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
-import { TradeItOAuthAccessResult } from "../../service/tradeit/apiresults/tradeit-oauth-access-result";
-import { TradeItGetOauthPopupURLResult } from "../../service/tradeit/apiresults/tradeit-get-oauth-popup-url-result";
+import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
+import { TradeItAPIResult } from "../../service/tradeit/apiresults/tradeit-api-result";
+import { TradeitOAuthComponent } from "./tradeit-oauth-component";
+import { Observable } from "rxjs/Observable";
 
 /**
  * Button panel component for the Account dialog.
@@ -15,37 +17,24 @@ import { TradeItGetOauthPopupURLResult } from "../../service/tradeit/apiresults/
 @Component({
     selector:    'tradeit-account-form-buttons',
     templateUrl: '../crud/form/crud-form-buttons.component.html',
-    styleUrls: ['../crud/form/crud-form-buttons.component.css']
+    styleUrls: ['../crud/form/crud-form-buttons.component.css'],
+    providers: [TradeitAccountOAuthService]
 })
-export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent<TradeItAccount> implements OnDestroy
+export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent<TradeItAccount>
+    implements OnDestroy, TradeitOAuthComponent
 {
-    private requestInProcess = false;
-    private requestCompleted = false;
-    private destroyed: boolean = false;
+    /**
+     * Constructor
+     * @param {ToastsManager} toaster
+     * @param {TradeItAccountCrudServiceContainer} customerAccountCrudServiceContainer
+     * @param {TradeItService} tradeItService
+     * @param {TradeitAccountOAuthService} tradeItOAuthService
+     */
     constructor( protected toaster: ToastsManager,
                  private customerAccountCrudServiceContainer: TradeItAccountCrudServiceContainer,
-                 private tradeItService: TradeItService,
-                 private changeDetectorRef: ChangeDetectorRef )
+                 private tradeItOAuthService: TradeitAccountOAuthService )
     {
         super( toaster, customerAccountCrudServiceContainer );
-        /*
-         * Setup listener for broker loggin message receipt
-         * https://stackoverflow.com/questions/41444343/angular-2-window-postmessage
-         */
-        if ( window.addEventListener )
-        {
-            window.addEventListener("message", this.receiveMessage.bind(this), false );
-        }
-        else
-        {
-            (<any>window).attachEvent("onmessage", this.receiveMessage.bind(this) );
-        }
-    }
-
-    public ngOnDestroy(): void
-    {
-        this.destroyed = true;
-        super.ngOnDestroy();
     }
 
     /**
@@ -55,58 +44,15 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
      * requestCompleted, and destroyed flags are used to prevent errors showing up as the second call results in a error from TradeIt.
      * @param event
      */
-    private receiveMessage( event: any )
+    public receiveMessage( event: any )
     {
-        if ( event.data && !this.requestInProcess && !this.requestCompleted && !this.destroyed )
-        {
-            var methodName = "receiveMessage";
-            this.log( methodName + " requestInProcess: " + this.requestInProcess );
-            this.log( methodName + " event: " + JSON.stringify( event ) );
-            try
-            {
-                var data = JSON.parse( event.data );
-                var oAuthVerifier = data.oAuthVerifier;
-                this.log( methodName + " oAuthVerifier: " + oAuthVerifier );
-                this.log( methodName + " getting OAuthAccessToken" );
-                this.tradeItService.getOAuthAccessToken( this.modelObject.brokerage, this.modelObject.name, oAuthVerifier )
-                                   .subscribe( (oAuthAccess: TradeItOAuthAccessResult) =>
-                                               {
-                                                   this.log( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ) +
-                                                             " requestCompleted: " + this.requestCompleted +
-                                                             " requestInProcess: " + this.requestInProcess );
-                                                   if ( !this.requestCompleted && !this.destroyed )
-                                                   {
-                                                       if ( oAuthAccess.status == "ERROR" )
-                                                       {
-                                                           this.reportTradeItError( oAuthAccess );
-                                                       }
-                                                       else
-                                                       {
-                                                           this.setModelObject( oAuthAccess.tradeItAccount );
-                                                           this.notifyAddButtonWorkSuccessful();
-                                                           this.log( methodName + " added account: " + JSON.stringify( this.modelObject ) );
-                                                           this.showInfo( oAuthAccess.tradeItAccount.name + " was successfully linked." )
-                                                           this.requestCompleted = true;
-                                                       }
-                                                   }
-                                               },
-                                               error =>
-                                               {
-                                                   if ( !this.requestInProcess && !this.requestCompleted )
-                                                   {
-                                                       this.reportRestError( error );
-                                                   }
-                                               });
-            }
-            catch( e )
-            {
-                // ignore exceptions as this is a general function that receives a lot of messages that are not
-                // what we are looking for.
-                console.log((<Error>e).message);
-            }
-            this.requestInProcess = true;
-            this.log( methodName + " setting requestInProcess: " + this.requestInProcess );
-        }
+        let methodName = "receiveMessage";
+        this.log( methodName + ".begin" );
+        /*
+         * Just forward the call back to the OAuth service.
+         */
+        this.tradeItOAuthService.receiveMessage( event );
+        this.log( methodName + ".end" );
     }
 
     /**
@@ -140,27 +86,41 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
         return "Add Account";
     }
 
+    /**
+     * When the add button is clicked, we need to validate the account with TradeIt.
+     * A window will be popped up requesting the user's brokerage credentials.
+     */
     protected onAddButtonClick(): void
     {
-        this.log( "onAddButtonClick" );
-        this.tradeItService
-            .getOAuthPopupURL( this.modelObject.brokerage )
-            .subscribe( (getOauthPopupURLResult: TradeItGetOauthPopupURLResult) =>
-                        {
-                            if ( getOauthPopupURLResult.status == "ERROR" )
-                            {
-                                this.reportTradeItError( getOauthPopupURLResult );
-                            }
-                            else
-                            {
-                                this.log( "onAddButtonClick: url: " + getOauthPopupURLResult.oAuthURL );
-                                this.log( "Opening login window" );
-                                window.open( getOauthPopupURLResult.oAuthURL );
-                            }
-                        },
-                        error =>
-                        {
-                            this.reportRestError( error );
-                        } );
+        let methodName = "onAddButtonClick";
+        this.log( methodName + ".begin" );
+        /*
+         * Need to setup the necessary window listeners so that the authentication (OAuth) window can be popped up.
+         */
+        this.tradeItOAuthService.register( this );
+        this.tradeItOAuthService
+            .openOAuthPopup( this, this.modelObject.brokerage );
+        this.log( methodName + ".end" );
+    }
+
+    /**
+     * This method is called by the {@code TradeItOAuthService} to get the current account.
+     * @return {TradeItAccount}
+     */
+    public getTradeItAccount(): TradeItAccount
+    {
+        return this.modelObject;
+    }
+
+    /**
+     * This method is called when the user has successfully authenticated a brokerage account.
+     */
+    public notifyAuthenticationSuccess( tradeItAccount: TradeItAccount )
+    {
+        let methodName = "notifyAuthenticationSuccess";
+        this.log( methodName + ".begin" )
+        this.setModelObject( tradeItAccount );
+        this.notifyAddButtonWorkSuccessful();
+        this.log( methodName + ".end" )
     }
 }

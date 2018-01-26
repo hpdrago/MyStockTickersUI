@@ -6,16 +6,16 @@ import { EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
-import { TradeItKeepSessionAliveResult } from "../../service/tradeit/apiresults/tradeit-keep-session-alive-result";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
-import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
+import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
+import { TradeitOAuthComponent } from "./tradeit-oauth-component";
+import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
 
 /**
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}
  * it is checked for authentication.
  */
-export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeItAccount> implements OnInit
+export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeItAccount> implements OnInit, TradeitOAuthComponent
 {
     @Output()
     private tradeItAccountSelected: EventEmitter<TradeItAccount>  = new EventEmitter<TradeItAccount>();
@@ -26,14 +26,16 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
     /**
      * Constructor
      * @param {ToastsManager} toaster
+     * @param {CrudRestErrorReporter} crudRestErrorReporter
      * @param {TradeitAccountCrudServiceContainer} tradeItAccountCrudServiceContainer
      * @param {TradeItService} tradeItService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItAccountCrudServiceContainer: TradeItAccountCrudServiceContainer,
-                 protected tradeItService: TradeItService )
+                 protected tradeItService: TradeItService,
+                 protected tradeItOAuthService: TradeitAccountOAuthService )
     {
-        super( TableLoadingStrategy.FULL_ON_CREATE, toaster, tradeItAccountCrudServiceContainer ) ;
+        super( TableLoadingStrategy.ALL_ON_CREATE, toaster, tradeItAccountCrudServiceContainer ) ;
     }
 
     public ngOnInit(): void
@@ -60,72 +62,20 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
         let methodName = "onRowSelect";
         this.log( methodName + ".begin " + JSON.stringify( event ));
         super.onRowSelect( event );
-        this.checkAuthentication();
+        this.tradeItOAuthService
+            .checkAuthentication( this.modelObject, this.tradeItSecurityQuestionDialog )
+            .subscribe( (tradeItAccount: TradeItAccount ) =>
+                        {
+                            this.log( methodName + " account authenticated or kept alive" );
+                            this.setModelObject( tradeItAccount );
+                            this.updateModelObjectRow( tradeItAccount );
+                            this.tradeItAccountSelected.emit( this.modelObject );
+                        },
+                        error =>
+                        {
+                            this.reportRestError( error );
+                        });
         this.log( methodName + ".end" );
-    }
-
-
-
-    /**
-     * Evaluates the the current TradeIt account to see if it needs to be authenticated with TradeIt.
-     * @return Observable<TradeItAccount> the account after authentication which includes the linked accounts.
-     */
-    protected checkAuthentication(): Observable<TradeItAccount>
-    {
-        let methodName = "checkAuthentication";
-        this.debug( methodName + ".begin isAuthenticated: " + this.modelObject.isAuthenticated() );
-        this.debug( methodName + " modelObject: " + JSON.stringify( this.modelObject ));
-        let completionSubject = new Subject<TradeItAccount>();
-        if ( !this.modelObject.isAuthenticated() )
-        {
-            this.log( methodName + " user is not authenticated" );
-            this.tradeItService
-                .authenticateAccount( this.modelObject.id )
-                .subscribe( ( authenticateResult: TradeItAuthenticateResult ) =>
-                            {
-                                this.log( methodName + " authenticateAccountResult: " + JSON.stringify( authenticateResult ) );
-                                //alert( JSON.stringify( authenticateResult ));
-                                if ( authenticateResult.isInformationNeeded() )
-                                {
-                                    this.log( methodName + " information needed" );
-                                    this.tradeItSecurityQuestionDialog.setCustomerAccount( this.modelObject );
-                                    this.tradeItSecurityQuestionDialog.setAuthenticationResult( authenticateResult );
-                                }
-                                /*
-                                 * If authentication succeeded, then emit the account selection event.
-                                 */
-                                else
-                                {
-                                    this.modelObject.linkedAccounts = authenticateResult.linkedAccounts;
-                                    this.log( methodName + " linkedAccounts: " + JSON.stringify( this.modelObject.linkedAccounts ));
-                                    this.tradeItAccountSelected.emit( this.modelObject );
-                                    completionSubject.next( this.modelObject );
-                                }
-                            },
-                            error =>
-                            {
-                                this.reportRestError( error );
-                                completionSubject.error( error );
-                            });
-        }
-        else
-        {
-            this.log( methodName + " user is authenticated sending keep alive message" );
-            this.tradeItService
-                .keepSessionAlive( this.modelObject )
-                .subscribe( (keepAliveResult: TradeItKeepSessionAliveResult ) =>
-                            {
-                                this.log( methodName + " keepAliveResult: " + JSON.stringify( keepAliveResult ));
-                                completionSubject.next( this.modelObject );
-                                this.tradeItAccountSelected.emit( this.modelObject );
-                            },
-                            error =>
-                            {
-                                this.reportRestError( error );
-                            });
-        }
-        this.debug( methodName + ".end" );
-        return completionSubject.asObservable();
     }
 
     /**
@@ -137,11 +87,43 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
         let methodName = "onAccountAdded";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
         this.setModelObject( tradeItAccount );
-        this.checkAuthentication()
+        this.tradeItOAuthService
+            .checkAuthentication( tradeItAccount, this.tradeItSecurityQuestionDialog )
             .subscribe( (tradeItAccount: TradeItAccount) =>
             {
-                this.log( methodName + " " + JSON.stringify( tradeItAccount ));
+                this.log( methodName + " authentication successful: " + JSON.stringify( tradeItAccount ));
+                this.setModelObject( tradeItAccount );
+            },
+            error =>
+            {
+                if ( error instanceof TradeItAuthenticateResult )
+                {
+                    this.reportTradeItError( error );
+                }
+                else
+                {
+                    this.reportRestError( error );
+                }
             });
+        this.log( methodName + ".end" );
+    }
+
+    public getTradeItAccount(): TradeItAccount
+    {
+        return this.modelObject;
+    }
+
+    public notifyAuthenticationSuccess( tradeItAccount: TradeItAccount )
+    {
+        let methodName = "notifyAuthenticationSuccess";
+        this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
+        this.log( methodName + ".end" );
+    }
+
+    public receiveMessage( event: any )
+    {
+        let methodName = "receiveMessage";
+        this.log( methodName + ".begin " + JSON.stringify( event ) );
         this.log( methodName + ".end" );
     }
 }

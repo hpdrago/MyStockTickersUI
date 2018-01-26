@@ -7,6 +7,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { isNullOrUndefined } from "util";
 import { StockQuote } from "../../model/entity/stock-quote";
 import { BaseCrudComponent } from "../crud/common/base-crud.component";
+import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
 
 /**
  * This component is a text input that finds stocks based on the incremental search of the input
@@ -45,6 +46,12 @@ export class StockAutoCompleteComponent extends BaseCrudComponent<Stock> impleme
     private disabled: boolean;
     private isStockSelected : boolean;
 
+    /**
+     * Constructor
+     * @param {ToastsManager} toaster
+     * @param {CrudRestErrorReporter} crudRestErrorReporter
+     * @param {StockCrudService} stockCrudService
+     */
     constructor( protected toaster: ToastsManager,
                  private stockCrudService: StockCrudService )
     {

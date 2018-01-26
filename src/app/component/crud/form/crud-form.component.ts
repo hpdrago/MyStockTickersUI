@@ -30,7 +30,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     private resourceLoaders: Observable<boolean>[] = [];
 
     /**
-     * C O N S T R U C T O R
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {CrudServiceContainer<T extends ModelObject<T>>} crudServiceContainer
      */
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
@@ -828,6 +830,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected invalidProperty( propertyName: string )
     {
-        this.debug( "invalidProperty " + propertyName );
+        //this.debug( "invalidProperty " + propertyName );
     }
 }

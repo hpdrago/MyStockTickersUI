@@ -26,11 +26,17 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
     @ViewChild(PortfolioStockTableComponent)
     private portfolioStocksComponent: PortfolioStockTableComponent;
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {SessionService} session
+     * @param {PortfolioCrudServiceContainer} portfolioCrudServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  protected session: SessionService,
                  protected portfolioCrudServiceContainer: PortfolioCrudServiceContainer )
     {
-        super( TableLoadingStrategy.FULL_ON_CREATE, toaster, portfolioCrudServiceContainer );
+        super( TableLoadingStrategy.ALL_ON_CREATE, toaster, portfolioCrudServiceContainer );
     }
 
     /**

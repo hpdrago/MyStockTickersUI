@@ -4,17 +4,22 @@
  * Created by mike on 10/23/2016.
  */
 import { BaseClass } from "../common/base-class";
+import { ToastsManager } from "ng2-toastr";
 
 export abstract class BaseService extends BaseClass
 {
-    constructor()
+    /**
+     * Constructor
+     */
+    constructor( protected toaster?: ToastsManager )
     {
-        super();
+        super( toaster );
     }
 
     protected reportError( error ): string
     {
         this.logger.error( error );
+        this.showError( error );
         return error;
     }
 }

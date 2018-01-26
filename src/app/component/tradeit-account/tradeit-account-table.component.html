@@ -3,7 +3,7 @@
         <div class="ui-grid-row">
             <div class="ui-grid-col-12">
                 <p-dataTable [value]="rows"
-                             [ngClass]="{'editing-table': crudOperation != OPERATION.NONE }"
+                             [ngClass]="{'editing-table': crudOperation != CrudOperation.NONE }"
                              selectionMode="single"
                              [(selection)]="selectedModelObject"
                              (onRowSelect)="onRowSelect($event)"
@@ -49,7 +49,7 @@
             <div class="ui-grid-col-4">
             </div>
             <div class="ui-grid-col-4">
-                <tradeit-account-panel [ngClass]="{'editing-form': crudOperation != OPERATION.NONE }">
+                <tradeit-account-panel [ngClass]="{'editing-form': crudOperation != CrudOperation.NONE }">
                 </tradeit-account-panel>
             </div>
             <div class="ui-grid-col-4">

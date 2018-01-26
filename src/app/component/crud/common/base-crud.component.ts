@@ -8,6 +8,7 @@ import { isNullOrUndefined } from "util";
 import { RestException } from "../../../common/rest-exception";
 import { TradeItException } from "../../../service/tradeit/tradeit-execption";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
+import { CrudRestErrorReporter } from "../../../service/crud/crud-rest-error-reporter";
 
 /**
  * This class is the base class for all CRUD components
@@ -16,6 +17,11 @@ import { ModelObjectFactory } from "../../../model/factory/model-object.factory"
  */
 export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
 {
+    /**
+     * Local type of enum so that it's available in the components HTML.
+     * @type {CrudOperation}
+     */
+    protected CrudOperation = CrudOperation;
     /**
      * Identifies the type of CRUD action
      */
@@ -27,7 +33,16 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      * The object that contains the form's data
      */
     protected modelObject: T;
+    /**
+     *
+     */
+    private crudRestErrorReporter: CrudRestErrorReporter;
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     */
     constructor( protected toaster: ToastsManager,
                  protected modelObjectFactory?: ModelObjectFactory<T> )
     {
@@ -35,6 +50,36 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
         if ( !this.toaster )
         {
             throw new Error( "toaster argument cannot be null" );
+        }
+        this.crudRestErrorReporter = this.createCrudRestErrorReporter();
+    }
+
+    /**
+     * Creates the instance of the CRUD REST error report to be used to report exceptions.
+     * @return {CrudRestErrorReporter}
+     */
+    protected createCrudRestErrorReporter(): CrudRestErrorReporter
+    {
+        return new CrudRestErrorReporter( this );
+    }
+
+    /**
+     * Resets behaviour subjects to a default value.
+     */
+    protected resetSubjects(): void
+    {
+        this.modelObjectChangeSubject.next( null );
+    }
+
+    /**
+     * Checks {@code this.modelObject} to make sure it's not null.
+     * If it is null, a ReferenceError exception is thrown.
+     */
+    protected checkModelObjectReference(): void
+    {
+        if ( isNullOrUndefined( this.modelObject ) )
+        {
+            throw new ReferenceError( "this.modelObject is null or undefined." );
         }
     }
 
@@ -67,7 +112,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
              /*
               * The object might still be initializing so execute on next clock tick
               */
-             this.tickThenRun( () => this.onCrudOperationChanged( newValue ) );
+             this.onCrudOperationChanged( newValue );
              //this.onCrudOperationChanged( newValue );
              break;
 
@@ -75,7 +120,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
              this.debug( "inputPropertyChange: " + property +
                  " previousValue: " + (previousValue ? JSON.stringify( previousValue ) : previousValue ) +
                  " newValue: " + (newValue ? JSON.stringify( newValue ) : newValue ));
-             this.tickThenRun( () => this.onModelObjectChanged( newValue ) );
+             this.onModelObjectChanged( newValue );
              //this.onModelObjectChanged( newValue );
              break;
 
@@ -223,40 +268,18 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent
      */
     protected reportRestError( rawJsonError ): RestException
     {
-        var restException: RestException;
         this.log( "reportRestError: " + JSON.stringify( rawJsonError ) );
-        if ( rawJsonError.status )
-        {
-            restException = new RestException( rawJsonError );
-            var message = restException.message;
-            var status = restException.status;
-            var error = restException.error;
-            var exception = restException.exception;
-            this.debug( "message: " + message );
-            this.debug( "status: " + status );
-            this.debug( "error: " + error );
-            this.debug( "exception: " + exception );
-            if ( restException.isDuplicateKeyExists() )
-            {
-                message = this.getDuplicateKeyErrorMessage();
-            }
-            else if ( exception == null )
-            {
-                var statusText = restException.statusText;
-                message = `Error ${status} - ${statusText}`;
-            }
-            else
-            {
-                message = `Error ${status} - ${error} - ${exception} - ${message}`;
-            }
-            this.showError( message );
-        }
-        else
-        {
-            this.log( "reportRestError: rawJsonError data does not have a status value" );
-            this.showError( rawJsonError );
-        }
+        var restException: RestException = this.crudRestErrorReporter.reportRestError( rawJsonError );
         return restException;
+    }
+
+    /**
+     * This method is called when a 409 HTTP Code is received from a rest call.
+     * Override this method to customize the error message
+     */
+    getDuplicateKeyErrorMessage(): string
+    {
+        return 'Sorry, you are attempting to create a duplicate entry';
     }
 
 }

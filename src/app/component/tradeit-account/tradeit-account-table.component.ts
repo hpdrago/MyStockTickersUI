@@ -1,9 +1,9 @@
 import { ToastsManager } from "ng2-toastr";
 import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { Component } from "@angular/core";
-import { CrudOperation } from "../crud/common/crud-operation";
 import { TradeitAccountBaseTableComponent } from "./tradeit-account-base-table.component";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
+import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -19,11 +19,18 @@ import { TradeItService } from "../../service/tradeit/tradeit.service";
 } )
 export class TradeItAccountTableComponent extends TradeitAccountBaseTableComponent
 {
-    private OPERATION = CrudOperation;
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {TradeItAccountCrudServiceContainer} customerAccountServiceContainer
+     * @param {TradeItService} tradeItService
+     * @param {TradeitAccountOAuthService} tradeItOAuthService
+     */
     constructor( protected toaster: ToastsManager,
                  protected customerAccountServiceContainer: TradeItAccountCrudServiceContainer,
-                 protected tradeItService: TradeItService )
+                 protected tradeItService: TradeItService,
+                 protected tradeItOAuthService: TradeitAccountOAuthService )
     {
-        super( toaster, customerAccountServiceContainer, tradeItService );
+        super( toaster, customerAccountServiceContainer, tradeItService, tradeItOAuthService );
     }
 }

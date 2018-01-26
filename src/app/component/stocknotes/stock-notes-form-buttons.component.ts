@@ -20,6 +20,13 @@ import { CrudOperation } from "../crud/common/crud-operation";
 })
 export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<StockNotes>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {SessionService} session
+     * @param {StockToBuyCrudServiceContainer} stocksToBuyServiceContainer
+     * @param {StockNotesCrudServiceContainer} stockNotesServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,
                  private stocksToBuyServiceContainer: StockToBuyCrudServiceContainer,

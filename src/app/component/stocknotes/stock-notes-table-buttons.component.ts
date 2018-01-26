@@ -14,12 +14,16 @@ import { StockNotes } from "../../model/entity/stock-notes";
 })
 export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<StockNotes>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockNotesCrudServiceContainer} stockNotesServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  protected stockNotesServiceContainer: StockNotesCrudServiceContainer )
     {
         super( toaster, stockNotesServiceContainer );
     }
-
 
     protected onAddButtonClick(): void
     {
@@ -37,5 +41,4 @@ export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<S
     {
         return "Delete Note";
     }
-
 }

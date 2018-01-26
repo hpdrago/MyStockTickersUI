@@ -39,7 +39,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
 
     public resetSubjects(): void
     {
-        this.modelObjectCrudOperationChangeSubject = new BehaviorSubject( null );
+        this.modelObjectCrudOperationChangeSubject.next( null );
         super.resetSubjects();
     }
 
@@ -169,7 +169,7 @@ export class CrudFormService<T extends ModelObject<T>> extends BaseCrudComponent
      */
     public sendFormErrors( errors: string[] )
     {
-        this.debug( "sendFormModelObjectVersionUpdateEvent: " );
+        //this.debug( "sendFormModelObjectVersionUpdateEvent: " );
         this.formErrorsSubject.next( errors );
     }
 

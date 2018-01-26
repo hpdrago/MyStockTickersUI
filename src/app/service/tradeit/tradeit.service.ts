@@ -14,9 +14,10 @@ import { TradeItException } from "./tradeit-execption";
 import { TradeItAPIResult } from "./apiresults/tradeit-api-result";
 import { TradeItKeepSessionAliveResult } from "./apiresults/tradeit-keep-session-alive-result";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
+import { GetOAuthTokenUpdateURLResult } from "./apiresults/tradeit-get-oath-token-update-url-result";
 
 /**
- * This service contains the methods to inteface with the Tradeit API
+ * This service contains the methods to interface with the Tradeit API
  */
 @Injectable()
 export class TradeItService extends BaseService
@@ -27,7 +28,8 @@ export class TradeItService extends BaseService
     private readonly GET_OAUTH_ACCESS_TOKEN_URL = "/getOAuthAccessToken";
     private readonly AUTHENTICATE_URL = "/authenticate";
     private readonly ANSWER_SECURITY_QUESTION_URL = "/authenticate";
-    private readonly KEEP_SESSION_ALIVE = "/keepSessionAlive"
+    private readonly KEEP_SESSION_ALIVE = "/keepSessionAlive";
+    private readonly GET_OAUTH_TOKEN_UPDATE_URL=  "/getOAuthTokenUpdateURL";
 
     constructor( protected http: Http,
                  protected sessionService: SessionService,
@@ -201,16 +203,43 @@ export class TradeItService extends BaseService
     public keepSessionAlive( tradeItAccount: TradeItAccount ): Observable<TradeItKeepSessionAliveResult>
     {
         let methodName = "keepSessionAlive";
-        let url = `${this.appConfig.getBaseURL()}/${this.CONTEXT_URL}/${this.KEEP_SESSION_ALIVE}/accountId/${tradeItAccount.id}/customer/${this.sessionService.getLoggedInUserId()}`;
+        this.debug( methodName + " " + JSON.stringify( tradeItAccount ));
+        let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.KEEP_SESSION_ALIVE}/accountId/${tradeItAccount.id}/customerId/${this.sessionService.getLoggedInUserId()}`;
         this.debug( methodName + " url: " + url );
         return this.http
                    .get( url )
                    .map( ( response: Response ) =>
                          {
-                             this.checkResponse( methodName, response );
-                             return response.json();
+                             this.debug( methodName + " received: " + JSON.stringify( response.json() ) )
+                             let keepAliveResult: TradeItKeepSessionAliveResult = TradeItKeepSessionAliveResult.newInstance( response.json() );
+                             return keepAliveResult;
                          } )
                    .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+    }
+
+    /**
+     * This method is called to get the URL provided by TradeIt to popup a dialog for the user to refresh/update
+     * their login token as the token has expired.
+     * @param {TradeItAccount} tradeItAccount
+     * @return {Observable<GetOAuthTokenUpdateURLResult>}
+     */
+    public getOAuthTokenUpdateURL( tradeItAccount: TradeItAccount ): Observable<GetOAuthTokenUpdateURLResult>
+    {
+        let methodName = "getOAuthTokenUpdateURL";
+        this.debug( methodName + " " + JSON.stringify( tradeItAccount ));
+        let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.GET_OAUTH_TOKEN_UPDATE_URL}/accountId/${tradeItAccount.id}/customerId/${this.sessionService.getLoggedInUserId()}`;
+        this.debug( methodName + " url: " + url );
+        return this.http
+                   .get( url )
+                   .map( ( response: Response ) =>
+                         {
+                             this.debug( methodName + " received: " + JSON.stringify( response.json() ) )
+                             let getOauthTokenUpdateURLResult: GetOAuthTokenUpdateURLResult = GetOAuthTokenUpdateURLResult.newInstance( response.json() );
+                             this.debug( methodName + " returning: " + JSON.stringify( getOauthTokenUpdateURLResult ) );
+                             return getOauthTokenUpdateURLResult;
+                         } )
+                   .catch( ( error: any ) => Observable.throw( this.reportError( error ) ) )
+
     }
 
     /**

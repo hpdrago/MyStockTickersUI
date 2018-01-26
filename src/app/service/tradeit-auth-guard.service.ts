@@ -13,7 +13,8 @@ import { TradeItService } from "./tradeit/tradeit.service";
 @Injectable()
 export class TradeItAuthGuardService extends BaseClass implements CanActivate, CanActivateChild
 {
-    constructor( private tradeItService: TradeItService, private router: Router )
+    constructor( private tradeItService: TradeItService,
+                 private router: Router )
     {
         super();
     }

@@ -6,6 +6,7 @@ import { CrudServiceContainer } from "../common/crud-service-container";
 import { Observable } from "rxjs/Observable";
 import { DialogCloseEventType } from "../common/close-button-event";
 import { isNullOrUndefined } from "util";
+import { CrudRestErrorReporter } from "../../../service/crud/crud-rest-error-reporter";
 
 /**
  * This class manages the set of buttons for a model object dialog.
@@ -14,6 +15,13 @@ import { isNullOrUndefined } from "util";
  */
 export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {CrudRestErrorReporter} crudRestErrorReporter
+     * @param {CrudServiceContainer<T extends ModelObject<T>>} crudServiceContainer
+     * @param {boolean} showContinuousAddButton
+     */
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T>,
                  protected showContinuousAddButton: boolean = false )
@@ -237,8 +245,8 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         //this.debug( `isSaveButtonDisabled crudOperation: ${this.crudOperation} isReadOnly: ${this.isModelObjectReadOnly( this.modelObject)} formDirty: ${this.formDirtyFlag}`);
         var disabled = true;
         if ( this.crudOperation == CrudOperation.UPDATE &&
-            this.formDirtyFlag &&
-            !this.isModelObjectReadOnly( this.modelObject ) )
+             this.formDirtyFlag &&
+             !this.isModelObjectReadOnly( this.modelObject ) )
         {
             disabled = !this.formValidFlag;
         }
@@ -362,6 +370,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "performSaveButtonWork";
         this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
+        this.checkModelObjectReference();
         var observable: Observable<T> = this.crudServiceContainer
                                             .crudRestService
                                             .updateModelObject( this.modelObject );
@@ -428,11 +437,12 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.debug( methodName + " " + JSON.stringify( this.modelObject ));
         this.performAddButtonWork( ( modelObject: T ) =>
                                    {
+                                       this.setModelObject( modelObject );
                                        this.crudServiceContainer
                                            .crudFormService.sendFormResetEvent();
                                        this.crudServiceContainer
                                            .crudFormButtonsService
-                                           .sendContinuousAddButtonClickedEvent( modelObject );
+                                           .sendContinuousAddButtonClickedEvent( this.modelObject );
                                    });
     }
 
@@ -479,16 +489,17 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     protected performAddButtonWork( notifySuccess?: ( modelObject: T ) => any ): void
     {
         var methodName = "performAddButtonWork";
+        this.checkModelObjectReference();
         this.debug( methodName + " " + JSON.stringify( this.modelObject ));
         var observable: Observable<T> = this.crudServiceContainer
                                             .crudRestService
                                             .createModelObject( this.modelObject );
         observable.subscribe( ( newModelObject: T ) =>
                    {
-                       this.showInfo( this.getSaveSuccessFulMessage( newModelObject ));
-                       this.modelObject = newModelObject;
+                       this.setModelObject( newModelObject );
                        this.debug( methodName + " add successful.  modelObject: " +
-                                        JSON.stringify( this.modelObject ) );
+                           JSON.stringify( this.modelObject ) );
+                       this.showInfo( this.getSaveSuccessFulMessage( this.modelObject ));
                        /*
                         * Check to see if there is a custom notifySuccess method passed in
                         */
@@ -707,4 +718,5 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.crudServiceContainer
             .crudFormButtonsService.sendModelObjectChangedEvent( this.modelObject );
     }
+
 }

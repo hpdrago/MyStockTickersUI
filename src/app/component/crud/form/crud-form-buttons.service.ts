@@ -36,6 +36,15 @@ export class CrudFormButtonsService<T extends ModelObject<T>> extends BaseCrudCo
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super( modelObjectFactory );
+        this.createSubjects();
+    }
+
+    /**
+     * Creates the form button subjects.
+     */
+    protected createSubjects()
+    {
+        super.createSubjects();
         this.addButtonClickedSubject = new Subject<T>();
         this.addButtonClickCompletedSubject = new Subject<T>();
         this.addAndContinueButtonClickedSubject = new Subject<T>();

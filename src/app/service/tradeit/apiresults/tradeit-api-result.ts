@@ -11,6 +11,9 @@ export class TradeItAPIResult
     @JsonProperty( "code", Number )
     public code: number = undefined;
 
+    @JsonProperty( "errorMessage", String )
+    public errorMessage: string = undefined;
+
     @JsonProperty( "status", String )
     public status: string = undefined;
 

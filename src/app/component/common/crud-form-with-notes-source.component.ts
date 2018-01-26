@@ -24,6 +24,12 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
     private stockNotesSourceList: StockNotesSourceList = new StockNotesSourceList( [] );
     private sourceAdded: boolean;
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {CrudServiceContainer<T extends ModelObject<T> & StockNotesSourceContainer>} crudServiceContainer
+     * @param {CustomerCrudService} customerService
+     */
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T>,
                  protected customerService: CustomerCrudService )

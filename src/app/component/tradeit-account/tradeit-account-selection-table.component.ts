@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Output } from "@angular/core";
+import { Component } from "@angular/core";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { TradeitAccountBaseTableComponent } from "./tradeit-account-base-table.component";
+import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
 
 
 /**
@@ -19,16 +20,19 @@ import { TradeitAccountBaseTableComponent } from "./tradeit-account-base-table.c
 export class TradeItAccountSelectionTableComponent extends TradeitAccountBaseTableComponent
 {
     /**
-     * Constructor
+     * Constructor.
      * @param {ToastsManager} toaster
-     * @param {TradeitAccountCrudServiceContainer} tradeItAccountCrudServiceContainer
+     * @param {TradeItAccountCrudServiceContainer} tradeItAccountCrudServiceContainer
      * @param {TradeItService} tradeItService
+     * @param {TradeitAccountOAuthService} tradeItOAuthService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItAccountCrudServiceContainer: TradeItAccountCrudServiceContainer,
-                 protected tradeItService: TradeItService )
+                 protected tradeItService: TradeItService,
+                 protected tradeItOAuthService: TradeitAccountOAuthService )
     {
-        super( toaster, tradeItAccountCrudServiceContainer, tradeItService ) ;
+        super( toaster, tradeItAccountCrudServiceContainer, tradeItService,
+               tradeItOAuthService ) ;
     }
 
     /**

@@ -13,6 +13,11 @@ import { StockNotes } from "../../model/entity/stock-notes";
 })
 export class StockNotesDialogComponent extends CrudDialogComponent<StockNotes>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockNotesCrudServiceContainer} stockNotesCrudServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
     {

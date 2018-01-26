@@ -1,7 +1,6 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Component, ElementRef, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { Stock } from "../../model/entity/stock";
 import { SelectItem } from "primeng/primeng";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
@@ -54,6 +53,15 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      */
     private stockSearch: string = "";
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {SessionService} sessionService
+     * @param {FormBuilder} formBuilder
+     * @param {StockCrudService} stockService
+     * @param {CustomerCrudService} customerService
+     * @param {StockNotesCrudServiceContainer} stockNotesCrudServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,

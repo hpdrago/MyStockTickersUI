@@ -11,14 +11,26 @@ import { Subscription } from "rxjs/Subscription";
  */
 export class CrudTableButtonsService<T extends ModelObject<T>> extends BaseCrudComponentService<T>
 {
-    private refreshButtonClickedSubject: Subject<any> = new Subject();
-    private addButtonClickedSubject: Subject<T> = new Subject();
-    private deleteButtonClickedSubject: Subject<T> = new Subject();
-    private editButtonClickedSubject: Subject<T> = new Subject();
+    private refreshButtonClickedSubject: Subject<any>;
+    private addButtonClickedSubject: Subject<T>;
+    private deleteButtonClickedSubject: Subject<T>;
+    private editButtonClickedSubject: Subject<T>;
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super( modelObjectFactory );
+    }
+
+    /**
+     * Creates the table cuttons service subjects.
+     */
+    protected createSubjects(): void
+    {
+        super.createSubjects();
+        this.refreshButtonClickedSubject = new Subject();
+        this.addButtonClickedSubject = new Subject();
+        this.deleteButtonClickedSubject = new Subject();
+        this.editButtonClickedSubject = new Subject();
     }
 
     /**

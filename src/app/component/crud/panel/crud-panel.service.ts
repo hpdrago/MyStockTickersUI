@@ -18,16 +18,36 @@ export class CrudPanelService<T extends ModelObject<T>> extends BaseCrudComponen
 
     protected cancelButtonClickedSubject: Subject<void> = new Subject<void>();
 
+    /**
+     * Constructor
+     * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
+     * @param {CrudFormButtonsService<T extends ModelObject<T>>} crudFormButtonsService
+     */
     constructor( protected modelObjectFactory: ModelObjectFactory<T>,
                  protected crudFormButtonsService: CrudFormButtonsService<T> )
     {
         super( modelObjectFactory );
     }
 
+    /**
+     * Creates the panel service subjects.  Called from super class.
+     */
+    protected createSubjects(): void
+    {
+        super.createSubjects();
+        this.displayDialogRequestSubject = new BehaviorSubject<ModelObjectCrudOperationSubjectInfo>( null );
+    }
+
+    /**
+     * Store default values in the behaviour subjects so that we don't get the current values next time through.
+     */
     public resetSubjects(): void
     {
+        let methodName = "resetSubjects";
+        this.debug( methodName + ".begin" )
         super.resetSubjects();
-        this.displayDialogRequestSubject = new BehaviorSubject<ModelObjectCrudOperationSubjectInfo>( null );
+        this.displayDialogRequestSubject.next( null );
+        this.debug( methodName + ".end" )
     }
 
     /**
@@ -98,8 +118,8 @@ export class CrudPanelService<T extends ModelObject<T>> extends BaseCrudComponen
     public sendDisplayFormRequestEvent( modelObject: T, crudOperation: CrudOperation )
     {
         var subjectInfo: ModelObjectCrudOperationSubjectInfo = this.createDisplayFormRequestSubjectInfo( modelObject, crudOperation );
-        this.debug( "sendDisplayFormRequestEvent " + JSON.stringify( subjectInfo ) + " to observers" +
-            this.displayDialogRequestSubject.observers.length );
+        this.debug( "sendDisplayFormRequestEvent " + JSON.stringify( subjectInfo ) + " to " +
+            this.displayDialogRequestSubject.observers.length + " observers" );
         this.displayDialogRequestSubject.next( subjectInfo )
     }
 

@@ -1,8 +1,6 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { TradeItAccountPanelComponent } from "./tradeit-account-panel.component";
 import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
-import { TradeitAccountBaseTableComponent } from "./tradeit-account-base-table.component";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { BaseComponent } from "../common/base.component";

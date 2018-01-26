@@ -13,6 +13,11 @@ import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-servi
 })
 export class TradeItAccountDialogComponent extends CrudDialogComponent<TradeItAccount>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {TradeItAccountCrudServiceContainer} customerAccountCrudServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  private customerAccountCrudServiceContainer: TradeItAccountCrudServiceContainer )
     {

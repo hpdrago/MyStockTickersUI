@@ -4,7 +4,6 @@ import { ModelObjectChangeService } from "../../service/crud/model-object-change
 import { LinkedAccount } from "../../model/entity/linked-account";
 import { LinkedAccountFactory } from "../../model/factory/linked-account.factory";
 import { LinkedAccountCrudService } from "../../service/crud/linked-account-crud.service";
-import { CrudPanelService } from "../crud/panel/crud-panel.service";
 import { CrudDialogService } from "../crud/dialog/crud-dialog.service";
 
 /**

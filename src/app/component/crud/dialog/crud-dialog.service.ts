@@ -18,12 +18,21 @@ import { CrudFormButtonsService } from "../form/crud-form-buttons.service";
  */
 export class CrudDialogService<T extends ModelObject<T>> extends CrudPanelService<T>
 {
-    protected closeButtonClickedSubject: Subject<DialogCloseEventType> = new Subject<DialogCloseEventType>();
+    protected closeButtonClickedSubject: Subject<DialogCloseEventType>;
 
     constructor( protected modelObjectFactory: ModelObjectFactory<T>,
                  protected crudFormButtonsService: CrudFormButtonsService<T> )
     {
         super( modelObjectFactory, crudFormButtonsService );
+    }
+
+    /**
+     * Create the dialog subjects.  Called from super class.
+     */
+    protected createSubjects(): void
+    {
+        super.createSubjects();
+        this.closeButtonClickedSubject = new Subject<DialogCloseEventType>();
     }
 
     /**

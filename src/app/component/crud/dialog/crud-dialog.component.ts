@@ -19,6 +19,11 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      */
     protected displayDialog: boolean;
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {CrudServiceContainer<T extends ModelObject<T>>} crudServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T> )
     {
@@ -217,9 +222,11 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      */
     protected closeDialog(): void
     {
+        let methodName = "closeDialog";
+        this.debug( methodName + ".begin" );
         this.displayDialog = false;
-        //this.unSubscribeAll();
-        //this.resetsServiceSubscriptions();
+        this.resetsServiceSubscriptions();
+        this.debug( methodName + ".end" );
     }
 
     /**
@@ -235,7 +242,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
     /**
      * This method is called when a 409 HTTP Code is received from a rest call.
      */
-    protected getDuplicateKeyErrorMessage(): string
+    public getDuplicateKeyErrorMessage(): string
     {
         return "This entry already exists";
     }

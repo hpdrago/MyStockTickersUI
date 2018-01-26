@@ -17,10 +17,15 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 } )
 export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccount>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {LinkedAccountCrudServiceContainer} linkedAccountCrudServiceContainer
+     */
     constructor( protected toaster: ToastsManager,
                  protected linkedAccountCrudServiceContainer: LinkedAccountCrudServiceContainer )
     {
-        super( TableLoadingStrategy.FULL_ON_DEMAND, toaster, linkedAccountCrudServiceContainer );
+        super( TableLoadingStrategy.ALL_ON_DEMAND, toaster, linkedAccountCrudServiceContainer );
     }
 
     /**

@@ -8,9 +8,9 @@
 export enum TableLoadingStrategy
 {
     LAZY_ON_CREATE,
-    FULL_ON_CREATE,
+    ALL_ON_CREATE,
     LAZY_ON_DEMAND,
-    FULL_ON_DEMAND
+    ALL_ON_DEMAND
 }
 export namespace TableLoadingStrategy
 {
@@ -25,12 +25,12 @@ export namespace TableLoadingStrategy
         {
             case TableLoadingStrategy.LAZY_ON_CREATE:
                 return "LAZY_ON_CREATE";
-            case TableLoadingStrategy.FULL_ON_CREATE:
-                return "FULL_ON_CREATE";
+            case TableLoadingStrategy.ALL_ON_CREATE:
+                return "ALL_ON_CREATE";
             case TableLoadingStrategy.LAZY_ON_DEMAND:
                 return "LAZY_ON_DEMAND";
-            case TableLoadingStrategy.FULL_ON_DEMAND:
-                return "FULL_ON_DEMAND";
+            case TableLoadingStrategy.ALL_ON_DEMAND:
+                return "ALL_ON_DEMAND";
             default:
                 return  intValue + " is an invalid value";
         }
@@ -43,8 +43,8 @@ export namespace TableLoadingStrategy
      */
     export function isFullLoading( tableLoadingStrategy: TableLoadingStrategy ): boolean
     {
-        return tableLoadingStrategy == TableLoadingStrategy.FULL_ON_CREATE ||
-               tableLoadingStrategy == TableLoadingStrategy.FULL_ON_DEMAND;
+        return tableLoadingStrategy == TableLoadingStrategy.ALL_ON_CREATE ||
+               tableLoadingStrategy == TableLoadingStrategy.ALL_ON_DEMAND;
     }
 
     /**
@@ -65,7 +65,7 @@ export namespace TableLoadingStrategy
      */
     export function isLoadOnDemand( tableLoadingStrategy: TableLoadingStrategy ): boolean
     {
-        return tableLoadingStrategy == TableLoadingStrategy.FULL_ON_DEMAND ||
+        return tableLoadingStrategy == TableLoadingStrategy.ALL_ON_DEMAND ||
                tableLoadingStrategy == TableLoadingStrategy.LAZY_ON_DEMAND;
     }
 
@@ -76,7 +76,7 @@ export namespace TableLoadingStrategy
      */
     export function isLoadOnCreate( tableLoadingStrategy: TableLoadingStrategy ): boolean
     {
-        return tableLoadingStrategy == TableLoadingStrategy.FULL_ON_CREATE ||
+        return tableLoadingStrategy == TableLoadingStrategy.ALL_ON_CREATE ||
                tableLoadingStrategy == TableLoadingStrategy.LAZY_ON_CREATE;
     }
 

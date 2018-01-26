@@ -18,6 +18,12 @@ import { StockModelObjectTableComponent } from "../common/stock-model-object-tab
 export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteModelObject<T>>
     extends StockModelObjectTableComponent<T>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {CrudServiceContainer<T extends StockQuoteModelObject<T>>} crudServiceContainer
+     * @param {StockQuoteRefreshService} stockQuoteRefreshService
+     */
     constructor( protected toaster: ToastsManager,
                  protected crudServiceContainer: CrudServiceContainer<T>,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
