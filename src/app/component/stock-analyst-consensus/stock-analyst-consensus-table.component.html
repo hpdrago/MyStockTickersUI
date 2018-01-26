@@ -24,9 +24,9 @@ column and modelObject are parameters to the template
         TICKER SYMBOL
         ------------------------------------------------------------------------------------------------------------>
         <div *ngSwitchCase="'tickerSymbol'">
-            <tipranks-link [tickerSymbol]="modelObject.tickerSymbol"
+            <yahoo-analysis-link [tickerSymbol]="modelObject.tickerSymbol"
                            [displayValue]="modelObject.tickerSymbol">
-            </tipranks-link>
+            </yahoo-analysis-link>
         </div>
 
         <div *ngSwitchDefault>
@@ -52,7 +52,7 @@ TABLE DEFINITION
                                  [rowsToDisplay]="rowsToDisplay"
                                  [rowsPerPageOptions]="rowsPerPageOptions"
                                  [(selection)]="selectedModelObject"
-                                 (onRowSelect)="onRowSelect($event)"
+                                 (rowSelected)="onRowSelect($event)"
                                  (onLazyLoad)="lazyLoadTable($event)"
                                  [loadingData]="loading"
                                  [showHeaderButtons]="showHeaderButtons"

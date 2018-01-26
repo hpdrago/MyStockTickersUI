@@ -24,6 +24,12 @@ export class CommonStockModelObjectColumns extends CrudTableColumns
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {
+                                        colId: 'avgUpsidePercent',
+                                        header: 'Avg Upside %',
+                                        dataType: CrudTableColumnType.CUSTOM,
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
                                         colId: 'stockPriceWhenCreated',
                                         header: 'Stock Price When Entered',
                                         dataType: CrudTableColumnType.CURRENCY,

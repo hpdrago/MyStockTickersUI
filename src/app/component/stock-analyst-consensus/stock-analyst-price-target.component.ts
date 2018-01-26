@@ -18,9 +18,9 @@ import { ToastsManager } from 'ng2-toastr';
                </ng-template>
                <ng-template #notFoundTemplate>
                    <div style="text-align: right">
-                       <tipranks-link [tickerSymbol]="tickerSymbol"
-                                      displayValue="Tip Ranks">
-                       </tipranks-link>
+                       <yahoo-analysis-link [tickerSymbol]="tickerSymbol"
+                                            [displayValue="Go to Yahoo">
+                       </yahoo-analysis-link>
                    </div>
                </ng-template>
     `

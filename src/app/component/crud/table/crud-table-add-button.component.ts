@@ -39,7 +39,7 @@ export abstract class CrudTableAddButtonComponent<T extends ModelObject<T>> exte
     {
         super.ngOnInit();
         this.buttonLabel = 'Add';
-        this.buttonIcon = 'fa-plus';
+        this.buttonIcon = 'fa fa-plus';
     }
 
     /**

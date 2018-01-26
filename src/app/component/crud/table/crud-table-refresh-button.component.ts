@@ -36,7 +36,7 @@ export abstract class CrudTableRefreshButtonComponent<T extends ModelObject<T>> 
     {
         super.ngOnInit();
         this.buttonLabel = 'Refresh';
-        this.buttonIcon = 'fa-refresh';
+        this.buttonIcon = 'fa fa-refresh';
     }
 
     /**

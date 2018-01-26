@@ -315,6 +315,7 @@ import { TradeItAccountStateStore } from './component/tradeit-account/tradeit-ac
 import { CustomerStateStore } from './component/customer/customer-state-store';
 import { GainsLossesController } from './component/gains-losses/gains-losses-controller';
 import { GainsLossesStateStore } from './component/gains-losses/gains-losses-state-store';
+import { YahooAnalysisLinkComponent } from './component/common/yahoo-analysis-link.component';
 
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -576,6 +577,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         UppercaseDirective,
         UppercaseValueDirective,
         TipRanksLinkComponent,
+        YahooAnalysisLinkComponent,
         CurrencyComponent,
         PercentComponent,
         MillifyComponent,

@@ -22,58 +22,58 @@ export class MenuBarComponent
     {
         this.menuItems =
             [
-                { label: 'Quad View', icon: 'fa-area-chart', routerLink: ['/quadview'] },
+                { label: 'Quad View', icon: 'fa fa-area-chart', routerLink: ['/quadview'] },
                 { label: 'Stock Notes',
-                   icon: 'fa-sticky-note',
+                   icon: 'fa fa-sticky-note',
                   items: [{
                             label: 'Add',
-                            icon: 'fa-plus',
+                            icon: 'fa fa-plus',
                             routerLink: ['/stockNotes/add']
                           },
                           {
                               label: 'View',
-                              icon: 'fa-list',
+                              icon: 'fa fa-list',
                               routerLink: ['/stockNotes/view']
                           }]},
                 { label: 'Stocks To Buy',
-                    icon: 'fa-shopping-cart',
+                    icon: 'fa fa-shopping-cart',
                     items: [{
                                 label: 'Add',
-                                icon: 'fa-plus',
+                                icon: 'fa fa-plus',
                                 routerLink: ['/stockToBuy/add']
                             },
                             {
                                 label: 'View',
-                                icon: 'fa-list',
+                                icon: 'fa fa-list',
                                 routerLink: ['/stockToBuy/view']
                             }]},
                 { label: 'Catalyst Events',
-                    icon: 'fa-calendar',
+                    icon: 'fa fa-calendar',
                     items: [{
                                 label: 'Add',
-                                icon: 'fa-plus',
+                                icon: 'fa fa-plus',
                                 routerLink: ['/stockCatalystEvents/add']
                             },
                             {
                                 label: 'View',
-                                icon: 'fa-list',
+                                icon: 'fa fa-list',
                                 routerLink: ['/stockCatalystEvents/view']
                             }]},
                 { label: 'Analyst Consensus',
-                    icon: 'fa-user',
+                    icon: 'fa fa-user',
                     items: [{
                                 label: 'Add',
-                                icon: 'fa-plus',
+                                icon: 'fa fa-plus',
                                 routerLink: ['/stockAnalystConsensus/add']
                             },
                             {
                                 label: 'View',
-                                icon: 'fa-list',
+                                icon: 'fa fa-list',
                                 routerLink: ['/stockAnalystConsensus/view']
                             }]},
-                { label: 'Accounts & Portfolios', icon: 'fa-briefcase', routerLink: ['/tradeItAccounts'] },
-                { label: 'Gains & Losses', icon: 'fa-dollar', routerLink: ['/gainsLosses'] },
-                { label: 'Profile', icon: 'fa-gear', routerLink: ['/profile'] }
+                { label: 'Accounts & Portfolios', icon: 'fa fa-briefcase', routerLink: ['/tradeItAccounts'] },
+                { label: 'Gains & Losses', icon: 'fa fa-dollar', routerLink: ['/gainsLosses'] },
+                { label: 'Profile', icon: 'fa fa-gear', routerLink: ['/profile'] }
             ]
     }
 }

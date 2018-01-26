@@ -136,12 +136,6 @@ export class StockAnalystConsensus extends ModelObject<StockAnalystConsensus>
         let crudTableColumns: CrudTableColumns = new CrudTableColumns([]);
         crudTableColumns.addAll( new CommonStockModelObjectColumns() );
         crudTableColumns.addColumn( {
-                                        colId: 'analystPriceTargets',
-                                        header: 'Price Targets (L,Avg,H)',
-                                        dataType: CrudTableColumnType.STOCK_ANALYST_PRICE_TARGETS,
-                                        sortable: true
-                                    } );
-        crudTableColumns.addColumn( {
                                         colId: 'analystSentimentDate',
                                         header: 'Sentiment Date',
                                         dataType: CrudTableColumnType.DATE,
@@ -177,10 +171,10 @@ export class StockAnalystConsensus extends ModelObject<StockAnalystConsensus>
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {
-                                        colId: 'notesSource',
+                                        colId: 'notesSourceName',
                                         header: 'Source',
                                         dataType: CrudTableColumnType.STRING,
-                                        field: 'notesSource',
+                                        field: 'notesSourceName',
                                         sortable: true
                                     } );
         crudTableColumns.addColumn( {
@@ -200,6 +194,12 @@ export class StockAnalystConsensus extends ModelObject<StockAnalystConsensus>
     public getAdditionalColumns(): CrudTableColumns
     {
         let additionalColumns = super.getAdditionalColumns();
+        additionalColumns.addColumn( {
+                                        colId: 'analystPriceTargets',
+                                        header: 'Price Targets (L,Avg,H)',
+                                        dataType: CrudTableColumnType.STOCK_ANALYST_PRICE_TARGETS,
+                                        sortable: true
+                                    } );
         additionalColumns.addAll( new StockPriceQuote().getDefaultColumns() );
         additionalColumns.addAll( new StockQuote().getDefaultColumns() );
         additionalColumns.addAll( new StockQuote().getDefaultColumns() );

@@ -23,7 +23,7 @@ export class CrudTableCustomizeButtonComponent extends CommonButtonComponent
     {
         super.ngOnInit();
         this.buttonLabel = 'Customize';
-        this.buttonIcon = 'fa-cog';
+        this.buttonIcon = 'fa fa-cog';
     }
 
     /**

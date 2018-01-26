@@ -72,7 +72,7 @@ export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBas
         {
             if ( this.stockPriceQuote.lastPrice < this.stockAnalystConsensus.avgAnalystPriceTarget )
             {
-                return this.stockPriceQuote.lastPrice / this.stockAnalystConsensus.avgAnalystPriceTarget;
+                return (this.stockAnalystConsensus.avgAnalystPriceTarget - this.stockPriceQuote.lastPrice)/this.stockPriceQuote.lastPrice;
             }
             else
             {
