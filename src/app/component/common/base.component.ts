@@ -53,11 +53,9 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
      */
     protected unSubscribeAll()
     {
-        this.debug( "unsubscribeAll" );
-        for ( var subscription of this.subscriptions )
-        {
-            subscription.unsubscribe();
-        }
+        this.debug( `unsubscribeAll ${this.subscriptions.length} subscriptions` );
+        this.subscriptions
+            .forEach( subscription => subscription.unsubscribe() );
     }
 
     /**

@@ -80,7 +80,8 @@ export class StockQuoteComponent extends BaseComponent implements OnInit
     {
         const methodName = 'onReceiveStockQuote';
         this.log( methodName + ' ' + JSON.stringify( stockQuote ));
-        if ( !isNullOrUndefined( stockQuote ))
+        if ( !isNullOrUndefined( stockQuote ) &&
+             !isNullOrUndefined( stockQuote.tickerSymbol ))
         {
             this.stockQuote = stockQuote;
             this.stockQuoteChange.emit( stockQuote );

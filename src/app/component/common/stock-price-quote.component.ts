@@ -77,7 +77,8 @@ export class StockPriceQuoteComponent extends BaseComponent implements OnInit
     {
         const methodName = 'onReceiveStockPriceQuote';
         this.log( methodName + ' ' + JSON.stringify( stockPriceQuote ));
-        if ( !isNullOrUndefined( stockPriceQuote ) )
+        if ( !isNullOrUndefined( stockPriceQuote ) &&
+             !isNullOrUndefined( stockPriceQuote.tickerSymbol ))
         {
             this.stockPriceQuote = stockPriceQuote;
             this.stockPriceQuoteChange.emit( stockPriceQuote );

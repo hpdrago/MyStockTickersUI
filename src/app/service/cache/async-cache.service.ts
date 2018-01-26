@@ -2,7 +2,7 @@ import { Observable } from "rxjs/Observable";
 import { ToastsManager } from "ng2-toastr";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-import { isNull, isNullOrUndefined } from 'util';
+import { isNullOrUndefined } from 'util';
 import { CacheStateContainer } from '../../model/common/cache-state-container';
 import { BaseService } from '../base-service';
 import { ModelObjectFactory } from '../../model/factory/model-object.factory';
@@ -25,7 +25,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
      * Contains the cached keys currently being retrieved.
      * @type {Map<any, any>}
      */
-    private workingMap: Map<K, Observable<T>> = new Map();G
+    private workingMap: Map<K, Observable<T>> = new Map();
 
     /**
      * Constructor.
@@ -103,7 +103,8 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
              * Go get the data and send the change to the subscribers.
              */
             this.fetchData( key )
-                .subscribe();
+                .subscribe()
+                .unsubscribe();
         }
         else
         {
@@ -125,11 +126,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         const methodName = 'getAndCheckDataExpiration';
         this.debug( methodName + '.begin ' + key );
         let returnObservable: Observable<T> = this.workingMap.get( key );
-        if ( !isNullOrUndefined( returnObservable ))
-        {
-            this.debug( methodName + ' ' + key + ' is already being fetched' );
-        }
-        else
+        if ( isNullOrUndefined( returnObservable ))
         {
             let subject: BehaviorSubject<T> = this.cacheSubjectMap
                                                   .get( key );
@@ -188,11 +185,13 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         this.debug( methodName + ' ' + key );
         this.debug( methodName + ' calling fetchCachedDataFromBackend with ' + key );
         let returnObservable: Observable<T> = this.fetchCachedDataFromBackend( key );
-        returnObservable.map( ( cachedData: T ) =>
+        this.workingMap
+            .set( key, returnObservable );
+        returnObservable.subscribe( ( cachedData: T ) =>
                         {
+                            this.debug( methodName + ' ' + key + ' retrieved ' + JSON.stringify( cachedData ) );
                             this.workingMap
                                 .delete( key );
-                            this.debug( methodName + ' ' + key + ' retrieved ' + JSON.stringify( cachedData ) );
                             if ( isNullOrUndefined( cachedData.getCacheState() ))
                             {
                                 this.logError( "Received null cached state" );
@@ -208,8 +207,6 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
                             cachedData.setCacheError( error );
                             this.sendCachedDataChange( key, cachedData );
                         });
-        this.workingMap
-            .set( key, returnObservable );
         return returnObservable;
     }
 

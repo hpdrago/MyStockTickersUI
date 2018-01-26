@@ -83,7 +83,8 @@
                   header="Price When Created"
                   [style]="{'width':'10px','text-align':'right'}">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                {{stockToBuy[col.field] | currency: 'USD' : true }}
+                <currency [currencyValue]="stockToBuy[col.field]">
+                </currency>
             </ng-template>
         </p-column>
 
@@ -111,7 +112,6 @@
                 <stock-quote-percent-change-since-created [stockModelObject]="stockToBuy"></stock-quote-percent-change-since-created>
             </ng-template>
         </p-column>
-
 
         <!----------------------------------------------------------------------------------------------------------
         BUY SHARES UP TO PRICE
