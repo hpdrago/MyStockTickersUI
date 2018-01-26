@@ -2,9 +2,10 @@ import { CrudPanelComponent } from "../crud/panel/crud-panel.component";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { SessionService } from "../../service/session.service";
-import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
-import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
+import { TradeItAccountStateStore } from './tradeit-account-state-store';
+import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 
 /**
  * This is the customer form panel.
@@ -19,14 +20,20 @@ export class TradeItAccountPanelComponent extends CrudPanelComponent<TradeItAcco
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {CrudRestErrorReporter} crudRestErrorReporter
      * @param {SessionService} sessionService
-     * @param {TradeItAccountCrudServiceContainer} customerAccountCrudServiceContainer
+     * @param {TradeItAccountStateStore} tradeItAccountStateStore
+     * @param {TradeItAccountController} tradeItAccountController
+     * @param {TradeItAccountFactory} tradeItAccountFactory
      */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
-                 protected customerAccountCrudServiceContainer: TradeItAccountCrudServiceContainer )
+                 private tradeItAccountStateStore: TradeItAccountStateStore,
+                 private tradeItAccountController: TradeItAccountController,
+                 private tradeItAccountFactory: TradeItAccountFactory )
     {
-        super( toaster, customerAccountCrudServiceContainer );
+        super( toaster,
+               tradeItAccountStateStore,
+               tradeItAccountController,
+               tradeItAccountFactory );
     }
 }

@@ -137,10 +137,10 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
      * service that the sources changed.
      * @param {StockNotes} modelObject
      */
-    protected onSaveButtonClicked( modelObject: T )
+    protected onSaveButtonClicked()
     {
         this.debug( "onSaveButtonClicked" );
-        super.onSaveButtonClicked( modelObject );
+        super.onSaveButtonClicked();
         if ( this.sourceAdded )
         {
             this.customerService.stockNoteSourcesChanged();

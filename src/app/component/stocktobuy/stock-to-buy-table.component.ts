@@ -26,6 +26,19 @@ import { StockNotesStateStore } from '../stocknotes/stock-notes-state-store';
 export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTableComponent<StockToBuy>
 {
     private urlMap: StockUrlMap = new StockUrlMap();
+
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockToBuyStateStore} stockToBuyStateStore
+     * @param {StockToBuyController} stockToBuyController
+     * @param {StockToBuyFactory} stockToBuyFactory
+     * @param {StockToBuyCrudService} stockToBuyCrudService
+     * @param {StockNotesStateStore} stockNotesStateStore
+     * @param {StockNotesController} stockNotesController
+     * @param {StockNotesFactory} stockNotesFactory
+     * @param {StockQuoteRefreshService} stockQuoteRefreshService
+     */
     constructor( protected toaster: ToastsManager,
                  protected stockToBuyStateStore: StockToBuyStateStore,
                  protected stockToBuyController: StockToBuyController,
@@ -99,15 +112,15 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
          * be prompted to delete the stock to buy entry.
          */
         this.stockNotesController
-            .subscribeToCloseButtonClickedEvent( ( event: DialogCloseEventType ) =>
-                                                 {
-                                                     this.log( methodName + " stock notes closed button clicked event: " + event );
-                                                     if ( event != DialogCloseEventType.CANCEL_BUTTON )
+            .subscribeToDialogCloseButtonClickedEvent( ( event: DialogCloseEventType ) =>
                                                      {
-                                                         this.stockToBuyController
-                                                             .sendDeleteButtonClickedEvent( stockToBuy );
-                                                     }
-                                                 })
+                                                         this.log( methodName + " stock notes closed button clicked event: " + event );
+                                                         if ( event != DialogCloseEventType.CANCEL_BUTTON )
+                                                         {
+                                                             this.stockToBuyController
+                                                                 .sendTableDeleteButtonClickedEvent( stockToBuy );
+                                                         }
+                                                     })
         /*
          * Display the stock notes dialog.
          */
@@ -115,8 +128,10 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
             .sendCrudOperationChangedEvent( CrudOperation.CREATE );
         this.stockNotesStateStore
             .sendModelObjectChangedEvent( this, stockNotes );
+        /*
         this.stockNotesController
             .sendDisplayFormRequestEvent();
+            */
     }
 
 }

@@ -6,7 +6,6 @@ import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enu
 import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { BullOrBear } from "../../common/bull-or-bear.enum";
-import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
@@ -32,11 +31,11 @@ export abstract class StockNotesTableComponent extends StockQuoteModelObjectTabl
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
      */
     constructor( protected session: SessionService,
+                 protected toaster: ToastsManager,
                  protected stockNotesStateStore: StockNotesStateStore,
                  protected stockNotesController: StockNotesController,
                  protected stockNotesFactory: StockNotesFactory,
                  protected stockNotesCrudService: StockNotesCrudService,
-                 protected toaster: ToastsManager,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
         super( toaster,

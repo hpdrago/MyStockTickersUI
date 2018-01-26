@@ -11,6 +11,7 @@ import { isNullOrUndefined } from "util";
 export class BaseClass implements OnDestroy
 {
     protected logger: Logger;
+    protected doLogging: boolean = true;
 
     /**
      * Constructor
@@ -33,7 +34,10 @@ export class BaseClass implements OnDestroy
      */
     protected debug( message: string )
     {
-        this.logger.debug( message );
+        if ( this.doLogging )
+        {
+            this.logger.debug( message );
+        }
     }
 
     /**
@@ -42,7 +46,10 @@ export class BaseClass implements OnDestroy
      */
     protected log( message: string )
     {
-        this.logger.log( message );
+        if ( this.doLogging )
+        {
+            this.logger.log( message );
+        }
     }
 
     /**

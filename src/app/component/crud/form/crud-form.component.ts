@@ -44,7 +44,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
                  protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super( toaster, crudStateStore, crudController, modelObjectFactory );
-        this.setModelObject( this.modelObjectFactory.newModelObject() );
     }
 
     /**
@@ -54,8 +53,8 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     {
         this.debug( "CrudFormComponent.ngOnInit.begin" );
         this.resourceLoaders = this.loadResources();
-        this.subscribeToCrudFormServiceEvents();
         this.initializeForm();
+        this.subscribeToCrudFormServiceEvents();
         if ( this.resourceLoaders.length > 0 )
         {
             this.debug( "Waiting for " + this.resourceLoaders.length + " resource loaders" );
@@ -77,7 +76,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
          * ngOnInit is only called once when the component is created.  So we need to call this method now.  It is called
          * through the crud form service for subsequent displaying of forms.
          */
-        this.onPrepareToDisplay();
+        //this.prepareToDisplay();
     }
 
     /**
@@ -200,82 +199,78 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected subscribeToCrudFormServiceEvents(): void
     {
-        this.debug( "subscribeToCrudFormServiceEvents.begin" );
-        /*
-        this.addSubscription(
-            this.crudServiceContainer
-                .crudStateStore
-                .subscribeToModelObjectCrudOperationChangedEvent(
-                    ( subjectInfo: ModelObjectCrudOperationSubjectInfo ) =>
-                        this.onModelObjectCrudOperationChanged( subjectInfo ) ));
-                        */
+        let methodName = 'subscribeToCrudFormServiceEvents';
+        this.debug( methodName + '.begin' );
         /*
          * Reset button
          */
-        this.addSubscription(
+        this.addSubscription( 'subscribeToFormResetEvent',
             this.crudController
                 .subscribeToFormResetEvent( () => this.resetForm() ));
         /*
          * Prepare to save
          */
-        this.addSubscription(
+        /*
+        this.addSubscription( 'subscribeToFormPrepareToSaveEvent',
             this.crudController
-                .subscribeToFormPrepareToSaveEvent( () => this.prepareToSave() ));
+                .subscribeToFormPrepareToSaveEvent( () => this.prepareToSave() ));*/
         /*
          * Model Object version update
          */
-        this.addSubscription(
+        this.addSubscription( 'subscribeToFormModelObjectVersionUpdateEvent',
             this.crudController
                 .subscribeToFormModelObjectVersionUpdateEvent( ( modelObject: T ) => this.onModelObjectVersionUpdate( modelObject ) ));
         /*
          * Add button clicked
          */
-        this.addSubscription(
+        this.addSubscription( 'subscribeToAddButtonClickedEvent',
             this.crudController
-                .subscribeToAddButtonClickedEvent( ( modelObject: T ) => this.onAddButtonClicked( modelObject ) ));
+                .subscribeToTableAddButtonClickedEvent( () => this.onAddButtonClicked() ));
 
         /*
          * Add button click completed
          */
-        this.addSubscription(
+        this.addSubscription( 'subscribeToAddButtonClickCompletedEvent',
             this.crudController
-                .subscribeToAddButtonClickCompletedEvent( ( modelObject: T ) => this.onAddButtonClickCompleted( modelObject ) ));
+                .subscribeToPanelAddButtonClickCompletedEvent( () => this.onAddButtonClickCompleted() ));
 
         /*
          * Save button clicked
          */
-        this.addSubscription(
+        this.addSubscription( 'subscribeToSaveButtonClickedEvent',
             this.crudController
-                .subscribeToSaveButtonClickedEvent( ( modelObject: T ) => this.onSaveButtonClicked( modelObject ) ));
+                .subscribeToPanelSaveButtonClickedEvent( () => this.onSaveButtonClicked() ));
 
         /*
          * Save button click completed
          */
-        this.addSubscription(
+        this.addSubscription( 'subscribeToSaveButtonClickCompletedEvent',
             this.crudController
-                .subscribeToSaveButtonClickCompletedEvent( ( modelObject: T ) => this.onSaveButtonClickCompleted( modelObject ) ));
+                .subscribeToPanelSaveButtonClickCompletedEvent( () => this.onSaveButtonClickCompleted() ));
 
         /*
          * Delete button clicked
          */
-        this.addSubscription(
+        this.addSubscription( 'subscribeToDeleteButtonClickedEvent',
             this.crudController
-                .subscribeToDeleteButtonClickedEvent( ( modelObject: T ) => this.onDeleteButtonClicked( modelObject ) ));
+                .subscribeToTableDeleteButtonClickedEvent( () => this.onDeleteButtonClicked() ));
 
         /*
          * Delete button click completed
          */
-        this.addSubscription(
+        this.addSubscription( 'subscribeToDeleteButtonClickCompletedEvent',
             this.crudController
-                .subscribeToDeleteButtonClickCompletedEvent( ( modelObject: T ) => this.onDeleteButtonClickCompleted( modelObject ) ));
+                .subscribeToPanelDeleteButtonClickCompletedEvent( ( modelObject: T ) => this.onDeleteButtonClickCompleted( modelObject ) ));
 
         /*
          * Prepare to display
          */
-        this.addSubscription(
+        /*
+        this.addSubscription( 'subscribeToFormPrepareToDisplayEvent',
             this.crudController
-                .subscribeToFormPrepareToDisplayEvent( () => this.onPrepareToDisplay() ));
-        this.debug( "subscribeToCrudFormServiceEvents.end" );
+                .subscribeToFormPrepareToDisplayEvent( () => this.prepareToDisplay() ));
+                */
+        this.debug( methodName + '.end' );
     }
 
     /**
@@ -709,19 +704,20 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      * This method is called after the successful completion of the saving of the model object.
      * @param {T} modelObject
      */
-    protected onSaveButtonClicked( modelObject: T ): void
+    protected onSaveButtonClicked(): void
     {
         let methodName = "onSaveButtonClicked";
-        this.debug( methodName + " " + JSON.stringify( modelObject ) );
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ) );
+        this.prepareToSave();
     }
 
     /**
      * This method is called after the user has clicked the Save button and it completed successfully.
      */
-    protected onSaveButtonClickCompleted( modelObject: T ): void
+    protected onSaveButtonClickCompleted(): void
     {
         let methodName = "onSaveButtonClickCompleted";
-        this.debug( methodName + " " + JSON.stringify( modelObject ) );
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ) );
         this.clearForm();
         this.crudStateStore.resetSubjects();
     }
@@ -730,31 +726,31 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      * This method is called after the successful completion of the saving of the model object.
      * @param {T} modelObject
      */
-    protected onAddButtonClicked( modelObject: T ): void
+    protected onAddButtonClicked(): void
     {
         let methodName = "onAddButtonClicked";
-        this.debug( methodName + " " + JSON.stringify( modelObject ) );
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ) );
+        this.prepareToDisplay()
     }
 
     /**
      * This method is called after the user has clicked the Add button and it completed successfully.
      */
-    protected onAddButtonClickCompleted( modelObject: T ): void
+    protected onAddButtonClickCompleted(): void
     {
         let methodName = "onAddButtonClickCompleted";
-        this.debug( methodName + " " + JSON.stringify( modelObject ) );
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ) );
         this.clearForm();
-        this.crudStateStore.resetSubjects();
     }
 
     /**
      * This method is called when the delete button is clicked.
      * @param {T} modelObject
      */
-    protected onDeleteButtonClicked( modelObject: T ): void
+    protected onDeleteButtonClicked(): void
     {
         let methodName = "onDeleteButtonClicked";
-        this.debug( methodName + " " + JSON.stringify( modelObject ) );
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ) );
     }
 
     /**
@@ -775,7 +771,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      * a form is not created again and there may be some initialiation logic to be performed each time the form
      * is displayed.
      */
-    protected onPrepareToDisplay(): void
+    protected prepareToDisplay(): void
     {
         this.debug( "prepareToDisplay" );
         this.setFormValues( this.modelObject );
@@ -785,9 +781,11 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      * Sets the model object and sets the form values if the form has been created.
      * @param {T} modelObject
      */
+    /*
     public setModelObject( modelObject: T ): void
     {
     }
+    */
 
     /**
      * This method is called when a form control fields is invalid.

@@ -1,14 +1,14 @@
 import { Component, OnDestroy } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
-import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
-import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
-import { TradeItAPIResult } from "../../service/tradeit/apiresults/tradeit-api-result";
 import { TradeitOAuthComponent } from "./tradeit-oauth-component";
-import { Observable } from "rxjs/Observable";
 import { CrudOperation } from "../crud/common/crud-operation";
+import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
+import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountStateStore } from './tradeit-account-state-store';
+import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 
 /**
  * Button panel component for the Account dialog.
@@ -25,17 +25,26 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
     implements OnDestroy, TradeitOAuthComponent
 {
     /**
-     * Constructor
+     * Constructor.
      * @param {ToastsManager} toaster
-     * @param {TradeItAccountCrudServiceContainer} customerAccountCrudServiceContainer
-     * @param {TradeItService} tradeItService
+     * @param {TradeItAccountStateStore} tradeItAccountStateStore
+     * @param {TradeItAccountController} tradeItAccountController
+     * @param {TradeItAccountFactory} tradeItAccountFactory
+     * @param {TradeItAccountCrudService} tradeItAccountCrudService
      * @param {TradeitAccountOAuthService} tradeItOAuthService
      */
     constructor( protected toaster: ToastsManager,
-                 private customerAccountCrudServiceContainer: TradeItAccountCrudServiceContainer,
+                 private tradeItAccountStateStore: TradeItAccountStateStore,
+                 private tradeItAccountController: TradeItAccountController,
+                 private tradeItAccountFactory: TradeItAccountFactory,
+                 private tradeItAccountCrudService: TradeItAccountCrudService,
                  private tradeItOAuthService: TradeitAccountOAuthService )
     {
-        super( toaster, customerAccountCrudServiceContainer );
+        super( toaster,
+               tradeItAccountStateStore,
+               tradeItAccountController,
+               tradeItAccountFactory,
+               tradeItAccountCrudService );
     }
 
     /**

@@ -17,6 +17,7 @@ export class StockQuoteRefreshService extends BaseService
     constructor( private stockQuoteCache: StockQuoteCache )
     {
         super();
+        this.doLogging = false;
     }
 
     /**

@@ -157,15 +157,8 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     {
         this.debug( "onAddButtonClick " );
         var modelObject = this.modelObjectFactory.newModelObject();
-        this.crudStateStore
-            .sendModelObjectChangedEvent( this, modelObject );
-        this.crudStateStore
-            .sendCrudOperationChangedEvent( CrudOperation.CREATE );
-        /*
-        this.crudServiceContainer
-            .crudTableButtonsService
-            .sendAddButtonClickedEvent( modelObject );
-            */
+        this.crudController
+            .sendTableAddButtonClickedEvent( modelObject );
     }
 
     /**
@@ -175,10 +168,13 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     protected onDeleteButtonClick(): void
     {
         this.debug( "onDeleteButtonClick " + JSON.stringify( this.modelObject ));
+        this.crudController.sendTableDeleteButtonClickedEvent( this.modelObject );
+        /*
         this.crudStateStore
             .sendModelObjectChangedEvent( this, this.modelObject );
         this.crudStateStore
             .sendCrudOperationChangedEvent( CrudOperation.DELETE );
+            */
         /*
         if ( !isNullOrUndefined( this.modelObject ) )
         {

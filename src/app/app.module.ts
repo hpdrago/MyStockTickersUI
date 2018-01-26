@@ -341,26 +341,19 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         TradeItService,
         TradeItErrorReporter,
 
+        CustomerController,
         CustomerService,
         CustomerCrudService,
-        CustomerStateStore,
-        CustomerController,
         CustomerFactory,
 
-        TradeItAccountStateStore,
-        TradeItAccountController,
         TradeItAccountCrudService,
         TradeItAccountFactory,
         TradeitAccountOAuthService,
 
-        LinkedAccountStateStore,
-        LinkedAccountController,
         LinkedAccountCrudService,
         LinkedAccountFactory,
 
         StockCrudService,
-        StockStateStore,
-        StockController,
         StockSectorCrudService,
         StockExchangeService,
         StockFactory,
@@ -369,17 +362,11 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         PortfolioFactory,
         PortfolioCrudService,
-        PortfolioStateStore,
-        PortfolioController,
 
         PortfolioStockCrudService,
-        PortfolioStockStateStore,
-        PortfolioStockController,
         PortfolioStockFactory,
 
         StockNotesCrudService,
-        StockNotesStateStore,
-        StockNotesController,
         StockNotesFactory,
 
         StockNotesCountService,
@@ -389,8 +376,6 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockNotesSourceFactory,
 
         StockAnalystConsensusCrudService,
-        StockAnalystConsensusStateStore,
-        StockAnalystConsensusController,
         StockAnalystConsensusFactory,
 
         StockCatalystEventCrudService,

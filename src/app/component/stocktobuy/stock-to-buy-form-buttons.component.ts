@@ -1,8 +1,11 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
+import { StockToBuyStateStore } from './stock-to-buy-state-store';
+import { StockToBuyController } from './stock-to-buy-controller';
+import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
+import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
 
 /**
  * Button panel component for the StockToBuy dialog.
@@ -16,10 +19,25 @@ import { StockToBuy } from "../../model/entity/stock-to-buy";
 })
 export class StockToBuyFormButtonsComponent extends CrudFormButtonsComponent<StockToBuy>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockToBuyStateStore} stockToBuyStateStore
+     * @param {StockToBuyController} stockToBuyController
+     * @param {StockToBuyFactory} stockToBuyFactory
+     * @param {StockToBuyCrudService} stockToBuyCrudService
+     */
     constructor( protected toaster: ToastsManager,
-                 private stockToBuyServiceContainer: StockToBuyCrudServiceContainer )
+                 private stockToBuyStateStore: StockToBuyStateStore,
+                 private stockToBuyController: StockToBuyController,
+                 private stockToBuyFactory: StockToBuyFactory,
+                 private stockToBuyCrudService: StockToBuyCrudService )
     {
-        super( toaster, stockToBuyServiceContainer );
+        super( toaster,
+               stockToBuyStateStore,
+               stockToBuyController,
+               stockToBuyFactory,
+               stockToBuyCrudService );
     }
 
     /**

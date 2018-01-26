@@ -16,7 +16,8 @@ import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analy
     {
         selector: 'stock-analyst-consensus-dashboard-table',
         styleUrls: ['../stockanalystconsensus/stock-analyst-consensus-table.component.css'],
-        templateUrl: './stock-analyst-consensus-dashboard-table.component.html'
+        templateUrl: './stock-analyst-consensus-dashboard-table.component.html',
+        providers: [StockAnalystConsensusStateStore, StockAnalystConsensusController]
     } )
 export class StockAnalystConsensusDashboardTableComponent extends StockAnalystConsensusTableComponent
 {

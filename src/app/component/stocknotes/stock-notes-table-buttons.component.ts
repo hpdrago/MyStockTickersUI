@@ -1,9 +1,11 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { CrudOperation } from "../crud/common/crud-operation";
+import { StockNotesStateStore } from './stock-notes-state-store';
+import { StockNotesController } from './stock-notes-controller';
+import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 
 /**
  * Created by mike on 8/15/2017.
@@ -18,17 +20,24 @@ export class StockNotesTableButtonsComponent extends CrudTableButtonsComponent<S
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {StockNotesCrudServiceContainer} stockNotesServiceContainer
+     * @param {StockNotesStateStore} stockNotesCrudStateStore
+     * @param {StockNotesController} stockNotesController
+     * @param {StockNotesFactory} stockNotesFactory
      */
     constructor( protected toaster: ToastsManager,
-                 protected stockNotesServiceContainer: StockNotesCrudServiceContainer )
+                 private stockNotesCrudStateStore: StockNotesStateStore,
+                 private stockNotesController: StockNotesController,
+                 private stockNotesFactory: StockNotesFactory )
     {
-        super( toaster, stockNotesServiceContainer );
+        super( toaster,
+               stockNotesCrudStateStore,
+               stockNotesController,
+               stockNotesFactory );
     }
 
     protected onAddButtonClick(): void
     {
-        let modelObject = this.stockNotesServiceContainer.modelObjectFactory.newModelObject();
+        let modelObject = this.stockNotesFactory.newModelObject();
         this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.CREATE );
         this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
         super.onAddButtonClick();

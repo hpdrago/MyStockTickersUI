@@ -11,11 +11,6 @@ import { Customer } from "../entity/customer";
 @Injectable()
 export class CustomerFactory extends ModelObjectFactory<Customer>
 {
-    constructor( protected session: SessionService )
-    {
-        super();
-    }
-
     /**
      * Create a new Customer instance
      * @returns {Customer}

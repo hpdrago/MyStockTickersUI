@@ -1,8 +1,10 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockCatalystEventCrudServiceContainer } from "./stock-catalyst-event-crud-service-container";
 import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
+import { StockCatalystEventController } from './stock-catalyst-event-controller';
+import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
+import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 
 /**
  * Created by mike on 8/15/2017.
@@ -14,10 +16,23 @@ import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 })
 export class StockCatalystEventTableButtonsComponent extends CrudTableButtonsComponent<StockCatalystEvent>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockCatalystEventStateStore} stockCatalystEventStateStore
+     * @param {StockCatalystEventController} stockCatalystEventController
+     * @param {StockCatalystEventFactory} stockCatalystEventFactory
+     */
     constructor( protected toaster: ToastsManager,
-                 protected stockCatalystEventServiceContainer: StockCatalystEventCrudServiceContainer )
+                 private stockCatalystEventStateStore: StockCatalystEventStateStore,
+                 private stockCatalystEventController: StockCatalystEventController,
+                 private stockCatalystEventFactory: StockCatalystEventFactory )
     {
-        super( toaster, stockCatalystEventServiceContainer );
+        super( toaster,
+               stockCatalystEventStateStore,
+               stockCatalystEventController,
+               stockCatalystEventFactory );
+               
     }
 
 

@@ -3,8 +3,10 @@ import { Stock } from "../../model/entity/stock";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { SessionService } from "../../service/session.service";
-import { StockCrudServiceContainer } from "./stock-crud-service-container";
 import { isNullOrUndefined } from "util";
+import { StockFactory } from '../../model/factory/stock.factory';
+import { StockController } from './stock-controller';
+import { StockStateStore } from './stock-crud-state-store';
 
 /**
  * Created by mike on 1/2/2017.
@@ -16,11 +18,24 @@ import { isNullOrUndefined } from "util";
 })
 export class StockTableButtonsComponent extends CrudTableButtonsComponent<Stock>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {SessionService} sessionService
+     * @param {StockStateStore} stockStateStore
+     * @param {StockController} stockController
+     * @param {StockFactory} stockFactory
+     */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
-                 private stockCrudServiceContainer: StockCrudServiceContainer )
+                 private stockStateStore: StockStateStore,
+                 private stockController: StockController,
+                 private stockFactory: StockFactory )
     {
-        super( toaster, stockCrudServiceContainer );
+        super( toaster,
+               stockStateStore,
+               stockController,
+               stockFactory );
     }
 
     /**

@@ -2,7 +2,9 @@ import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
-import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
+import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
+import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountStateStore } from './tradeit-account-state-store';
 
 /**
  * Created by mike on 8/15/2017.
@@ -16,11 +18,18 @@ export class TradeItAccountDialogComponent extends CrudDialogComponent<TradeItAc
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {TradeItAccountCrudServiceContainer} customerAccountCrudServiceContainer
+     * @param {TradeItAccountStateStore} tradeItAccountStateStore
+     * @param {TradeItAccountController} tradeItAccountController
+     * @param {TradeItAccountFactory} tradeItAccountFactory
      */
     constructor( protected toaster: ToastsManager,
-                 private customerAccountCrudServiceContainer: TradeItAccountCrudServiceContainer )
+                 private tradeItAccountStateStore: TradeItAccountStateStore,
+                 private tradeItAccountController: TradeItAccountController,
+                 private tradeItAccountFactory: TradeItAccountFactory )
     {
-        super( toaster, customerAccountCrudServiceContainer );
+        super( toaster,
+               tradeItAccountStateStore,
+               tradeItAccountController,
+               tradeItAccountFactory );
     }
 }

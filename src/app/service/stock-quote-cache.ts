@@ -20,6 +20,7 @@ export class StockQuoteCache extends BaseService
                  private stockService: StockCrudService )
     {
         super( toaster );
+        this.doLogging = false;
     }
 
     /**

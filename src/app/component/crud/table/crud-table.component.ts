@@ -255,27 +255,30 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudFormButtonEvents(): void
     {
+        let methodName = 'subscribeToCrudFormButtonEvents';
+        this.debug( methodName + '.begin' );
         if ( this.isAllowUpdates() )
         {
-            this.addSubscription(
+            this.addSubscription( 'subscribeToSaveButtonClickCompletedEvent',
                 this.crudController
-                    .subscribeToSaveButtonClickCompletedEvent(
-                        ( modelObject: T ) => this.onUserModifiedModelObject( modelObject ) ) );
+                    .subscribeToPanelSaveButtonClickCompletedEvent(
+                        () => this.onUserModifiedModelObject() ) );
         }
         if ( this.isAllowAdds() )
         {
-            this.addSubscription(
+            this.addSubscription( 'subscribeToAddButtonClickCompletedEvent',
                 this.crudController
-                    .subscribeToAddButtonClickCompletedEvent(
-                        ( modelObject: T ) => this.onUserCreatedModelObject( modelObject ) ) );
+                    .subscribeToPanelAddButtonClickCompletedEvent(
+                        () => this.onUserCreatedModelObject() ) );
         }
         if ( this.isAllowDeletes() )
         {
-            this.addSubscription(
+            this.addSubscription( 'subscribeToDeleteButtonClickCompletedEvent',
                 this.crudController
-                    .subscribeToDeleteButtonClickCompletedEvent(
+                    .subscribeToPanelDeleteButtonClickCompletedEvent(
                         ( modelObject: T ) => this.onUserDeletedModelObject( modelObject ) ) );
         }
+        this.debug( methodName + '.end' );
     }
 
     /**
@@ -283,26 +286,30 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudTableButtonEvents(): void
     {
+        let methodName = 'subscribeToCrudTableButtonEvents';
+        this.debug( methodName + '.begin' );
         if ( this.isAllowAdds() )
         {
-            this.addSubscription(
+            this.addSubscription( 'subscribeToAddButtonClickedEvent',
                 this.crudController
-                    .subscribeToAddButtonClickedEvent( ( modelObject: T ) => this.showFormToAdd( modelObject ) ) );
+                    .subscribeToTableAddButtonClickedEvent( () => this.showFormToAdd() ) );
         }
         if ( this.isAllowUpdates() )
         {
-            this.addSubscription(
+            this.addSubscription( 'subscribeToEditButtonClickedEvent',
                 this.crudController
-                    .subscribeToEditButtonClickedEvent( ( modelObject: T ) => this.showFormToEdit( modelObject ) ) );
+                    .subscribeToTableEditButtonClickedEvent( () => this.showFormToEdit() ) );
         }
         if ( this.isAllowDeletes() )
         {
-            this.addSubscription(
+            this.addSubscription( 'subscribeToDeleteButtonClickedEvent',
                 this.crudController
-                    .subscribeToDeleteButtonClickedEvent( ( modelObject: T ) => this.showFormToDelete( modelObject ) ) );
+                    .subscribeToTableDeleteButtonClickedEvent( () => this.showFormToDelete() ) );
         }
-        this.addSubscription( this.crudController
-                                  .subscribeToRefreshButtonClickedEvent( ( modelObject: T ) => this.refreshTable() ) );
+        this.addSubscription( 'subscribeToRefreshButtonClickedEvent',
+            this.crudController
+                .subscribeToRefreshButtonClickedEvent( () => this.refreshTable() ) );
+        this.debug( methodName + '.end' );
     }
 
     /**
@@ -337,11 +344,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * This method is called when the user clicks on the add button.
      * A dialog will be displayed to allow the user to add a new model object.
      */
-    protected showFormToAdd( modelObject: T ): void
+    protected showFormToAdd(): void
     {
         this.debug( "showFormToAdd" );
-        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
-        this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.CREATE );
         this.displayModelObject();
     }
 
@@ -350,14 +355,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * A dialog will be displayed to allow the user to edit the selected model object.
      * @param modelObject
      */
-    protected showFormToEdit( modelObject: T ): void
+    protected showFormToEdit(): void
     {
-        this.debug( "showFormToEdit " + JSON.stringify( modelObject ) );
-        if ( !isNullOrUndefined( modelObject ) )
+        this.debug( "showFormToEdit " + JSON.stringify( this.modelObject ) );
+        if ( !isNullOrUndefined( this.modelObject ) )
         {
             this.debug( "showFormToEdit" );
-            this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.UPDATE );
-            this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
             this.displayModelObject();
         }
     }
@@ -366,14 +369,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * This method is called when the user wants to delete a modelObject.
      * @param modelObject
      */
-    protected showFormToDelete( modelObject: T ): void
+    protected showFormToDelete(): void
     {
-        this.debug( "showFormToDelete " + JSON.stringify( modelObject ) );
-        if ( !isNullOrUndefined( modelObject ) )
+        this.debug( "showFormToDelete " + JSON.stringify( this.modelObject ) );
+        if ( !isNullOrUndefined( this.modelObject ) )
         {
             this.debug( "showFormToDelete" );
-            this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.DELETE );
-            this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
             this.displayModelObject();
         }
     }
@@ -388,12 +389,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         /*
          * if the user is modifying the model object, we need to check that they have the latest version of the data.
          */
+        /*
         if ( this.isCrudUpdateOperation() )
         {
             this.checkModelObjectVersion();
         }
+        */
+        /*
         this.crudController
-            .sendDisplayFormRequestEvent();
+            .sendDisplayFormRequestEvent();*/
     }
 
     /**
@@ -437,15 +441,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      *
      * @param modelObject
      */
-    protected onUserModifiedModelObject( modelObject: T ): void
+    protected onUserModifiedModelObject(): void
     {
-        this.debug( 'onUserModifiedModelObject ' + JSON.stringify( modelObject ) );
-        this.selectedModelObject = modelObject;
-        this.updateModelObjectInTable( modelObject, true );
+        this.debug( 'onUserModifiedModelObject ' + JSON.stringify( this.modelObject ) );
+        this.selectedModelObject = this.modelObject;
+        this.updateModelObjectInTable( this.modelObject, true );
         this.crudController
             .sendTableContentChangeEvent();
-        this.crudStateStore
-            .sendModelObjectChangedEvent( this, modelObject );
     }
 
     /**
@@ -476,17 +478,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     /**
      * This method is called when the user has created a new model object that needs to be added to the table.
      */
-    protected onUserCreatedModelObject( modelObject: T ): void
+    protected onUserCreatedModelObject(): void
     {
-        this.debug( 'onUserCreatedModelObject ' + JSON.stringify( modelObject ) );
+        this.debug( 'onUserCreatedModelObject ' + JSON.stringify( this.modelObject ) );
         //this.setModelObject( modelObject );
-        if ( !isNullOrUndefined( modelObject ) )
+        if ( !isNullOrUndefined( this.modelObject ) )
         {
-            this.addModelObjectToTable( modelObject );
-            this.crudController
-                .sendTableContentChangeEvent();
-            this.crudStateStore
-                .sendModelObjectCreatedEvent( this, modelObject );
+            this.addModelObjectToTable( this.modelObject );
         }
     }
 
@@ -620,8 +618,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         let methodName = "onModelObjectSelected";
         this.debug( methodName + ".begin " + JSON.stringify( modelObject ) );
-        this.crudStateStore
-            .sendModelObjectChangedEvent( this, modelObject );
         this.crudController
             .sendTableSelectionChangeEvent( this.modelObject );
         this.debug( methodName + ".end " );
@@ -636,8 +632,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         let methodName = "onRowUnSelect";
         this.debug( methodName + ".begin " + JSON.stringify( event ) );
-        this.crudStateStore
-            .sendModelObjectChangedEvent( this, null );
         this.crudController
             .sendTableSelectionChangeEvent( null );
         this.debug( methodName + ".end" );
@@ -654,7 +648,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             var methodName = "onRowDoubleClick";
             this.debug( methodName + ".begin " + JSON.stringify( event ) );
             this.onRowSelect( event );
-            this.showFormToEdit( this.modelObject );
+            this.showFormToEdit();
             this.debug( methodName + ".end" );
         }
     }
@@ -746,6 +740,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * from itself or another component and if so, make any necessary changes.
      * @param {ModelObjectChangedEvent<T extends ModelObject<T>>} modelObjectChangeEvent
      */
+    /*
     protected isReceivedOurOwnEvent( methodName: string, modelObjectChangedEvent: ModelObjectChangedEvent<T> )
     {
         let returnValue = false;
@@ -757,6 +752,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         }
         return returnValue;
     }
+    */
 
     /**
      * Remove the model object from the table.

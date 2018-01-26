@@ -16,7 +16,8 @@ import { LinkedAccountStateStore } from './linked-account-state-store';
 {
     selector:    'linked-account-table',
     styleUrls:   ['../crud/table/crud-table.component.css'],
-    templateUrl: './linked-account-table.component.html'
+    templateUrl: './linked-account-table.component.html',
+    providers: [LinkedAccountStateStore, LinkedAccountController]
 } )
 export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccount>
 {

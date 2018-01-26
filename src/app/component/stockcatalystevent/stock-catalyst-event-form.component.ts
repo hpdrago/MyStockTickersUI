@@ -3,12 +3,14 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
-import { StockCatalystEventCrudServiceContainer } from "./stock-catalyst-event-crud-service-container";
 import { SessionService } from "../../service/session.service";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { SelectItem } from "primeng/primeng";
 import { DateOrTimePeriod } from "../../common/date-or-time-period.enum";
 import { TimePeriods } from "../../common/time-periods.enum";
+import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
+import { StockCatalystEventController } from './stock-catalyst-event-controller';
+import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 
 /**
  * This is the Stock CatalystEvent Form Component class.
@@ -26,14 +28,31 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
     private timePeriodOptions: SelectItem[];
     private timePeriodYearOptions: SelectItem[];
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {SessionService} sessionService
+     * @param {FormBuilder} formBuilder
+     * @param {StockCatalystEventStateStore} stockCatalystEventStateStore
+     * @param {StockCatalystEventController} stockCatalystEventController
+     * @param {StockCatalystEventFactory} stockCatalystEventFactory
+     */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
-                 private stockCatalystEventCrudServiceContainer: StockCatalystEventCrudServiceContainer )
+                 private stockCatalystEventStateStore: StockCatalystEventStateStore,
+                 private stockCatalystEventController: StockCatalystEventController,
+                 private stockCatalystEventFactory: StockCatalystEventFactory )
     {
-        super( toaster, stockCatalystEventCrudServiceContainer );
+        super( toaster,
+               stockCatalystEventStateStore,
+               stockCatalystEventController,
+               stockCatalystEventFactory );
     }
 
+    /**
+     * Initialization event.
+     */
     public ngOnInit(): void
     {
         super.ngOnInit();

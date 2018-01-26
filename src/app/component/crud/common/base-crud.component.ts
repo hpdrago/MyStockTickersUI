@@ -3,10 +3,8 @@ import { ModelObject } from "../../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
 import { CrudOperation } from "./crud-operation";
 import { Subscription } from "rxjs/Subscription";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { isNullOrUndefined } from "util";
 import { RestException } from "../../../common/rest-exception";
-import { TradeItException } from "../../../service/tradeit/tradeit-execption";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { CrudRestErrorReporter } from "../../../service/crud/crud-rest-error-reporter";
 import { CrudStateStore } from "./crud-state-store";
@@ -48,6 +46,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
+     * @param {CrudController<T extends ModelObject<T>>} crudController
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      */
     constructor( protected toaster: ToastsManager,
@@ -61,7 +60,12 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
             throw new Error( "toaster argument cannot be null" );
         }
         this.crudRestErrorReporter = this.createCrudRestErrorReporter();
-        this.modelObject = modelObjectFactory.newModelObject();
+        /*
+         * Initial the values from the state store directly.  Do not call "on" method as that might trigger
+         * additional work that we don't want to do at this time.
+         */
+        this.modelObject = this.crudStateStore.getModelObject();
+        this.crudOperation = this.crudStateStore.getCrudOperation();
     }
 
     /**
@@ -72,7 +76,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         let methodName = "ngOnInit";
         this.log( methodName + ".begin" );
         this.subscribeToModelObjectChangeEvents();
-        this.addSubscription(
+        this.addSubscription( 'subscribeToCrudOperationChangeEvent',
             this.crudStateStore
                 .subscribeToCrudOperationChangeEvent( (crudOperation: CrudOperation) => this.crudOperationChangedEvent( crudOperation )));
         this.log( methodName + ".end" );
@@ -114,13 +118,18 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     private subscribeToModelObjectChangeEvents()
     {
-        this.debug( "subscribeToModelObjectChangeEvents" );
-        this.addSubscription( this.crudStateStore
+        let methodName = 'subscribeToModelObjectChangeEvents';
+        this.debug( methodName + '.begin' );
+        this.addSubscription( 'subscribeToModelObjectChangedEvent',
+            this.crudStateStore
             .subscribeToModelObjectChangedEvent( (changeEvent: ModelObjectChangedEvent<T>) => this.onModelObjectChangedEvent( changeEvent )));
-        this.addSubscription( this.crudStateStore
+        this.addSubscription( 'subscribeToModelObjectDeletedEvent',
+            this.crudStateStore
             .subscribeToModelObjectDeletedEvent( (deleteEvent: ModelObjectDeletedEvent<T>) => this.onModelObjectDeletedEvent( deleteEvent )));
-        this.addSubscription( this.crudStateStore
+        this.addSubscription( 'subscribeToModelObjectCreatedEvent',
+            this.crudStateStore
             .subscribeToModelObjectCreatedEvent( (createEvent: ModelObjectCreatedEvent<T>) => this.onModelObjectCreatedEvent( createEvent )));
+        this.debug( methodName + '.end' );
     }
 
     /**

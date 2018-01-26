@@ -5,7 +5,6 @@ import { ToastsManager } from "ng2-toastr";
 import { Observable } from "rxjs/Observable";
 import { DialogCloseEventType } from "../common/close-button-event";
 import { isNullOrUndefined } from "util";
-import { CrudRestErrorReporter } from "../../../service/crud/crud-rest-error-reporter";
 import { CrudStateStore } from '../common/crud-state-store';
 import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
@@ -320,7 +319,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         var methodName = "onSaveButtonClick";
         this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
         this.sendSaveButtonClickedEvent();
-        this.sendFormPrepareToSaveEvent();
+        //this.sendFormPrepareToSaveEvent();
         this.performSaveButtonWork();
         this.debug( methodName + ".end" );
     }
@@ -334,7 +333,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         var methodName = "sendSaveButtonClickedEvent";
         this.debug( methodName + " " + JSON.stringify( this.modelObject ));
         this.crudController
-            .sendSaveButtonClickedEvent( this.modelObject );
+            .sendPanelSaveButtonClickedEvent();
     }
 
     /**
@@ -370,7 +369,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.crudController
             .sendFormResetEvent();
         this.crudController
-            .sendSaveButtonClickCompletedEvent( this.modelObject );
+            .sendPanelSaveButtonClickCompletedEvent( this.modelObject );
         this.resetCrudOperationAndModelObject();
         this.sendResetCrudOperationAndModelObject();
         this.crudStateStore
@@ -398,7 +397,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         var methodName = "sendDeleteButtonClickedEvent";
         this.debug( methodName + " " + JSON.stringify( this.modelObject ));
         this.crudController
-            .sendDeleteButtonClickedEvent( this.modelObject );
+            .sendPanelDeleteButtonClickCompletedEvent( this.modelObject );
     }
 
     /**
@@ -414,7 +413,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                                        this.crudController
                                            .sendFormResetEvent();
                                        this.crudController
-                                           .sendContinuousAddButtonClickedEvent( this.modelObject );
+                                           .sendPanelContinuousAddButtonClickedEvent( this.modelObject );
                                    });
     }
 
@@ -423,10 +422,10 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected onAddButtonClick(): void
     {
-        var methodName = "onAddButtonClicked";
+        var methodName = "onPanelAddButtonClickCompletedEvent";
         this.debug( methodName + ".begin " + JSON.stringify( this.modelObject ));
         this.sendAddButtonClickedEvent();
-        this.sendFormPrepareToSaveEvent();
+        //this.sendFormPrepareToSaveEvent();
         this.performAddButtonWork();
         this.debug( methodName + ".end " + JSON.stringify( this.modelObject ));
     }
@@ -439,18 +438,22 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "sendADdButtonClickedEvent";
         this.debug( methodName + " " + JSON.stringify( this.modelObject ));
+        /*
         this.crudController
-            .sendAddButtonClickedEvent( this.modelObject );
+            .sendPan( this.modelObject );
+            */
     }
 
     /**
      * Sends a notification to the form to perform any necessary work before the model object is saved.
      */
+    /*
     protected sendFormPrepareToSaveEvent()
     {
         this.debug( "sendFormPrepareToSaveEvent" );
         this.crudController.sendFormPrepareToSaveEvent();
     }
+    */
 
     /**
      * This method is called when the Add button is clicked.
@@ -495,7 +498,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                        {
                            this.debug( methodName + " duplicateKeyExists" );
                            this.crudController
-                               .sendNavigateToModelObjectEvent( this.modelObject );
+                               .sendTableNavigateToModelObjectEvent( this.modelObject );
                        }
                    }
             );
@@ -511,7 +514,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.crudController
             .sendFormResetEvent();
         this.crudController
-            .sendAddButtonClickCompletedEvent( this.modelObject );
+            .sendPanelAddButtonClickCompletedEvent( this.modelObject );
         this.resetCrudOperationAndModelObject();
         this.sendResetCrudOperationAndModelObject();
         this.crudStateStore
@@ -570,7 +573,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.crudController
             .sendFormResetEvent();
         this.crudController
-            .sendDeleteButtonClickCompletedEvent( this.modelObject );
+            .sendPanelDeleteButtonClickCompletedEvent( this.modelObject );
         this.resetCrudOperationAndModelObject();
         this.sendResetCrudOperationAndModelObject();
     }
@@ -583,7 +586,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         this.debug( "onCloseButtonClick " + DialogCloseEventType.getName( event ) );
         this.crudController
-            .sendCloseButtonClickedEvent( event );
+            .sendDialogCloseButtonClickedEvent( event );
         this.resetCrudOperationAndModelObject();
         this.sendResetCrudOperationAndModelObject();
     }

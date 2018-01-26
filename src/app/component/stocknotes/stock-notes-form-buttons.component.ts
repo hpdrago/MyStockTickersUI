@@ -79,7 +79,6 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
     {
         var methodName = "onAddButtonClick.override";
         this.log( methodName + " " + JSON.stringify( this.modelObject ));
-        this.sendFormPrepareToSaveEvent();
         this.modelObject
             .stocks
             .forEach( stockNotesStock =>

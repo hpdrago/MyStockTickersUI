@@ -56,9 +56,12 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
      * Adds {@code subscription} to a list of Subscriptions.
      * All registered subscriptions will be unsubscribed when the instance is destroyed.
      * @param {Subscription} subscription
+     * @param {string} subjectName
      */
-    protected addSubscription( subscription: Subscription )
+    protected addSubscription( subjectName: string, subscription: Subscription )
     {
+        let methodName = 'addSubscription';
+        this.debug( methodName + " subscribing to " + subjectName );
         this.subscriptions.push( subscription );
     }
     /**

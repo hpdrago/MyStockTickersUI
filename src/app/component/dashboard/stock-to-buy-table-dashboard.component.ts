@@ -19,7 +19,9 @@ import { StockToBuyStateStore } from '../stocktobuy/stock-to-buy-state-store';
     {
         selector:    'stock-to-buy-dashboard-table',
         styleUrls:   ['../stocktobuy/stock-to-buy-table.component.css'],
-        templateUrl: './stock-to-buy-table-dashboard.component.html'
+        templateUrl: './stock-to-buy-table-dashboard.component.html',
+        providers: [StockToBuyStateStore, StockToBuyController,
+                    StockNotesStateStore, StockNotesController]
     } )
 export class StockToBuyTableDashboardComponent extends StockToBuyTableComponent
 {

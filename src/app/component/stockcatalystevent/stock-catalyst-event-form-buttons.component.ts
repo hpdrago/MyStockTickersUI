@@ -1,8 +1,11 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockCatalystEventCrudServiceContainer } from "./stock-catalyst-event-crud-service-container";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
+import { StockCatalystEventController } from './stock-catalyst-event-controller';
+import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
+import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
+import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
 
 /**
  * Button panel component for the StockAnalystConsensus dialog.
@@ -16,10 +19,25 @@ import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 })
 export class StockCatalystEventFormButtonsComponent extends CrudFormButtonsComponent<StockCatalystEvent>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockCatalystEventStateStore} stockCatalystEventStateStore
+     * @param {StockCatalystEventController} stockCatalystEventController
+     * @param {StockCatalystEventFactory} stockCatalystEventFactory
+     * @param {StockCatalystEventCrudService} stockCatalystEventCrudService
+     */
     constructor( protected toaster: ToastsManager,
-                 private stockCatalystEventServiceContainer: StockCatalystEventCrudServiceContainer )
+                 private stockCatalystEventStateStore: StockCatalystEventStateStore,
+                 private stockCatalystEventController: StockCatalystEventController,
+                 private stockCatalystEventFactory: StockCatalystEventFactory,
+                 private stockCatalystEventCrudService: StockCatalystEventCrudService )
     {
-        super( toaster, stockCatalystEventServiceContainer );
+        super( toaster,
+               stockCatalystEventStateStore,
+               stockCatalystEventController,
+               stockCatalystEventFactory,
+               stockCatalystEventCrudService );
     }
 
     /**

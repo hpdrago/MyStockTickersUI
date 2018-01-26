@@ -1,5 +1,4 @@
 import { TradeItAccount } from "../../model/entity/tradeit-account";
-import { TradeItException } from "../../service/tradeit/tradeit-execption";
 
 /**
  * This interface defines the methods that a component must implement to handle OAuth events.

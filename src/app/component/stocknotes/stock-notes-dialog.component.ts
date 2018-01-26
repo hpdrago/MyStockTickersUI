@@ -1,10 +1,10 @@
 import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { StockNotes } from "../../model/entity/stock-notes";
-import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
 import { StockNotesStateStore } from './stock-notes-state-store';
+import { StockNotesController } from './stock-notes-controller';
+import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 
 /**
  * Created by mike on 8/15/2017.
@@ -18,13 +18,18 @@ export class StockNotesDialogComponent extends CrudDialogComponent<StockNotes>
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {StockNotesCrudServiceContainer} stockNotesCrudServiceContainer
+     * @param {StockNotesStateStore} stockNotesCrudStateStore
+     * @param {StockNotesController} stockNotesController
+     * @param stockNotesFactory
      */
     constructor( protected toaster: ToastsManager,
                  private stockNotesCrudStateStore: StockNotesStateStore,
-                 private stockNotesModelObjectFactory,
-                 private stockNotesCrudRestService: StockNotesCrudService )
+                 private stockNotesController: StockNotesController,
+                 private stockNotesFactory: StockNotesFactory )
     {
-        super( toaster, stockNotesCrudServiceContainer );
+        super( toaster,
+               stockNotesCrudStateStore,
+               stockNotesController,
+               stockNotesFactory );
     }
 }

@@ -67,14 +67,17 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      */
     protected subscribeToCrudDialogServiceEvents()
     {
-        this.log( "subscribeToCrudDialogServiceEvents.begin" );
-        this.addSubscription(
+        let methodName = 'subscribeToCrudDialogServiceEvents';
+        this.debug( methodName + ".begin" );
+        this.addSubscription( 'subscribeToCloseButtonClickedEvent',
             this.crudController
-            .subscribeToCloseButtonClickedEvent(( event: DialogCloseEventType ) => this.onCloseButtonClick( event ) ));
-        this.addSubscription(
+            .subscribeToDialogCloseButtonClickedEvent(( event: DialogCloseEventType ) => this.onCloseButtonClick( event ) ));
+        /*
+        this.addSubscription( 'subscribeToDisplayFormRequestEvent',
             this.crudController
             .subscribeToDisplayFormRequestEvent( () => this.setDisplayDialog() ));
-        this.log( "subscribeToCrudDialogServiceEvents.end" );
+            */
+        this.debug( methodName + ".end" );
     }
 
     /**
@@ -82,20 +85,21 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      */
     protected subscribeToCrudFormButtonsServiceEvents()
     {
-        this.log( "subscribeToCrudFormButtonsServiceEvents.begin" );
-        this.addSubscription(
+        let methodName = 'subscribeToCrudFormButtonsServiceEvents';
+        this.debug( methodName + ".begin" );
+        this.addSubscription( 'subscribeToAddButtonClickedEvent',
             this.crudController
-                .subscribeToAddButtonClickedEvent( ( modelObject ) => this.onAddButtonClicked( modelObject ) ));
-        this.addSubscription(
+                .subscribeToPanelAddButtonClickCompletedEvent(() => this.onPanelAddButtonClickCompletedEvent() ));
+        this.addSubscription( 'subscribeToContinuousAddButtonClickedEvent',
             this.crudController
-                .subscribeToContinuousAddButtonClickedEvent(( modelObject ) => this.onContinuousAddButtonClicked( modelObject ) ));
-        this.addSubscription(
+                .subscribeToPanelContinuousAddButtonClickedEvent(() => this.onContinuousAddButtonClicked() ));
+        this.addSubscription( 'subscribeToSaveButtonClickedEvent',
             this.crudController
-                .subscribeToSaveButtonClickedEvent( ( modelObject ) => this.onSaveButtonClicked( modelObject ) ));
-        this.addSubscription(
+                .subscribeToPanelSaveButtonClickCompletedEvent( () => this.onPanelSaveButtonClickCompleted() ));
+        this.addSubscription( 'subscribeToDeleteButtonClickedEvent',
             this.crudController
-                .subscribeToDeleteButtonClickedEvent(( modelObject ) => this.onDeleteButtonClicked( modelObject ) ));
-        this.log( "subscribeToCrudFormButtonsServiceEvents.end" );
+                .subscribeToPanelDeleteButtonClickCompletedEvent(() => this.onDeleteButtonClickCompleted() ));
+        this.debug( methodName + '.end' );
     }
 
     /**
@@ -106,8 +110,10 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
     protected setDisplayDialog(): void
     {
         this.debug( "setDisplayDialog.begin" );
+        /*
         this.crudController
             .sendFormPrepareToDisplayEvent();
+            */
         this.displayDialog = true;
         this.debug( "setDisplayDialog.end" );
     }
@@ -130,9 +136,10 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      *
      * @param modelObject
      */
-    protected onAddButtonClicked( modelObject: T )
+    protected onPanelAddButtonClickCompletedEvent()
     {
-        this.debug( "onAddButtonClick " + JSON.stringify( modelObject ) );
+        let methodName = 'onPanelAddButtonClickCompletedEvent';
+        this.debug( methodName + ' ' + JSON.stringify( this.modelObject ) );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
             this.onCloseButtonClick( DialogCloseEventType.ADD_BUTTON );
@@ -144,12 +151,12 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      *
      * @param modelObject
      */
-    protected onContinuousAddButtonClicked( modelObject: T )
+    protected onContinuousAddButtonClicked()
     {
-        this.debug( "onContinuousAddButtonClicked " + JSON.stringify( modelObject ) );
+        this.debug( "onContinuousAddButtonClicked " + JSON.stringify( this.modelObject ) );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
-            this.crudStateStore.sendModelObjectChangedEvent( this, this.modelObjectFactory.newModelObject() );
+            this.crudController.sendPanelContinuousAddButtonClickedEvent( this.modelObject );
         }
     }
 
@@ -157,9 +164,10 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      * This method is called when the save button is clicked.  All observers of this event will be notified.
      * @param modelObject
      */
-    protected onSaveButtonClicked( modelObject: any )
+    protected onPanelSaveButtonClickCompleted()
     {
-        this.debug( "onSaveButtonClick " + JSON.stringify( modelObject ) );
+        let methodName = 'onPanelSaveButtonClickCompleted';
+        this.debug( methodName + " " + JSON.stringify( this.modelObject ) );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
             this.onCloseButtonClick( DialogCloseEventType.SAVE_BUTTON );
@@ -170,9 +178,9 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      * This method is called when the delete button is clicked.  All observers of this event will be notified.
      * @param modelObject
      */
-    protected onDeleteButtonClicked( modelObject: T )
+    protected onDeleteButtonClickCompleted( )
     {
-        this.debug( "onDeleteButtonClick " + JSON.stringify( modelObject ) );
+        this.debug( "onDeleteButtonClick " + JSON.stringify( this.modelObject ) );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
             this.closeDialog();

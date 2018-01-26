@@ -4,13 +4,15 @@ import { TradeItAuthenticateResult } from "../../service/tradeit/apiresults/trad
 import { TradeItSecurityQuestionDialogComponent } from "../tradeit/tradeit-security-question-dialog.component";
 import { EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
 import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
 import { TradeitOAuthComponent } from "./tradeit-oauth-component";
-import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
+import { TradeItAccountStateStore } from './tradeit-account-state-store';
+import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
+import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 
 /**
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}
@@ -28,17 +30,28 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {TradeItErrorReporter} tradeItErrorReporter
-     * @param {TradeItAccountCrudServiceContainer} tradeItAccountCrudServiceContainer
+     * @param {TradeItAccountStateStore} tradeItAccountStateStore
+     * @param {TradeItAccountController} tradeItAccountController
+     * @param {TradeItAccountFactory} tradeItAccountFactory
+     * @param {TradeItAccountCrudService} tradeItAccountCrudService
      * @param {TradeItService} tradeItService
      * @param {TradeitAccountOAuthService} tradeItOAuthService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
-                 protected tradeItAccountCrudServiceContainer: TradeItAccountCrudServiceContainer,
+                 protected tradeItAccountStateStore: TradeItAccountStateStore,
+                 protected tradeItAccountController: TradeItAccountController,
+                 protected tradeItAccountFactory: TradeItAccountFactory,
+                 protected tradeItAccountCrudService: TradeItAccountCrudService,
                  protected tradeItService: TradeItService,
                  protected tradeItOAuthService: TradeitAccountOAuthService )
     {
-        super( TableLoadingStrategy.ALL_ON_CREATE, toaster, tradeItAccountCrudServiceContainer ) ;
+        super( TableLoadingStrategy.ALL_ON_CREATE,
+               toaster,
+               tradeItAccountStateStore,
+               tradeItAccountController,
+               tradeItAccountFactory,
+               tradeItAccountCrudService );
     }
 
     public ngOnInit(): void
@@ -50,10 +63,11 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
          * Need to register to get notified when the TradeItAccount has been added successfully.  This occurs after
          * the user provides the login credentials to the brokerage successfully from the popup url auth call.
          */
-        this.addSubscription(
-            this.tradeItAccountCrudServiceContainer
-                .crudFormButtonsService
-                .subscribeToAddButtonClickCompletedEvent( tradeItAccount => { this.onModelObjectCreated( tradeItAccount );}));
+        /*
+        this.addSubscription( 'subscribeToAddButtonClickCompletedEvent',
+            this.tradeItAccountController
+                .subscribeToAddButtonClickCompletedEvent( () => this.onModelObjectCreated();}));
+                */
         this.log( methodName + ".end" );
     }
 

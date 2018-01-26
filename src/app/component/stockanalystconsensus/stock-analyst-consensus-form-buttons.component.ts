@@ -1,8 +1,11 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockAnalystConsensusCrudServiceContainer } from "./stock-analyst-consensus-crud-service-container";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
+import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
+import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
+import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
+import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
 
 /**
  * Button panel component for the StockAnalystConsensus dialog.
@@ -16,10 +19,25 @@ import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensu
 })
 export class StockAnalystConsensusFormButtonsComponent extends CrudFormButtonsComponent<StockAnalystConsensus>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockAnalystConsensusStateStore} stockAnalystConsensusStateStore
+     * @param {StockAnalystConsensusController} stockAnalystConsensusController
+     * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
+     * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
+     */
     constructor( protected toaster: ToastsManager,
-                 private stockAnalystConsensusServiceContainer: StockAnalystConsensusCrudServiceContainer )
+                 private stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
+                 private stockAnalystConsensusController: StockAnalystConsensusController,
+                 private stockAnalystConsensusFactory: StockAnalystConsensusFactory,
+                 private stockAnalystConsensusCrudService: StockAnalystConsensusCrudService )
     {
-        super( toaster, stockAnalystConsensusServiceContainer );
+        super( toaster,
+               stockAnalystConsensusStateStore,
+               stockAnalystConsensusController,
+               stockAnalystConsensusFactory,
+               stockAnalystConsensusCrudService );
     }
 
     /**

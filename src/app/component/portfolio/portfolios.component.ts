@@ -4,6 +4,8 @@ import { ToastsManager } from "ng2-toastr";
 import { TradeItAccountSelectionTableComponent } from "../tradeit-account/tradeit-account-selection-table.component";
 import { PortfolioTableComponent } from "./portfolio-table.component";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
+import { PortfolioStateStore } from './portfolio-state-store';
+import { PortfolioController } from './portfolio-controller';
 
 /**
  * This is the main display component for portfolios.
@@ -15,7 +17,8 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 @Component(
     {
         selector: 'portfolios',
-        templateUrl: './portfolios.component.html'
+        templateUrl: './portfolios.component.html',
+        providers: [PortfolioStateStore, PortfolioController]
     })
 export class PortfoliosComponent extends BaseComponent
 {

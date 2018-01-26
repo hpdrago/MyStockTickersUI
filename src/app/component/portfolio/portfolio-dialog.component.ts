@@ -2,7 +2,6 @@ import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
 import { Portfolio } from "../../model/entity/portfolio";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-container";
 import { PortfolioStateStore } from './portfolio-state-store';
 import { PortfolioController } from './portfolio-controller';
 import { PortfolioFactory } from '../../model/factory/portfolio.factory';

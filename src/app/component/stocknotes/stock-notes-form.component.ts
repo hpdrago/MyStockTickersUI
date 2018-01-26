@@ -3,7 +3,6 @@ import { Component, ElementRef, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { SelectItem } from "primeng/primeng";
 import { StockNotes } from "../../model/entity/stock-notes";
-import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { SessionService } from "../../service/session.service";
 import { CrudOperation } from "../crud/common/crud-operation";
@@ -15,6 +14,9 @@ import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
 import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
 import { StockQuote } from "../../model/entity/stock-quote";
+import { StockNotesStateStore } from './stock-notes-state-store';
+import { StockNotesController } from './stock-notes-controller';
+import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 
 /**
  * This is the Stock Note Form Component class.
@@ -60,16 +62,24 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      * @param {FormBuilder} formBuilder
      * @param {StockCrudService} stockService
      * @param {CustomerCrudService} customerService
-     * @param {StockNotesCrudServiceContainer} stockNotesCrudServiceContainer
+     * @param {StockNotesStateStore} stockNotesCrudStateStore
+     * @param {StockNotesController} stockNotesController
+     * @param {StockNotesFactory} stockNotesFactory
      */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private stockService: StockCrudService,
                  protected customerService: CustomerCrudService,
-                 private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
+                 private stockNotesCrudStateStore: StockNotesStateStore,
+                 private stockNotesController: StockNotesController,
+                 private stockNotesFactory: StockNotesFactory )
     {
-        super( toaster, stockNotesCrudServiceContainer, customerService );
+        super( toaster,
+               stockNotesCrudStateStore,
+               stockNotesController,
+               stockNotesFactory,
+               customerService );
     }
 
     /**
@@ -237,10 +247,10 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
     /**
      * This method is called just before the form is displayed
      */
-    protected onPrepareToDisplay(): void
+    protected prepareToDisplay(): void
     {
-        let methodName = "onPrepareToDisplay";
-        super.onPrepareToDisplay();
+        let methodName = "prepareToDisplay";
+        super.prepareToDisplay();
         /*
          * Need to simulate the entry of the stocks for this stock note
          */

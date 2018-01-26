@@ -1,9 +1,12 @@
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Component } from "@angular/core";
-import { ToastsManager } from "ng2-toastr";
-import { SessionService } from "../../service/session.service";
-import { Customer } from "../../model/entity/customer";
-import { CrudFormComponent } from "../crud/form/crud-form.component";
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { ToastsManager } from 'ng2-toastr';
+import { SessionService } from '../../service/session.service';
+import { Customer } from '../../model/entity/customer';
+import { CrudFormComponent } from '../crud/form/crud-form.component';
+import { CustomerStateStore } from './customer-state-store';
+import { CustomerFactory } from '../../model/factory/customer.factory';
+import { CustomerController } from './customer-controller';
 
 /**
  * This is the Customer Form Component class.
@@ -17,12 +20,26 @@ import { CrudFormComponent } from "../crud/form/crud-form.component";
             } )
 export class CustomerFormComponent extends CrudFormComponent<Customer>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {SessionService} sessionService
+     * @param {FormBuilder} formBuilder
+     * @param {CustomerStateStore} customerStateStore
+     * @param {CustomerController} customerController
+     * @param {CustomerFactory} customerFactory
+     */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
-                 private customerCrudServiceContainer: CustomerCrudServiceContainer )
+                 protected customerStateStore: CustomerStateStore,
+                 protected customerController: CustomerController,
+                 protected customerFactory: CustomerFactory )
     {
-        super( toaster, customerCrudServiceContainer );
+        super( toaster,
+               customerStateStore,
+               customerController,
+               customerFactory );
     }
 
     /**
@@ -31,7 +48,7 @@ export class CustomerFormComponent extends CrudFormComponent<Customer>
      */
     protected createFormGroup(): FormGroup
     {
-        this.debug( "initializeForm " );
+        this.debug( 'initializeForm ' );
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
                 'email':       new FormControl( this.modelObject.email, Validators.required )

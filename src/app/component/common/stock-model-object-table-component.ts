@@ -17,7 +17,10 @@ export abstract class StockModelObjectTableComponent<T extends StockModelObject<
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {CrudServiceContainer<T extends StockModelObject<T>>} crudServiceContainer
+     * @param {CrudStateStore<T extends StockModelObject<T>>} stockStateStore
+     * @param {CrudController<T extends StockModelObject<T>>} stockController
+     * @param {ModelObjectFactory<T extends StockModelObject<T>>} stockFactory
+     * @param {CrudRestService<T extends StockModelObject<T>>} stockCrudService
      */
     constructor( protected toaster: ToastsManager,
                  protected stockStateStore: CrudStateStore<T>,

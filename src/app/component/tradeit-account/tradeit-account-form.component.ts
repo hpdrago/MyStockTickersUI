@@ -4,9 +4,11 @@ import { ToastsManager } from "ng2-toastr";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { SessionService } from "../../service/session.service";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
-import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { SelectItem } from "primeng/primeng";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
+import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
+import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountStateStore } from './tradeit-account-state-store';
 
 /**
  * This is the Customer Account Form Component class.
@@ -26,17 +28,25 @@ export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccoun
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {SessionService} sessionService
-     * @param {TradeItService} tradeItService
      * @param {FormBuilder} formBuilder
-     * @param {TradeItAccountCrudServiceContainer} customerAccountCrudServiceContainer
+     * @param {TradeItAccountStateStore} tradeItAccountStateStore
+     * @param {TradeItAccountController} tradeItAccountController
+     * @param {TradeItAccountFactory} tradeItAccountFactory
+     * @param {TradeItService} tradeItService
+     * @param {} customerAccountCrudServiceContainer
      */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
-                 private tradeItService: TradeItService,
                  private formBuilder: FormBuilder,
-                 private customerAccountCrudServiceContainer: TradeItAccountCrudServiceContainer )
+                 private tradeItAccountStateStore: TradeItAccountStateStore,
+                 private tradeItAccountController: TradeItAccountController,
+                 private tradeItAccountFactory: TradeItAccountFactory,
+                 private tradeItService: TradeItService )
     {
-        super( toaster, customerAccountCrudServiceContainer );
+        super( toaster,
+               tradeItAccountStateStore,
+               tradeItAccountController,
+               tradeItAccountFactory );
     }
 
 

@@ -18,7 +18,8 @@ import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-cr
 @Component(
 {
     selector:    'portfolio-stock-table',
-    templateUrl: './portfolio-stock-table.component.html'
+    templateUrl: './portfolio-stock-table.component.html',
+    providers: [PortfolioStockStateStore, PortfolioStockController]
 })
 export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioStock>
 {

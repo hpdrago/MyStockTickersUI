@@ -7,9 +7,10 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
-import { CrudStateStore } from '../crud/common/crud-state-store';
-import { CrudController } from '../crud/common/crud-controller';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
+import { StockNotesController } from './stock-notes-controller';
+import { StockNotesStateStore } from './stock-notes-state-store';
+import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -19,7 +20,8 @@ import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.servi
 @Component(
 {
     selector:    'stock-note-counts',
-    templateUrl: './stocks.note.count-table.component.html'
+    templateUrl: './stocks.note.count-table.component.html',
+    providers: [StockNotesStateStore, StockNotesController]
 })
 export class StockNotesCountTableComponent extends CrudTableComponent<StockNotes>
 {
@@ -32,18 +34,24 @@ export class StockNotesCountTableComponent extends CrudTableComponent<StockNotes
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {SessionService} session
+     * @param {StockNotesStateStore} stockNotesStateStore
+     * @param {StockNotesController} stockNotesController
+     * @param {StockNotesFactory} stockNotesFactor
      * @param stockNotesModelObjectFactory
      * @param {StockNotesCrudService} stockNotesCrudRestService
      */
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,
+                 private stockNotesStateStore: StockNotesStateStore,
+                 private stockNotesController: StockNotesController,
+                 private stockNotesFactor: StockNotesFactory,
                  private stockNotesModelObjectFactory,
                  private stockNotesCrudRestService: StockNotesCrudService )
     {
         super( TableLoadingStrategy.ALL_ON_CREATE,
                toaster,
-               new CrudStateStore<StockNotes>( stockNotesModelObjectFactory ),
-               new CrudController<StockNotes>(),
+               stockNotesStateStore,
+               stockNotesController,
                stockNotesModelObjectFactory,
                stockNotesCrudRestService );
     }

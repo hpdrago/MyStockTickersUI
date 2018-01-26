@@ -73,8 +73,10 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
         //this.crudServiceContainer
         //    .crudFormButtonsService
         //    .sendModelObjectChangedEvent( subjectInfo.modelObject );
+        /*
         this.crudController
             .sendFormPrepareToDisplayEvent();
+            */
     }
 
     /**
@@ -82,12 +84,17 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      */
     protected subscribeToCrudPanelServiceEvents(): void
     {
-        this.debug( "subscribeToCrudPanelServiceEvents.begin" );
-        this.addSubscription( this.crudController
-                                  .subscribeToDisplayFormRequestEvent( () => this.displayModelObject() ));
-        this.addSubscription( this.crudController
-                                  .subscribeToCancelButtonClickedEvent( () => this.cancelButtonClicked() ));
-        this.debug( "subscribeToCrudPanelServiceEvents.end" );
+        let methodName = 'subscribeToCrudPanelServiceEvents';
+        this.debug( methodName + ".begin" );
+        /*
+        this.addSubscription( 'subscribeToCrudPanelServiceEvents',
+            this.crudController
+                .subscribeToDisplayFormRequestEvent( () => this.displayModelObject() ));
+                */
+        this.addSubscription( 'subscribeToCancelButtonClickedEvent',
+            this.crudController
+                .subscribeToPanelCancelButtonClickedEvent( () => this.cancelButtonClicked() ));
+        this.debug( methodName + ".end" );
     }
 
     /**
@@ -95,14 +102,18 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      */
     protected subscribeToCrudFormServiceEvents(): void
     {
-        this.debug( "subscribeToCrudFormServiceEvents.begin" );
-        this.addSubscription( this.crudController
-                                  .subscribeToDeleteButtonClickCompletedEvent( modelObject => this.deleteButtonClickCompleted( modelObject ) ));
-        this.addSubscription( this.crudController
-                                  .subscribeToSaveButtonClickCompletedEvent( modelObject => this.saveButtonClickCompleted( modelObject ) ));
-        this.addSubscription( this.crudController
-                                  .subscribeToAddButtonClickCompletedEvent( modelObject => this.addButtonClickCompleted( modelObject ) ));
-        this.debug( "subscribeToCrudFormServiceEvents.end" );
+        let methodName = 'subscribeToCrudFormServiceEvents';
+        this.debug( methodName + '.begin' );
+        this.addSubscription( 'subscribeToDeleteButtonClickCompletedEvent',
+            this.crudController
+                .subscribeToPanelDeleteButtonClickCompletedEvent( () => this.deleteButtonClickCompleted() ));
+        this.addSubscription( 'subscribeToSaveButtonClickCompletedEvent',
+            this.crudController
+                .subscribeToPanelSaveButtonClickCompletedEvent( () => this.saveButtonClickCompleted() ));
+        this.addSubscription( 'subscribeToAddButtonClickCompletedEvent',
+            this.crudController
+                .subscribeToPanelAddButtonClickCompletedEvent( () => this.addButtonClickCompleted() ));
+        this.debug( methodName + '.end' );
     }
 
     protected onSubmit(): void
@@ -123,7 +134,7 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      * This method is called upon the successful completion of deleting a model object.
      * @param customerAccount
      */
-    protected deleteButtonClickCompleted( modelObject: T )
+    protected deleteButtonClickCompleted()
     {
         this.debug( "deleteButtonClickCompleted" );
         this.resetPanel();
@@ -133,7 +144,7 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      * This method is called upon the successful completion of adding a model object.
      * @param modelObject
      */
-    protected addButtonClickCompleted( modelObject: T )
+    protected addButtonClickCompleted()
     {
         this.debug( "addButtonClickCompleted" );
         this.resetPanel();
@@ -143,7 +154,7 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      * This method is called upon the successful completion of saving a model object.
      * @param modelObject
      */
-    protected saveButtonClickCompleted( modelObject: T )
+    protected saveButtonClickCompleted()
     {
         this.debug( "saveButtonClickCompleted" );
         this.resetPanel();

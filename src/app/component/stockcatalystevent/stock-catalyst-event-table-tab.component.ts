@@ -1,7 +1,10 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockCatalystEventCrudServiceContainer } from "./stock-catalyst-event-crud-service-container";
 import { StockCatalystEventTableComponent } from "./stock-catalyst-event-table.component";
+import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
+import { StockCatalystEventController } from './stock-catalyst-event-controller';
+import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
+import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
 
 /**
  * This component lists all stock notes
@@ -12,13 +15,29 @@ import { StockCatalystEventTableComponent } from "./stock-catalyst-event-table.c
     {
         selector: 'stock-catalyst-event-table-tab',
         styleUrls: ['./stock-catalyst-event-table.component.css'],
-        templateUrl: './stock-catalyst-event-table-tab.component.html'
+        templateUrl: './stock-catalyst-event-table-tab.component.html',
+        providers: [StockCatalystEventStateStore, StockCatalystEventController]
     } )
 export class StockCatalystEventTableTabComponent extends StockCatalystEventTableComponent
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockCatalystEventStateStore} stockCatalystEventStateStore
+     * @param {StockCatalystEventController} stockCatalystEventController
+     * @param {StockCatalystEventFactory} stockCatalystEventFactory
+     * @param {StockCatalystEventCrudService} stockCatalystEventCrudService
+     */
     constructor( protected toaster: ToastsManager,
-                 protected StockCatalystEventServiceContainer: StockCatalystEventCrudServiceContainer )
+                 protected stockCatalystEventStateStore: StockCatalystEventStateStore,
+                 protected stockCatalystEventController: StockCatalystEventController,
+                 protected stockCatalystEventFactory: StockCatalystEventFactory,
+                 protected stockCatalystEventCrudService: StockCatalystEventCrudService )
     {
-        super( toaster, StockCatalystEventServiceContainer );
+        super( toaster,
+               stockCatalystEventStateStore,
+               stockCatalystEventController,
+               stockCatalystEventFactory,
+               stockCatalystEventCrudService );
     }
 }

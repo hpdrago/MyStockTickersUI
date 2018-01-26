@@ -28,6 +28,24 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
     }
 
     /**
+     * Get the current CrudOperation value.
+     * @return {CrudOperation}
+     */
+    public getCrudOperation(): CrudOperation
+    {
+        return this.crudOperationChangedSubject.getValue();
+    }
+
+    /**
+     * Get the current model object value.
+     * @return {ModelObjectChangedEvent<T extends ModelObject<T>>}
+     */
+    public getModelObject(): T
+    {
+        return this.modelObjectChangedSubject.getValue().modelObject;
+    }
+
+    /**
      * Create the subjects.
      */
     protected createSubjects(): void
@@ -161,9 +179,10 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
      */
     private sendModelObjectEvent( callingMethod: string,
                                   subject: Subject<any>,
-                                  changeEvent: any )
+                                  changeEvent: ModelObjectChangedEvent<any> )
     {
-        this.debug( callingMethod + " modelObject: " + JSON.stringify( changeEvent.modelObject ) );
+        this.debug( callingMethod + " sender: " + changeEvent.sender.getClassName() +
+                                    " modelObject: " + JSON.stringify( changeEvent.modelObject ) );
         this.debug( callingMethod + this.getToObserversMessage( subject ));
         subject.next( changeEvent );
         this.debug( callingMethod + ".end" );

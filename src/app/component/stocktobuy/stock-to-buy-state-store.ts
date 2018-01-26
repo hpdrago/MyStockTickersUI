@@ -3,9 +3,9 @@
  */
 
 import { CrudStateStore } from '../crud/common/crud-state-store';
-import { StockNotes } from '../../model/entity/stock-notes';
 import { Injectable } from '@angular/core';
 import { StockToBuy } from '../../model/entity/stock-to-buy';
+import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 
 /**
  * Stock to buy state store.
@@ -13,5 +13,12 @@ import { StockToBuy } from '../../model/entity/stock-to-buy';
 @Injectable()
 export class StockToBuyStateStore extends CrudStateStore<StockToBuy>
 {
-
+    /**
+     * Constructor.
+     * @param {StockToBuyFactory} stockToBuyFactory
+     */
+    constructor( stockToBuyFactory: StockToBuyFactory )
+    {
+        super( stockToBuyFactory );
+    }
 }

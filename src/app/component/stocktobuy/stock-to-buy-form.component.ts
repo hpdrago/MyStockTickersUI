@@ -3,11 +3,13 @@ import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
-import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
 import { SessionService } from "../../service/session.service";
 import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
+import { StockToBuyController } from './stock-to-buy-controller';
+import { StockToBuyStateStore } from './stock-to-buy-state-store';
+import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 
 /**
  * This is the Stock ToBuy Form Component class.
@@ -24,13 +26,29 @@ export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<St
     @ViewChild( StockAutoCompleteComponent )
     private stockAutoCompleteComponent: StockAutoCompleteComponent;
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {SessionService} sessionService
+     * @param {FormBuilder} formBuilder
+     * @param {StockToBuyStateStore} stockToBuyStateStore
+     * @param {StockToBuyController} stockToBuyController
+     * @param {StockToBuyFactory} stockToBuyFactory
+     * @param {CustomerCrudService} customerService
+     */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
-                 private stockToBuyCrudServiceContainer: StockToBuyCrudServiceContainer,
+                 private stockToBuyStateStore: StockToBuyStateStore,
+                 private stockToBuyController: StockToBuyController,
+                 private stockToBuyFactory: StockToBuyFactory,
                  protected customerService: CustomerCrudService)
     {
-        super( toaster, stockToBuyCrudServiceContainer, customerService );
+        super( toaster,
+               stockToBuyStateStore,
+               stockToBuyController,
+               stockToBuyFactory,
+               customerService );
     }
 
     /**

@@ -2,8 +2,11 @@ import { Component } from "@angular/core";
 import { Stock } from "../../model/entity/stock";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
-import { StockCrudServiceContainer } from "./stock-crud-service-container";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
+import { StockFactory } from '../../model/factory/stock.factory';
+import { StockController } from './stock-controller';
+import { StockStateStore } from './stock-crud-state-store';
+import { StockCrudService } from '../../service/crud/stock-crud.service';
 
 /**
  * This component lists the all of the stocks in the database.
@@ -12,19 +15,33 @@ import { TableLoadingStrategy } from "../common/table-loading-strategy";
     selector:    'stock-table',
     templateUrl: './stock-table.component.html',
     styleUrls:   ['./stock-table.component.css'],
-    outputs: ['modelObject']
+    outputs: ['modelObject'],
+    providers: [StockStateStore, StockController]
 } )
 export class StockTableComponent extends CrudTableComponent<Stock>
 {
     private companyNameSearch: string;
 
     /**
-     * Create a new instance with required DI sources
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockStateStore} stockStateStore
+     * @param {StockController} stockController
+     * @param {StockFactory} stockFactory
+     * @param {StockCrudService} stockCrudService
      */
     constructor( protected toaster: ToastsManager,
-                 private stockCrudServiceContainer: StockCrudServiceContainer )
+                 private stockStateStore: StockStateStore,
+                 private stockController: StockController,
+                 private stockFactory: StockFactory,
+                 private stockCrudService: StockCrudService )
     {
-        super( TableLoadingStrategy.LAZY_ON_CREATE, toaster, stockCrudServiceContainer );
+        super( TableLoadingStrategy.LAZY_ON_CREATE,
+               toaster,
+               stockStateStore,
+               stockController,
+               stockFactory,
+               stockCrudService );
     }
 
     /**
@@ -34,8 +51,7 @@ export class StockTableComponent extends CrudTableComponent<Stock>
     private getStockCompaniesLike( searchString: string )
     {
         this.logger.log( 'getStockCompaniesLike ' + searchString );
-        this.stockCrudServiceContainer
-            .stockCrudService
+        this.stockCrudService
             .getStockCompaniesLike( searchString )
             .subscribe( stocksPage =>
             {

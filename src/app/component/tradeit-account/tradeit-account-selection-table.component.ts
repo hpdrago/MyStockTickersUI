@@ -2,10 +2,13 @@ import { Component } from "@angular/core";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
-import { TradeItAccountCrudServiceContainer } from "./tradeit-account-crud-service-container";
 import { TradeitAccountBaseTableComponent } from "./tradeit-account-base-table.component";
 import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
+import { TradeItAccountStateStore } from './tradeit-account-state-store';
+import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
+import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 
 
 /**
@@ -24,17 +27,29 @@ export class TradeItAccountSelectionTableComponent extends TradeitAccountBaseTab
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {TradeItErrorReporter} tradeItErrorReporter
-     * @param {TradeItAccountCrudServiceContainer} tradeItAccountCrudServiceContainer
+     * @param {TradeItAccountStateStore} tradeItAccountStateStore
+     * @param {TradeItAccountController} tradeItAccountController
+     * @param {TradeItAccountFactory} tradeItAccountFactory
+     * @param {TradeItAccountCrudService} tradeItAccountCrudService
      * @param {TradeItService} tradeItService
      * @param {TradeitAccountOAuthService} tradeItOAuthService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
-                 protected tradeItAccountCrudServiceContainer: TradeItAccountCrudServiceContainer,
+                 protected tradeItAccountStateStore: TradeItAccountStateStore,
+                 protected tradeItAccountController: TradeItAccountController,
+                 protected tradeItAccountFactory: TradeItAccountFactory,
+                 protected tradeItAccountCrudService: TradeItAccountCrudService,
                  protected tradeItService: TradeItService,
                  protected tradeItOAuthService: TradeitAccountOAuthService )
     {
-        super( toaster, tradeItErrorReporter, tradeItAccountCrudServiceContainer, tradeItService,
+        super( toaster,
+               tradeItErrorReporter,
+               tradeItAccountStateStore,
+               tradeItAccountController,
+               tradeItAccountFactory,
+               tradeItAccountCrudService,
+               tradeItService,
                tradeItOAuthService ) ;
     }
 
