@@ -229,8 +229,16 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
                     .getStockPriceQuote( modelObject.tickerSymbol )
                     .subscribe( (stockPriceQuote) =>
                                 {
-                                    this.log( methodName + " found: " + stockPriceQuote.tickerSymbol );
-                                    modelObject.stockPriceWhenCreated = stockPriceQuote.lastPrice;
+                                    if ( stockPriceQuote == null )
+                                    {
+                                        this.log( methodName + " received null stockPriceQuote for tickerSymbol " +
+                                            modelObject.tickerSymbol );
+                                    }
+                                    else
+                                    {
+                                        this.log( methodName + " found: " + stockPriceQuote.tickerSymbol );
+                                        modelObject.stockPriceWhenCreated = stockPriceQuote.lastPrice;
+                                    }
 
                                 },
                                 error =>

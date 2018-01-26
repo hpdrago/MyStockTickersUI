@@ -83,7 +83,7 @@ export class StockInformationService extends BaseService
         if ( isNullOrUndefined( tickerSymbol ) || tickerSymbol.length == 0 )
         {
             this.logError( 'ticker symbol(' + tickerSymbol + ') is not valid' );
-            return null;
+            return Observable.of(null);
             //throw new ReferenceError( 'ticker symbol(' + tickerSymbol + ') is not valid' );
         }
         let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockPriceQuote/" + tickerSymbol;

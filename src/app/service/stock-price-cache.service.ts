@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { isNullOrUndefined } from 'util';
 import { RestErrorReporter } from './rest-error-reporter';
 import { Subject } from 'rxjs/Subject';
+import { ArgumentOutOfRangeError } from 'rxjs/Rx';
 
 /**
  * This class caches stock prices by ticker symbol.
@@ -54,6 +55,10 @@ export class StockPriceCacheService extends BaseService
     {
         let methodName = "getStockPriceChanges";
         this.debug( methodName + " " + tickerSymbol  );
+        if ( isNullOrUndefined(tickerSymbol))
+        {
+            throw new ReferenceError( tickerSymbol + ' is null or undefined' );
+        }
         /*
          * Check to see if the stock price is in the cache
          */
@@ -111,6 +116,10 @@ export class StockPriceCacheService extends BaseService
     private fetchStockPrice( tickerSymbol: string )
     {
         let methodName = 'fetchStockPrice';
+        if ( isNullOrUndefined(tickerSymbol))
+        {
+            throw new ReferenceError( tickerSymbol + ' is null or undefined' );
+        }
         this.stockService
             .getStockPriceQuote( tickerSymbol )
             .subscribe( ( stockPriceQuote: StockPriceQuote ) =>
