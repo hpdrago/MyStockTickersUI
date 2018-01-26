@@ -14,6 +14,7 @@ import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-ev
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
 import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
 import { StockAutoCompleteComponent } from '../common/stock-autocomplete.component';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This is the Stock CatalystEvent Form Component class.
@@ -157,6 +158,9 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
     protected resetForm(): void
     {
         super.resetForm();
-        this.stockAutoCompletedComponent.reset();
+        if ( this.stockAutoCompletedComponent )
+        {
+            this.stockAutoCompletedComponent.reset();
+        }
     }
 }

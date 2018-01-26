@@ -72,6 +72,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
     {
         let methodName = 'subscribeTooControllerEvents';
         this.debug( methodName + ".begin" );
+        /*
         this.addSubscription( methodName,
                               this.crudController
                                   .subscribeToTableEditButtonClickedEvent(() => this.setDisplayDialog() ));
@@ -84,6 +85,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
         this.addSubscription( methodName,
                               this.crudController
                                   .subscribeToDialogCloseButtonClickedEvent(( event: DialogCloseEventType ) => this.onCloseButtonClick( event ) ));
+                                  */
         /*
         this.addSubscription( methodName,
                               this.crudController

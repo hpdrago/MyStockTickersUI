@@ -66,6 +66,9 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         if ( this.resourceLoaders.length > 0 )
         {
             this.debug( "Waiting for " + this.resourceLoaders.length + " resource loaders" );
+            /*
+             * Run all of the loaders and wait for them to complete.
+             */
             Observable.forkJoin( this.resourceLoaders )
                       .subscribe( results =>
                        {
@@ -98,12 +101,20 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     public ngAfterContentInit(): void
     {
         this.debug( "ngAfterContentInit" );
-        this.crudController.sendFormReadyToDisplay();
     }
 
     public ngAfterViewInit(): void
     {
-        this.debug( "ngAfterViewInit" );
+        let methodName = "ngAfterViewInit";
+        this.debug( methodName + ".begin" );
+        this.debug( methodName + " crudOperation: " + this.CrudOperation.getName( this.crudOperation ) );
+        this.debug( methodName + " modelObject: " + JSON.stringify( this.modelObject ));
+        /*
+         * Notify the dialog or panel that the form is ready to be displayed.
+         * Need to run this on the next change cycle.
+         */
+        this.tickThenRun( () => this.crudController.sendFormReadyToDisplay() )
+        this.debug( methodName + ".end" );
     }
 
     /**
@@ -679,7 +690,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     /**
      * This method is called just before the dialog is displayed.
      * This method is meant to contain initialization logic outside of the creation initialization.  Once created,
-     * a form is not created again and there may be some initialiation logic to be performed each time the form
+     * a form is not created again and there may be some initialization logic to be performed each time the form
      * is displayed.
      */
     protected prepareToDisplay(): void

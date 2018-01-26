@@ -169,7 +169,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
                                                     this.stockNotesSourceList = this.customerCrudService.getStockNotesSourceList();
                                                     this.sourceItems = this.stockNotesSourceList.toSelectItems();
                                                     this.debug( "loadResources source items set " + JSON.stringify( this.sourceItems ) );
-                                                    this.debug( "CrudFormWithNotesSource.loadResources.end")
+                                                    this.debug( "CrudFormWithNotesSource.loadResources.end");
                                                     sourcesLoadingSubject.next( true );
                                                     sourcesLoadingSubject.complete();
                                                 }

@@ -1,5 +1,5 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Component, ElementRef, ViewChild } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { SelectItem } from "primeng/primeng";
 import { StockNotes } from "../../model/entity/stock-notes";
@@ -40,8 +40,6 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      */
     @ViewChild(StockAutoCompleteComponent)
     private stockAutoCompletedComponent: StockAutoCompleteComponent;
-    @ViewChild(StockAutoCompleteComponent)
-    private stockAutoCompletedElementRef: ElementRef;
 
     private stockQuote: StockQuote;
     private stockQuotes: StockQuote[];

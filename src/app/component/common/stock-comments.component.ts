@@ -51,6 +51,10 @@ export class StockCommentsComponent implements OnInit
      */
     private extractURLFromNotes( stockNotes: string ): string
     {
+        if ( stockNotes == null )
+        {
+            return null;
+        }
         var returnValue = null;
         //console.log( stockNotes );
         /*
