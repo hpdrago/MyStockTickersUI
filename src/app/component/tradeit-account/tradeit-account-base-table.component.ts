@@ -50,11 +50,10 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
          * Need to register to get notified when the TradeItAccount has been added successfully.  This occurs after
          * the user provides the login credentials to the brokerage successfully from the popup url auth call.
          */
-        /*
-        this.tradeItAccountCrudServiceContainer
-            .crudFormButtonsService
-            .subscribeToAddButtonClickCompletedEvent( tradeItAccount => { this.onAccountAdded( tradeItAccount );});
-            */
+        this.addSubscription(
+            this.tradeItAccountCrudServiceContainer
+                .crudFormButtonsService
+                .subscribeToAddButtonClickCompletedEvent( tradeItAccount => { this.onModelObjectCreated( tradeItAccount );}));
         this.log( methodName + ".end" );
     }
 
