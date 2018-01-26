@@ -124,8 +124,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         }
         else
         {
-            this.debug( `${methodName} ${key} is in the cache with ${subject.observers.length} 
-                        observers data: ${JSON.stringify( subject.getValue())}` );
+            this.debug( `${methodName} ${key} is in the cache with ${subject.observers.length} observers}` );
             this.getAndCheckDataExpiration( key );
             subscription = subject.subscribe( receiveCachedData );
         }
