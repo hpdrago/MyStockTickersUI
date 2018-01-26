@@ -1,9 +1,7 @@
 import { CrudActionHandler } from '../crud/common/crud-action-handler';
 import { Injectable } from '@angular/core';
-import { LinkedAccount } from '../../model/entity/linked-account';
 import { ToastsManager } from 'ng2-toastr';
 import { RestErrorReporter } from '../../service/rest-error-reporter';
-import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud.service';
 import { Customer } from '../../model/entity/customer';
 import { CustomerCrudService } from '../../service/crud/customer-crud.service';
 

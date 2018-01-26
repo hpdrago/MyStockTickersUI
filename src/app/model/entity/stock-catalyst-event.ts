@@ -1,16 +1,23 @@
 import { StockNotesContainer } from "../common/stock-notes-container";
 import { DateOrTimePeriod } from '../../common/date-or-time-period.enum';
-import { StockQuoteModelObject } from '../common/stock-quote-model-object';
+import { StockQuote } from './stock-quote';
+import { StockPriceQuote } from './stock-price-quote';
+import { StockPriceQuoteContainer } from '../common/stock-price-quote-container';
+import { StockQuoteContainer } from '../common/stock-quote-container';
+import { StockModelObject } from '../common/stock-model-object';
 
 /**
  * This entity contains the elements for the stock summary
  *
  * Created 10/17/2017
  */
-export class StockCatalystEvent extends StockQuoteModelObject<StockCatalystEvent>
-                                implements StockNotesContainer
+export class StockCatalystEvent extends StockModelObject<StockCatalystEvent>
+                                implements StockNotesContainer,
+                                           StockPriceQuoteContainer,
+                                           StockQuoteContainer
 
 {
+    public tickerSymbol: string;
     public id: string;
     public customerId: string;
     public catalystDesc: string;
@@ -23,6 +30,8 @@ export class StockCatalystEvent extends StockQuoteModelObject<StockCatalystEvent
     public timePeriod: number;
     public timePeriodYear: number;
     public catalystDate: Date;
+    public stockPriceQuote: StockPriceQuote;
+    public stockQuote: StockQuote;
 
     public getNotes(): string
     {
@@ -42,5 +51,25 @@ export class StockCatalystEvent extends StockQuoteModelObject<StockCatalystEvent
     public getPrimaryKeyName(): string
     {
         return "id";
+    }
+
+    public getStockPriceQuote(): StockPriceQuote
+    {
+        return this.stockPriceQuote;
+    }
+
+    public getStockQuote(): StockQuote
+    {
+        return this.stockQuote;
+    }
+
+    public setStockPriceQuote( stockPriceQuote: StockPriceQuote )
+    {
+        this.stockPriceQuote = stockPriceQuote;
+    }
+
+    public setStockQuote( stockQuote: StockQuote )
+    {
+        this.stockQuote = stockQuote;
     }
 }

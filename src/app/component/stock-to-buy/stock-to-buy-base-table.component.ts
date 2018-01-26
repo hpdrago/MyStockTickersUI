@@ -15,7 +15,6 @@ import { StockNotes } from '../../model/entity/stock-notes';
 import { StockNotesStock } from '../../model/entity/stock-notes-stock';
 import { CrudOperation } from '../crud/common/crud-operation';
 import { StockNotesSentiment } from '../../common/stock-notes-sentiment.enum';
-import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 
 /**
@@ -92,7 +91,7 @@ export abstract class StockToBuyBaseTableComponent extends StockModelObjectTable
         stockNotes.tags = stockToBuy.tags;
         let stockNoteStock: StockNotesStock = new StockNotesStock();
         stockNoteStock.tickerSymbol = stockNotes.tickerSymbol;
-        stockNoteStock.stockPrice = stockToBuy.lastPrice;
+        stockNoteStock.stockPrice = stockToBuy.getStockPriceQuote().lastPrice;
         stockNoteStock.customerId = stockToBuy.customerId;
         stockNotes.stocks = [stockNoteStock];
         this.log( "StockNotes: " + JSON.stringify( stockNotes ));

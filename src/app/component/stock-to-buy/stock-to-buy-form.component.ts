@@ -1,16 +1,13 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Component, ViewChild } from "@angular/core";
+import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockCompany } from "../../model/entity/stock-company";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { SessionService } from "../../service/session.service";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
-import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
 import { StockToBuyController } from './stock-to-buy-controller';
 import { StockToBuyStateStore } from './stock-to-buy-state-store';
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
-import { CrudFormComponent } from '../crud/form/crud-form.component';
 import { isNullOrUndefined } from 'util';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { StockCrudFormComponent } from '../common/stock-crud-form.component';

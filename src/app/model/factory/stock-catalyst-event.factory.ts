@@ -1,14 +1,24 @@
-import { ModelObjectFactory } from "./model-object.factory";
 import { SessionService } from "../../service/session.service";
 import { Injectable } from "@angular/core";
 import { StockCatalystEvent } from "../entity/stock-catalyst-event";
+import { StockQuoteFactory } from './stock-quote.factory';
+import { StockPriceQuoteFactory } from './stock-price-quote.factory';
+import { StockModelObjectFactory } from './stock-model-object.factory';
 
 @Injectable()
-export class StockCatalystEventFactory extends ModelObjectFactory<StockCatalystEvent>
+export class StockCatalystEventFactory extends StockModelObjectFactory<StockCatalystEvent>
 {
-    constructor( protected session: SessionService )
+    /**
+     * Constructor.
+     * @param {SessionService} session
+     * @param {StockPriceQuoteFactory} stockPriceQuoteFactory
+     * @param {StockQuoteFactory} stockQuoteFactory
+     */
+    constructor( protected session: SessionService,
+                 protected stockPriceQuoteFactory: StockPriceQuoteFactory,
+                 protected stockQuoteFactory: StockQuoteFactory )
     {
-        super();
+        super( session, stockQuoteFactory, stockPriceQuoteFactory );
     }
 
     public newModelObject(): StockCatalystEvent

@@ -3,6 +3,7 @@ import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
 import { SessionService } from "../../service/session.service";
 import { StockPriceQuote } from '../entity/stock-price-quote';
+import { CachedValueState } from '../../common/cached-value-state.enum';
 
 /**
  * This class provides StockCompany factory methods.
@@ -12,6 +13,10 @@ import { StockPriceQuote } from '../entity/stock-price-quote';
 @Injectable()
 export class StockPriceQuoteFactory extends ModelObjectFactory<StockPriceQuote>
 {
+    /**
+     * Constructor.
+     * @param {SessionService} session
+     */
     constructor( protected session: SessionService )
     {
         super();
@@ -23,9 +28,12 @@ export class StockPriceQuoteFactory extends ModelObjectFactory<StockPriceQuote>
      */
     public newModelObject(): StockPriceQuote
     {
-        var stock = new StockPriceQuote();
-        stock.tickerSymbol = '';
-        stock.companyName = '';
-        return stock;
+        var stockPriceQuote = new StockPriceQuote();
+        stockPriceQuote.tickerSymbol = '';
+        stockPriceQuote.lastPrice = 0;
+        stockPriceQuote.cacheState = CachedValueState.STALE;
+        stockPriceQuote.cacheError = '';
+        stockPriceQuote.expirationTime;
+        return stockPriceQuote;
     }
 }

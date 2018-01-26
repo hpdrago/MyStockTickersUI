@@ -8,12 +8,15 @@ import { StockAutoCompleteComponent } from './stock-autocomplete.component';
 import { isNullOrUndefined } from 'util';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { StockPriceQuoteContainer } from '../../model/common/stock-price-quote-container';
+import { StockQuoteContainer } from '../../model/common/stock-quote-container';
 
 /**
  * This is the base class for CRUD forms that contain StockAutoCompleteComponent that allows the user to search for/select
  * stock.
  */
-export abstract class StockCrudFormComponent<T extends ModelObject<T> & StockPriceQuoteContainer>  extends CrudFormComponent<T>
+export abstract class StockCrudFormComponent<T extends ModelObject<T> & StockPriceQuoteContainer
+                                                                      & StockQuoteContainer>
+    extends CrudFormComponent<T>
 {
     @ViewChild( StockAutoCompleteComponent )
     private stockAutoCompleteComponent: StockAutoCompleteComponent;
@@ -43,9 +46,7 @@ export abstract class StockCrudFormComponent<T extends ModelObject<T> & StockPri
     protected onStockSelected( stockPriceQuote: StockPriceQuote )
     {
         this.debug( "onStockSelected: " + JSON.stringify( stockPriceQuote ) );
-        this.modelObject.setCompanyName( stockPriceQuote.companyName );
-        this.modelObject.setLastPrice( stockPriceQuote.lastPrice );
-        this.modelObject.setTickerSymbol( stockPriceQuote.tickerSymbol );
+        this.modelObject.setStockPriceQuote( stockPriceQuote );
     }
 
     /**

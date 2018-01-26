@@ -1,7 +1,10 @@
 import { CachedValueState } from '../../common/cached-value-state.enum';
-import { ModelObject } from './model-object';
+import { ModelObject } from '../common/model-object';
 
-export abstract class StockQuoteModelObject<T> extends ModelObject<T>
+/**
+ * This class contains all of the properties for the Stock Quote.
+ */
+export class StockQuote extends ModelObject<StockQuote>
 {
     public tickerSymbol: string;
     public companyName: string;
@@ -29,10 +32,16 @@ export abstract class StockQuoteModelObject<T> extends ModelObject<T>
     public ytdChangePercent: number;
     public lastQuoteRequestDate: Date;
     public discontinuedInd;
-    public lastPrice: number;
-    public stockPriceQuoteCacheState: CachedValueState;
-    public stockPriceQuoteError: string;
-    public stockQuoteCacheState: CachedValueState;
-    public stockQuoteError: string;
-    public expirationTime: Date;
+    public cacheState: CachedValueState;
+    public cacheError: string;
+
+    public getPrimaryKeyName(): string
+    {
+        return "ticker_symbol";
+    }
+
+    public getPrimaryKeyValue(): any
+    {
+        this.tickerSymbol;
+    }
 }

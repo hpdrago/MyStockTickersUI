@@ -1,17 +1,20 @@
-import { StockPriceQuoteModelObject } from '../common/stock-price-quote-model-object';
 import { StockTableEntry } from '../common/stock-table-entry';
+import { StockModelObject } from '../common/stock-model-object';
+import { StockQuoteContainer } from '../common/stock-quote-container';
+import { StockPriceQuoteContainer } from '../common/stock-price-quote-container';
 
 /**
  * This class contains the information for a single stock position within a LinkedAccount.
  */
-export class StockPosition extends StockPriceQuoteModelObject<StockPosition>
-                           implements StockTableEntry
+export class StockPosition extends StockModelObject<StockPosition>
+                           implements StockTableEntry,
+                                      StockQuoteContainer,
+                                      StockPriceQuoteContainer
 {
     public id: string;
     public customerId: string;
     public tradeItAccountId: string;
     public linkedAccountId: string;
-    public tickerSymbol: string;
     public symbolClass: string;
     public costBasis: number;
     public holdingType: string;
@@ -43,7 +46,7 @@ export class StockPosition extends StockPriceQuoteModelObject<StockPosition>
      */
     public marketValue(): number
     {
-        return this.quantity * this.lastPrice;
+        return this.quantity * this.stockPriceQuote.lastPrice;
     }
 
     /**

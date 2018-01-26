@@ -10,6 +10,11 @@ import { StockCompanyFactory } from '../../model/factory/stock-company-factory';
 import { Observable } from 'rxjs/Observable';
 import { KeyValuePairs } from '../../common/key-value-pairs';
 import { PaginationPage } from '../../common/pagination';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { StockPriceQuote } from '../../model/entity/stock-price-quote';
+import { Subject } from 'rxjs/Subject';
+import { StockPriceQuoteService } from './stock-price-quote.service';
+import { StockPriceCacheService } from '../stock-price-cache.service';
 
 @Injectable()
 export class StockCompanyService extends ReadRestService<StockCompany>
@@ -26,12 +31,16 @@ export class StockCompanyService extends ReadRestService<StockCompany>
      * @param {AppConfigurationService} appConfig
      * @param {RestErrorReporter} restErrorReporter
      * @param {StockCompanyFactory} stockCompanyFactory
+     * @param {StockPriceQuoteService} stockPriceQuoteService
+     * @param {StockPriceCacheService} StockPriceCacheService
      */
     constructor( protected http: HttpClient,
                  protected session: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,
-                 protected stockCompanyFactory: StockCompanyFactory )
+                 protected stockCompanyFactory: StockCompanyFactory,
+                 protected stockPriceQuoteService: StockPriceQuoteService,
+                 protected stockPriceCacheService: StockPriceCacheService )
     {
         super( http,
                session,
@@ -91,7 +100,26 @@ export class StockCompanyService extends ReadRestService<StockCompany>
         stockCompany.tickerSymbol = tickerSymbol;
         let url = this.getCompleteURL( this.getContextURLFrom( '/company', stockCompany ),
                                        this.getCustomerURL() );
-        return this.httpRequestModelObject( url );
+        let subject: Subject<StockCompany> = new Subject<StockCompany>();
+        /*
+         * Call to get the stock company and the stock price quote
+         */
+        forkJoin( this.httpRequestModelObject( url ),
+                  this.stockPriceQuoteService
+                      .getStockPriceQuote( tickerSymbol ))
+                      .subscribe( results =>
+                       {
+                            let stockCompany: StockCompany = results[0];
+                            let stockPriceQuote: StockPriceQuote = results[1];
+                            stockCompany.lastPrice = stockPriceQuote.lastPrice;
+                            subject.next( stockCompany );
+                            subject.complete();
+                            /*
+                             * Update the cache with the new price.
+                             */
+                            this.stockPriceCacheService.sendStockPriceChange( tickerSymbol, stockPriceQuote );
+                       });
+        return subject.asObservable();
     }
 
 }

@@ -9,7 +9,6 @@ import { LoggerFactory } from "./logger-factory";
 import { Logger } from "./logger";
 import { LazyLoadEvent } from "primeng/primeng";
 import { isNullOrUndefined } from 'util';
-import { Injectable } from '@angular/core';
 
 export class PaginationURL
 {

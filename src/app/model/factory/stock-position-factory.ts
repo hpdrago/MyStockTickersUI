@@ -1,7 +1,9 @@
-import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
 import { SessionService } from "../../service/session.service";
 import { StockPosition } from '../entity/stock-position';
+import { StockQuoteFactory } from './stock-quote.factory';
+import { StockPriceQuoteFactory } from './stock-price-quote.factory';
+import { StockModelObjectFactory } from './stock-model-object.factory';
 
 /**
  * This class provides StockPosition factory methods.
@@ -9,11 +11,19 @@ import { StockPosition } from '../entity/stock-position';
  * Created by mike on 12/4/2017.
  */
 @Injectable()
-export class StockPositionFactory extends ModelObjectFactory<StockPosition>
+export class StockPositionFactory extends StockModelObjectFactory<StockPosition>
 {
-    constructor( protected session: SessionService )
+    /**
+     * Constructor.
+     * @param {SessionService} session
+     * @param {StockPriceQuoteFactory} stockPriceQuoteFactory
+     * @param {StockQuoteFactory} stockQuoteFactory
+     */
+    constructor( protected session: SessionService,
+                 protected stockPriceQuoteFactory: StockPriceQuoteFactory,
+                 protected stockQuoteFactory: StockQuoteFactory )
     {
-        super();
+        super( session, stockQuoteFactory, stockPriceQuoteFactory );
     }
 
     /**

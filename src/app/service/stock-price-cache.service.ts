@@ -2,7 +2,7 @@ import { BaseService } from "./base-service";
 import { Injectable } from "@angular/core";
 import { StockPriceQuote } from "../model/entity/stock-price-quote";
 import { Observable } from "rxjs/Observable";
-import { StockInformationService } from "./crud/stock-information.service";
+import { StockPriceQuoteService } from "./crud/stock-price-quote.service";
 import { ToastsManager } from "ng2-toastr";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
@@ -30,10 +30,10 @@ export class StockPriceCacheService extends BaseService
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {StockInformationService} stockService
+     * @param {StockPriceQuoteService} stockService
      */
     constructor( protected toaster: ToastsManager,
-                 private stockService: StockInformationService,
+                 private stockService: StockPriceQuoteService,
                  private restErrorReporter: RestErrorReporter )
     {
         super( toaster );
@@ -42,7 +42,7 @@ export class StockPriceCacheService extends BaseService
 
     /**
      * Subscribe to stock price changes for a ticker symbol.  When calling this method, if the stock price is not
-     * in the cache, the stockPriceChange method will be called with a null stockPriceQuote value but after the stock price
+     * in the cache, the stockPriceChange method will be called with a null stockModelObject value but after the stock price
      * has been received, a subsequent call to stockPriceChange will be called with the new stock price value and
      * whenever the stock price changes, the stockPriceChange method will be called as well.
      * @param {string} tickerSymbol
@@ -136,7 +136,7 @@ export class StockPriceCacheService extends BaseService
                     .reportRestError( error );
                     */
                 let stockPriceQuote: StockPriceQuote = new StockPriceQuote();
-                stockPriceQuote.error = error;
+                stockPriceQuote.cacheError = error;
                 this.sendStockPriceChange( tickerSymbol, stockPriceQuote );
             });
         this.workingMap.set( tickerSymbol, true );
@@ -147,7 +147,7 @@ export class StockPriceCacheService extends BaseService
      * @param {string} tickerSymbol
      * @param {StockPriceQuote} stockPrice
      */
-    private sendStockPriceChange( tickerSymbol: string, stockPrice: StockPriceQuote )
+    public sendStockPriceChange( tickerSymbol: string, stockPrice: StockPriceQuote )
     {
         let methodName = 'sendStockPriceChange';
         this.debug( methodName + ' ' + tickerSymbol + ' ' + stockPrice );

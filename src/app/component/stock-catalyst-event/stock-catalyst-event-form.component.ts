@@ -139,7 +139,7 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
     public onStockSelected( stock: StockCompany )
     {
         this.debug( "onStockSelected: " + JSON.stringify( stock ) );
-        this.modelObject.companyName = stock.companyName;
+        this.modelObject.stockQuote.companyName = stock.companyName;
         this.modelObject.tickerSymbol = stock.tickerSymbol;
     }
 

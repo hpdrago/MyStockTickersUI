@@ -1,7 +1,9 @@
 import { PortfolioStock } from "../entity/portfolio-stock";
-import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
 import { SessionService } from "../../service/session.service";
+import { StockModelObjectFactory } from './stock-model-object.factory';
+import { StockQuoteFactory } from './stock-quote.factory';
+import { StockPriceQuoteFactory } from './stock-price-quote.factory';
 
 /**
  * This class provides factory methods for the StockCompany ModelObject.
@@ -9,11 +11,19 @@ import { SessionService } from "../../service/session.service";
  * Created by mike on 12/13/2016.
  */
 @Injectable()
-export class PortfolioStockFactory extends ModelObjectFactory<PortfolioStock>
+export class PortfolioStockFactory extends StockModelObjectFactory<PortfolioStock>
 {
-    constructor( protected session: SessionService )
+    /**
+     * Constructor.
+     * @param {SessionService} session
+     * @param {StockQuoteFactory} stockQuoteFactory
+     * @param {StockPriceQuoteFactory} stockPriceQuoteFactory
+     */
+    public constructor( protected session: SessionService,
+                           protected stockQuoteFactory: StockQuoteFactory,
+                           protected stockPriceQuoteFactory: StockPriceQuoteFactory )
     {
-        super();
+        super( session, stockQuoteFactory, stockPriceQuoteFactory );
     }
 
     /**
@@ -24,7 +34,6 @@ export class PortfolioStockFactory extends ModelObjectFactory<PortfolioStock>
     {
         var portfolioStock = new PortfolioStock();
         portfolioStock.tickerSymbol = '';
-        portfolioStock.companyName = '';
         portfolioStock.customerId = this.session.getLoggedInUserId();
         portfolioStock.numberOfShares = 0;
         portfolioStock.averageUnitCost = 0;
@@ -37,6 +46,8 @@ export class PortfolioStockFactory extends ModelObjectFactory<PortfolioStock>
         portfolioStock.stopLossShares = 0;
         portfolioStock.profitTakingPrice = 0;
         portfolioStock.profitTakingShares = 0;
+        portfolioStock.setStockPriceQuote( this.stockPriceQuoteFactory.newModelObject() );
+        portfolioStock.setStockQuote( this.stockQuoteFactory.newModelObject() );
         return portfolioStock;
     }
 

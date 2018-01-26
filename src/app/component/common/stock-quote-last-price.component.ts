@@ -1,4 +1,3 @@
-import { StockPriceQuoteModelObject } from '../../model/common/stock-price-quote-model-object';
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
@@ -6,6 +5,8 @@ import { StockPriceCacheService } from '../../service/stock-price-cache.service'
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { Subscription } from 'rxjs/Subscription';
 import { isNullOrUndefined } from 'util';
+import { StockPriceQuoteContainer } from '../../model/common/stock-price-quote-container';
+import { StockQuoteContainer } from '../../model/common/stock-quote-container';
 
 /**
  * This component is used for StockPriceQuoteModelObject which contains a stock price -- last price.  The stock quote last
@@ -24,14 +25,14 @@ import { isNullOrUndefined } from 'util';
         <ng-template #notLoading>
             <div *ngIf="stockPriceModelObject != null">
                 <div *ngIf="isFetchError()">
-                    <i pTooltip="{{stockPriceQuote.error}}">ERROR</i>
+                    <i pTooltip="{{stockPriceQuote.cacheError}}">ERROR</i>
                 </div>
                 <div *ngIf="!isFetchError()">
                     <div class="positiveGain" *ngIf="priceChange >= 0.0">
-                        <currency [currencyValue]="stockPriceModelObject.lastPrice"></currency>
+                        <currency [currencyValue]="stockPriceModelObject.getStockPriceQuote().lastPrice"></currency>
                     </div>
                     <div class="negativeGain" *ngIf="priceChange < 0.0">
-                        <currency [currencyValue]="stockPriceModelObject.lastPrice"></currency>
+                        <currency [currencyValue]="stockPriceModelObject.getStockPriceQuote().lastPrice"></currency>
                     </div>
                 </div>
             </div>
@@ -44,16 +45,19 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
      * Reference to the model object for which the price is being displayed.
      */
     @Input()
-    protected stockPriceModelObject: StockPriceQuoteModelObject<any>;
+    protected stockPriceModelObject: StockPriceQuoteContainer & StockQuoteContainer;
+
     /**
      * The amount of price change from the open to the current/last price.
      * @type {number}
      */
     protected priceChange: number = 0.0;
+
     /**
      * Subscription to stock price changes.
      */
     private subscription: Subscription;
+
     /**
      * The stock price value obtained from the cache
      */
@@ -80,13 +84,13 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
         super.addSubscription( "getStockPriceChanges",
             this.subscription =
                 this.stockPriceCache
-                    .getStockPriceChanges( this.stockPriceModelObject.tickerSymbol,
+                    .getStockPriceChanges( this.stockPriceModelObject.getTickerSymbol(),
                                            stockPriceQuote => this.onStockPriceChange( stockPriceQuote )));
     }
 
     /**
      * This method is called by the StockPriceCache when the stock price changes.
-     * The stockPriceQuote maybe null in the initial registration.
+     * The stockModelObject maybe null in the initial registration.
      * @param {StockPriceQuote} stockPriceQuote
      */
     private onStockPriceChange( stockPriceQuote: StockPriceQuote )
@@ -102,19 +106,17 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
             this.stockPriceQuote = stockPriceQuote;
             if ( stockPriceQuote != null )
             {
-                if ( stockPriceQuote.error )
+                if ( stockPriceQuote.cacheError )
                 {
-                    this.logError( methodName + ' ' + stockPriceQuote.error );
+                    this.logError( methodName + ' ' + stockPriceQuote.cacheError );
                 }
                 else
                 {
                     this.log( methodName + ' ' + JSON.stringify( stockPriceQuote ));
                     this.stockPriceModelObject
-                        .lastPrice = stockPriceQuote.lastPrice;
-                    this.stockPriceModelObject
-                        .openPrice = stockPriceQuote.openPrice;
-                    this.priceChange = this.stockPriceModelObject.lastPrice -
-                        this.stockPriceModelObject.openPrice;
+                        .setStockPriceQuote( stockPriceQuote );
+                    this.priceChange = this.stockPriceModelObject.getStockPriceQuote().lastPrice -
+                        this.stockPriceModelObject.getStockQuote().openPrice;
                 }
             }
         });
@@ -137,7 +139,7 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
     {
         if ( this.isFetchingQuote() ) return false;
         if ( isNullOrUndefined( this.stockPriceQuote )) return false;
-        if ( this.stockPriceQuote.error ) return true;
+        if ( this.stockPriceQuote.cacheError ) return true;
         return false;
     }
 }

@@ -1,19 +1,29 @@
-import { ModelObjectFactory } from "./model-object.factory";
 import { StockNotes } from "../entity/stock-notes";
 import { Injectable } from "@angular/core";
 import { SessionService } from "../../service/session.service";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
+import { StockQuoteFactory } from './stock-quote.factory';
+import { StockPriceQuoteFactory } from './stock-price-quote.factory';
+import { StockModelObjectFactory } from './stock-model-object.factory';
 
 /**
  * This is the StockNotes model object factory
  * Created by mike on 12/13/2016.
  */
 @Injectable()
-export class StockNotesFactory extends ModelObjectFactory<StockNotes>
+export class StockNotesFactory extends StockModelObjectFactory<StockNotes>
 {
-    constructor( protected session: SessionService )
+    /**
+     * Constructor.
+     * @param {SessionService} session
+     * @param {StockPriceQuoteFactory} stockPriceQuoteFactory
+     * @param {StockQuoteFactory} stockQuoteFactory
+     */
+    constructor( protected session: SessionService,
+                 protected stockPriceQuoteFactory: StockPriceQuoteFactory,
+                 protected stockQuoteFactory: StockQuoteFactory )
     {
-        super();
+        super( session, stockQuoteFactory, stockPriceQuoteFactory );
     }
 
     /**

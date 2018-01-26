@@ -82,13 +82,13 @@ export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockA
      * This method is called when the user selects a stock using the stock/company search input
      * @param stock
      */
-    public onStockSelected( stock: StockCompany )
+    public onStockSelected( stockCompany: StockCompany )
     {
         let methodName = 'onStockSelected';
-        this.debug( methodName + " " + JSON.stringify( stock ) );
-        this.modelObject.companyName = stock.companyName;
-        this.modelObject.lastPrice = stock.lastPrice;
-        this.modelObject.tickerSymbol = stock.tickerSymbol;
+        this.debug( methodName + " " + JSON.stringify( stockCompany ) );
+        this.modelObject.getStockQuote().companyName = stockCompany.companyName;
+        this.modelObject.getStockPriceQuote().lastPrice = stockCompany.lastPrice;
+        this.modelObject.tickerSymbol = stockCompany.tickerSymbol;
         /*
          * Need to check to see if will create a duplicate
          */

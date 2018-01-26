@@ -1,11 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Rx";
-import { PaginationPage } from "../../common/pagination";
-import { PaginationURL } from "../../common/pagination-url";
 import { SessionService } from "../session.service";
 import { AppConfigurationService } from "./../app-configuration.service";
 import { StockPriceQuoteFactory } from "../../model/factory/stock-price-quote.factory";
-import { StockCompany } from "../../model/entity/stock-company";
 import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient } from '@angular/common/http';
@@ -19,7 +16,7 @@ import { isNullOrUndefined } from 'util';
  * Created by mike on 9/14/2016.
  */
 @Injectable()
-export class StockInformationService extends BaseService
+export class StockPriceQuoteService extends BaseService
 {
     private readonly stocksUrl: string = '/stocks/';
 
@@ -67,7 +64,7 @@ export class StockInformationService extends BaseService
             return Observable.of(null);
             //throw new ReferenceError( 'ticker symbol(' + tickerSymbol + ') is not valid' );
         }
-        let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockPriceQuote/" + tickerSymbol;
+        let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockModelObject/" + tickerSymbol;
         return this.http
                    .get<StockPriceQuote>( url )
                    .map( (stockPriceQuote: StockPriceQuote) =>

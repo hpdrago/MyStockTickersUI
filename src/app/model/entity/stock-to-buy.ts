@@ -1,16 +1,18 @@
 import { StockNotesContainer } from "../common/stock-notes-container";
-import { StockPriceQuoteModelObject } from "../common/stock-price-quote-model-object";
 import { StockNotesSourceContainer } from '../common/stock-notes-source-container';
 import { StockPriceQuoteContainer } from '../common/stock-price-quote-container';
+import { StockQuoteContainer } from '../common/stock-quote-container';
+import { StockModelObject } from '../common/stock-model-object';
 
 /**
  * This entity contains the elements for the stock to buy
  *
  * Created 10/17/2017
  */
-export class StockToBuy extends StockPriceQuoteModelObject<StockToBuy> implements StockNotesContainer,
-                                                                                  StockNotesSourceContainer,
-                                                                                  StockPriceQuoteContainer
+export class StockToBuy extends StockModelObject<StockToBuy> implements StockNotesContainer,
+                                                                        StockNotesSourceContainer,
+                                                                        StockPriceQuoteContainer,
+                                                                        StockQuoteContainer
 {
     public id: string;
     public customerId: string;
@@ -26,11 +28,6 @@ export class StockToBuy extends StockPriceQuoteModelObject<StockToBuy> implement
     public getNotes(): string
     {
         return this.comments;
-    }
-
-    public getTickerSymbol(): string
-    {
-        return this.tickerSymbol;
     }
 
     public isEqualPrimaryKey( modelObject: StockToBuy ): boolean
@@ -66,20 +63,5 @@ export class StockToBuy extends StockPriceQuoteModelObject<StockToBuy> implement
     public getPrimaryKeyName(): string
     {
         return "id";
-    }
-
-    public setCompanyName( companyName: string )
-    {
-        this.companyName = companyName;
-    }
-
-    public setLastPrice( lastPrice: number )
-    {
-        this.lastPrice = lastPrice;
-    }
-
-    public setTickerSymbol( tickerSymbol: string )
-    {
-        this.tickerSymbol = tickerSymbol;
     }
 }

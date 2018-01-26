@@ -4,7 +4,6 @@ import { AppConfigurationService } from "../app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { StockToBuyFactory } from "../../model/factory/stock-to-buy.factory";
-import { isNullOrUndefined } from "util";
 import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient } from '@angular/common/http';
 import { KeyValuePairs } from '../../common/key-value-pairs';

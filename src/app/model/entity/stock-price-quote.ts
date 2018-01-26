@@ -9,14 +9,10 @@ import { CachedValueState } from '../../common/cached-value-state.enum';
 export class StockPriceQuote
 {
     public tickerSymbol: string;
-    public openPrice: number;
     public lastPrice: number;
-    public lastPriceChange: Date;
-    public companyName: string;
-    public stockPriceCacheState: CachedValueState;
-    public stockQuoteCacheState: CachedValueState;
+    public cacheState: CachedValueState;
+    public cacheError: String;
     public expirationTime: Date;
-    public error: string;
 
     isNotFound()
     {

@@ -1,4 +1,4 @@
-import { ModelObject } from "../common/model-object";
+import { StockModelObject } from '../common/stock-model-object';
 
 /**
  * This class defines the information about a single stock that the customer is tracking in
@@ -6,13 +6,11 @@ import { ModelObject } from "../common/model-object";
  *
  * Created by mike on 11/1/2016.
  */
-export class PortfolioStock extends ModelObject<PortfolioStock>
+export class PortfolioStock extends StockModelObject<PortfolioStock>
 {
     public id: string;
     public portfolioId: string;
     public customerId: string;
-    public tickerSymbol: string;
-    public companyName: string;
     public numberOfShares: number;
     public averageUnitCost: number;
     public lastPrice: number;

@@ -78,7 +78,7 @@ import { PortfolioStockFormButtonsComponent } from "./component/portfolio-stock/
 import { PortfolioFormButtonsComponent } from "./component/portfolio/portfolio-form-buttons.component";
 import { StockNotesTableButtonsComponent } from "./component/stock-notes/stock-notes-table-buttons.component";
 import { StockNotesFormButtonsComponent } from "./component/stock-notes/stock-notes-form-buttons.component";
-import { StockInformationService } from "./service/crud/stock-information.service";
+import { StockPriceQuoteService } from "./service/crud/stock-price-quote.service";
 import { PortfolioCrudService } from "./service/crud/portfolio-crud.service";
 import { PortfolioStockCrudService } from "./service/crud/portfolio-stock-crud.service";
 import { StockNotesCrudService } from "./service/crud/stock-notes-crud.service";
@@ -231,9 +231,10 @@ import { StockAnalystPriceTargetsComponent } from './component/common/stock-anal
 import { StockAnalystPriceTargetComponent } from './component/common/stock-analyst-price-target.component';
 import { StockCompanyNameComponent } from './component/common/stock-company-name.component';
 import { CachedValueComponent } from './component/common/cached-value.component';
-import { BaseCachedValueComponent } from './component/common/base-cached-value.component';
 import { StockCompanyFactory } from './model/factory/stock-company-factory';
 import { StockCompanyService } from './service/crud/stock-company.service';
+import { StockQuoteService } from './service/crud/stock-quote.service';
+import { StockQuoteFactory } from './model/factory/stock-quote.factory';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -473,9 +474,11 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         LinkedAccountFactory,
         LinkedAccountController,
 
-        StockInformationService,
+        StockPriceQuoteService,
         StockExchangeService,
         StockPriceQuoteFactory,
+        StockQuoteFactory,
+        StockQuoteService,
 
         PortfolioFactory,
         PortfolioCrudService,

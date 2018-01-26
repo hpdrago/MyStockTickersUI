@@ -16,7 +16,6 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { GetOAuthTokenUpdateURLResult } from "./apiresults/tradeit-get-oath-token-update-url-result";
 import { ToastsManager } from "ng2-toastr";
 import { HttpClient } from '@angular/common/http';
-import { CrudRestErrorReporter } from '../crud/crud-rest-error-reporter';
 
 /**
  * This service contains the methods to interface with the Tradeit API

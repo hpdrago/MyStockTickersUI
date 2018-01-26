@@ -1,6 +1,6 @@
 import { Component, EventEmitter, forwardRef, Output } from "@angular/core";
 import { PaginationPage } from "../../common/pagination";
-import { StockInformationService } from "../../service/crud/stock-information.service";
+import { StockPriceQuoteService } from "../../service/crud/stock-price-quote.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockCompany } from "../../model/entity/stock-company";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
@@ -10,6 +10,7 @@ import { BaseComponent } from "./base.component";
 import { RestErrorReporter } from "../../service/rest-error-reporter";
 import { RestException } from '../../common/rest-exception';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
+import { StockCompanyFactory } from '../../model/factory/stock-company-factory';
 
 /**
  * This component is a text input that finds stocks based on the incremental search of the input
@@ -19,7 +20,7 @@ import { StockCompanyService } from '../../service/crud/stock-company.service';
 {
     selector: 'stock-autocomplete',
     template: ` <p-autoComplete [suggestions]="stockSearchResults"
-                                [(ngModel)]="tickerSymbol"
+                                [(ngModel)]="stockCompany.tickerSymbol"
                                 [minLength]="1"
                                 (completeMethod)="onStockSearch( $event )"
                                 (onSelect)="onStockSearchSelected( $event )"
@@ -40,23 +41,24 @@ import { StockCompanyService } from '../../service/crud/stock-company.service';
 export class StockAutoCompleteComponent extends BaseComponent implements ControlValueAccessor
 {
     @Output()
-    private stockSelected: EventEmitter<StockPriceQuote>  = new EventEmitter<StockPriceQuote>();
+    private stockSelected: EventEmitter<StockCompany>  = new EventEmitter<StockCompany>();
 
     protected stockSearchResults: string[];
-    protected tickerSymbol: string;
+    protected stockCompany: StockCompany;
     protected disabledState: boolean;
     private isStockSelected : boolean;
 
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {StockInformationService} stockService
+     * @param {StockPriceQuoteService} stockService
      * @param {StockCompanyService} stockCompanyService
      * @param {RestErrorReporter} restErrorReporter
      */
     constructor( protected toaster: ToastsManager,
-                 private stockService: StockInformationService,
+                 private stockService: StockPriceQuoteService,
                  private stockCompanyService: StockCompanyService,
+                 private stockCompanyFactory: StockCompanyFactory,
                  private restErrorReporter: RestErrorReporter )
     {
         super( toaster );
@@ -75,7 +77,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     public reset(): void
     {
         this.log( "reset" );
-        this.tickerSymbol = '';
+        this.stockCompany = this.stockCompanyFactory.newModelObject();
         this.disabledState = false;
         this.isStockSelected = false;
     }
@@ -122,12 +124,12 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     protected onBlur( event )
     {
         this.log( "onBlur " + JSON.stringify( event ) +
-                  " tickerSymbol: " + this.tickerSymbol +
+                  " tickerSymbol: " + this.stockCompany.tickerSymbol +
                   " isStockSelected: " + this.isStockSelected );
         if ( !this.disabledState &&
              !this.isStockSelected &&
-             !isNullOrUndefined( this.tickerSymbol ) &&
-             this.tickerSymbol.length > 0 )
+             !isNullOrUndefined( this.stockCompany.tickerSymbol ) &&
+             this.stockCompany.tickerSymbol.length > 0 )
         {
             this.getStockQuote();
         }
@@ -144,12 +146,12 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         if ( !this.disabledState )
         {
             var matches = /\[(.*)] (.*)/.exec( event );
-            this.tickerSymbol = matches[1];
+            this.stockCompany.tickerSymbol = matches[1];
             /*
              * Send the change through ngModel
              */
-            this.tickerSymbol = this.tickerSymbol.toUpperCase();
-            this.propagateChange( this.tickerSymbol );
+            this.stockCompany.tickerSymbol = this.stockCompany.tickerSymbol.toUpperCase();
+            this.propagateChange( this.stockCompany.tickerSymbol );
             this.getStockQuote();
         }
     }
@@ -159,10 +161,10 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
      */
     private getStockQuote()
     {
-        if ( !isNullOrUndefined( this.tickerSymbol ))
+        if ( !isNullOrUndefined( this.stockCompany.tickerSymbol ))
         {
             this.stockService
-                .getStockPriceQuote( this.tickerSymbol )
+                .getStockPriceQuote( this.stockCompany.tickerSymbol )
                 .subscribe( ( stockPriceQuote: StockPriceQuote ) =>
                             {
                                 this.log( 'onStockSearchSelected ' + JSON.stringify( stockPriceQuote ) );
@@ -172,8 +174,9 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                                 }
                                 else
                                 {
-                                    this.stockSelected.emit( stockPriceQuote );
-                                    this.tickerSymbol = "";
+                                    this.stockCompany.lastPrice = stockPriceQuote.lastPrice;
+                                    this.stockSelected.emit( this.stockCompany );
+                                    this.stockCompany = this.stockCompanyFactory.newModelObject();
                                     this.isStockSelected = true;
                                 }
                             },
@@ -182,7 +185,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                                 let restException = new RestException( error );
                                 if ( restException.isNotFoundError() )
                                 {
-                                    this.showError( this.tickerSymbol + ' was not found' );
+                                    this.showError( this.stockCompany.tickerSymbol + ' was not found' );
                                 }
                                 else
                                 {
@@ -208,7 +211,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         this.debug( "writeValue: " + searchString );
         if ( !isNullOrUndefined( searchString ) )
         {
-            this.tickerSymbol = searchString.toUpperCase();
+            this.stockCompany.tickerSymbol = searchString.toUpperCase();
         }
     }
 

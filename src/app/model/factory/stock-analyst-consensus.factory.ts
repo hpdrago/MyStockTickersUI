@@ -1,14 +1,24 @@
-import { ModelObjectFactory } from "./model-object.factory";
 import { StockAnalystConsensus } from "../entity/stock-analyst-consensus";
 import { SessionService } from "../../service/session.service";
 import { Injectable } from "@angular/core";
+import { StockPriceQuoteFactory } from './stock-price-quote.factory';
+import { StockQuoteFactory } from './stock-quote.factory';
+import { StockModelObjectFactory } from './stock-model-object.factory';
 
 @Injectable()
-export class StockAnalystConsensusFactory extends ModelObjectFactory<StockAnalystConsensus>
+export class StockAnalystConsensusFactory extends StockModelObjectFactory<StockAnalystConsensus>
 {
-    constructor( protected session: SessionService )
+    /**
+     * Constructor.
+     * @param {SessionService} session
+     * @param {StockPriceQuoteFactory} stockPriceQuoteFactory
+     * @param {StockQuoteFactory} stockQuoteFactory
+     */
+    constructor( protected session: SessionService,
+                 protected stockPriceQuoteFactory: StockPriceQuoteFactory,
+                 protected stockQuoteFactory: StockQuoteFactory )
     {
-        super();
+        super( session, stockQuoteFactory, stockPriceQuoteFactory );
     }
 
     public newModelObject(): StockAnalystConsensus
@@ -17,7 +27,6 @@ export class StockAnalystConsensusFactory extends ModelObjectFactory<StockAnalys
         stockAnalystConsensus.id = '';
         stockAnalystConsensus.customerId = this.session.getLoggedInUserId();
         stockAnalystConsensus.tickerSymbol = '';
-        stockAnalystConsensus.companyName = '';
         stockAnalystConsensus.comments = '';
         stockAnalystConsensus.analystStrongBuyCount = 0;
         stockAnalystConsensus.analystBuyCount = 0;
@@ -29,8 +38,8 @@ export class StockAnalystConsensusFactory extends ModelObjectFactory<StockAnalys
         stockAnalystConsensus.lowAnalystPriceTarget = 0;
         stockAnalystConsensus.highAnalystPriceTarget = 0;
         stockAnalystConsensus.analystPriceDate = null;
-        stockAnalystConsensus.lastPrice = 0;
-        stockAnalystConsensus.lastPriceChange = null;
+        stockAnalystConsensus.setStockPriceQuote( this.stockPriceQuoteFactory.newModelObject() );
+        stockAnalystConsensus.setStockQuote( this.stockQuoteFactory.newModelObject() );
         return stockAnalystConsensus;
     }
 }
