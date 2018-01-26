@@ -35,6 +35,7 @@
                 <div class="ui-grid-col-8">
                     <input id="accountName"
                            formControlName="accountName"
+                           [(ngModel)]="modelObject.accountName"
                            placeholder="Required"
                            maxlength="40"
                            required
@@ -54,6 +55,7 @@
                 <div class="ui-grid-col-8">
                     <input id="accountNumber"
                            formControlName="accountNumber"
+                           [(ngModel)]="modelObject.accountNumber"
                            placeholder="Required"
                            maxlength="20"
                            required
