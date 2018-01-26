@@ -433,9 +433,9 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
      * The selected model object will be emitted to the parent component.
      * @param modelObject
      */
-    protected onRowUnselect( modelObject: any )
+    protected onRowUnSelect( modelObject: any )
     {
-        const methodName = 'onRowUnselect';
+        const methodName = 'onRowUnSelect';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.rowUnselected.emit( modelObject );
     }
