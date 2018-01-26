@@ -12,7 +12,7 @@ import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store
 import { StockCatalystEventController } from './stock-catalyst-event-controller';
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
-import { StockAutoCompleteComponent } from '../common/stock-autocomplete.component';
+import { StockSearchSelectedCompaniesComponent } from '../common/stock-search-selected-companies.component';
 
 /**
  * This is the StockCompany CatalystEvent Form Component class.
@@ -30,8 +30,8 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
     protected timePeriodOptions: SelectItem[];
     protected timePeriodYearOptions: SelectItem[];
 
-    @ViewChild( StockAutoCompleteComponent )
-    private stockAutoCompletedComponent: StockAutoCompleteComponent;
+    @ViewChild( StockSearchSelectedCompaniesComponent )
+    private stockSearchSelectedCompaniesComponent: StockSearchSelectedCompaniesComponent;
 
     /**
      * Constructor.
@@ -79,7 +79,6 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
         this.timePeriodOptions.push( { label: '4Q', value: TimePeriods.FOURTH_QUARTER })
 
         this.timePeriodYearOptions = [];
-        this.timePeriodYearOptions.push( { label: '2017', value: 2017 })
         this.timePeriodYearOptions.push( { label: '2018', value: 2018 })
         this.timePeriodYearOptions.push( { label: '2019', value: 2019 })
         this.timePeriodYearOptions.push( { label: '2020', value: 2020 })
@@ -170,9 +169,9 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
     protected resetForm(): void
     {
         super.resetForm();
-        if ( this.stockAutoCompletedComponent )
+        if ( this.stockSearchSelectedCompaniesComponent )
         {
-            this.stockAutoCompletedComponent.reset();
+            this.stockSearchSelectedCompaniesComponent.reset();
         }
     }
 }

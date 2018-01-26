@@ -121,7 +121,7 @@ export class StockNotesCrudActionHandler extends StockModelObjectCrudActionHandl
          * Just execute, don't worry about the result, if there is a failure then
          */
         this.stockToBuyController
-            .addModelObject( stockToBuy )
+            .addModelObject( stockToBuy, false )
             .subscribe( stockToBuy =>
                         {
                             this.showAddSuccessful( stockNotes );

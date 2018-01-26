@@ -10,7 +10,11 @@ import { StockAnalystConsensusActionHandler } from './stock-analyst-consensus-ac
  */
 @Component
 ({
-    template: `<stock-analyst-consensus-dialog></stock-analyst-consensus-dialog>`,
+    template: `<stock-analyst-consensus-dialog [modal]="false"
+                                               [showContinuousAddButton]="true"
+                                               [showAddButton]="false"
+                                               [showCloseButton]="false"> 
+               </stock-analyst-consensus-dialog>`,
     providers: [StockAnalystConsensusController, StockAnalystConsensusStateStore, StockAnalystConsensusActionHandler]
  })
 export class StockAnalystConsensusAddComponent extends BaseComponent implements OnInit

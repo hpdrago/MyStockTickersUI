@@ -68,9 +68,6 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
     @Input()
     protected tickerSymbol: string;
 
-    @Input()
-    protected formControlName: string;
-
     /**
      * Emits the {@code StockCompany} when it is selected.
      * @type {EventEmitter<StockCompany>}
@@ -124,6 +121,7 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
     {
         const methodName = 'reset';
         this.logMethodBegin( methodName );
+        this.tickerSymbol = '';
         this.stockAutoCompleteComponent
             .reset();
         this.selectedStockCompaniesComponent
@@ -167,6 +165,7 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
         const methodName = 'onStockSelected';
         this.debug( methodName + ' ' + JSON.stringify( stockCompany ) );
         this.stockSelected.emit( stockCompany );
+        this.propagateChange( stockCompany.tickerSymbol );
         this.addCompany( stockCompany );
     }
 
@@ -194,8 +193,15 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
             .setDisabled( disabled );
     }
 
+    /**
+     * This is a placeholder function that is replace with a new function in registerOnChange
+     * @param _
+     */
+    private propagateChange = ( _: any) => {};
+
     public registerOnChange( fn: any ): void
     {
+        this.propagateChange = fn;
     }
 
     public registerOnTouched( fn: any ): void
@@ -209,6 +215,7 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
 
     public writeValue( obj: any ): void
     {
+        this.tickerSymbol = obj;
     }
 }
 

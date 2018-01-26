@@ -7,13 +7,13 @@ import { isNullOrUndefined } from "util";
 import { RestException } from "../../../common/rest-exception";
 import { ModelObjectFactory } from "../../../model/factory/model-object.factory";
 import { CrudStateStore } from "./crud-state-store";
-import { ChangeDetectorRef, OnInit } from "@angular/core";
 import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
 import { CrudController } from './crud-controller';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { CrudRestErrorReporter } from '../../../service/crud/crud-rest-error-reporter';
+import { OnInit } from '@angular/core';
 
 /**
  * This class is the base class for all CRUD components
@@ -31,6 +31,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      * Identifies the type of CRUD action
      */
     protected crudOperation: CrudOperation = CrudOperation.NONE;
+
     private displayProgressBar: boolean = false;
     private _busyIndicator: Subscription;
 
@@ -51,8 +52,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    constructor(
-                 protected toaster: ToastsManager,
+    constructor( protected toaster: ToastsManager,
                  protected crudStateStore: CrudStateStore<T>,
                  protected crudController: CrudController<T>,
                  protected modelObjectFactory: ModelObjectFactory<T>,

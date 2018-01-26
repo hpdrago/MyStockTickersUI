@@ -1,6 +1,6 @@
 <div *ngIf="!isCrudNoneOperation()">
     <p-dialog header="Stock To Buy"
-              [modal]="true"
+              [modal]="modal"
               [closable]="false"
               [closeOnEscape]="false"
               [responsive]="true"
@@ -14,7 +14,9 @@
                 </stock-to-buy-form>
             </div>
             <p-footer>
-                <stock-to-buy-form-buttons>
+                <stock-to-buy-form-buttons [showContinuousAddButton]="showContinuousAddButton"
+                                           [showAddButton]="showAddButton"
+                                           [showCloseButton]="showCloseButton">
                 </stock-to-buy-form-buttons>
             </p-footer>
     </p-dialog>

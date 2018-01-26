@@ -6,6 +6,7 @@ import { StockCatalystEventActionHandler } from '../stock-catalyst-event/stock-c
 import { StockCatalystEventTableComponent } from '../stock-catalyst-event/stock-catalyst-event-table.component';
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
+import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 
 /**
  * This component lists all stock notes
@@ -27,17 +28,20 @@ export class StockCatalystEventDashboardTableComponent extends StockCatalystEven
      * @param {StockCatalystEventController} stockCatalystEventController
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
      * @param {StockCatalystEventCrudService} stockCatalystEventCrudService
+     * @param {StockQuoteCacheService} stockQuoteCacheService
      */
     constructor( protected toaster: ToastsManager,
                  protected stockCatalystEventStateStore: StockCatalystEventStateStore,
                  protected stockCatalystEventController: StockCatalystEventController,
                  protected stockCatalystEventFactory: StockCatalystEventFactory,
-                 protected stockCatalystEventCrudService: StockCatalystEventCrudService )
+                 protected stockCatalystEventCrudService: StockCatalystEventCrudService,
+                 protected stockQuoteCacheService: StockQuoteCacheService )
     {
         super( toaster,
                stockCatalystEventStateStore,
                stockCatalystEventController,
                stockCatalystEventFactory,
-               stockCatalystEventCrudService );
+               stockCatalystEventCrudService,
+               stockQuoteCacheService );
     }
 }

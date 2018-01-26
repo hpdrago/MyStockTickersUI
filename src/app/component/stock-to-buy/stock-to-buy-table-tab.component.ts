@@ -10,6 +10,7 @@ import { StockToBuyController } from './stock-to-buy-controller';
 import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
 import { StockToBuyCrudActionHandler } from './stock-to-buy-action-handler';
 import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
+import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 
 /**
  * This component displays a list of Stocks to buy.
@@ -36,6 +37,7 @@ export class StockToBuyTableTabComponent extends StockToBuyBaseTableComponent
      * @param {StockNotesStateStore} stockNotesStateStore
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
+     * @param {StockQuoteCacheService} stockQuoteCacheService
      */
     constructor( protected toaster: ToastsManager,
                  protected stockToBuyStateStore: StockToBuyStateStore,
@@ -44,7 +46,8 @@ export class StockToBuyTableTabComponent extends StockToBuyBaseTableComponent
                  protected stockToBuyCrudService: StockToBuyCrudService,
                  protected stockNotesStateStore: StockNotesStateStore,
                  protected stockNotesController: StockNotesController,
-                 protected stockNotesFactory: StockNotesFactory )
+                 protected stockNotesFactory: StockNotesFactory,
+                 protected stockQuoteCacheService: StockQuoteCacheService )
     {
         super( toaster,
                stockToBuyStateStore,
@@ -53,6 +56,7 @@ export class StockToBuyTableTabComponent extends StockToBuyBaseTableComponent
                stockToBuyCrudService,
                stockNotesStateStore,
                stockNotesController,
-               stockNotesFactory );
+               stockNotesFactory,
+               stockQuoteCacheService );
     }
 }

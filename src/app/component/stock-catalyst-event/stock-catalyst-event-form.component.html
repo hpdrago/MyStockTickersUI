@@ -2,40 +2,11 @@
     <form [formGroup]="formGroup">
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
             <!----------------------------------------------------------------------------------------------------------
-            TICKER SYMBOL
+            SEARCH
             ------------------------------------------------------------------------------------------------------------>
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="tickerSymbol">Ticker Symbol:</label>
-                </div>
-                <div class="ui-grid-col-10">
-                    <stock-autocomplete id="tickerSymbol"
-                                        [(ngModel)]="modelObject.tickerSymbol"
-                                        [formGroup]="formGroup"
-                                        formControlName="tickerSymbol"
-                                        uppercase
-                                        (stockSelected)="onStockSelected( $event )">
-                    </stock-autocomplete>
-                </div>
-            </div>
-            <div [hidden]="formGroup.controls['tickerSymbol'].valid" class="ui-grid-row">
-                <div class="ui-message ui-messages-error ui-corner-all" *ngIf="isTickerSymbolInvalid()">
-                    <i class="fa fa-close"></i>
-                    Ticker Symbol is required
-                </div>
-            </div>
-
-            <!----------------------------------------------------------------------------------------------------------
-            COMPANY NAME
-            ------------------------------------------------------------------------------------------------------------>
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="companyNameColumn">Company:</label>
-                </div>
-                <div id="companyNameColumn" class="ui-grid-col-10">
-                    {{modelObject.companyName}}
-                </div>
-            </div>
+            <stock-search-selected-companies [(ngModel)]="modelObject.tickerSymbol"
+                                             [tickerSymbol]="modelObject.tickerSymbol">
+            </stock-search-selected-companies>
 
             <!----------------------------------------------------------------------------------------------------------
             CATALYST DATE or TIME PERIOD

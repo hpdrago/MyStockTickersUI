@@ -15,7 +15,12 @@ import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
  */
 @Component
 ({
-    template: `<stock-notes-dialog></stock-notes-dialog>`,
+    template: `<stock-notes-dialog [modal]="false"
+                                   [showContinuousAddButton]="true"
+                                   [showAddButton]="false"
+                                   [showCloseButton]="false">
+               </stock-notes-dialog>
+    `,
     providers: [StockNotesController, StockNotesStateStore, StockNotesCrudActionHandler,
                 StockToBuyController, StockToBuyStateStore, StockToBuyCrudActionHandler]
  })

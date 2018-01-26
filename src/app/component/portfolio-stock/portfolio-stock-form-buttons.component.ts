@@ -41,8 +41,7 @@ export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent
                portfolioStockStateStore,
                portfolioStockController,
                portfolioStockFactory,
-               portfolioStockCrudService,
-               true );
+               portfolioStockCrudService );
     }
 
     /**
@@ -55,7 +54,7 @@ export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent
             throw new ReferenceError( "this.portfolio is null or undefined" );
         }
         this.modelObject.portfolioId = this.portfolio.id;
-        super.onAddButtonClick();
+        super.onAddButtonClick( false );
     }
 
     /**

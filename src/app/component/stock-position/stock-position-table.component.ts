@@ -7,6 +7,7 @@ import { StockPositionStateStore } from './stock-position-state-store';
 import { StockPositionFactory } from '../../model/factory/stock-position-factory';
 import { StockPositionCrudService } from '../../service/crud/stock-position-crud.service';
 import { StockPositionCrudActionHandler } from './stock-position-crud-action-handler';
+import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -30,19 +31,22 @@ export class StockPositionTableComponent extends StockPositionBaseTableComponent
      * @param {StockPositionController} stockPositionController
      * @param {StockPositionFactory} stockPositionFactory
      * @param {StockPositionCrudService} stockPositionCrudService
+     * @param {StockQuoteCacheService} stockQuoteCacheService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
                  protected stockPositionStateStore: StockPositionStateStore,
                  protected stockPositionController: StockPositionController,
                  protected stockPositionFactory: StockPositionFactory,
-                 protected stockPositionCrudService: StockPositionCrudService )
+                 protected stockPositionCrudService: StockPositionCrudService,
+                 protected stockQuoteCacheService: StockQuoteCacheService )
     {
         super( toaster,
                tradeItErrorReporter,
                stockPositionStateStore,
                stockPositionController,
                stockPositionFactory,
-               stockPositionCrudService );
+               stockPositionCrudService,
+               stockQuoteCacheService );
     }
 }

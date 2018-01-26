@@ -2,8 +2,6 @@ import { Component, Input } from '@angular/core';
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
 import { StockPriceQuoteCacheService } from '../../service/cache/stock-price-quote-cache.service';
-import { StockPriceQuoteContainer } from '../../model/common/stock-price-quote-container';
-import { StockQuoteContainer } from '../../model/common/stock-quote-container';
 import { isNullOrUndefined } from 'util';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { StockQuote } from '../../model/entity/stock-quote';

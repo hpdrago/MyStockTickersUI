@@ -11,7 +11,11 @@ import { StockCatalystEventActionHandler } from './stock-catalyst-event-action-h
  */
 @Component
 ({
-    template: `<stock-catalyst-event-dialog></stock-catalyst-event-dialog>`,
+    template: `<stock-catalyst-event-dialog [modal]="false"
+                                            [showContinuousAddButton]="true"
+                                            [showAddButton]="false"
+                                            [showCloseButton]="false">
+               </stock-catalyst-event-dialog>`,
     providers: [StockCatalystEventController, StockCatalystEventStateStore, StockCatalystEventActionHandler]
  })
 export class StockCatalystEventAddComponent extends BaseComponent implements OnInit

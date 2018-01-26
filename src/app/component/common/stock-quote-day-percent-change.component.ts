@@ -12,7 +12,8 @@ import { StockQuote } from '../../model/entity/stock-quote';
 {
     selector: 'stock-quote-day-percent-change',
     template: `
-        <gain-loss-percent [percentValue]="calculatePercentChange(stockModelObject)"></gain-loss-percent>`
+        <gain-loss-percent [percentValue]="calculatePercentChange(stockModelObject.stockPriceQuote, stockModelObject.stockQuote)">
+        </gain-loss-percent>`
 })
 export class StockQuoteDayPercentChangeComponent
 {

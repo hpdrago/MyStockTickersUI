@@ -84,6 +84,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         this.setDisabledState( false );
         this.isStockSelected = false;
         this.emittedTickerSymbol = '';
+        this.tickerSymbol = '';
     }
 
     /**

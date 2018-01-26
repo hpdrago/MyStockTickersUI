@@ -1,191 +1,188 @@
-<div *ngIf="!isCrudNoneOperation()">
-    <form [formGroup]="formGroup">
-        <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
-            <!----------------------------------------------------------------------------------------------------------
-            SEARCH
-            ------------------------------------------------------------------------------------------------------------>
-            <stock-search-selected-companies (stockSelected)="onStockSelected($event)"
-                                             [maxStocks]="10"
-                                             formControlName="stockSearch"
-                                             [tickerSymbol]="modelObject.tickerSymbol">
-            </stock-search-selected-companies>
+<form [formGroup]="formGroup">
+    <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+        <!----------------------------------------------------------------------------------------------------------
+        SEARCH
+        ------------------------------------------------------------------------------------------------------------>
+        <stock-search-selected-companies (stockSelected)="onStockSelected($event)"
+                                         [maxStocks]="10"
+                                         [tickerSymbol]="modelObject.tickerSymbol">
+        </stock-search-selected-companies>
 
-            <!----------------------------------------------------------------------------------------------------------
-            NOTES
-            ------------------------------------------------------------------------------------------------------------>
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="notes">Notes:</label>
-                </div>
-                <div class="ui-grid-col-10">
-                    <p-editor id="notes"
-                              name="basic"
-                              [style]="{'height':'120px'}"
-                              styleClass="editor-dimensions"
-                              class="crud-form"
-                              formControlName="notes"
-                              [(ngModel)]="modelObject.notes"
-                              maxlength="4000"
-                              required>
-                    </p-editor>
-                    <!--
-                    <textarea id="notes"
-                              class="crud-form"
-                              formControlName="notes"
-                              placeholder="Required"
-                              autoresize="false"
-                              rows="5"
-                              columns="70"
-                              maxlength="4000"
-                              pInputTextarea
-                              required
-                    </textarea> -->
-                </div>
+        <!----------------------------------------------------------------------------------------------------------
+        NOTES
+        ------------------------------------------------------------------------------------------------------------>
+        <div class="crud-form ui-grid-row">
+            <div class="crud-form-label ui-grid-col-2">
+                <label class="crud-form" for="notes">Notes:</label>
+            </div>
+            <div class="ui-grid-col-10">
+                <p-editor id="notes"
+                          name="basic"
+                          [style]="{'height':'120px'}"
+                          styleClass="editor-dimensions"
+                          class="crud-form"
+                          formControlName="notes"
+                          [(ngModel)]="modelObject.notes"
+                          maxlength="4000"
+                          required>
+                </p-editor>
+                <!--
+                <textarea id="notes"
+                          class="crud-form"
+                          formControlName="notes"
+                          placeholder="Required"
+                          autoresize="false"
+                          rows="5"
+                          columns="70"
+                          maxlength="4000"
+                          pInputTextarea
+                          required
+                </textarea> -->
+            </div>
+        </div>
+
+        <!----------------------------------------------------------------------------------------------------------
+        TAGS
+        ------------------------------------------------------------------------------------------------------------>
+        <div class="ui-grid-row">
+            <div class="crud-form-label ui-grid-col-2">
+                <label class="crud-form" for="tags">Tags:</label>
+            </div>
+            <div class="ui-grid-col-10">
+                <p-chips id="tags"
+                         name="basic"
+                         placeholder="type and press enter"
+                         formControlName="tags">
+                </p-chips>
+            </div>
+        </div>
+
+        <!----------------------------------------------------------------------------------------------------------
+        SOURCE
+        ------------------------------------------------------------------------------------------------------------>
+        <div class="crud-form ui-grid-row">
+            <div class="crud-form-label ui-grid-col-2">
+                <label class="crud-form" for="notesSourceId">Source:</label>
+            </div>
+            <div class="ui-grid-col-2">
+                <stock-notes-source id="notesSourceId"
+                                    formControlName="notesSourceId"
+                                    [(ngModel)]="modelObject.notesSourceId">
+                </stock-notes-source>
             </div>
 
-            <!----------------------------------------------------------------------------------------------------------
-            TAGS
-            ------------------------------------------------------------------------------------------------------------>
-            <div class="ui-grid-row">
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="tags">Tags:</label>
-                </div>
-                <div class="ui-grid-col-10">
-                    <p-chips id="tags"
-                             name="basic"
-                             placeholder="type and press enter"
-                             formControlName="tags">
-                    </p-chips>
-                </div>
+        <!----------------------------------------------------------------------------------------------------------
+        RATING
+        ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form-label ui-grid-col-2">
+                <label class="crud-form" for="notesRating">Rating:</label>
             </div>
-
-            <!----------------------------------------------------------------------------------------------------------
-            SOURCE
-            ------------------------------------------------------------------------------------------------------------>
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="notesSourceId">Source:</label>
-                </div>
-                <div class="ui-grid-col-2">
-                    <stock-notes-source id="notesSourceId"
-                                        formControlName="notesSourceId"
-                                        [(ngModel)]="modelObject.notesSourceId">
-                    </stock-notes-source>
-                </div>
-
-            <!----------------------------------------------------------------------------------------------------------
-            RATING
-            ------------------------------------------------------------------------------------------------------------>
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="notesRating">Rating:</label>
-                </div>
-                <div class="ui-grid-col-4">
-                    <p-rating id="notesRating"
-                              class="crud-form"
-                              formControlName="notesRating"
-                              [stars]="5">
-                    </p-rating>
-                </div>
+            <div class="ui-grid-col-4">
+                <p-rating id="notesRating"
+                          class="crud-form"
+                          formControlName="notesRating"
+                          [stars]="5">
+                </p-rating>
             </div>
+        </div>
 
-            <!----------------------------------------------------------------------------------------------------------
-            BULL OR BEAR
-            ------------------------------------------------------------------------------------------------------------>
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="bullOrBear">Bull or Bear:</label>
-                </div>
-                <div class="ui-grid-col-10">
-                    <p-selectButton id="bullOrBear"
-                                    class="crud-form"
-                                    formControlName="bullOrBear"
-                                    [options]="bullOrBearOptions">
-                    </p-selectButton>
-                </div>
+        <!----------------------------------------------------------------------------------------------------------
+        BULL OR BEAR
+        ------------------------------------------------------------------------------------------------------------>
+        <div class="crud-form ui-grid-row">
+            <div class="crud-form-label ui-grid-col-2">
+                <label class="crud-form" for="bullOrBear">Bull or Bear:</label>
             </div>
-
-            <!----------------------------------------------------------------------------------------------------------
-            ACTION TAKEN
-            ------------------------------------------------------------------------------------------------------------>
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="actionTaken">Action Taken?:</label>
-                </div>
-                <div class="ui-grid-col-10">
-                    <p-selectButton id="actionTaken"
-                                    class="crud-form"
-                                    formControlName="actionTaken"
-                                    pTooltip="BUY LATER - Will create a 'Stock to Buy' record when saving the Stock Note"
-                                    [options]="actionTakenOptions"
-                                    (onChange)="onActionTakenChange($event)">
-                    </p-selectButton>
-                </div>
-            </div>
-
-            <!----------------------------------------------------------------------------------------------------------
-            ACTION TAKEN SHARES
-            ------------------------------------------------------------------------------------------------------------>
-            <div class="ui-grid-row">
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="actionTakenShares">Action Taken Shares:</label>
-                </div>
-                <div class="ui-grid-col-2">
-                    <p-inputMask
-                        id="actionTakenShares"
-                        [ngClass]="{'ui-state-disabled': isActionTakenFieldsDisabled(),
-                                    'ui-state-default': !isActionTakenFieldsDisabled() }"
-                        class="crud-form"
-                        formControlName="actionTakenShares"
-                        maxLength="6"
-                        placeholder=""
-                        mask="9?99999">
-                    </p-inputMask>
-                </div>
-
-            <!----------------------------------------------------------------------------------------------------------
-            ACTION TAKEN PRICE
-            ------------------------------------------------------------------------------------------------------------>
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="actionTakenPrice">Action Taken Price:</label>
-                </div>
-                <div id="actionTakenPrice" class="ui-grid-col-2">
-                    <input currencyMask
-                           [style]="{'width':'60px'}"
-                           class="crud-form ui-inputtext ui-widget ui-widget-content ui-corner-all ui-state-filled"
-                           formControlName="actionTakenPrice"
-                           placeholder="$"/>
-                </div>
-            </div>
-
-            <!----------------------------------------------------------------------------------------------------------
-            DATE
-            ------------------------------------------------------------------------------------------------------------>
-            <div class="crud-form ui-grid-row">
-                <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="notesDate">Note Date:</label>
-                </div>
-                <div class="ui-grid-col-10">
-                    <p-calendar id="notesDate"
+            <div class="ui-grid-col-10">
+                <p-selectButton id="bullOrBear"
                                 class="crud-form"
-                                [inputStyle]="{'width':'100px'}"
-                                formControlName="notesDate"
-                                [(ngModel)]="modelObject.notesDate"
-                                dateFormat="mm/dd/yy"
-                                [showIcon]="true">
-                    </p-calendar>
-                </div>
+                                formControlName="bullOrBear"
+                                [options]="bullOrBearOptions">
+                </p-selectButton>
             </div>
         </div>
-        <!--
-        <div *ngIf="displayProgressBar">
-            <md-progress-bar mode="indeterminate"></md-progress-bar>
+
+        <!----------------------------------------------------------------------------------------------------------
+        ACTION TAKEN
+        ------------------------------------------------------------------------------------------------------------>
+        <div class="crud-form ui-grid-row">
+            <div class="crud-form-label ui-grid-col-2">
+                <label class="crud-form" for="actionTaken">Action Taken?:</label>
+            </div>
+            <div class="ui-grid-col-10">
+                <p-selectButton id="actionTaken"
+                                class="crud-form"
+                                formControlName="actionTaken"
+                                pTooltip="BUY LATER - Will create a 'Stock to Buy' record when saving the Stock Note"
+                                [options]="actionTakenOptions"
+                                (onChange)="onActionTakenChange($event)">
+                </p-selectButton>
+            </div>
         </div>
-        <div *ngIf="displayProgressBar == true">
-            <h1>Progress XXX</h1>
+
+        <!----------------------------------------------------------------------------------------------------------
+        ACTION TAKEN SHARES
+        ------------------------------------------------------------------------------------------------------------>
+        <div class="ui-grid-row">
+            <div class="crud-form-label ui-grid-col-2">
+                <label class="crud-form" for="actionTakenShares">Action Taken Shares:</label>
+            </div>
+            <div class="ui-grid-col-2">
+                <p-inputMask
+                    id="actionTakenShares"
+                    [ngClass]="{'ui-state-disabled': isActionTakenFieldsDisabled(),
+                                'ui-state-default': !isActionTakenFieldsDisabled() }"
+                    class="crud-form"
+                    formControlName="actionTakenShares"
+                    maxLength="6"
+                    placeholder=""
+                    mask="9?99999">
+                </p-inputMask>
+            </div>
+
+        <!----------------------------------------------------------------------------------------------------------
+        ACTION TAKEN PRICE
+        ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form-label ui-grid-col-2">
+                <label class="crud-form" for="actionTakenPrice">Action Taken Price:</label>
+            </div>
+            <div id="actionTakenPrice" class="ui-grid-col-2">
+                <input currencyMask
+                       [style]="{'width':'60px'}"
+                       class="crud-form ui-inputtext ui-widget ui-widget-content ui-corner-all ui-state-filled"
+                       formControlName="actionTakenPrice"
+                       placeholder="$"/>
+            </div>
         </div>
-        <div *ngIf="!displayProgressBar">
-            <h1>Progress BAR</h1>
+
+        <!----------------------------------------------------------------------------------------------------------
+        DATE
+        ------------------------------------------------------------------------------------------------------------>
+        <div class="crud-form ui-grid-row">
+            <div class="crud-form-label ui-grid-col-2">
+                <label class="crud-form" for="notesDate">Note Date:</label>
+            </div>
+            <div class="ui-grid-col-10">
+                <p-calendar id="notesDate"
+                            class="crud-form"
+                            [inputStyle]="{'width':'100px'}"
+                            formControlName="notesDate"
+                            [(ngModel)]="modelObject.notesDate"
+                            dateFormat="mm/dd/yy"
+                            [showIcon]="true">
+                </p-calendar>
+            </div>
         </div>
-        -->
-    </form>
-</div>
+    </div>
+    <!--
+    <div *ngIf="displayProgressBar">
+        <md-progress-bar mode="indeterminate"></md-progress-bar>
+    </div>
+    <div *ngIf="displayProgressBar == true">
+        <h1>Progress XXX</h1>
+    </div>
+    <div *ngIf="!displayProgressBar">
+        <h1>Progress BAR</h1>
+    </div>
+    -->
+</form>

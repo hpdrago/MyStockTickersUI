@@ -27,11 +27,11 @@ export abstract class CrudTableButtonComponent<T extends ModelObject<T>> extends
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    constructor( protected toaster: ToastsManager,
-                 protected crudStateStore: CrudStateStore<T>,
-                 protected crudController: CrudController<T>,
-                 protected modelObjectFactory: ModelObjectFactory<T>,
-                 protected crudRestService: CrudRestService<T> )
+    protected constructor( protected toaster: ToastsManager,
+                           protected crudStateStore: CrudStateStore<T>,
+                           protected crudController: CrudController<T>,
+                           protected modelObjectFactory: ModelObjectFactory<T>,
+                           protected crudRestService: CrudRestService<T> )
     {
         super( toaster,
                crudStateStore,

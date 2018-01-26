@@ -41,6 +41,7 @@ import {
     FileUploadModule,
     ToggleButtonModule,
     ProgressSpinnerModule,
+    PickListModule,
     ProgressBarModule
 } from "primeng/primeng";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
@@ -265,8 +266,17 @@ import { StockCompanyNameComponent } from "./component/common/stock-company-name
 import { StockCompanyPriceQuoteService } from './service/stock-company-price-quote.service';
 import { StockNotesAddComponent } from './component/stock-notes/stock-notes-add.component';
 import { StockCatalystEventAddComponent } from './component/stock-catalyst-event/stock-catalyst-event-add.component';
-import { StockAnalystConsensusAddComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-event-add.component';
-import { StockToBuyAddComponent } from './component/stock-to-buy/stock-to-buy-event-add.component';
+import { StockAnalystConsensusAddComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-add.component';
+import { StockToBuyAddComponent } from './component/stock-to-buy/stock-to-buy-add.component';
+import { TickerSymbolColumnComponent } from './component/columns/ticker-symbol-column.component';
+import { CurrencyColumnComponent } from './component/columns/currency-column.component';
+import { CrudTableColumnSelectorComponent } from './component/crud/table/crud-table-column-selector.component';
+import { StockToBuyTableCustomizeButtonComponent } from './component/stock-to-buy/stock-to-buy-table-customize-button.component';
+import { CrudTableColumnSelectorDialogComponent } from './component/crud/table/crud-table-column-selector-dialog.component';
+import { CrudTableDisplayColumnComponent } from './component/crud/table/crud-table-display-column.component';
+import { StockPriceQuotePropertyColumnComponent } from './component/crud/table/stock-price-quote-property-column.component';
+import { StockQuotePropertyColumnComponent } from './component/crud/table/stock-quote-property-column.component';
+
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -311,6 +321,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         // PrimeNG modules
         DropdownModule,
         InputMaskModule,
+        TableModule,
         DataTableModule,
         FieldsetModule,
         ButtonModule,
@@ -339,6 +350,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         FileUploadModule,
         ToggleButtonModule,
         ProgressSpinnerModule,
+        PickListModule,
         // Third Party modules,
         ToastModule.forRoot(),
 
@@ -470,6 +482,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockToBuyTableDeleteButtonComponent,
         StockToBuyTableEditButtonComponent,
         StockToBuyTableRefreshButtonComponent,
+        StockToBuyTableCustomizeButtonComponent,
 
         GainsLossesImportDialogComponent,
         GainsLossesTableTabComponent,
@@ -501,8 +514,15 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockSearchComponent,
         StockSearchDisplayTickerSymbolComponent,
         StockSearchSelectedCompaniesComponent,
-
         StockPriceQuoteComponent,
+
+        StockPriceQuotePropertyColumnComponent,
+        StockQuotePropertyColumnComponent,
+        CrudTableDisplayColumnComponent,
+        CrudTableColumnSelectorComponent,
+        CrudTableColumnSelectorDialogComponent,
+        TickerSymbolColumnComponent,
+        CurrencyColumnComponent,
 
         CachedValueComponent,
         StockNotesSourceSelectionComponent,

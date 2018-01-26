@@ -6,6 +6,7 @@ import { GainsLosses } from '../../model/entity/gains-losses';
 import { GainsLossesFactory } from '../../model/factory/gains-losses.factory';
 import { GainsLossesCrudService } from '../../service/crud/gains-losses-crud.service';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
+import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 
 /**
  * This component displays a list of Stocks to buy.
@@ -21,19 +22,22 @@ export abstract class GainsLossesBaseTableComponent extends StockModelObjectTabl
      * @param {GainsLossesController} gainsLossesController
      * @param {GainsLossesFactory} gainsLossesFactory
      * @param {GainsLossesCrudService} gainsLossesCrudService
+     * @param {StockQuoteCacheService} stockQuoteCacheService
      */
     protected constructor( protected toaster: ToastsManager,
                            protected gainsLossesStateStore: GainsLossesStateStore,
                            protected gainsLossesController: GainsLossesController,
                            protected gainsLossesFactory: GainsLossesFactory,
-                           protected gainsLossesCrudService: GainsLossesCrudService )
+                           protected gainsLossesCrudService: GainsLossesCrudService,
+                           protected stockQuoteCacheService: StockQuoteCacheService )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
                gainsLossesStateStore,
                gainsLossesController,
                gainsLossesFactory,
-               gainsLossesCrudService );
+               gainsLossesCrudService,
+               stockQuoteCacheService );
     }
 
 }

@@ -3,6 +3,8 @@ import { StockPriceQuote } from '../entity/stock-price-quote';
 import { StockQuote } from '../entity/stock-quote';
 import { StockPriceQuoteContainer } from './stock-price-quote-container';
 import { StockQuoteContainer } from './stock-quote-container';
+import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
+import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
 
 /**
  * This is the base class for all ModelObjects that contains a ticker symbol, stock quote, and stock price quote
@@ -56,4 +58,47 @@ export abstract class StockModelObject<T extends ModelObject<T>> extends ModelOb
                    .lastPrice;
     }
 
+    /**
+     * Returns the available columns.
+     * @return {CrudTableColumns}
+     */
+    public getCrudTableColumns(): CrudTableColumns
+    {
+        let crudTableColumns = new CrudTableColumns();
+        crudTableColumns.addAll( this.stockQuote.getCrudTableColumns() );
+        crudTableColumns.addAll( this.stockPriceQuote.getCrudTableColumns() );
+        crudTableColumns.addColumn( {
+                                        colId: 'tickerSymbol',
+                                        header: 'Ticker Symbol',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'tickerSymbol',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'stockPriceWhenCreated',
+                                        header: 'Stock Price When Created',
+                                        dataType: CrudTableColumnType.CURRENCY,
+                                        field: 'stockPriceWhenCreated',
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'percentChangeSinceCreated',
+                                        header: '% Changed',
+                                        dataType: CrudTableColumnType.CUSTOM,
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'avgAnalystPriceTarget',
+                                        header: 'Avg Analyst PT',
+                                        dataType: CrudTableColumnType.CUSTOM,
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'avgUpsidePercent',
+                                        header: 'Avg Upside %',
+                                        dataType: CrudTableColumnType.CUSTOM,
+                                        sortable: true
+                                    } );
+        return crudTableColumns;
+    }
 }

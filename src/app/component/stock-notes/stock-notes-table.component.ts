@@ -9,6 +9,7 @@ import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
+import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 
 /**
  * This is the base class for StockCompany Notes tables.
@@ -25,20 +26,23 @@ export abstract class StockNotesTableComponent extends StockModelObjectTableComp
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockNotesCrudService} stockNotesCrudService
+     * @param {StockQuoteCacheService} stockQuoteCacheService
      */
-    constructor( protected session: SessionService,
-                 protected toaster: ToastsManager,
-                 protected stockNotesStateStore: StockNotesStateStore,
-                 protected stockNotesController: StockNotesController,
-                 protected stockNotesFactory: StockNotesFactory,
-                 protected stockNotesCrudService: StockNotesCrudService )
+    protected constructor( protected session: SessionService,
+                           protected toaster: ToastsManager,
+                           protected stockNotesStateStore: StockNotesStateStore,
+                           protected stockNotesController: StockNotesController,
+                           protected stockNotesFactory: StockNotesFactory,
+                           protected stockNotesCrudService: StockNotesCrudService,
+                           protected stockQuoteCacheService: StockQuoteCacheService )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
                stockNotesStateStore,
                stockNotesController,
                stockNotesFactory,
-               stockNotesCrudService );
+               stockNotesCrudService,
+               stockQuoteCacheService );
     }
 
     protected getActionTaken( actionTaken: string )

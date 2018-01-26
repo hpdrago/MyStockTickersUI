@@ -21,10 +21,15 @@ import { Component } from "@angular/core";
                     <stock-to-buy-table-refresh-button>
                     </stock-to-buy-table-refresh-button>
                </ng-template>
+               <ng-template #customizeButtonTemplate>
+                   <stock-to-buy-table-customize-button>
+                   </stock-to-buy-table-customize-button>
+               </ng-template>
                <crud-table-buttons [addButtonTemplate]="addButtonTemplate"
                                    [editButtonTemplate]="editButtonTemplate"
                                    [deleteButtonTemplate]="deleteButtonTemplate"
-                                   [refreshButtonTemplate]="refreshButtonTemplate">
+                                   [refreshButtonTemplate]="refreshButtonTemplate"
+                                   [customizeButtonTemplate]="customizeButtonTemplate">
                </crud-table-buttons>`
 })
 export class StockToBuyTableButtonsComponent

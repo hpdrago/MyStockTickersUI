@@ -16,7 +16,6 @@ import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
 import { CrudFormComponent } from '../crud/form/crud-form.component';
 import { StockCompany } from '../../model/entity/stock-company';
-import { StockCompanyService } from '../../service/crud/stock-company.service';
 import { StockSearchSelectedCompaniesComponent } from '../common/stock-search-selected-companies.component';
 import { StockNotesSourceSelectionComponent } from '../common/stock-notes-source-selection.component';
 import { StockCompanyPriceQuoteService } from '../../service/stock-company-price-quote.service';
@@ -136,6 +135,8 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         {
             this.stockSearchSelectedCompaniesComponent.reset();
         }
+        this.modelObject.notesDate = new Date();
+        this.formGroup.controls['notesDate'].setValue( new Date() );
         this.log( methodName + '.end' );
     }
 

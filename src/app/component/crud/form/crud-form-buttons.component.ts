@@ -7,6 +7,7 @@ import { CrudStateStore } from '../common/crud-state-store';
 import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
+import { Input } from '@angular/core';
 
 /**
  * This class manages the set of buttons for a model object dialog.
@@ -15,6 +16,15 @@ import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
  */
 export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends BaseCrudComponent<T>
 {
+    @Input()
+    protected showCloseButton: boolean = true;
+
+    @Input()
+    protected showAddButton: boolean = true;
+
+    @Input()
+    protected showContinuousAddButton: boolean = false;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -28,8 +38,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
                            protected crudStateStore: CrudStateStore<T>,
                            protected crudController: CrudController<T>,
                            protected modelObjectFactory: ModelObjectFactory<T>,
-                           protected crudRestService: CrudRestService<T>,
-                           protected showContinuousAddButton: boolean = false )
+                           protected crudRestService: CrudRestService<T> )
     {
         super( toaster,
                crudStateStore,
@@ -149,7 +158,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected isShowAddButton(): boolean
     {
-        return this.crudOperation == CrudOperation.CREATE;
+        return this.showAddButton;
     }
 
     /**
@@ -158,16 +167,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected isShowContinuousAddButton(): boolean
     {
-        return this.crudOperation == CrudOperation.CREATE && this.showContinuousAddButton;
-    }
-
-    /**
-     * Determines if the Add and continue Button should be shown
-     * @returns {boolean}
-     */
-    protected isShowAddAndContinueButton(): boolean
-    {
-        return this.crudOperation == CrudOperation.CREATE;
+        return this.showContinuousAddButton;
     }
 
     /**
@@ -176,7 +176,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected isShowCloseButton(): boolean
     {
-        return true;
+        return this.showCloseButton;
     }
 
     /**
@@ -337,7 +337,6 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         return "Save Successful!";
     }
 
-
     /**
      * This method is called when the Continuous Add button is clicked.
      */
@@ -345,13 +344,14 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     {
         var methodName = "onContinuousAddButtonClicked";
         this.debug( methodName + " " + JSON.stringify( this.modelObject ));
-        this.onAddButtonClick();
+        this.onAddButtonClick( true );
     }
 
     /**
      * This method is called when the Add button is clicked.
+     * @param {boolean} continuousAdd
      */
-    protected onAddButtonClick(): void
+    protected onAddButtonClick( continuousAdd: boolean ): void
     {
         var methodName = "onAddButtonClick";
         this.debug( methodName + ".begin" );
@@ -359,7 +359,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
         this.crudController
             .sendFormPrepareToSaveEvent();
         this.busyIndicator = this.crudController
-                                 .addModelObject( this.modelObject )
+                                 .addModelObject( this.modelObject, continuousAdd )
                                  .subscribe( modelObject =>
                                              {
                                                  this.debug( methodName + ' completed ' + JSON.stringify( modelObject ) );

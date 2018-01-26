@@ -43,12 +43,6 @@ export class PortfolioFormButtonsComponent extends CrudFormButtonsComponent<Port
                portfolioCrudService );
     }
 
-    protected onAddButtonClick(): void
-    {
-        this.modelObject.customerId = this.session.getLoggedInUserId();
-        super.onAddButtonClick();
-    }
-
     /**
      * Defines the message to display to the user in the dialog when deleting the model object
      */

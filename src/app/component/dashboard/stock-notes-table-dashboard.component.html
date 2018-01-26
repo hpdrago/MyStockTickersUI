@@ -24,7 +24,7 @@
     <p-column id="tickerSymbolColumn"
               field="tickerSymbol"
               header="Ticker"
-              [style]="{'width':'50px'}"
+              [style]="{'width':'60px'}"
               [sortable]="true">
     </p-column>
 
@@ -34,7 +34,7 @@
     <p-column id="notesDateColumn"
               field="notesDate"
               header="Date"
-              [style]="{'width':'80px'}"
+              [style]="{'width':'90px'}"
               [sortable]="true">
         <ng-template let-col let-stockNotes="rowData" pTemplate="body">
             <date [dateValue]="stockNotes[col.field]"></date>

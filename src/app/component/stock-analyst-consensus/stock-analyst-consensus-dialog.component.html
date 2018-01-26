@@ -1,6 +1,6 @@
 <div *ngIf="!isCrudNoneOperation()">
     <p-dialog header="Stock Analyst Consensus"
-              [modal]="true"
+              [modal]="modal"
               [closable]="false"
               [closeOnEscape]="false"
               [responsive]="true"
@@ -18,7 +18,9 @@
                 -->
             </div>
             <p-footer>
-                <stock-analyst-consensus-form-buttons>
+                <stock-analyst-consensus-form-buttons [showContinuousAddButton]="showContinuousAddButton"
+                                                      [showAddButton]="showAddButton"
+                                                      [showCloseButton]="showCloseButton">
                 </stock-analyst-consensus-form-buttons>
             </p-footer>
     </p-dialog>

@@ -26,7 +26,7 @@ export class MenuBarComponent
                 { label: 'Stock Notes',
                    icon: 'fa-sticky-note',
                   items: [{
-                            label: 'Create',
+                            label: 'Add',
                             icon: 'fa-plus',
                             routerLink: ['/stockNotes/add']
                           },
@@ -38,7 +38,7 @@ export class MenuBarComponent
                 { label: 'Stocks To Buy',
                     icon: 'fa-shopping-cart',
                     items: [{
-                                label: 'Create',
+                                label: 'Add',
                                 icon: 'fa-plus',
                                 routerLink: ['/stockToBuy/add']
                             },
@@ -50,7 +50,7 @@ export class MenuBarComponent
                 { label: 'Catalyst Events',
                     icon: 'fa-calendar',
                     items: [{
-                                label: 'Create',
+                                label: 'Add',
                                 icon: 'fa-plus',
                                 routerLink: ['/stockCatalystEvents/add']
                             },
@@ -62,7 +62,7 @@ export class MenuBarComponent
                 { label: 'Analyst Consensus',
                     icon: 'fa-user',
                     items: [{
-                                label: 'Create',
+                                label: 'Add',
                                 icon: 'fa-plus',
                                 routerLink: ['/stockAnalystConsensus/add']
                             },

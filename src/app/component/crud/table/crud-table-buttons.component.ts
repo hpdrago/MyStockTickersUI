@@ -7,6 +7,7 @@ import { Component, Input, TemplateRef } from "@angular/core";
  *   - Add button
  *   - Edit button
  *   - Refresh button
+ *   - Customize button
  *
  * Created by mike on 1/2/2017.
  */
@@ -19,6 +20,8 @@ import { Component, Input, TemplateRef } from "@angular/core";
                <ng-container *ngTemplateOutlet="deleteButtonTemplate">
                </ng-container>
                <ng-container *ngTemplateOutlet="refreshButtonTemplate">
+               </ng-container>
+               <ng-container *ngTemplateOutlet="customizeButtonTemplate">
                </ng-container>
               `
 })
@@ -35,4 +38,7 @@ export class CrudTableButtonsComponent
 
     @Input('deleteButtonTemplate')
     protected deleteButtonTemplate: TemplateRef<any>;
+
+    @Input('customizeButtonTemplate')
+    protected customizeButtonTemplate: TemplateRef<any>;
 }

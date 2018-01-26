@@ -7,6 +7,7 @@ import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 import { Injectable } from '@angular/core';
 import { StockCatalystEventActionHandler } from './stock-catalyst-event-action-handler';
+import { DateOrTimePeriod } from '../../common/date-or-time-period.enum';
 
 /**
  * This is the Controller for the StockCatalystEvent entity components.
@@ -27,5 +28,11 @@ export class StockCatalystEventController extends CrudController<StockCatalystEv
         super( stockCatalystEventStateStore,
                stockCatalystEventFactory,
                stockCatalystEventActionHandler );
+    }
+
+    protected setDefaultValues( modelObject: StockCatalystEvent )
+    {
+        super.setDefaultValues( modelObject );
+        modelObject.dateOrTimePeriod = DateOrTimePeriod.DATE;
     }
 }

@@ -4,7 +4,6 @@ import { StockQuoteContainer } from '../common/stock-quote-container';
 import { StockPriceQuoteContainer } from '../common/stock-price-quote-container';
 import { StockModelObject } from '../common/stock-model-object';
 import { StockCompanyContainer } from '../common/stock-company-container';
-import { CachedValueState } from '../../common/cached-value-state.enum';
 import { StockCompany } from './stock-company';
 
 /**

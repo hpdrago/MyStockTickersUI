@@ -10,7 +10,11 @@ import { StockToBuyCrudActionHandler } from './stock-to-buy-action-handler';
  */
 @Component
 ({
-    template: `<stock-to-buy-dialog></stock-to-buy-dialog>`,
+    template: `<stock-to-buy-dialog [modal]="false"
+                                    [showContinuousAddButton]="true"
+                                    [showAddButton]="false"
+                                    [showCloseButton]="false">
+               </stock-to-buy-dialog>`,
     providers: [StockToBuyController, StockToBuyStateStore, StockToBuyCrudActionHandler]
  })
 export class StockToBuyAddComponent extends BaseComponent implements OnInit

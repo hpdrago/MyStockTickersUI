@@ -3,6 +3,8 @@ import { TickerSymbolContainer } from '../common/ticker-symbol-container';
 import { StockCompanyContainer } from '../common/stock-company-container';
 import { StockCompany } from './stock-company';
 import { LinkedAccount } from './linked-account';
+import { StockQuoteContainer } from '../common/stock-quote-container';
+import { StockQuote } from './stock-quote';
 
 /**
  * This entity contains the elements for gains and losses.
@@ -11,7 +13,8 @@ import { LinkedAccount } from './linked-account';
  */
 export class GainsLosses extends ModelObject<GainsLosses>
                          implements TickerSymbolContainer,
-                                    StockCompanyContainer
+                                    StockCompanyContainer,
+                                    StockQuoteContainer
 {
     public id: string;
     public customerId: string;
@@ -21,6 +24,7 @@ export class GainsLosses extends ModelObject<GainsLosses>
     public losses: number;
     public totalGainsLosses: number;
     public stockCompany: StockCompany;
+    public stockQuote: StockQuote;
 
     public getTickerSymbol(): string
     {

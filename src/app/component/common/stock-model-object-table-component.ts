@@ -9,28 +9,34 @@ import { ModelObjectFactory } from '../../model/factory/model-object.factory';
 import { CrudRestService } from '../../service/crud/crud-rest.serivce';
 import { ModelObject } from '../../model/common/model-object';
 import { TickerSymbolContainer } from '../../model/common/ticker-symbol-container';
+import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
+import { StockQuoteContainer } from '../../model/common/stock-quote-container';
+import { StockQuote } from '../../model/entity/stock-quote';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This is a base class for all tables that contain model objects containing a ticker symbol
  */
-export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & TickerSymbolContainer>
+export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & TickerSymbolContainer & StockQuoteContainer>
     extends CrudTableComponent<T>
 {
     /**
-     * Constructor.
+     * Constructor
      * @param {TableLoadingStrategy} tableLoadingStrategy
      * @param {ToastsManager} toaster
-     * @param {CrudStateStore<T extends StockModelObject<T>>} stockStateStore
-     * @param {CrudController<T extends StockModelObject<T>>} stockController
-     * @param {ModelObjectFactory<T extends StockModelObject<T>>} stockFactory
-     * @param {CrudRestService<T extends StockModelObject<T>>} stockCrudService
+     * @param {CrudStateStore<T extends ModelObject<T> & TickerSymbolContainer>} stockStateStore
+     * @param {CrudController<T extends ModelObject<T> & TickerSymbolContainer>} stockController
+     * @param {ModelObjectFactory<T extends ModelObject<T> & TickerSymbolContainer>} stockFactory
+     * @param {CrudRestService<T extends ModelObject<T> & TickerSymbolContainer>} stockCrudService
+     * @param {StockQuoteCacheService} stockQuoteCacheService
      */
     protected constructor( protected tableLoadingStrategy: TableLoadingStrategy,
                            protected toaster: ToastsManager,
                            protected stockStateStore: CrudStateStore<T>,
                            protected stockController: CrudController<T>,
                            protected stockFactory: ModelObjectFactory<T>,
-                           protected stockCrudService: CrudRestService<T> )
+                           protected stockCrudService: CrudRestService<T>,
+                           protected stockQuoteCacheService: StockQuoteCacheService )
     {
         super( tableLoadingStrategy,
                toaster,
@@ -62,6 +68,43 @@ export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & 
         this.modelObject = this.stockFactory
                                .newModelObject();
         this.loadTable();
+    }
+
+    /**
+     * This method is called after the modelObjects have been retrieved from the database
+     * @param {T[]} modelObjects
+     */
+    protected onTableLoad( modelObjects: T[] ): void
+    {
+        this.log( 'onTableLoad subscribing to cache updates')
+        modelObjects.forEach( modelObject =>
+                              {
+                                  if ( modelObject.hasOwnProperty( 'stockQuote' ) )
+                                  {
+                                      this.addSubscription( modelObject.tickerSymbol + '.stockQuoteSubscription',
+                                          this.stockQuoteCacheService
+                                              .subscribe( modelObject.tickerSymbol, (stockQuote: StockQuote ) =>
+                                                          {
+                                                              this.onStockQuoteUpdate( modelObject, stockQuote );
+                                                          } ));
+                                  }
+                              })
+        super.onTableLoad( modelObjects );
+    }
+
+    /**
+     * This method is called when a stock quote is receive from the stock quote cache.
+     * @param {T} modelObject Will be updated with the new stock quote
+     * @param {StockQuote} stockQuote
+     */
+    protected onStockQuoteUpdate( modelObject: T, stockQuote: StockQuote )
+    {
+        if ( !isNullOrUndefined( stockQuote ))
+        {
+            const methodName = 'onStockQuoteUpdate';
+            this.log( `${methodName} ${modelObject.tickerSymbol} => ` + JSON.stringify( stockQuote ) );
+            modelObject.stockQuote = stockQuote;
+        }
     }
 
     /**

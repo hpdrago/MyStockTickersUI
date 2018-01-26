@@ -1,0 +1,27 @@
+    <p-dialog header="Customize Columns"
+              [modal]="true"
+              [closable]="false"
+              [closeOnEscape]="false"
+              [responsive]="true"
+              [width]="600"
+              [height]="530"
+              [resizable]="false"
+              [(visible)]="displayDialog">
+        <div>
+            <crud-table-column-selector [availableColumns]="availableColumns"
+                                        [selectedColumns]="selectedColumns">
+            </crud-table-column-selector>
+        </div>
+        <p-footer>
+            <button pButton type="button"
+                    (click)="onOkButtonClicked()"
+                    label="OK"
+                    icon="fa-check">
+            </button>
+            <button pButton type="button"
+                    (click)="onCancelButtonClicked()"
+                    label="Cancel"
+                    icon="fa-times">
+            </button>
+        </p-footer>
+    </p-dialog>

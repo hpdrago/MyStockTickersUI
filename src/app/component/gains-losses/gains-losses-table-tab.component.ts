@@ -6,6 +6,7 @@ import { GainsLossesStateStore } from './gains-losses-state-store';
 import { GainsLossesController } from './gains-losses-controller';
 import { GainsLossesCrudService } from '../../service/crud/gains-losses-crud.service';
 import { GainsLossesCrudActionHandler } from './gains-losses-action-handler';
+import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 
 /**
  * This component displays a list of gains/losses.
@@ -27,17 +28,20 @@ export class GainsLossesTableTabComponent extends GainsLossesBaseTableComponent
      * @param {GainsLossesController} gainsLossesController
      * @param {GainsLossesFactory} gainsLossesFactory
      * @param {GainsLossesCrudService} gainsLossesCrudService
+     * @param {StockQuoteCacheService} stockQuoteCacheService
      */
     constructor( protected toaster: ToastsManager,
                  protected gainsLossesStateStore: GainsLossesStateStore,
                  protected gainsLossesController: GainsLossesController,
                  protected gainsLossesFactory: GainsLossesFactory,
-                 protected gainsLossesCrudService: GainsLossesCrudService )
+                 protected gainsLossesCrudService: GainsLossesCrudService,
+                 protected stockQuoteCacheService: StockQuoteCacheService )
     {
         super( toaster,
                gainsLossesStateStore,
                gainsLossesController,
                gainsLossesFactory,
-               gainsLossesCrudService );
+               gainsLossesCrudService,
+               stockQuoteCacheService );
     }
 }

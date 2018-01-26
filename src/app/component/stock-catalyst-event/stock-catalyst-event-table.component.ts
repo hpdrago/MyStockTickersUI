@@ -8,6 +8,7 @@ import { StockCatalystEventController } from './stock-catalyst-event-controller'
 import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
 import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
+import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 
 /**
  * This component lists all stock notes
@@ -16,8 +17,8 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
  */
 export abstract class StockCatalystEventTableComponent extends StockModelObjectTableComponent<StockCatalystEvent>
 {
-    private DATE_OR_TIMEPERIOD = DateOrTimePeriod;
-    private TIME_PERIODS = TimePeriods;
+    protected DATE_OR_TIMEPERIOD = DateOrTimePeriod;
+    protected TIME_PERIODS = TimePeriods;
 
     /**
      * Constructor.
@@ -26,18 +27,21 @@ export abstract class StockCatalystEventTableComponent extends StockModelObjectT
      * @param {StockCatalystEventController} stockCatalystEventController
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
      * @param {StockCatalystEventCrudService} stockCatalystEventCrudService
+     * @param {StockQuoteCacheService} stockQuoteCacheService
      */
     protected constructor( protected toaster: ToastsManager,
                            protected stockCatalystEventStateStore: StockCatalystEventStateStore,
                            protected stockCatalystEventController: StockCatalystEventController,
                            protected stockCatalystEventFactory: StockCatalystEventFactory,
-                           protected stockCatalystEventCrudService: StockCatalystEventCrudService )
+                           protected stockCatalystEventCrudService: StockCatalystEventCrudService,
+                           protected stockQuoteCacheService: StockQuoteCacheService )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
                stockCatalystEventStateStore,
                stockCatalystEventController,
                stockCatalystEventFactory,
-               stockCatalystEventCrudService );
+               stockCatalystEventCrudService,
+               stockQuoteCacheService );
     }
 }

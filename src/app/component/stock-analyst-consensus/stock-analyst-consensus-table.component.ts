@@ -6,6 +6,7 @@ import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
+import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 
 /**
  * This is the base class for the tab and dashboard table for StockCompany Analyst Consensus information
@@ -19,18 +20,21 @@ export abstract class StockAnalystConsensusTableComponent extends StockModelObje
      * @param {StockAnalystConsensusController} stockAnalystConsensusController
      * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
      * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
+     * @param {StockQuoteCacheService} stockQuoteCacheService
      */
     protected constructor( protected toaster: ToastsManager,
                            protected stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
                            protected stockAnalystConsensusController: StockAnalystConsensusController,
                            protected stockAnalystConsensusFactory: StockAnalystConsensusFactory,
-                           protected stockAnalystConsensusCrudService: StockAnalystConsensusCrudService )
+                           protected stockAnalystConsensusCrudService: StockAnalystConsensusCrudService,
+                           protected stockQuoteCacheService: StockQuoteCacheService )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
                stockAnalystConsensusStateStore,
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,
-               stockAnalystConsensusCrudService );
+               stockAnalystConsensusCrudService,
+               stockQuoteCacheService );
     }
 }

@@ -15,7 +15,7 @@ import { CrudStateStore } from '../common/crud-state-store';
 import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
-import { ChangeDetectorRef, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Input, OnInit } from '@angular/core';
 
 /**
  * This class contains the common functionality for a form for a CRUD model object.
@@ -24,6 +24,9 @@ import { ChangeDetectorRef, OnInit } from '@angular/core';
  */
 export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCrudComponent<T> implements OnInit
 {
+    @Input()
+    protected continuousAddEnabled: boolean = false;
+
     /**
      * The formGroup is the Dynamic Form object
      */
@@ -151,6 +154,22 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.changeDetector
             .detectChanges();
         this.debug( methodName + '.end' );
+    }
+
+    /**
+     * This method is called when the crud operation changes.
+     * @param {CrudOperation} crudOperation
+     */
+    protected onCrudOperationChanged( crudOperation: CrudOperation )
+    {
+        if ( this.continuousAddEnabled )
+        {
+            this.debug( 'onCrudOperationChanged ignored - continuous add enabled' );
+        }
+        else
+        {
+            super.onCrudOperationChanged( crudOperation );
+        }
     }
 
     /**

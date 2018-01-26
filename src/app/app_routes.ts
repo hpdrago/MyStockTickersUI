@@ -15,8 +15,8 @@ import { TradeItAccountsComponent } from "./component/tradeit-account/tradeit-ac
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 import { GainsLossesTableTabComponent } from './component/gains-losses/gains-losses-table-tab.component';
 import { StockNotesAddComponent } from './component/stock-notes/stock-notes-add.component';
-import { StockToBuyAddComponent } from './component/stock-to-buy/stock-to-buy-event-add.component';
-import { StockAnalystConsensusAddComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-event-add.component';
+import { StockToBuyAddComponent } from './component/stock-to-buy/stock-to-buy-add.component';
+import { StockAnalystConsensusAddComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-add.component';
 import { StockCatalystEventAddComponent } from './component/stock-catalyst-event/stock-catalyst-event-add.component';
 
 const routes: Routes = [
@@ -43,6 +43,11 @@ const routes: Routes = [
     {
         path: 'stockNotes/add',
         component: StockNotesAddComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'stockNotes',
+        component: StockNotesTableTabComponent,
         canActivate: [AuthGuardService]
     },
     {
@@ -76,7 +81,7 @@ const routes: Routes = [
         canActivate: [AuthGuardService]
     },
     {
-        path: 'stocksToBuy/view',
+        path: 'stockToBuy/view',
         component: StockToBuyTableTabComponent,
         canActivate: [AuthGuardService]
     },
@@ -114,4 +119,4 @@ const routes: Routes = [
 ];
 
 // - Updated Export
-export const routing = RouterModule.forRoot(routes);
+export const routing = RouterModule.forRoot(routes, {enableTracing: true});

@@ -3,6 +3,10 @@ import { StockNotesSourceContainer } from '../common/stock-notes-source-containe
 import { StockPriceQuoteContainer } from '../common/stock-price-quote-container';
 import { StockQuoteContainer } from '../common/stock-quote-container';
 import { StockModelObject } from '../common/stock-model-object';
+import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
+import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
+import { StockQuote } from './stock-quote';
+import { StockPriceQuote } from './stock-price-quote';
 
 /**
  * This entity contains the elements for the stock to buy
@@ -63,5 +67,72 @@ export class StockToBuy extends StockModelObject<StockToBuy> implements StockNot
     public getPrimaryKeyName(): string
     {
         return "id";
+    }
+
+    /**
+     * Returns all of the available columns.
+     * @return {CrudTableColumns}
+     */
+    public getCrudTableColumns(): CrudTableColumns
+    {
+        let crudTableColumns: CrudTableColumns = new CrudTableColumns();
+        crudTableColumns.addColumn( {
+                            colId: 'tickerSymbol',
+                            header: 'Ticker Symbol',
+                            field: 'tickerSymbol',
+                            dataType: CrudTableColumnType.STRING,
+                            sortable: true
+                        } );
+        crudTableColumns.addColumn( {
+                            colId: 'recordBuy',
+                            header: 'Record Buy',
+                            dataType: CrudTableColumnType.CUSTOM,
+                            sortable: false
+                        } );
+        crudTableColumns.addColumn( {
+                            colId: 'stockPriceWhenCreated',
+                            header: 'Price When Created',
+                            dataType: CrudTableColumnType.CURRENCY,
+                            field: 'stockPriceWhenCreated',
+                            sortable: true
+                        } );
+        crudTableColumns.addColumn( {
+                            colId: 'comments',
+                            header: 'Comments',
+                            dataType: CrudTableColumnType.COMMENTS,
+                            field: 'comments',
+                            sortable: false
+                        } );
+        crudTableColumns.addColumn( {
+                            colId: 'buySharesUpToPrice',
+                            header: 'Buy Shares Up To',
+                            dataType: CrudTableColumnType.CUSTOM,
+                            field: 'buySharesUpToPrice',
+                            sortable: false
+                        } );
+        crudTableColumns.addColumn( {
+                            colId: 'notesSourceName',
+                            header: 'Source',
+                            dataType: CrudTableColumnType.STRING,
+                            field: 'notesSourceName',
+                            sortable: true
+                        } );
+        crudTableColumns.addColumn( {
+                            colId: 'buyAfterDate',
+                            header: 'Buy After Date',
+                            dataType: CrudTableColumnType.CUSTOM,
+                            field: 'buyAfterDate',
+                            sortable: true
+                        } );
+        crudTableColumns.addColumn( {
+                                        colId: 'tags',
+                                        header: 'Tags',
+                                        dataType: CrudTableColumnType.STRING,
+                                        field: 'tags',
+                                        sortable: false
+                                    } );
+        let superTableColumns: CrudTableColumns = super.getCrudTableColumns();
+        crudTableColumns.addAll( superTableColumns );
+        return crudTableColumns;
     }
 }

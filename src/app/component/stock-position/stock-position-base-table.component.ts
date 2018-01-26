@@ -10,6 +10,7 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { LinkedAccount } from '../../model/entity/linked-account';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
+import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 
 /**
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}
@@ -29,20 +30,23 @@ export class StockPositionBaseTableComponent extends StockModelObjectTableCompon
      * @param {StockPositionController} stockPositionController
      * @param {StockPositionFactory} stockPositionFactory
      * @param {StockPositionCrudService} stockPositionCrudService
+     * @param {StockQuoteCacheService} stockQuoteCacheService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
                  protected stockPositionStateStore: StockPositionStateStore,
                  protected stockPositionController: StockPositionController,
                  protected stockPositionFactory: StockPositionFactory,
-                 protected stockPositionCrudService: StockPositionCrudService )
+                 protected stockPositionCrudService: StockPositionCrudService,
+                 protected stockQuoteCacheService: StockQuoteCacheService )
     {
         super( TableLoadingStrategy.ALL_ON_DEMAND,
                toaster,
                stockPositionStateStore,
                stockPositionController,
                stockPositionFactory,
-               stockPositionCrudService );
+               stockPositionCrudService,
+               stockQuoteCacheService );
     }
 
     /**

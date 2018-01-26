@@ -4,6 +4,8 @@
  * Created by mike on 12/8/2016.
  */
 import { JsonObject, JsonProperty } from "json2typescript";
+import { CrudTableColumns } from '../../component/crud/table/crud-table-columns';
+import { CrudTableColumnType } from '../../component/crud/table/crud-table-column-type';
 
 @JsonObject
 export abstract class ModelObject<T>
@@ -72,6 +74,30 @@ export abstract class ModelObject<T>
      * @returns {any}
      */
     public abstract getPrimaryKeyName(): string;
+
+    /**
+     * Get all of the columns to display in the table.
+     * @return {CrudTableColumns}
+     */
+    public getCrudTableColumns(): CrudTableColumns
+    {
+        let crudTableColumns: CrudTableColumns = new CrudTableColumns();
+        crudTableColumns.addColumn( {
+                                        colId: 'dateCreated',
+                                        field: 'dateCreated',
+                                        header: 'Created',
+                                        dataType: CrudTableColumnType.DATE,
+                                        sortable: true
+                                    } );
+        crudTableColumns.addColumn( {
+                                        colId: 'dateModified',
+                                        field: 'dateModified',
+                                        header: 'Modified',
+                                        dataType: CrudTableColumnType.DATE,
+                                        sortable: true
+                                    } );
+        return crudTableColumns;
+    }
 
     /**
      * Determines if two model object primary keys are the equal.

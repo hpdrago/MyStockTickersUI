@@ -18,6 +18,10 @@ import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { Observable } from 'rxjs/Rx';
+import { CrudTableColumns } from './crud-table-columns';
+import { CrudTableColumnType } from './crud-table-column-type';
+import { CrudTableColumnCachedDataType } from './crud-table-column-cached-data-type';
+
 
 /**
  * This is the base class for CRUD enabled tables.
@@ -27,6 +31,15 @@ import { Observable } from 'rxjs/Rx';
  */
 export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseCrudComponent<T> implements OnInit
 {
+    /**
+     * Enum reference variable.
+     */
+    protected CrudTableColumnCachedDataType = CrudTableColumnCachedDataType;
+    /**
+     * Enum reference variable.
+     * @type {CrudTableColumnType}
+     */
+    protected CrudTableColumnType = CrudTableColumnType;
     /**
      * The list of model objects displayed.
      * @type {Array}
@@ -52,8 +65,42 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected lastLoadEvent: LazyLoadEvent;
 
+    /**
+     * The table :-)
+     */
     @ViewChild(DataTable)
     protected dataTable: DataTable;
+
+    /**
+     * These are the columns to be sent to the turbo table.  They are defined as <any> because we are going to send it
+     * our columns of type CrudTableColumn.
+     * @type {any[]}
+     */
+    protected columns: any[] = [];
+
+    /**
+     * Column definitions for the columns that are selected/displayed.
+     * @type {any[]}
+     */
+    protected selectedColumns: CrudTableColumns = new CrudTableColumns();
+
+    /**
+     * Column definitions for columns that have not been selected to be displayed and thus are available.
+     * @type {CrudTableColumns}
+     */
+    protected availableColumns: CrudTableColumns = new CrudTableColumns();
+
+    /**
+     * Column definitions for all columns.
+     * @type {CrudTableColumns}
+     */
+    protected allColumns: CrudTableColumns = new CrudTableColumns();
+
+    /**
+     * Controls the display of the column selection dialog.
+     * @type {boolean}
+     */
+    protected displayColumnSelectorDialog: boolean = false;
 
     /**
      * Constructor.
@@ -64,12 +111,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    constructor( protected tableLoadingStrategy: TableLoadingStrategy,
-                 protected toaster: ToastsManager,
-                 protected crudStateStore: CrudStateStore<T>,
-                 protected crudController: CrudController<T>,
-                 protected modelObjectFactory: ModelObjectFactory<T>,
-                 protected crudRestService: CrudRestService<T> )
+    protected constructor( protected tableLoadingStrategy: TableLoadingStrategy,
+                           protected toaster: ToastsManager,
+                           protected crudStateStore: CrudStateStore<T>,
+                           protected crudController: CrudController<T>,
+                           protected modelObjectFactory: ModelObjectFactory<T>,
+                           protected crudRestService: CrudRestService<T> )
     {
         super( toaster,
                crudStateStore,
@@ -87,10 +134,28 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( "ngOnInit.begin" );
         super.ngOnInit();
         this.subscribeToServiceEvents();
+        this.loadColumns();
         if ( TableLoadingStrategy.isLoadOnCreate( this.tableLoadingStrategy ))
         {
             this.loading = true;
             this.loadTable();
+        }
+    }
+
+    /**
+     * Load all of the columns for type table.  This is based on the type of model object.
+     */
+    protected loadColumns(): void
+    {
+        let modelObject: ModelObject<T> = this.modelObjectFactory
+                                              .newModelObject();
+        let crudTableColumns: CrudTableColumns = modelObject.getCrudTableColumns();
+        if ( !isNullOrUndefined( crudTableColumns ) )
+        {
+            this.allColumns.addAll( modelObject.getCrudTableColumns() );
+            this.selectedColumns.addAll( this.allColumns );
+            this.columns = this.selectedColumns
+                               .toArray();
         }
     }
 
@@ -269,7 +334,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.addSubscription( 'subscribeToRefreshButtonClickedEvent',
             this.crudController
                 .subscribeToRefreshButtonClickedEvent( () => this.refreshTable() ) );
+        this.addSubscription( 'subscribeToCustomizeButtonClickedEvent',
+                              this.crudController
+                                  .subscribeToCustomizeButtonClickedEvent( () => this.customizeColumns() ) );
         this.debug( methodName + '.end' );
+    }
+
+    protected customizeColumns(): void
+    {
+
     }
 
     /**
@@ -546,11 +619,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         let modelObject: T = null;
         if ( event.data )
         {
-            modelObject = event.data;
+            modelObject = this.modelObjectFactory
+                              .newModelObjectFromJSON( event.data );
         }
         else
         {
-            modelObject = event;
+            modelObject = this.modelObjectFactory
+                              .newModelObjectFromJSON( event );
         }
         return modelObject;
     }
