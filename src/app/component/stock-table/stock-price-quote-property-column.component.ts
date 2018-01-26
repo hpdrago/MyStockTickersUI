@@ -1,8 +1,8 @@
-import { BaseComponent } from '../../common/base.component';
+import { BaseComponent } from '../common/base.component';
 import { Component, Input } from '@angular/core';
-import { CrudTableColumn } from './crud-table-column';
+import { CrudTableColumn } from '../crud/table/crud-table-column';
 import { ToastsManager } from 'ng2-toastr';
-import { StockPriceQuote } from '../../../model/entity/stock-price-quote';
+import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { isNullOrUndefined } from 'util';
 
 /**
@@ -11,14 +11,15 @@ import { isNullOrUndefined } from 'util';
 @Component
 ({
     selector: 'stock-price-quote-property-column',
-    template: `<stock-price-quote [tickerSymbol]="tickerSymbol"
-                                  (stockPriceQuoteChange)="stockPriceQuote">
-                   <div *ngIf="isValidQuote(stockPriceQuote)">
-                       <crud-table-display-column [modelObject]="stockPriceQuote"
-                                                  [column]="column">
-                       </crud-table-display-column>
-                   </div>
-               </stock-price-quote>
+    template: `
+        <stock-price-quote [tickerSymbol]="tickerSymbol"
+                           (stockPriceQuoteChange)="stockPriceQuote">
+            <div *ngIf="isValidQuote(stockPriceQuote)">
+                <crud-table-column-by-data-type [modelObject]="stockPriceQuote"
+                                                [column]="column">
+                </crud-table-column-by-data-type>
+            </div>
+        </stock-price-quote>
     `
  })
 export class StockPriceQuotePropertyColumnComponent extends BaseComponent

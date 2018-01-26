@@ -1,326 +1,93 @@
-<p-panel>
-    <div class="crud-form ui-grid-row">
-        <div class="ui-grid-col-4 ui-state-default">
-            <stock-search (stockSelected)="onStockSelected( $event )"
-                          (resetButtonClick)="onResetButtonClick()">
-            </stock-search>
-        </div>
-        <div class="ui-grid-col-8 ui-state-default">
-        </div>
-    </div>
-    <p-header>
-        <stock-to-buy-table-buttons>
-        </stock-to-buy-table-buttons>
-    </p-header>
-    <p-table class="ui-table"
-             [value]="rows"
-             [columns]="columns"
-             [autoLayout]="true"
-             dataKey="id"
-             [(selection)]="selectedModelObject"
-             (onRowSelect)="onRowSelect($event)"
-             (onRowUnselect)="onRowUnSelect($event)"
-             selectionMode="single"
-             (onLazyLoad)="lazyLoadTable($event)"
-             [lazy]="true"
-             [paginator]="true"
-             [pageLinks]="3"
-             [rowsPerPageOptions]="[20,30,40]"
-             [rows]="20"
-             [totalRecords]="totalRows"
-             [loading]="loading"
-             (onRowDblclick)="onRowDoubleClick($event)"
-             [resizableColumns]="true"
-             [reorderableColumns]="true"
-             [responsive]="true">
+<!----------------------------------------------------------------------------------------------------------
+BUTTONS TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #buttonsTemplate>
+    <stock-to-buy-table-buttons>
+    </stock-to-buy-table-buttons>
+</ng-template>
 
-        <ng-template pTemplate="header" let-columns>
-            <tr>
-                <th *ngFor="let col of columns">
-                    <span class="ui-column-title">{{col.header}}</span>
-                </th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-modelObject let-columns="columns">
-            <tr [pSelectableRow]="modelObject">
-                <td *ngFor="let col of columns">
-                    <div [ngSwitch]="col.colId">
-                        <!----------------------------------------------------------------------------------------------------------
-                        RECORD BUY BUTTON
-                        ------------------------------------------------------------------------------------------------------------>
-                        <div *ngSwitchCase="'recordBuy'">
-                            <button pButton type="button" (click)="onBuyButtonClick( modelObject )" label="Record Buy"></button>
-                        </div>
-                        <!----------------------------------------------------------------------------------------------------------
-                        BUY SHARES UP TO
-                        ------------------------------------------------------------------------------------------------------------>
-                        <div *ngSwitchCase="'buySharesUpToPrice'">
-                            <div class="buy" *ngIf="modelObject && modelObject['lastPrice'] < modelObject[col.field]">
-                                <currency [currencyValue]="modelObject[col.field]">
-                                </currency>
-                            </div>
-                            <div class="wait" *ngIf="modelObject && modelObject['lastPrice'] >= modelObject[col.field]">
-                                <currency [currencyValue]="modelObject[col.field]">
-                                </currency>
-                            </div>
-                        </div>
-                        <!----------------------------------------------------------------------------------------------------------
-                        BUY SHARES AFTER DATE
-                        ------------------------------------------------------------------------------------------------------------>
-                        <div *ngSwitchCase="'buySharesAfterDate'">
-                            <div class="buy" *ngIf="modelObject && isAfterBuyAfterDate( modelObject )">
-                                {{modelObject[col.field] | date: 'y-MM-dd' }}
-                            </div>
-                            <div class="wait" *ngIf="modelObject && !isAfterBuyAfterDate( modelObject )">
-                                {{modelObject[col.field] | date: 'y-MM-dd' }}
-                            </div>
-                        </div>
-                        <!----------------------------------------------------------------------------------------------------------
-                        LAST PRICE
-                        ------------------------------------------------------------------------------------------------------------>
-                        <div *ngSwitchCase="'lastPrice'">
-                            <stock-price-quote-last-price [tickerSymbol]="modelObject.tickerSymbol">
-                            </stock-price-quote-last-price>
-                        </div>
-                        <!----------------------------------------------------------------------------------------------------------
-                        TICKER SYMBOL
-                        ------------------------------------------------------------------------------------------------------------>
-                        <div *ngSwitchCase="'tickerSymbol'">
-                            <ticker-symbol-column [tickerSymbol]="modelObject.tickerSymbol">
-                            </ticker-symbol-column>
-                        </div>
-                        <!----------------------------------------------------------------------------------------------------------
-                        STOCK PRICE WHEN CREATED
-                        ------------------------------------------------------------------------------------------------------------>
-                        <div *ngSwitchCase="'stockPriceWhenCreated'">
-                            <currency-column [currencyValue]="modelObject.stockPriceWhenCreated">
-                            </currency-column>
-                        </div>
-                        <!----------------------------------------------------------------------------------------------------------
-                        PERCENT OF CHANGE
-                        ------------------------------------------------------------------------------------------------------------>
-                        <div *ngSwitchCase="'percentChangeSinceCreated'">
-                            <stock-quote-percent-change-since-created [stockModelObject]="modelObject">
-                            </stock-quote-percent-change-since-created>
-                        </div>
-                        <!----------------------------------------------------------------------------------------------------------
-                        ANALYST PRICE TARGET
-                        ------------------------------------------------------------------------------------------------------------>
-                        <div *ngSwitchCase="'percentChangeSinceCreated'">
-                            <currency [currencyValue]="modelObject[col.field]">
-                            </currency>
-                        </div>
-                        <!----------------------------------------------------------------------------------------------------------
-                        ANALYST AVERAGE UPSIDE PERCENT
-                        ------------------------------------------------------------------------------------------------------------>
-                        <div *ngSwitchCase="'avgUpsidePercent'">
-                            <stock-average-upside-percent [tickerSymbol]="modelObject.tickerSymbol">
-                            </stock-average-upside-percent>
-                        </div>
-                        <!----------------------------------------------------------------------------------------------------------
-                        ANALYST AVG PRICE TARGET
-                        ------------------------------------------------------------------------------------------------------------>
-                        <div *ngSwitchCase="'avgAnalystPriceTarget'">
-                            <stock-analyst-price-target [tickerSymbol]="modelObject.tickerSymbol"
-                                                        [target]="'high'">
-                            </stock-analyst-price-target>
-                        </div>
-                        <!----------------------------------------------------------------------------------------------------------
-                        COMPANY NAME
-                        ------------------------------------------------------------------------------------------------------------>
-                        <div *ngSwitchCase="'companyName'">
-                            <stock-company-name [tickerSymbol]="modelObject.tickerSymbol">
-                            </stock-company-name>
-                        </div>
-                        <!----------------------------------------------------------------------------------------------------------
-                        COMMON DATA TYPES
-                        ------------------------------------------------------------------------------------------------------------>
-                        <div *ngSwitchDefault>
-                            <!----------------------------------------------------------------------------------------------------------
-                            CACHED DATA
-                            ------------------------------------------------------------------------------------------------------------>
-                            <div [ngSwitch]="col.cachedDataType">
-                                <div *ngSwitchCase="CrudTableColumnCachedDataType.STOCK_PRICE_QUOTE">
-                                    <div *ngIf="modelObject.stockPriceQuote != undefined">
-                                        <crud-table-display-column [modelObject]="modelObject.stockPriceQuote"
-                                                                   [column]="col">
-                                        </crud-table-display-column>
-                                    </div>
-                                </div>
-                                <div *ngSwitchCase="CrudTableColumnCachedDataType.STOCK_QUOTE">
-                                    <div *ngIf="modelObject.stockQuote != undefined">
-                                        <crud-table-display-column [modelObject]="modelObject.stockQuote"
-                                                                   [column]="col">
-                                        </crud-table-display-column>
-                                    </div>
-                                </div>
-                                <div *ngSwitchDefault>
-                                    <!----------------------------------------------------------------------------------------------------------
-                                    NON CACHED DATA
-                                    ------------------------------------------------------------------------------------------------------------>
-                                    <crud-table-display-column [modelObject]="modelObject"
-                                                               [column]="col">
-                                    </crud-table-display-column>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </ng-template>
-
-        ------------------------------------------------------------------------------------------------------------>
-
-        <!----------------------------------------------------------------------------------------------------------
-        STOCK PRICE WHEN CREATED
-        <p-column id="stockPriceWhenCreated"
-                  field="stockPriceWhenCreated"
-                  header="Price When Created"
-                  [style]="{'width':'10px','text-align':'right'}">
-            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                <currency [currencyValue]="stockToBuy[col.field]">
-                </currency>
-            </ng-template>
-        </p-column>
-        ------------------------------------------------------------------------------------------------------------>
-
-        <!----------------------------------------------------------------------------------------------------------
-        LAST PRICE
-        <p-column id="lastPrice"
-                  field="lastPrice"
-                  header="Last Price"
-                  [style]="{'width':'10px','text-align':'right'}">
-            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                <stock-price-quote-last-price [tickerSymbol]="stockToBuy.tickerSymbol">
-                </stock-price-quote-last-price>
-            </ng-template>
-        </p-column>
-
-        ------------------------------------------------------------------------------------------------------------>
-
-        <!----------------------------------------------------------------------------------------------------------
-        BUY SHARES UP TO PRICE
-        <p-column id="buySharesUpToPrice"
-                  field="buySharesUpToPrice"
-                  header="Buy Up To"
-                  [style]="{'width':'10px','text-align':'right'}">
-            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                <div class="buy" *ngIf="stockToBuy && stockToBuy['lastPrice'] < stockToBuy[col.field]">
-                    <currency [currencyValue]="stockToBuy[col.field]">
-                    </currency>
-                </div>
-                <div class="wait" *ngIf="stockToBuy && stockToBuy['lastPrice'] >= stockToBuy[col.field]">
-                    <currency [currencyValue]="stockToBuy[col.field]">
-                    </currency>
-                </div>
-            </ng-template>
-        </p-column>
-        ------------------------------------------------------------------------------------------------------------>
-
-        <!----------------------------------------------------------------------------------------------------------
-        ANALYST PRICE TARGET
-        <p-column id="avgAnalystPriceTarget"
-                  field="avgAnalystPriceTarget"
-                  header="Analyst PT"
-                  [style]="{'width':'10px','text-align':'right'}">
-            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                <currency [currencyValue]="stockToBuy[col.field]">
-                </currency>
-            </ng-template>
-        </p-column>
-        ------------------------------------------------------------------------------------------------------------>
-
-        <!----------------------------------------------------------------------------------------------------------
-        AVG UPSIDE PERCENTAGE
-        <p-column id="avgUpsidePercent"
-                  header="Avg Upside"
-                  field="avgUpsidePercent"
-                  [style]="{'width':'10px','text-align':'right'}"
-                  [sortable]="false">
-            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                <stock-average-upside-percent [tickerSymbol]="stockToBuy.tickerSymbol">
-                </stock-average-upside-percent>
-            </ng-template>
-        </p-column>
-        ------------------------------------------------------------------------------------------------------------>
-
-        <!----------------------------------------------------------------------------------------------------------
-        BUY SHARES AFTER DATE
-        <p-column id="buyAfterDate"
-                  field="buyAfterDate"
-                  header="Buy After Date"
-                  [style]="{'width':'20px'}"
-                  [sortable]="true">
-            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                <div class="buy" *ngIf="stockToBuy && isAfterBuyAfterDate( stockToBuy )">
-                    {{stockToBuy[col.field] | date: 'y-MM-dd' }}
-                </div>
-                <div class="wait" *ngIf="stockToBuy && !isAfterBuyAfterDate( stockToBuy )">
-                    {{stockToBuy[col.field] | date: 'y-MM-dd' }}
-                </div>
-            </ng-template>
-        </p-column>
-        ------------------------------------------------------------------------------------------------------------>
-
-        <!----------------------------------------------------------------------------------------------------------
-        DATE CREATED
-        <p-column id="createDate"
-                  field="createDate"
-                  header="Date Created"
-                  [style]="{'width':'20px'}"
-                  [sortable]="true">
-            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                {{stockToBuy[col.field] | date: 'y-MM-dd' }}
-            </ng-template>
-        </p-column>
-        ------------------------------------------------------------------------------------------------------------>
-
-        <!----------------------------------------------------------------------------------------------------------
-        SOURCE
-        <p-column id="notesSourceName"
-                  field="notesSourceName"
-                  header="Source"
-                  [style]="{'width':'40px'}"
-                  [sortable]="false">
-        </p-column>
-        ------------------------------------------------------------------------------------------------------------>
-
-        <!----------------------------------------------------------------------------------------------------------
-        TAGS
-        <p-column id="tags"
-                  field="tags"
-                  header="Tags"
-                  [style]="{'width':'40px'}"
-                  [sortable]="false">
-            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                {{stockToBuy[col.field] }}
-            </ng-template>
-        </p-column>
-        ------------------------------------------------------------------------------------------------------------>
-
-        <!----------------------------------------------------------------------------------------------------------
-        COMMENTS
-        <p-column id="comments"
-                  field="comments"
-                  header="Comments"
-                  [style]="{'width':'150px'}">
-            <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                <stock-comments [stockNotesContainer]="stockToBuy"></stock-comments>
-            </ng-template>
-        </p-column>
-
-        <p-footer>
-            <stock-to-buy-table-buttons>
-            </stock-to-buy-table-buttons>
-        </p-footer>
-        ------------------------------------------------------------------------------------------------------------>
-    </p-table>
+<!----------------------------------------------------------------------------------------------------------
+DIALOG TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #dialogTemplate>
     <stock-to-buy-dialog>
     </stock-to-buy-dialog>
-    <crud-table-column-selector-dialog>
-    </crud-table-column-selector-dialog>
-    <p-footer>
-        <stock-to-buy-table-buttons>
-        </stock-to-buy-table-buttons>
-    </p-footer>
-</p-panel>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+DEFAULT COLUMN DEFINITION
+------------------------------------------------------------------------------------------------------------>
+<ng-template #defaultColumnsTemplate let-column="column" let-modelObject="modelObject">
+    <crud-table-column-by-data-type [column]="column"
+                                    [modelObject]="modelObject">
+    </crud-table-column-by-data-type>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+CUSTOM STOCK TO BUY COLUMNS TEMPLATE
+column and modelObject are parameters to the template
+------------------------------------------------------------------------------------------------------------>
+<ng-template #columnsTemplate let-column="column" let-modelObject="modelObject">
+    <div [ngSwitch]="column.colId">
+        <!----------------------------------------------------------------------------------------------------------
+        RECORD BUY BUTTON
+        ------------------------------------------------------------------------------------------------------------>
+        <div *ngSwitchCase="'recordBuy'">
+            <button pButton type="button" (click)="onBuyButtonClick( modelObject )" label="Record Buy">
+            </button>
+        </div>
+        <!----------------------------------------------------------------------------------------------------------
+        BUY SHARES UP TO
+        ------------------------------------------------------------------------------------------------------------>
+        <div *ngSwitchCase="'buySharesUpToPrice'">
+            <div class="buy" *ngIf="modelObject && modelObject['lastPrice'] < modelObject[column.field]">
+                <currency [currencyValue]="modelObject[column.field]">
+                </currency>
+            </div>
+            <div class="wait" *ngIf="modelObject && modelObject['lastPrice'] >= modelObject[column.field]">
+                <currency [currencyValue]="modelObject[column.field]">
+                </currency>
+            </div>
+        </div>
+        <!----------------------------------------------------------------------------------------------------------
+        BUY SHARES AFTER DATE
+        ------------------------------------------------------------------------------------------------------------>
+        <div *ngSwitchCase="'buyAfterDate'">
+            <div class="buy" *ngIf="modelObject && isAfterBuyAfterDate( modelObject )">
+                {{modelObject[column.field] | date: 'y-MM-dd' }}
+            </div>
+            <div class="wait" *ngIf="modelObject && !isAfterBuyAfterDate( modelObject )">
+                {{modelObject[column.field] | date: 'y-MM-dd' }}
+            </div>
+        </div>
+
+        <div *ngSwitchDefault>
+            <stock-model-object-common-columns [modelObject]="modelObject"
+                                               [column]="column">
+            </stock-model-object-common-columns>
+
+            <!--
+            <ng-container *ngTemplateOutlet="defaultColumnsTemplate; context: {modelObject: modelObject, column: column}">
+            </ng-container> -->
+        </div>
+    </div>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+TABLE DEFINITION
+------------------------------------------------------------------------------------------------------------>
+<stock-model-object-table-component [buttonsTemplate]="buttonsTemplate"
+                                    [columnsTemplate]="columnsTemplate"
+                                    [dialogTemplate]="dialogTemplate"
+                                    [defaultColumnsTemplate]="defaultColumnsTemplate"
+                                    [crudController]="stockToBuyControllerTemplateRef"
+                                    [modelObjectFactory]="stockToBuyFactoryTemplateRef"
+                                    [modelObjectRows]="modelObjectRows"
+                                    [totalRecords]="totalRows"
+                                    [(selection)]="selectedModelObject"
+                                    (onRowSelect)="onRowSelect($event)"
+                                    (onRowUnSelect)="onRowUnSelect($event)"
+                                    (onLazyLoad)="lazyLoadTable($event)"
+                                    [lazy]="true"
+                                    (onRowDblclick)="onRowDoubleClick($event)">
+</stock-model-object-table-component>

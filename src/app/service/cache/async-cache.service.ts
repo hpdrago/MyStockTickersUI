@@ -67,9 +67,9 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
 
     /**
      * Subscribe to cached data changes.  When calling this method, if the cached data is not
-     * in the cache, the receivedCachedData method will be called with a null value but after the cached data
-     * has been received, a subsequent call to receivedCachedData will be called with the new cached data value and
-     * whenever the cached data value changes, the receivedCachedData method will be called as well.
+     * in the cache, the receivedCachedData method will be called with a null modelObjectRows but after the cached data
+     * has been received, a subsequent call to receivedCachedData will be called with the new cached data modelObjectRows and
+     * whenever the cached data modelObjectRows changes, the receivedCachedData method will be called as well.
      * @param {K} key
      * @param {(cachedData: T) => any} receiveCachedData
      * @return {Subscription}

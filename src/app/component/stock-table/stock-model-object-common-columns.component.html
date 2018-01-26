@@ -1,0 +1,91 @@
+<div [ngSwitch]="column.colId">
+    <!----------------------------------------------------------------------------------------------------------
+    LAST PRICE
+    ------------------------------------------------------------------------------------------------------------>
+    <div *ngSwitchCase="'lastPrice'">
+        <stock-price-quote-last-price [tickerSymbol]="modelObject.tickerSymbol">
+        </stock-price-quote-last-price>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------
+    TICKER SYMBOL
+    ------------------------------------------------------------------------------------------------------------>
+    <div *ngSwitchCase="'tickerSymbol'">
+        <ticker-symbol-column [tickerSymbol]="modelObject.tickerSymbol">
+        </ticker-symbol-column>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------
+    STOCK PRICE WHEN CREATED
+    ------------------------------------------------------------------------------------------------------------>
+    <div *ngSwitchCase="'stockPriceWhenCreated'">
+        <currency-column [currencyValue]="modelObject.stockPriceWhenCreated">
+        </currency-column>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------
+    PERCENT OF CHANGE
+    ------------------------------------------------------------------------------------------------------------>
+    <div *ngSwitchCase="'percentChangeSinceCreated'">
+        <stock-quote-percent-change-since-created [stockModelObject]="modelObject">
+        </stock-quote-percent-change-since-created>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------
+    ANALYST PRICE TARGET
+    ------------------------------------------------------------------------------------------------------------>
+    <div *ngSwitchCase="'percentChangeSinceCreated'">
+        <currency [currencyValue]="modelObject[column.field]">
+        </currency>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------
+    ANALYST AVERAGE UPSIDE PERCENT
+    ------------------------------------------------------------------------------------------------------------>
+    <div *ngSwitchCase="'avgUpsidePercent'">
+        <stock-average-upside-percent [tickerSymbol]="modelObject.tickerSymbol">
+        </stock-average-upside-percent>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------
+    ANALYST AVG PRICE TARGET
+    ------------------------------------------------------------------------------------------------------------>
+    <div *ngSwitchCase="'avgAnalystPriceTarget'">
+        <stock-analyst-price-target [tickerSymbol]="modelObject.tickerSymbol"
+                                    [target]="'avg'">
+        </stock-analyst-price-target>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------
+    COMPANY NAME
+    ------------------------------------------------------------------------------------------------------------>
+    <div *ngSwitchCase="'companyName'">
+        <stock-company-name [tickerSymbol]="modelObject.tickerSymbol">
+        </stock-company-name>
+    </div>
+    <!----------------------------------------------------------------------------------------------------------
+    COMMON DATA TYPES
+    ------------------------------------------------------------------------------------------------------------>
+    <div *ngSwitchDefault>
+        <!----------------------------------------------------------------------------------------------------------
+        CACHED DATA
+        ------------------------------------------------------------------------------------------------------------>
+        <div [ngSwitch]="column.cachedDataType">
+            <div *ngSwitchCase="CrudTableColumnCachedDataType.STOCK_PRICE_QUOTE">
+                <div *ngIf="modelObject.stockPriceQuote != undefined">
+                    <crud-table-column-by-data-type [modelObject]="modelObject.stockPriceQuote"
+                                                    [column]="column">
+                    </crud-table-column-by-data-type>
+                </div>
+            </div>
+            <div *ngSwitchCase="CrudTableColumnCachedDataType.STOCK_QUOTE">
+                <div *ngIf="modelObject.stockQuote != undefined">
+                    <crud-table-column-by-data-type [modelObject]="modelObject.stockQuote"
+                                                    [column]="column">
+                    </crud-table-column-by-data-type>
+                </div>
+            </div>
+            <div *ngSwitchDefault>
+                <!----------------------------------------------------------------------------------------------------------
+                NON CACHED DATA
+                ------------------------------------------------------------------------------------------------------------>
+                <crud-table-column-by-data-type [modelObject]="modelObject"
+                                                [column]="column">
+                </crud-table-column-by-data-type>
+            </div>
+        </div>
+    </div>
+</div>

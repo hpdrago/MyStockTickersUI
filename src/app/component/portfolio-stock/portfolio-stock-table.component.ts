@@ -10,6 +10,7 @@ import { PortfolioStockController } from './portfolio-stock-controller';
 import { PortfolioStockStateStore } from './portfolio-stock-state-store';
 import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
 import { PortfolioStockActionHandler } from './portfolio-stock-action-handler';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This component lists all of the stocks for a portfolio
@@ -35,20 +36,23 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
      * @param {PortfolioStockController} portfolioStockController
      * @param {PortfolioStockFactory} portfolioStockFactory
      * @param {PortfolioStockCrudService} portfolioStockCrudService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
-                 private session: SessionService,
-                 private portfolioStockStateStore: PortfolioStockStateStore,
-                 private portfolioStockController: PortfolioStockController,
-                 private portfolioStockFactory: PortfolioStockFactory,
-                 private portfolioStockCrudService: PortfolioStockCrudService )
+                 protected session: SessionService,
+                 protected portfolioStockStateStore: PortfolioStockStateStore,
+                 protected portfolioStockController: PortfolioStockController,
+                 protected portfolioStockFactory: PortfolioStockFactory,
+                 protected portfolioStockCrudService: PortfolioStockCrudService,
+                 protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.ALL_ON_CREATE,
                toaster,
                portfolioStockStateStore,
                portfolioStockController,
                portfolioStockFactory,
-               portfolioStockCrudService );
+               portfolioStockCrudService,
+               cookieService );
     }
 
     private getAddButtonText(): string
@@ -84,11 +88,11 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
                         {
                             if ( stocks.length > 0 )
                             {
-                                this.rows = stocks;
+                                this.modelObjectRows = stocks;
                             }
                             else
                             {
-                                this.rows = [];
+                                this.modelObjectRows = [];
                             }
                         });
     }

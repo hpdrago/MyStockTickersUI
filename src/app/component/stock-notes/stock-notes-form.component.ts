@@ -255,7 +255,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     }
 
     /**
-     * This method is called when the user changes the action taken drop down list box value.
+     * This method is called when the user changes the action taken drop down list box modelObjectRows.
      * @param event
      */
     protected onActionTakenChange( event )

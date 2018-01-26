@@ -64,7 +64,7 @@ export abstract class ModelObject<T>
     }
 
     /**
-     * Returns the primary key value
+     * Returns the primary key modelObjectRows
      * @returns {any}
      */
     public abstract getPrimaryKeyValue(): any;
@@ -76,7 +76,7 @@ export abstract class ModelObject<T>
     public abstract getPrimaryKeyName(): string;
 
     /**
-     * Get all of the columns to display in the table.
+     * Get all of the crudTableColumns to display in the table.
      * @return {CrudTableColumns}
      */
     public getCrudTableColumns(): CrudTableColumns
@@ -100,7 +100,7 @@ export abstract class ModelObject<T>
     }
 
     /**
-     * Get the columns from other related model objects contained within this model object.
+     * Get the crudTableColumns from other related model objects contained within this model object.
      * @return {CrudTableColumns}
      */
     public getOtherCrudTableColumns(): CrudTableColumns

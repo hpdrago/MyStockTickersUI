@@ -4,7 +4,7 @@ import { CrudTableColumnCachedDataType } from './crud-table-column-cached-data-t
 /**
  * Defines the properties of a crud table column.
  * These values are used to determine the contents of a crud table and also provides the means of defines a set of
- * columns that can be shared between components.
+ * crudTableColumns that can be shared between components.
  */
 export interface CrudTableColumn
 {
@@ -15,4 +15,5 @@ export interface CrudTableColumn
     field?: string;
     style?: any;
     sortable?: boolean;
+    handled?: boolean;
 }

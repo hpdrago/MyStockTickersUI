@@ -5,7 +5,7 @@ import { Toast, ToastsManager } from "ng2-toastr";
 import { isNullOrUndefined } from "util";
 
 /**
- * This is the BaseClass for all classes to provide common logging and other methods that are of value amongst all
+ * This is the BaseClass for all classes to provide common logging and other methods that are of modelObjectRows amongst all
  * objects of the application.
  */
 export class BaseClass implements OnDestroy

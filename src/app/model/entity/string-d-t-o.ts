@@ -1,5 +1,5 @@
 /**
- * Generic DTO for getting a string value from the Backend.
+ * Generic DTO for getting a string modelObjectRows from the Backend.
  * Created by mike on 6/4/2018
  */
 export class StringDTO

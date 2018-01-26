@@ -24,7 +24,7 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
     }
 
     /**
-     * Get the current CrudOperation value.
+     * Get the current CrudOperation modelObjectRows.
      * @return {CrudOperation}
      */
     public getCrudOperation(): CrudOperation
@@ -33,7 +33,7 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
     }
 
     /**
-     * Get the current model object value.
+     * Get the current model object modelObjectRows.
      * @return {ModelObjectChangedEvent<T extends ModelObject<T>>}
      */
     public getModelObject(): T

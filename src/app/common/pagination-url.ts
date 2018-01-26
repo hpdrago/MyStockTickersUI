@@ -17,7 +17,7 @@ export class PaginationURL
 
     /**
      * Create a new instance
-     * @param url The base URL to which the page number and number of rows will be added
+     * @param url The base URL to which the page number and number of modelObjectRows will be added
      *        to make a proper request to a Spring REST service
      */
     constructor( url: string )
@@ -43,7 +43,7 @@ export class PaginationURL
     /**
      * Format the URL to make a Spring REST page request
      * @param pageNumber Starting at page number
-     * @param rows The number of rows to retrieve
+     * @param rows The number of modelObjectRows to retrieve
      * @returns {any}
      */
     public getPageWithSearchString( searchString: string, rowOffSet: number, rows: number  ): string
@@ -61,7 +61,7 @@ export class PaginationURL
     /**
      * Format the URL to make a Spring REST page request
      * @param pageNumber Starting at page number
-     * @param rows The number of rows to retrieve
+     * @param modelObjectRows The number of modelObjectRows to retrieve
      *
      * https://docs.spring.io/spring-data/rest/docs/2.0.0.M1/reference/html/paging-chapter.html
      *
@@ -95,7 +95,7 @@ export class PaginationURL
 
     /**
      * Extracts the sort field from the lazyLoadEvent.  Subclasses can override this method to change a column name
-     * from one value to another value.
+     * from one modelObjectRows to another modelObjectRows.
      * @param {LazyLoadEvent} lazyLoadEvent
      * @return {string | undefined}
      */

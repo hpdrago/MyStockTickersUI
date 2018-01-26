@@ -12,7 +12,7 @@ import { isNullOrUndefined } from 'util';
  * the stock quote is retrieved asynchronously.
  *
  * This component is used as a wrapper around another component that requires stock quote information.  The event emmitter
- * will emit the fetch data value and passes it back to the caller in order to save that information to be displayed on a page.
+ * will emit the fetch data modelObjectRows and passes it back to the caller in order to save that information to be displayed on a page.
  */
 @Component
 ({

@@ -30,7 +30,7 @@ export class StockAnalystPriceTargetComponent extends StockAnalystConsensusBaseC
     private target: string;
 
     /**
-     * The price target based on the value of {@code target}
+     * The price target based on the modelObjectRows of {@code target}
      */
     protected analystPriceTarget: number;
 

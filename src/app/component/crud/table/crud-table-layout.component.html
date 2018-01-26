@@ -1,0 +1,80 @@
+<p-panel>
+    <!----------------------------------------------------------------------------------------------------------
+    ALLOW THE FILTER TO BE DEFINED BY THE USER OF THIS TEMPLATE
+    ------------------------------------------------------------------------------------------------------------>
+    <ng-container *ngTemplateOutlet="filterTemplate">
+    </ng-container>
+    <!----------------------------------------------------------------------------------------------------------
+    ALLOW THE HEADER TO BE DEFINED BY THE USER OF THIS TEMPLATE
+    ------------------------------------------------------------------------------------------------------------>
+    <p-header>
+        <ng-container *ngTemplateOutlet="buttonsTemplate">
+        </ng-container>
+    </p-header>
+    <!----------------------------------------------------------------------------------------------------------
+    DEFINE THE TABLE
+    ------------------------------------------------------------------------------------------------------------>
+
+    <!--
+    [paginator]="paginator"
+    [pageLinks]="pageLinks"
+    [totalRecords]="totalRecords"
+    -->
+
+    <p-table class="ui-table"
+             [value]="modelObjectRows"
+             [columns]="crudTableColumns"
+             [rows]="rowsToDisplay"
+             [autoLayout]="autoLayout"
+             [dataKey]="dataKey"
+             [(selection)]="selectedModelObject"
+             (onRowSelect)="onRowSelect"
+             (onRowUnselect)="onRowUnSelect"
+             selectionMode="single"
+             (onLazyLoad)="lazyLoadTable"
+             [lazy]="lazy"
+             [rowsPerPageOptions]="rowsPerPageOptions"
+             [loading]="loading"
+             [resizableColumns]="resizableColumns"
+             [reorderableColumns]="reorderableColumns"
+             [responsive]="true">
+
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-modelObject let-columns="columns">
+            <tr [pSelectableRow]="modelObject">
+                <td *ngFor="let column of crudTableColumns">
+                    <!-- Display the custom crudTableColumns -->
+                    <ng-container *ngTemplateOutlet="columnsTemplate; context: {modelObject: modelObject, column: column}">
+                    </ng-container>
+                    <!-- If the column was found in the previous container, check the default container
+                    <ng-container *ngTemplateOutlet="defaultColumnsTemplate; context: {modelObject: modelObject, column: column}">
+                    </ng-container> -->
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <!----------------------------------------------------------------------------------------------------------
+    ALLOW THE DIALOG TO BE DEFINED BY THE USER OF THIS TEMPLATE
+    ------------------------------------------------------------------------------------------------------------>
+    <ng-container *ngTemplateOutlet="dialogTemplate">
+    </ng-container>
+    <!----------------------------------------------------------------------------------------------------------
+    THE COLUMN CUSTOMIZER IS USED ON ALL TABLES
+    ------------------------------------------------------------------------------------------------------------>
+    <crud-table-column-selector-dialog>
+    </crud-table-column-selector-dialog>
+    <!----------------------------------------------------------------------------------------------------------
+    BUTTONS ARE REPEATED
+    ------------------------------------------------------------------------------------------------------------>
+    <p-footer>
+        <ng-container *ngTemplateOutlet="buttonsTemplate">
+        </ng-container>
+    </p-footer>
+</p-panel>

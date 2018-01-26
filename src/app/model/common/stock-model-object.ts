@@ -60,7 +60,7 @@ export abstract class StockModelObject<T extends ModelObject<T>> extends ModelOb
     }
 
     /**
-     * Returns the available columns.
+     * Returns the available crudTableColumns.
      * @return {CrudTableColumns}
      */
     public getCrudTableColumns(): CrudTableColumns
@@ -110,7 +110,7 @@ export abstract class StockModelObject<T extends ModelObject<T>> extends ModelOb
     }
 
     /**
-     * Get the stock quote columns.
+     * Get the stock quote crudTableColumns.
      * @return {CrudTableColumns}
      */
     public getOtherCrudTableColumns(): CrudTableColumns

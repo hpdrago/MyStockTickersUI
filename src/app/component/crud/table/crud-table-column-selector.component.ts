@@ -4,7 +4,7 @@ import { ToastsManager } from 'ng2-toastr';
 import { Column } from 'primeng/shared';
 
 /**
- * This component allows the user to select and order the columns to be displayed in the table.
+ * This component allows the user to select and order the crudTableColumns to be displayed in the table.
  */
 @Component
 ({

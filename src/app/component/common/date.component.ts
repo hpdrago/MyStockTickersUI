@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 
 /**
  * This is a simple wrapper component for the date pipe that make its convenient to display a date without have to
- * remember the date format string which defaults to 'y-MM-dd' but can be changed with the input value {@code dateFormat}.
+ * remember the date format string which defaults to 'y-MM-dd' but can be changed with the input modelObjectRows {@code dateFormat}.
  */
 @Component
 ({

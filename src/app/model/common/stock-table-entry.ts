@@ -5,7 +5,7 @@
 export interface StockTableEntry
 {
     /**
-     * Returns the market value of the stock.
+     * Returns the market modelObjectRows of the stock.
      * @return {number}
      */
     getMarketValue(): number;

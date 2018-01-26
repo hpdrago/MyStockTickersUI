@@ -11,6 +11,7 @@ import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action
 import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
 import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This is the StockCompany Notes that displays in its own tab.
@@ -36,6 +37,7 @@ export class StockNotesTableTabComponent extends StockNotesTableComponent
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockNotesCrudService} stockNotesCrudService
      * @param {StockQuoteCacheService} stockQuoteCacheService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected session: SessionService,
@@ -43,7 +45,8 @@ export class StockNotesTableTabComponent extends StockNotesTableComponent
                  protected stockNotesController: StockNotesController,
                  protected stockNotesFactory: StockNotesFactory,
                  protected stockNotesCrudService: StockNotesCrudService,
-                 protected stockQuoteCacheService: StockQuoteCacheService )
+                 protected stockQuoteCacheService: StockQuoteCacheService,
+                 protected cookieService: CookieService )
     {
         super( session,
                toaster,
@@ -51,6 +54,7 @@ export class StockNotesTableTabComponent extends StockNotesTableComponent
                stockNotesController,
                stockNotesFactory,
                stockNotesCrudService,
-               stockQuoteCacheService );
+               stockQuoteCacheService,
+               cookieService );
     }
 }

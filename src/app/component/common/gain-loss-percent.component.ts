@@ -20,7 +20,7 @@ export class GainLossPercentComponent
     protected percentValue: number;
 
     /**
-     * Optional value to divide {@code percentValue} by a constant value.
+     * Optional modelObjectRows to divide {@code percentValue} by a constant modelObjectRows.
      * Defaults to 1.
      * @type {number}
      */

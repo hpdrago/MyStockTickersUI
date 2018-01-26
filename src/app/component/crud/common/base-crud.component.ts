@@ -127,7 +127,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     }
 
     /**
-     * Resets behaviour subjects to a default value.
+     * Resets behaviour subjects to a default modelObjectRows.
      */
     protected resetSubjects(): void
     {
@@ -301,7 +301,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
    }
 
     /**
-     * Returns true if the current {@code crudOperation} value is NONE
+     * Returns true if the current {@code crudOperation} modelObjectRows is NONE
      * @return {boolean}
      */
     protected isCrudNoneOperation(): boolean
@@ -310,7 +310,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     }
 
     /**
-     * Returns true if the current {@code crudOperation} value is CREATE
+     * Returns true if the current {@code crudOperation} modelObjectRows is CREATE
      * @return {boolean}
      */
     protected isCrudCreateOperation(): boolean
@@ -319,7 +319,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     }
 
     /**
-     * Returns true if the current {@code crudOperation} value is UPDATE
+     * Returns true if the current {@code crudOperation} modelObjectRows is UPDATE
      * @return {boolean}
      */
     protected isCrudUpdateOperation(): boolean
@@ -328,7 +328,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     }
 
     /**
-     * Returns true if the current {@code crudOperation} value is DELETE
+     * Returns true if the current {@code crudOperation} modelObjectRows is DELETE
      * @return {boolean}
      */
     protected isCrudDeleteOperation(): boolean

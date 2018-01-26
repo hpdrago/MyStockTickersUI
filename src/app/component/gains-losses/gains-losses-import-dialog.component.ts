@@ -88,8 +88,8 @@ export class GainsLossesImportDialogComponent extends BaseComponent implements O
     {
         this.gainsLossesController
             .subscribeToImportButtonClickedEvent( () => this.onDisplay() );
-        //this.importModes.push( { label: 'Add to current gains/losses', value: this.IMPORT_MODE_CUMULATIVE } );
-        //this.importModes.push( { label: 'Replace existing gains/losses', value: this.IMPORT_MODE_REPLACE } );
+        //this.importModes.push( { label: 'Add to current gains/losses', modelObjectRows: this.IMPORT_MODE_CUMULATIVE } );
+        //this.importModes.push( { label: 'Replace existing gains/losses', modelObjectRows: this.IMPORT_MODE_REPLACE } );
         /*
         this.formGroup = this.formBuilder.group(
         {

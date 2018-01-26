@@ -1,8 +1,8 @@
-import { BaseComponent } from '../../common/base.component';
+import { BaseComponent } from '../common/base.component';
 import { Component, Input } from '@angular/core';
-import { CrudTableColumn } from './crud-table-column';
+import { CrudTableColumn } from '../crud/table/crud-table-column';
 import { ToastsManager } from 'ng2-toastr';
-import { StockQuote } from '../../../model/entity/stock-quote';
+import { StockQuote } from '../../model/entity/stock-quote';
 import { isNullOrUndefined } from 'util';
 
 /**
@@ -14,9 +14,9 @@ import { isNullOrUndefined } from 'util';
     template: `<stock-quote [tickerSymbol]="tickerSymbol"
                             (stockQuoteChange)="onStockQuoteChange( stockQuote )">
                    <div *ngIf="isValidQuote( stockQuote )">
-                       <crud-table-display-column [modelObject]="stockQuote"
-                                                  [column]="column">
-                       </crud-table-display-column>
+                       <crud-table-column-by-data-type [modelObject]="stockQuote"
+                                                       [column]="column">
+                       </crud-table-column-by-data-type>
                    </div>
                </stock-quote>
     `

@@ -4,9 +4,9 @@ import { Logger } from "./logger";
 
 /**
  * This is a simple wrapper for the standard @agular/core EventEmitter.
- * It maintains the last value emitted and will only event a new event
- * if the value changes.  Therefore, multiple calls to the {@code emit} method
- * with the same value, will not result in the event being generated.
+ * It maintains the last modelObjectRows emitted and will only event a new event
+ * if the modelObjectRows changes.  Therefore, multiple calls to the {@code emit} method
+ * with the same modelObjectRows, will not result in the event being generated.
  *
  * Created by mike on 12/9/2016.
  */
@@ -24,10 +24,10 @@ export class OnChangeEventEmitter<T>
     }
 
     /**
-     * Emit event with {@code value} if value is different than the last
-     * value emitted.
+     * Emit event with {@code modelObjectRows} if modelObjectRows is different than the last
+     * modelObjectRows emitted.
      *
-     * @param value
+     * @param modelObjectRows
      */
     public emit( newValue: T )
     {

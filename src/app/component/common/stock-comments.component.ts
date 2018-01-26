@@ -105,7 +105,7 @@ export class StockCommentsComponent implements OnInit
     }
 
     /**
-     * Truncates {@code notes} to the max length defined by the return value from {@code getNotesSize()} which defaults
+     * Truncates {@code notes} to the max length defined by the return modelObjectRows from {@code getNotesSize()} which defaults
      * to 250 chars.
      * @param {string} notes
      * @return {string}

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 /**
- * This component formats the dollars into a currency value in USD.
+ * This component formats the dollars into a currency modelObjectRows in USD.
  */
 @Component(
 {

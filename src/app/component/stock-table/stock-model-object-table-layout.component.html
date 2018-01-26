@@ -1,0 +1,41 @@
+<!----------------------------------------------------------------------------------------------------------
+DEFINE THE FILTER TEMPLATE TO INCLUDE THE STOCK SYMBOL SEARCH
+------------------------------------------------------------------------------------------------------------>
+<ng-template #filterTemplate>
+    <div class="crud-form ui-grid-row">
+        <div class="ui-grid-col-6 ui-state-default">
+            <stock-search (stockSelected)="onStockSelected( $event )"
+                          (resetButtonClick)="onResetButtonClick()">
+            </stock-search>
+        </div>
+        <div class="ui-grid-col-8 ui-state-default">
+        </div>
+    </div>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+DEFINE THE DEFAULT COLUMNS TO INCLUDE ALL AVAILABLE STOCK COLUMNS
+------------------------------------------------------------------------------------------------------------>
+<ng-template #defaultColumnsTemplate>
+    <stock-model-object-common-columns>
+    </stock-model-object-common-columns>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
+DEFINE THE TABLE LAYOUT
+------------------------------------------------------------------------------------------------------------>
+<crud-table-layout [dialogTemplate]="dialogTemplate"
+                   [columnsTemplate]="columnsTemplate"
+                   [defaultColumnsTemplate]="defaultColumnsTemplate"
+                   [buttonsTemplate]="buttonsTemplate"
+                   [filterTemplate]="filterTemplate"
+                   [crudTableColumns]="crudTableColumns"
+                   [modelObjectRows]="modelObjectRows"
+                   [totalRecords]="totalRecords"
+                   [(selection)]="selectedModelObject"
+                   (rowSelect)="onRowSelect"
+                   (rowUnselect)="onRowUnSelect"
+                   (onLazyLoad)="lazyLoadTable"
+                   [lazy]="true"
+                   (onRowDblclick)="onRowDoubleClick">
+</crud-table-layout>

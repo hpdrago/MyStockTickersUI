@@ -18,10 +18,7 @@ import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { Observable } from 'rxjs/Rx';
-import { CrudTableColumns } from './crud-table-columns';
-import { CrudTableColumnType } from './crud-table-column-type';
-import { CrudTableColumnCachedDataType } from './crud-table-column-cached-data-type';
-import { CrudTableColumnSelectorDialogComponent } from './crud-table-column-selector-dialog.component';
+import { CookieService } from 'ngx-cookie-service';
 
 
 /**
@@ -33,21 +30,12 @@ import { CrudTableColumnSelectorDialogComponent } from './crud-table-column-sele
 export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseCrudComponent<T> implements OnInit
 {
     /**
-     * Enum reference variable.
-     */
-    protected CrudTableColumnCachedDataType = CrudTableColumnCachedDataType;
-    /**
-     * Enum reference variable.
-     * @type {CrudTableColumnType}
-     */
-    protected CrudTableColumnType = CrudTableColumnType;
-    /**
      * The list of model objects displayed.
      * @type {Array}
      */
-    protected rows: Array<T> = [];
+    protected modelObjectRows: Array<T> = [];
     /**
-     * totalRows is used to tell the paginator how many total rows are in the database so that it can accurately display
+     * totalRows is used to tell the paginator how many total modelObjectRows are in the database so that it can accurately display
      * the page selection list and other pagination information.
      */
     protected totalRows: number;
@@ -73,37 +61,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected dataTable: DataTable;
 
     /**
-     * Column customizer.
-     */
-    @ViewChild(CrudTableColumnSelectorDialogComponent)
-    protected crudTableColumnSelectorDialogComponent: CrudTableColumnSelectorDialogComponent;
-
-    /**
-     * These are the columns to be sent to the turbo table.  They are defined as <any> because we are going to send it
-     * our columns of type CrudTableColumn.
-     * @type {any[]}
-     */
-    protected columns: any[] = [];
-
-    /**
-     * Column definitions for the columns that are selected/displayed.
-     * @type {any[]}
-     */
-    protected selectedColumns: CrudTableColumns = new CrudTableColumns( [] );
-
-    /**
-     * Column definitions for columns that have not been selected to be displayed and thus are available.
-     * @type {CrudTableColumns}
-     */
-    protected availableColumns: CrudTableColumns = new CrudTableColumns( [] );
-
-    /**
-     * Column definitions for all columns.
-     * @type {CrudTableColumns}
-     */
-    //protected allColumns: CrudTableColumns = new CrudTableColumns( [] );
-
-    /**
      * Constructor.
      * @param {TableLoadingStrategy} tableLoadingStrategy
      * @param {ToastsManager} toaster
@@ -111,13 +68,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * @param {CrudController<T extends ModelObject<T>>} crudController
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
+     * @param {CookieService} cookieService
      */
     protected constructor( protected tableLoadingStrategy: TableLoadingStrategy,
                            protected toaster: ToastsManager,
                            protected crudStateStore: CrudStateStore<T>,
                            protected crudController: CrudController<T>,
                            protected modelObjectFactory: ModelObjectFactory<T>,
-                           protected crudRestService: CrudRestService<T> )
+                           protected crudRestService: CrudRestService<T>,
+                           protected cookieService: CookieService )
     {
         super( toaster,
                crudStateStore,
@@ -135,46 +94,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( "ngOnInit.begin" );
         super.ngOnInit();
         this.subscribeToServiceEvents();
-        this.loadColumns();
         if ( TableLoadingStrategy.isLoadOnCreate( this.tableLoadingStrategy ))
         {
             this.loading = true;
             this.loadTable();
         }
     }
-
-    /**
-     * View init completed.
-     */
-    public ngAfterViewInit()
-    {
-        super.ngAfterViewInit();
-        /*
-         * Subscribe to the OK button being clicked to customize the column layout.
-         */
-        this.addSubscription( 'columnsCustomizedEvent',
-                              this.crudTableColumnSelectorDialogComponent
-                                  .subscribeToOkButtonClicked( ()=> this.columnsCustomized() ));
-
-    }
-
-    /**
-     * Load all of the columns for type table.  This is based on the type of model object.
-     */
-    protected loadColumns(): void
-    {
-        let modelObject: ModelObject<T> = this.modelObjectFactory
-                                              .newModelObject();
-        let crudTableColumns: CrudTableColumns = modelObject.getCrudTableColumns();
-        if ( !isNullOrUndefined( crudTableColumns ) )
-        {
-            this.selectedColumns.addAll( modelObject.getCrudTableColumns() )
-            this.availableColumns.addAll( modelObject.getOtherCrudTableColumns() );
-            this.columns = this.selectedColumns
-                               .toArray();
-        }
-    }
-
     /**
      * Determines if lazy loading is enabled.
      * @returns {boolean}
@@ -237,7 +162,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         var rows: T[] = this.modelObjectFactory
                             .newModelObjectArray( page.content );
         this.onTableLoad( rows );
-        this.debug( 'onPageLoad.end: totalElements: ' + this.rows.length );
+        this.debug( 'onPageLoad.end: totalElements: ' + this.modelObjectRows.length );
     }
 
     /**
@@ -312,13 +237,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.debug( "onTableLoad.begin" );
         if ( !isNullOrUndefined( modelObjects ) && modelObjects.length > 0 )
         {
-            this.rows = modelObjects;
-            this.debug( methodName + " loaded " + this.rows.length + " rows" );
+            this.modelObjectRows = modelObjects;
+            this.debug( methodName + " loaded " + this.modelObjectRows.length + " modelObjectRows" );
         }
         else
         {
-            this.rows = [];
-            this.debug( methodName + " loaded 0 rows" );
+            this.modelObjectRows = [];
+            this.debug( methodName + " loaded 0 modelObjectRows" );
         }
         this.debug( methodName + ".end" );
     }
@@ -354,48 +279,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         this.addSubscription( 'subscribeToRefreshButtonClickedEvent',
             this.crudController
                 .subscribeToRefreshButtonClickedEvent( () => this.refreshTable() ) );
-        /*
-         * Subscribe to customize button click
-         */
-        this.addSubscription( 'subscribeToCustomizeButtonClickedEvent',
-                              this.crudController
-                                  .subscribeToCustomizeButtonClickedEvent( () => this.customizeColumns() ) );
         this.debug( methodName + '.end' );
     }
-
-    /**
-     * This method is called when the user clicks on the customize table button.
-     */
-    protected customizeColumns(): void
-    {
-        const methodName = 'customizeColumns';
-        this.log( methodName );
-        this.crudTableColumnSelectorDialogComponent
-            .selectedColumns = this.selectedColumns.toColumnArray();
-        this.crudTableColumnSelectorDialogComponent
-            .availableColumns = this.availableColumns.toColumnArray();
-        this.crudTableColumnSelectorDialogComponent
-            .displayDialog = true;
-    }
-
-    /**
-     * This method is called when the use has clicked the ok button on the customize column dialog.
-     */
-    protected columnsCustomized(): void
-    {
-        const methodName = 'columnsCustomized';
-        this.log( methodName + ' selectedColumns ' + JSON.stringify( this.crudTableColumnSelectorDialogComponent
-                                                         .selectedColumns ));
-        this.log( methodName + ' availableColumns ' + JSON.stringify( this.crudTableColumnSelectorDialogComponent
-                                                                          .availableColumns ));
-        this.selectedColumns = new CrudTableColumns( this.crudTableColumnSelectorDialogComponent
-                                                         .selectedColumns );
-        this.availableColumns = new CrudTableColumns( this.crudTableColumnSelectorDialogComponent
-                                                          .availableColumns );
-        this.columns = this.selectedColumns
-                           .toArray();
-    }
-
     /**
      * Creates a new model object by calling the model object factory to create the model object.
      * This method is called when the user has clicked the add button.
@@ -512,13 +397,13 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     }
 
     /**
-     * Adds rows to the table
+     * Adds modelObjectRows to the table
      * @param {T[]} newRows
      */
     protected addRows( newRows: T[] ): void
     {
         this.debug( "addRows" );
-        this.rows = [...newRows, ...this.rows];
+        this.modelObjectRows = [...newRows, ...this.modelObjectRows];
     }
 
     /**
@@ -559,7 +444,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         /*
          * A new array must be created to trigger a change event
          */
-        this.rows = [modelObject, ...this.rows];
+        this.modelObjectRows = [modelObject, ...this.modelObjectRows];
         this.modelObject = modelObject;
     }
 
@@ -593,11 +478,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected updateModelObjectTableRow( rowIndex: number, modelObject: T ): void
     {
         this.debug( 'updateModelObjectTableRow index: ' + rowIndex + " " + JSON.stringify( modelObject ) );
-        this.rows[rowIndex] = modelObject;
+        this.modelObjectRows[rowIndex] = modelObject;
         /*
          * A new array must be created to trigger a change event
          */
-        this.rows = [...this.rows]
+        this.modelObjectRows = [...this.modelObjectRows]
     }
 
     /**
@@ -632,7 +517,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             /*
              * A new array must be created to trigger a change event
              */
-            this.rows = this.rows.slice( index + 1 ).concat( this.rows.slice( 0, index ) );
+            this.modelObjectRows = this.modelObjectRows.slice( index + 1 ).concat( this.modelObjectRows.slice( 0, index ) );
             //this.setModelObject( null );
             return true;
         }
@@ -650,12 +535,12 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         var index = this.indexOf( this.selectedModelObject );
         if ( index >= 0 )
         {
-            let modelObject: T = this.rows[index];
+            let modelObject: T = this.modelObjectRows[index];
             this.onModelObjectSelected( modelObject );
         }
         else
         {
-            this.logError( "Could not find mode object int rows array" );
+            this.logError( "Could not find mode object int modelObjectRows array" );
         }
         this.debug( methodName +  ".end" );
     }
@@ -735,16 +620,16 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     }
 
     /**
-     * Determines the index of a model object in the rows array
+     * Determines the index of a model object in the modelObjectRows array
      * @returns {number} -1 if not found
      */
     protected indexOf( targetModelObject: T ): number
     {
         if ( targetModelObject )
         {
-            for ( var i = 0; i < this.rows.length; i++ )
+            for ( var i = 0; i < this.modelObjectRows.length; i++ )
             {
-                var modelObject = this.rows[i];
+                var modelObject = this.modelObjectRows[i];
                 if ( targetModelObject.isEqualPrimaryKey( modelObject ) )
                 {
                     return i;
@@ -755,15 +640,15 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     }
 
     /**
-     * Removes all rows from the table.
+     * Removes all modelObjectRows from the table.
      */
     public clearTable()
     {
-        this.rows = [];
+        this.modelObjectRows = [];
     }
 
     /**
-     * When true, rows can be deleted.
+     * When true, modelObjectRows can be deleted.
      * @returns {boolean} Default is true
      */
     protected isAllowDeletes(): boolean
@@ -772,7 +657,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     }
 
     /**
-     * When true, rows can be added.
+     * When true, modelObjectRows can be added.
      * @returns {boolean} Default is true
      */
     protected isAllowAdds(): boolean
@@ -781,7 +666,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     }
 
     /**
-     * When true, rows can be edited.
+     * When true, modelObjectRows can be edited.
      * @returns {boolean} Default is true
      */
     protected isAllowUpdates(): boolean

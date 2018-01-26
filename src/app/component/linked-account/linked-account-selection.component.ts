@@ -77,7 +77,7 @@ export class LinkedAccountSelectionComponent extends BaseComponent
                 {
                     this.log( methodName + ' linked account was already set, calling change detector' );
                     /*
-                     * Force a change detection to get the drop down list box display the correct value.
+                     * Force a change detection to get the drop down list box display the correct modelObjectRows.
                      */
                     let saveLinkedAccountId = this.linkedAccountId;
                     this.linkedAccountId = null;

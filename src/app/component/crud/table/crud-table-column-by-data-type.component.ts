@@ -12,7 +12,7 @@ import { isNullOrUndefined } from 'util';
  */
 @Component
 ({
-    selector: 'crud-table-display-column',
+    selector: 'crud-table-column-by-data-type',
     template: `
         <div [ngSwitch]="column.dataType">
             <div *ngSwitchCase="CrudTableColumnType.CURRENCY">
@@ -39,7 +39,7 @@ import { isNullOrUndefined } from 'util';
         </div>
     `
  })
-export class CrudTableDisplayColumnComponent extends BaseComponent
+export class CrudTableColumnByDataTypeComponent extends BaseComponent
 {
     protected CrudTableColumnType = CrudTableColumnType;
 
@@ -75,7 +75,7 @@ export class CrudTableDisplayColumnComponent extends BaseComponent
     {
         let value = _.get( object, property );
         //this.debug( "getProperty object: " + JSON.stringify( object ) );
-        //this.debug( "getProperty object: property: " + property + " value: " + value );
+        //this.debug( "getProperty object: property: " + property + " modelObjectRows: " + modelObjectRows );
         return value;
     }
 

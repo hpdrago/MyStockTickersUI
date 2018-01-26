@@ -4,7 +4,7 @@ import { ToastsManager } from 'ng2-toastr';
 
 /**
  * This is the base class for components that display model object information that has the potential of being asynchronously
- * fetched from the backend.  This component, with the use of the {@code CachedValueComponent} which displays the correct value
+ * fetched from the backend.  This component, with the use of the {@code CachedValueComponent} which displays the correct modelObjectRows
  * based on the state of the data, identifies a custom template and abstract methods that subclass must implement as
  * well as default values for the failure, stale, and not found messages.
  */
@@ -20,13 +20,13 @@ export abstract class BaseCachedValueComponent extends BaseComponent
     }
 
     /**
-     * Returns the cached value state.
+     * Returns the cached modelObjectRows state.
      * @return {CachedValueState}
      */
     protected abstract getCachedValueState(): CachedValueState;
 
     /**
-     * Returns the message to display if the state of the value is STALE
+     * Returns the message to display if the state of the modelObjectRows is STALE
      * @return {string}
      */
     protected getStaleMessage(): string
@@ -35,7 +35,7 @@ export abstract class BaseCachedValueComponent extends BaseComponent
     }
 
     /**
-     * Returns the failure message if the cached value state is FAILURE.
+     * Returns the failure message if the cached modelObjectRows state is FAILURE.
      * @return {string}
      */
     protected getFailureMessage(): string
@@ -44,7 +44,7 @@ export abstract class BaseCachedValueComponent extends BaseComponent
     }
 
     /**
-     * Returns the not found message if the cached value state is NOT_FOUND.
+     * Returns the not found message if the cached modelObjectRows state is NOT_FOUND.
      * @return {string}
      */
     protected getNotFoundMessage(): string

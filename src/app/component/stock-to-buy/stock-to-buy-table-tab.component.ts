@@ -11,6 +11,7 @@ import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.serv
 import { StockToBuyCrudActionHandler } from './stock-to-buy-action-handler';
 import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This component displays a list of Stocks to buy.
@@ -27,6 +28,12 @@ import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.se
     } )
 export class StockToBuyTableTabComponent extends StockToBuyBaseTableComponent
 {
+    /*
+     * Need to make these visible to the template so that they can be passed to the table layout component.
+     */
+    protected stockToBuyControllerTemplateRef: StockToBuyController;
+    protected stockToBuyFactoryTemplateRef: StockToBuyFactory;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -38,6 +45,7 @@ export class StockToBuyTableTabComponent extends StockToBuyBaseTableComponent
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockQuoteCacheService} stockQuoteCacheService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected stockToBuyStateStore: StockToBuyStateStore,
@@ -47,7 +55,8 @@ export class StockToBuyTableTabComponent extends StockToBuyBaseTableComponent
                  protected stockNotesStateStore: StockNotesStateStore,
                  protected stockNotesController: StockNotesController,
                  protected stockNotesFactory: StockNotesFactory,
-                 protected stockQuoteCacheService: StockQuoteCacheService )
+                 protected stockQuoteCacheService: StockQuoteCacheService,
+                 protected cookieService: CookieService )
     {
         super( toaster,
                stockToBuyStateStore,
@@ -57,6 +66,9 @@ export class StockToBuyTableTabComponent extends StockToBuyBaseTableComponent
                stockNotesStateStore,
                stockNotesController,
                stockNotesFactory,
-               stockQuoteCacheService );
+               stockQuoteCacheService,
+               cookieService );
+        this.stockToBuyControllerTemplateRef = this.stockToBuyController;
+        this.stockToBuyFactory = this.stockToBuyFactory;
     }
 }

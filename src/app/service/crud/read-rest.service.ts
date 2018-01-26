@@ -49,7 +49,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         let contextURL = this.getContextBaseURL();
         if ( isNullOrUndefined( contextURL ) )
         {
-            throw new ReferenceError( methodName +' cannot return a null or undefined value' );
+            throw new ReferenceError( methodName +' cannot return a null or undefined modelObjectRows' );
         }
         let customerURL = this.getCustomerURL() == null ? '/' : this.getCustomerURL();
         this.debug( methodName + ' contextURL: ' + contextURL + ' customerURL: ' + customerURL );
@@ -60,7 +60,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
 
     /**
      * This method is called to read an entity.  It combines the {baseUrl}  + {contextUrl} + {customerUrl} to create
-     * the REST url.  The contextURL will contain any key/value pairs as returned by {@code getContextURLKeyValues}.
+     * the REST url.  The contextURL will contain any key/modelObjectRows pairs as returned by {@code getContextURLKeyValues}.
      * @param {T} modelObject
      * @returns {string}
      */
@@ -71,7 +71,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         if ( isNullOrUndefined( contextURL ) )
         {
-            throw new ReferenceError(methodName + ' cannot return a null or undefined value' );
+            throw new ReferenceError(methodName + ' cannot return a null or undefined modelObjectRows' );
         }
         let customerURL = this.getCustomerURL() == null ? '/' : this.getCustomerURL();
         this.debug( methodName + ' contextURL: ' + contextURL + ' customerURL: ' + customerURL );
@@ -149,7 +149,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     }
 
     /**
-     * This method will return a KeyValuePair for the primary key value of the {@code modelObject}
+     * This method will return a KeyValuePair for the primary key modelObjectRows of the {@code modelObject}
      * @param {T} modelObject
      * @returns {KeyValuePair<string, any>}
      */
@@ -159,11 +159,11 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     }
 
     /**
-     * Returns the list of key value pairs to add to the URL.  By default, only the primary key value is checked and
-     * added to the URL.  Subclasses should override this method to add different key/value pairs.
+     * Returns the list of key modelObjectRows pairs to add to the URL.  By default, only the primary key modelObjectRows is checked and
+     * added to the URL.  Subclasses should override this method to add different key/modelObjectRows pairs.
      * @param {T} modelObject
      * @param {string} primaryKey
-     * @returns list of key value pairs, key=column name,value=column value.
+     * @returns list of key modelObjectRows pairs, key=column name,modelObjectRows=column modelObjectRows.
      */
     protected getContextURLKeyValues( modelObject: T ): KeyValuePairs<string,any>
     {
@@ -223,7 +223,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         let customerURL = this.getCustomerURL();
         if ( isNullOrUndefined( customerURL ) )
         {
-            throw new ReferenceError( 'getCustomerURL cannot return a null or undefined value' );
+            throw new ReferenceError( 'getCustomerURL cannot return a null or undefined modelObjectRows' );
         }
         this.debug( methodName + ' customerURL: ' + customerURL );
         let contextURL = this.getContextURL( modelObject, pageable );
@@ -370,7 +370,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     /**
      * Retrieves a specific page of stocks
      * @param rowOffSet The page to retrieve
-     * @param rows The numbers of rows per page (rows to return for this page)
+     * @param modelObjectRows The numbers of modelObjectRows per page (modelObjectRows to return for this page)
      * @returns {Observable<PaginationPage<StockCompany>>}
      */
     public getPage( modelObject: T, lazyLoadEvent: LazyLoadEvent ): Observable<PaginationPage<T>>
@@ -419,7 +419,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     /**
      * After a model object is loaded from the backend, its loading status is set by the return result of this method.
      * Services that handle model objects that are not completely loaded when fetched, should override this method and
-     * set the return value to LOADING to indicate that a subsequent backend request is required to retrieve the rest
+     * set the return modelObjectRows to LOADING to indicate that a subsequent backend request is required to retrieve the rest
      * of the model object information.
      * @return {LoadingStatus}
      */

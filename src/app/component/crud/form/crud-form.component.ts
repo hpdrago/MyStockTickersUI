@@ -193,7 +193,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * This method will wait for the ngOnInit completion subject to send a true value which indicates that the method
+     * This method will wait for the ngOnInit completion subject to send a true modelObjectRows which indicates that the method
      * has completed.
      *
      * @param {() => void} completionFunction
@@ -324,7 +324,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     /**
      * This method is called when a new model object is being created or when the reset button is clicked.
      * This method only calls {@code setFormValue} so for subclasses that override this method, set the model object
-     * value sand then call {@code super.setDefaultValues()}.
+     * modelObjectRows sand then call {@code super.setDefaultValues()}.
      */
     protected setDefaultValues(): void
     {
@@ -357,7 +357,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * Sets a single form control value
+     * Sets a single form control modelObjectRows
      * @param {string} fieldName
      * @param fieldValue
      */
@@ -371,7 +371,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         }
         if ( isNullOrUndefined( fieldValue ) )
         {
-            this.debug( 'setFormValue WARNING: null or undefined field value for ' + fieldName );
+            this.debug( 'setFormValue WARNING: null or undefined field modelObjectRows for ' + fieldName );
             return;
         }
         if ( isNullOrUndefined( this.formGroup.controls[fieldName] ))
@@ -477,7 +477,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
 
     /**
      * Emits an event to indicate that the form validity has changed.
-     * The event value contains a boolean flag that indicates whether the form
+     * The event modelObjectRows contains a boolean flag that indicates whether the form
      * is valid or not
      */
     protected emitFormValidChange(): void
@@ -489,7 +489,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
 
     /**
      * Emits an event to indicate that the form is dirty (true) clean (false).
-     * The event value contains a boolean flag that indicates whether the form
+     * The event modelObjectRows contains a boolean flag that indicates whether the form
      * is dirty or clean.
      */
     protected emitFormDirtyChange(): void

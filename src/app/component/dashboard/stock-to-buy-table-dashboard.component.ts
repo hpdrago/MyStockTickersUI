@@ -11,6 +11,7 @@ import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
 import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action-handler';
 import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This component displays a list of Stocks to buy.
@@ -37,6 +38,7 @@ export class StockToBuyTableDashboardComponent extends StockToBuyBaseTableCompon
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockQuoteCacheService} stockQuoteCacheService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected stockToBuyStateStore: StockToBuyStateStore,
@@ -46,7 +48,8 @@ export class StockToBuyTableDashboardComponent extends StockToBuyBaseTableCompon
                  protected stockNotesStateStore: StockNotesStateStore,
                  protected stockNotesController: StockNotesController,
                  protected stockNotesFactory: StockNotesFactory,
-                 protected stockQuoteCacheService: StockQuoteCacheService )
+                 protected stockQuoteCacheService: StockQuoteCacheService,
+                 protected cookieService: CookieService )
     {
         super( toaster,
                stockToBuyStateStore,
@@ -56,8 +59,7 @@ export class StockToBuyTableDashboardComponent extends StockToBuyBaseTableCompon
                stockNotesStateStore,
                stockNotesController,
                stockNotesFactory,
-               stockQuoteCacheService );
-
+               stockQuoteCacheService,
+               cookieService );
     }
-
 }

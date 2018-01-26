@@ -7,7 +7,7 @@ import { Directive, forwardRef } from "@angular/core";
 @Directive( {
                 selector: 'input[upper]',
                 // When the user updates the input
-                host: {'(input)': 'onChange($event.target.value.toUpperCase())'},
+                host: {'(input)': 'onChange($event.target.modelObjectRows.toUpperCase())'},
                 providers: [
                     {
                         provide: NG_VALUE_ACCESSOR,
@@ -18,7 +18,7 @@ import { Directive, forwardRef } from "@angular/core";
 export class UppercaseValueDirective extends DefaultValueAccessor
 {
 
-    // When the code updates the value of the
+    // When the code updates the modelObjectRows of the
     // property bound to the input
     writeValue( value: any ): void
     {

@@ -1,5 +1,5 @@
 /**
- * This enum identifies the values for the StockCompany Notes bull or bear value
+ * This enum identifies the values for the StockCompany Notes bull or bear modelObjectRows
  */
 export enum BullOrBear
 {

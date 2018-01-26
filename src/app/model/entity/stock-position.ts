@@ -41,7 +41,7 @@ export class StockPosition extends StockModelObject<StockPosition>
     }
 
     /**
-     * The market value is shares(quantity) * current price
+     * The market modelObjectRows is shares(quantity) * current price
      * @return {number}
      */
     public marketValue(): number
@@ -50,7 +50,7 @@ export class StockPosition extends StockModelObject<StockPosition>
     }
 
     /**
-     * Returns the market value of the stock (cost basis * quantity).
+     * Returns the market modelObjectRows of the stock (cost basis * quantity).
      * @return {number}
      */
     public getMarketValue(): number

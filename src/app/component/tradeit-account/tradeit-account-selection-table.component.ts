@@ -9,6 +9,7 @@ import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
+import { CookieService } from 'ngx-cookie-service';
 
 
 /**
@@ -33,6 +34,7 @@ export class TradeItAccountSelectionTableComponent extends TradeItAccountBaseTab
      * @param {TradeItAccountCrudService} tradeItAccountCrudService
      * @param {TradeItService} tradeItService
      * @param {TradeItAccountOAuthService} tradeItOAuthService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
@@ -41,7 +43,8 @@ export class TradeItAccountSelectionTableComponent extends TradeItAccountBaseTab
                  protected tradeItAccountFactory: TradeItAccountFactory,
                  protected tradeItAccountCrudService: TradeItAccountCrudService,
                  protected tradeItService: TradeItService,
-                 protected tradeItOAuthService: TradeItAccountOAuthService )
+                 protected tradeItOAuthService: TradeItAccountOAuthService,
+                 protected cookieService: CookieService )
     {
         super( toaster,
                tradeItErrorReporter,
@@ -50,7 +53,8 @@ export class TradeItAccountSelectionTableComponent extends TradeItAccountBaseTab
                tradeItAccountFactory,
                tradeItAccountCrudService,
                tradeItService,
-               tradeItOAuthService ) ;
+               tradeItOAuthService,
+               cookieService );
     }
 
     /**

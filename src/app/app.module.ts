@@ -273,9 +273,12 @@ import { CurrencyColumnComponent } from './component/columns/currency-column.com
 import { CrudTableColumnSelectorComponent } from './component/crud/table/crud-table-column-selector.component';
 import { StockToBuyTableCustomizeButtonComponent } from './component/stock-to-buy/stock-to-buy-table-customize-button.component';
 import { CrudTableColumnSelectorDialogComponent } from './component/crud/table/crud-table-column-selector-dialog.component';
-import { CrudTableDisplayColumnComponent } from './component/crud/table/crud-table-display-column.component';
-import { StockPriceQuotePropertyColumnComponent } from './component/crud/table/stock-price-quote-property-column.component';
-import { StockQuotePropertyColumnComponent } from './component/crud/table/stock-quote-property-column.component';
+import { CrudTableColumnByDataTypeComponent } from './component/crud/table/crud-table-column-by-data-type.component';
+import { StockPriceQuotePropertyColumnComponent } from './component/stock-table/stock-price-quote-property-column.component';
+import { StockQuotePropertyColumnComponent } from './component/stock-table/stock-quote-property-column.component';
+import { StockModelObjectCommonColumnsComponent } from './component/stock-table/stock-model-object-common-columns.component';
+import { CrudTableLayoutComponent } from './component/crud/table/crud-table-layout.component';
+import { StockModelObjectTableLayoutComponent } from './component/stock-table/stock-model-object-table-layout.component';
 
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -369,7 +372,12 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         CustomerPanelComponent,
         CustomerFormButtonsComponent,
         ProfileComponent,
+
         CrudTableButtonsComponent,
+        CrudTableLayoutComponent,
+
+        StockModelObjectCommonColumnsComponent,
+        StockModelObjectTableLayoutComponent,
 
         TradeItAccountTableComponent,
         TradeItAccountSelectionTableComponent,
@@ -518,7 +526,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockPriceQuotePropertyColumnComponent,
         StockQuotePropertyColumnComponent,
-        CrudTableDisplayColumnComponent,
+        CrudTableColumnByDataTypeComponent,
         CrudTableColumnSelectorComponent,
         CrudTableColumnSelectorDialogComponent,
         TickerSymbolColumnComponent,

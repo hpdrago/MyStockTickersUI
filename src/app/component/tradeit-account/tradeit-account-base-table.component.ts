@@ -14,6 +14,7 @@ import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 import { isNullOrUndefined } from 'util';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}
@@ -34,6 +35,7 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
      * @param {TradeItAccountCrudService} tradeItAccountCrudService
      * @param {TradeItService} tradeItService
      * @param {TradeItAccountOAuthService} tradeItOAuthService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
@@ -42,14 +44,16 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
                  protected tradeItAccountFactory: TradeItAccountFactory,
                  protected tradeItAccountCrudService: TradeItAccountCrudService,
                  protected tradeItService: TradeItService,
-                 protected tradeItOAuthService: TradeItAccountOAuthService )
+                 protected tradeItOAuthService: TradeItAccountOAuthService,
+                 protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.ALL_ON_CREATE,
                toaster,
                tradeItAccountStateStore,
                tradeItAccountController,
                tradeItAccountFactory,
-               tradeItAccountCrudService );
+               tradeItAccountCrudService,
+               cookieService );
     }
 
     /**

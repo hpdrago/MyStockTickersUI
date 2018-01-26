@@ -8,6 +8,7 @@ import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analy
 import { StockAnalystConsensusActionHandler } from '../stock-analyst-consensus/stock-analyst-consensus-action-handler';
 import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This component lists completed stock analyst consensus information on the Analyst Consensus tab
@@ -32,6 +33,7 @@ export class StockAnalystConsensusDashboardTableComponent extends StockAnalystCo
      * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
      * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      * @param {StockQuoteCacheService} stockQuoteCacheService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
@@ -39,13 +41,15 @@ export class StockAnalystConsensusDashboardTableComponent extends StockAnalystCo
                  protected stockAnalystConsensusFactory: StockAnalystConsensusFactory,
                  protected stockAnalystConsensusCrudService: StockAnalystConsensusCrudService,
                  protected stockAnalystConsensusCache: StockAnalystConsensusCache,
-                 protected stockQuoteCacheService: StockQuoteCacheService )
+                 protected stockQuoteCacheService: StockQuoteCacheService,
+                 protected cookieService: CookieService )
     {
         super( toaster,
                stockAnalystConsensusStateStore,
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,
                stockAnalystConsensusCrudService,
-               stockQuoteCacheService );
+               stockQuoteCacheService,
+               cookieService );
     }
 }

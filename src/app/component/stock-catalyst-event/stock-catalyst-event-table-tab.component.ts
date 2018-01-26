@@ -11,6 +11,7 @@ import { CrudController } from '../crud/common/crud-controller';
 import { ModelObjectFactory } from '../../model/factory/model-object.factory';
 import { CrudRestService } from '../../service/crud/crud-rest.serivce';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This component displays a table to Stock Catalyst Events.
@@ -37,19 +38,22 @@ export class StockCatalystEventTableTabComponent extends StockCatalystEventTable
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
      * @param {StockCatalystEventCrudService} stockCatalystEventCrudService
      * @param {StockQuoteCacheService} stockQuoteCacheService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected stockCatalystEventStateStore: StockCatalystEventStateStore,
                  protected stockCatalystEventController: StockCatalystEventController,
                  protected stockCatalystEventFactory: StockCatalystEventFactory,
                  protected stockCatalystEventCrudService: StockCatalystEventCrudService,
-                 protected stockQuoteCacheService: StockQuoteCacheService )
+                 protected stockQuoteCacheService: StockQuoteCacheService,
+                 protected cookieService: CookieService )
     {
         super( toaster,
                stockCatalystEventStateStore,
                stockCatalystEventController,
                stockCatalystEventFactory,
                stockCatalystEventCrudService,
-               stockQuoteCacheService );
+               stockQuoteCacheService,
+               cookieService );
     }
 }

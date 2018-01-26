@@ -52,7 +52,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
         var contextURL = this.getContextBaseURL();
         if ( isNullOrUndefined( contextURL ) )
         {
-            throw new ReferenceError( "getContextURL cannot return a null or undefined value" );
+            throw new ReferenceError( "getContextURL cannot return a null or undefined modelObjectRows" );
         }
         var primaryKey: KeyValuePair<string,any> = this.getContextPrimaryURLKeyValue( modelObject );
         contextURL += "/" + primaryKey.key + "/" + primaryKey.value;

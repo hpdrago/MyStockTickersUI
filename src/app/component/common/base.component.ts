@@ -77,8 +77,8 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
     /**
      * This method is called by {@code ngOnChanges} for each property that has changed.
      * @param property The name of the property that has changed.
-     * @param previousValue The previous value.
-     * @param currentValue The current value.
+     * @param previousValue The previous modelObjectRows.
+     * @param currentValue The current modelObjectRows.
      */
     protected inputPropertyChange( property: string, previousValue: any, currentValue: any )
     {
@@ -122,4 +122,13 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
         return this.disabled;
     }
 
+    /**
+     * Provide a stringify method that can be used intemplates for debugging.
+     * @param object
+     * @return {string}
+     */
+    public stringify( object: any ): string
+    {
+        return JSON.stringify( object );
+    }
 }

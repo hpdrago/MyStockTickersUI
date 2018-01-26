@@ -16,6 +16,7 @@ import { TradeItErrorReporter } from '../tradeit/tradeit-error-reporter';
 import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
 import { TradeItAccountStateStore } from '../tradeit-account/tradeit-account-state-store';
 import { isNullOrUndefined } from 'util';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This table displays all of the linked account for a TradeItAccount instance.
@@ -43,6 +44,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      * @param {TradeItErrorReporter} tradeItErrorReporter
      * @param {TradeItAccountController} tradeItAccountController
      * @param {TradeItAccountStateStore} tradeItAccountStateStore
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected linkedAccountStateStore: LinkedAccountStateStore,
@@ -52,14 +54,16 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
                  protected tradeItOAuthService: TradeItAccountOAuthService,
                  protected tradeItErrorReporter: TradeItErrorReporter,
                  protected tradeItAccountController: TradeItAccountController,
-                 protected tradeItAccountStateStore: TradeItAccountStateStore )
+                 protected tradeItAccountStateStore: TradeItAccountStateStore,
+                 protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.ALL_ON_DEMAND,
                toaster,
                linkedAccountStateStore,
                linkedAccountController,
                linkedAccountFactory,
-               linkedAccountCrudService );
+               linkedAccountCrudService,
+               cookieService );
     }
 
     /**
@@ -76,7 +80,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
         {
             if ( tradeItAccount.linkedAccounts )
             {
-                this.rows = tradeItAccount.linkedAccounts;
+                this.modelObjectRows = tradeItAccount.linkedAccounts;
                 this.updateLinkedAccounts();
             }
             else

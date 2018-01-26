@@ -12,6 +12,7 @@ import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.se
 import { StockQuoteContainer } from '../../model/common/stock-quote-container';
 import { StockQuote } from '../../model/entity/stock-quote';
 import { isNullOrUndefined } from 'util';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This is a base class for all tables that contain model objects containing a ticker symbol
@@ -28,6 +29,7 @@ export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & 
      * @param {ModelObjectFactory<T extends ModelObject<T> & TickerSymbolContainer>} stockFactory
      * @param {CrudRestService<T extends ModelObject<T> & TickerSymbolContainer>} stockCrudService
      * @param {StockQuoteCacheService} stockQuoteCacheService
+     * @param {CookieService} cookieService
      */
     protected constructor( protected tableLoadingStrategy: TableLoadingStrategy,
                            protected toaster: ToastsManager,
@@ -35,14 +37,16 @@ export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & 
                            protected stockController: CrudController<T>,
                            protected stockFactory: ModelObjectFactory<T>,
                            protected stockCrudService: CrudRestService<T>,
-                           protected stockQuoteCacheService: StockQuoteCacheService )
+                           protected stockQuoteCacheService: StockQuoteCacheService,
+                           protected cookieService: CookieService )
     {
         super( tableLoadingStrategy,
                toaster,
                stockStateStore,
                stockController,
                stockFactory,
-               stockCrudService );
+               stockCrudService,
+               cookieService );
     }
 
     /**

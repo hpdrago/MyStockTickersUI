@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 /**
- * This component displays the currency in green or read depending on the currency value.
+ * This component displays the currency in green or read depending on the currency modelObjectRows.
  * GREEN = currency >= 0
  * RED = currency < 0
  */

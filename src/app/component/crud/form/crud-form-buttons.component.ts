@@ -49,19 +49,19 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
 
     /**
      * Keeps track of when the form is valid or invalid.
-     * This value is set from an event initiated from the child form component.
+     * This modelObjectRows is set from an event initiated from the child form component.
      */
     protected formValidFlag: boolean;
 
     /**
      * Keeps track of when the form is dirty or not dirty
-     * This value is set from an event initiated from the child form component.
+     * This modelObjectRows is set from an event initiated from the child form component.
      */
     protected formDirtyFlag: boolean;
 
     /**
      * Keeps track of when the form has been touched
-     * This value is set from an event initiated from the child form component.
+     * This modelObjectRows is set from an event initiated from the child form component.
      */
     protected formTouchedFlag: boolean;
 
@@ -270,7 +270,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
     }
 
     /**
-     * This method is called whenever the form.touched value changes
+     * This method is called whenever the form.touched modelObjectRows changes
      * @param touched
      */
     private onFormTouched( touched: boolean ): void
@@ -282,7 +282,7 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
 
     /**
      * This method will enable or disable the buttons based on
-     * the is<button>Disabled() return value
+     * the is<button>Disabled() return modelObjectRows
      */
     protected enableDisableButtons(): void
     {

@@ -17,6 +17,7 @@ import { CrudOperation } from '../crud/common/crud-operation';
 import { StockNotesSentiment } from '../../common/stock-notes-sentiment.enum';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This component displays a list of Stocks to buy.
@@ -36,6 +37,7 @@ export abstract class StockToBuyBaseTableComponent extends StockModelObjectTable
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockQuoteCacheService} stockQuoteCacheService
+     * @param {CookieService} cookieService
      */
     protected constructor( protected toaster: ToastsManager,
                            protected stockToBuyStateStore: StockToBuyStateStore,
@@ -45,7 +47,8 @@ export abstract class StockToBuyBaseTableComponent extends StockModelObjectTable
                            protected stockNotesStateStore: StockNotesStateStore,
                            protected stockNotesController: StockNotesController,
                            protected stockNotesFactory: StockNotesFactory,
-                           protected stockQuoteCacheService: StockQuoteCacheService )
+                           protected stockQuoteCacheService: StockQuoteCacheService,
+                           protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
@@ -53,7 +56,8 @@ export abstract class StockToBuyBaseTableComponent extends StockModelObjectTable
                stockToBuyController,
                stockToBuyFactory,
                stockToBuyCrudService,
-               stockQuoteCacheService );
+               stockQuoteCacheService,
+               cookieService );
     }
 
     /**

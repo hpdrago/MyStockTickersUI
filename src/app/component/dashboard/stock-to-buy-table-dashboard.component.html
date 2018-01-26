@@ -36,7 +36,7 @@
               [style]="{'width':'30px'}"
               [sortable]="false">
         <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-            <p-checkbox name="completed" value="stockToBuy[col.field] == 'Y' ? true : false"></p-checkbox>
+            <p-checkbox name="completed" modelObjectRows="stockToBuy[col.field] == 'Y' ? true : false"></p-checkbox>
         </ng-template>
     </p-column>
     ------------------------------------------------------------------------------------------------------------>

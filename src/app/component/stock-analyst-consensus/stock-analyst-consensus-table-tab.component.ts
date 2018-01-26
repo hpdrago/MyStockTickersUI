@@ -13,6 +13,7 @@ import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analy
 import { StockAnalystConsensusActionHandler } from './stock-analyst-consensus-action-handler';
 import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component(
     {
@@ -34,6 +35,7 @@ export class StockAnalystConsensusTableTabComponent extends StockAnalystConsensu
      * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
      * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      * @param {StockQuoteCacheService} stockQuoteCacheService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
@@ -41,13 +43,15 @@ export class StockAnalystConsensusTableTabComponent extends StockAnalystConsensu
                  protected stockAnalystConsensusFactory: StockAnalystConsensusFactory,
                  protected stockAnalystConsensusCrudService: StockAnalystConsensusCrudService,
                  protected stockAnalystConsensusCache: StockAnalystConsensusCache,
-                 protected stockQuoteCacheService: StockQuoteCacheService )
+                 protected stockQuoteCacheService: StockQuoteCacheService,
+                 protected cookieService: CookieService )
     {
         super( toaster,
                stockAnalystConsensusStateStore,
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,
                stockAnalystConsensusCrudService,
-               stockQuoteCacheService );
+               stockQuoteCacheService,
+               cookieService );
     }
 }

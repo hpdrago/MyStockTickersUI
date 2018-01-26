@@ -27,7 +27,7 @@ export class RankCalculator
     }
 
     /**
-     * Calculates the total market value from each of the StockTableEntry instancecs.
+     * Calculates the total market modelObjectRows from each of the StockTableEntry instancecs.
      * @param {StockTableEntry[]} stocks
      * @return {number}
      */

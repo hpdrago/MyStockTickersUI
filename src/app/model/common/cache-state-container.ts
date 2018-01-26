@@ -12,7 +12,7 @@ export interface CacheStateContainer<K>
     setCacheState( cacheState: CachedValueState )
 
     /**
-     * Get the state of the cache value.
+     * Get the state of the cache modelObjectRows.
      * @return {CachedValueState}
      */
     getCacheState(): CachedValueState;

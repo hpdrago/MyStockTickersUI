@@ -11,6 +11,7 @@ import { PortfolioFactory } from '../../model/factory/portfolio.factory';
 import { PortfolioController } from './portfolio-controller';
 import { PortfolioStateStore } from './portfolio-state-store';
 import { PortfolioActionHandler } from './portfolio-action-handler';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -37,20 +38,23 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
      * @param {PortfolioController} portfolioController
      * @param {PortfolioFactory} portfolioFactory
      * @param {PortfolioCrudService} portfolioCrudService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected session: SessionService,
-                 private portfolioStateStore: PortfolioStateStore,
-                 private portfolioController: PortfolioController,
-                 private portfolioFactory: PortfolioFactory,
-                 private portfolioCrudService: PortfolioCrudService )
+                 protected portfolioStateStore: PortfolioStateStore,
+                 protected portfolioController: PortfolioController,
+                 protected portfolioFactory: PortfolioFactory,
+                 protected portfolioCrudService: PortfolioCrudService,
+                 protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.ALL_ON_CREATE,
                toaster,
                portfolioStateStore,
                portfolioController,
                portfolioFactory,
-               portfolioCrudService );
+               portfolioCrudService,
+               cookieService );
     }
 
     /**
@@ -104,18 +108,18 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
             .getCustomerPortfolios( this.session.getLoggedInUserId() )
             .subscribe( portfolios =>
             {
-                this.rows = portfolios;
-                this.logger.log( "loadTable: " + JSON.stringify( this.rows ));
-                this.logger.log( "loadTable length: " + this.rows.length );
-                this.logger.log( "loadTable[0]: " + JSON.stringify( this.rows[0] ));
-                this.logger.log( "loadTable[0]: " + this.rows );
+                this.modelObjectRows = portfolios;
+                this.logger.log( "loadTable: " + JSON.stringify( this.modelObjectRows ));
+                this.logger.log( "loadTable length: " + this.modelObjectRows.length );
+                this.logger.log( "loadTable[0]: " + JSON.stringify( this.modelObjectRows[0] ));
+                this.logger.log( "loadTable[0]: " + this.modelObjectRows );
                 this.initializeMenuBar();
             });
     }
 
     private initializeMenuBar()
     {
-        this.rows
+        this.modelObjectRows
             .forEach( portfolio =>
             {
                 let menuItem = <MenuItem>{};

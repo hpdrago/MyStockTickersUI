@@ -7,7 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 /**
- * This component is used to customize the crud table by selecting and ordering the columns allowing the user
+ * This component is used to customize the crud table by selecting and ordering the crudTableColumns allowing the user
  * to create their own preferences.
  */
 @Component
@@ -86,7 +86,7 @@ export class CrudTableColumnSelectorDialogComponent extends BaseComponent
     }
 
     /**
-     * Get the selected columns.
+     * Get the selected crudTableColumns.
      * @return {Column[]}
      */
     public get selectedColumns(): Column[]
@@ -95,7 +95,7 @@ export class CrudTableColumnSelectorDialogComponent extends BaseComponent
     }
 
     /**
-     * Set the selected columns.
+     * Set the selected crudTableColumns.
      * @param {Column[]} value
      */
     public set selectedColumns( value: Column[] )
@@ -104,7 +104,7 @@ export class CrudTableColumnSelectorDialogComponent extends BaseComponent
     }
 
     /**
-     * Get the available columns
+     * Get the available crudTableColumns
      * @return {Column[]}
      */
     public get availableColumns(): Column[]
@@ -113,7 +113,7 @@ export class CrudTableColumnSelectorDialogComponent extends BaseComponent
     }
 
     /**
-     * Set the available columns.
+     * Set the available crudTableColumns.
      * @param {Column[]} value
      */
     public set availableColumns( value: Column[] )

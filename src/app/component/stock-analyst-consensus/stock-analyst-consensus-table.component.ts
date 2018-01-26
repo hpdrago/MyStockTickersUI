@@ -7,6 +7,7 @@ import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analy
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This is the base class for the tab and dashboard table for StockCompany Analyst Consensus information
@@ -21,13 +22,15 @@ export abstract class StockAnalystConsensusTableComponent extends StockModelObje
      * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
      * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
      * @param {StockQuoteCacheService} stockQuoteCacheService
+     * @param {CookieService} cookieService
      */
     protected constructor( protected toaster: ToastsManager,
                            protected stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
                            protected stockAnalystConsensusController: StockAnalystConsensusController,
                            protected stockAnalystConsensusFactory: StockAnalystConsensusFactory,
                            protected stockAnalystConsensusCrudService: StockAnalystConsensusCrudService,
-                           protected stockQuoteCacheService: StockQuoteCacheService )
+                           protected stockQuoteCacheService: StockQuoteCacheService,
+                           protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
@@ -35,6 +38,7 @@ export abstract class StockAnalystConsensusTableComponent extends StockModelObje
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,
                stockAnalystConsensusCrudService,
-               stockQuoteCacheService );
+               stockQuoteCacheService,
+               cookieService );
     }
 }

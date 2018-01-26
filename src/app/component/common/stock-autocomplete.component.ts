@@ -74,7 +74,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         this.log( "ngOnInit" );
         if ( !this.stockSelected )
         {
-            throw new Error( "stockSelected has not been set by Input value" );
+            throw new Error( "stockSelected has not been set by Input modelObjectRows" );
         }
     }
 
@@ -123,7 +123,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     /**
      * This method is called when the search input loses focus.
      * If the user hasn't selected a stock, then it's possible that the stock does not exist in the stock table so
-     * now we'll make another search based on the ticker symbol value to see if we can get a quote for the symbol.
+     * now we'll make another search based on the ticker symbol modelObjectRows to see if we can get a quote for the symbol.
      * @param event
      */
     protected onBlur( event )

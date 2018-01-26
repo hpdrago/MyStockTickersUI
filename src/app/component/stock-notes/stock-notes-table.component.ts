@@ -10,6 +10,7 @@ import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.servi
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This is the base class for StockCompany Notes tables.
@@ -27,6 +28,7 @@ export abstract class StockNotesTableComponent extends StockModelObjectTableComp
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockNotesCrudService} stockNotesCrudService
      * @param {StockQuoteCacheService} stockQuoteCacheService
+     * @param {CookieService} cookieService
      */
     protected constructor( protected session: SessionService,
                            protected toaster: ToastsManager,
@@ -34,7 +36,8 @@ export abstract class StockNotesTableComponent extends StockModelObjectTableComp
                            protected stockNotesController: StockNotesController,
                            protected stockNotesFactory: StockNotesFactory,
                            protected stockNotesCrudService: StockNotesCrudService,
-                           protected stockQuoteCacheService: StockQuoteCacheService )
+                           protected stockQuoteCacheService: StockQuoteCacheService,
+                           protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
@@ -42,7 +45,8 @@ export abstract class StockNotesTableComponent extends StockModelObjectTableComp
                stockNotesController,
                stockNotesFactory,
                stockNotesCrudService,
-               stockQuoteCacheService );
+               stockQuoteCacheService,
+               cookieService );
     }
 
     protected getActionTaken( actionTaken: string )

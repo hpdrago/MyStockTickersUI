@@ -3,14 +3,14 @@ import { isNullOrUndefined, isString } from 'util';
 import { isNumeric } from 'rxjs/util/isNumeric';
 
 /**
- * Manages an array of key value pairs.
+ * Manages an array of key modelObjectRows pairs.
  */
 export class KeyValuePairs<K,V>
 {
     private pairs: Array<KeyValuePair<K,V>> = [];
 
     /**
-     * Add the key value pair to the list.
+     * Add the key modelObjectRows pair to the list.
      * @param {K} key
      * @param {V} value if null, the pair is not added.
      */
@@ -42,7 +42,7 @@ export class KeyValuePairs<K,V>
 
     /**
      * Loop over each entry and apply fn.
-     * @param {(key: K, value: V) => any} fn
+     * @param {(key: K, modelObjectRows: V) => any} fn
      */
     public forEach( fn: (key: K, value: V) => any  )
     {

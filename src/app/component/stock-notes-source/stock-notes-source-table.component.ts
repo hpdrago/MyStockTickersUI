@@ -9,6 +9,7 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockNotesSourceCrudActionHandler } from './stock-notes-source-crud-action-handler';
 import { CrudTableComponent } from '../crud/table/crud-table.component';
 import { StockNotesSourceFactory } from '../../model/factory/stock-notes-source.factory';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  */
@@ -29,21 +30,23 @@ export class StockNotesSourceTableComponent extends CrudTableComponent<StockNote
      * @param {StockNotesSourceController} stockNotesSourceController
      * @param {StockNotesSourceFactory} stockNotesSourceFactory
      * @param {StockNotesSourceCrudService} stockNotesSourceCrudService
-     * @param {StockPriceRefreshService} stockQuoteRefreshService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
                  protected stockNotesSourceStateStore: StockNotesSourceStateStore,
                  protected stockNotesSourceController: StockNotesSourceController,
                  protected stockNotesSourceFactory: StockNotesSourceFactory,
-                 protected stockNotesSourceCrudService: StockNotesSourceCrudService )
+                 protected stockNotesSourceCrudService: StockNotesSourceCrudService,
+                 protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.ALL_ON_CREATE,
                toaster,
                stockNotesSourceStateStore,
                stockNotesSourceController,
                stockNotesSourceFactory,
-               stockNotesSourceCrudService )
+               stockNotesSourceCrudService,
+               cookieService )
     }
 
 }

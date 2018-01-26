@@ -1,7 +1,7 @@
 /**
  * This enum defines strategies to load model table.
  * LAZY loading means that page loading will be used and a page at a time will be loaded.
- * FULL means that the all available rows will be loaded.
+ * FULL means that the all available modelObjectRows will be loaded.
  * ON_DEMAND means that when the table will not be automatically loaded when the table is created.
  * ON_CREATE means that the table will be loaded when the table is created/displayed.
  */
@@ -15,7 +15,7 @@ export enum TableLoadingStrategy
 export namespace TableLoadingStrategy
 {
     /**
-     * Convert the int value to the name of the enum.
+     * Convert the int modelObjectRows to the name of the enum.
      * @param {number} intValue
      * @returns {string}
      */
@@ -32,12 +32,12 @@ export namespace TableLoadingStrategy
             case TableLoadingStrategy.ALL_ON_DEMAND:
                 return "ALL_ON_DEMAND";
             default:
-                return  intValue + " is an invalid value";
+                return  intValue + " is an invalid modelObjectRows";
         }
     }
 
     /**
-     * Returns true if all available rows will be loaded.
+     * Returns true if all available modelObjectRows will be loaded.
      * @param {TableLoadingStrategy} tableLoadingStrategy
      * @returns {boolean}
      */

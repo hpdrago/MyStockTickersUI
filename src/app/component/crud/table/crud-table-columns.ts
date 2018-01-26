@@ -40,7 +40,7 @@ export class CrudTableColumns
     }
 
     /**
-     * Iterator for the columns.
+     * Iterator for the crudTableColumns.
      * @return {IterableIterator<CrudTableColumn>}
      */
     public iterator(): IterableIterator<CrudTableColumn>
@@ -73,11 +73,22 @@ export class CrudTableColumns
     }
 
     /**
-     * Adds all of the columns from {@code crudTableColumns} to the internal column list.
+     * Adds all of the crudTableColumns from {@code crudTableColumns} to the internal column list.
      * @param {CrudTableColumns} crudTableColumns
      */
     public addAll( crudTableColumns: CrudTableColumns )
     {
         this.columns = this.columns.concat( crudTableColumns.toArray() );
+    }
+
+    /**
+     * Create a new instance from a JSON string.
+     * @param {string} json
+     * @return {CrudTableColumns}
+     */
+    public static fromJSON( json: string )
+    {
+        let crudTableColumns = JSON.parse( json );
+        return new CrudTableColumns( crudTableColumns.columns );
     }
 }

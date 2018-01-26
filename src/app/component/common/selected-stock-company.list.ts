@@ -23,7 +23,7 @@ export class SelectedStockCompanyList extends StockCompanyList
         style: 'currency',
         currency: 'USD',
         minimumFractionDigits: 2,
-        // the default value for minimumFractionDigits depends on the currency
+        // the default modelObjectRows for minimumFractionDigits depends on the currency
         // and is usually already 2
     });
 

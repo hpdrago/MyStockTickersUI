@@ -11,6 +11,7 @@ import { LinkedAccount } from '../../model/entity/linked-account';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}
@@ -31,6 +32,7 @@ export class StockPositionBaseTableComponent extends StockModelObjectTableCompon
      * @param {StockPositionFactory} stockPositionFactory
      * @param {StockPositionCrudService} stockPositionCrudService
      * @param {StockQuoteCacheService} stockQuoteCacheService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
@@ -38,7 +40,8 @@ export class StockPositionBaseTableComponent extends StockModelObjectTableCompon
                  protected stockPositionController: StockPositionController,
                  protected stockPositionFactory: StockPositionFactory,
                  protected stockPositionCrudService: StockPositionCrudService,
-                 protected stockQuoteCacheService: StockQuoteCacheService )
+                 protected stockQuoteCacheService: StockQuoteCacheService,
+                 protected cookieService: CookieService )
     {
         super( TableLoadingStrategy.ALL_ON_DEMAND,
                toaster,
@@ -46,7 +49,8 @@ export class StockPositionBaseTableComponent extends StockModelObjectTableCompon
                stockPositionController,
                stockPositionFactory,
                stockPositionCrudService,
-               stockQuoteCacheService );
+               stockQuoteCacheService,
+               cookieService );
     }
 
     /**

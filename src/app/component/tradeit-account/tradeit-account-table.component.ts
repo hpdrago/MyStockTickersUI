@@ -9,6 +9,7 @@ import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -33,6 +34,7 @@ export class TradeItAccountTableComponent extends TradeItAccountBaseTableCompone
      * @param {TradeItAccountCrudService} tradeItAccountCrudService
      * @param {TradeItService} tradeItService
      * @param {TradeItAccountOAuthService} tradeItOAuthService
+     * @param {CookieService} cookieService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
@@ -41,7 +43,8 @@ export class TradeItAccountTableComponent extends TradeItAccountBaseTableCompone
                  protected tradeItAccountFactory: TradeItAccountFactory,
                  protected tradeItAccountCrudService: TradeItAccountCrudService,
                  protected tradeItService: TradeItService,
-                 protected tradeItOAuthService: TradeItAccountOAuthService )
+                 protected tradeItOAuthService: TradeItAccountOAuthService,
+                 protected cookieService: CookieService )
     {
         super( toaster,
                tradeItErrorReporter,
@@ -50,7 +53,8 @@ export class TradeItAccountTableComponent extends TradeItAccountBaseTableCompone
                tradeItAccountFactory,
                tradeItAccountCrudService,
                tradeItService,
-               tradeItOAuthService );
+               tradeItOAuthService,
+               cookieService );
         this.tradeItAccountController
             .subscribeToAccountLinkedEvent( (tradeItAccount: TradeItAccount) => { this.onAccountLinkedEvent( tradeItAccount ); });
     }
