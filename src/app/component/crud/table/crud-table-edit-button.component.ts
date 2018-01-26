@@ -1,5 +1,5 @@
 import { CrudTableButtonComponent } from './crud-table-button.component';
-import { ModelObject } from '../../../model/entity/modelobject';
+import { ModelObject } from '../../../model/common/model-object';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudController } from '../common/crud-controller';

@@ -1,4 +1,4 @@
-import { ModelObject } from "../entity/modelobject";
+import { ModelObject } from "./model-object";
 
 /**
  * This is the base class for all ModelObjects that contains a ticker symbol and company name

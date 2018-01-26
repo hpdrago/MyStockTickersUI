@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 import { SessionService } from "../session.service";
 import { ReadRestService } from "./read-rest.service";
-import { ModelObject } from "../../model/entity/modelobject";
+import { ModelObject } from "../../model/common/model-object";
 import { AppConfigurationService } from "../app-configuration.service";
 import { ModelObjectFactory } from "../../model/factory/model-object.factory";
 import { isNullOrUndefined } from "util";

@@ -1,4 +1,4 @@
-import { ModelObject } from "./modelobject";
+import { ModelObject } from "../common/model-object";
 
 /**
  * This class defines the information about a single stock that the customer is tracking in

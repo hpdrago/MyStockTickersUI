@@ -2,7 +2,7 @@ import { SessionService } from '../session.service';
 import { AppConfigurationService } from '../app-configuration.service';
 import { ModelObjectFactory } from '../../model/factory/model-object.factory';
 import { Observable } from 'rxjs/Observable';
-import { ModelObject } from '../../model/entity/modelobject';
+import { ModelObject } from '../../model/common/model-object';
 import { BaseService } from '../base-service';
 import { isNullOrUndefined, isNumber } from 'util';
 import { PaginationPage } from '../../common/pagination';

@@ -2,7 +2,7 @@
  * This class manages the CRUD state which includes the CrudOperation and the ModelObject.
  * These values are stored in single location and RxJs Observables are used to notify components of any state change.
  */
-import { ModelObject } from '../../../model/entity/modelobject';
+import { ModelObject } from '../../../model/common/model-object';
 import { BaseClass } from '../../../common/base-class';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';

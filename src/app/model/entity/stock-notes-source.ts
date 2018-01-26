@@ -1,4 +1,4 @@
-import { ModelObject } from "./modelobject";
+import { ModelObject } from "../common/model-object";
 
 /**
  * A stock note source defines a single source that the customer has identified.

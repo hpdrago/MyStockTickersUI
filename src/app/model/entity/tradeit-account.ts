@@ -1,7 +1,7 @@
 /**
  * Created by mike on 11/11/2017
  */
-import { ModelObject } from "./modelobject";
+import { ModelObject } from "../common/model-object";
 import { JsonObject, JsonProperty } from "json2typescript";
 import { isNullOrUndefined } from "util";
 import { LinkedAccount } from "./linked-account";

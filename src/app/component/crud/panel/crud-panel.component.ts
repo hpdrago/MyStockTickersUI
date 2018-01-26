@@ -1,5 +1,5 @@
 import { ToastsManager } from "ng2-toastr";
-import { ModelObject } from "../../../model/entity/modelobject";
+import { ModelObject } from "../../../model/common/model-object";
 import { BaseCrudComponent } from "../common/base-crud.component";
 import { OnInit } from "@angular/core";
 import { CrudOperation } from "../common/crud-operation";

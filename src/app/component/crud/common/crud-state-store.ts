@@ -1,4 +1,4 @@
-import { ModelObject } from "../../../model/entity/modelobject";
+import { ModelObject } from "../../../model/common/model-object";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { CrudOperation } from "./crud-operation";
 import { Subscription } from "rxjs/Subscription";

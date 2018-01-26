@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { ValidationService } from "../../../service/validation-service";
 import { CrudOperation } from "../common/crud-operation";
 import { BaseCrudComponent } from "../common/base-crud.component";
-import { ModelObject } from "../../../model/entity/modelobject";
+import { ModelObject } from "../../../model/common/model-object";
 import { ToastsManager } from "ng2-toastr";
 import { isNullOrUndefined } from "util";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";

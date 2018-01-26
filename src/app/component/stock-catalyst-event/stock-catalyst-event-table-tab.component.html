@@ -47,10 +47,6 @@
                   header="Company Name"
                   [style]="{'width':'150px'}"
                   [sortable]="false">
-            <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
-                <stock-company-name [stockCompany]="stockCatalystEvent">
-                </stock-company-name>
-            </ng-template>
         </p-column>
 
         <!----------------------------------------------------------------------------------------------------------
@@ -67,7 +63,7 @@
         </p-column>
 
         <!----------------------------------------------------------------------------------------------------------
-        CATALYST DESCRIPTIO
+        CATALYST DESCRIPTION
         ------------------------------------------------------------------------------------------------------------>
         <p-column id="catalystDesc"
                   field="catalystDesc"

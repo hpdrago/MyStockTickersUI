@@ -2,7 +2,7 @@
  * Created by mike on 3/4/2018
  */
 import { Component, Input } from '@angular/core';
-import { ModelObject } from '../../model/entity/modelobject';
+import { ModelObject } from '../../model/common/model-object';
 
 /**
  * This component will displays {@code loadingMessage} if the model object is currently loading, otherwise it will

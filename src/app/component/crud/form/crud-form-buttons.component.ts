@@ -1,5 +1,5 @@
 import { BaseCrudComponent } from "../common/base-crud.component";
-import { ModelObject } from "../../../model/entity/modelobject";
+import { ModelObject } from "../../../model/common/model-object";
 import { CrudOperation } from "../common/crud-operation";
 import { ToastsManager } from "ng2-toastr";
 import { DialogCloseEventType } from "../common/close-button-event";

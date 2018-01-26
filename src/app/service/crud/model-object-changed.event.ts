@@ -1,7 +1,7 @@
 /**
  * Created by mike on 11/12/2017
  */
-import { ModelObject } from "../../model/entity/modelobject";
+import { ModelObject } from "../../model/common/model-object";
 
 /**
  * This class contains the information to send an event with the {@code ModelObjectChangeService}

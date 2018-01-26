@@ -1,4 +1,4 @@
-import { ModelObject } from "./modelobject";
+import { ModelObject } from "../common/model-object";
 import { JsonObject, JsonProperty } from "json2typescript";
 import { DateConverter } from "../common/date-converter";
 

@@ -2,7 +2,7 @@
  * Created by mike on 5/6/2018
  */
 import { CrudFormComponent } from '../crud/form/crud-form.component';
-import { ModelObject } from '../../model/entity/modelobject';
+import { ModelObject } from '../../model/common/model-object';
 import { ViewChild } from '@angular/core';
 import { StockAutoCompleteComponent } from './stock-autocomplete.component';
 import { isNullOrUndefined } from 'util';

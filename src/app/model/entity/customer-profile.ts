@@ -1,4 +1,4 @@
-import { ModelObject } from './modelobject';
+import { ModelObject } from '../common/model-object';
 
 export class CustomerProfile extends ModelObject<CustomerProfile>
 {

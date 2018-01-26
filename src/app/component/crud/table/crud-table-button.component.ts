@@ -1,5 +1,5 @@
 import { BaseCrudComponent } from '../common/base-crud.component';
-import { ModelObject } from '../../../model/entity/modelobject';
+import { ModelObject } from '../../../model/common/model-object';
 import { ToastsManager } from 'ng2-toastr';
 import { CrudStateStore } from '../common/crud-state-store';
 import { CrudController } from '../common/crud-controller';

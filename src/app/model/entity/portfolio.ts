@@ -1,4 +1,4 @@
-import { ModelObject } from "./modelobject";
+import { ModelObject } from "../common/model-object";
 
 /**
  * Defines a single portfolio for a customer

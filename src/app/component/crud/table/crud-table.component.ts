@@ -4,7 +4,7 @@
  * Created by mike on 12/8/2016.
  */
 
-import { ModelObject } from "../../../model/entity/modelobject";
+import { ModelObject } from "../../../model/common/model-object";
 import { BaseCrudComponent } from "../common/base-crud.component";
 import { OnInit, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";

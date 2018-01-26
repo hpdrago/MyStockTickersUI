@@ -1,4 +1,4 @@
-import { ModelObject } from "./modelobject";
+import { ModelObject } from "../common/model-object";
 import { CachedValueState } from '../../common/cached-value-state.enum';
 
 /**

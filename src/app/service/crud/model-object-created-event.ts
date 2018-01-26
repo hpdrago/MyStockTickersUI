@@ -1,5 +1,5 @@
 import { ModelObjectChangedEvent } from "./model-object-changed.event";
-import { ModelObject } from "../../model/entity/modelobject";
+import { ModelObject } from "../../model/common/model-object";
 
 /**
  * This event is created when a model object is created.

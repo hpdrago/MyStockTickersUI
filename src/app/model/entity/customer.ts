@@ -1,7 +1,7 @@
 /**
  * Created by mike on 11/11/2017
  */
-import { ModelObject } from "./modelobject";
+import { ModelObject } from "../common/model-object";
 
 export class Customer extends ModelObject<Customer>
 {
