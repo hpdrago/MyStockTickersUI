@@ -396,35 +396,4 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                    .share();
     }
 
-    /**
-     * Sets the loadingData time and loadingData status to the initial loadingData status.
-     * @param {T} modelObject
-     */
-    protected setLoadingStatus( modelObject: T )
-    {
-        modelObject.loadedTime = Date.now();
-        modelObject.loadingStatus = this.getInitialLoadingStatus();
-    }
-
-    /**
-     * Set the status to LOADED and set the load time.
-     * @param {T} modelObject
-     */
-    protected setLoadedStatus( modelObject: T )
-    {
-        modelObject.loadedTime = Date.now();
-        modelObject.loadingStatus = LoadingStatus.getName( LoadingStatus.LOADED );
-    }
-
-    /**
-     * After a model object is loaded from the backend, its loadingData status is set by the return result of this method.
-     * Services that handle model objects that are not completely loaded when fetched, should override this method and
-     * set the return modelObjectRows to LOADING to indicate that a subsequent backend request is required to retrieve the rest
-     * of the model object information.
-     * @return {LoadingStatus}
-     */
-    protected getInitialLoadingStatus(): string
-    {
-        return LoadingStatus.getName( LoadingStatus.LOADED );
-    }
 }

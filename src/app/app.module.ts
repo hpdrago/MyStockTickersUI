@@ -173,7 +173,6 @@ import { PercentComponent } from './component/common/percent.component';
 import { StockQuoteDayPercentChangeComponent } from './component/common/stock-quote-day-percent-change.component';
 import { DateComponent } from './component/common/date.component';
 import { DateOrTimePeriodComponent } from './component/common/date-or-timeperiod.component';
-import { ModelObjectLoadingComponent } from './component/common/model-object-loading.component';
 import { PortfolioStockTableDeleteButtonComponent } from './component/portfolio-stock/portfolio-stock-table-delete-button.component';
 import { StockNotesTableAddButtonComponent } from './component/stock-notes/stock-notes-table-add-button.component';
 import { TradeItAccountTableAddButtonComponent } from './component/tradeit-account/tradeit-account-table-add-button.component';
@@ -592,8 +591,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         GainLossCurrencyComponent,
         GainLossPercentComponent,
         DateComponent,
-        DateOrTimePeriodComponent,
-        ModelObjectLoadingComponent
+        DateOrTimePeriodComponent
     ],
     bootstrap:
     [

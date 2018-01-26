@@ -26,9 +26,6 @@ export abstract class ModelObject<T> extends BaseClass
     @JsonProperty( "dateModified", Date )
     public dateModified: Date;
 
-    @JsonProperty( "loadingStatus", String )
-    public loadingStatus: string;
-
     public loadedTime: number;
 
     /**
