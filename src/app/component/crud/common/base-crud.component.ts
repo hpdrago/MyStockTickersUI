@@ -72,8 +72,9 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         let methodName = "ngOnInit";
         this.log( methodName + ".begin" );
         this.subscribeToModelObjectChangeEvents();
-        this.crudStateStore
-            .subscribeToCrudOperationChangeEvent( (crudOperation: CrudOperation) => this.crudOperationChangedEvent( crudOperation ));
+        this.addSubscription(
+            this.crudStateStore
+                .subscribeToCrudOperationChangeEvent( (crudOperation: CrudOperation) => this.crudOperationChangedEvent( crudOperation )));
         this.log( methodName + ".end" );
     }
 
@@ -114,12 +115,12 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     private subscribeToModelObjectChangeEvents()
     {
         this.debug( "subscribeToModelObjectChangeEvents" );
-        this.crudStateStore
-            .subscribeToModelObjectChangedEvent( (changeEvent: ModelObjectChangedEvent<T>) => this.onModelObjectChangedEvent( changeEvent ));
-        this.crudStateStore
-            .subscribeToModelObjectDeletedEvent( (deleteEvent: ModelObjectDeletedEvent<T>) => this.onModelObjectDeletedEvent( deleteEvent ));
-        this.crudStateStore
-            .subscribeToModelObjectCreatedEvent( (createEvent: ModelObjectCreatedEvent<T>) => this.onModelObjectCreatedEvent( createEvent ));
+        this.addSubscription( this.crudStateStore
+            .subscribeToModelObjectChangedEvent( (changeEvent: ModelObjectChangedEvent<T>) => this.onModelObjectChangedEvent( changeEvent )));
+        this.addSubscription( this.crudStateStore
+            .subscribeToModelObjectDeletedEvent( (deleteEvent: ModelObjectDeletedEvent<T>) => this.onModelObjectDeletedEvent( deleteEvent )));
+        this.addSubscription( this.crudStateStore
+            .subscribeToModelObjectCreatedEvent( (createEvent: ModelObjectCreatedEvent<T>) => this.onModelObjectCreatedEvent( createEvent )));
     }
 
     /**

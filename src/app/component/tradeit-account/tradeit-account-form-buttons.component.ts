@@ -8,6 +8,7 @@ import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
 import { TradeItAPIResult } from "../../service/tradeit/apiresults/tradeit-api-result";
 import { TradeitOAuthComponent } from "./tradeit-oauth-component";
 import { Observable } from "rxjs/Observable";
+import { CrudOperation } from "../crud/common/crud-operation";
 
 /**
  * Button panel component for the Account dialog.
@@ -118,7 +119,7 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
     public notifyAuthenticationSuccess( tradeItAccount: TradeItAccount )
     {
         let methodName = "notifyAuthenticationSuccess";
-        this.log( methodName + ".begin" )
+        this.log( methodName + ".begin " + CrudOperation.getName( this.crudOperation ) + " " + JSON.stringify( tradeItAccount ) );
         this.crudStateStore.sendModelObjectChangedEvent( this, tradeItAccount );
         this.notifyAddButtonWorkSuccessful();
         this.log( methodName + ".end" )
