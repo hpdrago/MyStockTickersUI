@@ -85,10 +85,6 @@ import { PortfolioStockFormButtonsComponent } from "./component/portfoliostock/p
 import { PortfolioFormButtonsComponent } from "./component/portfolio/portfolio-form-buttons.component";
 import { StockNotesTableButtonsComponent } from "./component/stocknotes/stock-notes-table-buttons.component";
 import { StockNotesFormButtonsComponent } from "./component/stocknotes/stock-notes-form-buttons.component";
-import { StockNotesCrudServiceContainer } from "./component/stocknotes/stock-notes-crud-service-container";
-import { PortfolioStockCrudServiceContainer } from "./component/portfoliostock/portfolio-stock-crud-service-container";
-import { PortfolioCrudServiceContainer } from "./component/portfolio/portfolio-crud-service-container";
-import { StockCrudServiceContainer } from "./component/stock/stock-crud-service-container";
 import { StockCrudService } from "./service/crud/stock-crud.service";
 import { PortfolioCrudService } from "./service/crud/portfolio-crud.service";
 import { PortfolioStockCrudService } from "./service/crud/portfolio-stock-crud.service";
@@ -106,10 +102,8 @@ import { StockAnalystConsensusTableButtonsComponent } from "./component/stockana
 import { StockAnalystConsensusFormButtonsComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-form-buttons.component";
 import { StockAnalystConsensusDialogComponent } from "./component/stockanalystconsensus/stock-analyst-consensus-dialog.component";
 import { StockAnalystConsensusCrudService } from "./service/crud/stock-analyst-consensus-crud.service";
-import { StockAnalystConsensusCrudServiceContainer } from "./component/stockanalystconsensus/stock-analyst-consensus-crud-service-container";
 import { StockAnalystConsensusFactory } from "./model/factory/stock-analyst-consensus.factory";
 import { StockCatalystEventFactory } from "./model/factory/stock-catalyst-event.factory";
-import { StockCatalystEventCrudServiceContainer } from "./component/stockcatalystevent/stock-catalyst-event-crud-service-container";
 import { StockCatalystEventCrudService } from "./service/crud/stock-catalyst-event-crud.service";
 import { StockCatalystEventDialogComponent } from "./component/stockcatalystevent/stock-catalyst-event-dialog.component";
 import { StockCatalystEventTableComponent } from "./component/stockcatalystevent/stock-catalyst-event-table.component";
@@ -121,7 +115,6 @@ import { StockToBuyFormComponent } from "./component/stocktobuy/stock-to-buy-for
 import { StockToBuyTableButtonsComponent } from "./component/stocktobuy/stock-to-buy-table-buttons.component";
 import { StockToBuyFormButtonsComponent } from "./component/stocktobuy/stock-to-buy-form-buttons.component";
 import { StockToBuyFactory } from "./model/factory/stock-to-buy.factory";
-import { StockToBuyCrudServiceContainer } from "./component/stocktobuy/stock-to-buy-crud-service-container";
 import { StockToBuyCrudService } from "./service/crud/stock-to-buy-crud.service";
 import { StockQuoteRefreshService } from "./service/stock-quote-refresh.service";
 import { CustomerCrudService } from "./service/crud/customer-crud.service";
@@ -138,8 +131,6 @@ import { TradeItAccountFactory } from "./model/factory/tradeit-account.factory";
 import { TradeItAccountCrudService } from "./service/crud/tradeit-account-crud.service";
 import { CustomerFormComponent } from "./component/customer/customer-form.component";
 import { ProfileComponent } from "./component/profile/profile.component";
-import { TradeItAccountCrudServiceContainer } from "./component/tradeit-account/tradeit-account-crud-service-container";
-import { CustomerCrudServiceContainer } from "./component/customer/customer-crud-service-container";
 import { CustomerPanelComponent } from "./component/customer/customer-panel.component";
 import { CustomerFormButtonsComponent } from "./component/customer/customer-form-buttons.component";
 import { CustomerService } from "./service/customer.service";
@@ -164,7 +155,6 @@ import { TradeItAccountPanelComponent } from "./component/tradeit-account/tradei
 import { TradeItAccountSelectionTableComponent } from "./component/tradeit-account/tradeit-account-selection-table.component";
 import { PortfoliosComponent } from "./component/portfolio/portfolios.component";
 import { TradeItSecurityQuestionDialogComponent } from "./component/tradeit/tradeit-security-question-dialog.component";
-import { LinkedAccountCrudServiceContainer } from "./component/linked-account/linked-account-crud-service-container";
 import { LinkedAccountFactory } from "./model/factory/linked-account.factory";
 import { LinkedAccountCrudService } from "./service/crud/linked-account-crud.service";
 import { LinkedAccountTableButtonsComponent } from "./component/linked-account/linked-account-table-buttons.component";
@@ -172,6 +162,26 @@ import { LinkedAccountTableComponent } from "./component/linked-account/linked-a
 import { TradeitAccountOAuthService } from "./component/tradeit-account/tradeit-account-oauth.service";
 import { RestErrorReporter } from "./service/rest-error-reporter";
 import { TradeItErrorReporter } from "./component/tradeit/tradeit-error-reporter";
+import { CustomerController } from './component/customer/customer-controller';
+import { LinkedAccountController } from './component/linked-account/linked-account-controller';
+import { PortfolioController } from './component/portfolio/portfolio-controller';
+import { StockAnalystConsensusController } from './component/stockanalystconsensus/stock-analyst-consensus-controller';
+import { StockNotesController } from './component/stocknotes/stock-notes-controller';
+import { PortfolioStockController } from './component/portfoliostock/portfolio-stock-controller';
+import { StockToBuy } from './model/entity/stock-to-buy';
+import { StockCatalystEventController } from './component/stockcatalystevent/stock-catalyst-event-controller';
+import { CustomerStateStore } from './component/customer/customer-state-store';
+import { TradeItAccountStateStore } from './component/tradeit-account/tradeit-account-state-store';
+import { LinkedAccountStateStore } from './component/linked-account/linked-account-state-store';
+import { TradeItAccountController } from './component/tradeit-account/tradeit-controller';
+import { StockStateStore } from './component/stock/stock-crud-state-store';
+import { PortfolioStateStore } from './component/portfolio/portfolio-state-store';
+import { PortfolioStockStateStore } from './component/portfoliostock/portfolio-stock-state-store';
+import { StockController } from './component/stock/stock-controller';
+import { StockNotesStateStore } from './component/stocknotes/stock-notes-state-store';
+import { StockCatalystEventStateStore } from './component/stockcatalystevent/stock-catalyst-event-state-store';
+import { StockAnalystConsensusStateStore } from './component/stockanalystconsensus/stock-analyst-consensus-state-store';
+import { StockToBuyStateStore } from './component/stocktobuy/stock-to-buy-state-store';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -333,20 +343,24 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         CustomerService,
         CustomerCrudService,
-        CustomerCrudServiceContainer,
+        CustomerStateStore,
+        CustomerController,
         CustomerFactory,
 
-        TradeItAccountCrudServiceContainer,
+        TradeItAccountStateStore,
+        TradeItAccountController,
         TradeItAccountCrudService,
         TradeItAccountFactory,
         TradeitAccountOAuthService,
 
-        LinkedAccountCrudServiceContainer,
+        LinkedAccountStateStore,
+        LinkedAccountController,
         LinkedAccountCrudService,
         LinkedAccountFactory,
 
         StockCrudService,
-        StockCrudServiceContainer,
+        StockStateStore,
+        StockController,
         StockSectorCrudService,
         StockExchangeService,
         StockFactory,
@@ -355,14 +369,17 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         PortfolioFactory,
         PortfolioCrudService,
-        PortfolioCrudServiceContainer,
+        PortfolioStateStore,
+        PortfolioController,
 
         PortfolioStockCrudService,
-        PortfolioStockCrudServiceContainer,
+        PortfolioStockStateStore,
+        PortfolioStockController,
         PortfolioStockFactory,
 
         StockNotesCrudService,
-        StockNotesCrudServiceContainer,
+        StockNotesStateStore,
+        StockNotesController,
         StockNotesFactory,
 
         StockNotesCountService,
@@ -372,15 +389,18 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockNotesSourceFactory,
 
         StockAnalystConsensusCrudService,
-        StockAnalystConsensusCrudServiceContainer,
+        StockAnalystConsensusStateStore,
+        StockAnalystConsensusController,
         StockAnalystConsensusFactory,
 
         StockCatalystEventCrudService,
-        StockCatalystEventCrudServiceContainer,
+        StockCatalystEventStateStore,
+        StockCatalystEventController,
         StockCatalystEventFactory,
 
         StockToBuyCrudService,
-        StockToBuyCrudServiceContainer,
+        StockToBuyStateStore,
+        StockToBuy,
         StockToBuyFactory,
 
         RestErrorReporter,

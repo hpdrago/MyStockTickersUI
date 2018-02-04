@@ -6,12 +6,14 @@ import { BaseCrudComponent } from "../common/base-crud.component";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
 import { isNullOrUndefined } from "util";
-import { CrudServiceContainer } from "../common/crud-service-container";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { INVALID } from "@angular/forms/src/model";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
+import { CrudStateStore } from '../common/crud-state-store';
+import { CrudController } from '../common/crud-controller';
+import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 
 /**
  * This class contains the common functionality for a form for a CRUD model object.
@@ -32,21 +34,17 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {CrudServiceContainer<T extends ModelObject<T>>} crudServiceContainer
+     * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
+     * @param {CrudController<T extends ModelObject<T>>} crudController
+     * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      */
     constructor( protected toaster: ToastsManager,
-                 protected crudServiceContainer: CrudServiceContainer<T> )
+                 protected crudStateStore: CrudStateStore<T>,
+                 protected crudController: CrudController<T>,
+                 protected modelObjectFactory: ModelObjectFactory<T> )
     {
-        super( toaster, crudServiceContainer.crudStateStore, crudServiceContainer.modelObjectFactory );
-        if ( !this.crudServiceContainer.modelObjectFactory )
-        {
-            throw new Error( "modelObjectFactory argument cannot be null" );
-        }
-        if ( !this.crudServiceContainer.crudFormService )
-        {
-            throw new Error( "crudFormService argument cannot be null" );
-        }
-        this.setModelObject( this.crudServiceContainer.modelObjectFactory.newModelObject() );
+        super( toaster, crudStateStore, crudController, modelObjectFactory );
+        this.setModelObject( this.modelObjectFactory.newModelObject() );
     }
 
     /**
@@ -91,7 +89,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     {
         this.debug( "sendNgOnInitCompletedEvent.begin" );
         this.ngOnInitCompletedSubject.next( true );
-        this.sendComponentInitializedCompletedEvent();
         this.postInit();
         this.debug( "sendNgOnInitCompletedEvent.end" );
     }
@@ -176,16 +173,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * This method is called at the end of the ngOnInit method.  Override this event to add additional logic on when
-     * to send this event.
-     */
-    protected sendComponentInitializedCompletedEvent(): void
-    {
-        this.debug( "sendComponentInitializedCompletedEvent" );
-        this.crudServiceContainer.crudFormService.sendComponentInitializedEvent();
-    }
-
-    /**
      * This method will notify the subscriber when a non null modelObject has been loaded.
      * @param {(modelObject) => any} fn
      */
@@ -194,8 +181,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         while ( isNullOrUndefined( this.modelObject ))
         {
             this.debug( "waitForValidModelObject waiting" );
-            let subscription: Subscription = this.crudServiceContainer
-                                                 .crudStateStore
+            let subscription: Subscription = this.crudStateStore
                                                  .subscribeToModelObjectChangedEvent( ( modelObjectChangeEvent: ModelObjectChangedEvent<T> ) =>
             {
                 this.debug( "waitForValidModelObject " + JSON.stringify( modelObjectChangeEvent ) );
@@ -210,7 +196,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     }
 
     /**
-     * Subscribes to {@code CrudFormService} events through the {@code crudFormService} service.
+     * Subscribes to {@code CrudFormService} events through the {@code crudStateStore} service.
      */
     protected subscribeToCrudFormServiceEvents(): void
     {
@@ -218,7 +204,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         /*
         this.addSubscription(
             this.crudServiceContainer
-                .crudFormService
+                .crudStateStore
                 .subscribeToModelObjectCrudOperationChangedEvent(
                     ( subjectInfo: ModelObjectCrudOperationSubjectInfo ) =>
                         this.onModelObjectCrudOperationChanged( subjectInfo ) ));
@@ -227,77 +213,67 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
          * Reset button
          */
         this.addSubscription(
-            this.crudServiceContainer
-                .crudFormService
+            this.crudController
                 .subscribeToFormResetEvent( () => this.resetForm() ));
         /*
          * Prepare to save
          */
         this.addSubscription(
-            this.crudServiceContainer
-                .crudFormService
+            this.crudController
                 .subscribeToFormPrepareToSaveEvent( () => this.prepareToSave() ));
         /*
          * Model Object version update
          */
         this.addSubscription(
-            this.crudServiceContainer
-                .crudFormService
+            this.crudController
                 .subscribeToFormModelObjectVersionUpdateEvent( ( modelObject: T ) => this.onModelObjectVersionUpdate( modelObject ) ));
         /*
          * Add button clicked
          */
         this.addSubscription(
-            this.crudServiceContainer
-                .crudFormButtonsService
+            this.crudController
                 .subscribeToAddButtonClickedEvent( ( modelObject: T ) => this.onAddButtonClicked( modelObject ) ));
 
         /*
          * Add button click completed
          */
         this.addSubscription(
-            this.crudServiceContainer
-                .crudFormButtonsService
+            this.crudController
                 .subscribeToAddButtonClickCompletedEvent( ( modelObject: T ) => this.onAddButtonClickCompleted( modelObject ) ));
 
         /*
          * Save button clicked
          */
         this.addSubscription(
-            this.crudServiceContainer
-                .crudFormButtonsService
+            this.crudController
                 .subscribeToSaveButtonClickedEvent( ( modelObject: T ) => this.onSaveButtonClicked( modelObject ) ));
 
         /*
          * Save button click completed
          */
         this.addSubscription(
-            this.crudServiceContainer
-                .crudFormButtonsService
+            this.crudController
                 .subscribeToSaveButtonClickCompletedEvent( ( modelObject: T ) => this.onSaveButtonClickCompleted( modelObject ) ));
 
         /*
          * Delete button clicked
          */
         this.addSubscription(
-            this.crudServiceContainer
-                .crudFormButtonsService
+            this.crudController
                 .subscribeToDeleteButtonClickedEvent( ( modelObject: T ) => this.onDeleteButtonClicked( modelObject ) ));
 
         /*
          * Delete button click completed
          */
         this.addSubscription(
-            this.crudServiceContainer
-                .crudFormButtonsService
+            this.crudController
                 .subscribeToDeleteButtonClickCompletedEvent( ( modelObject: T ) => this.onDeleteButtonClickCompleted( modelObject ) ));
 
         /*
          * Prepare to display
          */
         this.addSubscription(
-            this.crudServiceContainer
-                .crudFormService
+            this.crudController
                 .subscribeToFormPrepareToDisplayEvent( () => this.onPrepareToDisplay() ));
         this.debug( "subscribeToCrudFormServiceEvents.end" );
     }
@@ -395,8 +371,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         {
             this.setFormValues( modelObject );
         }
-        this.crudServiceContainer
-            .crudFormService
+        this.crudController
             .sendFormLogStateRequest();
     }
 
@@ -496,8 +471,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected clearForm(): void
     {
         this.debug( "clearForm" );
-        let modelObject: T = this.crudServiceContainer
-                                 .modelObjectFactory
+        let modelObject: T = this.modelObjectFactory
                                  .newModelObject();
         this.crudStateStore
             .sendCrudOperationChangedEvent( CrudOperation.NONE );
@@ -558,7 +532,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
                     errors.push( errorMessage );
                 }
             }
-            this.crudServiceContainer.crudFormService.sendFormErrors( errors );
+            this.crudController.sendFormErrors( errors );
             //this.log( JSON.stringify( errors ));
         }
         else
@@ -576,8 +550,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected emitFormValidChange(): void
     {
         //this.debug( "emitFormValidChange" );
-        this.crudServiceContainer
-            .crudFormService
+        this.crudController
             .sendFormValidEvent( this.formGroup.valid );
     }
 
@@ -589,8 +562,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
     protected emitFormDirtyChange(): void
     {
         //this.debug( "emitFormDirtyChange" );
-        this.crudServiceContainer
-            .crudFormService
+        this.crudController
             .sendFormDirtyEvent( this.formGroup.dirty );
     }
 
@@ -751,7 +723,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         let methodName = "onSaveButtonClickCompleted";
         this.debug( methodName + " " + JSON.stringify( modelObject ) );
         this.clearForm();
-        this.crudServiceContainer.crudFormService.resetSubjects();
+        this.crudStateStore.resetSubjects();
     }
 
     /**
@@ -772,7 +744,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         let methodName = "onAddButtonClickCompleted";
         this.debug( methodName + " " + JSON.stringify( modelObject ) );
         this.clearForm();
-        this.crudServiceContainer.crudFormService.resetSubjects();
+        this.crudStateStore.resetSubjects();
     }
 
     /**

@@ -1,9 +1,7 @@
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { ToastsManager } from "ng2-toastr";
-import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
 import { StockUrlMap } from "../../common/stock-url-map";
 import { isNullOrUndefined } from "util";
-import { StockNotesCrudServiceContainer } from "../stocknotes/stock-notes-crud-service-container";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { StockNotesSentiment } from "../../common/stock-notes-sentiment.enum";
@@ -12,6 +10,13 @@ import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { DialogCloseEventType } from "../crud/common/close-button-event";
 import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
+import { StockToBuyStateStore } from './stock-to-buy-state-store';
+import { StockToBuyController } from './stock-to-buy-controller';
+import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
+import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
+import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
+import { StockNotesController } from '../stocknotes/stock-notes-controller';
+import { StockNotesStateStore } from '../stocknotes/stock-notes-state-store';
 
 /**
  * This component displays a list of Stocks to buy.
@@ -22,11 +27,21 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
 {
     private urlMap: StockUrlMap = new StockUrlMap();
     constructor( protected toaster: ToastsManager,
-                 protected stockToBuyServiceContainer: StockToBuyCrudServiceContainer,
-                 protected stockNotesServiceContainer: StockNotesCrudServiceContainer,
+                 protected stockToBuyStateStore: StockToBuyStateStore,
+                 protected stockToBuyController: StockToBuyController,
+                 protected stockToBuyFactory: StockToBuyFactory,
+                 protected stockToBuyCrudService: StockToBuyCrudService,
+                 protected stockNotesStateStore: StockNotesStateStore,
+                 protected stockNotesController: StockNotesController,
+                 protected stockNotesFactory: StockNotesFactory,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
-        super( toaster, stockToBuyServiceContainer, stockQuoteRefreshService );
+        super( toaster,
+               stockToBuyStateStore,
+               stockToBuyController,
+               stockToBuyFactory,
+               stockToBuyCrudService,
+               stockQuoteRefreshService );
     }
 
     /**
@@ -64,17 +79,17 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
      */
     protected onBuyButtonClick( stockToBuy: StockToBuy )
     {
-        var methodName: string = 'onBuyButtonClick ';
+        let methodName: string = 'onBuyButtonClick ';
         this.log( methodName + " " + JSON.stringify( stockToBuy ));
         /*
          * Convert the StockToBuy information into a StockNote instance so that the user can record the buy
          */
-        var stockNotes: StockNotes = this.stockNotesServiceContainer.modelObjectFactory.newModelObject();
+        let stockNotes: StockNotes = this.stockNotesFactory.newModelObject();
         stockNotes.tickerSymbol = stockToBuy.tickerSymbol;
         stockNotes.notes = stockToBuy.comments;
         stockNotes.actionTaken = StockNotesActionTaken.BUY;
         stockNotes.bullOrBear = StockNotesSentiment.BULL;
-        var stockNoteStock: StockNotesStock = new StockNotesStock();
+        let stockNoteStock: StockNotesStock = new StockNotesStock();
         stockNoteStock.tickerSymbol = stockNotes.tickerSymbol;
         stockNoteStock.stockPrice = stockToBuy.lastPrice;
         stockNoteStock.customerId = stockToBuy.customerId;
@@ -83,29 +98,24 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
          * Register to get notified when the user closes the stock notes dialog to determine if the user should
          * be prompted to delete the stock to buy entry.
          */
-        this.stockNotesServiceContainer
-            .crudDialogService
+        this.stockNotesController
             .subscribeToCloseButtonClickedEvent( ( event: DialogCloseEventType ) =>
                                                  {
                                                      this.log( methodName + " stock notes closed button clicked event: " + event );
                                                      if ( event != DialogCloseEventType.CANCEL_BUTTON )
                                                      {
-                                                         this.stockToBuyServiceContainer
-                                                             .crudTableButtonsService
+                                                         this.stockToBuyController
                                                              .sendDeleteButtonClickedEvent( stockToBuy );
                                                      }
                                                  })
         /*
          * Display the stock notes dialog.
          */
-        this.stockNotesServiceContainer
-            .crudStateStore
+        this.stockNotesStateStore
             .sendCrudOperationChangedEvent( CrudOperation.CREATE );
-        this.stockNotesServiceContainer
-            .crudStateStore
+        this.stockNotesStateStore
             .sendModelObjectChangedEvent( this, stockNotes );
-        this.stockNotesServiceContainer
-            .crudDialogService
+        this.stockNotesController
             .sendDisplayFormRequestEvent();
     }
 

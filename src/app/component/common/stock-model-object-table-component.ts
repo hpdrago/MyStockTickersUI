@@ -1,9 +1,12 @@
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
-import { CrudServiceContainer } from "../crud/common/crud-service-container";
 import { StockModelObject } from "../../model/entity/stock-model-object";
 import { Stock } from "../../model/entity/stock";
 import { TableLoadingStrategy } from "./table-loading-strategy";
+import { CrudStateStore } from '../crud/common/crud-state-store';
+import { CrudController } from '../crud/common/crud-controller';
+import { ModelObjectFactory } from '../../model/factory/model-object.factory';
+import { CrudRestService } from '../../service/crud/crud-rest.serivce';
 
 /**
  * This is a base class for all tables that contain model objects containing a ticker symbol
@@ -17,9 +20,17 @@ export abstract class StockModelObjectTableComponent<T extends StockModelObject<
      * @param {CrudServiceContainer<T extends StockModelObject<T>>} crudServiceContainer
      */
     constructor( protected toaster: ToastsManager,
-                 protected crudServiceContainer: CrudServiceContainer<T> )
+                 protected stockStateStore: CrudStateStore<T>,
+                 protected stockController: CrudController<T>,
+                 protected stockFactory: ModelObjectFactory<T>,
+                 protected stockCrudService: CrudRestService<T> )
     {
-        super( TableLoadingStrategy.LAZY_ON_CREATE, toaster, crudServiceContainer );
+        super( TableLoadingStrategy.LAZY_ON_CREATE, 
+               toaster,
+               stockStateStore,
+               stockController,
+               stockFactory,
+               stockCrudService );
     }
 
     /**
@@ -29,8 +40,7 @@ export abstract class StockModelObjectTableComponent<T extends StockModelObject<
     public loadTableForTickerSymbol( tickerSymbol: string )
     {
         this.debug( "loadTableForTickerSymbol " + tickerSymbol );
-        this.modelObject = this.crudServiceContainer
-                               .modelObjectFactory
+        this.modelObject = this.stockFactory
                                .newModelObject();
         this.modelObject.tickerSymbol = tickerSymbol;
         this.loadTable();
@@ -42,8 +52,7 @@ export abstract class StockModelObjectTableComponent<T extends StockModelObject<
     public resetTable()
     {
         this.debug( "resetTable" );
-        this.modelObject = this.crudServiceContainer
-                               .modelObjectFactory
+        this.modelObject = this.stockFactory
                                .newModelObject();
         this.loadTable();
     }

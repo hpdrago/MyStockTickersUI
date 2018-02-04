@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
-import { StockNotesCrudServiceContainer } from "../stocknotes/stock-notes-crud-service-container";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { StockNotesTableComponent } from "../stocknotes/stock-notes-table.component";
 
@@ -26,7 +25,6 @@ export class StockNotesTableDashboardComponent extends StockNotesTableComponent
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
      */
     constructor( protected toaster: ToastsManager,
-                 protected stockNotesServiceContainer: StockNotesCrudServiceContainer,
                  protected session: SessionService,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {

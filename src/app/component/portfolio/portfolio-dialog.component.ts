@@ -3,6 +3,9 @@ import { Portfolio } from "../../model/entity/portfolio";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-container";
+import { PortfolioStateStore } from './portfolio-state-store';
+import { PortfolioController } from './portfolio-controller';
+import { PortfolioFactory } from '../../model/factory/portfolio.factory';
 
 /**
  * Created by mike on 1/8/2017.
@@ -13,9 +16,21 @@ import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-containe
 })
 export class PortfolioDialogComponent extends CrudDialogComponent<Portfolio>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {PortfolioStateStore} portfolioStateStore
+     * @param {PortfolioController} portfolioController
+     * @param {PortfolioFactory} portfolioFactory
+     */
     constructor( protected toaster: ToastsManager,
-                 private portfolioCrudServiceContainer: PortfolioCrudServiceContainer )
+                 private portfolioStateStore: PortfolioStateStore,
+                 private portfolioController: PortfolioController,
+                 private portfolioFactory: PortfolioFactory )
     {
-        super( toaster, portfolioCrudServiceContainer );
+        super( toaster,
+               portfolioStateStore,
+               portfolioController,
+               portfolioFactory );
     }
 }

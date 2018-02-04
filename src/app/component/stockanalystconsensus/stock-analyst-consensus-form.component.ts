@@ -3,10 +3,12 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
-import { StockAnalystConsensusCrudServiceContainer } from "./stock-analyst-consensus-crud-service-container";
 import { SessionService } from "../../service/session.service";
 import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
+import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
+import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
+import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 
 /**
  * This is the Stock AnalystConsensus Form Component class.
@@ -21,13 +23,29 @@ import { CustomerCrudService } from "../../service/crud/customer-crud.service";
             } )
 export class StockAnalystConsensusFormComponent extends CrudFormWithNotesSourceComponent<StockAnalystConsensus>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {SessionService} sessionService
+     * @param {FormBuilder} formBuilder
+     * @param {StockAnalystConsensusStateStore} stockAnalystConsensusStateStore
+     * @param {StockAnalystConsensusController} stockAnalystConsensusController
+     * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
+     * @param {CustomerCrudService} customerService
+     */
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
-                 private stockAnalystConsensusCrudServiceContainer: StockAnalystConsensusCrudServiceContainer,
+                 private stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
+                 private stockAnalystConsensusController: StockAnalystConsensusController,
+                 private stockAnalystConsensusFactory: StockAnalystConsensusFactory,
                  protected customerService: CustomerCrudService )
     {
-        super( toaster, stockAnalystConsensusCrudServiceContainer, customerService );
+        super( toaster,
+               stockAnalystConsensusStateStore,
+               stockAnalystConsensusController,
+               stockAnalystConsensusFactory,
+               customerService );
     }
 
     /**

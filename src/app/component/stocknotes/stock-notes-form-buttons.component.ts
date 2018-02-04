@@ -1,12 +1,17 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { SessionService } from "../../service/session.service";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
-import { StockToBuyCrudServiceContainer } from "../stocktobuy/stock-to-buy-crud-service-container";
 import { CrudOperation } from "../crud/common/crud-operation";
+import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
+import { StockNotesStateStore } from './stock-notes-state-store';
+import { StockNotesController } from './stock-notes-controller';
+import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
+import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
+import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
+import { StockToBuyStateStore } from '../stocktobuy/stock-to-buy-state-store';
 
 /**
  * Button panel component for the StockNotes dialog.
@@ -24,15 +29,29 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {SessionService} session
-     * @param {StockToBuyCrudServiceContainer} stocksToBuyServiceContainer
-     * @param {StockNotesCrudServiceContainer} stockNotesServiceContainer
+     * @param {StockNotesStateStore} stockNotesStateStore
+     * @param {StockNotesController} stockNotesController
+     * @param {StockNotesFactory} stockNotesFactory
+     * @param {StockNotesCrudService} stockNotesService
+     * @param {StockToBuyStateStore} stockToBuyStateStore
+     * @param {StockToBuyFactory} stockToBuyFactory
+     * @param {StockToBuyCrudService} stockToBuyCrudService
      */
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,
-                 private stocksToBuyServiceContainer: StockToBuyCrudServiceContainer,
-                 private stockNotesServiceContainer: StockNotesCrudServiceContainer )
+                 private stockNotesStateStore: StockNotesStateStore,
+                 private stockNotesController: StockNotesController,
+                 private stockNotesFactory: StockNotesFactory,
+                 private stockNotesService: StockNotesCrudService,
+                 private stockToBuyStateStore: StockToBuyStateStore,
+                 private stockToBuyFactory: StockToBuyFactory,
+                 private stockToBuyCrudService: StockToBuyCrudService )
     {
-        super( toaster, stockNotesServiceContainer );
+        super( toaster,
+               stockNotesStateStore,
+               stockNotesController,
+               stockNotesFactory,
+               stockNotesService );
     }
 
     /**
@@ -86,8 +105,7 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
     {
         var methodName = "createStockToBuy";
         this.log( methodName + ".begin" ) ;
-        var stockToBuy = this.stocksToBuyServiceContainer
-                             .stockToBuyFactory
+        var stockToBuy = this.stockToBuyFactory
                              .newModelObject();
         stockToBuy.customerId = this.modelObject.customerId;
         stockToBuy.tickerSymbol = this.modelObject.tickerSymbol;
@@ -97,17 +115,14 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
         stockToBuy.comments = this.modelObject.notes;
         stockToBuy.completed = false;
         this.log( methodName + " " + JSON.stringify( stockToBuy ));
-        this.stocksToBuyServiceContainer
-            .stockToBuyCrudService
+        this.stockToBuyCrudService
             .createModelObject( stockToBuy )
             .subscribe( () =>
                         {
                             this.showInfo( "Stock To Buy created for " + this.modelObject.tickerSymbol );
-                            this.stocksToBuyServiceContainer
-                                .crudStateStore
+                            this.stockToBuyStateStore
                                 .sendCrudOperationChangedEvent( CrudOperation.CREATE );
-                            this.stocksToBuyServiceContainer
-                                .crudStateStore
+                            this.stockToBuyStateStore
                                 .sendModelObjectChangedEvent( this, stockToBuy )
                             this.log( methodName + ".end" );
                         },

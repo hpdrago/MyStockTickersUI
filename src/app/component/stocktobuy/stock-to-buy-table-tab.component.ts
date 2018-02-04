@@ -1,7 +1,5 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
-import { StockNotesCrudServiceContainer } from "../stocknotes/stock-notes-crud-service-container";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { StockToBuyTableComponent } from "./stock-to-buy-table.component";
 
@@ -19,8 +17,6 @@ import { StockToBuyTableComponent } from "./stock-to-buy-table.component";
 export class StockToBuyTableTabComponent extends StockToBuyTableComponent
 {
     constructor( protected toaster: ToastsManager,
-                 protected stockToBuyServiceContainer: StockToBuyCrudServiceContainer,
-                 protected stockNotesServiceContainer: StockNotesCrudServiceContainer,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
         super( toaster, stockToBuyServiceContainer, stockNotesServiceContainer, stockQuoteRefreshService );

@@ -11,6 +11,12 @@ import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-servi
 import { Portfolio } from "../../model/entity/portfolio";
 import { isNullOrUndefined } from "util";
 import { StockQuote } from "../../model/entity/stock-quote";
+import { PortfolioStockStateStore } from './portfolio-stock-state-store';
+import { PortfolioController } from '../portfolio/portfolio-controller';
+import { PortfolioStockController } from './portfolio-stock-controller';
+import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
+import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
+import { StockCrudService } from '../../service/crud/stock-crud.service';
 
 /**
  * Created by mike on 11/16/2016.
@@ -35,10 +41,16 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
     constructor( protected toaster: ToastsManager,
                  protected formBuilder: FormBuilder,
                  protected stockSectorService: StockSectorCrudService,
-                 protected stockCrudServiceContainer: StockCrudServiceContainer,
-                 protected portfolioStockCrudServiceContainer: PortfolioStockCrudServiceContainer )
+                 protected portfolioStockStateStore: PortfolioStockStateStore,
+                 protected portfolioStockController: PortfolioStockController,
+                 protected portfolioStockFactory: PortfolioStockFactory,
+                 protected stockCrudService: StockCrudService )
     {
-        super( toaster, portfolioStockCrudServiceContainer );
+        super( toaster,
+               portfolioStockStateStore,
+               portfolioStockController,
+               portfolioStockFactory );
+
         this.continuousAdd = true;
     }
 
@@ -72,8 +84,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
         if ( (!this.selectedStockQuote || this.selectedStockQuote.tickerSymbol != this.getTickerSymbolFormValue()) &&
               !isNullOrUndefined( this.getTickerSymbolFormValue() ))
         {
-            this.stockCrudServiceContainer
-                .stockCrudService.getStock( this.getTickerSymbolFormValue() )
+            this.stockCrudService.getStock( this.getTickerSymbolFormValue() )
                 .subscribe( (stock) =>
                             {
                                 this.debug( methodName + " found: " + stock.tickerSymbol );

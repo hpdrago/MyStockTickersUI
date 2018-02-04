@@ -1,10 +1,12 @@
 import { ToastsManager } from "ng2-toastr";
-import { CrudServiceContainer } from "../common/crud-service-container";
 import { Component } from "@angular/core";
 import { ModelObject } from "../../../model/entity/modelobject";
 import { BaseCrudComponent } from "../common/base-crud.component";
 import { isNullOrUndefined } from "util";
 import { CrudOperation } from "../common/crud-operation";
+import { CrudStateStore } from '../common/crud-state-store';
+import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
+import { CrudController } from '../common/crud-controller';
 
 /**
  * This is the base component class for the buttons on all CRUD enabled tables
@@ -23,12 +25,16 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {CrudServiceContainer<T extends ModelObject<T>>} crudServiceContainer
+     * @param {CrudStateStore<T extends ModelObject<T>>} crudStateStore
+     * @param {CrudController<T extends ModelObject<T>>} crudController
+     * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      */
     constructor( protected toaster: ToastsManager,
-                 protected crudServiceContainer: CrudServiceContainer<T> )
+                 protected crudStateStore: CrudStateStore<T>,
+                 protected crudController: CrudController<T>,
+                 protected modelObjectFactory: ModelObjectFactory<T> )
     {
-        super( toaster, crudServiceContainer.crudStateStore, crudServiceContainer.modelObjectFactory );
+        super( toaster, crudStateStore, crudController, modelObjectFactory );
         this.subscribeToCrudTableEvents()
     }
 
@@ -41,8 +47,7 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
         /*
          * We need to know when the table selections change so that we can enable/disable buttons
          */
-        this.crudServiceContainer
-            .crudTableService
+        this.crudController
             .subscribeToTableSelectionChangeEvent( ( modelObject: T ) =>
                                                    {
                                                        this.handleTableSelectionChangeEvent( modelObject );
@@ -58,20 +63,6 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     {
         this.debug( "handleTableSelectionChangeEvent modelObject: " + JSON.stringify( modelObject ));
         this.selectedModelObject = modelObject;
-    }
-
-    /**
-     * Component initialization
-     */
-    public ngOnInit()
-    {
-        this.debug( "ngOnInit.begin" );
-        super.ngOnInit();
-        if ( !this.crudServiceContainer.crudTableButtonsService )
-        {
-            throw new Error( "crudTableButtonsService has not been set by Input value" );
-        }
-        this.debug( "ngOnInit.end" );
     }
 
     /**
@@ -165,12 +156,10 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     protected onAddButtonClick(): void
     {
         this.debug( "onAddButtonClick " );
-        var modelObject = this.crudServiceContainer.modelObjectFactory.newModelObject();
-        this.crudServiceContainer
-            .crudStateStore
+        var modelObject = this.modelObjectFactory.newModelObject();
+        this.crudStateStore
             .sendModelObjectChangedEvent( this, modelObject );
-        this.crudServiceContainer
-            .crudStateStore
+        this.crudStateStore
             .sendCrudOperationChangedEvent( CrudOperation.CREATE );
         /*
         this.crudServiceContainer
@@ -186,11 +175,9 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     protected onDeleteButtonClick(): void
     {
         this.debug( "onDeleteButtonClick " + JSON.stringify( this.modelObject ));
-        this.crudServiceContainer
-            .crudStateStore
+        this.crudStateStore
             .sendModelObjectChangedEvent( this, this.modelObject );
-        this.crudServiceContainer
-            .crudStateStore
+        this.crudStateStore
             .sendCrudOperationChangedEvent( CrudOperation.DELETE );
         /*
         if ( !isNullOrUndefined( this.modelObject ) )
@@ -208,8 +195,7 @@ export abstract class CrudTableButtonsComponent<T extends ModelObject<T>> extend
     protected onRefreshButtonClick(): void
     {
         this.debug( "onRefreshButtonClick " );
-        this.crudServiceContainer
-            .crudTableButtonsService
+        this.crudController
             .sendRefreshButtonClickedEvent();
     }
 

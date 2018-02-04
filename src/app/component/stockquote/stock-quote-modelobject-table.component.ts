@@ -2,10 +2,13 @@ import { StockQuoteModelObject } from "../../model/entity/stock-quote-modelobjec
 import { StockQuoteState } from "../../common/stock-quote-state.enum";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { ToastsManager } from "ng2-toastr";
-import { CrudServiceContainer } from "../crud/common/crud-service-container";
 import { StockQuote } from "../../model/entity/stock-quote";
 import { isNullOrUndefined } from "util";
 import { StockModelObjectTableComponent } from "../common/stock-model-object-table-component";
+import { CrudStateStore } from '../crud/common/crud-state-store';
+import { CrudController } from '../crud/common/crud-controller';
+import { ModelObjectFactory } from '../../model/factory/model-object.factory';
+import { CrudRestService } from '../../service/crud/crud-rest.serivce';
 
 /**
  * This is a base class for tables that contain Stock Quote information.  It provides the common methods for updating
@@ -21,14 +24,24 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {CrudServiceContainer<T extends StockQuoteModelObject<T>>} crudServiceContainer
+     * @param {CrudStateStore<T extends StockQuoteModelObject<T>>} stockStateStore
+     * @param {CrudController<T extends StockQuoteModelObject<T>>} stockController
+     * @param {ModelObjectFactory<T extends StockQuoteModelObject<T>>} stockFactory
+     * @param {CrudRestService<T extends StockQuoteModelObject<T>>} stockCrudService
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
      */
     constructor( protected toaster: ToastsManager,
-                 protected crudServiceContainer: CrudServiceContainer<T>,
+                 protected stockStateStore: CrudStateStore<T>,
+                 protected stockController: CrudController<T>,
+                 protected stockFactory: ModelObjectFactory<T>,
+                 protected stockCrudService: CrudRestService<T>,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
-        super( toaster, crudServiceContainer );
+        super( toaster,
+               stockStateStore,
+               stockController,
+               stockFactory,
+               stockCrudService );
     }
 
     /**

@@ -1,9 +1,12 @@
 import { Component, Input } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-service-container";
 import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { Portfolio } from "../../model/entity/portfolio";
+import { PortfolioStockStateStore } from './portfolio-stock-state-store';
+import { PortfolioStockController } from './portfolio-stock-controller';
+import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
+import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
 
 /**
  * This class manages the modal dialog that contains the Portfolio Stock
@@ -22,10 +25,24 @@ export class PortfolioStockDialogComponent extends CrudDialogComponent<Portfolio
     @Input()
     private portfolio: Portfolio;
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {PortfolioStockStateStore} portfolioStockStateStore
+     * @param {PortfolioStockController} portfolioStockController
+     * @param {PortfolioStockFactory} portfolioStockFactory
+     * @param {PortfolioStockCrudService} portfolioStockCrudService
+     */
     constructor( protected toaster: ToastsManager,
-                 private portfolioStockCrudServiceContainer: PortfolioStockCrudServiceContainer )
+                 private portfolioStockStateStore: PortfolioStockStateStore,
+                 private portfolioStockController: PortfolioStockController,
+                 private portfolioStockFactory: PortfolioStockFactory,
+                 private portfolioStockCrudService: PortfolioStockCrudService )
     {
-        super( toaster, portfolioStockCrudServiceContainer );
+        super( toaster,
+               portfolioStockStateStore,
+               portfolioStockController,
+               portfolioStockFactory );
     }
 
     /**

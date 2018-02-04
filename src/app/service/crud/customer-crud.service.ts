@@ -8,12 +8,12 @@ import { SessionService } from "../session.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { AppConfigurationService } from "../app-configuration.service";
 import { CustomerFactory } from "../../model/factory/customer.factory";
-import { StockNotesCrudServiceContainer } from "../../component/stocknotes/stock-notes-crud-service-container";
 import { SelectItem } from "primeng/primeng";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 import { Http, Response } from "@angular/http";
+import { StockNotesSourceService } from './stock-notes-source.service';
 
 /**
  * This service handles all of the customer related actions.
@@ -31,8 +31,8 @@ export class CustomerCrudService extends CrudRestService<Customer>
     constructor( protected http: Http,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
-                 private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer,
-                 private customerFactory: CustomerFactory )
+                 private customerFactory: CustomerFactory,
+                 private stockNotesSourceService: StockNotesSourceService )
     {
         super( http, sessionService, appConfig, customerFactory );
     }
@@ -78,8 +78,7 @@ export class CustomerCrudService extends CrudRestService<Customer>
     {
         this.log( 'loadSources.begin' );
         this.sourcesLoadingSubject.next( true );
-        this.stockNotesCrudServiceContainer
-            .stockNoteSourceService
+        this.stockNotesSourceService
             .getStockNoteSources( this.sessionService.getLoggedInUserId() )
             .subscribe( ( stockNotesSources: StockNotesSourceList ) =>
                         {

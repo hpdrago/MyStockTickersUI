@@ -4,6 +4,9 @@ import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.comp
 import { LinkedAccount } from "../../model/entity/linked-account";
 import { LinkedAccountCrudServiceContainer } from "./linked-account-crud-service-container";
 import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
+import { LinkedAccountStateStore } from './linked-account-state-store';
+import { LinkedAccountController } from './linked-account-controller';
+import { LinkedAccountFactory } from '../../model/factory/linked-account.factory';
 
 /**
  * The buttons component for the linked accounts.
@@ -19,13 +22,19 @@ export class LinkedAccountTableButtonsComponent extends CrudTableButtonsComponen
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {CrudRestErrorReporter} crudRestErrorReporter
-     * @param {LinkedAccountCrudServiceContainer} linkedAccountServiceContainer
+     * @param {LinkedAccountStateStore} linkedAccountStateStore
+     * @param {LinkedAccountController} linkedAccountController
+     * @param {LinkedAccountFactory} linkedAccountFactory
      */
     constructor( protected toaster: ToastsManager,
-                 protected linkedAccountServiceContainer: LinkedAccountCrudServiceContainer )
+                 private linkedAccountStateStore: LinkedAccountStateStore,
+                 private linkedAccountController: LinkedAccountController,
+                 private linkedAccountFactory: LinkedAccountFactory )
     {
-        super( toaster, linkedAccountServiceContainer );
+        super( toaster,
+               linkedAccountStateStore,
+               linkedAccountController,
+               linkedAccountFactory );
     }
 
     protected isShowAddButton(): boolean

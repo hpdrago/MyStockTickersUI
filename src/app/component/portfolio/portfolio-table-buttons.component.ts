@@ -2,7 +2,9 @@ import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.comp
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
-import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-container";
+import { PortfolioStateStore } from './portfolio-state-store';
+import { PortfolioController } from './portfolio-controller';
+import { PortfolioFactory } from '../../model/factory/portfolio.factory';
 
 /**
  * Created by mike on 1/2/2017.
@@ -14,10 +16,23 @@ import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-containe
 })
 export class PortfolioTableButtonsComponent extends CrudTableButtonsComponent<Portfolio>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {PortfolioStateStore} portfolioStateStore
+     * @param {PortfolioController} portfolioController
+     * @param {PortfolioFactory} portfolioFactory
+     */
     constructor( protected toaster: ToastsManager,
-                 private portfolioCrudServiceContainer: PortfolioCrudServiceContainer )
+                 protected portfolioStateStore: PortfolioStateStore,
+                 protected portfolioController: PortfolioController,
+                 protected portfolioFactory: PortfolioFactory )
+
     {
-        super( toaster, portfolioCrudServiceContainer );
+        super( toaster,
+               portfolioStateStore,
+               portfolioController,
+               portfolioFactory );
     }
 
     protected getAddButtonLabel(): string

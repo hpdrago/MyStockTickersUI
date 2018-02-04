@@ -2,13 +2,14 @@ import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockNoteCount } from "../../model/entity/stock-note-count";
 import { StockNotesTableComponent } from "./stock-notes-table.component";
-import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { SessionService } from "../../service/session.service";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
-import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
+import { CrudStateStore } from '../crud/common/crud-state-store';
+import { CrudController } from '../crud/common/crud-controller';
+import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -30,15 +31,21 @@ export class StockNotesCountTableComponent extends CrudTableComponent<StockNotes
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {CrudRestErrorReporter} crudRestErrorReporter
      * @param {SessionService} session
-     * @param {StockNotesCrudServiceContainer} stockNotesCrudServiceContainer
+     * @param stockNotesModelObjectFactory
+     * @param {StockNotesCrudService} stockNotesCrudRestService
      */
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,
-                 private stockNotesCrudServiceContainer: StockNotesCrudServiceContainer )
+                 private stockNotesModelObjectFactory,
+                 private stockNotesCrudRestService: StockNotesCrudService )
     {
-        super( TableLoadingStrategy.ALL_ON_CREATE, toaster, stockNotesCrudServiceContainer );
+        super( TableLoadingStrategy.ALL_ON_CREATE,
+               toaster,
+               new CrudStateStore<StockNotes>( stockNotesModelObjectFactory ),
+               new CrudController<StockNotes>(),
+               stockNotesModelObjectFactory,
+               stockNotesCrudRestService );
     }
 
     /**
@@ -69,10 +76,10 @@ export class StockNotesCountTableComponent extends CrudTableComponent<StockNotes
     /**
      * Load the portfolios for the customer
      */
+    /*
     protected loadTable()
     {
-        this.stockNotesCrudServiceContainer
-            .stockNoteCountService
+        this.stockNoteCountService
             .getStockNoteCounts( this.session.getLoggedInUserId() )
             .subscribe( stockNoteCounts =>
             {
@@ -88,5 +95,5 @@ export class StockNotesCountTableComponent extends CrudTableComponent<StockNotes
                 this.reportRestError( err );
             });
     }
-
+    */
 }

@@ -4,7 +4,6 @@
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { ModelObject } from "../../model/entity/modelobject";
 import { ToastsManager } from "ng2-toastr";
-import { CrudServiceContainer } from "../crud/common/crud-service-container";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { SelectItem } from "primeng/primeng";
 import { StockNotesSourceList } from "../stocknotes/stock-notes-source-list";
@@ -13,6 +12,9 @@ import { StockNotesSourceContainer } from "../../common/stock-notes-source-conta
 import { isNumeric } from "rxjs/util/isNumeric";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
+import { ModelObjectFactory } from '../../model/factory/model-object.factory';
+import { CrudController } from '../crud/common/crud-controller';
+import { CrudStateStore } from '../crud/common/crud-state-store';
 
 /**
  * This class contains the methods to handle forms for entities with note sources.
@@ -27,14 +29,22 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {CrudServiceContainer<T extends ModelObject<T> & StockNotesSourceContainer>} crudServiceContainer
+     * @param {CrudStateStore<T extends ModelObject<T> & StockNotesSourceContainer>} crudStateStore
+     * @param {CrudController<T extends ModelObject<T> & StockNotesSourceContainer>} crudController
+     * @param {ModelObjectFactory<T extends ModelObject<T> & StockNotesSourceContainer>} modelObjectFactory
      * @param {CustomerCrudService} customerService
      */
     constructor( protected toaster: ToastsManager,
-                 protected crudServiceContainer: CrudServiceContainer<T>,
+                 protected crudStateStore: CrudStateStore<T>,
+                 protected crudController: CrudController<T>,
+                 protected modelObjectFactory: ModelObjectFactory<T>,
                  protected customerService: CustomerCrudService )
     {
-        super( toaster, crudServiceContainer );
+        super( toaster,
+               crudStateStore,
+               crudController,
+               modelObjectFactory );
+
     }
 
     /**

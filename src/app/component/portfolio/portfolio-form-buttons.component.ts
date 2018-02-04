@@ -3,7 +3,10 @@ import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.compone
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
 import { SessionService } from "../../service/session.service";
-import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-container";
+import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service';
+import { PortfolioFactory } from '../../model/factory/portfolio.factory';
+import { PortfolioController } from './portfolio-controller';
+import { PortfolioStateStore } from './portfolio-state-store';
 
 /**
  * Button panel component for the Portfolio dialog.
@@ -17,11 +20,27 @@ import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-containe
 })
 export class PortfolioFormButtonsComponent extends CrudFormButtonsComponent<Portfolio>
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {SessionService} session
+     * @param {PortfolioStateStore} portfolioStateStore
+     * @param {PortfolioController} portfolioController
+     * @param {PortfolioFactory} portfolioFactory
+     * @param {PortfolioCrudService} portfolioCrudService
+     */
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,
-                 protected portfolioCrudServiceContainer: PortfolioCrudServiceContainer )
+                 private portfolioStateStore: PortfolioStateStore,
+                 private portfolioController: PortfolioController,
+                 private portfolioFactory: PortfolioFactory,
+                 private portfolioCrudService: PortfolioCrudService )
     {
-        super( toaster, portfolioCrudServiceContainer );
+        super( toaster,
+               portfolioStateStore,
+               portfolioController,
+               portfolioFactory,
+               portfolioCrudService );
     }
 
     protected onAddButtonClick(): void

@@ -5,8 +5,14 @@ import { MenuItem } from "primeng/primeng";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { PortfolioStockTableComponent } from "../portfoliostock/portfolio-stock-table.component";
-import { PortfolioCrudServiceContainer } from "./portfolio-crud-service-container";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
+import { PortfolioStockStateStore } from '../portfoliostock/portfolio-stock-state-store';
+import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
+import { PortfolioStockController } from '../portfoliostock/portfolio-stock-controller';
+import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service';
+import { PortfolioFactory } from '../../model/factory/portfolio.factory';
+import { PortfolioController } from './portfolio-controller';
+import { PortfolioStateStore } from './portfolio-state-store';
 
 /**
  * This class contains the UI for listing the user's portfolios.
@@ -30,13 +36,24 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {SessionService} session
-     * @param {PortfolioCrudServiceContainer} portfolioCrudServiceContainer
+     * @param {PortfolioStateStore} portfolioStateStore
+     * @param {PortfolioController} portfolioController
+     * @param {PortfolioFactory} portfolioFactory
+     * @param {PortfolioCrudService} portfolioCrudService
      */
     constructor( protected toaster: ToastsManager,
                  protected session: SessionService,
-                 protected portfolioCrudServiceContainer: PortfolioCrudServiceContainer )
+                 private portfolioStateStore: PortfolioStateStore,
+                 private portfolioController: PortfolioController,
+                 private portfolioFactory: PortfolioFactory,
+                 private portfolioCrudService: PortfolioCrudService )
     {
-        super( TableLoadingStrategy.ALL_ON_CREATE, toaster, portfolioCrudServiceContainer );
+        super( TableLoadingStrategy.ALL_ON_CREATE,
+               toaster,
+               portfolioStateStore,
+               portfolioController,
+               portfolioFactory,
+               portfolioCrudService );
     }
 
     /**
@@ -53,8 +70,7 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
     private loadPortfolio()
     {
         this.debug( "loadPortfolio " );
-        this.portfolioCrudServiceContainer
-            .portfolioCrudService
+        this.portfolioCrudService
             .getModelObject( this.modelObject )
             .subscribe( (portfolio) =>
                         {
@@ -92,8 +108,7 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
      */
     protected loadTable()
     {
-        this.portfolioCrudServiceContainer
-            .portfolioCrudService
+        this.portfolioCrudService
             .getCustomerPortfolios( this.session.getLoggedInUserId() )
             .subscribe( portfolios =>
             {

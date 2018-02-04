@@ -1,13 +1,16 @@
 import { StockNotes } from "../../model/entity/stock-notes";
 import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
-import { StockNotesCrudServiceContainer } from "./stock-notes-crud-service-container";
 import { StockUrlMap } from "../../common/stock-url-map";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { StockQuoteModelObjectTableComponent } from "../stockquote/stock-quote-modelobject-table.component";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { BullOrBear } from "../../common/bull-or-bear.enum";
 import { CrudRestErrorReporter } from "../../service/crud/crud-rest-error-reporter";
+import { StockNotesStateStore } from './stock-notes-state-store';
+import { StockNotesController } from './stock-notes-controller';
+import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
+import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
 
 /**
  * This is the base class for Stock Notes tables.
@@ -21,17 +24,27 @@ export abstract class StockNotesTableComponent extends StockQuoteModelObjectTabl
     /**
      * Constructor.
      * @param {SessionService} session
+     * @param {StockNotesStateStore} stockNotesStateStore
+     * @param {StockNotesController} stockNotesController
+     * @param {StockNotesFactory} stockNotesFactory
+     * @param {StockNotesCrudService} stockNotesCrudService
      * @param {ToastsManager} toaster
-     * @param {CrudRestErrorReporter} crudRestErrorReporter
-     * @param {StockNotesCrudServiceContainer} stockNotesServiceContainer
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
      */
     constructor( protected session: SessionService,
+                 protected stockNotesStateStore: StockNotesStateStore,
+                 protected stockNotesController: StockNotesController,
+                 protected stockNotesFactory: StockNotesFactory,
+                 protected stockNotesCrudService: StockNotesCrudService,
                  protected toaster: ToastsManager,
-                 protected stockNotesServiceContainer: StockNotesCrudServiceContainer,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
-        super( toaster, stockNotesServiceContainer, stockQuoteRefreshService );
+        super( toaster,
+               stockNotesStateStore,
+               stockNotesController,
+               stockNotesFactory,
+               stockNotesCrudService,
+               stockQuoteRefreshService );
     }
 
     /**

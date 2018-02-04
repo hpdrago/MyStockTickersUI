@@ -14,7 +14,7 @@ import { ModelObjectFactory } from "../../../model/factory/model-object.factory"
  * This class manages the CRUD state which includes the CrudOperation and the ModelObject.
  * These values are stored in single location and RxJs Observables are used to notify components of any state change.
  */
-export class CrudStateStore<T extends ModelObject<T>> extends BaseClass
+export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
 {
     private modelObjectChangedSubject: BehaviorSubject<ModelObjectChangedEvent<T>>;
     private modelObjectDeletedSubject: Subject<ModelObjectDeletedEvent<T>>;

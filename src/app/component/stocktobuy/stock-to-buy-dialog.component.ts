@@ -1,8 +1,10 @@
 import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockToBuyCrudServiceContainer } from "./stock-to-buy-crud-service-container";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
+import { StockToBuyStateStore } from './stock-to-buy-state-store';
+import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
+import { StockToBuyController } from './stock-to-buy-controller';
 
 /**
  * Created by mike on 8/15/2017.
@@ -14,8 +16,10 @@ import { StockToBuy } from "../../model/entity/stock-to-buy";
 export class StockToBuyDialogComponent extends CrudDialogComponent<StockToBuy>
 {
     constructor( protected toaster: ToastsManager,
-                 private stockToBuyCrudServiceContainer: StockToBuyCrudServiceContainer )
+                 private stockToBuyStateStore: StockToBuyStateStore,
+                 private stockToBuyController: StockToBuyController,
+                 private stockToBuyFactory: StockToBuyFactory )
     {
-        super( toaster, stockToBuyCrudServiceContainer );
+        super( toaster, stockToBuyStateStore, stockToBuyController, stockToBuyFactory );
     }
 }

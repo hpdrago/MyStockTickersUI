@@ -2,7 +2,10 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { Customer } from "../../model/entity/customer";
-import { CustomerCrudServiceContainer } from "./customer-crud-service-container";
+import { CustomerFactory } from '../../model/factory/customer.factory';
+import { CustomerController } from './customer-controller';
+import { CustomerStateStore } from './customer-state-store';
+import { CustomerCrudService } from '../../service/crud/customer-crud.service';
 
 /**
  * Button panel component for the Customer panel.
@@ -17,9 +20,16 @@ import { CustomerCrudServiceContainer } from "./customer-crud-service-container"
 export class CustomerFormButtonsComponent extends CrudFormButtonsComponent<Customer>
 {
     constructor( protected toaster: ToastsManager,
-                 private customerCrudServiceContainer: CustomerCrudServiceContainer )
+                 protected customerStateStore: CustomerStateStore,
+                 protected customerController: CustomerController,
+                 protected customerFactory: CustomerFactory,
+                 protected customerCrudService: CustomerCrudService )
     {
-        super( toaster, customerCrudServiceContainer );
+        super( toaster,
+               customerStateStore,
+               customerController,
+               customerFactory,
+               customerCrudService );
     }
 
     public getDeleteKeyword(): string

@@ -1,9 +1,14 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { StockToBuyCrudServiceContainer } from "../stocktobuy/stock-to-buy-crud-service-container";
-import { StockNotesCrudServiceContainer } from "../stocknotes/stock-notes-crud-service-container";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { StockToBuyTableComponent } from "../stocktobuy/stock-to-buy-table.component";
+import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
+import { StockNotesController } from '../stocknotes/stock-notes-controller';
+import { StockNotesStateStore } from '../stocknotes/stock-notes-state-store';
+import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
+import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
+import { StockToBuyController } from '../stocktobuy/stock-to-buy-controller';
+import { StockToBuyStateStore } from '../stocktobuy/stock-to-buy-state-store';
 
 /**
  * This component displays a list of Stocks to buy.
@@ -18,12 +23,38 @@ import { StockToBuyTableComponent } from "../stocktobuy/stock-to-buy-table.compo
     } )
 export class StockToBuyTableDashboardComponent extends StockToBuyTableComponent
 {
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockToBuyStateStore} stockToBuyStateStore
+     * @param {StockToBuyController} stockToBuyController
+     * @param {StockToBuyFactory} stockToBuyFactory
+     * @param {StockToBuyCrudService} stockToBuyCrudService
+     * @param {StockNotesStateStore} stockNotesStateStore
+     * @param {StockNotesController} stockNotesController
+     * @param {StockNotesFactory} stockNotesFactory
+     * @param {StockQuoteRefreshService} stockQuoteRefreshService
+     */
     constructor( protected toaster: ToastsManager,
-                 protected stockToBuyServiceContainer: StockToBuyCrudServiceContainer,
-                 protected stockNotesServiceContainer: StockNotesCrudServiceContainer,
+                 protected stockToBuyStateStore: StockToBuyStateStore,
+                 protected stockToBuyController: StockToBuyController,
+                 protected stockToBuyFactory: StockToBuyFactory,
+                 protected stockToBuyCrudService: StockToBuyCrudService,
+                 protected stockNotesStateStore: StockNotesStateStore,
+                 protected stockNotesController: StockNotesController,
+                 protected stockNotesFactory: StockNotesFactory,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
-        super( toaster, stockToBuyServiceContainer, stockNotesServiceContainer, stockQuoteRefreshService );
+        super( toaster,
+               stockToBuyStateStore,
+               stockToBuyController,
+               stockToBuyFactory,
+               stockToBuyCrudService,
+               stockNotesStateStore,
+               stockNotesController,
+               stockNotesFactory,
+               stockQuoteRefreshService );
+
     }
 
 }

@@ -3,9 +3,12 @@ import { Portfolio } from "../../model/entity/portfolio";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
-import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-service-container";
 import { SessionService } from "../../service/session.service";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
+import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
+import { PortfolioStockController } from './portfolio-stock-controller';
+import { PortfolioStockStateStore } from './portfolio-stock-state-store';
+import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
 
 /**
  * This component lists all of the stocks for a portfolio
@@ -26,13 +29,24 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {SessionService} session
-     * @param {PortfolioStockCrudServiceContainer} portfolioStockCrudServiceContainer
+     * @param {PortfolioStockStateStore} portfolioStockStateStore
+     * @param {PortfolioStockController} portfolioStockController
+     * @param {PortfolioStockFactory} portfolioStockFactory
+     * @param {PortfolioStockCrudService} portfolioStockCrudService
      */
     constructor( protected toaster: ToastsManager,
                  private session: SessionService,
-                 protected portfolioStockCrudServiceContainer: PortfolioStockCrudServiceContainer )
+                 private portfolioStockStateStore: PortfolioStockStateStore,
+                 private portfolioStockController: PortfolioStockController,
+                 private portfolioStockFactory: PortfolioStockFactory,
+                 private portfolioStockCrudService: PortfolioStockCrudService )
     {
-        super( TableLoadingStrategy.ALL_ON_CREATE, toaster, portfolioStockCrudServiceContainer );
+        super( TableLoadingStrategy.ALL_ON_CREATE,
+               toaster,
+               portfolioStockStateStore,
+               portfolioStockController,
+               portfolioStockFactory,
+               portfolioStockCrudService );
     }
 
     private getAddButtonText(): string
@@ -47,8 +61,7 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
      */
     public registerForPortfolioStockChanges( observer )
     {
-        return this.portfolioStockCrudServiceContainer
-                   .crudTableService
+        return this.portfolioStockController
                    .subscribeToTableContentChangeEvent( observer );
     }
 
@@ -63,8 +76,7 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
         this.logger.log( 'loadPortfolio ' + JSON.stringify( portfolio ));
         this.title = portfolio.name + " Portfolio Stocks";
         this.portfolio = portfolio;
-        this.portfolioStockCrudServiceContainer
-            .portfolioStockCrudService
+        this.portfolioStockCrudService
             .getPortfolioStocks( this.session.getLoggedInUserId(), portfolio.id )
             .subscribe( (stocks: PortfolioStock[]) =>
                         {

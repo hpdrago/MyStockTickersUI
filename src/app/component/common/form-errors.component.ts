@@ -3,9 +3,9 @@
  */
 
 import { Component, Input } from "@angular/core";
-import { CrudFormService } from "../crud/form/crud-form.service";
 import { BaseComponent } from "./base.component";
 import { ToastsManager } from "ng2-toastr";
+import { CrudController } from '../crud/common/crud-controller';
 
 /**
  * This is a generic component to display form errors in an ordered list.
@@ -26,7 +26,7 @@ import { ToastsManager } from "ng2-toastr";
 export class FormErrorsComponent extends BaseComponent
 {
     @Input()
-    protected crudFormService: CrudFormService<any>;
+    protected crudController: CrudController<any>;
 
     private errors: string[];
 
@@ -37,7 +37,7 @@ export class FormErrorsComponent extends BaseComponent
 
     public ngOnInit()
     {
-        this.crudFormService.subscribeFormErrorsEvent( ( errors ) => this.onErrors( errors ) );
+        this.crudController.subscribeFormErrorsEvent( ( errors ) => this.onErrors( errors ) );
         this.errors = [];
     }
 

@@ -2,9 +2,12 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { LinkedAccount } from "../../model/entity/linked-account";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { LinkedAccountCrudServiceContainer } from "./linked-account-crud-service-container";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
+import { LinkedAccountFactory } from '../../model/factory/linked-account.factory';
+import { LinkedAccountController } from './linked-account-controller';
+import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud.service';
+import { LinkedAccountStateStore } from './linked-account-state-store';
 
 /**
  * This table displays all of the linked account for a TradeItAccount instance.
@@ -20,12 +23,23 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {LinkedAccountCrudServiceContainer} linkedAccountCrudServiceContainer
+     * @param {LinkedAccountStateStore} linkedAccountStateStore
+     * @param {LinkedAccountController} linkedAccountController
+     * @param {LinkedAccountFactory} linkedAccountFactory
+     * @param {LinkedAccountCrudService} linkedAccountCrudService
      */
     constructor( protected toaster: ToastsManager,
-                 protected linkedAccountCrudServiceContainer: LinkedAccountCrudServiceContainer )
+                 protected linkedAccountStateStore: LinkedAccountStateStore,
+                 protected linkedAccountController: LinkedAccountController,
+                 protected linkedAccountFactory: LinkedAccountFactory,
+                 protected linkedAccountCrudService: LinkedAccountCrudService )
     {
-        super( TableLoadingStrategy.ALL_ON_DEMAND, toaster, linkedAccountCrudServiceContainer );
+        super( TableLoadingStrategy.ALL_ON_DEMAND,
+               toaster,
+               linkedAccountStateStore,
+               linkedAccountController,
+               linkedAccountFactory,
+               linkedAccountCrudService );
     }
 
     /**

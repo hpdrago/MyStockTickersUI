@@ -1,9 +1,16 @@
 import { Component, Input } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
-import { PortfolioStockCrudServiceContainer } from "./portfolio-stock-crud-service-container";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
+import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service';
+import { PortfolioFactory } from '../../model/factory/portfolio.factory';
+import { PortfolioController } from '../portfolio/portfolio-controller';
+import { PortfolioStateStore } from '../portfolio/portfolio-state-store';
+import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
+import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
+import { PortfolioStockController } from './portfolio-stock-controller';
+import { PortfolioStockStateStore } from './portfolio-stock-state-store';
 
 /**
  * Created by mike on 1/2/2017.
@@ -18,10 +25,24 @@ export class PortfolioStockTableButtonsComponent extends CrudTableButtonsCompone
     @Input()
     private portfolio: Portfolio;
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {PortfolioStockStateStore} portfolioStockStateStore
+     * @param {PortfolioStockController} portfolioStockController
+     * @param {PortfolioStockFactory} portfolioStockFactory
+     * @param {PortfolioStockCrudService} portfolioStockCrudService
+     */
     constructor( protected toaster: ToastsManager,
-                 private portfolioStockCrudServiceContainer: PortfolioStockCrudServiceContainer )
+                 private portfolioStockStateStore: PortfolioStockStateStore,
+                 private portfolioStockController: PortfolioStockController,
+                 private portfolioStockFactory: PortfolioStockFactory,
+                 private portfolioStockCrudService: PortfolioStockCrudService )
     {
-        super( toaster, portfolioStockCrudServiceContainer );
+        super( toaster,
+               portfolioStockStateStore,
+               portfolioStockController,
+               portfolioStockFactory )
     }
 
     /**

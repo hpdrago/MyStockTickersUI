@@ -14,6 +14,7 @@ import { OnInit } from "@angular/core";
 import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
 import { ModelObjectDeletedEvent } from "../../../service/crud/model-object-deleted-event";
 import { ModelObjectCreatedEvent } from "../../../service/crud/model-object-created-event";
+import { CrudController } from './crud-controller';
 
 /**
  * This class is the base class for all CRUD components
@@ -51,6 +52,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     constructor( protected toaster: ToastsManager,
                  protected crudStateStore?: CrudStateStore<T>,
+                 protected crudController?: CrudController<T>,
                  protected modelObjectFactory?: ModelObjectFactory<T> )
     {
         super( toaster );

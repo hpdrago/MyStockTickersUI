@@ -4,7 +4,6 @@ import { ToastsManager } from "ng2-toastr";
 import { SessionService } from "../../service/session.service";
 import { Customer } from "../../model/entity/customer";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
-import { CustomerCrudServiceContainer } from "./customer-crud-service-container";
 
 /**
  * This is the Customer Form Component class.
