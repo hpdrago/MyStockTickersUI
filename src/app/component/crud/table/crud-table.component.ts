@@ -439,8 +439,22 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         var methodName = "onModelObjectCreated";
         this.debug( methodName + ".begin" );
-        //super.onModelObjectCreated( modelObject );
+        super.onModelObjectCreated( modelObject );
         this.addModelObjectToTable( modelObject );
+        this.debug( methodName + ".end" );
+    }
+
+    /**
+     * This method is called when a modelObject of type T is changed.  This method will determine if the event is
+     * from itself or another component and if so, make any necessary changes.
+     * @param {ModelObjectChangedEvent<T extends ModelObject<T>>} modelObjectChangeEvent
+     */
+    protected onModelObjectChangedEvent( modelObjectChangeEvent: ModelObjectChangedEvent<T> )
+    {
+        var methodName = "onModelObjectChangedEvent";
+        this.debug( methodName + ".begin modelObject: " + JSON.stringify( modelObjectChangeEvent.modelObject ) );
+        this.debug( methodName + " sender: " + (<any>modelObjectChangeEvent.sender).constructor.name );
+        this.updateModelObjectInTable( modelObjectChangeEvent.modelObject, false );
         this.debug( methodName + ".end" );
     }
 
@@ -624,20 +638,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             }
         }
         return -1;
-    }
-
-    /**
-     * This method is called when a modelObject of type T is changed.  This method will determine if the event is
-     * from itself or another component and if so, make any necessary changes.
-     * @param {ModelObjectChangedEvent<T extends ModelObject<T>>} modelObjectChangeEvent
-     */
-    protected onModelObjectChangedEvent( modelObjectChangeEvent: ModelObjectChangedEvent<T> )
-    {
-        var methodName = "onModelObjectChangedEvent";
-        this.debug( methodName + ".begin modelObject: " + JSON.stringify( modelObjectChangeEvent.modelObject ) );
-        this.debug( methodName + " sender: " + (<any>modelObjectChangeEvent.sender).constructor.name );
-        this.updateModelObjectInTable( modelObjectChangeEvent.modelObject, false );
-        this.debug( methodName + ".end" );
     }
 
     /**

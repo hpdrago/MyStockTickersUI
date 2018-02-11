@@ -7,7 +7,7 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { SelectItem } from "primeng/primeng";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
-import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 

@@ -6,11 +6,11 @@ import { EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
-import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
-import { TradeitOAuthComponent } from "./tradeit-oauth-component";
+import { TradeItAccountOAuthService } from "./tradeit-account-oauth.service";
+import { TradeItOAuthComponent } from "./tradeit-oauth-component";
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
-import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 
@@ -18,7 +18,7 @@ import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-cr
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}
  * it is checked for authentication.
  */
-export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeItAccount> implements OnInit, TradeitOAuthComponent
+export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeItAccount> implements OnInit, TradeItOAuthComponent
 {
     @Output()
     private tradeItAccountSelected: EventEmitter<TradeItAccount>  = new EventEmitter<TradeItAccount>();
@@ -35,7 +35,7 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
      * @param {TradeItAccountFactory} tradeItAccountFactory
      * @param {TradeItAccountCrudService} tradeItAccountCrudService
      * @param {TradeItService} tradeItService
-     * @param {TradeitAccountOAuthService} tradeItOAuthService
+     * @param {TradeItAccountOAuthService} tradeItOAuthService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
@@ -44,7 +44,7 @@ export class TradeitAccountBaseTableComponent extends CrudTableComponent<TradeIt
                  protected tradeItAccountFactory: TradeItAccountFactory,
                  protected tradeItAccountCrudService: TradeItAccountCrudService,
                  protected tradeItService: TradeItService,
-                 protected tradeItOAuthService: TradeitAccountOAuthService )
+                 protected tradeItOAuthService: TradeItAccountOAuthService )
     {
         super( TableLoadingStrategy.ALL_ON_CREATE,
                toaster,

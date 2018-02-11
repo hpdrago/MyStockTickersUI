@@ -3,7 +3,7 @@ import { ToastsManager } from "ng2-toastr";
 import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
-import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 
@@ -37,15 +37,4 @@ export class TradeItAccountTableButtonsComponent extends CrudTableButtonsCompone
                tradeItAccountFactory,
                tradeItCrudService )
     }
-
-    protected getAddButtonLabel(): string
-    {
-        return "Add Account";
-    }
-
-    protected getDeleteButtonLabel(): string
-    {
-        return "Delete Account";
-    }
-
 }

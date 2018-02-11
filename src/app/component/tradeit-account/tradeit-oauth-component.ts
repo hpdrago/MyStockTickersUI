@@ -3,7 +3,7 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 /**
  * This interface defines the methods that a component must implement to handle OAuth events.
  */
-export interface TradeitOAuthComponent
+export interface TradeItOAuthComponent
 {
     /**
      * This method is called by the TradeIt popup window to communicate the authentication results.

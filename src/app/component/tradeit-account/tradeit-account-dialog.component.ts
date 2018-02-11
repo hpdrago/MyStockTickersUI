@@ -3,7 +3,7 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
-import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 
@@ -35,5 +35,12 @@ export class TradeItAccountDialogComponent extends CrudDialogComponent<TradeItAc
                tradeItAccountController,
                tradeItAccountFactory,
                tradeItAccountCrudService );
+    }
+
+    public ngOnInit()
+    {
+        super.ngOnInit();
+        this.tradeItAccountController
+            .subscribeToAccountLinkedEvent( (tradeItAccount) => { this.closeDialog(); } );
     }
 }

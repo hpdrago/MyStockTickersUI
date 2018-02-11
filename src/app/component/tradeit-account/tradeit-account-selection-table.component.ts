@@ -2,11 +2,11 @@ import { Component } from "@angular/core";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
-import { TradeitAccountBaseTableComponent } from "./tradeit-account-base-table.component";
-import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
+import { TradeItAccountBaseTableComponent } from "./tradeit-account-base-table.component";
+import { TradeItAccountOAuthService } from "./tradeit-account-oauth.service";
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
-import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 
@@ -21,7 +21,7 @@ import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-cr
                templateUrl: './tradeit-account-selection-table.component.html',
                styleUrls: ['./tradeit-account-selection-table.component.css']
            })
-export class TradeItAccountSelectionTableComponent extends TradeitAccountBaseTableComponent
+export class TradeItAccountSelectionTableComponent extends TradeItAccountBaseTableComponent
 {
     /**
      * Constructor.
@@ -32,7 +32,7 @@ export class TradeItAccountSelectionTableComponent extends TradeitAccountBaseTab
      * @param {TradeItAccountFactory} tradeItAccountFactory
      * @param {TradeItAccountCrudService} tradeItAccountCrudService
      * @param {TradeItService} tradeItService
-     * @param {TradeitAccountOAuthService} tradeItOAuthService
+     * @param {TradeItAccountOAuthService} tradeItOAuthService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
@@ -41,7 +41,7 @@ export class TradeItAccountSelectionTableComponent extends TradeitAccountBaseTab
                  protected tradeItAccountFactory: TradeItAccountFactory,
                  protected tradeItAccountCrudService: TradeItAccountCrudService,
                  protected tradeItService: TradeItService,
-                 protected tradeItOAuthService: TradeitAccountOAuthService )
+                 protected tradeItOAuthService: TradeItAccountOAuthService )
     {
         super( toaster,
                tradeItErrorReporter,

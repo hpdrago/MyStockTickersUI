@@ -77,7 +77,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     /**
      * This subject indicates that a model object has been succesfully added to the database.
      */
-    private modelObjectCreatedSubject: Subject<T>;
+    private modelObjectAddedSubject: Subject<T>;
 
     /**
      * Constructor.
@@ -122,7 +122,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         this.formReadyToDisplay = new Subject<void>();
         this.modelObjectDeletedSubject = new Subject<T>();
         this.modelObjectSavedSubject = new Subject<T>();
-        this.modelObjectCreatedSubject = new Subject<T>();
+        this.modelObjectAddedSubject = new Subject<T>();
     }
 
     /**
@@ -721,7 +721,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         this.debug( methodName + '.begin to ' + this.getToObserversMessage( this.modelObjectDeletedSubject ));
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.modelObjectDeletedSubject.next( modelObject );
-        //this.crudStateStore.resetSubjects();
+        this.crudStateStore.resetSubjects();
         this.debug( methodName + '.end' );
     }
 
@@ -739,7 +739,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
                    .map( ( modelObject: T ) =>
                          {
                              this.sendFormResetEvent();
-                             this.sendModelObjectCreatedEvent( modelObject )
+                             this.sendModelObjectAddedEvent( modelObject )
                              return modelObject;
                          });
     }
@@ -749,23 +749,23 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      * button work was completed successfully.
      * @return {Subscription}
      */
-    public subscribeToModelObjectCreatedEvent( fn: ( T ) => any ): Subscription
+    public subscribeToModelObjectAddedEvent( fn: ( T ) => any ): Subscription
     {
-        this.debug( 'subscribeToModelObjectCreated' );
-        return this.modelObjectCreatedSubject.asObservable().subscribe( fn );
+        this.debug( 'subscribeToModelObjectAddedEvent' );
+        return this.modelObjectAddedSubject.asObservable().subscribe( fn );
     }
 
     /**
-     * The {@code CrudPanelComponent will call this method when the delete button work completed successfully.
+     * Sends an event indicating that that {@code modelObject} was added to the database.
      * @param modelObject
      */
-    protected sendModelObjectCreatedEvent( modelObject: T )
+    public sendModelObjectAddedEvent( modelObject: T )
     {
-        let methodName = 'sendModelObjectCreatedEvent';
-        this.debug( methodName + '.begin to ' + this.getToObserversMessage( this.modelObjectCreatedSubject ));
+        let methodName = 'sendModelObjectAddedEvent';
+        this.debug( methodName + '.begin to ' + this.getToObserversMessage( this.modelObjectAddedSubject ));
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
-        this.modelObjectCreatedSubject.next( modelObject );
-        //this.crudStateStore.resetSubjects();
+        this.modelObjectAddedSubject.next( modelObject );
+        this.crudStateStore.resetSubjects();
         this.debug( methodName + '.end' );
     }
 
@@ -791,16 +791,16 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     }
 
     /**
-     * The {@code CrudPanelComponent will call this method when the delete button work completed successfully.
+     * Sends an event indicating that that {@code modelObject} was saved to the database.
      * @param modelObject
      */
-    protected sendModelObjectSavedEvent( modelObject: T )
+    public sendModelObjectSavedEvent( modelObject: T )
     {
         let methodName = 'sendModelObjectSavedEvent';
         this.debug( methodName + '.begin to ' + this.getToObserversMessage( this.modelObjectSavedSubject ));
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.modelObjectSavedSubject.next( modelObject );
-        //this.crudStateStore.resetSubjects();
+        this.crudStateStore.resetSubjects();
         this.debug( methodName + '.end' );
     }
 

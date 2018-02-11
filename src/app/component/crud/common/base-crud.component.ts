@@ -10,8 +10,6 @@ import { CrudRestErrorReporter } from "../../../service/crud/crud-rest-error-rep
 import { CrudStateStore } from "./crud-state-store";
 import { OnInit } from "@angular/core";
 import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
-import { ModelObjectDeletedEvent } from "../../../service/crud/model-object-deleted-event";
-import { ModelObjectCreatedEvent } from "../../../service/crud/model-object-created-event";
 import { CrudController } from './crud-controller';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { Observable } from 'rxjs/Observable';
@@ -81,10 +79,28 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         let methodName = "ngOnInit";
         this.log( methodName + ".begin" );
         this.subscribeToModelObjectChangeEvents();
-        this.addSubscription( 'subscribeToCrudOperationChangeEvent',
-            this.crudStateStore
-                .subscribeToCrudOperationChangeEvent( (crudOperation: CrudOperation) => this.crudOperationChangedEvent( crudOperation )));
+        this.subscribeToCrudStateStoreEvents();
         this.log( methodName + ".end" );
+    }
+
+    /**
+     * Subscribe to CrudStateStore changes.
+     */
+    protected subscribeToCrudStateStoreEvents()
+    {
+        let methodName = 'subscribeToCrudStateStoreEvents';
+        this.debug( methodName );
+        this.addSubscription( 'subscribeToCrudOperationChangeEvent',
+                              this.crudStateStore
+                                  .subscribeToCrudOperationChangeEvent(
+                                      ( crudOperation: CrudOperation ) => this.crudOperationChangedEvent(
+                                          crudOperation ) ) );
+        this.addSubscription( 'subscribeToModelObjectChangedEvent',
+                              this.crudStateStore
+                                  .subscribeToModelObjectChangedEvent( (modelObjectChangeEvent: ModelObjectChangedEvent<T>) =>
+                                                                       {
+                                                                            this.onModelObjectChanged( modelObjectChangeEvent.modelObject );
+                                                                       }));
     }
 
     /**
@@ -125,15 +141,15 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     {
         let methodName = 'subscribeToModelObjectChangeEvents';
         this.debug( methodName + '.begin' );
-        this.addSubscription( 'subscribeToModelObjectChangedEvent',
+        this.addSubscription( 'subscribeToModelObjectSavedEvent',
             this.crudController
             .subscribeToModelObjectSavedEvent( (modelObject: T) => this.onModelObjectSaved( modelObject )));
         this.addSubscription( 'subscribeToModelObjectDeletedEvent',
             this.crudController
             .subscribeToModelObjectDeletedEvent( (modelObject: T) => this.onModelObjectDeleted( modelObject )));
-        this.addSubscription( 'subscribeToModelObjectCreatedEvent',
-            this.crudController
-            .subscribeToModelObjectCreatedEvent( (modelObject: T) => this.onModelObjectCreated( modelObject )));
+        this.addSubscription( 'subscribeToModelObjectAddedEvent',
+                              this.crudController
+            .subscribeToModelObjectAddedEvent( ( modelObject: T) => this.onModelObjectCreated( modelObject )));
         this.debug( methodName + '.end' );
     }
 
@@ -247,18 +263,6 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         let methodName = "onModelObjectSaved";
         this.debug( methodName + " " + JSON.stringify( modelObject ) );
         this.modelObject = modelObject;
-    }
-
-    /**
-     * Determines if {@code modelObject} is the same as {@code this.modelObject}.
-     * @param {T} modelObject
-     * @return {boolean} true if the model objects are the same as compared by the primary key.
-     */
-    protected isCurrentModelObject( modelObject: T ): boolean
-    {
-        return !isNullOrUndefined( this.modelObject ) &&
-               !isNullOrUndefined( modelObject ) &&
-               this.modelObject.isEqualPrimaryKey( modelObject );
     }
 
     /**

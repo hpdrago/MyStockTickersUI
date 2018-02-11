@@ -2,11 +2,11 @@ import { Component, OnDestroy } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
-import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
-import { TradeitOAuthComponent } from "./tradeit-oauth-component";
+import { TradeItAccountOAuthService } from "./tradeit-account-oauth.service";
+import { TradeItOAuthComponent } from "./tradeit-oauth-component";
 import { CrudOperation } from "../crud/common/crud-operation";
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
-import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 
@@ -19,10 +19,10 @@ import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-cr
     selector:    'tradeit-account-form-buttons',
     templateUrl: '../crud/form/crud-form-buttons.component.html',
     styleUrls: ['../crud/form/crud-form-buttons.component.css'],
-    providers: [TradeitAccountOAuthService]
+    providers: [TradeItAccountOAuthService]
 })
 export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent<TradeItAccount>
-    implements OnDestroy, TradeitOAuthComponent
+    implements OnDestroy, TradeItOAuthComponent
 {
     /**
      * Constructor.
@@ -31,14 +31,14 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
      * @param {TradeItAccountController} tradeItAccountController
      * @param {TradeItAccountFactory} tradeItAccountFactory
      * @param {TradeItAccountCrudService} tradeItAccountCrudService
-     * @param {TradeitAccountOAuthService} tradeItOAuthService
+     * @param {TradeItAccountOAuthService} tradeItOAuthService
      */
     constructor( protected toaster: ToastsManager,
                  private tradeItAccountStateStore: TradeItAccountStateStore,
                  private tradeItAccountController: TradeItAccountController,
                  private tradeItAccountFactory: TradeItAccountFactory,
                  private tradeItAccountCrudService: TradeItAccountCrudService,
-                 private tradeItOAuthService: TradeitAccountOAuthService )
+                 private tradeItOAuthService: TradeItAccountOAuthService )
     {
         super( toaster,
                tradeItAccountStateStore,
@@ -129,10 +129,15 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
     {
         let methodName = "notifyAuthenticationSuccess";
         this.log( methodName + ".begin " + CrudOperation.getName( this.crudOperation ) + " " + JSON.stringify( tradeItAccount ) );
-        this.crudStateStore.sendModelObjectChangedEvent( this, tradeItAccount );
-        //this.notifyAddButtonWorkSuccessful();
-        //this.tradeItAccountController
-        //    .sendModelObjectCreatedEvent( tradeItAccount );
+        /*
+         * Notify that the account has been linked.
+         * The adding of the account is a multi-step process, this notification is necesssary to let the dialog know
+         * that the linking has been completed.
+         */
+        this.tradeItAccountController
+            .sendAccountLinkedEvent( tradeItAccount );
+        this.tradeItAccountStateStore
+            .resetSubjects();
         this.log( methodName + ".end" )
     }
 }

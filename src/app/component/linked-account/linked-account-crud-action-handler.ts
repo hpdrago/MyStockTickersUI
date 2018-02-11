@@ -1,30 +1,30 @@
 import { CrudActionHandler } from '../crud/common/crud-action-handler';
 import { Customer } from '../../model/entity/customer';
 import { Injectable } from '@angular/core';
-import { TradeItAccount } from '../../model/entity/tradeit-account';
+import { LinkedAccount } from '../../model/entity/linked-account';
 import { ToastsManager } from 'ng2-toastr';
 import { RestErrorReporter } from '../../service/rest-error-reporter';
-import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
+import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud.service';
 
 /**
  * Action handler class.  This class is called by the controller to perform the handle the crud operations triggered
  * from the components.
  */
 @Injectable()
-export class TradeitAccountActionHandler extends CrudActionHandler<TradeItAccount>
+export class LinkedAccountCrudActionHandler extends CrudActionHandler<LinkedAccount>
 {
     /**
      * Constructor.
      * @param {ToastsManager} toaster
      * @param {RestErrorReporter} restErrorReporter
-     * @param {TradeItAccountCrudService} tradeItAccountCrudService
+     * @param {LinkedAccountCrudService} linkedAccountCrudService
      */
     constructor( protected toaster: ToastsManager,
                  protected restErrorReporter: RestErrorReporter,
-                 protected tradeItAccountCrudService: TradeItAccountCrudService )
+                 protected linkedAccountCrudService: LinkedAccountCrudService )
     {
         super( toaster,
                restErrorReporter,
-               tradeItAccountCrudService );
+               linkedAccountCrudService );
     }
 }

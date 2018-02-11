@@ -6,9 +6,11 @@ import { BaseComponent } from "../common/base.component";
 import { TradeItAccountTableComponent } from "./tradeit-account-table.component";
 import { LinkedAccountTableComponent } from "../linked-account/linked-account-table.component";
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
-import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountController } from './tradeit-account-controller';
 import { LinkedAccountStateStore } from '../linked-account/linked-account-state-store';
 import { LinkedAccountController } from '../linked-account/linked-account-controller';
+import { TradeItAccountCrudActionHandler } from './tradeit-account-crud-action-handler';
+import { LinkedAccountCrudActionHandler } from '../linked-account/linked-account-crud-action-handler';
 
 /**
  * Created by mike on 10/8/2016.
@@ -17,8 +19,8 @@ import { LinkedAccountController } from '../linked-account/linked-account-contro
     {
         selector:    'tradeit-accounts',
         templateUrl: './tradeit-accounts.component.html',
-        providers: [TradeItAccountStateStore, TradeItAccountController,
-                    LinkedAccountStateStore, LinkedAccountController]
+        providers: [TradeItAccountStateStore, TradeItAccountController, TradeItAccountCrudActionHandler,
+                    LinkedAccountStateStore, LinkedAccountController, LinkedAccountCrudActionHandler]
     })
 export class TradeItAccountsComponent extends BaseComponent
 {

@@ -98,19 +98,34 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
         this.debug( methodName + ".end" );
     }
 
-    protected onModelObjectChanged( modelObject: T ): void
+    /**
+     * This method is called upon the successful completion of a save which is our signal to close the dialog.
+     * @param {T} modelObject
+     */
+    protected onModelObjectSaved( modelObject: T ): void
     {
-        super.onModelObjectChanged( modelObject );
+        super.onModelObjectSaved( modelObject );
+        this.closeDialog();
     }
 
+    /**
+     * This method is called upon the successful completion of a creating a new model object which is our signal to close the dialog.
+     * @param {T} modelObject
+     */
     protected onModelObjectCreated( modelObject: T ): void
     {
         super.onModelObjectCreated( modelObject );
+        this.closeDialog();
     }
 
+    /**
+     * This method is called upon the successful completion of a delete which is our signal to close the dialog.
+     * @param {T} modelObject
+     */
     protected onModelObjectDeleted( modelObject: T ): void
     {
         super.onModelObjectDeleted( modelObject );
+        this.closeDialog();
     }
 
     /**

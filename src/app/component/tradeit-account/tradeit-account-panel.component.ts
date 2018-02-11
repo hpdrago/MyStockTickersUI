@@ -4,7 +4,7 @@ import { ToastsManager } from "ng2-toastr";
 import { SessionService } from "../../service/session.service";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
-import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 

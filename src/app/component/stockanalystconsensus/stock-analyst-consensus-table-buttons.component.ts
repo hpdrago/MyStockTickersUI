@@ -37,15 +37,4 @@ export class StockAnalystConsensusTableButtonsComponent extends CrudTableButtons
                stockAnalystConsensusFactory,
                stockAnalystConsensusCrudService );
     }
-
-    protected getAddButtonLabel(): string
-    {
-        return "Add Consensus";
-    }
-
-    protected getDeleteButtonLabel(): string
-    {
-        return "Delete Consensus";
-    }
-
 }

@@ -37,16 +37,4 @@ export class StockToBuyTableButtonsComponent extends CrudTableButtonsComponent<S
                stockToBuyFactory,
                stockToBuyCrudService );
     }
-
-/*
-    protected getAddButtonLabel(): string
-    {
-        return "Add Stock To Buy";
-    }
-
-    protected getDeleteButtonLabel(): string
-    {
-        return "Delete Stock To Buy";
-    }
-*/
 }

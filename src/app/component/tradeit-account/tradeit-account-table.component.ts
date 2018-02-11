@@ -1,13 +1,14 @@
 import { ToastsManager } from "ng2-toastr";
 import { Component } from "@angular/core";
-import { TradeitAccountBaseTableComponent } from "./tradeit-account-base-table.component";
+import { TradeItAccountBaseTableComponent } from "./tradeit-account-base-table.component";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
-import { TradeitAccountOAuthService } from "./tradeit-account-oauth.service";
+import { TradeItAccountOAuthService } from "./tradeit-account-oauth.service";
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
-import { TradeItAccountController } from './tradeit-controller';
+import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
+import { TradeItAccount } from '../../model/entity/tradeit-account';
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -21,7 +22,7 @@ import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-cr
                   './tradeit-account-table.component.css'],
     templateUrl: './tradeit-account-table.component.html'
 } )
-export class TradeItAccountTableComponent extends TradeitAccountBaseTableComponent
+export class TradeItAccountTableComponent extends TradeItAccountBaseTableComponent
 {
     /**
      * Constructor.
@@ -32,7 +33,7 @@ export class TradeItAccountTableComponent extends TradeitAccountBaseTableCompone
      * @param {TradeItAccountFactory} tradeItAccountFactory
      * @param {TradeItAccountCrudService} tradeItAccountCrudService
      * @param {TradeItService} tradeItService
-     * @param {TradeitAccountOAuthService} tradeItOAuthService
+     * @param {TradeItAccountOAuthService} tradeItOAuthService
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
@@ -41,7 +42,7 @@ export class TradeItAccountTableComponent extends TradeitAccountBaseTableCompone
                  protected tradeItAccountFactory: TradeItAccountFactory,
                  protected tradeItAccountCrudService: TradeItAccountCrudService,
                  protected tradeItService: TradeItService,
-                 protected tradeItOAuthService: TradeitAccountOAuthService )
+                 protected tradeItOAuthService: TradeItAccountOAuthService )
     {
         super( toaster,
                tradeItErrorReporter,
@@ -51,5 +52,19 @@ export class TradeItAccountTableComponent extends TradeitAccountBaseTableCompone
                tradeItAccountCrudService,
                tradeItService,
                tradeItOAuthService );
+        this.tradeItAccountController
+            .subscribeToAccountLinkedEvent( (tradeItAccount: TradeItAccount) => { this.onAccountLinkedEvent( tradeItAccount ); });
+    }
+
+    /**
+     * This event indicates that a new account was added which is done outside the normal added operations so
+     * we need to refresh the table.
+     * @param {TradeItAccount} tradeItAccount
+     */
+    private onAccountLinkedEvent( tradeItAccount: TradeItAccount )
+    {
+        let methodName = 'nAccountLinkedEvent';
+        this.log( methodName + ' ' + JSON.stringify( tradeItAccount ));
+        this.refreshTable();
     }
 }

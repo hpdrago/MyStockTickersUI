@@ -10,41 +10,44 @@ import { TradeItSecurityQuestionDialogComponent } from "../tradeit/tradeit-secur
 import { TradeItAPIResult } from "../../service/tradeit/apiresults/tradeit-api-result";
 import { ToastsManager } from "ng2-toastr";
 import { GetOAuthTokenUpdateURLResult } from "../../service/tradeit/apiresults/tradeit-get-oath-token-update-url-result";
-import { TradeitOAuthComponent } from "./tradeit-oauth-component";
+import { TradeItOAuthComponent } from "./tradeit-oauth-component";
 import { BaseTradeItService } from "./base-tradeit.service";
 import { RestErrorReporter } from "../../service/rest-error-reporter";
 import { TradeItAPIResultEnum, } from "../../service/tradeit/apiresults/tradeit-api-result-error-code";
+import { TradeItAccountController } from './tradeit-account-controller';
 
 /**
  * This class contains all of the necessary functionality necessary to create and maintain OAuth tokens necessary to
  * communicate to TradeIt to get access to the users brokerage accounts.
  */
 @Injectable()
-export class TradeitAccountOAuthService extends BaseTradeItService
+export class TradeItAccountOAuthService extends BaseTradeItService
 {
     private requestInProcess = false;
     private requestCompleted = false;
     private destroyed: boolean = false;
     private oAuthResultSubject = new Subject<TradeItAccount>();
-    private oAuthComponent: TradeitOAuthComponent;
+    private oAuthComponent: TradeItOAuthComponent;
 
     /**
      * Constructor.
-     * @param {TradeItService} tradeItService
      * @param {ToastsManager} toaster
+     * @param {RestErrorReporter} restErrorReporter
+     * @param {TradeItService} tradeItService
+     * @param {TradeItAccountController} tradeItController
      */
-    constructor( private tradeItService: TradeItService,
-                 protected toaster: ToastsManager,
-                 protected restErrorReporter: RestErrorReporter )
+    constructor( protected toaster: ToastsManager,
+                 protected restErrorReporter: RestErrorReporter,
+                 private tradeItService: TradeItService )
     {
         super( toaster, restErrorReporter );
     }
 
     /**
      * Creates the necessary windows listeners to create OAuth popup windows for TradeIt Account Broker authentication.
-     * @param {TradeitOAuthComponent} oAuthComponent
+     * @param {TradeItOAuthComponent} oAuthComponent
      */
-    public register( oAuthComponent: TradeitOAuthComponent )
+    public register( oAuthComponent: TradeItOAuthComponent )
     {
         let methodName = "register";
         this.log( methodName + ".begin" );
@@ -76,12 +79,11 @@ export class TradeitAccountOAuthService extends BaseTradeItService
      * authenticate their brokerage account.
      * @param {string} broker
      */
-    public openOAuthPopup( oAuthComponent: TradeitOAuthComponent, broker: string  ): void// Observable<string>
+    public openOAuthPopup( oAuthComponent: TradeItOAuthComponent, broker: string  ): void// Observable<string>
     {
         let methodName = "openOAuthPopup";
         this.log( methodName + " broker: " + broker );
         this.register( this.oAuthComponent );
-        //let openOAuthPopupSubject = new Subject<string>();
         this.tradeItService
             .getOAuthPopupURL( broker )
             .subscribe( (getOauthPopupURLResult: TradeItGetOauthPopupURLResult) =>
@@ -92,7 +94,6 @@ export class TradeitAccountOAuthService extends BaseTradeItService
                         {
                             this.reportRestError( error );
                         } );
-        //return openOAuthPopupSubject.asObservable();
     }
 
     /**
@@ -346,7 +347,7 @@ export class TradeitAccountOAuthService extends BaseTradeItService
             observable.subscribe((tradeItAccount: TradeItAccount) =>
                                  {
                                      this.log( methodName + ".begin" );
-                                     this.log( methodName + " added account: " + JSON.stringify( tradeItAccount ) );
+                                     this.log( methodName + " linked account: " + JSON.stringify( tradeItAccount ) );
                                      this.showInfo( tradeItAccount.name + " was successfully linked." )
                                      this.oAuthComponent.notifyAuthenticationSuccess( tradeItAccount );
                                      this.log( methodName + ".end" );

@@ -106,7 +106,6 @@ import { StockAnalystConsensusFactory } from "./model/factory/stock-analyst-cons
 import { StockCatalystEventFactory } from "./model/factory/stock-catalyst-event.factory";
 import { StockCatalystEventCrudService } from "./service/crud/stock-catalyst-event-crud.service";
 import { StockCatalystEventDialogComponent } from "./component/stockcatalystevent/stock-catalyst-event-dialog.component";
-import { StockCatalystEventTableComponent } from "./component/stockcatalystevent/stock-catalyst-event-table.component";
 import { StockCatalystEventTableButtonsComponent } from "./component/stockcatalystevent/stock-catalyst-event-table-buttons.component";
 import { StockCatalystEventFormButtonsComponent } from "./component/stockcatalystevent/stock-catalyst-event-form-buttons.component";
 import { StockCatalystEventFormComponent } from "./component/stockcatalystevent/stock-catalyst-event-form.component";
@@ -159,17 +158,10 @@ import { LinkedAccountFactory } from "./model/factory/linked-account.factory";
 import { LinkedAccountCrudService } from "./service/crud/linked-account-crud.service";
 import { LinkedAccountTableButtonsComponent } from "./component/linked-account/linked-account-table-buttons.component";
 import { LinkedAccountTableComponent } from "./component/linked-account/linked-account-table.component";
-import { TradeitAccountOAuthService } from "./component/tradeit-account/tradeit-account-oauth.service";
+import { TradeItAccountOAuthService } from "./component/tradeit-account/tradeit-account-oauth.service";
 import { RestErrorReporter } from "./service/rest-error-reporter";
 import { TradeItErrorReporter } from "./component/tradeit/tradeit-error-reporter";
 import { CustomerController } from './component/customer/customer-controller';
-import { StockToBuy } from './model/entity/stock-to-buy';
-import { StockCatalystEventController } from './component/stockcatalystevent/stock-catalyst-event-controller';
-import { StockCatalystEventStateStore } from './component/stockcatalystevent/stock-catalyst-event-state-store';
-import { StockToBuyStateStore } from './component/stocktobuy/stock-to-buy-state-store';
-import { StockAnalystConsensusController } from './component/stockanalystconsensus/stock-analyst-consensus-controller';
-import { StockNotesController } from './component/stocknotes/stock-notes-controller';
-import { StockToBuyController } from './component/stocktobuy/stock-to-buy-controller';
 import { StockCatalystEventDashboardTableComponent } from './component/dashboard/stock-catalyst-event-dashboard-table.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -337,7 +329,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         TradeItAccountCrudService,
         TradeItAccountFactory,
-        TradeitAccountOAuthService,
+        TradeItAccountOAuthService,
 
         LinkedAccountCrudService,
         LinkedAccountFactory,
