@@ -553,14 +553,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         let methodName = "onRowSelect";
         this.debug( methodName +  ".begin " + JSON.stringify( event ) );
-        if ( event.data )
-        {
-            this.selectedModelObject = event.data;
-        }
-        else
-        {
-            this.selectedModelObject = event;
-        }
+        this.selectedModelObject = this.createModelObjectFromRowSelectionEvent( event );
         var index = this.indexOf( this.selectedModelObject );
         if ( index >= 0 )
         {
@@ -572,6 +565,25 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
             this.logError( "Could not find mode object int rows array" );
         }
         this.debug( methodName +  ".end" );
+    }
+
+    /**
+     * Creates a model object from a row selection event.
+     * @param event
+     * @return {T}
+     */
+    protected createModelObjectFromRowSelectionEvent( event ): T
+    {
+        let modelObject: T = null;
+        if ( event.data )
+        {
+            modelObject = event.data;
+        }
+        else
+        {
+            modelObject = event;
+        }
+        return modelObject;
     }
 
     /**
