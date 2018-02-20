@@ -15,6 +15,7 @@ import { BaseTradeItService } from "./base-tradeit.service";
 import { RestErrorReporter } from "../rest-error-reporter";
 import { TradeItAPIResultEnum, } from "./apiresults/tradeit-api-result-error-code";
 import { TradeItAccountController } from '../../component/tradeit-account/tradeit-account-controller';
+import { RestException } from '../../common/rest-exception';
 
 /**
  * This class contains all of the necessary functionality necessary to create and maintain OAuth tokens necessary to
@@ -202,10 +203,11 @@ export class TradeItAccountOAuthService extends BaseTradeItService
         else
         {
             this.log( methodName + " user is authenticated sending keep alive message" );
-            let authenticationResult = new TradeItAuthenticateResult();
+            //let authenticationResult = new TradeItAuthenticateResult();
             /*
              * Just return success result and don't wait for the keep alive
              */
+            /*
             authenticationResult.status = TradeItAPIResult.SUCCESS;
             authenticationResult.tradeItAccount = tradeItAccount;
             authenticationResult.linkedAccounts = tradeItAccount.linkedAccounts;
@@ -214,11 +216,11 @@ export class TradeItAccountOAuthService extends BaseTradeItService
                                                 observer.next( authenticationResult );
                                                 observer.complete();
                                             });
+                                            */
             /*
              * We don't care about the result.
              */
-            this.keepSessionAlive( tradeItAccount, tradeItSecurityQuestionDialog )
-                .subscribe();
+            observable = this.keepSessionAlive( tradeItAccount, tradeItSecurityQuestionDialog );
         }
         this.log( methodName + ".end" );
         return observable;
@@ -287,28 +289,8 @@ export class TradeItAccountOAuthService extends BaseTradeItService
                             this.log( methodName + " status: " + tradeItAPIResult );
                             if ( keepAliveResult.isError() )
                             {
-                                if ( TradeItAPIResultEnum.isSessionExpiredError( keepAliveResult ) ||
-                                     TradeItAPIResultEnum.isParamsError( keepAliveResult ))
-                                {
-                                    this.log( methodName + " the session has expired, calling authenticate" );
-                                    //keepSessionAliveSubject.flatMap(
-                                    this.authenticate( tradeItAccount, tradeItSecurityQuestionDialog )
-                                        .subscribe( (tradeItAuthenticationResult: TradeItAuthenticateResult ) =>
-                                                    {
-                                                        this.log( methodName + " authenticate result: " +
-                                                            JSON.stringify( tradeItAuthenticationResult ));
-                                                        keepSessionAliveSubject.next( tradeItAuthenticationResult );
-                                                    },
-                                                    error =>
-                                                    {
-                                                        keepSessionAliveSubject.error( error ) ;
-                                                    });
-                                }
-                                else
-                                {
-                                    this.log( methodName + " unhandled error calling handling routine" );
-                                    this.handleAuthenticationError( tradeItAccount, tradeItSecurityQuestionDialog, keepAliveResult );
-                                }
+                                this.handleKeepAliveFailure( keepAliveResult, tradeItAccount,
+                                                             tradeItSecurityQuestionDialog, keepSessionAliveSubject );
                             }
                             else
                             {
@@ -318,9 +300,63 @@ export class TradeItAccountOAuthService extends BaseTradeItService
                         },
                         error =>
                         {
-                            keepSessionAliveSubject.error( error );
+                            let restException = new RestException( error );
+                            /*
+                             * Check to see if the keep alive failed with an authentication exception
+                             */
+                            if ( restException.isAuthorizationError() )
+                            {
+                                /*
+                                 * Handles this exception as an session expiration error.
+                                 */
+                                let tradeItAPIResult = new TradeItAuthenticateResult();
+                                tradeItAPIResult.code = TradeItAPIResultEnum.getSessionExpiredCode();
+                                this.handleKeepAliveFailure( tradeItAPIResult, tradeItAccount, tradeItSecurityQuestionDialog,
+                                                             keepSessionAliveSubject );
+                            }
+                            else
+                            {
+                                this.logError( methodName + " " + error );
+                                keepSessionAliveSubject.error( "keepSessionAlive: " + error );
+                            }
                         } );
         return keepSessionAliveSubject.asObservable();
+    }
+
+    /**
+     * This method handles the session expiring and needs to be re-authenticated.
+     * @param {TradeItAuthenticateResult} keepAliveResult
+     * @param {TradeItAccount} tradeItAccount
+     * @param {TradeItSecurityQuestionDialogComponent} tradeItSecurityQuestionDialog
+     * @param {Subject<TradeItAuthenticateResult>} keepSessionAliveSubject
+     */
+    private handleKeepAliveFailure( keepAliveResult: TradeItAuthenticateResult,
+                                    tradeItAccount: TradeItAccount,
+                                    tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent,
+                                    keepSessionAliveSubject: Subject<TradeItAuthenticateResult> )
+    {
+        let methodName = 'handleKeepAliveFailure';
+        this.debug( methodName + ".begin" );
+        if ( TradeItAPIResultEnum.isSessionExpiredError( keepAliveResult ) ||
+             TradeItAPIResultEnum.isParamsError( keepAliveResult ) )
+        {
+            this.log( methodName + " the session has expired, calling authenticate" );
+            this.authenticate( tradeItAccount, tradeItSecurityQuestionDialog )
+                .subscribe( ( tradeItAuthenticationResult: TradeItAuthenticateResult ) => {
+                                this.log( methodName + " authenticate result: " +
+                                    JSON.stringify( tradeItAuthenticationResult ) );
+                                keepSessionAliveSubject.next( tradeItAuthenticationResult );
+                            },
+                            error => {
+                                keepSessionAliveSubject.error( error );
+                            } );
+        }
+        else
+        {
+            this.log( methodName + " unhandled error calling handling routine" );
+            this.handleAuthenticationError( tradeItAccount, tradeItSecurityQuestionDialog, keepAliveResult );
+        }
+        this.debug( methodName + ".end" );
     }
 
     /**

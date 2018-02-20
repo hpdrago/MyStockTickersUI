@@ -59,26 +59,39 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
     {
         let methodName = "onRowSelect";
         this.log( methodName + ".begin " + JSON.stringify( event ));
-        super.onRowSelect( event );
+        let modelObject: TradeItAccount = this.createModelObjectFromRowSelectionEvent( event );
         this.tradeItOAuthService
-            .checkAuthentication( this.modelObject, this.tradeItSecurityQuestionDialog )
+            .checkAuthentication( modelObject, this.tradeItSecurityQuestionDialog )
             .subscribe( (authenticateAccountResult: TradeItAuthenticateResult ) =>
                         {
                             this.log( methodName + " checkAuthentication result: " + JSON.stringify( authenticateAccountResult ));
                             if ( authenticateAccountResult.isSuccess() )
                             {
                                 this.log( methodName + " account authenticated or kept alive" );
-                                this.modelObject = authenticateAccountResult.tradeItAccount;
-                                this.modelObject.linkedAccounts = authenticateAccountResult.linkedAccounts;
-                                this.onModelObjectSelected( this.modelObject );
+                                /*
+                                 * Need to perform the work the that super class does.  We don't want to call it directly
+                                 * because we have updated information about the account that will not be propated
+                                 * correctly with call to super.
+                                 */
+                                this.selectedModelObject = event;
+                                /*
+                                 * Need to update the model object return from the authentication call
+                                 */
+                                modelObject = authenticateAccountResult.tradeItAccount;
+                                modelObject.linkedAccounts = authenticateAccountResult.linkedAccounts;
+                                this.crudStateStore
+                                    .sendModelObjectChangedEvent( this, modelObject );
+                                this.onModelObjectSelected( modelObject );
                             }
                             else
                             {
+                                this.onModelObjectSelected( modelObject );
                                 this.tradeItErrorReporter.reportError( authenticateAccountResult );
                             }
                         },
                         error =>
                         {
+                            this.onModelObjectSelected( modelObject );
                             this.reportRestError( error );
                         });
         this.log( methodName + ".end" );

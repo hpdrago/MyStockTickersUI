@@ -15,6 +15,26 @@ export enum TradeItAPIResultEnum
 }
 export namespace TradeItAPIResultEnum
 {
+    export function getSessionExpiredCode()
+    {
+        return 600;
+    }
+    export function codeValueOf( code: number ): string
+    {
+        switch( code )
+        {
+            case   0: return "SUCCESS";
+            case 100: return "SYSTEM_ERROR";
+            case 101: return "CONCURRENT_AUTHENTICATION_ERROR";
+            case 200: return "BROKER_EXECUTION_ERROR";
+            case 300: return "BROKER_AUTHENTICATION_ERROR";
+            case 301: return "TOO_MANY_LOGIN_ATTEMPTS_ERROR";
+            case 400: return "BROKER_ACCOUNT_ERROR";
+            case 500: return "PARAMS_ERROR";
+            case 600: return "SESSION_EXPIRED_ERROR";
+            case 700: return "TOKEN_INVALID_OR_EXPIRED_ERROR";
+        }
+    }
     export function nameOf( tradeItAPIResult: TradeItAPIResult ): string
     {
         switch( tradeItAPIResult.code )

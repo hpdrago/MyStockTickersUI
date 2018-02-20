@@ -88,8 +88,13 @@ export class RestException
      * Determines if the status code returned is 404 - Not Found.
      * @return {boolean}
      */
-    public isNotFound(): boolean
+    public isNotFoundError(): boolean
     {
         return this.status == 404;
+    }
+
+    public isAuthorizationError()
+    {
+        return this.status == 401;
     }
 }
