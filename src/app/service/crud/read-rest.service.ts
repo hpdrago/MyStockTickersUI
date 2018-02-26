@@ -290,6 +290,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                    .get( url )
                    .map( ( response: Response ) =>
                          {
+                             this.debug( "Received response status: " + response.statusText )
                              return response.json();
                          } )
                    .catch( ( error: any ) =>

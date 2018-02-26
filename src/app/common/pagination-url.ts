@@ -76,7 +76,11 @@ export class PaginationURL
         this.logger.log( methodName + " " + JSON.stringify( lazyLoadEvent ));
         if ( isNullOrUndefined( lazyLoadEvent ))
         {
-            throw ReferenceError( "lazyLoadEvent is null.  Cannot create getPage URL" );
+            lazyLoadEvent =
+            {
+                first: 0,
+                rows: 20
+            }
         }
         var pageNumber = ((lazyLoadEvent.first + lazyLoadEvent.rows) / lazyLoadEvent.rows) - 1;
         var url = this.url + "?page=" + pageNumber + "&limit=" + lazyLoadEvent.rows;

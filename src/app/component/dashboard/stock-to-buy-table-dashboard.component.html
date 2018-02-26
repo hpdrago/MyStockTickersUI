@@ -4,8 +4,7 @@
              (onRowSelect)="onRowSelect($event)"
              (onRowUnselect)="onRowUnSelect($event)"
              [paginator]="true"
-             [pageLinks]="3"
-             [rowsPerPageOptions]="[20,30,40]"
+             [pageLinks]="10"
              [rows]="5"
              [loading]="loading"
              [totalRecords]="totalRows"
@@ -25,7 +24,7 @@
     <p-column id="tickerSymbol"
               field="tickerSymbol"
               header="Ticker"
-              [style]="{'width':'40px'}"
+              [style]="{'width':'30px'}"
               [sortable]="true">
     </p-column>
 
@@ -59,7 +58,7 @@
     ------------------------------------------------------------------------------------------------------------>
     <p-column id="buyButton"
               header="Action"
-              [style]="{'width':'30px'}">
+              [style]="{'width':'35px'}">
         <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
             <button pButton type="button" (click)="onBuyButtonClick( stockToBuy )" label="Record Buy"></button>
         </ng-template>
@@ -184,7 +183,7 @@
     <p-column id="comments"
               field="comments"
               header="Comments"
-              [style]="{'width':'200px'}">
+              [style]="{'width':'175px'}">
         <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
             <div *ngIf="urlMap.getURL( stockToBuy.tickerSymbol ) == null">
                 <div [innerHTML]="truncateNotes( stockToBuy[col.field] )">

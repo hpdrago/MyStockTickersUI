@@ -12,14 +12,18 @@ import { StockAnalystConsensusDashboardTableComponent } from "./stock-analyst-co
 import { StockToBuyTableDashboardComponent } from "./stock-to-buy-table-dashboard.component";
 import { StockCatalystEventTableComponent } from "../stock-catalyst-event/stock-catalyst-event-table.component";
 import { StockSearchComponent } from "../common/stock-search.component";
+import { StockCatalystEventDashboardTableComponent } from './stock-catalyst-event-dashboard-table.component';
 
+/**
+ * This component displays four tables: stock notes, stock catalyst events, stocks to buy, and stock analyst consensus
+ */
 @Component(
 {
    selector: 'my-dashboard',
    styleUrls: ['./dashboard.component.css'],
    templateUrl: './dashboard.component.html'
 })
-export class DashboardComponent extends BaseComponent implements OnInit
+export class DashboardComponent extends BaseComponent
 {
     @ViewChild(StockNotesTableDashboardComponent)
     private stockNotesTableDashboardComponent: StockNotesTableDashboardComponent;
@@ -27,8 +31,8 @@ export class DashboardComponent extends BaseComponent implements OnInit
     private stockAnalystConsensusDashboardTableComponent: StockAnalystConsensusDashboardTableComponent;
     @ViewChild(StockToBuyTableDashboardComponent)
     private stockToBuyTableDashboardComponent: StockToBuyTableDashboardComponent
-    @ViewChild(StockCatalystEventTableComponent)
-    private stockCatalystEventTableComponent: StockCatalystEventTableComponent;
+    @ViewChild(StockCatalystEventDashboardTableComponent)
+    private stockCatalystEventDashboardTableComponent: StockCatalystEventDashboardTableComponent;
     @ViewChild(StockSearchComponent)
     private stockSearchComponent: StockSearchComponent;
 
@@ -37,10 +41,6 @@ export class DashboardComponent extends BaseComponent implements OnInit
                  private stockService: StockCrudService )
     {
         super( toaster );
-    }
-
-    public ngOnInit(): void
-    {
     }
 
     /**
@@ -52,7 +52,7 @@ export class DashboardComponent extends BaseComponent implements OnInit
         this.stockNotesTableDashboardComponent.loadTableForTickerSymbol( stock.tickerSymbol );
         this.stockToBuyTableDashboardComponent.loadTableForTickerSymbol( stock.tickerSymbol );
         this.stockAnalystConsensusDashboardTableComponent.loadTableForTickerSymbol( stock.tickerSymbol );
-        this.stockCatalystEventTableComponent.loadTableForTickerSymbol( stock.tickerSymbol );
+        this.stockCatalystEventDashboardTableComponent.loadTableForTickerSymbol( stock.tickerSymbol );
     }
 
     /**
@@ -63,7 +63,7 @@ export class DashboardComponent extends BaseComponent implements OnInit
         this.stockNotesTableDashboardComponent.refreshTable();
         this.stockToBuyTableDashboardComponent.refreshTable();
         this.stockAnalystConsensusDashboardTableComponent.refreshTable();
-        this.stockCatalystEventTableComponent.refreshTable();
+        this.stockCatalystEventDashboardTableComponent.refreshTable();
     }
 }
 
