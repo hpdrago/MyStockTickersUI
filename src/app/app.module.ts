@@ -38,7 +38,8 @@ import {
     SliderModule,
     TabMenuModule,
     TabViewModule,
-    TooltipModule
+    TooltipModule,
+    ProgressSpinnerModule
 } from "primeng/primeng";
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
@@ -185,6 +186,7 @@ import { PercentComponent } from './component/common/percent.component';
 import { StockQuoteDayPercentChangeComponent } from './component/common/stock-quote-day-percent-change.component';
 import { DateComponent } from './component/common/date.component';
 import { DateOrTimePeriodComponent } from './component/common/date-or-timeperiod.component';
+import { LoadingComponent } from './component/common/loading.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -347,7 +349,8 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         GainLossPercentComponent,
         StockQuoteDayPercentChangeComponent,
         DateComponent,
-        DateOrTimePeriodComponent
+        DateOrTimePeriodComponent,
+        LoadingComponent
     ],
     bootstrap:
     [

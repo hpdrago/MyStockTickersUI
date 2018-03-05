@@ -1,6 +1,6 @@
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { LinkedAccount } from "../../model/entity/linked-account";
-import { Component, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
@@ -61,24 +61,6 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
                linkedAccountController,
                linkedAccountFactory,
                linkedAccountCrudService );
-    }
-
-    /**
-     * You can't add a linked account, the accounts are identified through the authentication process.
-     * @returns false.
-     */
-    protected isAllowAdds(): boolean
-    {
-        return false;
-    }
-
-    /**
-     * Can't update a linked account either.
-     * @returns false.
-     */
-    protected isAllowUpdates(): boolean
-    {
-        return false;
     }
 
     /**
@@ -144,6 +126,30 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
         this.log( methodName + ".end" );
     }
 
+    /**
+     * Makes to http requests for  linked accounts, the first will get the initial linked account list and then
+     * it will request
+     * @param {LinkedAccount[]} modelObjects
+     */
+    protected onTableLoad( modelObjects: LinkedAccount[] ): void
+    {
+        let methodName = 'onLoadTable.override';
+        this.log( methodName + ".begin")
+        super.onTableLoad( modelObjects );
+        /*
+         * Make a separate HTTP request for each linked account.
+         */
+        modelObjects.forEach( (linkedAccount) =>
+                     {
+                         this.linkedAccountCrudService
+                             .getUpdatedLinkedAccount( linkedAccount )
+                             .subscribe( updatedLinkedAccount =>
+                                         {
+                                             this.updateModelObjectRow( updatedLinkedAccount );
+                                         });
+                     });
+    }
+
     public getTradeItAccount(): TradeItAccount
     {
         return this.tradeItAccount;
@@ -161,5 +167,23 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
         let methodName = "receiveMessage";
         this.log( methodName + ".begin " + JSON.stringify( event ) );
         this.log( methodName + ".end" );
+    }
+
+    /**
+     * You can't add a linked account, the accounts are identified through the authentication process.
+     * @returns false.
+     */
+    protected isAllowAdds(): boolean
+    {
+        return false;
+    }
+
+    /**
+     * Can't update a linked account either.
+     * @returns false.
+     */
+    protected isAllowUpdates(): boolean
+    {
+        return false;
     }
 }

@@ -199,8 +199,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         if ( this.isLazyLoading() )
         {
             this.debug( "loadTable lazyLoading=true" );
-            //this.lastLoadEvent.first = 0;
-            //this.lastLoadEvent = this.getRowsPerPage();
             this.lazyLoadTable( this.lastLoadEvent );
         }
         else
@@ -213,12 +211,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                                 this.loading = false;
                                 this.onTableLoad( modelObjects );
                                 this.debug( "loadTable.end" );
-                            },
-                            error =>
-                            {
-                                this.loading = false;
-                                this.debug( "loadTable.end" );
-                            } );
+                            });
 
         }
     }

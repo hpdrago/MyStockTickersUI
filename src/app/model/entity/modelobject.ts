@@ -4,6 +4,7 @@
  * Created by mike on 12/8/2016.
  */
 import { JsonObject, JsonProperty } from "json2typescript";
+import { LoadingStatus } from './loading-status';
 
 @JsonObject
 export abstract class ModelObject<T>
@@ -22,6 +23,11 @@ export abstract class ModelObject<T>
 
     @JsonProperty( "dateModified", Date )
     public dateModified: Date;
+
+    @JsonProperty( "loadingStatus", String )
+    public loadingStatus: string;
+
+    public loadedTime: number;
 
     /**
      * Compares the two object's properties.

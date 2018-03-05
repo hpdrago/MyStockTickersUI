@@ -42,7 +42,9 @@
                               header="Available Cash"
                               [style]="{'width':'10px','text-align':'right'}">
                         <ng-template let-col let-linkedAccount="rowData" pTemplate="body">
-                            <currency [currencyValue]="linkedAccount[col.field]"></currency>
+                            <loading [modelObject]="linkedAccount">
+                                <currency [currencyValue]="linkedAccount[col.field]"></currency>
+                            </loading>
                         </ng-template>
                     </p-column>
 
@@ -54,7 +56,9 @@
                               header="Buying Power"
                               [style]="{'width':'10px','text-align':'right'}">
                         <ng-template let-col let-linkedAccount="rowData" pTemplate="body">
-                            <currency [currencyValue]="linkedAccount[col.field]"></currency>
+                            <loading [modelObject]="linkedAccount">
+                                <currency [currencyValue]="linkedAccount[col.field]"></currency>
+                            </loading>
                         </ng-template>
                     </p-column>
 
@@ -66,7 +70,9 @@
                               header="Margin $"
                               [style]="{'width':'10px','text-align':'right'}">
                         <ng-template let-col let-linkedAccount="rowData" pTemplate="body">
-                            <currency [currencyValue]="linkedAccount[col.field]"></currency>
+                            <loading [modelObject]="linkedAccount">
+                                <currency [currencyValue]="linkedAccount[col.field]"></currency>
+                            </loading>
                         </ng-template>
                     </p-column>
 

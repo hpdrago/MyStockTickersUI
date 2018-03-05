@@ -1,17 +1,18 @@
-import { SessionService } from "../session.service";
-import { AppConfigurationService } from "../app-configuration.service";
-import { ModelObjectFactory } from "../../model/factory/model-object.factory";
-import { Observable } from "rxjs/Observable";
-import { Http, Response } from "@angular/http";
-import { ModelObject } from "../../model/entity/modelobject";
-import { BaseService } from "../base-service";
-import { isNullOrUndefined, isNumber } from "util";
-import { PaginationPage } from "../../common/pagination";
-import { PaginationURL } from "../../common/pagination-url";
-import { KeyValuePairs } from "../../common/key-value-pairs";
-import { KeyValuePair } from "../../common/key-value-pair";
-import { LazyLoadEvent } from "primeng/primeng";
+import { SessionService } from '../session.service';
+import { AppConfigurationService } from '../app-configuration.service';
+import { ModelObjectFactory } from '../../model/factory/model-object.factory';
+import { Observable } from 'rxjs/Observable';
+import { Http, Response } from '@angular/http';
+import { ModelObject } from '../../model/entity/modelobject';
+import { BaseService } from '../base-service';
+import { isNullOrUndefined, isNumber } from 'util';
+import { PaginationPage } from '../../common/pagination';
+import { PaginationURL } from '../../common/pagination-url';
+import { KeyValuePairs } from '../../common/key-value-pairs';
+import { KeyValuePair } from '../../common/key-value-pair';
+import { LazyLoadEvent } from 'primeng/primeng';
 import { RestErrorReporter } from '../rest-error-reporter';
+import { LoadingStatus } from '../../model/entity/loading-status';
 
 /**
  * Generic class for reading model objects from the database.  Provides a method to read a single entity or a list
@@ -43,17 +44,17 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getCreateModelObjectUrl(): string
     {
-        var methodName = "getCreateModelObjectUrl";
-        this.debug( methodName + ".begin" );
-        var contextURL = this.getContextBaseURL();
+        let methodName = 'getCreateModelObjectUrl';
+        this.debug( methodName + '.begin' );
+        let contextURL = this.getContextBaseURL();
         if ( isNullOrUndefined( contextURL ) )
         {
-            throw new ReferenceError( methodName +" cannot return a null or undefined value" );
+            throw new ReferenceError( methodName +' cannot return a null or undefined value' );
         }
-        var customerURL = this.getCustomerURL() == null ? "/" : this.getCustomerURL();
-        this.debug( methodName + " contextURL: " + contextURL + " customerURL: " + customerURL );
-        var url = this.appConfig.getBaseURL() + contextURL + customerURL;
-        this.debug( methodName + " url: " + url );
+        let customerURL = this.getCustomerURL() == null ? '/' : this.getCustomerURL();
+        this.debug( methodName + ' contextURL: ' + contextURL + ' customerURL: ' + customerURL );
+        let url = this.getCompleteURL(contextURL, customerURL );
+        this.debug( methodName + ' url: ' + url );
         return url;
     }
 
@@ -65,17 +66,29 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getReadModelObjectURL( modelObject: T ): string
     {
-        var methodName = "getReadModelObjectURL";
-        var contextURL = this.getContextURL( modelObject );
-        this.debug( methodName + " " + JSON.stringify( modelObject ));
+        let methodName = 'getReadModelObjectURL';
+        let contextURL = this.getContextURL( modelObject );
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         if ( isNullOrUndefined( contextURL ) )
         {
-            throw new ReferenceError( methodName +" cannot return a null or undefined value" );
+            throw new ReferenceError(methodName + ' cannot return a null or undefined value' );
         }
-        var customerURL = this.getCustomerURL() == null ? "/" : this.getCustomerURL();
-        this.debug( methodName + " contextURL: " + contextURL + " customerURL: " + customerURL );
-        var url = this.appConfig.getBaseURL() + contextURL + customerURL;
-        this.debug( methodName + " url: " + url );
+        let customerURL = this.getCustomerURL() == null ? '/' : this.getCustomerURL();
+        this.debug( methodName + ' contextURL: ' + contextURL + ' customerURL: ' + customerURL );
+        let url = this.getCompleteURL( contextURL, customerURL );
+        this.debug( methodName + ' url: ' + url );
+        return url;
+    }
+
+    /**
+     * Combines the application base url + context url + customer url
+     * @param {string} contextURL
+     * @param {string} customerURL
+     * @return {string}
+     */
+    protected getCompleteURL( contextURL: string, customerURL: string )
+    {
+        let url = this.appConfig.getBaseURL() + contextURL + customerURL;
         return url;
     }
 
@@ -97,12 +110,12 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getContextURL( modelObject: T ): string
     {
-        let methodName = "getContextURL";
-        this.debug( methodName + " " + JSON.stringify( modelObject ));
+        let methodName = 'getContextURL';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         let contextURL = this.getContextBaseURL();
         let keyColumnValues: KeyValuePairs<string,any> = this.getContextURLKeyValues( modelObject );
-        keyColumnValues.forEach( (key, value) => contextURL += "/" + key + "/" + value );
-        this.debug( methodName + " contextURL: " + contextURL );
+        keyColumnValues.forEach( (key, value) => contextURL += '/' + key + '/' + value );
+        this.debug( methodName + ' contextURL: ' + contextURL );
         return contextURL;
     }
 
@@ -167,16 +180,16 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getReadModelObjectListUrl( modelObject: T ): string
     {
-        var methodName = "getReadModelObjectListUrl";
-        this.debug( methodName + " " + JSON.stringify( modelObject ));
-        var customerURL = this.getCustomerURL();
+        let methodName = 'getReadModelObjectListUrl';
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        let customerURL = this.getCustomerURL();
         if ( isNullOrUndefined( customerURL ) )
         {
-            throw new ReferenceError( "getCustomerURL cannot return a null or undefined value" );
+            throw new ReferenceError( 'getCustomerURL cannot return a null or undefined value' );
         }
-        this.debug( methodName + " customerURL: " + customerURL );
-        var contextURL = this.getContextURL( modelObject );
-        var url: string = '';
+        this.debug( methodName + ' customerURL: ' + customerURL );
+        let contextURL = this.getContextURL( modelObject );
+        let url: string = '';
         if ( isNullOrUndefined( contextURL ) )
         {
             url = this.appConfig.getBaseURL() + customerURL
@@ -185,8 +198,8 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         {
             url = this.appConfig.getBaseURL() + contextURL + customerURL
         }
-        this.debug( methodName + " contextURL: " + contextURL + " customerURL: " + customerURL );
-        this.debug( methodName + " url: " + url );
+        this.debug( methodName + ' contextURL: ' + contextURL + ' customerURL: ' + customerURL );
+        this.debug( methodName + ' url: ' + url );
         return url;
     }
 
@@ -197,8 +210,8 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected serialize( modelObject: T ): string
     {
-        //var json: string = serialize( modelObject );
-        var json: string = JSON.stringify( modelObject );
+        //let json: string = serialize( modelObject );
+        let json: string = JSON.stringify( modelObject );
         return json;
     }
 
@@ -211,25 +224,40 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     public getModelObject( modelObject: T ): Observable<T>
     {
-        var methodName = "getModelObject";
-        this.debug( methodName + " query for: " + JSON.stringify( modelObject ) );
+        let methodName = 'getModelObject';
+        this.debug( methodName + ' query for: ' + JSON.stringify( modelObject ) );
         if ( isNullOrUndefined( modelObject ) )
         {
-            throw new ReferenceError( "modelObject is null or undefined" );
+            throw new ReferenceError( 'modelObject is null or undefined' );
         }
-        var url = this.getReadModelObjectURL( modelObject );
-        this.debug( methodName + " url: " + url );
+        let url = this.getReadModelObjectURL( modelObject );
+        this.debug( methodName + ' url: ' + url );
         if ( isNullOrUndefined( url ) )
         {
-            throw new ReferenceError( "url is null or undefined" );
+            throw new ReferenceError( 'url is null or undefined' );
         }
+        return this.httpRequestModelObject( url );
+    }
+
+    /**
+     * For the specific url, requests a model object.  This method allows subclasses query for model objects
+     * entities at an alternate url that is different than that that is used in {@code getModelObject}
+     * @param {string} url
+     * @return {Observable<T extends ModelObject<T>>}
+     */
+    protected httpRequestModelObject( url: string ): Observable<T>
+    {
+        let methodName = 'httpRequestModelObject';
+        this.debug( methodName + ' ' + url );
         return this.http
                    .get( url ) // ...using put request
                    .map( ( response: Response ) =>
-                   {
-                       this.debug( methodName + " received: " + JSON.stringify( response.json() ))
-                       return this.modelObjectFactory.newModelObjectFromJSON( response.json() );
-                   } ) // ...and calling .json() on the response to return data
+                         {
+                             this.debug( methodName + ' received: ' + JSON.stringify( response.json() ))
+                             let modelObject: T = this.modelObjectFactory.newModelObjectFromJSON( response.json() );
+                             this.setLoadingStatus( modelObject );
+                             return modelObject;
+                         } ) // ...and calling .json() on the response to return data
                    .catch( ( error: any ) =>
                            {
                                this.restErrorReporter.reportRestError( error );
@@ -245,28 +273,43 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     public getModelObjectList( modelObject: T ): Observable<Array<T>>
     {
-        var methodName = "getModelObjectList";
-        this.debug( methodName + " modelObject: " + this.serialize( modelObject ) );
+        let methodName = 'getModelObjectList';
+        this.debug( methodName + ' modelObject: ' + this.serialize( modelObject ) );
         if ( isNullOrUndefined( modelObject ) )
         {
-            throw new ReferenceError( "modelObject is null or undefined" );
+            throw new ReferenceError( 'modelObject is null or undefined' );
         }
-        var url: string = this.getReadModelObjectListUrl( modelObject );
-        this.debug( methodName + " url: " + url );
+        let url: string = this.getReadModelObjectListUrl( modelObject );
+        this.debug( methodName + ' url: ' + url );
         if ( isNullOrUndefined( url ) )
         {
-            throw new ReferenceError( "url is null or undefined" );
+            throw new ReferenceError( 'url is null or undefined' );
         }
+        return this.httpRequestModelObjects( url );
+    }
+
+    /**
+     * For the specific url, requests a list of model objects.  This method allows subclasses query for other lists of
+     * entities at an alternate url that is different than that that is used in {@code getModelObjectList}
+     * @param {string} url
+     * @return {Observable<Array<T extends ModelObject<T>>>}
+     */
+    protected httpRequestModelObjects( url: string ): Observable<Array<T>>
+    {
+        let methodName = 'httpRequestModelObjects';
+        this.debug( methodName + '.begin ' + url );
         return this.http
                    .get( url )
                    .map( ( response: Response ) =>
-                   {
-                       this.debug( methodName + " received response " + JSON.stringify(response) );
-                       var modelObjects: T[] = this.modelObjectFactory.newModelObjectArray( response.json() )
-                       this.debug( methodName + " " + modelObjects.length + " model objects" );
-                       //this.debug( methodName + " " + JSON.stringify( modelObjects ));
-                       return modelObjects;
-                   })
+                         {
+                             this.debug( methodName + ' received response' ); //+ JSON.stringify(response) );
+                             let modelObjects: T[] = this.modelObjectFactory
+                                                         .newModelObjectArray( response.json() );
+                             modelObjects.forEach( modelObject => this.setLoadingStatus( modelObject ) );
+                             this.debug( methodName + ' ' + modelObjects.length + ' model objects' );
+                             //this.debug( methodName + ' ' + JSON.stringify( modelObjects ));
+                             return modelObjects;
+                         })
                    .catch( ( error: any ) =>
                            {
                                this.restErrorReporter.reportRestError( error );
@@ -283,20 +326,45 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     public getPage( modelObject: T, lazyLoadEvent: LazyLoadEvent ): Observable<PaginationPage<T>>
     {
-        let methodName = "getPage";
+        let methodName = 'getPage';
         let url = new PaginationURL( this.getReadModelObjectListUrl( modelObject ) ).getPage( lazyLoadEvent );
         this.logger.log( `${methodName} url: ${url}` );
         return this.http
                    .get( url )
                    .map( ( response: Response ) =>
                          {
-                             this.debug( "Received response status: " + response.statusText )
-                             return response.json();
+                             this.debug( 'Received response status: ' + response.statusText )
+                             let json: PaginationPage<T> = response.json();
+                             json.content
+                                 .forEach( (modelObject) => this.setLoadingStatus( modelObject ) );
+                             return json;
                          } )
                    .catch( ( error: any ) =>
                            {
                                this.restErrorReporter.reportRestError( error );
                                return Observable.throw( error );
                            } );
+    }
+
+    /**
+     * Sets the loading time and loading status.
+     * @param {T} modelObject
+     */
+    protected setLoadingStatus( modelObject: T )
+    {
+        modelObject.loadedTime = Date.now();
+        modelObject.loadingStatus = this.getInitialLoadingStatus();
+    }
+
+    /**
+     * After a model object is loaded from the backend, its loading status is set by the return result of this method.
+     * Services that handle model objects that are not completely loaded when fetched, should override this method and
+     * set the return value to LOADING to indicate that a subsequent backend request is required to retrieve the rest
+     * of the model object information.
+     * @return {LoadingStatus}
+     */
+    protected getInitialLoadingStatus(): string
+    {
+        return LoadingStatus.getName( LoadingStatus.LOADED );
     }
 }

@@ -42,7 +42,7 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
                  protected stockPositionCrudService: StockPositionCrudService,
                  protected stockQuoteRefreshService: StockQuoteRefreshService )
     {
-        super( TableLoadingStrategy.LAZY_ON_DEMAND,
+        super( TableLoadingStrategy.ALL_ON_DEMAND,
                toaster,
                stockPositionStateStore,
                stockPositionController,

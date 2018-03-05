@@ -70,7 +70,7 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
                                 this.log( methodName + " account authenticated or kept alive" );
                                 /*
                                  * Need to perform the work the that super class does.  We don't want to call it directly
-                                 * because we have updated information about the account that will not be propated
+                                 * because we have updated information about the account that will not be propagated
                                  * correctly with call to super.
                                  */
                                 this.selectedModelObject = event;
