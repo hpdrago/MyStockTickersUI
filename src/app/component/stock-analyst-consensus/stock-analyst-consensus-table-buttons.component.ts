@@ -1,39 +1,32 @@
 import { Component } from "@angular/core";
-import { ToastsManager } from "ng2-toastr";
-import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
-import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
-import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
-import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
-import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
-import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
 
 /**
  * Created by mike on 8/15/2017.
  */
 @Component({
-    selector:    'stock-analyst-consensus-table-buttons',
-    templateUrl: '../crud/table/crud-table-buttons.component.html'
+    selector: 'stock-analyst-consensus-table-buttons',
+    template: `<ng-template #addButtonTemplate>
+                    <stock-analyst-consensus-table-add-button>
+                    </stock-analyst-consensus-table-add-button>
+               </ng-template>
+               <ng-template #editButtonTemplate>
+                    <stock-analyst-consensus-table-edit-button>
+                    </stock-analyst-consensus-table-edit-button>
+               </ng-template>
+               <ng-template #deleteButtonTemplate>
+                    <stock-analyst-consensus-table-delete-button>
+                    </stock-analyst-consensus-table-delete-button>
+               </ng-template>
+               <ng-template #refreshButtonTemplate>
+                    <stock-analyst-consensus-table-refresh-button>
+                    </stock-analyst-consensus-table-refresh-button>
+               </ng-template>
+               <crud-table-buttons [addButtonTemplate]="addButtonTemplate"
+                                   [editButtonTemplate]="editButtonTemplate"
+                                   [deleteButtonTemplate]="deleteButtonTemplate"
+                                   [refreshButtonTemplate]="refreshButtonTemplate">
+               </crud-table-buttons>`
 })
-export class StockAnalystConsensusTableButtonsComponent extends CrudTableButtonsComponent<StockAnalystConsensus>
+export class StockAnalystConsensusTableButtonsComponent
 {
-    /**
-     * Constructor.
-     * @param {ToastsManager} toaster
-     * @param {StockAnalystConsensusStateStore} stockAnalystConsensusStateStore
-     * @param {StockAnalystConsensusController} stockAnalystConsensusController
-     * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
-     * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
-     */
-    constructor( protected toaster: ToastsManager,
-                 private stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
-                 private stockAnalystConsensusController: StockAnalystConsensusController,
-                 private stockAnalystConsensusFactory: StockAnalystConsensusFactory,
-                 private stockAnalystConsensusCrudService: StockAnalystConsensusCrudService )
-    {
-        super( toaster,
-               stockAnalystConsensusStateStore,
-               stockAnalystConsensusController,
-               stockAnalystConsensusFactory,
-               stockAnalystConsensusCrudService );
-    }
 }

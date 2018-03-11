@@ -2,13 +2,13 @@ import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { StockToBuyTableComponent } from "./stock-to-buy-table.component";
-import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
+import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
 import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
-import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
-import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
-import { StockToBuyController } from './stock-to-buy-controller';
+import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockToBuyStateStore } from './stock-to-buy-state-store';
+import { StockToBuyController } from './stock-to-buy-controller';
+import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
 import { StockToBuyCrudActionHandler } from './stock-to-buy-action-handler';
 import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
 
@@ -59,5 +59,4 @@ export class StockToBuyTableTabComponent extends StockToBuyTableComponent
                stockNotesFactory,
                stockQuoteRefreshService );
     }
-
 }

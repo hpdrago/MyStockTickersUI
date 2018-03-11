@@ -1,44 +1,16 @@
-import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
-import { Stock } from "../../model/entity/stock";
 import { Component } from "@angular/core";
-import { ToastsManager } from "ng2-toastr";
-import { SessionService } from "../../service/session.service";
-import { isNullOrUndefined } from "util";
-import { StockFactory } from '../../model/factory/stock.factory';
-import { StockController } from './stock-controller';
-import { StockStateStore } from './stock-crud-state-store';
-import { StockCrudService } from '../../service/crud/stock-crud.service';
 
 /**
  * Created by mike on 1/2/2017.
  */
 @Component({
-    selector:    'stock-table-buttons',
-    templateUrl: '../crud/table/crud-table-buttons.component.html'
+    selector: 'stock-table-buttons',
+    template: `<ng-template #refreshButtonTemplate>
+               </ng-template>
+               <crud-table-buttons>
+               </crud-table-buttons>`
 })
-export class StockTableButtonsComponent extends CrudTableButtonsComponent<Stock>
+export class StockTableButtonsComponent
 {
-    /**
-     * Constructor.
-     * @param {ToastsManager} toaster
-     * @param {SessionService} sessionService
-     * @param {StockStateStore} stockStateStore
-     * @param {StockController} stockController
-     * @param {StockFactory} stockFactory
-     * @param {StockCrudService} stockCrudService
-     */
-    constructor( protected toaster: ToastsManager,
-                 protected sessionService: SessionService,
-                 private stockStateStore: StockStateStore,
-                 private stockController: StockController,
-                 private stockFactory: StockFactory,
-                 private stockCrudService: StockCrudService )
-    {
-        super( toaster,
-               stockStateStore,
-               stockController,
-               stockFactory,
-               stockCrudService );
-    }
 }
 

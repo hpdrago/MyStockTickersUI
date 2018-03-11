@@ -186,12 +186,40 @@ import { StockQuoteDayPercentChangeComponent } from './component/common/stock-qu
 import { DateComponent } from './component/common/date.component';
 import { DateOrTimePeriodComponent } from './component/common/date-or-timeperiod.component';
 import { ModelObjectLoadingComponent } from './component/common/model-object-loading.component';
-import { CrudTableDeleteButtonComponent } from './component/crud/table/crud-table-delete-button.component';
-import { CrudTableAddButtonComponent } from './component/crud/table/crud-table-add-button.component';
-import { CrudTableRefreshButtonComponent } from './component/crud/table/crud-table-refresh-button.component';
-import { CrudTableEditButtonComponent } from './component/crud/table/crud-table-edit-button.component';
 import { PortfolioStockTableDeleteButtonComponent } from './component/portfolio-stock/portfolio-stock-table-delete-button.component';
 import { StockNotesTableAddButtonComponent } from './component/stock-notes/stock-notes-table-add-button.component';
+import { TradeItAccountTableAddButtonComponent } from './component/tradeit-account/tradeit-account-table-add-button.component';
+import { TradeItAccountTableRefreshButtonComponent } from './component/tradeit-account/tradeit-account-table-refresh-button.component';
+import { PortfolioStockTableEditButtonComponent } from './component/portfolio-stock/portfolio-stock-table-edit-button.component';
+import { PortfolioStockTableRefreshButtonComponent } from './component/portfolio-stock/portfolio-stock-table-refresh-button.component';
+import { PortfolioStockTableAddButtonComponent } from './component/portfolio-stock/portfolio-stock-table-add-button.component';
+import { StockNotesTableRefreshButtonComponent } from './component/stock-notes/stock-notes-table-refresh-button.component';
+import { StockCatalystEventTableRefreshButtonComponent } from './component/stock-catalyst-event/stock-catalyst-event-table-refresh-button.component';
+import { StockCatalystEventTableAddButtonComponent } from './component/stock-catalyst-event/stock-catalyst-event-table-add-button.component';
+import { StockToBuyTableAddButtonComponent } from './component/stock-to-buy/stock-to-buy-table-add-button.component';
+import { StockToBuyTableRefreshButtonComponent } from './component/stock-to-buy/stock-to-buy-table-refresh-button.component';
+import { TradeItAccountTableEditButtonComponent } from './component/tradeit-account/tradeit-account-table-edit-button.component';
+import { TradeItAccountTableDeleteButtonComponent } from './component/tradeit-account/tradeit-account-table-delete-button.component';
+import { LinkedAccountTableAddButtonComponent } from './component/linked-account/linked-account-add-button.component';
+import { LinkedAccountTableEditButtonComponent } from './component/linked-account/linked-account-table-edit-button.component';
+import { PortfolioTableAddButtonComponent } from './component/portfolio/portfolio-table-add-button.component';
+import { PortfolioTableEditButtonComponent } from './component/portfolio/portfolio-table-edit-button.component';
+import { StockToBuyTableDeleteButtonComponent } from './component/stock-to-buy/stock-to-buy-table-delete-button.component';
+import { StockToBuyTableEditButtonComponent } from './component/stock-to-buy/stock-to-buy-table-edit-button.component';
+import { StockAnalystConsensusTableAddButtonComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table-add-button.component';
+import { StockAnalystConsensusTableRefreshButtonComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table-refresh-button.component';
+import { LinkedAccountTableDeleteButtonComponent } from './component/linked-account/linked-account-delete-button.component';
+import { LinkedAccountTableRefreshButtonComponent } from './component/linked-account/linked-account-refresh-button.component';
+import { PortfolioTableDeleteButtonComponent } from './component/portfolio/portfolio-table-delete-button.component';
+import { PortfolioTableRefreshButtonComponent } from './component/portfolio/portfolio-table-refresh-button.component';
+import { StockNotesTableEditButtonComponent } from './component/stock-notes/stock-notes-table-edit-button.component';
+import { StockNotesTableDeleteButtonComponent } from './component/stock-notes/stock-notes-table-delete-button.component';
+import { StockAnalystConsensusTableEditButtonComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table-edit-button.component';
+import { StockAnalystConsensusTableDeleteButtonComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table-delete-button.component';
+import { StockCatalystEventTableDeleteButtonComponent } from './component/stock-catalyst-event/stock-catalyst-event-table-delete-button.component';
+import { StockCatalystEventTableEditButtonComponent } from './component/stock-catalyst-event/stock-catalyst-event-table-edit-button.component';
+import { CrudTableButtonsComponent } from './component/crud/table/crud-table-buttons.component';
+import { StockPositionTableRefreshButtonComponent } from './component/stock-position/stock-position-table-refresh-button.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -264,15 +292,11 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         LoginComponent,
         MenuBarComponent,
 
-        CrudTableDeleteButtonComponent,
-        CrudTableAddButtonComponent,
-        CrudTableEditButtonComponent,
-        CrudTableRefreshButtonComponent,
-
         CustomerFormComponent,
         CustomerPanelComponent,
         CustomerFormButtonsComponent,
         ProfileComponent,
+        CrudTableButtonsComponent,
 
         TradeItAccountTableComponent,
         TradeItAccountSelectionTableComponent,
@@ -281,11 +305,19 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         TradeItAccountPanelComponent,
         TradeItAccountFormButtonsComponent,
         TradeItAccountTableButtonsComponent,
+        TradeItAccountTableAddButtonComponent,
+        TradeItAccountTableEditButtonComponent,
+        TradeItAccountTableDeleteButtonComponent,
+        TradeItAccountTableRefreshButtonComponent,
         TradeItAccountsComponent,
 
         LinkedAccountTableComponent,
         LinkedAccountTableButtonsComponent,
         LinkedAccountDialogComponent,
+        LinkedAccountTableAddButtonComponent,
+        LinkedAccountTableEditButtonComponent,
+        LinkedAccountTableDeleteButtonComponent,
+        LinkedAccountTableRefreshButtonComponent,
         LinkedAccountFormComponent,
         LinkedAccountFormButtonsComponent,
 
@@ -295,6 +327,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockFormButtonsComponent,
         StockTableButtonsComponent,
 
+        StockPositionTableRefreshButtonComponent,
         StockPositionTableComponent,
         StockPositionTableButtonsComponent,
 
@@ -304,6 +337,10 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         PortfolioFormButtonsComponent,
         PortfolioDialogComponent,
         PortfolioTableButtonsComponent,
+        PortfolioTableAddButtonComponent,
+        PortfolioTableEditButtonComponent,
+        PortfolioTableDeleteButtonComponent,
+        PortfolioTableRefreshButtonComponent,
 
         PortfolioStockTableComponent,
         PortfolioStockTableButtonsComponent,
@@ -311,6 +348,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         PortfolioStockDialogComponent,
         PortfolioStockFormButtonsComponent,
         PortfolioStockTableDeleteButtonComponent,
+        PortfolioStockTableAddButtonComponent,
+        PortfolioStockTableEditButtonComponent,
+        PortfolioStockTableRefreshButtonComponent,
 
         StockNotesTableTabComponent,
         StockNotesTableDashboardComponent,
@@ -318,6 +358,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockNotesDialogComponent,
         StockNotesTableButtonsComponent,
         StockNotesTableAddButtonComponent,
+        StockNotesTableDeleteButtonComponent,
+        StockNotesTableEditButtonComponent,
+        StockNotesTableRefreshButtonComponent,
         StockNotesFormButtonsComponent,
 
         StockAnalystConsensusTableTabComponent,
@@ -326,6 +369,10 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockAnalystConsensusDialogComponent,
         StockAnalystConsensusTableButtonsComponent,
         StockAnalystConsensusFormButtonsComponent,
+        StockAnalystConsensusTableAddButtonComponent,
+        StockAnalystConsensusTableDeleteButtonComponent,
+        StockAnalystConsensusTableEditButtonComponent,
+        StockAnalystConsensusTableRefreshButtonComponent,
 
         StockCatalystEventTableTabComponent,
         StockCatalystEventDashboardTableComponent,
@@ -333,6 +380,10 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockCatalystEventDialogComponent,
         StockCatalystEventTableButtonsComponent,
         StockCatalystEventFormButtonsComponent,
+        StockCatalystEventTableAddButtonComponent,
+        StockCatalystEventTableDeleteButtonComponent,
+        StockCatalystEventTableEditButtonComponent,
+        StockCatalystEventTableRefreshButtonComponent,
 
         StockToBuyTableTabComponent,
         StockToBuyTableDashboardComponent,
@@ -340,6 +391,10 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockToBuyDialogComponent,
         StockToBuyTableButtonsComponent,
         StockToBuyFormButtonsComponent,
+        StockToBuyTableAddButtonComponent,
+        StockToBuyTableDeleteButtonComponent,
+        StockToBuyTableEditButtonComponent,
+        StockToBuyTableRefreshButtonComponent,
 
         TradeItSecurityQuestionDialogComponent,
 

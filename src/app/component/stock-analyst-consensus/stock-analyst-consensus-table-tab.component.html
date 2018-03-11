@@ -85,8 +85,8 @@
                   header="Comments"
                   [style]="{'width':'250px'}"
                   [sortable]="false">
-            <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                <stock-comments [stockNotesContainer]="stockNotes"></stock-comments>
+            <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
+                <stock-comments [stockNotesContainer]="stockAnalystConsensus"></stock-comments>
             </ng-template>
         </p-column>
 

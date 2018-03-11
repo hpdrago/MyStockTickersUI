@@ -1,36 +1,32 @@
 import { Component } from "@angular/core";
-import { ToastsManager } from "ng2-toastr";
-import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
-import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
-import { StockCatalystEventStateStore } from './stock-catalyst-event-state-store';
-import { StockCatalystEventController } from './stock-catalyst-event-controller';
-import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
-import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
 
 /**
  * Created by mike on 8/15/2017.
  */
 @Component({
-    selector:    'stock-catalyst-event-table-buttons',
-    templateUrl: '../crud/table/crud-table-buttons.component.html'
+    selector: 'stock-catalyst-event-table-buttons',
+    template: `<ng-template #addButtonTemplate>
+                    <stock-catalyst-event-table-add-button>
+                    </stock-catalyst-event-table-add-button>
+               </ng-template>
+               <ng-template #editButtonTemplate>
+                    <stock-catalyst-event-table-edit-button>
+                    </stock-catalyst-event-table-edit-button>
+               </ng-template>
+               <ng-template #deleteButtonTemplate>
+                    <stock-catalyst-event-table-delete-button>
+                    </stock-catalyst-event-table-delete-button>
+               </ng-template>
+               <ng-template #refreshButtonTemplate>
+                    <stock-catalyst-event-table-refresh-button>
+                    </stock-catalyst-event-table-refresh-button>
+               </ng-template>
+               <crud-table-buttons [addButtonTemplate]="addButtonTemplate"
+                                   [editButtonTemplate]="editButtonTemplate"
+                                   [deleteButtonTemplate]="deleteButtonTemplate"
+                                   [refreshButtonTemplate]="refreshButtonTemplate">
+               </crud-table-buttons>`
 })
-export class StockCatalystEventTableButtonsComponent extends CrudTableButtonsComponent<StockCatalystEvent>
+export class StockCatalystEventTableButtonsComponent
 {
-    /**
-     * Constructor.
-     * @param {ToastsManager} toaster
-     */
-    constructor( protected toaster: ToastsManager,
-                 private stockCatalystEventStateStore: StockCatalystEventStateStore,
-                 private stockCatalystEventController: StockCatalystEventController,
-                 private stockCatalystEventFactory: StockCatalystEventFactory,
-                 private stockCatalystEventCrudServuce: StockCatalystEventCrudService )
-    {
-        super( toaster,
-               stockCatalystEventStateStore,
-               stockCatalystEventController,
-               stockCatalystEventFactory,
-               stockCatalystEventCrudServuce );
-
-    }
 }

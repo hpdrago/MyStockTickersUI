@@ -14,7 +14,7 @@ import { isNullOrUndefined } from "util";
 @Component
 ({
     selector: 'crud-table-edit-button',
-     templateUrl: './crud-table-button.component.html'
+    templateUrl: './crud-table-button.component.html'
 })
 export class CrudTableEditButtonComponent<T extends ModelObject<T>> extends CrudTableButtonComponent<T>
 {

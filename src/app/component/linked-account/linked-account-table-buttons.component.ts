@@ -1,11 +1,4 @@
-import { Component, OnInit } from "@angular/core";
-import { ToastsManager } from "ng2-toastr";
-import { CrudTableButtonsComponent } from "../crud/table/crud-table-buttons.component";
-import { LinkedAccount } from "../../model/entity/linked-account";
-import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud.service';
-import { LinkedAccountFactory } from '../../model/factory/linked-account.factory';
-import { LinkedAccountController } from './linked-account-controller';
-import { LinkedAccountStateStore } from './linked-account-state-store';
+import { Component } from "@angular/core";
 
 /**
  * The buttons component for the linked accounts.
@@ -13,34 +6,28 @@ import { LinkedAccountStateStore } from './linked-account-state-store';
  */
 @Component({
     selector:    'linked-account-table-buttons',
-    templateUrl: '../crud/table/crud-table-buttons.component.html'
+    template: `<ng-template #addButtonTemplate>
+                   <linked-account-table-add-button>
+                   </linked-account-table-add-button>
+               </ng-template>
+               <ng-template #editButtonTemplate>
+                   <linked-account-table-edit-button>
+                   </linked-account-table-edit-button>
+               </ng-template>
+               <ng-template #deleteButtonTemplate>
+                   <linked-account-table-delete-button>
+                   </linked-account-table-delete-button>
+               </ng-template>
+               <ng-template #refreshButtonTemplate>
+                   <linked-account-table-refresh-button>
+                   </linked-account-table-refresh-button>
+               </ng-template>
+               <crud-table-buttons [addButtonTemplate]="addButtonTemplate"
+                                   [editButtonTemplate]="editButtonTemplate"
+                                   [deleteButtonTemplate]="deleteButtonTemplate"
+                                   [refreshButtonTemplate]="refreshButtonTemplate">
+               </crud-table-buttons>`
 })
-export class LinkedAccountTableButtonsComponent extends CrudTableButtonsComponent<LinkedAccount>
-                                                implements OnInit
+export class LinkedAccountTableButtonsComponent
 {
-    /**
-     * Constructor.
-     * @param {ToastsManager} toaster
-     * @param {LinkedAccountStateStore} linkedAccountStateStore
-     * @param {LinkedAccountController} linkedAccountController
-     * @param {LinkedAccountFactory} linkedAccountFactory
-     * @param {LinkedAccountCrudService} linkedAccountCrudService
-     */
-    constructor( protected toaster: ToastsManager,
-                 private linkedAccountStateStore: LinkedAccountStateStore,
-                 private linkedAccountController: LinkedAccountController,
-                 private linkedAccountFactory: LinkedAccountFactory,
-                 private linkedAccountCrudService: LinkedAccountCrudService )
-    {
-        super( toaster,
-               linkedAccountStateStore,
-               linkedAccountController,
-               linkedAccountFactory,
-               linkedAccountCrudService );
-    }
-
-    public ngOnInit(): void
-    {
-        this.addButton.showButton = false;
-    }
 }

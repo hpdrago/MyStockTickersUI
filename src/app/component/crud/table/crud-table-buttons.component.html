@@ -1,6 +1,15 @@
 <div style="text-align: center">
-    <crud-table-edit-button></crud-table-edit-button>
-    <crud-table-add-button></crud-table-add-button>
-    <crud-table-delete-button></crud-table-delete-button>
-    <crud-table-refresh-button></crud-table-refresh-button>
+    <ng-template #editButton></ng-template>
+    <ng-template #addButton></ng-template>
+    <ng-template #deleteButton></ng-template>
+    <ng-template #refeshButton></ng-template>
+
+    <ng-container *ngTemplateOutlet="editButtonTemplate">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="addButtonTemplate">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="deleteButtonTemplate">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="refreshButtonTemplate">
+    </ng-container>
 </div>

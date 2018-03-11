@@ -18,12 +18,12 @@ import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
  * Created by mike on 10/30/2016.
  */
 @Component(
-    {
-        selector: 'stock-notes-dashboard-table',
-        templateUrl: './stock-notes-table-dashboard.component.html',
-        providers: [StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler,
-                    StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler]
-    } )
+{
+    selector: 'stock-notes-dashboard-table',
+    templateUrl: './stock-notes-table-dashboard.component.html',
+    providers: [StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler,
+                StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler]
+})
 export class StockNotesTableDashboardComponent extends StockNotesTableComponent
 {
     /**

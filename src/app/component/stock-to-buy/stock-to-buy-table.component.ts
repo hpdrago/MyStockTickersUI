@@ -1,22 +1,22 @@
-import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { ToastsManager } from "ng2-toastr";
 import { isNullOrUndefined } from "util";
-import { StockNotes } from "../../model/entity/stock-notes";
-import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
-import { StockNotesSentiment } from "../../common/stock-notes-sentiment.enum";
-import { CrudOperation } from "../crud/common/crud-operation";
-import { StockNotesStock } from "../../model/entity/stock-notes-stock";
 import { DialogCloseEventType } from "../crud/common/close-button-event";
 import { StockQuoteModelObjectTableComponent } from "../stock-quote/stock-quote-modelobject-table.component";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
-import { StockToBuyStateStore } from './stock-to-buy-state-store';
-import { StockToBuyController } from './stock-to-buy-controller';
-import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
-import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
-import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
+import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
 import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
-import { TableLoadingStrategy } from '../common/table-loading-strategy';
+import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
+import { StockToBuy } from '../../model/entity/stock-to-buy';
+import { StockToBuyStateStore } from './stock-to-buy-state-store';
+import { StockToBuyController } from './stock-to-buy-controller';
+import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
+import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
+import { StockNotesActionTaken } from '../../common/stock-notes-action-taken.enum';
+import { StockNotes } from '../../model/entity/stock-notes';
+import { StockNotesStock } from '../../model/entity/stock-notes-stock';
+import { CrudOperation } from '../crud/common/crud-operation';
+import { StockNotesSentiment } from '../../common/stock-notes-sentiment.enum';
 
 /**
  * This component displays a list of Stocks to buy.
@@ -72,7 +72,7 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
 
     /**
      * This method is called when the user clicks the "Record Buy" button in the table.
-     * The buy information contained within the StockToBuy for that row clicked will be converted to a StockNotes
+     * The buy information contained within the StockToBuy for that row clicked will be converted to a StockToBuy
      * instances so that a note can be created to document the purchase of a stock.
      * The stock notes dialog will display to allow the user to enter note information and if the note is created
      * then the user will be prompted to delete the stock to buy entry if they want.
@@ -112,12 +112,12 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
         /*
          * Display the stock notes dialog.
          */
-        this.stockNotesStateStore
+        this.stockToBuyStateStore
             .sendCrudOperationChangedEvent( CrudOperation.CREATE );
-        this.stockNotesStateStore
-            .sendModelObjectChangedEvent( this, stockNotes );
+        this.stockToBuyStateStore
+            .sendModelObjectChangedEvent( this, stockToBuy );
         /*
-        this.stockNotesController
+        this.stockToBuyController
             .sendDisplayFormRequestEvent();
             */
     }
