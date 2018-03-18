@@ -41,8 +41,8 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     @Output()
     private stockSelected: EventEmitter<StockQuote>  = new EventEmitter<StockQuote>();
 
-    private stockSearchResults: string[];
-    private tickerSymbol: string;
+    protected stockSearchResults: string[];
+    protected tickerSymbol: string;
     private disabled: boolean;
     private isStockSelected : boolean;
 

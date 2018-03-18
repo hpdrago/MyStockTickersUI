@@ -281,6 +281,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
                         },
                         error =>
                         {
+                            this.logError( "keepSessionAlive failed with exception: " + JSON.stringify( error ));
                             let restException = new RestException( error );
                             /*
                              * Check to see if the keep alive failed with an authentication exception
@@ -297,8 +298,8 @@ export class TradeItAccountOAuthService extends BaseTradeItService
                             }
                             else
                             {
-                                this.logError( methodName + " " + error );
-                                keepSessionAliveSubject.error( "keepSessionAlive: " + error );
+                                this.logError( methodName + " " + JSON.stringify( error ));
+                                keepSessionAliveSubject.error( error );
                             }
                         } );
         return keepSessionAliveSubject.asObservable();

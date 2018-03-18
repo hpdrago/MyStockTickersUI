@@ -10,6 +10,7 @@ import { StockPosition } from '../../model/entity/stock-position';
 import { StockPositionFactory } from '../../model/factory/stock-position-factory';
 import { KeyValuePairs } from '../../common/key-value-pairs';
 import { RestErrorReporter } from '../rest-error-reporter';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This service handles all of the stock position related actions.
@@ -25,7 +26,7 @@ export class StockPositionCrudService extends CrudRestService<StockPosition>
      * @param {restErrorReporter} restErrorReporter
      * @param {StockPositionFactory} stockPositionFactory
      */
-    constructor( protected http: Http,
+    constructor( protected http: HttpClient,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,

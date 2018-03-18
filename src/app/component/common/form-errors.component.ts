@@ -28,7 +28,7 @@ export class FormErrorsComponent extends BaseComponent
     @Input()
     protected crudController: CrudController<any>;
 
-    private errors: string[];
+    protected errors: string[];
 
     constructor( protected toaster: ToastsManager )
     {

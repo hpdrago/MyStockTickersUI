@@ -1,12 +1,12 @@
 import { SessionService } from "../session.service";
 import { Injectable } from "@angular/core";
-import { Http } from "@angular/http";
 import { Observable } from "rxjs";
 import { PortfolioStockFactory } from "../../model/factory/portfolio-stock.factory";
 import { CrudRestService } from "./crud-rest.serivce";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { AppConfigurationService } from "../app-configuration.service";
 import { RestErrorReporter } from '../rest-error-reporter';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This service manages REST communication for PortfolioStocks.
@@ -26,7 +26,7 @@ export class PortfolioStockCrudService extends CrudRestService<PortfolioStock>
      * @param {restErrorReporter} restErrorReporter
      * @param {PortfolioStockFactory} portfolioStockFactory
      */
-    constructor( protected http: Http,
+    constructor( protected http: HttpClient,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,

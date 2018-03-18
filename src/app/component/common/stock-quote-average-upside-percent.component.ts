@@ -13,7 +13,7 @@ import { StockQuoteModelObject } from '../../model/entity/stock-quote-modelobjec
 export class StockQuoteAverageUpsidePercentComponent
 {
     @Input()
-    private stockQuote: StockQuoteModelObject<any>;
+    protected stockQuote: StockQuoteModelObject<any>;
 
     /**
      * Calculates the amount of upside potential from current stock price to the average analyst price

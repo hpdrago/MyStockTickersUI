@@ -8,7 +8,6 @@ import { ErrorHandler, NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
-import { HttpModule } from "@angular/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 /**
  *  Angular Material
@@ -67,7 +66,6 @@ import { PortfolioStockTableComponent } from "./component/portfolio-stock/portfo
 import { PortfolioStockFactory } from "./model/factory/portfolio-stock.factory";
 import { StockFactory } from "./model/factory/stock.factory";
 import { PortfolioFactory } from "./model/factory/portfolio.factory";
-import { StockSectorCrudService } from "./service/crud/stock-sector-crud.service";
 import { StockAutoCompleteComponent } from "./component/common/stock-autocomplete.component";
 import { StockTableButtonsComponent } from "./component/stock/stock-table-buttons.component";
 import { StockDialogComponent } from "./component/stock/stock-dialog.component";
@@ -77,7 +75,6 @@ import { PortfolioDialogComponent } from "./component/portfolio/portfolio-dialog
 import { PortfolioFormComponent } from "./component/portfolio/portfolio-form.component";
 import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.component";
 import { PortfolioTableButtonsComponent } from "./component/portfolio/portfolio-table-buttons.component";
-import { StockSectorFactory } from "./model/factory/stock-sector.factory";
 import { StockNotesDialogComponent } from "./component/stock-notes/stock-notes-dialog.component";
 import { StockNotesFormComponent } from "./component/stock-notes/stock-notes-form.component";
 import { StockFormButtonsComponent } from "./component/stock/stock-form-buttons.component";
@@ -92,9 +89,7 @@ import { StockNotesCrudService } from "./service/crud/stock-notes-crud.service";
 import { StockNotesFactory } from "./model/factory/stock-notes.factory";
 import { StockNotesCountService } from "./service/crud/stock-notes-count.service";
 import { StockNotesCountFactory } from "./model/factory/stock-note-count.factory";
-import { StockNotesSourceCrudService } from "./service/crud/stock-notes-source-crud.service";
 import { StockNotesSourceFactory } from "./model/factory/stock-notes-source.factory";
-import { BusyModule } from 'angular2-busy';
 
 import { CURRENCY_MASK_CONFIG, CurrencyMaskConfig } from "ng2-currency-mask/src/currency-mask.config";
 import { StockAnalystConsensusFormComponent } from "./component/stock-analyst-consensus/stock-analyst-consensus-form.component";
@@ -220,15 +215,19 @@ import { StockCatalystEventTableDeleteButtonComponent } from './component/stock-
 import { StockCatalystEventTableEditButtonComponent } from './component/stock-catalyst-event/stock-catalyst-event-table-edit-button.component';
 import { CrudTableButtonsComponent } from './component/crud/table/crud-table-buttons.component';
 import { StockPositionTableRefreshButtonComponent } from './component/stock-position/stock-position-table-refresh-button.component';
-import { StockNotesSourceTableAddButtonComponent } from './component/stock-notes-source/stock-notes-source-table-add-button.component';
-import { StockNotesSourceTableDeleteButtonComponent } from './component/stock-notes-source/stock-notes-source-table-delete-button.component';
-import { StockNotesSourceTableRefreshButtonComponent } from './component/stock-notes-source/stock-notes-source-table-refresh-button.component';
-import { StockNotesSourceTableComponent } from './component/stock-notes-source/stock-notes-source-table.component';
-import { StockNotesSourceTableButtonsComponent } from './component/stock-notes-source/stock-notes-source-table-buttons.component';
-import { StockNotesSourceTableEditButtonComponent } from './component/stock-notes-source/stock-notes-source-table-edit-button.component';
-import { StockNotesSourceFormComponent } from './component/stock-notes-source/stock-notes-source-form.component';
-import { StockNotesSourceDialogComponent } from './component/stock-notes-source/stock-notes-source-dialog.component';
+import { BusyModule } from 'angular2-busy';
+import { HttpClientModule } from '@angular/common/http';
+import { StockNotesSourceCrudService } from './service/crud/stock-notes-source-crud.service';
 import { StockNotesSourceFormButtonsComponent } from './component/stock-notes-source/stock-notes-source-form-buttons.component';
+import { StockNotesSourceTableRefreshButtonComponent } from './component/stock-notes-source/stock-notes-source-table-refresh-button.component';
+import { StockNotesSourceTableEditButtonComponent } from './component/stock-notes-source/stock-notes-source-table-edit-button.component';
+import { StockNotesSourceTableDeleteButtonComponent } from './component/stock-notes-source/stock-notes-source-table-delete-button.component';
+import { StockNotesSourceTableAddButtonComponent } from './component/stock-notes-source/stock-notes-source-table-add-button.component';
+import { StockNotesSourceTableButtonsComponent } from './component/stock-notes-source/stock-notes-source-table-buttons.component';
+import { StockNotesSourceDialogComponent } from './component/stock-notes-source/stock-notes-source-dialog.component';
+import { StockNotesSourceFormComponent } from './component/stock-notes-source/stock-notes-source-form.component';
+import { NotesSourceComponent } from './component/common/notes-source.component';
+import { StockNotesSourceTableComponent } from './component/stock-notes-source/stock-notes-source-table.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -255,7 +254,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         FormsModule,
         ReactiveFormsModule,
         routing,
-        HttpModule,
+        HttpClientModule,
         BrowserAnimationsModule,
         // Angular Material modules
         MatProgressBarModule,
@@ -372,6 +371,16 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockNotesTableRefreshButtonComponent,
         StockNotesFormButtonsComponent,
 
+        StockNotesSourceFormComponent,
+        StockNotesSourceDialogComponent,
+        StockNotesSourceTableComponent,
+        StockNotesSourceTableButtonsComponent,
+        StockNotesSourceTableAddButtonComponent,
+        StockNotesSourceTableDeleteButtonComponent,
+        StockNotesSourceTableEditButtonComponent,
+        StockNotesSourceTableRefreshButtonComponent,
+        StockNotesSourceFormButtonsComponent,
+
         StockAnalystConsensusTableTabComponent,
         StockAnalystConsensusDashboardTableComponent,
         StockAnalystConsensusFormComponent,
@@ -405,18 +414,9 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockToBuyTableEditButtonComponent,
         StockToBuyTableRefreshButtonComponent,
 
-        StockNotesSourceTableComponent,
-        StockNotesSourceTableButtonsComponent,
-        StockNotesSourceTableAddButtonComponent,
-        StockNotesSourceTableDeleteButtonComponent,
-        StockNotesSourceTableEditButtonComponent,
-        StockNotesSourceTableRefreshButtonComponent,
-        StockNotesSourceDialogComponent,
-        StockNotesSourceFormComponent,
-        StockNotesSourceFormButtonsComponent,
-
         TradeItSecurityQuestionDialogComponent,
 
+        NotesSourceComponent,
         DashboardComponent,
         FormErrorsComponent,
         UppercaseDirective,
@@ -466,10 +466,8 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         LinkedAccountController,
 
         StockCrudService,
-        StockSectorCrudService,
         StockExchangeService,
         StockFactory,
-        StockSectorFactory,
         StockQuoteRefreshService,
 
         PortfolioFactory,

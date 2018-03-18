@@ -25,14 +25,14 @@ import { Component, Input, TemplateRef } from "@angular/core";
 export class CrudTableButtonsComponent
 {
     @Input('refreshButtonTemplate')
-    private refreshButtonTemplate: TemplateRef<any>;
+    protected refreshButtonTemplate: TemplateRef<any>;
 
     @Input('addButtonTemplate')
-    private addButtonTemplate: TemplateRef<any>;
+    protected addButtonTemplate: TemplateRef<any>;
 
     @Input('editButtonTemplate')
-    private editButtonTemplate: TemplateRef<any>;
+    protected editButtonTemplate: TemplateRef<any>;
 
     @Input('deleteButtonTemplate')
-    private deleteButtonTemplate: TemplateRef<any>;
+    protected deleteButtonTemplate: TemplateRef<any>;
 }

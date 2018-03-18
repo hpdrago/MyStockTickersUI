@@ -91,7 +91,6 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
                         },
                         error =>
                         {
-                            this.onModelObjectSelected( modelObject );
                             this.reportRestError( error );
                         });
         this.log( methodName + ".end" );

@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { CrudTableButtonComponent } from './crud-table-button.component';
 import { ModelObject } from '../../../model/entity/modelobject';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
@@ -11,12 +10,7 @@ import { isNullOrUndefined } from "util";
 /**
  * Edit button for standard CRUD based table
  */
-@Component
-({
-    selector: 'crud-table-edit-button',
-    templateUrl: './crud-table-button.component.html'
-})
-export class CrudTableEditButtonComponent<T extends ModelObject<T>> extends CrudTableButtonComponent<T>
+export abstract class CrudTableEditButtonComponent<T extends ModelObject<T>> extends CrudTableButtonComponent<T>
 {
     /**
      * Constructor.

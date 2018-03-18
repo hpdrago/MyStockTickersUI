@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 {
     template: ``
 })
-export class StockNotesSourceComponent
+export class NotesSourceComponent
 {
 
 }

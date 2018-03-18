@@ -1,4 +1,3 @@
-import { Http, Response } from "@angular/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Rx";
 import { PaginationPage } from "../../common/pagination";
@@ -10,6 +9,7 @@ import { Stock } from "../../model/entity/stock";
 import { StockQuote } from "../../model/entity/stock-quote";
 import { CrudRestService } from "./crud-rest.serivce";
 import { RestErrorReporter } from '../rest-error-reporter';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This class provides all of the REST communication services for Stocks.
@@ -31,7 +31,7 @@ export class StockCrudService extends CrudRestService<Stock>
      * @param {StockFactory} stockFactory
      * @param {RestErrorReporter} restErrorReporter
      */
-    constructor( protected http: Http,
+    constructor( protected http: HttpClient,
                  protected session: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,
@@ -64,7 +64,6 @@ export class StockCrudService extends CrudRestService<Stock>
     {
         this.debug( "getStockCompaniesLike " + searchString )
         return this.http.get( this.stocksCompaniesLikePaginationUrl.getPageWithSearchString( searchString, 0, 20 ) )
-                        .map( ( response: Response ) => response.json() )
                         .catch( ( error: any ) =>
                                 {
                                     this.restErrorReporter.reportRestError( error );
@@ -93,23 +92,6 @@ export class StockCrudService extends CrudRestService<Stock>
         this.debug( methodName + " " + tickerSymbol );
         let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockQuote/" + tickerSymbol;
         return this.http
-                   .get( url )
-                   .map( ( response: Response ) => response.json() );
-        /*
-                   .catch( ( error: any ) =>
-                           {
-                               let restException = new RestException( error );
-                               if ( restException.isNotFound() )
-                               {
-                                   this.debug( methodName + " " + tickerSymbol + " was not found" );
-                                   return null;
-                               }
-                               else
-                               {
-                                   Observable.throw( error );
-                               }
-                           }
-                           );
-                           */
+                   .get<StockQuote>( url )
     }
 }

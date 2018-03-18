@@ -23,8 +23,8 @@ import { Component, Input } from '@angular/core';
 export class GainLossCurrencyComponent
 {
     @Input()
-    private currencyValue: number;
+    protected currencyValue: number;
 
     @Input()
-    private currencyType: string = 'USD'
+    protected currencyType: string = 'USD'
 }

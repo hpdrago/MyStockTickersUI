@@ -21,9 +21,9 @@ import { ModelObject } from '../../model/entity/modelobject';
 export class ModelObjectLoadingComponent
 {
     @Input()
-    private modelObject: ModelObject<any>;
+    protected modelObject: ModelObject<any>;
 
     @Input()
-    private loadingMessage: string = 'Loading...';
+    protected loadingMessage: string = 'Loading...';
 
 }

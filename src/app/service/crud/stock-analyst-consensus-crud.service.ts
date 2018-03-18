@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Http } from "@angular/http";
 import { SessionService } from "../session.service";
 import { AppConfigurationService } from "../app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
@@ -7,6 +6,7 @@ import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensu
 import { StockAnalystConsensusFactory } from "../../model/factory/stock-analyst-consensus.factory";
 import { KeyValuePairs } from "../../common/key-value-pairs";
 import { RestErrorReporter } from '../rest-error-reporter';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This class provides all CRUD REST services for Stock Summary.
@@ -26,7 +26,7 @@ export class StockAnalystConsensusCrudService extends CrudRestService<StockAnaly
      * @param {restErrorReporter} restErrorReporter
      * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
      */
-    constructor ( protected http: Http,
+    constructor ( protected http: HttpClient,
                   protected sessionService: SessionService,
                   protected appConfig: AppConfigurationService,
                   protected restErrorReporter: RestErrorReporter,

@@ -7,6 +7,7 @@ import { Observable } from "rxjs/Observable";
 import { Injectable } from "@angular/core";
 import { StockNoteCount } from "../../model/entity/stock-note-count";
 import { RestErrorReporter } from '../rest-error-reporter';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class StockNotesCountService extends ReadRestService<StockNoteCount>
@@ -21,7 +22,7 @@ export class StockNotesCountService extends ReadRestService<StockNoteCount>
      * @param {restErrorReporter} restErrorReporter
      * @param {StockNotesCountFactory} modelObjectFactory
      */
-    constructor( protected http: Http,
+    constructor( protected http: HttpClient,
                  protected sessionService: SessionService,
                  protected appConfigurationService: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,

@@ -6,13 +6,13 @@ import { Component, Input } from '@angular/core';
 @Component(
 {
     selector: 'currency',
-    template: `{{currencyValue | currency: currencyType : true}}`
+    template: `{{currencyValue | currency: currencyType : 'symbol'}}`
 })
 export class CurrencyComponent
 {
     @Input()
-    private currencyValue: number;
+    protected currencyValue: number;
 
     @Input()
-    private currencyType: string = 'USD'
+    protected currencyType: string = 'USD'
 }

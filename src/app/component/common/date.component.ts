@@ -12,9 +12,9 @@ import { Component, Input } from '@angular/core';
 export class DateComponent
 {
     @Input()
-    private dateValue: Date;
+    protected dateValue: Date;
 
     @Input()
-    private dateFormat: string = 'y-MM-dd';
+    protected dateFormat: string = 'y-MM-dd';
 }
 

@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { CrudTableButtonComponent } from './crud-table-button.component';
 import { ModelObject } from '../../../model/entity/modelobject';
 import { ToastsManager } from 'ng2-toastr';
@@ -10,12 +9,7 @@ import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 /**
  * Add button for standard CRUD based table
  */
-@Component
-({
-    selector: 'crud-table-add-button',
-    templateUrl: './crud-table-button.component.html'
-})
-export class CrudTableAddButtonComponent<T extends ModelObject<T>> extends CrudTableButtonComponent<T>
+export abstract class CrudTableAddButtonComponent<T extends ModelObject<T>> extends CrudTableButtonComponent<T>
 {
     /**
      * Constructor.

@@ -5,13 +5,13 @@ import { Injectable } from "@angular/core";
 import { SessionService } from "../session.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { AppConfigurationService } from "../app-configuration.service";
-import { Http } from "@angular/http";
 import { LinkedAccount } from "../../model/entity/linked-account";
 import { LinkedAccountFactory } from "../../model/factory/linked-account.factory";
 import { RestErrorReporter } from '../rest-error-reporter';
 import { KeyValuePairs } from '../../common/key-value-pairs';
 import { Observable } from 'rxjs/Observable';
 import { LoadingStatus } from '../../model/entity/loading-status';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This service handles all of the linked account related CRUD actions.
@@ -27,7 +27,7 @@ export class LinkedAccountCrudService extends CrudRestService<LinkedAccount>
      * @param {restErrorReporter} restErrorReporter
      * @param {LinkedAccountFactory} linkedAccountFactory
      */
-    constructor( protected http: Http,
+    constructor( protected http: HttpClient,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,

@@ -6,9 +6,9 @@ import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { SessionService } from "../session.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { AppConfigurationService } from "../app-configuration.service";
-import { Http } from "@angular/http";
 import { TradeItAccountFactory } from "../../model/factory/tradeit-account.factory";
 import { RestErrorReporter } from '../rest-error-reporter';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This service handles all of the account related actions.
@@ -24,7 +24,7 @@ export class TradeItAccountCrudService extends CrudRestService<TradeItAccount>
      * @param {restErrorReporter} restErrorReporter
      * @param {TradeItAccountFactory} customerAccountFactory
      */
-    constructor( protected http: Http,
+    constructor( protected http: HttpClient,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,

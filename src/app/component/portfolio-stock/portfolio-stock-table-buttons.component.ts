@@ -1,5 +1,4 @@
 import { Component, Input } from "@angular/core";
-import { InputHandler } from 'ng2-currency-mask/src/input.handler';
 import { Portfolio } from '../../model/entity/portfolio';
 
 /**

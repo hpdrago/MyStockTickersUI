@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { BaseService } from "../base-service";
 import { Observable } from "rxjs/Observable";
 import { SelectItem } from "primeng/primeng";
-import { Headers, Http, RequestOptions, Response } from "@angular/http";
 import { AppConfigurationService } from "../app-configuration.service";
 import { TradeItBrokerListResult } from "./apiresults/tradeit-broker-list-result";
 import { TradeItOAuthAccessResult } from "./apiresults/tradeit-oauth-access-result";
@@ -16,6 +15,8 @@ import { TradeItKeepSessionAliveResult } from "./apiresults/tradeit-keep-session
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { GetOAuthTokenUpdateURLResult } from "./apiresults/tradeit-get-oath-token-update-url-result";
 import { ToastsManager } from "ng2-toastr";
+import { HttpClient } from '@angular/common/http';
+import { CrudRestErrorReporter } from '../crud/crud-rest-error-reporter';
 
 /**
  * This service contains the methods to interface with the Tradeit API
@@ -40,10 +41,9 @@ export class TradeItService extends BaseService
      * @param {AppConfigurationService} appConfig
      */
     constructor( protected toaster: ToastsManager,
-                 protected http: Http,
+                 protected http: HttpClient,
                  protected sessionService: SessionService,
-                 protected appConfig: AppConfigurationService,
-               )
+                 protected appConfig: AppConfigurationService )
     {
         super( toaster );
     }
@@ -62,14 +62,15 @@ export class TradeItService extends BaseService
         url += `/customerId/${this.sessionService.getLoggedInUserId()}`;
         this.debug( methodName + " url: " + url );
         return this.http
-                   .get( url )
-                   .map( ( response: Response ) =>
+                   .get<TradeItAuthenticateResult>( url )
+                   .map( ( authenticateResult: TradeItAuthenticateResult ) =>
                          {
-                             this.checkResponse( methodName, response );
+                             this.checkResponse( methodName, authenticateResult );
                              let jsonConvert: JsonConvert = new JsonConvert();
                              jsonConvert.operationMode = OperationMode.LOGGING;
                              jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
-                             let authenticate: TradeItAuthenticateResult = jsonConvert.deserialize( response.json(), TradeItAuthenticateResult );
+                             let authenticate: TradeItAuthenticateResult = jsonConvert.deserialize( authenticateResult,
+                                                                                                    TradeItAuthenticateResult );
                              this.debug( methodName + ": " + JSON.stringify( authenticate ) );
                              return  authenticate;
                          })
@@ -90,18 +91,16 @@ export class TradeItService extends BaseService
         url += `/accountId/${accountId}`;
         url += `/customerId/${this.sessionService.getLoggedInUserId()}`;
         this.debug( methodName + " url: " + url );
-        var bodyString = securityQuestionAnswer;
-        var headers = new Headers( { 'Content-Type': 'application/json' } ); // ... Set content type to JSON
-        var options = new RequestOptions();
-        options.headers = headers;
-        return this.http.post( url, bodyString, options ) // ...using post request
-                   .map( ( response: Response ) =>
+        return this.http
+                   .post( url, securityQuestionAnswer ) // ...using post request
+                   .map( ( authenticationResult: TradeItAuthenticateResult ) =>
                          {
-                             this.checkResponse( methodName, response );
+                             this.checkResponse( methodName, authenticationResult );
                              let jsonConvert: JsonConvert = new JsonConvert();
                              jsonConvert.operationMode = OperationMode.LOGGING;
                              jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
-                             let authenticate: TradeItAuthenticateResult = jsonConvert.deserialize( response.json(), TradeItAuthenticateResult );
+                             let authenticate: TradeItAuthenticateResult = jsonConvert.deserialize( authenticationResult,
+                                                                                                    TradeItAuthenticateResult );
                              this.debug( methodName + " authenticateAccount: " + JSON.stringify( authenticate ) );
                              return  authenticate;
                          })
@@ -124,14 +123,15 @@ export class TradeItService extends BaseService
         url += `/oAuthVerifier/${oAuthVerifier}`;
         this.debug( methodName + " url: " + url );
         return this.http
-                   .get( url )
-                   .map( ( response: Response ) =>
+                   .get<TradeItOAuthAccessResult>( url )
+                   .map( ( oAuthAccessResult: TradeItOAuthAccessResult ) =>
                          {
-                             this.checkResponse( methodName, response );
+                             this.checkResponse( methodName, oAuthAccessResult );
                              let jsonConvert: JsonConvert = new JsonConvert();
                              jsonConvert.operationMode = OperationMode.LOGGING;
                              jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
-                             let oAuthAccess: TradeItOAuthAccessResult = jsonConvert.deserialize( response.json(), TradeItOAuthAccessResult );
+                             let oAuthAccess: TradeItOAuthAccessResult = jsonConvert.deserialize( oAuthAccessResult,
+                                                                                                  TradeItOAuthAccessResult );
                              this.debug( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ) );
                              return oAuthAccess;
                          } )
@@ -149,11 +149,11 @@ export class TradeItService extends BaseService
         let url = this.appConfig.getBaseURL() + this.CONTEXT_URL + this.GET_REQUEST_OAUTH_POPUP_URL + "/" + broker;
         this.debug( methodName + " url: " + url );
         return this.http
-                   .get( url )
-                   .map( ( response: Response ) =>
+                   .get<TradeItGetOauthPopupURLResult>( url )
+                   .map( ( tradeItGetOauthPopupURLResult: TradeItGetOauthPopupURLResult ) =>
                          {
-                             this.checkResponse( methodName, response );
-                             return response.json();
+                             this.checkResponse( methodName, tradeItGetOauthPopupURLResult );
+                             return tradeItGetOauthPopupURLResult;
                          } )
                    .catch( ( error: any ) => Observable.throw( error ))
     }
@@ -168,11 +168,11 @@ export class TradeItService extends BaseService
         let url = this.appConfig.getBaseURL() + this.CONTEXT_URL + this.GET_BROKERS_URL;
         this.debug( methodName + " url: " + url );
         return this.http
-                   .get( url )
-                   .map( ( response: Response ) =>
+                   .get<TradeItBrokerListResult>( url )
+                   .map( ( brokerListResult: TradeItBrokerListResult ) =>
                          {
-                             this.checkResponse( methodName, response );
-                             return response.json();
+                             this.checkResponse( methodName, brokerListResult );
+                             return brokerListResult;
                          } )
                    .catch( ( error: any ) => Observable.throw( error ))
     }
@@ -216,14 +216,14 @@ export class TradeItService extends BaseService
         let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.KEEP_SESSION_ALIVE}/tradeItAccountId/${tradeItAccount.id}/customerId/${this.sessionService.getLoggedInUserId()}`;
         this.debug( methodName + " url: " + url );
         return this.http
-                   .get( url )
-                   .map( ( response: Response ) =>
+                   .get<TradeItKeepSessionAliveResult>( url )
+                   .map( ( keepSessionAliveResult: TradeItKeepSessionAliveResult ) =>
                          {
-                             this.debug( methodName + " received: " + JSON.stringify( response.json() ) )
-                             let keepAliveResult: TradeItKeepSessionAliveResult = TradeItKeepSessionAliveResult.newInstance( response.json() );
+                             this.debug( methodName + " received: " + JSON.stringify( keepSessionAliveResult ));
+                             let keepAliveResult: TradeItKeepSessionAliveResult = TradeItKeepSessionAliveResult
+                                 .newInstance( keepSessionAliveResult );
                              return keepAliveResult;
-                         } )
-                   .catch( ( error: any ) => Observable.throw( error ))
+                         });
     }
 
     /**
@@ -239,11 +239,12 @@ export class TradeItService extends BaseService
         let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.GET_OAUTH_TOKEN_UPDATE_URL}/accountId/${tradeItAccount.id}/customerId/${this.sessionService.getLoggedInUserId()}`;
         this.debug( methodName + " url: " + url );
         return this.http
-                   .get( url )
-                   .map( ( response: Response ) =>
+                   .get<GetOAuthTokenUpdateURLResult>( url )
+                   .map( ( oAuthTokenUpdateURL: GetOAuthTokenUpdateURLResult ) =>
                          {
-                             this.debug( methodName + " received: " + JSON.stringify( response.json() ) )
-                             let getOauthTokenUpdateURLResult: GetOAuthTokenUpdateURLResult = GetOAuthTokenUpdateURLResult.newInstance( response.json() );
+                             this.debug( methodName + " received: " + JSON.stringify( oAuthTokenUpdateURL ));
+                             let getOauthTokenUpdateURLResult: GetOAuthTokenUpdateURLResult = GetOAuthTokenUpdateURLResult
+                                 .newInstance( oAuthTokenUpdateURL );
                              this.debug( methodName + " returning: " + JSON.stringify( getOauthTokenUpdateURLResult ) );
                              return getOauthTokenUpdateURLResult;
                          } )
@@ -257,10 +258,10 @@ export class TradeItService extends BaseService
      * @param {string} methodName The name of the calling method so that the log is helpful
      * @param {Response} response json
      */
-    private checkResponse( methodName: string, response: Response ): TradeItAPIResult
+    private checkResponse( methodName: string, tradeItAPIResult: TradeItAPIResult ): TradeItAPIResult
     {
-        this.debug( methodName + " received: " + JSON.stringify( response.json() ) )
-        let result: TradeItAPIResult = TradeItAPIResult.newInstance( response.json() );
+        this.debug( methodName + " received: " + JSON.stringify( tradeItAPIResult ));
+        let result: TradeItAPIResult = TradeItAPIResult.newInstance( tradeItAPIResult );
         if ( result.status == "ERROR" )
         {
             let tradeItException: TradeItException = new TradeItException( result );

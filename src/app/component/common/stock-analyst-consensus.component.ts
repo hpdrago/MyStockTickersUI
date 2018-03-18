@@ -16,5 +16,5 @@ import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensu
 export class StockAnalystConsensusComponent
 {
     @Input()
-    private stockAnalystConsensus: StockAnalystConsensus;
+    protected stockAnalystConsensus: StockAnalystConsensus;
 }

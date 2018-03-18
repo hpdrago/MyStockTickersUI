@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Http } from "@angular/http";
 import { SessionService } from "../session.service";
 import { AppConfigurationService } from "../app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
 import { PortfolioFactory } from "../../model/factory/portfolio.factory";
 import { Portfolio } from "../../model/entity/portfolio";
 import { RestErrorReporter } from '../rest-error-reporter';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This class provides all CRUD REST services.
@@ -26,7 +26,7 @@ export class PortfolioCrudService extends CrudRestService<Portfolio>
      * @param {restErrorReporter} restErrorReporter
      * @param {PortfolioFactory} portfolioFactory
      */
-    constructor( protected http: Http,
+    constructor( protected http: HttpClient,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,

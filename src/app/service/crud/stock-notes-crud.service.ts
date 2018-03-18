@@ -9,6 +9,7 @@ import { CrudRestService } from "./crud-rest.serivce";
 import { KeyValuePairs } from "../../common/key-value-pairs";
 import { RestErrorReporter } from '../rest-error-reporter';
 import { isNullOrUndefined } from 'util';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This class provides all CRUD REST services for Stock Notes.
@@ -29,7 +30,7 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockNotesCountFactory} stockNoteCountFactory
      */
-    constructor ( protected http: Http,
+    constructor ( protected http: HttpClient,
                   protected sessionService: SessionService,
                   protected appConfig: AppConfigurationService,
                   protected restErrorReporter: RestErrorReporter,

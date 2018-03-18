@@ -16,6 +16,6 @@ import { Component, Input } from '@angular/core';
 export class GainLossPercentComponent
 {
     @Input()
-    private percentValue: number;
+    protected percentValue: number;
 
 }

@@ -3,8 +3,6 @@ import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { SelectItem } from "primeng/components/common/api";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
-import { StockSectorList } from "../../model/entity/stock-sectors.list";
-import { StockSectorCrudService } from "../../service/crud/stock-sector-crud.service";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
 import { isNullOrUndefined } from "util";
@@ -29,7 +27,6 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
 {
     @Input()
     private portfolio: Portfolio;
-    private stockSectorMap: StockSectorList = new StockSectorList();
     private stockSubSectors: SelectItem[];
     private stockSectors: SelectItem[];
     private dataLoaded: boolean = true;
@@ -48,7 +45,6 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      */
     constructor( protected toaster: ToastsManager,
                  protected formBuilder: FormBuilder,
-                 protected stockSectorService: StockSectorCrudService,
                  protected portfolioStockStateStore: PortfolioStockStateStore,
                  protected portfolioStockController: PortfolioStockController,
                  protected portfolioStockFactory: PortfolioStockFactory,
@@ -128,8 +124,6 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
             'numberOfShares':     '',
             'averageUnitCost':    '',
             'lastPrice':          '',
-            'sector':             '',
-            'subSector':          '',
             'realizedGains':      '',
             'realizedLosses':     '',
             'stopLossPrice':      '',
@@ -138,18 +132,6 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
             'profitTakingShares': ''
         } );
         return formGroup;
-    }
-
-    /**
-     * This method is called when the user selects a stock sector.
-     * When this occurs, the sub sector dropdown is populated with the sub sectors
-     * @param event
-     */
-    public onStockSectorChange( event )
-    {
-        this.debug( "onStockSectorChange: " + JSON.stringify( event.value ));
-        this.stockSubSectors = this.stockSectorMap.getSubSectors( event.value.name );
-        this.debug( "onStockSectorChange: " + JSON.stringify( this.stockSubSectors ));
     }
 
     public onMenuSelect( sector, subSector ): void

@@ -9,6 +9,7 @@ import { StockNotesSourceList } from "../../component/stock-notes/stock-notes-so
 import { Injectable } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { RestErrorReporter } from '../rest-error-reporter';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This class contains the CRUD services necessary to create, delete, update, and retrieve source of stock notes.
@@ -28,7 +29,7 @@ export class StockNotesSourceCrudService extends CrudRestService<StockNotesSourc
      * @param {StockNotesSourceFactory} modelObjectFactory
      */
     constructor( protected toaster: ToastsManager,
-                 protected http: Http,
+                 protected http: HttpClient,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,

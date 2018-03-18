@@ -48,6 +48,7 @@ export class RestErrorReporter extends BaseClass
      */
     protected getExceptionMessage( restException: RestException ): string
     {
+        this.debug( "getExceptionMessage: " + JSON.stringify( restException ));
         var message = restException.message;
         var status = restException.status;
         var error = restException.error;
@@ -56,15 +57,9 @@ export class RestErrorReporter extends BaseClass
         this.debug( "status: " + status );
         this.debug( "error: " + error );
         this.debug( "exception: " + exception );
-        if ( restException == null )
-        {
-            var statusText = restException.statusText;
-            message = `Error ${status} - ${statusText}`;
-        }
-        else
-        {
+        /*{
             message = `Error ${status} - ${error} - ${exception} - ${message}`;
-        }
+        }*/
         return message;
     }
 }

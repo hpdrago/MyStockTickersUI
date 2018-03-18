@@ -12,9 +12,9 @@ import { SelectItem } from "primeng/primeng";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
-import { Http, Response } from "@angular/http";
 import { StockNotesSourceCrudService } from './stock-notes-source-crud.service';
 import { RestErrorReporter } from '../rest-error-reporter';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This service handles all of the customer related actions.
@@ -38,7 +38,7 @@ export class CustomerCrudService extends CrudRestService<Customer>
      * @param {CustomerFactory} customerFactory
      * @param {StockNotesSourceCrudService} stockNotesSourceService
      */
-    constructor( protected http: Http,
+    constructor( protected http: HttpClient,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,
@@ -138,11 +138,11 @@ export class CustomerCrudService extends CrudRestService<Customer>
         var url: string = this.appConfig.getBaseURL() + this.getContextURL( null ) + '/email/' + email;
         this.debug( methodName + " url: " + url );
         return this.http
-                   .get( url )
-                   .map( ( response: Response ) =>
+                   .get<Customer>( url )
+                   .map( ( customer: Customer ) =>
                          {
-                             this.debug( methodName + " received: " + JSON.stringify( response.json() ))
-                             return this.customerFactory.newModelObjectFromJSON( response.json() );
+                             this.debug( methodName + " received: " + JSON.stringify( customer ))
+                             return this.customerFactory.newModelObjectFromJSON( customer );
                          } ) // ...and calling .json() on the response to return data
                    .catch( ( error: any ) => Observable.throw( error ))
 

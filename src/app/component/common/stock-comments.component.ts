@@ -24,15 +24,15 @@ import { StockNotesContainer } from '../../common/stock-notes-container';
 export class StockCommentsComponent implements OnInit
 {
     @Input()
-    private stockNotesContainer: StockNotesContainer;
+    protected stockNotesContainer: StockNotesContainer;
 
     @Input()
-    private maxLength: number = 250;
+    protected maxLength: number = 250;
 
     /**
      * Contains the URL extracted from the notes.  This will be null if no URL is found.
      */
-    private notesUrl: string;
+    protected notesUrl: string;
 
 
     /**

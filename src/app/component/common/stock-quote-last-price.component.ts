@@ -29,9 +29,9 @@ import { ToastsManager } from 'ng2-toastr';
 export class StockQuoteLastPriceComponent extends BaseComponent implements OnInit
 {
     @Input()
-    private stockQuote: StockQuoteModelObject<any>;
+    protected stockQuote: StockQuoteModelObject<any>;
 
-    private priceChange: number;
+    protected priceChange: number;
 
     constructor( protected toaster: ToastsManager )
     {

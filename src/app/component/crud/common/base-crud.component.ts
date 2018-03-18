@@ -347,14 +347,6 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     {
         this.log( "reportRestError: " + JSON.stringify( rawJsonError ) );
         var restException: RestException = this.crudRestErrorReporter.reportRestError( rawJsonError );
-        if ( restException.message )
-        {
-            this.showError( restException.message );
-        }
-        else
-        {
-            this.showError( rawJsonError );
-        }
         return restException;
     }
 

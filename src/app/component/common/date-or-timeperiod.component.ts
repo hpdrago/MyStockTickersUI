@@ -18,9 +18,9 @@ export class DateOrTimePeriodComponent
     /*
      * Need local references to the enums.
      */
-    private DateOrTimePeriod = DateOrTimePeriod;
-    private TimePeriods = TimePeriods;
+    protected DateOrTimePeriod = DateOrTimePeriod;
+    protected TimePeriods = TimePeriods;
 
     @Input()
-    private stockCatalystEvent: StockCatalystEvent;
+    protected stockCatalystEvent: StockCatalystEvent;
 }

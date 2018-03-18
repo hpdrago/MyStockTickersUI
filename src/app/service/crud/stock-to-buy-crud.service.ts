@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Http } from "@angular/http";
 import { SessionService } from "../session.service";
 import { AppConfigurationService } from "../app-configuration.service";
 import { CrudRestService } from "./crud-rest.serivce";
@@ -7,6 +6,7 @@ import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { StockToBuyFactory } from "../../model/factory/stock-to-buy.factory";
 import { isNullOrUndefined } from "util";
 import { RestErrorReporter } from '../rest-error-reporter';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This class provides all CRUD REST services for Stock To Buy.
@@ -26,7 +26,7 @@ export class StockToBuyCrudService extends CrudRestService<StockToBuy>
      * @param {restErrorReporter} restErrorReporter
      * @param {StockToBuyFactory} stockToBuyFactory
      */
-    constructor ( protected http: Http,
+    constructor ( protected http: HttpClient,
                   protected sessionService: SessionService,
                   protected appConfig: AppConfigurationService,
                   protected restErrorReporter: RestErrorReporter,

@@ -7,6 +7,7 @@ import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockCatalystEventFactory } from "../../model/factory/stock-catalyst-event.factory";
 import { KeyValuePairs } from "../../common/key-value-pairs";
 import { RestErrorReporter } from '../rest-error-reporter';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * This class provides all CRUD REST services for Stock Catalyst Events.
@@ -26,7 +27,7 @@ export class StockCatalystEventCrudService extends CrudRestService<StockCatalyst
      * @param {restErrorReporter} restErrorReporter
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
      */
-    constructor ( protected http: Http,
+    constructor ( protected http: HttpClient,
                   protected sessionService: SessionService,
                   protected appConfig: AppConfigurationService,
                   protected restErrorReporter: RestErrorReporter,

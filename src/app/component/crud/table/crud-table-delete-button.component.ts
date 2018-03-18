@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { CrudTableButtonComponent } from './crud-table-button.component';
 import { ModelObject } from '../../../model/entity/modelobject';
 import { ToastsManager } from 'ng2-toastr';
@@ -11,12 +10,7 @@ import { isNullOrUndefined } from 'util';
 /**
  * Delete button for standard CRUD based table
  */
-@Component
-({
-    selector: 'crud-table-delete-button',
-    templateUrl: './crud-table-button.component.html'
-})
-export class CrudTableDeleteButtonComponent<T extends ModelObject<T>> extends CrudTableButtonComponent<T>
+export abstract class CrudTableDeleteButtonComponent<T extends ModelObject<T>> extends CrudTableButtonComponent<T>
 {
     /**
      * Constructor.

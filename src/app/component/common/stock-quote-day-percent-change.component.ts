@@ -15,7 +15,7 @@ import { isNullOrUndefined } from "util";
 export class StockQuoteDayPercentChangeComponent
 {
     @Input()
-    private stockQuote: StockQuoteModelObject<any>;
+    protected stockQuote: StockQuoteModelObject<any>;
 
     /**
      * Determines the percent of change from the original price to the last price.

@@ -25,14 +25,17 @@
  */
 export class RestException
 {
-    private _exception: string;
-    private _path: string;
-    private _message: string;
     private _status: number;
     private _statusText: string;
-    private _error: string;
-    private _ok: boolean;
     private _url: string;
+    private _ok: boolean;
+    private _name: string;
+    private _timestamp: number;
+    private _errorStatus: number;
+    private _error: string;
+    private _exception;
+    private _message: string;
+    private _path: string;
 
     constructor( exception: any )
     {
@@ -53,36 +56,30 @@ export class RestException
         /*
          * parse the body and extract the values
          */
-        var bodyText = exceptionObject._body;
+        ///let error = exceptionObject.error;
         try
         {
-            var bodyObject = JSON.parse( bodyText );
-            this._exception = bodyObject.exception;
-            this._path = bodyObject.path;
-            this._message = bodyObject.message;
-            this._error = bodyObject.error;
-            this._statusText = bodyObject.statusText;
+            //var error = JSON.parse(  );
+            this._exception = exceptionObject.error.exception;
+            this._path = exceptionObject.error.path;
+            this._message = exceptionObject.error.message;
+            this._error = exceptionObject.error.error;
+            this._statusText = exceptionObject.error.statusText;
         }
-        catch( Error )
+        catch( error )
         {
+            console.error( error );
            // ignore for now
         }
-    }
-
-    /**
-     * Determines if the HTTP status code is duplicate key exists
-     * @returns {boolean}
-     */
-    public isDuplicateKeyExists(): boolean
-    {
-        return this._status == 409 // CONFLICT;
     }
 
     get message(): string { return this._message; }
     get status(): number { return this._status; }
     get statusText(): string { return this._statusText; }
-    get error(): string { return this._error; }
     get exception(): string { return this._exception; }
+    get timestamp(): number { return this._timestamp; }
+    get error(): string { return this._error; }
+    get path(): string { return this._path; }
 
     /**
      * Determines if the status code returned is 404 - Not Found.
@@ -96,5 +93,14 @@ export class RestException
     public isAuthorizationError()
     {
         return this.status == 401;
+    }
+
+    /**
+     * Determines if the HTTP status code is duplicate key exists
+     * @returns {boolean}
+     */
+    public isDuplicateKeyExists(): boolean
+    {
+        return this._status == 409 // CONFLICT;
     }
 }

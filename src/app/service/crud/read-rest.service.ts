@@ -2,7 +2,6 @@ import { SessionService } from '../session.service';
 import { AppConfigurationService } from '../app-configuration.service';
 import { ModelObjectFactory } from '../../model/factory/model-object.factory';
 import { Observable } from 'rxjs/Observable';
-import { Http, Response } from '@angular/http';
 import { ModelObject } from '../../model/entity/modelobject';
 import { BaseService } from '../base-service';
 import { isNullOrUndefined, isNumber } from 'util';
@@ -13,6 +12,7 @@ import { KeyValuePair } from '../../common/key-value-pair';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { RestErrorReporter } from '../rest-error-reporter';
 import { LoadingStatus } from '../../model/entity/loading-status';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * Generic class for reading model objects from the database.  Provides a method to read a single entity or a list
@@ -29,7 +29,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {RestErrorReporter} restErrorReporter
      */
-    constructor( protected http: Http,
+    constructor( protected http: HttpClient,
                  protected sessionService: SessionService,
                  protected appConfig: AppConfigurationService,
                  protected restErrorReporter: RestErrorReporter,
@@ -284,11 +284,11 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         let methodName = 'httpRequestModelObject';
         this.debug( methodName + ' ' + url );
         return this.http
-                   .get( url ) // ...using put request
-                   .map( ( response: Response ) =>
+                   .get<T>( url ) // ...using put request
+                   .map( ( modelObject: T ) =>
                          {
-                             this.debug( methodName + ' received: ' + JSON.stringify( response.json() ))
-                             let modelObject: T = this.modelObjectFactory.newModelObjectFromJSON( response.json() );
+                             this.debug( methodName + ' received: ' + JSON.stringify( modelObject ))
+                             modelObject = this.modelObjectFactory.newModelObjectFromJSON( modelObject );
                              //this.setLoadedStatus( modelObject );
                              return modelObject;
                          } ) // ...and calling .json() on the response to return data
@@ -297,7 +297,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                                this.restErrorReporter.reportRestError( error );
                                return Observable.throw( error )
                            } )
-                   .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
+                   .shareReplay();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
     /**
@@ -333,12 +333,12 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         let methodName = 'httpRequestModelObjects';
         this.debug( methodName + '.begin ' + url );
         return this.http
-                   .get( url )
-                   .map( ( response: Response ) =>
+                   .get<Array<T>>( url )
+                   .map( ( modelObjects: Array<T> ) =>
                          {
                              this.debug( methodName + ' received response' ); //+ JSON.stringify(response) );
-                             let modelObjects: T[] = this.modelObjectFactory
-                                                         .newModelObjectArray( response.json() );
+                             modelObjects = this.modelObjectFactory
+                                                .newModelObjectArray( modelObjects );
                              //modelObjects.forEach( modelObject => this.setLoadedStatus( modelObject ) );
                              this.debug( methodName + ' ' + modelObjects.length + ' model objects' );
                              //this.debug( methodName + ' ' + JSON.stringify( modelObjects ));
@@ -349,7 +349,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                                this.restErrorReporter.reportRestError( error );
                                return Observable.throw( error )
                            })
-                   .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
+                   .shareReplay();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
     /**
@@ -364,22 +364,21 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         let url = new PaginationURL( this.getReadModelObjectListUrl( modelObject ) ).getPage( lazyLoadEvent );
         this.logger.log( `${methodName} url: ${url}` );
         return this.http
-                   .get( url )
-                   .map( ( response: Response ) =>
+                   .get<PaginationPage<T>>( url )
+                   .map( ( page: PaginationPage<T> ) =>
                          {
-                             this.debug( 'Received response status: ' + response.statusText )
-                             let json: PaginationPage<T> = response.json();
                              /*
                              json.content
                                  .forEach( (modelObject) => this.setLoadedStatus( modelObject ) );
                                  */
-                             return json;
+                             return page;
                          } )
                    .catch( ( error: any ) =>
                            {
                                this.restErrorReporter.reportRestError( error );
                                return Observable.throw( error );
-                           } );
+                           } )
+                   .shareReplay();
     }
 
     /**

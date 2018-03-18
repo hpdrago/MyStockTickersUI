@@ -10,8 +10,8 @@ import { Component, Input } from '@angular/core';
 export class TipRanksLinkComponent
 {
     @Input()
-    private tickerSymbol: string;
+    protected tickerSymbol: string;
 
     @Input()
-    private displayValue: string;
+    protected displayValue: string;
 }

@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { CrudTableButtonComponent } from './crud-table-button.component';
 import { ModelObject } from '../../../model/entity/modelobject';
 import { ToastsManager } from 'ng2-toastr';
@@ -7,15 +6,7 @@ import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 
-/**
- * Refresh button for standard CRUD based table
- */
-@Component
-({
-    selector: 'crud-table-refresh-button',
-    templateUrl: './crud-table-button.component.html'
-})
-export class CrudTableRefreshButtonComponent<T extends ModelObject<T>> extends CrudTableButtonComponent<T>
+export abstract class CrudTableRefreshButtonComponent<T extends ModelObject<T>> extends CrudTableButtonComponent<T>
 {
     /**
      * Constructor.

@@ -11,7 +11,7 @@ import { Component } from "@angular/core";
 })
 export class MenuBarComponent
 {
-    private menuItems: MenuItem[];
+    protected menuItems: MenuItem[];
 
     ngOnInit()
     {
