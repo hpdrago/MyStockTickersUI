@@ -1,6 +1,5 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component } from "@angular/core";
 import { BaseComponent } from "../common/base.component";
-import { CustomerPanelComponent } from "../customer/customer-panel.component";
 import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
 
@@ -10,13 +9,10 @@ import { ToastsManager } from "ng2-toastr";
 @Component(
     {
         selector:    'customer-profile',
-        templateUrl: './profile.component.html'
+        templateUrl: './profile.component.html',
     })
 export class ProfileComponent extends BaseComponent
 {
-    @ViewChild(CustomerPanelComponent)
-    private customerPanel: CustomerPanelComponent;
-
     constructor( protected toaster: ToastsManager,
                  private sessionService: SessionService )
     {

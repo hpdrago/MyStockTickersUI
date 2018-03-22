@@ -11,11 +11,10 @@ import { CustomerCrudService } from '../../service/crud/customer-crud.service';
  * This is the customer form panel.
  * Created 12/4/2017
  */
-@Component( {
-                selector: 'customer-panel',
-                templateUrl: './customer-panel.component.html',
-                providers: [CustomerStateStore, CustomerController]
-            } )
+@Component({
+    selector: 'customer-panel',
+    templateUrl: './customer-panel.component.html',
+})
 export class CustomerPanelComponent extends CrudPanelComponent<Customer>
 {
     /**

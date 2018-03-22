@@ -316,13 +316,10 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         /*
          * Clear the form fields of any previous model object.
          */
-        /*
-          Had to comment this out after upgade to Angular 5 because was getting: 
-         */
-        //if ( !isNullOrUndefined( this.formGroup ))
-        //{
-        //    this.resetForm();
-        //}
+        if ( !isNullOrUndefined( this.formGroup ))
+        {
+            this.resetForm();
+        }
         this.enableDisableInputs();
         if ( modelObject )
         {

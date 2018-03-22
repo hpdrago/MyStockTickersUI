@@ -42,7 +42,7 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
     public ngOnDestroy(): void
     {
         this.debug( "ngOnDestroy" );
-        //this.unSubscribeAll();
+        this.unSubscribeAll();
     }
 
     /**

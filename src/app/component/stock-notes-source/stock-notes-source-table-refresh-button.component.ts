@@ -40,11 +40,4 @@ export class StockNotesSourceTableRefreshButtonComponent extends CrudTableRefres
                stockNotesSourceFactory,
                stockNotesSourceCrudService );
     }
-
-    public ngOnInit(): void
-    {
-        super.ngOnInit();
-        this.buttonLabel = 'Synchronize';
-        this.buttonDivClass = 'synchronize-table-button';
-    }
 }
