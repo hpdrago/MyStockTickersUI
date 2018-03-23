@@ -2,6 +2,8 @@ import { RestException } from "../common/rest-exception";
 import { BaseClass } from "../common/base-class";
 import { Injectable } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
+import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
 /**
  * This class encapsulates the reporting of REST exceptions.
@@ -19,26 +21,70 @@ export class RestErrorReporter extends BaseClass
     }
 
     /**
-     * Reports the error to the console and a visible message to the user.
-     * @param rawJsonError The JSON text returned from the REST call
+     * This is Angular's suggested error handling routing for HttpClient calls.
+     * @param {HttpErrorResponse} error
+     * @return {ErrorObservable}
      */
-    public reportRestError( rawJsonError ): RestException
+    public handleError( error: HttpErrorResponse ): ErrorObservable
     {
-        var restException: RestException;
-        this.log( "reportRestError: " + JSON.stringify( rawJsonError ) );
-        if ( rawJsonError.status )
+        if ( error.error instanceof ErrorEvent )
         {
-            restException = new RestException( rawJsonError );
-            var message = this.getExceptionMessage( restException );
-            this.logError( message );
-            this.showError( message );
+            // A client-side or network error occurred. Handle it accordingly.
+            console.error( 'An error occurred:', error.error.message );
         }
         else
         {
-            this.logError( rawJsonError );
-            this.showError( rawJsonError );
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            console.error(
+                `Backend returned code ${error.status}, ` +
+                `body was: ${error.error}` );
+        }
+        // return an ErrorObservable with a user-facing error message
+        return new ErrorObservable(
+            'Something bad happened; please try again later.' );
+    };
+
+    /**
+     * Reports the error to the console and a visible message to the user.
+     * @param error The JSON text returned from the REST call
+     */
+    public reportRestError( error ): RestException
+    {
+        var restException: RestException;
+        this.log( "reportRestError: " + JSON.stringify( error ) );
+        if ( error.error instanceof ErrorEvent )
+        {
+            this.logAndReportError( error.error.message );
+        }
+        else
+        {
+            restException = new RestException( error );
+            var message = this.getExceptionMessage( restException );
+            this.logAndReportError( message );
         }
         return restException;
+    }
+
+    /**
+     * Convert the HttpErrorResponse into a RestException.
+     * @param {HttpErrorResponse} error
+     * @return {RestException}
+     */
+    public getRestException( error: HttpErrorResponse )
+    {
+        let restException = new RestException( error );
+        return restException;
+    }
+
+    /**
+     * Logs the error and reports the error to the user.
+     * @param {string} message
+     */
+    public logAndReportError( message: string )
+    {
+        this.logError( message );
+        this.showError( message );
     }
 
     /**

@@ -23,6 +23,9 @@
  *      "url":"http://localhost:8080/stocks"
  *  }
  */
+import { HttpErrorResponse } from '@angular/common/http';
+import { isNullOrUndefined } from 'util';
+
 export class RestException
 {
     private _status: number;
@@ -39,37 +42,53 @@ export class RestException
 
     constructor( exception: any )
     {
-        /*
-         * Convert the exception from JSON to a string, remove some of the extra characters
-         * and then convert it back into an object and grab the individual values.
-         */
-        var exceptionObject = exception;
-
-         /*
-            JSON.parse( JSON.stringify( exception )
-                                              .replace( /\\/g, "" )
-                                              .replace( /"{"/g, "{\"" )
-                                              .replace( /"}"/g, "\"}" ) ); */
-        this._status = exceptionObject.status;
-        this._url = exceptionObject.url;
-        this._ok = exceptionObject.ok;
-        /*
-         * parse the body and extract the values
-         */
-        ///let error = exceptionObject.error;
-        try
+        if ( exception.error instanceof ErrorEvent )
         {
-            //var error = JSON.parse(  );
-            this._exception = exceptionObject.error.exception;
-            this._path = exceptionObject.error.path;
-            this._message = exceptionObject.error.message;
-            this._error = exceptionObject.error.error;
-            this._statusText = exceptionObject.error.statusText;
+            // A client-side or network error occurred. Handle it accordingly.
+            //.error( 'An error occurred:', exception.error.message );
+            let errorEvent: ErrorEvent = exception.error;
+            this._message = errorEvent.message;
+            this._status = errorEvent.error;
         }
-        catch( error )
+        else
         {
-            console.error( error );
-           // ignore for now
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            /*
+             * Convert the exception from JSON to a string, remove some of the extra characters
+             * and then convert it back into an object and grab the individual values.
+             */
+            var httpErrorResponse: HttpErrorResponse  = exception;
+
+            /*
+             JSON.parse( JSON.stringify( exception )
+             .replace( /\\/g, "" )
+             .replace( /"{"/g, "{\"" )
+             .replace( /"}"/g, "\"}" ) ); */
+            this._status = httpErrorResponse.status;
+            this._url = httpErrorResponse.url;
+            this._ok = httpErrorResponse.ok;
+            this._message = httpErrorResponse.message;
+            this._statusText = httpErrorResponse.statusText;
+            /*
+             * parse the body and extract the values
+             */
+            ///let error = exceptionObject.error;
+            if ( !isNullOrUndefined( httpErrorResponse.error ))
+            try
+            {
+                //var error = JSON.parse(  );
+                this._exception = httpErrorResponse.error.exception;
+                this._path = httpErrorResponse.error.path;
+                this._message = httpErrorResponse.error.message;
+                this._error = httpErrorResponse.error.error;
+                this._statusText = httpErrorResponse.error.statusText;
+            }
+            catch ( error )
+            {
+                console.error( error );
+                // ignore for now
+            }
         }
     }
 

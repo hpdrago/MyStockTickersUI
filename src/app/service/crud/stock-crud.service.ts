@@ -9,7 +9,7 @@ import { Stock } from "../../model/entity/stock";
 import { StockQuote } from "../../model/entity/stock-quote";
 import { CrudRestService } from "./crud-rest.serivce";
 import { RestErrorReporter } from '../rest-error-reporter';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 /**
  * This class provides all of the REST communication services for Stocks.
@@ -93,5 +93,14 @@ export class StockCrudService extends CrudRestService<Stock>
         let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockQuote/" + tickerSymbol;
         return this.http
                    .get<StockQuote>( url )
+                   .catch( error =>
+                   {
+                       let restException = this.restErrorReporter.getRestException( error );
+                       if ( restException.status == 404 )
+                       {
+                           return Observable.throw( 'Ticker symbol ' + tickerSymbol + ' was not found' );
+                       }
+                       return Observable.throw( restException.message );
+                   });
     }
 }
