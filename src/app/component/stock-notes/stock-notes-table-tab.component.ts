@@ -11,6 +11,7 @@ import { StockNotesCrudActionHandler } from './stock-notes-crud-action-handler';
 import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action-handler';
 import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
 import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
+import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 
 /**
  * This is the Stock Notes that displays in its own tab.
@@ -36,6 +37,7 @@ export class StockNotesTableTabComponent extends StockNotesTableComponent
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockNotesCrudService} stockNotesCrudService
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
+     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected toaster: ToastsManager,
                  protected session: SessionService,
@@ -43,7 +45,8 @@ export class StockNotesTableTabComponent extends StockNotesTableComponent
                  protected stockNotesController: StockNotesController,
                  protected stockNotesFactory: StockNotesFactory,
                  protected stockNotesCrudService: StockNotesCrudService,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService )
+                 protected stockQuoteRefreshService: StockQuoteRefreshService,
+                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
         super( session,
                toaster,
@@ -51,6 +54,7 @@ export class StockNotesTableTabComponent extends StockNotesTableComponent
                stockNotesController,
                stockNotesFactory,
                stockNotesCrudService,
-               stockQuoteRefreshService );
+               stockQuoteRefreshService,
+               stockAnalystConsensusCache );
     }
 }

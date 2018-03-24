@@ -139,7 +139,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
                                 this.tradeItAccountStateStore
                                     .sendModelObjectChangedEvent( this, authenticateAccountResult.tradeItAccount );
                                 this.tradeItAccount = authenticateAccountResult.tradeItAccount;
-                                this.onModelObjectSelected( this.modelObject );
+                                this.log( methodName + ".end" );
                             }
                             else
                             {
@@ -152,6 +152,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
                         });
         this.log( methodName + ".end" );
     }
+
     public getTradeItAccount(): TradeItAccount
     {
         return this.tradeItAccount;

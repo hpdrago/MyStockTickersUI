@@ -17,13 +17,14 @@ import { StockNotes } from '../../model/entity/stock-notes';
 import { StockNotesStock } from '../../model/entity/stock-notes-stock';
 import { CrudOperation } from '../crud/common/crud-operation';
 import { StockNotesSentiment } from '../../common/stock-notes-sentiment.enum';
+import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 
 /**
  * This component displays a list of Stocks to buy.
  *
  * Created by mike on 10/24/2017.
  */
-export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTableComponent<StockToBuy>
+export abstract class StockToBuyBaseTableComponent extends StockQuoteModelObjectTableComponent<StockToBuy>
 {
     /**
      * Constructor.
@@ -36,6 +37,7 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
+     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected toaster: ToastsManager,
                  protected stockToBuyStateStore: StockToBuyStateStore,
@@ -45,7 +47,8 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
                  protected stockNotesStateStore: StockNotesStateStore,
                  protected stockNotesController: StockNotesController,
                  protected stockNotesFactory: StockNotesFactory,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService )
+                 protected stockQuoteRefreshService: StockQuoteRefreshService,
+                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
@@ -53,7 +56,8 @@ export abstract class StockToBuyTableComponent extends StockQuoteModelObjectTabl
                stockToBuyController,
                stockToBuyFactory,
                stockToBuyCrudService,
-               stockQuoteRefreshService );
+               stockQuoteRefreshService,
+               stockAnalystConsensusCache );
     }
 
     /**

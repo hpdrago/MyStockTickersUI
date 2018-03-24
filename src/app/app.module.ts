@@ -228,6 +228,7 @@ import { StockNotesSourceDialogComponent } from './component/stock-notes-source/
 import { StockNotesSourceFormComponent } from './component/stock-notes-source/stock-notes-source-form.component';
 import { NotesSourceComponent } from './component/common/notes-source.component';
 import { StockNotesSourceTableComponent } from './component/stock-notes-source/stock-notes-source-table.component';
+import { StockAnalystConsensusCache } from './service/stock-analyst-consensus-cache';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -490,6 +491,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockAnalystConsensusCrudService,
         StockAnalystConsensusFactory,
+        StockAnalystConsensusCache,
 
         StockCatalystEventCrudService,
         StockCatalystEventFactory,

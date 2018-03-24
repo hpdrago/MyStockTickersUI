@@ -10,6 +10,7 @@ import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
+import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 
 /**
  * This is the base class for Stock Notes tables.
@@ -21,12 +22,13 @@ export abstract class StockNotesTableComponent extends StockQuoteModelObjectTabl
     /**
      * Constructor.
      * @param {SessionService} session
+     * @param {ToastsManager} toaster
      * @param {StockNotesStateStore} stockNotesStateStore
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockNotesCrudService} stockNotesCrudService
-     * @param {ToastsManager} toaster
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
+     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected session: SessionService,
                  protected toaster: ToastsManager,
@@ -34,7 +36,8 @@ export abstract class StockNotesTableComponent extends StockQuoteModelObjectTabl
                  protected stockNotesController: StockNotesController,
                  protected stockNotesFactory: StockNotesFactory,
                  protected stockNotesCrudService: StockNotesCrudService,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService )
+                 protected stockQuoteRefreshService: StockQuoteRefreshService,
+                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
         super( TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
@@ -42,7 +45,8 @@ export abstract class StockNotesTableComponent extends StockQuoteModelObjectTabl
                stockNotesController,
                stockNotesFactory,
                stockNotesCrudService,
-               stockQuoteRefreshService );
+               stockQuoteRefreshService,
+               stockAnalystConsensusCache );
     }
 
     protected getActionTaken( actionTaken: string )

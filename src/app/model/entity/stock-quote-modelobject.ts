@@ -12,5 +12,12 @@ export abstract class StockQuoteModelObject<T extends StockModelObject<T>> exten
     public lastPriceChange: Date;
     public stockQuoteState: number;
     public stockPriceWhenCreated: number;
+    public lowAnalystPriceTarget: number;
     public avgAnalystPriceTarget: number;
+    public highAnalystPriceTarget: number;
+    public analystStrongBuyCount: number;
+    public analystBuyCount: number;
+    public analystHoldCount: number;
+    public analystUnderPerformCount: number;
+    public analystSellCount: number;
 }

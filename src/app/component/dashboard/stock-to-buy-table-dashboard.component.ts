@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
-import { StockToBuyTableComponent } from "../stock-to-buy/stock-to-buy-table.component";
+import { StockToBuyBaseTableComponent } from "../stock-to-buy/stock-to-buy-base-table.component";
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
 import { StockNotesStateStore } from '../stock-notes/stock-notes-state-store';
@@ -11,6 +11,7 @@ import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
 import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
 import { StockToBuyCrudActionHandler } from '../stock-to-buy/stock-to-buy-action-handler';
 import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
+import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 
 /**
  * This component displays a list of Stocks to buy.
@@ -24,7 +25,7 @@ import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-act
         providers: [StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler,
                     StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler]
     } )
-export class StockToBuyTableDashboardComponent extends StockToBuyTableComponent
+export class StockToBuyTableDashboardComponent extends StockToBuyBaseTableComponent
 {
     /**
      * Constructor.
@@ -37,6 +38,7 @@ export class StockToBuyTableDashboardComponent extends StockToBuyTableComponent
      * @param {StockNotesController} stockNotesController
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
+     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected toaster: ToastsManager,
                  protected stockToBuyStateStore: StockToBuyStateStore,
@@ -46,7 +48,8 @@ export class StockToBuyTableDashboardComponent extends StockToBuyTableComponent
                  protected stockNotesStateStore: StockNotesStateStore,
                  protected stockNotesController: StockNotesController,
                  protected stockNotesFactory: StockNotesFactory,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService )
+                 protected stockQuoteRefreshService: StockQuoteRefreshService,
+                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
         super( toaster,
                stockToBuyStateStore,
@@ -56,7 +59,8 @@ export class StockToBuyTableDashboardComponent extends StockToBuyTableComponent
                stockNotesStateStore,
                stockNotesController,
                stockNotesFactory,
-               stockQuoteRefreshService );
+               stockQuoteRefreshService,
+               stockAnalystConsensusCache );
 
     }
 

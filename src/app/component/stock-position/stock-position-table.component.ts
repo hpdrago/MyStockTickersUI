@@ -8,6 +8,7 @@ import { StockQuoteRefreshService } from '../../service/stock-quote-refresh.serv
 import { StockPositionFactory } from '../../model/factory/stock-position-factory';
 import { StockPositionCrudService } from '../../service/crud/stock-position-crud.service';
 import { StockPositionCrudActionHandler } from './stock-position-crud-action-handler';
+import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 
 /**
  * This component display the list of the customer's brokerage accounts
@@ -32,6 +33,7 @@ export class StockPositionTableComponent extends StockPositionBaseTableComponent
      * @param {StockPositionFactory} stockPositionFactory
      * @param {StockPositionCrudService} stockPositionCrudService
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
+     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
@@ -39,7 +41,8 @@ export class StockPositionTableComponent extends StockPositionBaseTableComponent
                  protected stockPositionController: StockPositionController,
                  protected stockPositionFactory: StockPositionFactory,
                  protected stockPositionCrudService: StockPositionCrudService,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService )
+                 protected stockQuoteRefreshService: StockQuoteRefreshService,
+                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
         super( toaster,
                tradeItErrorReporter,
@@ -47,6 +50,7 @@ export class StockPositionTableComponent extends StockPositionBaseTableComponent
                stockPositionController,
                stockPositionFactory,
                stockPositionCrudService,
-               stockQuoteRefreshService )
+               stockQuoteRefreshService,
+               stockAnalystConsensusCache )
     }
 }

@@ -11,6 +11,7 @@ import { StockQuoteRefreshService } from '../../service/stock-quote-refresh.serv
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { LinkedAccount } from '../../model/entity/linked-account';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
+import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 
 /**
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}
@@ -31,6 +32,7 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
      * @param {StockPositionFactory} stockPositionFactory
      * @param {StockPositionCrudService} stockPositionCrudService
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
+     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
@@ -38,7 +40,8 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
                  protected stockPositionController: StockPositionController,
                  protected stockPositionFactory: StockPositionFactory,
                  protected stockPositionCrudService: StockPositionCrudService,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService )
+                 protected stockQuoteRefreshService: StockQuoteRefreshService,
+                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
         super( TableLoadingStrategy.ALL_ON_DEMAND,
                toaster,
@@ -46,7 +49,8 @@ export class StockPositionBaseTableComponent extends StockQuoteModelObjectTableC
                stockPositionController,
                stockPositionFactory,
                stockPositionCrudService,
-               stockQuoteRefreshService );
+               stockQuoteRefreshService,
+               stockAnalystConsensusCache );
     }
 
     /**

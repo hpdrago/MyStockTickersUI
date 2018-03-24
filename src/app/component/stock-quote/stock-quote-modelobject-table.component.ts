@@ -10,6 +10,8 @@ import { CrudController } from '../crud/common/crud-controller';
 import { ModelObjectFactory } from '../../model/factory/model-object.factory';
 import { CrudRestService } from '../../service/crud/crud-rest.serivce';
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
+import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensus';
+import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
 
 /**
  * This is a base class for tables that contain Stock Quote information.  It provides the common methods for updating
@@ -31,6 +33,7 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
      * @param {ModelObjectFactory<T extends StockQuoteModelObject<T>>} stockFactory
      * @param {CrudRestService<T extends StockQuoteModelObject<T>>} stockCrudService
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
+     * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
     constructor( protected tableLoadingStrategy: TableLoadingStrategy,
                  protected toaster: ToastsManager,
@@ -38,7 +41,8 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
                  protected stockController: CrudController<T>,
                  protected stockFactory: ModelObjectFactory<T>,
                  protected stockCrudService: CrudRestService<T>,
-                 protected stockQuoteRefreshService: StockQuoteRefreshService )
+                 protected stockQuoteRefreshService: StockQuoteRefreshService,
+                 protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
         super( tableLoadingStrategy,
                toaster,
@@ -66,29 +70,61 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
              */
             modelObjects.forEach( stockQuoteModelObject =>
                                   {
-                                      if ( stockQuoteModelObject.stockQuoteState == StockQuoteState.NOT_CACHED ||
-                                          stockQuoteModelObject.stockQuoteState == StockQuoteState.STALE )
-                                      {
-                                          this.stockQuoteRefreshService
-                                              .refreshStockQuote( stockQuoteModelObject )
-                                              .subscribe( ( stockQuote: StockQuote ) =>
-                                                          {
-                                                              //this.debug( 'onTableLoad.overridden stockQuote: ' + JSON.stringify( stockQuote ));
-                                                              stockQuoteModelObject.companyName = stockQuote.companyName;
-                                                              stockQuoteModelObject.stockQuoteState = stockQuote.stockQuoteState;
-                                                              stockQuoteModelObject.lastPrice = stockQuote.lastPrice;
-                                                              stockQuoteModelObject.lastPriceChange = stockQuote.lastPriceChange;
-                                                          },
-                                                          error =>
-                                                          {
-                                                              stockQuoteModelObject.stockQuoteState = StockQuoteState.FAILURE;
-                                                              this.debug( "Error " + error + " refreshing stock quote: " + JSON.stringify( stockQuoteModelObject ) );
-                                                          }
-                                              );
-                                      }
+                                      this.updateStockQuote( stockQuoteModelObject );
+                                      this.updateAnalystConsensus( stockQuoteModelObject );
                                   } );
         }
         this.log( 'onTableLoad.overridden.end' );
+    }
+
+    /**
+     * Evaluatest eh stock quote model object to check the state of the stock quote information.  If the stock quote
+     * information is stale, the stock quote information will be updated asynchronously.
+     * @param stockQuoteModelObject
+     */
+    private updateStockQuote( stockQuoteModelObject )
+    {
+        if ( stockQuoteModelObject.stockQuoteState == StockQuoteState.NOT_CACHED ||
+            stockQuoteModelObject.stockQuoteState == StockQuoteState.STALE )
+        {
+            this.stockQuoteRefreshService
+                .refreshStockQuote( stockQuoteModelObject )
+                .subscribe( ( stockQuote: StockQuote ) => {
+                                //this.debug( 'onTableLoad.overridden stockQuote: ' + JSON.stringify( stockQuote ));
+                                stockQuoteModelObject.companyName = stockQuote.companyName;
+                                stockQuoteModelObject.stockQuoteState = stockQuote.stockQuoteState;
+                                stockQuoteModelObject.lastPrice = stockQuote.lastPrice;
+                                stockQuoteModelObject.lastPriceChange = stockQuote.lastPriceChange;
+                            },
+                            error => {
+                                stockQuoteModelObject.stockQuoteState = StockQuoteState.FAILURE;
+                                this.debug( "Error " + error + " refreshing stock quote: " + JSON.stringify(
+                                    stockQuoteModelObject ) );
+                            }
+                );
+        }
+    }
+
+    /**
+     * Checks the stock analyst consensus cache to see if analyst consensus information exists for the ticker symbol and
+     * if found, updates the stock quote model object with the stock analyst consensus information.
+     * @param {T} stockQuoteModelObject
+     */
+    private updateAnalystConsensus( stockQuoteModelObject: T )
+    {
+        let stockAnalystConsensus: StockAnalystConsensus = this.stockAnalystConsensusCache
+                                                               .get( stockQuoteModelObject.tickerSymbol );
+        if ( !isNullOrUndefined( stockAnalystConsensus ) )
+        {
+            stockQuoteModelObject.analystStrongBuyCount = stockAnalystConsensus.analystStrongBuyCount;
+            stockQuoteModelObject.analystBuyCount = stockAnalystConsensus.analystBuyCount;
+            stockQuoteModelObject.analystHoldCount = stockAnalystConsensus.analystHoldCount;
+            stockQuoteModelObject.analystUnderPerformCount = stockAnalystConsensus.analystUnderPerformCount;
+            stockQuoteModelObject.analystSellCount = stockAnalystConsensus.analystSellCount;
+            stockQuoteModelObject.lowAnalystPriceTarget = stockAnalystConsensus.lowAnalystPriceTarget;
+            stockQuoteModelObject.avgAnalystPriceTarget = stockAnalystConsensus.avgAnalystPriceTarget;
+            stockQuoteModelObject.highAnalystPriceTarget = stockAnalystConsensus.highAnalystPriceTarget;
+        }
     }
 
     /**

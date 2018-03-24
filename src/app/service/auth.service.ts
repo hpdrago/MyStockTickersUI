@@ -11,6 +11,7 @@ import { SessionService } from "./session.service";
 import { CookieService } from "ngx-cookie-service";
 import { CustomerFactory } from "../model/factory/customer.factory";
 import { CustomerService } from "./customer.service";
+import { StockAnalystConsensusCache } from './stock-analyst-consensus-cache';
 
 /**
  * This is the service that identifies the login status of a user and performs the login and logout functionality.
@@ -29,15 +30,16 @@ export class AuthService extends BaseService
                  private customerFactory: CustomerFactory,
                  private customerService: CustomerService,
                  private cookieService: CookieService,
-                 private sessionService: SessionService )
+                 private sessionService: SessionService,
+                 private stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
         super();
         if ( this.cookieService.check( "customer" ) )
         {
-            this.isLoggedIn = true;
-            this.sessionService.customer = this.customerFactory.newModelObjectFromJSON( JSON.parse( this.cookieService.get( "customer" )));
-            this.customerService.onLogin( this.sessionService.customer );
             this.debug( "found customer cookie: " +  this.cookieService.get( "customer" ) );
+            this.sessionService.customer = this.customerFactory
+                                               .newModelObjectFromJSON( JSON.parse( this.cookieService.get( "customer" )));
+            this.onLogin( this.sessionService.customer );
         }
     }
 
@@ -57,10 +59,7 @@ export class AuthService extends BaseService
                              if ( customer.email === email )
                              {
                                  this.debug( "login successful" );
-                                 this.isLoggedIn = true;
-                                 this.sessionService.customer = customer;
-                                 this.cookieService.set( "customer", JSON.stringify( customer ));
-                                 this.customerService.onLogin( this.sessionService.customer );
+                                 this.onLogin( customer );
                                  return true;
                              }
                              else
@@ -70,6 +69,19 @@ export class AuthService extends BaseService
                                  return false;
                              }
                          } );
+    }
+
+    /**
+     * This method is called when the user logs in successfully or the login cookies are found.
+     * @param {Customer} customer
+     */
+    private onLogin( customer: Customer )
+    {
+        this.cookieService.set( "customer", JSON.stringify( customer ) );
+        this.isLoggedIn = true;
+        this.sessionService.customer = customer;
+        this.customerService.onLogin( this.sessionService.customer );
+        this.stockAnalystConsensusCache.load();
     }
 
     public logout(): void
