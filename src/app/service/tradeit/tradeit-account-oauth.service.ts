@@ -200,11 +200,18 @@ export class TradeItAccountOAuthService extends BaseTradeItService
             this.log( methodName + " user is not authenticated" );
             observable = this.authenticate( tradeItAccount, tradeItSecurityQuestionDialog );
         }
+        /* TODO: keep session alive can be moved to the backend. */
         else
         {
             this.log( methodName + " user is authenticated sending keep alive message" );
             observable = this.keepSessionAlive( tradeItAccount, tradeItSecurityQuestionDialog );
         }
+        /*
+        else
+        {
+            observable = Observable.of( null );
+        }
+        */
         this.log( methodName + ".end" );
         return observable;
     }

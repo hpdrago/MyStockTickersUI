@@ -6,10 +6,21 @@ import { Component, Input } from '@angular/core';
 @Component
 ({
     selector: 'percent',
-    template: `{{percentValue | percent: '1.2-2' }}`
+    template: `{{(percentValue/divideBy) | percent: '1.2-2' }}`
 })
 export class PercentComponent
 {
+    /**
+     * The percentage value.
+     */
     @Input()
     protected percentValue: number;
+
+    /**
+     * Optional value to divide {@code percentValue} by a constant value.
+     * Defaults to 1.
+     * @type {number}
+     */
+    @Input()
+    protected divideBy: number = 1;
 }

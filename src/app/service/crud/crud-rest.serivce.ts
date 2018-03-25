@@ -115,7 +115,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                         .catch( ( error: any ) =>
                                 {
                                     this.restErrorReporter.reportRestError( error );
-                                    return Observable.throw( error || 'Server error' )
+                                    return Observable.throw( null )
                                 } )//...errors if any
                         .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
@@ -151,7 +151,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                         .catch( ( error: any ) =>
                                 {
                                     this.restErrorReporter.reportRestError( error );
-                                    return Observable.throw( error || 'Server error' )
+                                    return Observable.throw( null );
                                 } ) //...errors if any
                         .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
@@ -185,7 +185,7 @@ export abstract class CrudRestService<T extends ModelObject<T>> extends ReadRest
                         .catch( ( error: any ) =>
                                 {
                                     this.restErrorReporter.reportRestError( error );
-                                    return Observable.throw( error || 'Server Error' );
+                                    return Observable.throw( null );
                                 }) //...errors if any
                         .share();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }

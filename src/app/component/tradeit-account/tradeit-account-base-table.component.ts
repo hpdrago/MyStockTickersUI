@@ -13,6 +13,7 @@ import { TradeItAccountStateStore } from './tradeit-account-state-store';
 import { TradeItAccountController } from './tradeit-account-controller';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}
@@ -65,7 +66,11 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
             .subscribe( (authenticateAccountResult: TradeItAuthenticateResult ) =>
                         {
                             this.log( methodName + " checkAuthentication result: " + JSON.stringify( authenticateAccountResult ));
-                            if ( authenticateAccountResult.isSuccess() )
+                            if ( isNullOrUndefined( authenticateAccountResult ))
+                            {
+                                this.log( methodName + " authentication is current" );
+                            }
+                            else if ( authenticateAccountResult.isSuccess() )
                             {
                                 this.log( methodName + " account authenticated or kept alive" );
                                 /*
@@ -109,7 +114,11 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
             .checkAuthentication( tradeItAccount, this.tradeItSecurityQuestionDialog )
             .subscribe( (authenticateAccountResult: TradeItAuthenticateResult) =>
             {
-                if ( authenticateAccountResult.isSuccess() )
+                if ( isNullOrUndefined( authenticateAccountResult ))
+                {
+                    this.log( methodName + " authentication is current" );
+                }
+                else if ( authenticateAccountResult.isSuccess() )
                 {
                     tradeItAccount.linkedAccounts = authenticateAccountResult.linkedAccounts;
                     this.log( methodName + " authentication successful: " + JSON.stringify( tradeItAccount ));

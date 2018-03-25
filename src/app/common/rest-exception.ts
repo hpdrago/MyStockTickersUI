@@ -50,7 +50,7 @@ export class RestException
             this._message = errorEvent.message;
             this._status = errorEvent.error;
         }
-        else
+        else if ( exception instanceof HttpErrorResponse )
         {
             // The backend returned an unsuccessful response code.
             // The response body may contain clues as to what went wrong,
@@ -74,7 +74,8 @@ export class RestException
              * parse the body and extract the values
              */
             ///let error = exceptionObject.error;
-            if ( !isNullOrUndefined( httpErrorResponse.error ))
+            if ( !isNullOrUndefined( httpErrorResponse.error ) &&
+                 !(httpErrorResponse.error instanceof ProgressEvent ))
             try
             {
                 //var error = JSON.parse(  );
@@ -89,6 +90,14 @@ export class RestException
                 console.error( error );
                 // ignore for now
             }
+        }
+        else
+        {
+            this._status = exception.status;
+            this._statusText = exception.statusText;
+            this._url = exception.url;
+            this._ok = exception.ok;
+            this._message = exception.message;
         }
     }
 

@@ -55,15 +55,9 @@ export class StockPositionCrudService extends CrudRestService<StockPosition>
      */
     protected getContextURLKeyValues( stockPosition: StockPosition ): KeyValuePairs<string,any>
     {
-        let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
-        if ( stockPosition.linkedAccountId )
-        {
-            keyColumns.addPair( "linkedAccountId", stockPosition.linkedAccountId );
-        }
-        if ( stockPosition.tradeItAccountId )
-        {
-            keyColumns.addPair( "tradeItAccountId", stockPosition.tradeItAccountId );
-        }
+        let keyColumns: KeyValuePairs<string,any> = super.getContextURLKeyValues( stockPosition );
+        keyColumns.addPair( "linkedAccountId", stockPosition.linkedAccountId );
+        keyColumns.addPair( "tradeItAccountId", stockPosition.tradeItAccountId );
         return keyColumns;
     }
 }

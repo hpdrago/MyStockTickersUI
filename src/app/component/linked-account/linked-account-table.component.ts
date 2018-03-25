@@ -130,7 +130,11 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
             .subscribe( (authenticateAccountResult: TradeItAuthenticateResult ) =>
                         {
                             this.log( methodName + " checkAuthentication result: " + JSON.stringify( authenticateAccountResult ));
-                            if ( authenticateAccountResult.isSuccess() )
+                            if ( isNullOrUndefined( authenticateAccountResult ))
+                            {
+                                this.log( methodName + " authentication is current, no action to take." );
+                            }
+                            else if ( authenticateAccountResult.isSuccess() )
                             {
                                 this.log( methodName + " account authenticated or kept alive" );
                                 /*

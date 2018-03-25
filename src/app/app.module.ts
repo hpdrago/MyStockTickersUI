@@ -39,15 +39,16 @@ import {
     TabViewModule,
     TooltipModule
 } from "primeng/primeng";
-import { CurrencyMaskModule } from "ng2-currency-mask";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
 import { AutoCompleteModule } from "primeng/components/autocomplete/autocomplete";
 import { InputMaskModule } from "primeng/components/inputmask/inputmask";
 import { FieldsetModule } from "primeng/components/fieldset/fieldset";
+import { AccordionModule } from 'primeng/accordion';
 /**
  * Third party imports
  */
 import { ToastModule, ToastOptions, ToastsManager } from "ng2-toastr/ng2-toastr";
+import { CurrencyMaskModule } from "ng2-currency-mask";
 /**
  * Application Imports
  */
@@ -229,6 +230,8 @@ import { StockNotesSourceFormComponent } from './component/stock-notes-source/st
 import { NotesSourceComponent } from './component/common/notes-source.component';
 import { StockNotesSourceTableComponent } from './component/stock-notes-source/stock-notes-source-table.component';
 import { StockAnalystConsensusCache } from './service/stock-analyst-consensus-cache';
+import { StockPositionMarketValue } from './component/stock-position/stock-position-market-value';
+import { StockPositionPurchasePrice } from './component/stock-position/stock-position-purchase-price';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -286,6 +289,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         CheckboxModule,
         TooltipModule,
         ListboxModule,
+        AccordionModule,
         // Third Party modules,
         BusyModule,
         ToastModule.forRoot(),
@@ -339,6 +343,8 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockPositionTableRefreshButtonComponent,
         StockPositionTableComponent,
         StockPositionTableButtonsComponent,
+        StockPositionMarketValue,
+        StockPositionPurchasePrice,
 
         PortfoliosComponent,
         PortfolioTableComponent,

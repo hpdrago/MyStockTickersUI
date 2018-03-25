@@ -38,4 +38,17 @@ export class TradeItAuthenticateResult extends TradeItAPIResult
     {
         return this.status == "INFORMATION_NEEDED";
     }
+
+    /**
+     * Creates an ok result instance.
+     * @return {TradeItAuthenticateResult}
+     * @constructor
+     */
+    public static OK(): TradeItAuthenticateResult
+    {
+        let okResult = new TradeItAuthenticateResult();
+        okResult.status = TradeItAPIResult.SUCCESS;
+        okResult.linkedAccounts = [];
+        return okResult;
+    }
 }

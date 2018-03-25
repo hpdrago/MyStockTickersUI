@@ -14,9 +14,9 @@ export class StockPosition extends StockQuoteModelObject<StockPosition>
     public costBasis: number;
     public holdingType: string;
     public quantity: number;
-    public todayGainLossDollar: number;
+    public todayGainLossAbsolute: number;
     public todayGainLossPercentage: number;
-    public totalGainLossDollar: number;
+    public totalGainLossAbsolute: number;
     public totalGainLossPercentage: number;
     public exchange: string;
     public openPrice: number;
@@ -31,5 +31,14 @@ export class StockPosition extends StockQuoteModelObject<StockPosition>
     public getPrimaryKeyName(): string
     {
         return "id";
+    }
+
+    /**
+     * The market value is shares(quantity) * current price
+     * @return {number}
+     */
+    public marketValue(): number
+    {
+        return this.quantity * this.lastPrice;
     }
 }

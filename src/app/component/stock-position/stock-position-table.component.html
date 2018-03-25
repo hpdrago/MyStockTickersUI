@@ -23,9 +23,9 @@
                     public costBasis: number = undefined;
                     public holdingType: string = undefined;
                     public quantity: number = undefined;
-                    public todayGainLossDollar: number = undefined;
+                    public todayGainLossAbsolute: number = undefined;
                     public todayGainLossPercentage: number = undefined;
-                    public totalGainLossDollar: number = undefined;
+                    public totalGainLossAbsolute: number = undefined;
                     public totalGainLossPercentage: number = undefined;
                     -->
                     <!----------------------------------------------------------------------------------------------------------
@@ -61,8 +61,21 @@
                     </p-column>
 
                     <!----------------------------------------------------------------------------------------------------------
+                    PURCHASE PRICE
+                    ------------------------------------------------------------------------------------------------------------>
+                    <p-column id="purchasePrice"
+                              header="Purchase Price"
+                              [style]="{'width':'80px','text-align':'right'}">
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <stock-position-purchase-price [stockPosition]="stockPosition">
+                            </stock-position-purchase-price>
+                        </ng-template>
+                    </p-column>
+
+                    <!----------------------------------------------------------------------------------------------------------
                     OPEN PRICE
                     ------------------------------------------------------------------------------------------------------------>
+                    <!--
                     <p-column id="openPrice"
                               field="openPrice"
                               header="Open Price"
@@ -72,10 +85,11 @@
                             </currency>
                         </ng-template>
                     </p-column>
-
+                    -->
                     <!----------------------------------------------------------------------------------------------------------
                     CLOSE PRICE
                     ------------------------------------------------------------------------------------------------------------>
+                    <!--
                     <p-column id="closePrice"
                               field="closePrice"
                               header="Close Price"
@@ -85,10 +99,11 @@
                             </currency>
                         </ng-template>
                     </p-column>
-
+                    -->
                     <!----------------------------------------------------------------------------------------------------------
                     LAST PRICE DATE
                     ------------------------------------------------------------------------------------------------------------>
+                    <!--
                     <p-column id="lastPriceChangeColumn"
                               field="lastPriceChange"
                               header="Last Price Change "
@@ -98,12 +113,12 @@
                             {{stockPosition[col.field] | date: 'y-MM-dd h:mm a' }}
                         </ng-template>
                     </p-column>
-
+                    -->
                     <!----------------------------------------------------------------------------------------------------------
                     TODAY GAIN/LOSS PERCENTAGE
                     ------------------------------------------------------------------------------------------------------------>
-                    <p-column id="todayGainLossDollar"
-                              field="todayGainLossDollar"
+                    <p-column id="todayGainLossAbsolute"
+                              field="todayGainLossAbsolute"
                               header="Today GL$"
                               [style]="{'width':'80px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
@@ -119,15 +134,15 @@
                               header="Today GL%"
                               [style]="{'width':'80px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <gain-loss-percent [percentValue]="stockPosition[col.field]"></gain-loss-percent>
+                            <gain-loss-percent [percentValue]="stockPosition[col.field]" [divideBy]="100"></gain-loss-percent>
                         </ng-template>
                     </p-column>
 
                     <!----------------------------------------------------------------------------------------------------------
-                    TOTAL GAIN/LOSS DOLLARS
+                    TOTAL GAIN/LOSS ABSOLUTE
                     ------------------------------------------------------------------------------------------------------------>
-                    <p-column id="totalGainLossDollar"
-                              field="totalGainLossDollar"
+                    <p-column id="totalGainLossAbsolute"
+                              field="totalGainLossAbsolute"
                               header="Total GL$"
                               [style]="{'width':'80px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
@@ -143,7 +158,7 @@
                               header="Today GL%"
                               [style]="{'width':'80px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <gain-loss-percent [percentValue]="stockPosition[col.field]"></gain-loss-percent>
+                            <gain-loss-percent [percentValue]="stockPosition[col.field]" [divideBy]="100"></gain-loss-percent>
                         </ng-template>
                     </p-column>
 
@@ -209,24 +224,28 @@
                             <currency [currencyValue]="stockPosition[col.field]"></currency>
                         </ng-template>
                     </p-column>
+
                     <!----------------------------------------------------------------------------------------------------------
-                    PERCENT OF CHANGE
+                    COST BASIS
                     ------------------------------------------------------------------------------------------------------------>
-                    <!--
-                    <p-column id="percentChange"
-                              field="percentChange"
-                              header="% Change Since Entered"
+                    <p-column id="costBasis"
+                              header="Cost Basis"
                               [style]="{'width':'80px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <div class="positiveGain" *ngIf="calculatePercentChange( stockPosition ) >= 0.0">
-                                {{calculatePercentChange( stockPosition ) | percent: '1.2-2' }}
-                            </div>
-                            <div class="negativeGain" *ngIf="calculatePercentChange( stockPosition ) < 0.0">
-                                {{calculatePercentChange( stockPosition ) | percent: '1.2-2' }}
-                            </div>
+                            <currency [currencyValue]="stockPosition.costBasis"></currency>
                         </ng-template>
                     </p-column>
-                    -->
+
+                    <!----------------------------------------------------------------------------------------------------------
+                    MARKET VALUE
+                    ------------------------------------------------------------------------------------------------------------>
+                    <p-column id="marketValue"
+                              header="Market Value"
+                              [style]="{'width':'80px','text-align':'right'}">
+                        <ng-template let-col let-stockPosition="rowData" pTemplate="body">
+                            <stock-position-market-value [stockPosition]="stockPosition"></stock-position-market-value>
+                        </ng-template>
+                    </p-column>
 
                     <p-footer>
                         <stock-position-table-buttons>

@@ -32,9 +32,9 @@ export class StockPositionFactory extends ModelObjectFactory<StockPosition>
         position.costBasis = 0;
         position.holdingType = "";
         position.quantity = 0;
-        position.todayGainLossDollar = 0;
+        position.todayGainLossAbsolute = 0;
         position.todayGainLossPercentage = 0;
-        position.totalGainLossDollar = 0;
+        position.totalGainLossAbsolute = 0;
         position.totalGainLossPercentage = 0;
         position.exchange = "";
         position.version = 0;

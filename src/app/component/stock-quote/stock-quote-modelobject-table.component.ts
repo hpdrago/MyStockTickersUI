@@ -112,10 +112,12 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
      */
     private updateAnalystConsensus( stockQuoteModelObject: T )
     {
+        let methodName = 'updateAnalystConsensus';
         let stockAnalystConsensus: StockAnalystConsensus = this.stockAnalystConsensusCache
                                                                .get( stockQuoteModelObject.tickerSymbol );
         if ( !isNullOrUndefined( stockAnalystConsensus ) )
         {
+            this.log( methodName + ' ' + JSON.stringify( stockAnalystConsensus ));
             stockQuoteModelObject.analystStrongBuyCount = stockAnalystConsensus.analystStrongBuyCount;
             stockQuoteModelObject.analystBuyCount = stockAnalystConsensus.analystBuyCount;
             stockQuoteModelObject.analystHoldCount = stockAnalystConsensus.analystHoldCount;

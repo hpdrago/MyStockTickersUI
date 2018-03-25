@@ -212,7 +212,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * Returns the URL string to Read a single model object via REST
      * @param modelObject
      */
-    protected getReadModelObjectListUrl( modelObject: T ): string
+    protected getReadModelObjectListUrl( modelObject: T, pageable: boolean = false ): string
     {
         let methodName = 'getReadModelObjectListUrl';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
@@ -226,11 +226,11 @@ export abstract class ReadRestService<T extends ModelObject<T>>
         let url: string = '';
         if ( isNullOrUndefined( contextURL ) )
         {
-            url = this.appConfig.getBaseURL() + customerURL
+            url = this.appConfig.getBaseURL() + (pageable ? "/page" : "" ) + customerURL
         }
         else
         {
-            url = this.appConfig.getBaseURL() + contextURL + customerURL
+            url = this.appConfig.getBaseURL() + contextURL + (pageable ? "/page" : "" ) + customerURL
         }
         this.debug( methodName + ' contextURL: ' + contextURL + ' customerURL: ' + customerURL );
         this.debug( methodName + ' url: ' + url );
@@ -295,14 +295,14 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                    .catch( ( error: any ) =>
                            {
                                this.restErrorReporter.reportRestError( error );
-                               return Observable.throw( error )
+                               return Observable.throw( null )
                            } )
                    .shareReplay();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
 
     /**
-     * Get the stocks for a portfolio by the portfolio id
-     * @param portfolioId
+     * Get a list of model object by Query By Example(QBE) from {@code modelObject}.
+     * @param modelObject
      * @returns {Observable<R>}
      */
     public getModelObjectList( modelObject: T ): Observable<Array<T>>
@@ -347,7 +347,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                    .catch( ( error: any ) =>
                            {
                                this.restErrorReporter.reportRestError( error );
-                               return Observable.throw( error )
+                               return Observable.throw( null )
                            })
                    .shareReplay();  // if there are multiple subscribers, without this call, the http call will be executed for each observer
     }
@@ -361,7 +361,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     public getPage( modelObject: T, lazyLoadEvent: LazyLoadEvent ): Observable<PaginationPage<T>>
     {
         let methodName = 'getPage';
-        let url = new PaginationURL( this.getReadModelObjectListUrl( modelObject ) ).getPage( lazyLoadEvent );
+        let url = new PaginationURL( this.getReadModelObjectListUrl( modelObject, true ) ).getPage( lazyLoadEvent );
         this.logger.log( `${methodName} url: ${url}` );
         return this.http
                    .get<PaginationPage<T>>( url )
@@ -376,7 +376,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
                    .catch( ( error: any ) =>
                            {
                                this.restErrorReporter.reportRestError( error );
-                               return Observable.throw( error );
+                               return Observable.throw( null );
                            } )
                    .shareReplay();
     }

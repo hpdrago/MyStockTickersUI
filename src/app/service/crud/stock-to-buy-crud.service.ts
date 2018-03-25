@@ -7,6 +7,7 @@ import { StockToBuyFactory } from "../../model/factory/stock-to-buy.factory";
 import { isNullOrUndefined } from "util";
 import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient } from '@angular/common/http';
+import { KeyValuePairs } from '../../common/key-value-pairs';
 
 /**
  * This class provides all CRUD REST services for Stock To Buy.
@@ -44,13 +45,27 @@ export class StockToBuyCrudService extends CrudRestService<StockToBuy>
         return this.urlPath;
     }
 
+    /**
+     * Modify the url parameters based on stockToBuy key fields.
+     * @param {StockToBuy} stockToBuy
+     * @return {KeyValuePairs<string, any>}
+     */
+    protected getContextURLKeyValues( stockToBuy: StockToBuy ): KeyValuePairs<string,any>
+    {
+        let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
+        keyColumns.addPair( "tickerSymbol", stockToBuy.tickerSymbol );
+        return keyColumns;
+    }
+
+    /*
     protected getReadModelObjectListUrl( stockToBuy: StockToBuy ): string
     {
-        var url: string = super.getReadModelObjectListUrl( stockToBuy );
+        var url: string = super.getReadModelObjectListUrl( stockToBuy, true );
         if ( !isNullOrUndefined( stockToBuy.tickerSymbol ) )
         {
             url += '/' + stockToBuy.tickerSymbol;
         }
         return url;
     }
+    */
 }

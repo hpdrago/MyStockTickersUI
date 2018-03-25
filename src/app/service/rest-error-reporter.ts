@@ -4,6 +4,7 @@ import { Injectable } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This class encapsulates the reporting of REST exceptions.
@@ -83,6 +84,7 @@ export class RestErrorReporter extends BaseClass
      */
     public logAndReportError( message: string )
     {
+        this.debug( 'logAndReportError ' + message );
         this.logError( message );
         this.showError( message );
     }
@@ -95,10 +97,10 @@ export class RestErrorReporter extends BaseClass
     protected getExceptionMessage( restException: RestException ): string
     {
         this.debug( "getExceptionMessage: " + JSON.stringify( restException ));
-        var message = restException.message;
-        var status = restException.status;
-        var error = restException.error;
-        var exception = restException.exception;
+        let message = restException.message;
+        let status = restException.status;
+        let error = restException.error;
+        let exception = restException.exception;
         this.debug( "message: " + message );
         this.debug( "status: " + status );
         this.debug( "error: " + error );
