@@ -71,21 +71,40 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
             modelObjects.forEach( stockQuoteModelObject =>
                                   {
                                       this.updateStockQuote( stockQuoteModelObject );
-                                      this.updateAnalystConsensus( stockQuoteModelObject );
                                   } );
         }
         this.log( 'onTableLoad.overridden.end' );
     }
 
     /**
-     * Evaluatest eh stock quote model object to check the state of the stock quote information.  If the stock quote
+     * Override to check the stock quote status to determine if it needs to be updated.
+     * @param {T} modelObject
+     */
+    protected onModelObjectCreated( modelObject: T ): void
+    {
+        super.onModelObjectCreated( modelObject );
+        this.updateStockQuote( modelObject );
+    }
+
+    /**
+     * Override to check the stock quote status to determine if it needs to be updated.
+     * @param {T} modelObject
+     */
+    protected onModelObjectChanged( modelObject: T ): void
+    {
+        super.onModelObjectChanged( modelObject );
+        this.updateStockQuote( modelObject );
+    }
+
+    /**
+     * Evaluates the stock quote model object to check the state of the stock quote information.  If the stock quote
      * information is stale, the stock quote information will be updated asynchronously.
      * @param stockQuoteModelObject
      */
     private updateStockQuote( stockQuoteModelObject )
     {
         if ( stockQuoteModelObject.stockQuoteState == StockQuoteState.NOT_CACHED ||
-            stockQuoteModelObject.stockQuoteState == StockQuoteState.STALE )
+             stockQuoteModelObject.stockQuoteState == StockQuoteState.STALE )
         {
             this.stockQuoteRefreshService
                 .refreshStockQuote( stockQuoteModelObject )
@@ -110,6 +129,7 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
      * if found, updates the stock quote model object with the stock analyst consensus information.
      * @param {T} stockQuoteModelObject
      */
+    /*
     private updateAnalystConsensus( stockQuoteModelObject: T )
     {
         let methodName = 'updateAnalystConsensus';
@@ -128,6 +148,7 @@ export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteMo
             stockQuoteModelObject.highAnalystPriceTarget = stockAnalystConsensus.highAnalystPriceTarget;
         }
     }
+    */
 
     /**
      * This method is called to report the failure to find a stock quote work object in the table.

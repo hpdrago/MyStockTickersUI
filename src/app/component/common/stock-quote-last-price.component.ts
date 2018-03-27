@@ -13,17 +13,21 @@ import { ToastsManager } from 'ng2-toastr';
 {
     selector: 'stock-quote-last-price',
     template: `
-        <div *ngIf="isFetchingQuote()">
+        <div *ngIf="isFetchingQuote(); then loading else notLoading">
+        </div>
+        <ng-template #loading>
             Loading...
-        </div>
-        <div *ngIf="!isFetchingQuote() && stockQuote != null">
-            <div class="positiveGain" *ngIf="priceChange >= 0.0">
-                <currency [currencyValue]="stockQuote.lastPrice"></currency>
+        </ng-template>
+        <ng-template #notLoading>
+            <div *ngIf="stockQuote != null">
+                <div class="positiveGain" *ngIf="priceChange >= 0.0">
+                    <currency [currencyValue]="stockQuote.lastPrice"></currency>
+                </div>
+                <div class="negativeGain" *ngIf="priceChange < 0.0">
+                    <currency [currencyValue]="stockQuote.lastPrice"></currency>
+                </div>
             </div>
-            <div class="negativeGain" *ngIf="priceChange < 0.0">
-                <currency [currencyValue]="stockQuote.lastPrice"></currency>
-            </div>
-        </div>
+        </ng-template>
     `
 })
 export class StockQuoteLastPriceComponent extends BaseComponent implements OnInit

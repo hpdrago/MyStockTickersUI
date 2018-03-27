@@ -182,7 +182,7 @@
                               header="Analyst BSH"
                               [style]="{'width':'80px'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-analyst-consensus [stockAnalystConsensus]="stockPosition"></stock-analyst-consensus>
+                            <stock-analyst-consensus [tickerSymbol]="stockPosition.tickerSymbol"></stock-analyst-consensus>
                         </ng-template>
                     </p-column>
 

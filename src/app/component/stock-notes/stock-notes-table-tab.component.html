@@ -88,6 +88,31 @@
             </p-column>
 
             <!----------------------------------------------------------------------------------------------------------
+            PERCENT OF CHANGE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="percentChange"
+                      field="percentChange"
+                      header="% Change Since Entered"
+                      [style]="{'width':'80px','text-align':'right'}">
+                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                    <stock-quote-percent-change-since-created [stockQuote]="stockNotes"></stock-quote-percent-change-since-created>
+                </ng-template>
+            </p-column>
+
+            <!----------------------------------------------------------------------------------------------------------
+            OPEN PRICE
+            ------------------------------------------------------------------------------------------------------------>
+            <p-column id="openPrice"
+                      field="openPrice"
+                      header="Open Price"
+                      [style]="{'width':'80px','text-align':'right'}">
+                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
+                    <currency [currencyValue]="stockNotes.openPrice">
+                    </currency>
+                </ng-template>
+            </p-column>
+
+            <!----------------------------------------------------------------------------------------------------------
             LAST PRICE
             ------------------------------------------------------------------------------------------------------------>
             <p-column id="lastPrice"
@@ -114,18 +139,6 @@
                 </ng-template>
             </p-column>
             -->
-
-            <!----------------------------------------------------------------------------------------------------------
-            PERCENT OF CHANGE
-            ------------------------------------------------------------------------------------------------------------>
-            <p-column id="percentChange"
-                      field="percentChange"
-                      header="% Change Since Entered"
-                      [style]="{'width':'80px','text-align':'right'}">
-                <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-                    <stock-quote-percent-change-since-created [stockQuote]="stockNotes"></stock-quote-percent-change-since-created>
-                </ng-template>
-            </p-column>
 
             <!----------------------------------------------------------------------------------------------------------
             ACTION TAKEN
