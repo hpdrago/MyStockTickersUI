@@ -34,7 +34,7 @@
                     <p-column id="tickerSymbolColumn"
                               field="tickerSymbol"
                               header="Ticker"
-                              [style]="{'width':'30px'}"
+                              [style]="{'width':'35px'}"
                               [sortable]="true">
                     </p-column>
 
@@ -44,14 +44,13 @@
                     <p-column id="quantity"
                               field="quantity"
                               header="Shares"
-                              [style]="{'width':'30px','text-align':'right'}">
+                              [style]="{'width':'25px','text-align':'right'}">
                     </p-column>
 
                     <!----------------------------------------------------------------------------------------------------------
                     LAST PRICE
                     ------------------------------------------------------------------------------------------------------------>
                     <p-column id="lastPrice"
-                              field="lastPrice"
                               header="Last Price"
                               [style]="{'width':'30px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
@@ -65,7 +64,7 @@
                     ------------------------------------------------------------------------------------------------------------>
                     <p-column id="purchasePrice"
                               header="Purchase Price"
-                              [style]="{'width':'40px','text-align':'right'}">
+                              [style]="{'width':'30px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <stock-position-purchase-price [stockPosition]="stockPosition">
                             </stock-position-purchase-price>
@@ -132,7 +131,7 @@
                     <p-column id="todayGainLossPercentage"
                               field="todayGainLossPercentage"
                               header="Today GL%"
-                              [style]="{'width':'40px','text-align':'right'}">
+                              [style]="{'width':'30px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <gain-loss-percent [percentValue]="stockPosition[col.field]" [divideBy]="100"></gain-loss-percent>
                         </ng-template>
@@ -156,7 +155,7 @@
                     <p-column id="totalGainLossPercentage"
                               field="totalGainLossPercentage"
                               header="Today GL%"
-                              [style]="{'width':'40px','text-align':'right'}">
+                              [style]="{'width':'30px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <gain-loss-percent [percentValue]="stockPosition[col.field]" [divideBy]="100"></gain-loss-percent>
                         </ng-template>
@@ -167,7 +166,7 @@
                     ------------------------------------------------------------------------------------------------------------>
                     <p-column id="avgUpsidePercent"
                               header="Avg Upside"
-                              [style]="{'width':'30px','text-align':'right'}"
+                              [style]="{'width':'20px','text-align':'right'}"
                               [sortable]="true">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <stock-average-upside-percent [stockQuote]="stockPosition"></stock-average-upside-percent>
@@ -179,7 +178,7 @@
                     ------------------------------------------------------------------------------------------------------------>
                     <p-column id="analystBSH"
                               header="Analyst BSH"
-                              [style]="{'width':'80px'}">
+                              [style]="{'width':'60px'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <stock-analyst-consensus [tickerSymbol]="stockPosition.tickerSymbol"></stock-analyst-consensus>
                         </ng-template>
@@ -190,7 +189,7 @@
                     ------------------------------------------------------------------------------------------------------------>
                     <p-column id="analystPriceTargets"
                               header="Analyst Targets"
-                              [style]="{'width':'80px'}">
+                              [style]="{'width':'70px'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
                             <stock-analyst-price-targets [tickerSymbol]="stockPosition.tickerSymbol"></stock-analyst-price-targets>
                         </ng-template>
@@ -202,10 +201,10 @@
                     <p-column id="highAnalystPrice"
                               field="highAnalystPriceTarget"
                               header="High Analyst PT"
-                              [style]="{'width':'40px','text-align':'right'}"
+                              [style]="{'width':'30px','text-align':'right'}"
                               [sortable]="false">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-analyst-price-target tickerSymbol="stockPosition.tickerSymbol"
+                            <stock-analyst-price-target [tickerSymbol]="stockPosition.tickerSymbol"
                                                         target="high" >
                             </stock-analyst-price-target>
                         </ng-template>
@@ -217,10 +216,10 @@
                     <p-column id="avgAnalystPrice"
                               field="avgAnalystPriceTarget"
                               header="Avg Analyst PT"
-                              [style]="{'width':'40px','text-align':'right'}"
+                              [style]="{'width':'30px','text-align':'right'}"
                               [sortable]="false">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-analyst-price-target tickerSymbol="stockPosition.tickerSymbol"
+                            <stock-analyst-price-target [tickerSymbol]="stockPosition.tickerSymbol"
                                                         target="avg" >
                             </stock-analyst-price-target>
                         </ng-template>
@@ -232,10 +231,10 @@
                     <p-column id="lowAnalystPrice"
                               field="lowAnalystPriceTarget"
                               header="Low Analyst PT"
-                              [style]="{'width':'40px','text-align':'right'}"
+                              [style]="{'width':'30px','text-align':'right'}"
                               [sortable]="false">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-analyst-price-target tickerSymbol="stockPosition.tickerSymbol"
+                            <stock-analyst-price-target [tickerSymbol]="stockPosition.tickerSymbol"
                                                         target="low" >
                             </stock-analyst-price-target>
                         </ng-template>

@@ -37,6 +37,10 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
 
     protected priceChange: number;
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     */
     constructor( protected toaster: ToastsManager )
     {
         super( toaster );

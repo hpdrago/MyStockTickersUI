@@ -26,7 +26,7 @@ export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBas
     constructor( protected toaster: ToastsManager,
                  protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
-        super( stockAnalystConsensusCache );
+        super( toaster, stockAnalystConsensusCache );
     }
 
     public ngOnInit(): void

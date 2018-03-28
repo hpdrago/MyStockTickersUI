@@ -10,7 +10,7 @@ import { StockPosition } from '../../model/entity/stock-position';
 @Component
 ({
     selector: 'stock-position-purchase-price',
-    template: `<currency [currencyValue]="stockPosition.marketValue() / stockPosition.quantity"></currency>`
+    template: `<currency [currencyValue]="stockPosition.costBasis / stockPosition.quantity"></currency>`
 })
 export class StockPositionPurchasePrice
 {

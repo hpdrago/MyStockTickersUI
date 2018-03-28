@@ -42,7 +42,7 @@ export class StockAnalystPriceTargetComponent extends StockAnalystConsensusBaseC
     constructor( protected toaster: ToastsManager,
                  protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
-        super( stockAnalystConsensusCache );
+        super( toaster, stockAnalystConsensusCache );
     }
 
     /**

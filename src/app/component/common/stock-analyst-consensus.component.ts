@@ -31,6 +31,6 @@ export class StockAnalystConsensusComponent extends StockAnalystConsensusBaseCom
     constructor( protected toaster: ToastsManager,
                  protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
-        super( this.toaster, stockAnalystConsensusCache );
+        super( toaster, stockAnalystConsensusCache );
     }
 }
