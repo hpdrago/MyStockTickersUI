@@ -1,7 +1,7 @@
 /**
  * Created by mike on 11/4/2017
  */
-import { StockQuoteModelObject } from "../model/entity/stock-quote-modelobject";
+import { StockPriceModelObject } from "../model/entity/stock-price-model-object";
 import { Observable } from "rxjs/Observable";
 import { StockQuote } from "../model/entity/stock-quote";
 import { Injectable } from "@angular/core";
@@ -25,7 +25,7 @@ export class StockQuoteRefreshService extends BaseService
      * @param {T} stockQuoteModelObject
      * @returns {Observable<StockQuote>}
      */
-    public refreshStockQuote<T extends StockQuoteModelObject<T>>( stockQuoteModelObject: T ): Observable<StockQuote>
+    public refreshStockQuote<T extends StockPriceModelObject<T>>( stockQuoteModelObject: T ): Observable<StockQuote>
     {
         this.debug( "refreshStockQuote" );
         return this.stockQuoteCache.refreshStockQuote( stockQuoteModelObject.tickerSymbol )

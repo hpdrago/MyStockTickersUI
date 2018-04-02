@@ -1,12 +1,12 @@
 import { StockNotesContainer } from "../../common/stock-notes-container";
-import { StockQuoteModelObject } from "./stock-quote-modelobject";
+import { StockPriceModelObject } from "./stock-price-model-object";
 
 /**
  * This entity contains the elements for the stock to buy
  *
  * Created 10/17/2017
  */
-export class StockToBuy extends StockQuoteModelObject<StockToBuy> implements StockNotesContainer
+export class StockToBuy extends StockPriceModelObject<StockToBuy> implements StockNotesContainer
 {
     public id: number;
     public customerId: number;

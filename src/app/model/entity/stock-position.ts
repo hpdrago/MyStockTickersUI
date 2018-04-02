@@ -1,9 +1,9 @@
-import { StockQuoteModelObject } from './stock-quote-modelobject';
+import { StockPriceModelObject } from './stock-price-model-object';
 
 /**
  * This class contains the information for a single stock position within a LinkedAccount.
  */
-export class StockPosition extends StockQuoteModelObject<StockPosition>
+export class StockPosition extends StockPriceModelObject<StockPosition>
 {
     public id: number;
     public customerId: number;

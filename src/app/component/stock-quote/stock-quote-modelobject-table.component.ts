@@ -1,4 +1,4 @@
-import { StockQuoteModelObject } from "../../model/entity/stock-quote-modelobject";
+import { StockPriceModelObject } from "../../model/entity/stock-price-model-object";
 import { StockQuoteState } from "../../common/stock-quote-state.enum";
 import { StockQuoteRefreshService } from "../../service/stock-quote-refresh.service";
 import { ToastsManager } from "ng2-toastr";
@@ -21,17 +21,17 @@ import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensu
  *
  * Created by mike on 11/4/2017
  */
-export abstract class StockQuoteModelObjectTableComponent<T extends StockQuoteModelObject<T>>
+export abstract class StockQuoteModelObjectTableComponent<T extends StockPriceModelObject<T>>
     extends StockModelObjectTableComponent<T>
 {
     /**
      * Constructor.
      * @param {TableLoadingStrategy} tableLoadingStrategy
      * @param {ToastsManager} toaster
-     * @param {CrudStateStore<T extends StockQuoteModelObject<T>>} stockStateStore
-     * @param {CrudController<T extends StockQuoteModelObject<T>>} stockController
-     * @param {ModelObjectFactory<T extends StockQuoteModelObject<T>>} stockFactory
-     * @param {CrudRestService<T extends StockQuoteModelObject<T>>} stockCrudService
+     * @param {CrudStateStore<T extends StockPriceModelObject<T>>} stockStateStore
+     * @param {CrudController<T extends StockPriceModelObject<T>>} stockController
+     * @param {ModelObjectFactory<T extends StockPriceModelObject<T>>} stockFactory
+     * @param {CrudRestService<T extends StockPriceModelObject<T>>} stockCrudService
      * @param {StockQuoteRefreshService} stockQuoteRefreshService
      * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */

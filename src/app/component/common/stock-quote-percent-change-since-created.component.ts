@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { StockQuoteModelObject } from '../../model/entity/stock-quote-modelobject';
+import { StockPriceModelObject } from '../../model/entity/stock-price-model-object';
 import { StockQuote } from '../../model/entity/stock-quote';
 import { isNullOrUndefined } from "util";
 
 /**
  * This component displays the percent the price has changed since the model object was created.
- * It compares the StockQuoteModelObject.lastPrice with the StockQuoteModelObject.stockPriceWhenCreated.
+ * It compares the StockPriceModelObject.lastPrice with the StockPriceModelObject.stockPriceWhenCreated.
  */
 @Component(
 {
@@ -15,7 +15,7 @@ import { isNullOrUndefined } from "util";
 export class StockQuotePercentChangeSinceCreatedComponent
 {
     @Input()
-    protected stockQuote: StockQuoteModelObject<any>;
+    protected stockQuote: StockPriceModelObject<any>;
 
     /**
      * Determines the percent of change from the original price to the last price.
