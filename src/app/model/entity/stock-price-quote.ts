@@ -10,5 +10,5 @@ export class StockPriceQuote
     public lastPriceChange: Date;
     public companyName: string;
     public stockPriceState: number;
-    public expiration: Date;
+    public expirationTime: Date;
 }

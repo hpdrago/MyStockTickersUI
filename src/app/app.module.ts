@@ -57,10 +57,8 @@ import { StockExchangeService } from "./service/crud/stock-exchange.service";
 import { SessionService } from "./service/session.service";
 import { AppConfigurationService } from "./service/app-configuration.service";
 import { AppComponent } from "./app.component";
-import { StockTableComponent } from "./component/stock/stock-table.component";
 import { MenuBarComponent } from "./component/menubar/menu-bar.component";
 import { DashboardComponent } from "./component/dashboard/dashboard.component";
-import { StockFormComponent } from "./component/stock/stock-form.component";
 import { UppercaseDirective } from "./directives/uppercase.directive";
 import { PortfolioStockFormComponent } from "./component/portfolio-stock/portfolio-stock-form.component";
 import { PortfolioStockTableComponent } from "./component/portfolio-stock/portfolio-stock-table.component";
@@ -68,8 +66,6 @@ import { PortfolioStockFactory } from "./model/factory/portfolio-stock.factory";
 import { StockFactory } from "./model/factory/stock.factory";
 import { PortfolioFactory } from "./model/factory/portfolio.factory";
 import { StockAutoCompleteComponent } from "./component/common/stock-autocomplete.component";
-import { StockTableButtonsComponent } from "./component/stock/stock-table-buttons.component";
-import { StockDialogComponent } from "./component/stock/stock-dialog.component";
 import { PortfolioStockDialogComponent } from "./component/portfolio-stock/portfolio-stock-dialog.component";
 import { PortfolioStockTableButtonsComponent } from "./component/portfolio-stock/portfolio-stock-table-buttons.component";
 import { PortfolioDialogComponent } from "./component/portfolio/portfolio-dialog.component";
@@ -78,12 +74,11 @@ import { PortfolioTableComponent } from "./component/portfolio/portfolio-table.c
 import { PortfolioTableButtonsComponent } from "./component/portfolio/portfolio-table-buttons.component";
 import { StockNotesDialogComponent } from "./component/stock-notes/stock-notes-dialog.component";
 import { StockNotesFormComponent } from "./component/stock-notes/stock-notes-form.component";
-import { StockFormButtonsComponent } from "./component/stock/stock-form-buttons.component";
 import { PortfolioStockFormButtonsComponent } from "./component/portfolio-stock/portfolio-stock-form-buttons.component";
 import { PortfolioFormButtonsComponent } from "./component/portfolio/portfolio-form-buttons.component";
 import { StockNotesTableButtonsComponent } from "./component/stock-notes/stock-notes-table-buttons.component";
 import { StockNotesFormButtonsComponent } from "./component/stock-notes/stock-notes-form-buttons.component";
-import { StockCrudService } from "./service/crud/stock-crud.service";
+import { StockInformationService } from "./service/crud/stock-information.service";
 import { PortfolioCrudService } from "./service/crud/portfolio-crud.service";
 import { PortfolioStockCrudService } from "./service/crud/portfolio-stock-crud.service";
 import { StockNotesCrudService } from "./service/crud/stock-notes-crud.service";
@@ -337,12 +332,6 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         LinkedAccountFormComponent,
         LinkedAccountFormButtonsComponent,
 
-        StockTableComponent,
-        StockFormComponent,
-        StockDialogComponent,
-        StockFormButtonsComponent,
-        StockTableButtonsComponent,
-
         StockPositionTableRefreshButtonComponent,
         StockPositionTableComponent,
         StockPositionTableButtonsComponent,
@@ -477,7 +466,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         LinkedAccountFactory,
         LinkedAccountController,
 
-        StockCrudService,
+        StockInformationService,
         StockExchangeService,
         StockFactory,
 

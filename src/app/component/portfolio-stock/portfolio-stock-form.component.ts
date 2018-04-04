@@ -10,7 +10,7 @@ import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { PortfolioStockStateStore } from './portfolio-stock-state-store';
 import { PortfolioStockController } from './portfolio-stock-controller';
 import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
-import { StockCrudService } from '../../service/crud/stock-crud.service';
+import { StockInformationService } from '../../service/crud/stock-information.service';
 import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
 
 /**
@@ -41,7 +41,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
      * @param {PortfolioStockController} portfolioStockController
      * @param {PortfolioStockFactory} portfolioStockFactory
      * @param {PortfolioStockCrudService} portfolioStockCrudService
-     * @param {StockCrudService} stockCrudService
+     * @param {StockInformationService} stockCrudService
      */
     constructor( protected toaster: ToastsManager,
                  protected formBuilder: FormBuilder,
@@ -49,7 +49,7 @@ export class PortfolioStockFormComponent extends CrudFormComponent<PortfolioStoc
                  protected portfolioStockController: PortfolioStockController,
                  protected portfolioStockFactory: PortfolioStockFactory,
                  protected portfolioStockCrudService: PortfolioStockCrudService,
-                 protected stockCrudService: StockCrudService )
+                 protected stockCrudService: StockInformationService )
     {
         super( toaster,
                portfolioStockStateStore,

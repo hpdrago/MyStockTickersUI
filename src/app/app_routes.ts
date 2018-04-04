@@ -2,9 +2,7 @@
  * Created by mike on 9/16/2016.
  */
 import { RouterModule, Routes } from '@angular/router';
-import { StockTableComponent } from './component/stock/stock-table.component';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
-import { StockFormComponent } from './component/stock/stock-form.component';
 import { PortfolioStockFormComponent } from "./component/portfolio-stock/portfolio-stock-form.component";
 import { StockNotesTableTabComponent } from "./component/stock-notes/stock-notes-table-tab.component";
 import { StockToBuyTableTabComponent } from "./component/stock-to-buy/stock-to-buy-table-tab.component";
@@ -57,6 +55,7 @@ const routes: Routes = [
         component: StockToBuyTableTabComponent,
         canActivate: [AuthGuardService]
     },
+    /* for the future
     {
         path: 'Popular Links',
         component: StockTableComponent,
@@ -65,14 +64,7 @@ const routes: Routes = [
         path: 'News',
         component: StockTableComponent,
     },
-    {
-        path: 'stocks',
-        component: StockTableComponent,
-    },
-    {
-        path: 'stockDetail/:tickerSymbol',
-        component: StockFormComponent
-    },
+    */
     {
         path: 'dashboard',
         component: DashboardComponent,

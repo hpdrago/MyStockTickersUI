@@ -10,6 +10,8 @@ import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { CrudRestService } from "./crud-rest.serivce";
 import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BaseService } from '../base-service';
+import { ToastsManager } from 'ng2-toastr';
 
 /**
  * This class provides all of the REST communication services for Stocks.
@@ -17,7 +19,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
  * Created by mike on 9/14/2016.
  */
 @Injectable()
-export class StockCrudService extends CrudRestService<Stock>
+export class StockInformationService extends BaseService
 {
     private stocksUrl: string = '/stocks/';
     private stocksCompaniesLikeUrl: string = '/' + this.stocksUrl + '/companiesLike';
@@ -31,17 +33,13 @@ export class StockCrudService extends CrudRestService<Stock>
      * @param {StockFactory} stockFactory
      * @param {RestErrorReporter} restErrorReporter
      */
-    constructor( protected http: HttpClient,
+    constructor( protected toaster: ToastsManager,
+                 protected http: HttpClient,
                  protected session: SessionService,
                  protected appConfig: AppConfigurationService,
-                 protected restErrorReporter: RestErrorReporter,
-                 private stockFactory: StockFactory )
+                 protected restErrorReporter: RestErrorReporter )
     {
-        super( http,
-               session,
-               appConfig,
-               restErrorReporter,
-               stockFactory )
+        super( toaster );
         this.stocksCompaniesLikePaginationUrl = new PaginationURL( appConfig.getBaseURL() + this.stocksCompaniesLikeUrl );
     }
 
@@ -63,7 +61,8 @@ export class StockCrudService extends CrudRestService<Stock>
     public getStockCompaniesLike( searchString: string ): Observable<PaginationPage<Stock>>
     {
         this.debug( "getStockCompaniesLike " + searchString )
-        return this.http.get( this.stocksCompaniesLikePaginationUrl.getPageWithSearchString( searchString, 0, 20 ) )
+        return this.http.get( this.stocksCompaniesLikePaginationUrl
+                                  .getPageWithSearchString( searchString, 0, 20 ) )
                         .catch( ( error: any ) =>
                                 {
                                     this.restErrorReporter.reportRestError( error );
@@ -90,7 +89,7 @@ export class StockCrudService extends CrudRestService<Stock>
     {
         let methodName = "getStockPriceQuote";
         this.debug( methodName + " " + tickerSymbol );
-        let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockPrice/" + tickerSymbol;
+        let url = this.appConfig.getBaseURL() + this.getContextBaseURL() + "stockPriceQuote/" + tickerSymbol;
         return this.http
                    .get<StockPriceQuote>( url )
                    .catch( error =>

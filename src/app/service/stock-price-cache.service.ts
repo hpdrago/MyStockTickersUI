@@ -2,10 +2,13 @@ import { BaseService } from "./base-service";
 import { Injectable } from "@angular/core";
 import { StockPriceQuote } from "../model/entity/stock-price-quote";
 import { Observable } from "rxjs/Observable";
-import { StockCrudService } from "./crud/stock-crud.service";
+import { StockInformationService } from "./crud/stock-information.service";
 import { ToastsManager } from "ng2-toastr";
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
+import { isNullOrUndefined } from 'util';
+import { RestErrorReporter } from './rest-error-reporter';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * This class caches stock prices by ticker symbol.
@@ -23,15 +26,16 @@ export class StockPriceCacheService extends BaseService
      * Contains the quotes being updated
      * @type {Map<any, any>}
      */
-    private workingMap: Map<string, Observable<StockPriceQuote>> = new Map();
+    private workingMap: Map<string, boolean> = new Map();
 
     /**
      * Constructor.
      * @param {ToastsManager} toaster
-     * @param {StockCrudService} stockService
+     * @param {StockInformationService} stockService
      */
     constructor( protected toaster: ToastsManager,
-                 private stockService: StockCrudService )
+                 private stockService: StockInformationService,
+                 private restErrorReporter: RestErrorReporter )
     {
         super( toaster );
         this.doLogging = false;
@@ -54,7 +58,7 @@ export class StockPriceCacheService extends BaseService
          * Check to see if the stock price is in the cache
          */
         let stockPriceSubject = this.stockPriceSubjectMap.get( tickerSymbol );
-        if ( stockPriceSubject == null )
+        if ( isNullOrUndefined( stockPriceSubject ))
         {
             stockPriceSubject = new BehaviorSubject<StockPriceQuote>( null );
             this.debug( methodName + " " + tickerSymbol + " is not in the cache.  Fetching..." );
@@ -72,16 +76,30 @@ export class StockPriceCacheService extends BaseService
     /**
      * Check to see if the stock has expired and if so, refresh the price.
      */
-    private checkStockPriceExpiration( stockPriceSubject, tickerSymbol: string )
+    private checkStockPriceExpiration( stockPriceSubject: BehaviorSubject<StockPriceQuote>,
+                                       tickerSymbol: string )
     {
         let methodName = 'checkStockPriceExpiration';
-        if ( stockPriceSubject != null &&
-             stockPriceSubject.getValue() != null &&
-             stockPriceSubject.getValue()
-                              .expiration.getTime() < Date.now() )
+        this.debug( methodName + ' ' + tickerSymbol );
+        if ( !isNullOrUndefined( stockPriceSubject ) &&
+             !isNullOrUndefined( stockPriceSubject.getValue() ))
         {
-            this.debug( methodName + ' ' + tickerSymbol + ' has expired, updating price...' );
-            this.fetchStockPrice( tickerSymbol );
+            let stockPriceQuote: StockPriceQuote = stockPriceSubject.getValue();
+            this.debug( methodName + ' ' + JSON.stringify( stockPriceQuote ));
+            let expirationTime: Date = stockPriceQuote.expirationTime;
+            if ( isNullOrUndefined( expirationTime ) )
+            {
+                this.fetchStockPrice( tickerSymbol );
+            }
+            else
+            {
+                if ( expirationTime instanceof Date &&
+                     expirationTime.getTime() < Date.now() )
+                {
+                    this.debug( methodName + ' ' + tickerSymbol + ' has expired, updating price...' );
+                    this.fetchStockPrice( tickerSymbol );
+                }
+            }
         }
     }
 
@@ -93,18 +111,23 @@ export class StockPriceCacheService extends BaseService
     private fetchStockPrice( tickerSymbol: string )
     {
         let methodName = 'fetchStockPrice';
-        let observable = this.stockService
-                             .getStockPriceQuote( tickerSymbol )
-                             .map( ( stockPrice ) =>
-                             {
-                                   this.debug( methodName + ' ' + tickerSymbol +
-                                       ' price retrieved ' + JSON.stringify( stockPrice ) );
-                                   this.sendStockPriceChange( tickerSymbol, stockPrice );
-                                   this.workingMap.delete( tickerSymbol );
-                                   return stockPrice
-                             })
-        this.workingMap.set( tickerSymbol, observable );
-        return observable;
+        this.stockService
+            .getStockPriceQuote( tickerSymbol )
+            .subscribe( ( stockPriceQuote: StockPriceQuote ) =>
+            {
+                this.debug( methodName + ' ' + tickerSymbol + ' price retrieved ' + JSON.stringify( stockPriceQuote ) );
+                this.sendStockPriceChange( tickerSymbol, stockPriceQuote );
+                this.workingMap
+                    .delete( tickerSymbol );
+                return stockPriceQuote
+            },
+            error =>
+            {
+                this.workingMap.delete( tickerSymbol );
+                this.restErrorReporter
+                    .reportRestError( error );
+            });
+        this.workingMap.set( tickerSymbol, true );
     }
 
     /**

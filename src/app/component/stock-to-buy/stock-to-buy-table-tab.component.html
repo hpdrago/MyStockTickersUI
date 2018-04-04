@@ -105,7 +105,7 @@
                   header="Last Price"
                   [style]="{'width':'10px','text-align':'right'}">
             <ng-template let-col let-stockToBuy="rowData" pTemplate="body">
-                {{stockToBuy[col.field] | currency: 'USD' : true }}
+                <stock-quote-last-price [stockPriceModelObject]="stockToBuy" ></stock-quote-last-price>
             </ng-template>
         </p-column>
 

@@ -9,7 +9,7 @@ import { CrudOperation } from "../crud/common/crud-operation";
 import { isNullOrUndefined } from "util";
 import { StockNotesSentiment } from "../../common/stock-notes-sentiment.enum";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
-import { StockCrudService } from "../../service/crud/stock-crud.service";
+import { StockInformationService } from "../../service/crud/stock-information.service";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
 import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
@@ -61,7 +61,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
      * @param {ToastsManager} toaster
      * @param {SessionService} sessionService
      * @param {FormBuilder} formBuilder
-     * @param {StockCrudService} stockService
+     * @param {StockInformationService} stockService
      * @param {CustomerCrudService} customerService
      * @param {StockNotesStateStore} stockNotesCrudStateStore
      * @param {StockNotesController} stockNotesController
@@ -71,7 +71,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
     constructor( protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
-                 private stockService: StockCrudService,
+                 private stockService: StockInformationService,
                  protected customerService: CustomerCrudService,
                  private stockNotesCrudStateStore: StockNotesStateStore,
                  private stockNotesController: StockNotesController,

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, forwardRef, Output } from "@angular/core";
 import { PaginationPage } from "../../common/pagination";
-import { StockCrudService } from "../../service/crud/stock-crud.service";
+import { StockInformationService } from "../../service/crud/stock-information.service";
 import { ToastsManager } from "ng2-toastr";
 import { Stock } from "../../model/entity/stock";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
@@ -48,10 +48,10 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
      * Constructor
      * @param {ToastsManager} toaster
      * @param {CrudRestErrorReporter} crudRestErrorReporter
-     * @param {StockCrudService} stockCrudService
+     * @param {StockInformationService} stockCrudService
      */
     constructor( protected toaster: ToastsManager,
-                 private stockCrudService: StockCrudService,
+                 private stockCrudService: StockInformationService,
                  private restErrorReporter: RestErrorReporter )
     {
         super( toaster );

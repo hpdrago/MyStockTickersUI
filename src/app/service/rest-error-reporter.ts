@@ -94,7 +94,7 @@ export class RestErrorReporter extends BaseClass
      * @param {RestException} restException
      * @return {string}
      */
-    protected getExceptionMessage( restException: RestException ): string
+    protected getExceptionMessage( restException: any ): string
     {
         this.debug( "getExceptionMessage: " + JSON.stringify( restException ));
         let message = restException.message;
@@ -105,7 +105,17 @@ export class RestErrorReporter extends BaseClass
         this.debug( "status: " + status );
         this.debug( "error: " + error );
         this.debug( "exception: " + exception );
-        message = `Error ${status} - ${error} - ${exception} - ${message}`;
+        if ( isNullOrUndefined( message ) &&
+             isNullOrUndefined( status ) &&
+             isNullOrUndefined( error ) &&
+             isNullOrUndefined( exception ))
+        {
+            message = restException;
+        }
+        else
+        {
+            message = `Error ${status} - ${error} - ${exception} - ${message}`;
+        }
         return message;
     }
 }
