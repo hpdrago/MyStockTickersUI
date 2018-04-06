@@ -11,7 +11,8 @@ import { Component, Input } from '@angular/core';
                </div>
                <div class="negativeGain" *ngIf="percentValue < 0.0">
                    <percent [percentValue]="percentValue" [divideBy]="divideBy"></percent> 
-               </div>`
+               </div>
+              `
 })
 export class GainLossPercentComponent
 {

@@ -205,7 +205,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getCustomerURL(): string
     {
-        return '/customer/' + this.sessionService.getLoggedInUserId();
+        return '/customerId/' + this.sessionService.getLoggedInUserId();
     }
 
     /**

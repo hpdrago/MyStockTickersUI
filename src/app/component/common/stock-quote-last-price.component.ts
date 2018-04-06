@@ -1,5 +1,5 @@
 import { StockPriceQuoteModelObject } from '../../model/entity/stock-price-quote-model-object';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
 import { StockPriceCacheService } from '../../service/stock-price-cache.service';
@@ -59,10 +59,18 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
      * @param {StockPriceCacheService} stockPriceCache
      */
     constructor( protected toaster: ToastsManager,
-                 private stockPriceCache: StockPriceCacheService )
+                 private stockPriceCache: StockPriceCacheService,
+                 private changeDetector: ChangeDetectorRef )
     {
         super( toaster );
     }
+
+    /*
+    public ngAfterViewInit()
+    {
+        this.changeDetector.detectChanges();
+    }
+    */
 
     /**
      * Calculate the difference once.
@@ -70,15 +78,11 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
     public ngOnInit()
     {
         this.debug( "ngOnInit " + JSON.stringify( this.stockPriceModelObject ));
-        this.subscription =
-            this.stockPriceCache
-                .getStockPriceChanges( this.stockPriceModelObject.tickerSymbol,
-                                       stockPrice => this.stockPriceChange( stockPrice ));
-    }
-
-    public ngOnDestroy()
-    {
-        this.subscription.unsubscribe();
+        super.addSubscription( "getStockPriceChanges",
+            this.subscription =
+                this.stockPriceCache
+                    .getStockPriceChanges( this.stockPriceModelObject.tickerSymbol,
+                                           stockPrice => this.stockPriceChange( stockPrice )));
     }
 
     /**
@@ -88,16 +92,19 @@ export class StockQuoteLastPriceComponent extends BaseComponent implements OnIni
      */
     private stockPriceChange( stockPrice: StockPriceQuote )
     {
-        this.stockPrice = stockPrice;
-        if ( stockPrice != null )
+        super.tickThenRun( () =>
         {
-            this.stockPriceModelObject
-                .lastPrice = stockPrice.lastPrice;
-            this.stockPriceModelObject
-                .openPrice = stockPrice.openPrice;
-            this.priceChange = this.stockPriceModelObject.lastPrice -
-                               this.stockPriceModelObject.openPrice;
-        }
+            this.stockPrice = stockPrice;
+            if ( stockPrice != null )
+            {
+                this.stockPriceModelObject
+                    .lastPrice = stockPrice.lastPrice;
+                this.stockPriceModelObject
+                    .openPrice = stockPrice.openPrice;
+                this.priceChange = this.stockPriceModelObject.lastPrice -
+                                   this.stockPriceModelObject.openPrice;
+            }
+        });
     }
 
     /**
