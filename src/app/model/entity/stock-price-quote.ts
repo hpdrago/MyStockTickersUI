@@ -11,4 +11,5 @@ export class StockPriceQuote
     public companyName: string;
     public stockPriceState: number;
     public expirationTime: Date;
+    public error: string;
 }

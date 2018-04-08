@@ -29,11 +29,11 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {RestErrorReporter} restErrorReporter
      */
-    constructor( protected http: HttpClient,
-                 protected sessionService: SessionService,
-                 protected appConfig: AppConfigurationService,
-                 protected restErrorReporter: RestErrorReporter,
-                 protected modelObjectFactory: ModelObjectFactory<T> )
+    protected constructor( protected http: HttpClient,
+                           protected sessionService: SessionService,
+                           protected appConfig: AppConfigurationService,
+                           protected restErrorReporter: RestErrorReporter,
+                           protected modelObjectFactory: ModelObjectFactory<T> )
     {
         super();
     }
@@ -353,6 +353,17 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     }
 
     /**
+     * Returns an instance of the object that handles altering the URL to add sorting and paging arguments.
+     * Subclasses can override this method to provide sort column substitutions.
+     * @param {string} url
+     * @return {PaginationURL}
+     */
+    protected getPaginationURL( url: string ): PaginationURL
+    {
+        return new PaginationURL( url );
+    }
+
+    /**
      * Retrieves a specific page of stocks
      * @param rowOffSet The page to retrieve
      * @param rows The numbers of rows per page (rows to return for this page)
@@ -361,7 +372,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     public getPage( modelObject: T, lazyLoadEvent: LazyLoadEvent ): Observable<PaginationPage<T>>
     {
         let methodName = 'getPage';
-        let url = new PaginationURL( this.getReadModelObjectListUrl( modelObject, true ) ).getPage( lazyLoadEvent );
+        let url = this.getPaginationURL( this.getReadModelObjectListUrl( modelObject, true ) ).getPage( lazyLoadEvent );
         this.logger.log( `${methodName} url: ${url}` );
         return this.http
                    .get<PaginationPage<T>>( url )

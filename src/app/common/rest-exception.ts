@@ -91,13 +91,17 @@ export class RestException
                 // ignore for now
             }
         }
-        else
+        else if ( exception.status )
         {
             this._status = exception.status;
             this._statusText = exception.statusText;
             this._url = exception.url;
             this._ok = exception.ok;
             this._message = exception.message;
+        }
+        else
+        {
+            this._message = exception;
         }
     }
 

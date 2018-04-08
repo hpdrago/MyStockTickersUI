@@ -124,8 +124,13 @@ export class StockPriceCacheService extends BaseService
             error =>
             {
                 this.workingMap.delete( tickerSymbol );
+                /*
                 this.restErrorReporter
                     .reportRestError( error );
+                    */
+                let stockPriceQuote: StockPriceQuote = new StockPriceQuote();
+                stockPriceQuote.error = error;
+                this.sendStockPriceChange( tickerSymbol, stockPriceQuote );
             });
         this.workingMap.set( tickerSymbol, true );
     }

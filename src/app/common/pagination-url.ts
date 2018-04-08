@@ -9,6 +9,7 @@ import { LoggerFactory } from "./logger-factory";
 import { Logger } from "./logger";
 import { LazyLoadEvent } from "primeng/primeng";
 import { isNullOrUndefined } from 'util';
+import { Injectable } from '@angular/core';
 
 export class PaginationURL
 {
@@ -86,10 +87,21 @@ export class PaginationURL
         var url = this.url + "?page=" + pageNumber + "&limit=" + lazyLoadEvent.rows;
         if ( lazyLoadEvent.sortField )
         {
-            url += `&sort=${lazyLoadEvent.sortField},`;
+            url += `&sort=${this.getSortField(lazyLoadEvent)},`;
             url += lazyLoadEvent.sortOrder == 1 ? "asc" : "desc";
         }
         this.logger.log( methodName + " url: " + url );
         return url;
+    }
+
+    /**
+     * Extracts the sort field from the lazyLoadEvent.  Subclasses can override this method to change a column name
+     * from one value to another value.
+     * @param {LazyLoadEvent} lazyLoadEvent
+     * @return {string | undefined}
+     */
+    protected getSortField( lazyLoadEvent: LazyLoadEvent )
+    {
+        return lazyLoadEvent.sortField;
     }
 }

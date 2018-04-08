@@ -112,7 +112,10 @@ export class RestErrorReporter extends BaseClass
         {
             message = restException;
         }
-        else
+        else if ( !isNullOrUndefined( status ) &&
+                  !isNullOrUndefined( error ) &&
+                  !isNullOrUndefined( exception ) &&
+                  !isNullOrUndefined( message ))
         {
             message = `Error ${status} - ${error} - ${exception} - ${message}`;
         }
