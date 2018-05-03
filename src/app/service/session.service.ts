@@ -22,14 +22,14 @@ export class SessionService extends BaseService
     {
         super( toaster );
         this.customer = new Customer();
-        this.customer.id = 1;
+        this.customer.id = 'efbfbd6f-efbf-bdef-bfbd-3cefbfbd11ef';
     }
 
     /**
      * Get the user id of the logged in user
      * @returns {number}
      */
-    public getLoggedInUserId(): number
+    public getLoggedInUserId(): string
     {
         return this._customer.id;
     }

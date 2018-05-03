@@ -23,7 +23,7 @@ export class StockNotesStockFactory extends ModelObjectFactory<StockNotesStock>
     newModelObject(): StockNotesStock
     {
         var stockNoteStock = new StockNotesStock();
-        stockNoteStock.stockNotesId = 0;
+        stockNoteStock.stockNotesId = '';
         stockNoteStock.customerId = this.session.getLoggedInUserId();
         stockNoteStock.tickerSymbol = '';
         stockNoteStock.stockPrice = 0;

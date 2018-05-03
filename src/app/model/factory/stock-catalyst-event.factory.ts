@@ -14,7 +14,7 @@ export class StockCatalystEventFactory extends ModelObjectFactory<StockCatalystE
     public newModelObject(): StockCatalystEvent
     {
         var catalystEvent: StockCatalystEvent = new StockCatalystEvent();
-        catalystEvent.id = 0;
+        catalystEvent.id = '';
         catalystEvent.customerId = this.session.getLoggedInUserId();
         catalystEvent.tickerSymbol = '';
         catalystEvent.catalystDate = null;

@@ -9,8 +9,8 @@ import { DateOrTimePeriod } from '../../common/date-or-time-period.enum';
  */
 export class StockCatalystEvent extends ModelObject<StockCatalystEvent> implements StockNotesContainer
 {
-    public id: number;
-    public customerId: number;
+    public id: string;
+    public customerId: string;
     public tickerSymbol: string;
     public catalystDesc: string;
     public companyName: string;

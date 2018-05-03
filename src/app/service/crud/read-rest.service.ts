@@ -205,6 +205,10 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getCustomerURL(): string
     {
+        if ( isNullOrUndefined( this.sessionService.getLoggedInUserId() ))
+        {
+            throw new ReferenceError( "logged in user id is null" );
+        }
         return '/customerId/' + this.sessionService.getLoggedInUserId();
     }
 

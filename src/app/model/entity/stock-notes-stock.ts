@@ -2,8 +2,8 @@ import { ModelObject } from "./modelobject";
 
 export class StockNotesStock extends ModelObject<StockNotesStock>
 {
-    public stockNotesId: number;
-    public customerId: number;
+    public stockNotesId: string;
+    public customerId: string;
     public tickerSymbol: string;
     public stockPrice: number;
 

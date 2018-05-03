@@ -122,7 +122,7 @@ export class CustomerCrudService extends CrudRestService<Customer>
      * @param {number} notesSourceId
      * @return {string}
      */
-    public getStockNotesSourceLabel( notesSourceId: number ): String
+    public getStockNotesSourceLabel( notesSourceId: string ): String
     {
         return this.stockNotesSources.getLabel( notesSourceId );
     }

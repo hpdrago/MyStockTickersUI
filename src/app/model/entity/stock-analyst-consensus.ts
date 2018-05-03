@@ -11,8 +11,8 @@ export class StockAnalystConsensus extends StockPriceQuoteModelObject<StockAnaly
                                    implements StockNotesContainer,
                                               StockNotesSourceContainer
 {
-    public id: number;
-    public customerId: number;
+    public id: string;
+    public customerId: string;
     public comments: string;
     public analystStrongBuyCount: number;
     public analystBuyCount: number;
@@ -24,7 +24,7 @@ export class StockAnalystConsensus extends StockPriceQuoteModelObject<StockAnaly
     public lowAnalystPriceTarget: number;
     public highAnalystPriceTarget: number;
     public analystPriceDate: Date;
-    public notesSourceId: number;
+    public notesSourceId: string;
     public notesSourceName: string;
     public createDate: Date;
     public updateDate: Date;
@@ -34,12 +34,12 @@ export class StockAnalystConsensus extends StockPriceQuoteModelObject<StockAnaly
         return this.comments;
     }
 
-    public getNotesSourceId(): number
+    public getNotesSourceId(): string
     {
         return this.notesSourceId;
     }
 
-    public setNotesSourceId( notesSourceId: number )
+    public setNotesSourceId( notesSourceId: string )
     {
         this.notesSourceId = notesSourceId;
     }

@@ -50,12 +50,11 @@ export class PortfolioStockCrudService extends CrudRestService<PortfolioStock>
      * @param portfolioId
      * @return {Observable<Array<PortfolioStock>>}
      */
-    public getPortfolioStocks( customerId: number, portfolioId: number ): Observable<Array<PortfolioStock>>
+    public getPortfolioStocks( customerId: string, portfolioId: string ): Observable<Array<PortfolioStock>>
     {
         var portfolioStock: PortfolioStock = this.portfolioStockFactory.newModelObject();
         portfolioStock.customerId = customerId;
         portfolioStock.portfolioId = portfolioId;
         return super.getModelObjectList( portfolioStock );
     }
-
 }

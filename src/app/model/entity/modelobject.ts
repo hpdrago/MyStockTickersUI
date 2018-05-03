@@ -11,11 +11,11 @@ export abstract class ModelObject<T>
     @JsonProperty( "version", Number )
     public version: number;
 
-    @JsonProperty( "createdBy", Number )
-    public createdBy: number;
+    @JsonProperty( "createdBy", String )
+    public createdBy: string;
 
-    @JsonProperty( "updatedBy", Number )
-    public updatedBy: number;
+    @JsonProperty( "updatedBy", String )
+    public updatedBy: string;
 
     @JsonProperty( "dateCreate", Date )
     public dateCreated: Date;

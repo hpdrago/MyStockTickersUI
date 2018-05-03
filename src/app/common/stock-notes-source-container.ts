@@ -3,8 +3,8 @@
  */
 export interface StockNotesSourceContainer
 {
-    getNotesSourceId(): number;
-    setNotesSourceId( notesSourceId: number );
+    getNotesSourceId(): string;
+    setNotesSourceId( notesSourceId: string );
     getNotesSourceName(): string;
     setNotesSourceName( notesSourceName: string );
 }

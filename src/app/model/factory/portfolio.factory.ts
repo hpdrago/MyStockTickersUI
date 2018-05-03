@@ -23,7 +23,7 @@ export class PortfolioFactory extends ModelObjectFactory<Portfolio>
     newModelObject(): Portfolio
     {
         var portfolio= new Portfolio();
-        portfolio.id = 0;
+        portfolio.id = '';
         portfolio.customerId = this.session.getLoggedInUserId();
         portfolio.name = '';
         return portfolio;

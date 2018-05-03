@@ -5,10 +5,10 @@ import { StockPriceQuoteModelObject } from './stock-price-quote-model-object';
  */
 export class StockPosition extends StockPriceQuoteModelObject<StockPosition>
 {
-    public id: number;
-    public customerId: number;
-    public tradeItAccountId: number;
-    public linkedAccountId: number;
+    public id: string;
+    public customerId: string;
+    public tradeItAccountId: string;
+    public linkedAccountId: string;
     public tickerSymbol: string;
     public symbolClass: string;
     public costBasis: number;

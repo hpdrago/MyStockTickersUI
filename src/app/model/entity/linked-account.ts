@@ -9,14 +9,14 @@ import { DateConverter } from "../common/DateConverter";
 @JsonObject
 export class LinkedAccount extends ModelObject<LinkedAccount>
 {
-    @JsonProperty( "id", Number )
-    public id: number = undefined;
+    @JsonProperty( "id", String )
+    public id: string = undefined;
 
-    @JsonProperty( "customerId", Number )
-    public customerId: number = undefined;
+    @JsonProperty( "customerId", String )
+    public customerId: string = undefined;
 
-    @JsonProperty( "tradeItAccountId", Number )
-    public tradeItAccountId: number = undefined;
+    @JsonProperty( "tradeItAccountId", String )
+    public tradeItAccountId: string = undefined;
 
     @JsonProperty( "accountNumber", String )
     public accountNumber: string = undefined;

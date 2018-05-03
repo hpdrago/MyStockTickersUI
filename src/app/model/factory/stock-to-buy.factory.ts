@@ -14,7 +14,7 @@ export class StockToBuyFactory extends ModelObjectFactory<StockToBuy>
     public newModelObject(): StockToBuy
     {
         var stockToBuy: StockToBuy = new StockToBuy();
-        stockToBuy.id = 0;
+        stockToBuy.id = '';
         stockToBuy.customerId = this.session.getLoggedInUserId();
         stockToBuy.tickerSymbol = '';
         stockToBuy.companyName = '';

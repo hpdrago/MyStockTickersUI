@@ -50,7 +50,7 @@ export class PortfolioCrudService extends CrudRestService<Portfolio>
      * @param portfolioName
      * @returns {Observable<Portfolio>}
      */
-    public addPortfolio( customerId: number, portfolioName: string ): Observable<any>
+    public addPortfolio( customerId: string, portfolioName: string ): Observable<any>
     {
         let methodName = "addPortfolio";
         this.logger.debug( `${methodName} customerId: ${customerId} portfolioName: ${portfolioName}`);
@@ -85,7 +85,7 @@ export class PortfolioCrudService extends CrudRestService<Portfolio>
      * @param customerId
      * @returns {Observable<R>}
      */
-    public getCustomerPortfolios( customerId: number ): Observable<Array<Portfolio>>
+    public getCustomerPortfolios( customerId: string ): Observable<Array<Portfolio>>
     {
         var portfolio: Portfolio = new Portfolio();
         portfolio.customerId = customerId;

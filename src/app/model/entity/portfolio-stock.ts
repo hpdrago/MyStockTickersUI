@@ -8,9 +8,9 @@ import { ModelObject } from "./modelobject";
  */
 export class PortfolioStock extends ModelObject<PortfolioStock>
 {
-    public id: number;
-    public portfolioId: number;
-    public customerId: number;
+    public id: string;
+    public portfolioId: string;
+    public customerId: string;
     public tickerSymbol: string;
     public companyName: string;
     public numberOfShares: number;

@@ -41,7 +41,7 @@ export class StockNotesSourceList extends BaseClass
      * @param {number} id
      * @returns {string}
      */
-    public getLabel( id: number ): string
+    public getLabel( id: string ): string
     {
         let filteredSources: StockNotesSource[] = this.stockNotesSources.filter( stockNotesSource => stockNotesSource.id === id );
         if ( filteredSources.length == 0 )

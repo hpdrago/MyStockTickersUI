@@ -14,7 +14,7 @@ export class StockAnalystConsensusFactory extends ModelObjectFactory<StockAnalys
     public newModelObject(): StockAnalystConsensus
     {
         var stockAnalystConsensus: StockAnalystConsensus = new StockAnalystConsensus();
-        stockAnalystConsensus.id = 0;
+        stockAnalystConsensus.id = '';
         stockAnalystConsensus.customerId = this.session.getLoggedInUserId();
         stockAnalystConsensus.tickerSymbol = '';
         stockAnalystConsensus.companyName = '';

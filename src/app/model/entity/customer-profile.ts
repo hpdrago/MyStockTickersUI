@@ -2,7 +2,7 @@ import { ModelObject } from './modelobject';
 
 export class CustomerProfile extends ModelObject<CustomerProfile>
 {
-    public id: number;
+    public id: string;
 
     getPrimaryKeyValue(): any
     {

@@ -53,7 +53,7 @@ export class TradeItService extends BaseService
      * @param {number} accountId
      * @returns {Observable<TradeItAuthenticateResult>}
      */
-    public authenticateAccount( accountId: number ): Observable<TradeItAuthenticateResult>
+    public authenticateAccount( accountId: string ): Observable<TradeItAuthenticateResult>
     {
         let methodName = "authenticateAccount";
         this.debug( methodName + ".begin accountId: " + accountId );
@@ -84,7 +84,7 @@ export class TradeItService extends BaseService
      * @param {string} securityQuestionAnswer
      * @returns {Observable<TradeItAuthenticateResult>} The same result is returned as the authenticate call.
      */
-    public answerSecurityQuestion( accountId: number, securityQuestionAnswer: string ): Observable<TradeItAuthenticateResult>
+    public answerSecurityQuestion( accountId: string, securityQuestionAnswer: string ): Observable<TradeItAuthenticateResult>
     {
         let methodName = "answerSecurityQuestion";
         let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.ANSWER_SECURITY_QUESTION_URL}`;

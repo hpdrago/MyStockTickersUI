@@ -25,7 +25,7 @@ export class TradeItAccountFactory extends ModelObjectFactory<TradeItAccount>
         var account = new TradeItAccount();
         account.customerId = this.session.getLoggedInUserId();
         account.brokerage = "";
-        account.id = 0;
+        account.id = '';
         account.name = "";
         return account;
     }

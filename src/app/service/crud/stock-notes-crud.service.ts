@@ -61,7 +61,7 @@ export class StockNotesCrudService extends CrudRestService<StockNotes>
          * Add the ticker symbol only if that's set and the id is not.
          */
         if ( !isNullOrUndefined( stockNotes ) &&
-             (isNullOrUndefined( stockNotes.id ) || stockNotes.id == 0 )&&
+             (isNullOrUndefined( stockNotes.id ) || stockNotes.id.length == 0)&&
              !isNullOrUndefined( stockNotes.tickerSymbol ))
         {
             keyColumns.addPair( "tickerSymbol", stockNotes.tickerSymbol );

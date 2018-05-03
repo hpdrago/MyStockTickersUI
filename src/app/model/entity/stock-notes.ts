@@ -10,12 +10,12 @@ import { StockNotesSourceContainer } from "../../common/stock-notes-source-conta
 export class StockNotes extends StockPriceQuoteModelObject<StockNotes> implements StockNotesContainer,
                                                                              StockNotesSourceContainer
 {
-    public id: number;
-    public customerId: number;
+    public id: string;
+    public customerId: string;
     public notes: string;
     public notesDate: Date;
     public notesSourceName: string;
-    public notesSourceId: number;
+    public notesSourceId: string;
     public notesRating: number;
     public publicInd: boolean;
     public bullOrBear: number;
@@ -34,12 +34,12 @@ export class StockNotes extends StockPriceQuoteModelObject<StockNotes> implement
         return this.notes;
     }
 
-    public getNotesSourceId(): number
+    public getNotesSourceId(): string
     {
         return this.notesSourceId;
     }
 
-    public setNotesSourceId( notesSourceId: number )
+    public setNotesSourceId( notesSourceId: string )
     {
         this.notesSourceId = notesSourceId;
     }

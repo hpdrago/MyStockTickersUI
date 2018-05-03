@@ -5,7 +5,7 @@ import { ModelObject } from "./modelobject";
 
 export class Customer extends ModelObject<Customer>
 {
-    public id;
+    public id: string;
     public email: string;
 
     public getPrimaryKeyValue(): any

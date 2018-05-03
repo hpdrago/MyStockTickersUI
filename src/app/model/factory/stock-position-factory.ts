@@ -24,9 +24,9 @@ export class StockPositionFactory extends ModelObjectFactory<StockPosition>
     {
         var position = new StockPosition();
         position.customerId = this.session.getLoggedInUserId();
-        position.id = 0;
-        position.tradeItAccountId = 0;
-        position.linkedAccountId = 0;
+        position.id = '';
+        position.tradeItAccountId = '';
+        position.linkedAccountId = '';
         position.tickerSymbol = "";
         position.symbolClass = "";
         position.costBasis = 0;

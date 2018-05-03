@@ -102,7 +102,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
         if ( !isNumeric( event.value ))
         {
             this.modelObject.setNotesSourceName( event.value.toUpperCase() );
-            this.modelObject.setNotesSourceId( 0 );
+            this.modelObject.setNotesSourceId( '' );
             this.sourceAdded = true;
             this.setFormValue( 'notesSourceId', event.value.toUpperCase() )
         }
@@ -135,7 +135,7 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
              */
             this.debug( this.modelObject.getNotesSourceName() + " is a new source" );
             this.modelObject.setNotesSourceName( "" + this.modelObject.getNotesSourceId() );
-            this.modelObject.setNotesSourceId( 0 );
+            this.modelObject.setNotesSourceId( '' );
         }
     }
 

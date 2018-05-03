@@ -40,7 +40,7 @@ export class StockNotesCountService extends ReadRestService<StockNoteCount>
         return this.contextUrl;
     }
 
-    public getStockNoteCounts( customerId: number ): Observable<Array<StockNoteCount>>
+    public getStockNoteCounts( customerId: string ): Observable<Array<StockNoteCount>>
     {
         let methodName = "getStockNotes";
         this.logger.debug( `${methodName} customerId: ${customerId}` );

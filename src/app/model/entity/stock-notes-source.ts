@@ -7,15 +7,15 @@ import { ModelObject } from "./modelobject";
  */
 export class StockNotesSource extends ModelObject<StockNotesSource>
 {
-    private _id: number;
-    private _customerId: number;
+    private _id: string;
+    private _customerId: string;
     private _name: string;
     private _dateCreated: Date;
 
-    set id( id: number ) { this._id = id }
-    get id(): number { return this._id }
-    set customerId( customerId: number ) { this._customerId = customerId }
-    get customerId(): number { return this._customerId }
+    set id( id: string ) { this._id = id }
+    get id(): string { return this._id }
+    set customerId( customerId: string ) { this._customerId = customerId }
+    get customerId(): string { return this._customerId }
     set name( name: string ) { this._name = name }
     get name(): string { return this._name }
     set dateCreated( dateCreated: Date ) { this._dateCreated = dateCreated }

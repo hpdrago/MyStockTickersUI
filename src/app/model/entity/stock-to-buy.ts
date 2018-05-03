@@ -1,18 +1,20 @@
 import { StockNotesContainer } from "../../common/stock-notes-container";
 import { StockPriceQuoteModelObject } from "./stock-price-quote-model-object";
+import { StockNotesSourceContainer } from '../../common/stock-notes-source-container';
 
 /**
  * This entity contains the elements for the stock to buy
  *
  * Created 10/17/2017
  */
-export class StockToBuy extends StockPriceQuoteModelObject<StockToBuy> implements StockNotesContainer
+export class StockToBuy extends StockPriceQuoteModelObject<StockToBuy> implements StockNotesContainer,
+                                                                                  StockNotesSourceContainer
 {
-    public id: number;
-    public customerId: number;
+    public id: string;
+    public customerId: string;
     public comments: string;
     public buySharesUpToPrice: number;
-    public notesSourceId: number;
+    public notesSourceId: string;
     public notesSourceName: string;
     public stockPriceWhenCreated: number;
     public completed: boolean;
@@ -34,12 +36,12 @@ export class StockToBuy extends StockPriceQuoteModelObject<StockToBuy> implement
         return modelObject.id === this.id;
     }
 
-    public getNotesSourceId(): number
+    public getNotesSourceId(): string
     {
         return this.notesSourceId;
     }
 
-    public setNotesSourceId( notesSourceId: number )
+    public setNotesSourceId( notesSourceId: string )
     {
         this.notesSourceId = notesSourceId;
     }

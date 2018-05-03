@@ -22,7 +22,7 @@ export class StockNotesSourceFactory extends ModelObjectFactory<StockNotesSource
     newModelObject(): StockNotesSource
     {
         var stockNoteSource = new StockNotesSource();
-        stockNoteSource.id = 0;
+        stockNoteSource.id = '';
         stockNoteSource.customerId = this.session.getLoggedInUserId();
         stockNoteSource.name = '';
         return stockNoteSource;

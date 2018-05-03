@@ -52,7 +52,7 @@ export class StockNotesSourceCrudService extends CrudRestService<StockNotesSourc
      * @param {number} customerId
      * @return {Observable<Array<StockNotesSource>>}
      */
-    public getStockNoteSources( customerId: number ): Observable<StockNotesSourceList>
+    public getStockNoteSources( customerId: string ): Observable<StockNotesSourceList>
     {
         var methodName: string = "getStockNoteSources";
         this.log( `${methodName} customerId: ${customerId}` );

@@ -23,11 +23,11 @@ export class StockNotesFactory extends ModelObjectFactory<StockNotes>
     newModelObject(): StockNotes
     {
         var stockNote = new StockNotes();
-        stockNote.id = 0;
+        stockNote.id = '';
         stockNote.customerId = this.session.getLoggedInUserId();
         stockNote.notes = '';
         stockNote.notesDate = new Date();
-        stockNote.notesSourceId = 0;
+        stockNote.notesSourceId = '';
         stockNote.notesSourceName = "";
         stockNote.notesRating = 0;
         stockNote.publicInd = false;
