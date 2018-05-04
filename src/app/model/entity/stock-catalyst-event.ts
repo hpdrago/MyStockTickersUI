@@ -1,5 +1,5 @@
 import { ModelObject } from "./modelobject";
-import { StockNotesContainer } from "../../common/stock-notes-container";
+import { StockNotesContainer } from "../common/stock-notes-container";
 import { DateOrTimePeriod } from '../../common/date-or-time-period.enum';
 
 /**

@@ -1,6 +1,6 @@
-import { StockNotesContainer } from "../../common/stock-notes-container";
+import { StockNotesContainer } from "../common/stock-notes-container";
 import { StockPriceQuoteModelObject } from "./stock-price-quote-model-object";
-import { StockNotesSourceContainer } from '../../common/stock-notes-source-container';
+import { StockNotesSourceContainer } from '../common/stock-notes-source-container';
 
 /**
  * This entity contains the elements for the stock to buy

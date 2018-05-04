@@ -1,5 +1,5 @@
 import { isNullOrUndefined } from "util";
-import { StockNotesContainer } from './stock-notes-container';
+import { StockNotesContainer } from '../model/common/stock-notes-container';
 
 /**
  * This class provides a map of URLs keyed by the ticker symbol.  It is meant to be used with classes

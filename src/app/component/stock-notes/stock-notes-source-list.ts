@@ -12,7 +12,6 @@ export class StockNotesSourceList extends BaseClass
      * @param {StockNotesSource[]} stockNotesSources
      */
     constructor( private stockNotesSources: StockNotesSource[] )
-
     {
         super();
     }
@@ -52,13 +51,26 @@ export class StockNotesSourceList extends BaseClass
     }
 
     /**
+     * Determines if the {@code sourceId} is in the source list.
+     * @param {string} sourceId
+     * @returns {boolean}
+     */
+    public containsSourceId( sourceId: string ): boolean
+    {
+        return this.stockNotesSources
+                   .filter( stockNotesSource => stockNotesSource.id === sourceId )
+                   .length > 0;
+    }
+
+    /**
      * Determines if the {@code sourceName} is in the source list.
      * @param {string} sourceName
      * @returns {boolean}
      */
-    public contains( sourceName: string ): boolean
+    public containsSourceName( sourceName: string ): boolean
     {
-        //let filteredSources: StockNotesSource[] = this.stockNotesSources.filter( stockNotesSource => stockNotesSource.name === sourceName );
-        return !isNullOrUndefined( this.stockNotesSources[sourceName] );
+        return this.stockNotesSources
+                   .filter( stockNotesSource => stockNotesSource.name === sourceName )
+                   .length > 0;
     }
 }

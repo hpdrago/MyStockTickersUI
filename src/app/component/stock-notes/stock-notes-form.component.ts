@@ -18,6 +18,7 @@ import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
+import { CrudFormComponent } from '../crud/form/crud-form.component';
 
 /**
  * This is the Stock Note Form Component class.
@@ -30,7 +31,7 @@ import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.servi
                             './stock-notes-form.component.css'],
                 templateUrl: './stock-notes-form.component.html'
             } )
-export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<StockNotes>
+export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
 {
     protected bullOrBearOptions: SelectItem[];
     protected actionTakenOptions: SelectItem[];
@@ -72,7 +73,6 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
                  protected sessionService: SessionService,
                  private formBuilder: FormBuilder,
                  private stockService: StockInformationService,
-                 protected customerService: CustomerCrudService,
                  private stockNotesCrudStateStore: StockNotesStateStore,
                  private stockNotesController: StockNotesController,
                  private stockNotesFactory: StockNotesFactory,
@@ -82,8 +82,7 @@ export class StockNotesFormComponent extends CrudFormWithNotesSourceComponent<St
                stockNotesCrudStateStore,
                stockNotesController,
                stockNotesFactory,
-               stockNotesCrudService,
-               customerService );
+               stockNotesCrudService )
     }
 
     /**

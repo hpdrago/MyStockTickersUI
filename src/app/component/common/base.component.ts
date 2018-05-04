@@ -15,7 +15,7 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
      * Constructor
      * @param {ToastsManager} toaster
      */
-    constructor( protected toaster: ToastsManager )
+    protected constructor( protected toaster: ToastsManager )
     {
         super( toaster );
         this.debug( "BaseComponent.constructor" );

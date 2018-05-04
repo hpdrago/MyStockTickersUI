@@ -85,7 +85,7 @@ export class StockInformationService extends BaseService
         this.debug( methodName + " " + tickerSymbol );
         if ( isNullOrUndefined( tickerSymbol ) || tickerSymbol.length == 0 )
         {
-            this.logError( 'ticker symbol(' + tickerSymbol + ') is not valid' );
+            //this.logError( 'ticker symbol is not valid' );
             return Observable.of(null);
             //throw new ReferenceError( 'ticker symbol(' + tickerSymbol + ') is not valid' );
         }

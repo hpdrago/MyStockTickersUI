@@ -221,7 +221,7 @@ import { StockNotesSourceTableAddButtonComponent } from './component/stock-notes
 import { StockNotesSourceTableButtonsComponent } from './component/stock-notes-source/stock-notes-source-table-buttons.component';
 import { StockNotesSourceDialogComponent } from './component/stock-notes-source/stock-notes-source-dialog.component';
 import { StockNotesSourceFormComponent } from './component/stock-notes-source/stock-notes-source-form.component';
-import { NotesSourceComponent } from './component/common/notes-source.component';
+import { StockNotesSourceComponent } from './component/common/stock-notes-source.component';
 import { StockNotesSourceTableComponent } from './component/stock-notes-source/stock-notes-source-table.component';
 import { StockAnalystConsensusCache } from './service/stock-analyst-consensus-cache';
 import { StockPositionMarketValue } from './component/stock-position/stock-position-market-value';
@@ -415,7 +415,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         TradeItSecurityQuestionDialogComponent,
 
-        NotesSourceComponent,
+        StockNotesSourceComponent,
         DashboardComponent,
         FormErrorsComponent,
         UppercaseDirective,

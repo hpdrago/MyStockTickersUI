@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { StockNotesContainer } from '../../common/stock-notes-container';
+import { StockNotesContainer } from '../../model/common/stock-notes-container';
 
 /**
  * This component will display user comments and if the comments contains a URL it will set the HTML such that the

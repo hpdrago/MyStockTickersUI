@@ -8,7 +8,7 @@ import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { SelectItem } from "primeng/primeng";
 import { StockNotesSourceList } from "../stock-notes/stock-notes-source-list";
 import { isNullOrUndefined } from "util";
-import { StockNotesSourceContainer } from "../../common/stock-notes-source-container";
+import { StockNotesSourceContainer } from "../../model/common/stock-notes-source-container";
 import { isNumeric } from "rxjs/util/isNumeric";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
@@ -84,34 +84,6 @@ export abstract class CrudFormWithNotesSourceComponent<T extends ModelObject<T> 
         }
         this.debug( "getSourceName: " + JSON.stringify( notesSourceContainer ));
         return this.stockNotesSourceList.getLabel( notesSourceContainer.getNotesSourceId() );
-    }
-
-    /**
-     * This method is called whenever the notes source changes.  When the user types in a new source, each keystroke
-     * will cause a call to this method.  Since we get the source id from the drop down list as the value, we need to
-     * capture the name of any new source that the user types in so we assign that value here to the modelObject.
-     *
-     * @param event
-     */
-    protected sourcesOnChange( event )
-    {
-        this.debug( "sourcesOnChange: " + JSON.stringify( event ));
-        /*
-         * Capture the new values that the user types and put in the source name
-         */
-        if ( !isNumeric( event.value ))
-        {
-            this.modelObject.setNotesSourceName( event.value.toUpperCase() );
-            this.modelObject.setNotesSourceId( '' );
-            this.sourceAdded = true;
-            this.setFormValue( 'notesSourceId', event.value.toUpperCase() )
-        }
-        else
-        {
-            this.debug( "sourcesOnChange: setting notesSourceId= " + event.value );
-            this.modelObject.setNotesSourceId( event.value );
-            this.modelObject.setNotesSourceName( this.stockNotesSourceList.getLabel( event.value ));
-        }
     }
 
     /**
