@@ -78,7 +78,7 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
                                  * because we have updated information about the account that will not be propagated
                                  * correctly with call to super.
                                  */
-                                this.selectedModelObject = event;
+                                this.selectedModelObject = this.createModelObjectFromRowSelectionEvent( event );
                                 /*
                                  * Need to update the model object return from the authentication call
                                  */

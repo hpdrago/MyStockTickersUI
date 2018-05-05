@@ -73,8 +73,8 @@ export class TradeItService extends BaseService
                                                                                                     TradeItAuthenticateResult );
                              this.debug( methodName + ": " + JSON.stringify( authenticate ) );
                              return  authenticate;
-                         })
-                   .catch( ( error: any ) => Observable.throw( error ))
+                         });
+                   //.catch( ( error: any ) => Observable.throw( error ))
     }
 
     /**
@@ -103,8 +103,8 @@ export class TradeItService extends BaseService
                                                                                                     TradeItAuthenticateResult );
                              this.debug( methodName + " authenticateAccount: " + JSON.stringify( authenticate ) );
                              return  authenticate;
-                         })
-                   .catch( ( error: any ) => Observable.throw( error ) )
+                         });
+                   //.catch( ( error: any ) => Observable.throw( error ) )
     }
 
     /**
@@ -126,16 +126,13 @@ export class TradeItService extends BaseService
                    .get<TradeItOAuthAccessResult>( url )
                    .map( ( oAuthAccessResult: TradeItOAuthAccessResult ) =>
                          {
-                             this.checkResponse( methodName, oAuthAccessResult );
+                             let tradeItAPIResult: TradeItAPIResult = this.checkResponse( methodName, oAuthAccessResult );
+                             this.debug( methodName + " result: " + JSON.stringify( tradeItAPIResult ));
                              let jsonConvert: JsonConvert = new JsonConvert();
                              jsonConvert.operationMode = OperationMode.LOGGING;
                              jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
-                             let oAuthAccess: TradeItOAuthAccessResult = jsonConvert.deserialize( oAuthAccessResult,
-                                                                                                  TradeItOAuthAccessResult );
-                             this.debug( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccess ) );
-                             return oAuthAccess;
-                         } )
-                   .catch( ( error: any ) => Observable.throw( error ) )
+                             return oAuthAccessResult;
+                         } );
     }
 
     /**
@@ -154,8 +151,8 @@ export class TradeItService extends BaseService
                          {
                              this.checkResponse( methodName, tradeItGetOauthPopupURLResult );
                              return tradeItGetOauthPopupURLResult;
-                         } )
-                   .catch( ( error: any ) => Observable.throw( error ))
+                         });
+                   //.catch( ( error: any ) => Observable.throw( error ))
     }
 
     /**
@@ -173,8 +170,8 @@ export class TradeItService extends BaseService
                          {
                              this.checkResponse( methodName, brokerListResult );
                              return brokerListResult;
-                         } )
-                   .catch( ( error: any ) => Observable.throw( error ))
+                         });
+                   //.catch( ( error: any ) => Observable.throw( error ))
     }
 
     /**
@@ -247,8 +244,8 @@ export class TradeItService extends BaseService
                                  .newInstance( oAuthTokenUpdateURL );
                              this.debug( methodName + " returning: " + JSON.stringify( getOauthTokenUpdateURLResult ) );
                              return getOauthTokenUpdateURLResult;
-                         } )
-                   .catch( ( error: any ) => Observable.throw( error ))
+                         });
+                   //.catch( ( error: any ) => Observable.throw( error ))
 
     }
 

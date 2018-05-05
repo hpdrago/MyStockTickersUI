@@ -27,7 +27,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
     private requestInProcess = false;
     private requestCompleted = false;
     private destroyed: boolean = false;
-    private oAuthResultSubject = new Subject<TradeItAccount>();
+    //private oAuthResultSubject = new Subject<TradeItAccount>();
     private oAuthComponent: TradeItOAuthComponent;
 
     /**
@@ -130,51 +130,38 @@ export class TradeItAccountOAuthService extends BaseTradeItService
         this.log( methodName + " " + JSON.stringify( event ));
         if ( event.data && !this.requestInProcess && !this.requestCompleted && !this.destroyed )
         {
-            this.log( methodName + " requestInProcess: " + this.requestInProcess );
-            this.log( methodName + " event: " + JSON.stringify( event ) );
-            try
-            {
-                var data = JSON.parse( event.data );
-                var oAuthVerifier = data.oAuthVerifier;
-                this.log( methodName + " oAuthVerifier: " + oAuthVerifier );
-                this.log( methodName + " getting OAuthAccessToken" )
-                let tradeItAccount: TradeItAccount = this.oAuthComponent.getTradeItAccount();
-                this.tradeItService.getOAuthAccessToken( tradeItAccount.brokerage, tradeItAccount.name, oAuthVerifier )
-                    .subscribe( ( oAuthAccessResult: TradeItOAuthAccessResult ) =>
-                                {
-                                    this.log( methodName + " oAuthAccess: " + JSON.stringify( oAuthAccessResult ) +
-                                        " requestCompleted: " + this.requestCompleted +
-                                        " requestInProcess: " + this.requestInProcess );
-                                    if ( !this.requestCompleted && !this.destroyed )
-                                    {
-                                        if ( oAuthAccessResult.status == "ERROR" )
-                                        {
-                                            this.oAuthResultSubject.error( oAuthAccessResult );
-                                        }
-                                        else
-                                        {
-                                            this.oAuthResultSubject.next( oAuthAccessResult.tradeItAccount );
-                                            this.requestCompleted = true;
-                                        }
-                                    }
-                                },
-                                error =>
-                                {
-                                    if ( !this.requestInProcess && !this.requestCompleted )
-                                    {
-                                        this.oAuthResultSubject.error( error );
-                                    }
-                                } );
-            }
-            catch( e )
-            {
-                // ignore exceptions as this is a general function that receives a lot of messages that are not
-                // what we are looking for.
-                console.log( (<Error>e).message );
-            }
             this.requestInProcess = true;
             this.log( methodName + " setting requestInProcess: " + this.requestInProcess );
-            return this.oAuthResultSubject.asObservable();
+            this.log( methodName + " requestInProcess: " + this.requestInProcess );
+            this.log( methodName + " event: " + JSON.stringify( event ) );
+            var data = JSON.parse( event.data );
+            var oAuthVerifier = data.oAuthVerifier;
+            this.log( methodName + " oAuthVerifier: " + oAuthVerifier );
+            this.log( methodName + " getting OAuthAccessToken" )
+            let tradeItAccount: TradeItAccount = this.oAuthComponent.getTradeItAccount();
+            this.log( methodName + " tradeItAccount " + JSON.stringify( tradeItAccount ));
+            return this.tradeItService
+                       .getOAuthAccessToken( tradeItAccount.brokerage, tradeItAccount.name, oAuthVerifier )
+                       .map( ( oAuthAccessResult: TradeItOAuthAccessResult ) =>
+                           {
+                                this.log( methodName + " oAuthAccessResult: " + JSON.stringify( oAuthAccessResult ) +
+                                    " requestCompleted: " + this.requestCompleted +
+                                    " requestInProcess: " + this.requestInProcess );
+                                if ( !this.requestCompleted && !this.destroyed )
+                                {
+                                    if ( oAuthAccessResult.status == "ERROR" )
+                                    {
+                                        Observable.throw( oAuthAccessResult.errorMessage );
+                                        //this.oAuthResultSubject.error( oAuthAccessResult );
+                                    }
+                                    else
+                                    {
+                                        ///this.oAuthResultSubject.next( oAuthAccessResult.tradeItAccount );
+                                        this.requestCompleted = true;
+                                        return oAuthAccessResult.tradeItAccount;
+                                    }
+                                }
+                            });
         }
         else
         {
