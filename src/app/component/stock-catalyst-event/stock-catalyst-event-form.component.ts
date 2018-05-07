@@ -1,7 +1,7 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { Stock } from "../../model/entity/stock";
+import { StockCompany } from "../../model/entity/stockCompany";
 import { CrudFormComponent } from "../crud/form/crud-form.component";
 import { SessionService } from "../../service/session.service";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
@@ -15,7 +15,7 @@ import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst
 import { StockAutoCompleteComponent } from '../common/stock-autocomplete.component';
 
 /**
- * This is the Stock CatalystEvent Form Component class.
+ * This is the StockCompany CatalystEvent Form Component class.
  *
  * Created by mike on 10/17/2017.
  */
@@ -26,9 +26,9 @@ import { StockAutoCompleteComponent } from '../common/stock-autocomplete.compone
             } )
 export class StockCatalystEventFormComponent extends CrudFormComponent<StockCatalystEvent>
 {
-    private dateOrTimePeriodOptions: SelectItem[];
-    private timePeriodOptions: SelectItem[];
-    private timePeriodYearOptions: SelectItem[];
+    protected dateOrTimePeriodOptions: SelectItem[];
+    protected timePeriodOptions: SelectItem[];
+    protected timePeriodYearOptions: SelectItem[];
 
     @ViewChild( StockAutoCompleteComponent )
     private stockAutoCompletedComponent: StockAutoCompleteComponent;
@@ -136,7 +136,7 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
      * This method is called when the user selects a stock using the stock/company search input
      * @param stock
      */
-    public onStockSelected( stock: Stock )
+    public onStockSelected( stock: StockCompany )
     {
         this.debug( "onStockSelected: " + JSON.stringify( stock ) );
         this.modelObject.companyName = stock.companyName;

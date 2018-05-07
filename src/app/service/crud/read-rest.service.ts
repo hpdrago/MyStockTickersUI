@@ -371,7 +371,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      * Retrieves a specific page of stocks
      * @param rowOffSet The page to retrieve
      * @param rows The numbers of rows per page (rows to return for this page)
-     * @returns {Observable<PaginationPage<Stock>>}
+     * @returns {Observable<PaginationPage<StockCompany>>}
      */
     public getPage( modelObject: T, lazyLoadEvent: LazyLoadEvent ): Observable<PaginationPage<T>>
     {

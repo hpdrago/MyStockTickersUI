@@ -12,7 +12,7 @@ import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
 import { StockToBuyStateStore } from '../stock-to-buy/stock-to-buy-state-store';
 
 /**
- * This is the Stock Notes that displays on the dashboard
+ * This is the StockCompany Notes that displays on the dashboard
  *
  * Created by mike on 10/30/2016.
  */

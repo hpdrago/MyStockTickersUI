@@ -169,20 +169,8 @@
                     <label class="crud-form" for="notesSourceId">Source:</label>
                 </div>
                 <div class="ui-grid-col-2">
-                    <!--
-                    <p-dropdown id="notesSourceId"
-                                class="crud-form"
-                                [options]="sourceItems"
-                                formControlName="notesSourceId"
-                                (onChange)="sourcesOnChange($event)"
-                                [(ngModel)]="modelObject.notesSourceId"
-                                [style]="{'width':'225px'}"
-                                maxlength="20"
-                                uppercase
-                                editable="false"
-                                placeholder="Select a source">
-                    </p-dropdown> -->
-                    <stock-notes-source formControlName="notesSourceId"
+                    <stock-notes-source id="notesSourceId"
+                                        formControlName="notesSourceId"
                                         [(ngModel)]="modelObject.notesSourceId">
                     </stock-notes-source>
                 </div>

@@ -1,19 +1,19 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { Stock } from "../../model/entity/stock";
+import { StockCompany } from "../../model/entity/stockCompany";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { SessionService } from "../../service/session.service";
-import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
 import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
 import { CrudOperation } from '../crud/common/crud-operation';
+import { CrudFormComponent } from '../crud/form/crud-form.component';
 
 /**
- * This is the Stock AnalystConsensus Form Component class.
+ * This is the StockCompany AnalystConsensus Form Component class.
  *
  * Created by mike on 10/17/2017.
  */
@@ -23,7 +23,7 @@ import { CrudOperation } from '../crud/common/crud-operation';
                             './stock-analyst-consensus-form.component.css'],
                 templateUrl: './stock-analyst-consensus-form.component.html'
             } )
-export class StockAnalystConsensusFormComponent extends CrudFormWithNotesSourceComponent<StockAnalystConsensus>
+export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockAnalystConsensus>
 {
     /**
      * Constructor.
@@ -42,15 +42,13 @@ export class StockAnalystConsensusFormComponent extends CrudFormWithNotesSourceC
                  private stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
                  private stockAnalystConsensusController: StockAnalystConsensusController,
                  private stockAnalystConsensusFactory: StockAnalystConsensusFactory,
-                 private stockAnalystConsensusCrudService: StockAnalystConsensusCrudService,
-                 protected customerService: CustomerCrudService )
+                 private stockAnalystConsensusCrudService: StockAnalystConsensusCrudService )
     {
         super( toaster,
                stockAnalystConsensusStateStore,
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,
-               stockAnalystConsensusCrudService,
-               customerService );
+               stockAnalystConsensusCrudService );
     }
 
     /**
@@ -84,7 +82,7 @@ export class StockAnalystConsensusFormComponent extends CrudFormWithNotesSourceC
      * This method is called when the user selects a stock using the stock/company search input
      * @param stock
      */
-    public onStockSelected( stock: Stock )
+    public onStockSelected( stock: StockCompany )
     {
         let methodName = 'onStockSelected';
         this.debug( methodName + " " + JSON.stringify( stock ) );

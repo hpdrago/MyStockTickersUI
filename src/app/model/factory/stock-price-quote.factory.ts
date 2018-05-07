@@ -1,11 +1,11 @@
-import { Stock } from "../entity/stock";
+import { StockCompany } from "../entity/stockCompany";
 import { ModelObjectFactory } from "./model-object.factory";
 import { Injectable } from "@angular/core";
 import { SessionService } from "../../service/session.service";
 import { StockPriceQuote } from '../entity/stock-price-quote';
 
 /**
- * This class provides Stock factory methods.
+ * This class provides StockCompany factory methods.
  *
  * Created by mike on 12/13/2016.
  */
@@ -18,8 +18,8 @@ export class StockPriceQuoteFactory extends ModelObjectFactory<StockPriceQuote>
     }
 
     /**
-     * Create a new Stock instance
-     * @returns {Stock}
+     * Create a new StockCompany instance
+     * @returns {StockCompany}
      */
     public newModelObject(): StockPriceQuote
     {

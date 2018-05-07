@@ -12,7 +12,7 @@ import { isNullOrUndefined } from 'util';
 import { HttpClient } from '@angular/common/http';
 
 /**
- * This class provides all CRUD REST services for Stock Notes.
+ * This class provides all CRUD REST services for StockCompany Notes.
  *
  * Created by mike on 10/23/2016.
  */

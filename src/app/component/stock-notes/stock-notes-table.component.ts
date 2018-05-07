@@ -11,7 +11,7 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 
 /**
- * This is the base class for Stock Notes tables.
+ * This is the base class for StockCompany Notes tables.
  *
  * Created by mike on 10/30/2016.
  */

@@ -1,19 +1,22 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
-import { Stock } from "../../model/entity/stock";
+import { StockCompany } from "../../model/entity/stockCompany";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { SessionService } from "../../service/session.service";
-import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
 import { StockToBuyController } from './stock-to-buy-controller';
 import { StockToBuyStateStore } from './stock-to-buy-state-store';
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
+import { CrudFormComponent } from '../crud/form/crud-form.component';
+import { isNullOrUndefined } from 'util';
+import { StockPriceQuote } from '../../model/entity/stock-price-quote';
+import { StockCrudFormComponent } from '../common/stock-crud-form.component';
 
 /**
- * This is the Stock ToBuy Form Component class.
+ * This is the StockCompany ToBuy Form Component class.
  *
  * Created by mike on 10/17/2017.
  */
@@ -22,11 +25,8 @@ import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.serv
                 styleUrls: ['../crud/form/crud-form.component.css'],
                 templateUrl: './stock-to-buy-form.component.html'
             } )
-export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<StockToBuy>
+export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
 {
-    @ViewChild( StockAutoCompleteComponent )
-    private stockAutoCompleteComponent: StockAutoCompleteComponent;
-
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -44,15 +44,13 @@ export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<St
                  private stockToBuyStateStore: StockToBuyStateStore,
                  private stockToBuyController: StockToBuyController,
                  private stockToBuyFactory: StockToBuyFactory,
-                 private stockToBuyCrudService: StockToBuyCrudService,
-                 protected customerService: CustomerCrudService)
+                 private stockToBuyCrudService: StockToBuyCrudService )
     {
         super( toaster,
                stockToBuyStateStore,
                stockToBuyController,
                stockToBuyFactory,
-               stockToBuyCrudService,
-               customerService );
+               stockToBuyCrudService );
     }
 
     /**
@@ -66,7 +64,7 @@ export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<St
             {
                 'tickerSymbol':       new FormControl( this.modelObject.tickerSymbol, Validators.required ),
                 'comments':           new FormControl( this.modelObject.comments, Validators.maxLength(4000 ) ),
-                'notesSource':        new FormControl( this.modelObject.notesSourceId ),
+                'notesSourceId':      new FormControl( this.modelObject.notesSourceId ),
                 'buySharesUpToPrice': new FormControl( this.modelObject.buySharesUpToPrice ),
                 'buyAfterDate':       new FormControl( this.modelObject.buyAfterDate ),
                 'tags':               new FormControl( this.modelObject.tags )
@@ -75,33 +73,21 @@ export class StockToBuyFormComponent extends CrudFormWithNotesSourceComponent<St
     }
 
     /**
-     * This method is called when the user selects a stock using the stock/company search input
-     * @param stock
+     * Override to check to see that the user hasn't selected a stock to buy that already exists.
+     * @param {StockPriceQuote} stockPriceQuote
      */
-    public onStockSelected( stock: Stock )
+    protected onStockSelected( stockPriceQuote: StockPriceQuote )
     {
-        this.debug( "onStockSelected: " + JSON.stringify( stock ) );
-        this.modelObject.companyName = stock.companyName;
-        this.modelObject.lastPrice = stock.lastPrice;
-        this.modelObject.tickerSymbol = stock.tickerSymbol;
-    }
-
-    /**
-     * Determines if the ticker symbol is invalid
-     * @returns {boolean}
-     */
-    public isTickerSymbolInvalid(): boolean
-    {
-        return !this.formGroup.controls['tickerSymbol'].valid &&
-               this.formGroup.controls['tickerSymbol'].dirty;
-    }
-
-    protected resetForm(): void
-    {
-        if ( this.stockAutoCompleteComponent )
-        {
-            this.stockAutoCompleteComponent.reset();
-        }
-        super.resetForm();
+        super.onStockSelected( stockPriceQuote );
+        this.crudRestService
+            .getModelObject( this.modelObject )
+            .subscribe( (existingStockToBuy: StockToBuy) =>
+            {
+                if ( !isNullOrUndefined( existingStockToBuy ))
+                {
+                    this.toaster.warning( 'A Stock To Buy entry already exists for ' +
+                        existingStockToBuy.getTickerSymbol() );
+                }
+            });
     }
 }

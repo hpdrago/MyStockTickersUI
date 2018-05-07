@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 
 /**
- * State store for Stock Notes components.
+ * State store for StockCompany Notes components.
  */
 @Injectable()
 export class StockNotesStateStore extends CrudStateStore<StockNotes>

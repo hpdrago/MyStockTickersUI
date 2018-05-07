@@ -9,7 +9,7 @@ import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.facto
 import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
 
 /**
- * This class manages the modal dialog that contains the Portfolio Stock
+ * This class manages the modal dialog that contains the Portfolio StockCompany
  * editing fields
  *
  * Created by mike on 11/19/2016.

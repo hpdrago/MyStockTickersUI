@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { BaseComponent } from "../common/base.component";
 import { StockInformationService } from "../../service/crud/stock-information.service";
 import { ToastsManager } from "ng2-toastr";
-import { Stock } from "../../model/entity/stock";
+import { StockCompany } from "../../model/entity/stockCompany";
 import { StockNotesTableDashboardComponent } from "./stock-notes-table-dashboard.component";
 import { StockAnalystConsensusDashboardTableComponent } from "./stock-analyst-consensus-dashboard-table.component";
 import { StockToBuyTableDashboardComponent } from "./stock-to-buy-table-dashboard.component";
@@ -44,9 +44,9 @@ export class DashboardComponent extends BaseComponent
 
     /**
      * This method is called when the user enters a ticker symbol in the search box
-     * @param {Stock} stock
+     * @param {StockCompany} stock
      */
-    protected onStockSelected( stock: Stock )
+    protected onStockSelected( stock: StockCompany )
     {
         this.stockNotesTableDashboardComponent.loadTableForTickerSymbol( stock.tickerSymbol );
         this.stockToBuyTableDashboardComponent.loadTableForTickerSymbol( stock.tickerSymbol );

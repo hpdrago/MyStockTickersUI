@@ -1,7 +1,7 @@
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { ToastsManager } from "ng2-toastr";
 import { StockModelObject } from "../../model/common/stock-model-object";
-import { Stock } from "../../model/entity/stock";
+import { StockCompany } from "../../model/entity/stockCompany";
 import { TableLoadingStrategy } from "./table-loading-strategy";
 import { CrudStateStore } from '../crud/common/crud-state-store';
 import { CrudController } from '../crud/common/crud-controller';
@@ -64,9 +64,9 @@ export abstract class StockModelObjectTableComponent<T extends StockModelObject<
 
     /**
      * This method is called when the user enters a ticker symbol in the search box
-     * @param {Stock} stock
+     * @param {StockCompany} stock
      */
-    protected onStockSelected( stock: Stock )
+    protected onStockSelected( stock: StockCompany )
     {
         this.debug( "onStockSelected " + JSON.stringify( stock ) );
         this.loadTableForTickerSymbol( stock.tickerSymbol )

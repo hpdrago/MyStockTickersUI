@@ -45,6 +45,6 @@ export class StockAnalystConsensusFormButtonsComponent extends CrudFormButtonsCo
      */
     public getDeleteKeyword(): string
     {
-        return 'Stock Analyst Consensus'
+        return 'StockCompany Analyst Consensus'
     }
 }

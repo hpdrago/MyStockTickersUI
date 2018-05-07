@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
 import { SessionService } from "../../service/session.service";
 
 /**
- * This class provides factory methods for the Stock ModelObject.
+ * This class provides factory methods for the StockCompany ModelObject.
  *
  * Created by mike on 12/13/2016.
  */

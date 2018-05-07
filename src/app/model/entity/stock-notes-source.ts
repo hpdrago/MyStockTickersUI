@@ -2,7 +2,7 @@ import { ModelObject } from "./modelobject";
 
 /**
  * A stock note source defines a single source that the customer has identified.
- * Stock note sources are owned by the customer and the customer can add, remove, and change
+ * StockCompany note sources are owned by the customer and the customer can add, remove, and change
  * their sources.  This is their way of categorizing the source of each stock note.
  */
 export class StockNotesSource extends ModelObject<StockNotesSource>

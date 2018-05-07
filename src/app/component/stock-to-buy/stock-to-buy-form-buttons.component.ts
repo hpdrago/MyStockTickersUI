@@ -53,7 +53,7 @@ export class StockToBuyFormButtonsComponent extends CrudFormButtonsComponent<Sto
      */
     public getDeleteKeyword(): string
     {
-        return 'Stock To Buy'
+        return 'StockCompany To Buy'
     }
 
     /**

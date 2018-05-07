@@ -12,7 +12,6 @@ import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enu
 import { StockInformationService } from "../../service/crud/stock-information.service";
 import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
-import { CrudFormWithNotesSourceComponent } from "../common/crud-form-with-notes-source.component";
 import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
@@ -21,7 +20,7 @@ import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.servi
 import { CrudFormComponent } from '../crud/form/crud-form.component';
 
 /**
- * This is the Stock Note Form Component class.
+ * This is the StockCompany Note Form Component class.
  *
  * Created by mike on 8/15/2017.
  */

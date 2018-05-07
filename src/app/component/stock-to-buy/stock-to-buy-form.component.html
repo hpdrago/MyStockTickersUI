@@ -1,6 +1,6 @@
 <div *ngIf="!isCrudNoneOperation()">
     <div [ngBusy]="busyIndicator"></div>
-    <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)">
+    <form [formGroup]="formGroup">
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
             <!----------------------------------------------------------------------------------------------------------
             TICKER SYMBOL
@@ -81,21 +81,13 @@
             ------------------------------------------------------------------------------------------------------------>
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-2">
-                    <label class="crud-form" for="notesSource">Source:</label>
+                    <label class="crud-form" for="notesSourceId">Source:</label>
                 </div>
                 <div class="ui-grid-col-10">
-                    <p-dropdown id="notesSource"
-                                class="crud-form"
-                                [options]="sourceItems"
-                                formControlName="notesSource"
-                                [(ngModel)]="modelObject.notesSourceId"
-                                (onChange)="sourcesOnChange($event)"
-                                [style]="{'width':'225px'}"
-                                maxlength="20"
-                                uppercase
-                                editable="true"
-                                placeholder="Select a source">
-                    </p-dropdown>
+                    <stock-notes-source id="notesSourceId"
+                                        formControlName="notesSourceId"
+                                        [(ngModel)]="modelObject.notesSourceId">
+                    </stock-notes-source>
                 </div>
             </div>
 

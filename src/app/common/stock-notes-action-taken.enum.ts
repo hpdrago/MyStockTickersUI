@@ -1,5 +1,5 @@
 /**
- * This enum identifies the values for the Stock Notes action taken
+ * This enum identifies the values for the StockCompany Notes action taken
  */
 export enum StockNotesActionTaken
 {

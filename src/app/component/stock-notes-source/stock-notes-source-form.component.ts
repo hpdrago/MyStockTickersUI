@@ -10,7 +10,7 @@ import { StockNotesSourceFactory } from '../../model/factory/stock-notes-source.
 import { StockNotesSourceCrudService } from '../../service/crud/stock-notes-source-crud.service';
 
 /**
- * This is the Stock Notes Source Form Component class.
+ * This is the StockCompany Notes Source Form Component class.
  *
  * Created by mike on 10/17/2017.
  */

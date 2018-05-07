@@ -2,7 +2,7 @@ import { Component, EventEmitter, forwardRef, Output } from "@angular/core";
 import { PaginationPage } from "../../common/pagination";
 import { StockInformationService } from "../../service/crud/stock-information.service";
 import { ToastsManager } from "ng2-toastr";
-import { Stock } from "../../model/entity/stock";
+import { StockCompany } from "../../model/entity/stockCompany";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { isNullOrUndefined } from "util";
 import { StockPriceQuote } from "../../model/entity/stock-price-quote";
@@ -25,6 +25,7 @@ import { RestException } from '../../common/rest-exception';
                                 (onBlur)="onBlur( $event )"
                                 (onKeyUp)="onKeyUp( $event )"
                                 uppercase
+                                [disabled]="disabledState"
                                 placeholder="Enter company name or ticker symbol. Tab for expanded search">
                </p-autoComplete>
     `,
@@ -42,7 +43,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
 
     protected stockSearchResults: string[];
     protected tickerSymbol: string;
-    private disabled: boolean;
+    protected disabledState: boolean;
     private isStockSelected : boolean;
 
     /**
@@ -70,8 +71,9 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
 
     public reset(): void
     {
+        this.log( "reset" );
         this.tickerSymbol = '';
-        this.disabled = false;
+        this.disabledState = false;
         this.isStockSelected = false;
     }
 
@@ -80,14 +82,20 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
      * or ticker symbol.
      * @param event
      */
-    private onStockSearch( event ): void
+    protected onStockSearch( event ): void
     {
-        var query: string = event.query;
-        this.log( "onStockSearch " + query );
+        let methodName = 'onStockSjarch';
+        let query: string = event.query;
+        this.log( methodName + ' ' + query );
+        if ( this.disabledState )
+        {
+            this.log( methodName + ' disabled returning' );
+            return;
+        }
         this.propagateChange( query );
         this.stockCrudService
             .getStockCompaniesLike( query )
-            .subscribe( ( data: PaginationPage<Stock> ) =>
+            .subscribe( ( data: PaginationPage<StockCompany> ) =>
                         {
                             this.stockSearchResults = [];
                             for ( let stock of data.content )
@@ -113,7 +121,8 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         this.log( "onBlur " + JSON.stringify( event ) +
                   " tickerSymbol: " + this.tickerSymbol +
                   " isStockSelected: " + this.isStockSelected );
-        if ( !this.isStockSelected &&
+        if ( !this.disabledState &&
+             !this.isStockSelected &&
              !isNullOrUndefined( this.tickerSymbol ) &&
              this.tickerSymbol.length > 0 )
         {
@@ -129,14 +138,17 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     protected onStockSearchSelected( event ): void
     {
         this.log( 'onStockSearchSelected ' + JSON.stringify( event ));
-        var matches = /\[(.*)] (.*)/.exec( event );
-        this.tickerSymbol = matches[1];
-        /*
-         * Send the change through ngModel
-         */
-        this.tickerSymbol = this.tickerSymbol.toUpperCase();
-        this.propagateChange( this.tickerSymbol );
-        this.getStockQuote();
+        if ( !this.disabledState )
+        {
+            var matches = /\[(.*)] (.*)/.exec( event );
+            this.tickerSymbol = matches[1];
+            /*
+             * Send the change through ngModel
+             */
+            this.tickerSymbol = this.tickerSymbol.toUpperCase();
+            this.propagateChange( this.tickerSymbol );
+            this.getStockQuote();
+        }
     }
 
     /**
@@ -210,9 +222,10 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
 
     public registerOnTouched( fn: any ): void {}
 
-    public setDisabledState( isDisabled: boolean ): void
+    public setDisabledState( disabledState: boolean ): void
     {
-        this.disabled = isDisabled;
+        this.log( 'Setting disabledState=' + disabledState );
+        this.disabledState = disabledState;
     }
 
 }

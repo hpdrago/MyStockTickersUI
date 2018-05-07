@@ -5,7 +5,7 @@ import { PaginationURL } from "../../common/pagination-url";
 import { SessionService } from "../session.service";
 import { AppConfigurationService } from "./../app-configuration.service";
 import { StockPriceQuoteFactory } from "../../model/factory/stock-price-quote.factory";
-import { Stock } from "../../model/entity/stock";
+import { StockCompany } from "../../model/entity/stockCompany";
 import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { CrudRestService } from "./crud-rest.serivce";
 import { RestErrorReporter } from '../rest-error-reporter';
@@ -62,7 +62,7 @@ export class StockInformationService extends BaseService
      * @param searchString
      * @returns {Observable<R>}
      */
-    public getStockCompaniesLike( searchString: string ): Observable<PaginationPage<Stock>>
+    public getStockCompaniesLike( searchString: string ): Observable<PaginationPage<StockCompany>>
     {
         this.debug( "getStockCompaniesLike " + searchString )
         return this.http.get( this.stocksCompaniesLikePaginationUrl

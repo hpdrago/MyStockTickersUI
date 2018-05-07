@@ -53,6 +53,6 @@ export class StockCatalystEventFormButtonsComponent extends CrudFormButtonsCompo
      */
     public getDeleteKeyword(): string
     {
-        return 'Stock Catalyst Event'
+        return 'StockCompany Catalyst Event'
     }
 }

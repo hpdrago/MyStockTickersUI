@@ -15,7 +15,7 @@ export class AppComponent
 {
     DateOrTimePeriod: typeof DateOrTimePeriod = DateOrTimePeriod;
 
-    title = 'My Stock Tickers';
+    title = 'My StockCompany Tickers';
     constructor( public toastr: ToastsManager,
                  private vRef: ViewContainerRef,
                  private customerService: CustomerService )

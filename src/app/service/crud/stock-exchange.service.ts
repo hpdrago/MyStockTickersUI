@@ -1,5 +1,5 @@
 /**
- * Stock Exchange service
+ * StockCompany Exchange service
  * Created by mike on 10/10/2016.
  */
 

@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 
 /**
- * Stock notes source table buttons.
+ * StockCompany notes source table buttons.
  * Created by mike on 3/16/2018.
  */
 @Component({

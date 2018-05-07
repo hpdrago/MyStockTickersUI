@@ -8,7 +8,7 @@ import { StockToBuy } from '../../model/entity/stock-to-buy';
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 
 /**
- * Stock to buy state store.
+ * StockCompany to buy state store.
  */
 @Injectable()
 export class StockToBuyStateStore extends CrudStateStore<StockToBuy>

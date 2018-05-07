@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { KeyValuePairs } from '../../common/key-value-pairs';
 
 /**
- * This class provides all CRUD REST services for Stock To Buy.
+ * This class provides all CRUD REST services for StockCompany To Buy.
  *
  * Created by mike on 10/17/2017.
  */

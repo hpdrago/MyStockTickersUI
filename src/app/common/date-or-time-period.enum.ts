@@ -1,5 +1,5 @@
 /**
- * This enum identifies the possible values for Stock Catalyst Events
+ * This enum identifies the possible values for StockCompany Catalyst Events
  */
 export enum DateOrTimePeriod
 {

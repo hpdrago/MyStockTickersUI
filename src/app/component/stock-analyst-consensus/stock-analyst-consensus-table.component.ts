@@ -8,7 +8,7 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 
 /**
- * This is the base class for the tab and dashboard table for Stock Analyst Consensus information
+ * This is the base class for the tab and dashboard table for StockCompany Analyst Consensus information
  */
 export abstract class StockAnalystConsensusTableComponent extends StockModelObjectTableComponent<StockAnalystConsensus>
 {

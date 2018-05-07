@@ -1,6 +1,7 @@
 import { StockNotesContainer } from "../common/stock-notes-container";
 import { StockPriceQuoteModelObject } from "../common/stock-price-quote-model-object";
 import { StockNotesSourceContainer } from '../common/stock-notes-source-container';
+import { StockPriceQuoteContainer } from '../common/stock-price-quote-container';
 
 /**
  * This entity contains the elements for the stock to buy
@@ -8,7 +9,8 @@ import { StockNotesSourceContainer } from '../common/stock-notes-source-containe
  * Created 10/17/2017
  */
 export class StockToBuy extends StockPriceQuoteModelObject<StockToBuy> implements StockNotesContainer,
-                                                                                  StockNotesSourceContainer
+                                                                                  StockNotesSourceContainer,
+                                                                                  StockPriceQuoteContainer
 {
     public id: string;
     public customerId: string;
@@ -64,5 +66,20 @@ export class StockToBuy extends StockPriceQuoteModelObject<StockToBuy> implement
     public getPrimaryKeyName(): string
     {
         return "id";
+    }
+
+    public setCompanyName( companyName: string )
+    {
+        this.companyName = companyName;
+    }
+
+    public setLastPrice( lastPrice: number )
+    {
+        this.lastPrice = lastPrice;
+    }
+
+    public setTickerSymbol( tickerSymbol: string )
+    {
+        this.tickerSymbol = tickerSymbol;
     }
 }

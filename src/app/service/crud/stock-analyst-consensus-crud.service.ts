@@ -9,7 +9,7 @@ import { RestErrorReporter } from '../rest-error-reporter';
 import { HttpClient } from '@angular/common/http';
 
 /**
- * This class provides all CRUD REST services for Stock Summary.
+ * This class provides all CRUD REST services for StockCompany Summary.
  *
  * Created by mike on 10/17/2017.
  */

@@ -10,7 +10,7 @@ import { PortfolioActionHandler } from '../portfolio/portfolio-action-handler';
 import { PortfolioStockActionHandler } from './portfolio-stock-action-handler';
 
 /**
- * This is the controller for Portfolio Stock entity components.
+ * This is the controller for Portfolio StockCompany entity components.
  */
 @Injectable()
 export class PortfolioStockController extends CrudController<PortfolioStock>

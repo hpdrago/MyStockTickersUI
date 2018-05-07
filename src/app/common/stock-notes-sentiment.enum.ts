@@ -1,5 +1,5 @@
 /**
- * This enum identifies the possible values for Stock Notes bull or bear
+ * This enum identifies the possible values for StockCompany Notes bull or bear
  */
 export enum StockNotesSentiment
 {

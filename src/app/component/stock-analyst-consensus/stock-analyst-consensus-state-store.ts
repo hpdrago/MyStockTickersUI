@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 
 /**
- * State store for Stock Analyst Consensus components.
+ * State store for StockCompany Analyst Consensus components.
  */
 @Injectable()
 export class StockAnalystConsensusStateStore extends CrudStateStore<StockAnalystConsensus>
