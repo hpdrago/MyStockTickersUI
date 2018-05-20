@@ -6,7 +6,7 @@ import { StockAnalystConsensusController } from '../stock-analyst-consensus/stoc
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
 import { StockAnalystConsensusActionHandler } from '../stock-analyst-consensus/stock-analyst-consensus-action-handler';
-import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
+import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 
 /**
  * This component lists completed stock analyst consensus information on the Analyst Consensus tab

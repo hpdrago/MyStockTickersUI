@@ -11,7 +11,7 @@ import { StockAnalystConsensusController } from './stock-analyst-consensus-contr
 import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
 import { StockAnalystConsensusActionHandler } from './stock-analyst-consensus-action-handler';
-import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
+import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 
 @Component(
     {

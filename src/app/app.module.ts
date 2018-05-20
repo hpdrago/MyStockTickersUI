@@ -130,7 +130,7 @@ import { AdminRoutingModule } from "./admin-routing.module";
 import { LoginComponent } from "./login.component";
 import { AdminComponent } from "./component/admin/admin.component";
 import { CookieService } from "ngx-cookie-service";
-import { StockPriceQuoteCacheService } from "./service/stock-price-quote-cache.service";
+import { StockPriceQuoteCacheService } from "./service/cache/stock-price-quote-cache.service";
 import { TradeItService } from "./service/tradeit/tradeit.service";
 import { TradeItAccountTableButtonsComponent } from "./component/tradeit-account/tradeit-account-table-buttons.component";
 import { TradeItAccountFormButtonsComponent } from "./component/tradeit-account/tradeit-account-form-buttons.component";
@@ -223,20 +223,23 @@ import { StockNotesSourceDialogComponent } from './component/stock-notes-source/
 import { StockNotesSourceFormComponent } from './component/stock-notes-source/stock-notes-source-form.component';
 import { StockNotesSourceComponent } from './component/common/stock-notes-source.component';
 import { StockNotesSourceTableComponent } from './component/stock-notes-source/stock-notes-source-table.component';
-import { StockAnalystConsensusCache } from './service/stock-analyst-consensus-cache';
+import { StockAnalystConsensusCache } from './service/cache/stock-analyst-consensus-cache';
 import { StockPositionMarketValue } from './component/stock-position/stock-position-market-value';
 import { StockPositionPurchasePrice } from './component/stock-position/stock-position-purchase-price';
 import { TableModule } from 'primeng/table';
 import { StockAnalystPriceTargetsComponent } from './component/common/stock-analyst-price-targets.component';
 import { StockAnalystPriceTargetComponent } from './component/common/stock-analyst-price-target.component';
-import { StockCompanyNameComponent } from './component/common/stock-company-name.component';
+import { StockCompanyComponent } from './component/common/stock-company.component';
 import { CachedValueComponent } from './component/common/cached-value.component';
 import { StockCompanyFactory } from './model/factory/stock-company-factory';
 import { StockCompanyService } from './service/crud/stock-company.service';
 import { StockQuoteService } from './service/crud/stock-quote.service';
 import { StockQuoteFactory } from './model/factory/stock-quote.factory';
-import { StockQuoteCacheService } from './service/stock-quote-cache.service';
+import { StockQuoteCacheService } from './service/cache/stock-quote-cache.service';
 import { StockQuoteComponent } from './component/common/stock-quote.component';
+import { StockPriceQuoteComponent } from './component/common/stock-price-quote.component';
+import { StockPriceGainLossComponent } from './component/common/stock-price-gain-loss.component';
+import { StockCompanyCacheService } from './service/cache/stock-company-cache.service';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -430,13 +433,16 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockQuoteLastPriceComponent,
         StockQuotePercentChangeSinceCreatedComponent,
         StockQuoteDayPercentChangeComponent,
+        StockPriceGainLossComponent,
 
-        StockCompanyNameComponent,
+        StockCompanyComponent,
 
         StockAutoCompleteComponent,
         StockSearchComponent,
         StockAverageUpsidePercentComponent,
         StockCommentsComponent,
+
+        StockPriceQuoteComponent,
 
         CachedValueComponent,
         StockNotesSourceComponent,
@@ -520,6 +526,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockCompanyFactory,
         StockCompanyService,
+        StockCompanyCacheService,
 
         RestErrorReporter,
         SessionService,

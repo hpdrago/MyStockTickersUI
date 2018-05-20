@@ -1,8 +1,8 @@
-import { StockAnalystConsensus } from '../model/entity/stock-analyst-consensus';
+import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensus';
 import { Injectable } from '@angular/core';
-import { StockAnalystConsensusCrudService } from './crud/stock-analyst-consensus-crud.service';
-import { SessionService } from './session.service';
-import { BaseClass } from '../common/base-class';
+import { StockAnalystConsensusCrudService } from '../crud/stock-analyst-consensus-crud.service';
+import { SessionService } from '../session.service';
+import { BaseClass } from '../../common/base-class';
 import { ToastsManager } from 'ng2-toastr';
 
 /**

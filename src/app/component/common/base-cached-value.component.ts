@@ -26,12 +26,6 @@ export abstract class BaseCachedValueComponent extends BaseComponent
     protected abstract getCachedValueState(): CachedValueState;
 
     /**
-     * Returns the value to display if the state is CURRENT.
-     * @return {string}
-     */
-    protected abstract getDisplayValue(): string;
-
-    /**
      * Returns the message to display if the state of the value is STALE
      * @return {string}
      */

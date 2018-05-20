@@ -1,6 +1,6 @@
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
-import { StockQuoteCacheService } from '../../service/stock-quote-cache.service';
+import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { StockQuote } from '../../model/entity/stock-quote';
 import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
@@ -24,12 +24,26 @@ export class StockQuoteComponent extends BaseComponent implements OnInit
      */
     protected stockQuote: StockQuote;
 
+    /**
+     * Set the output of this emitter to the stockQuote property of the model object.  It will get updated after the
+     * stock quote is retrieved and whenever it is changes.
+     * @type {EventEmitter<StockQuote>}
+     */
     @Output()
     private stockQuoteChange: EventEmitter<StockQuote> = new EventEmitter<StockQuote>();
 
+    /**
+     * Ticker symbol to identify the stock quote to obtain.
+     */
     @Input()
     protected  tickerSymbol: string;
 
+    /**
+     * Constructor.
+     * @param {ToastsManager} toaster
+     * @param {StockQuoteCacheService} stockQuoteCache
+     * @param {StockQuoteFactory} stockQuoteFactory
+     */
     public constructor( protected toaster: ToastsManager,
                         private stockQuoteCache: StockQuoteCacheService,
                         private stockQuoteFactory: StockQuoteFactory )

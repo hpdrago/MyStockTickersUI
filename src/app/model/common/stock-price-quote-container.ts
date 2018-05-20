@@ -12,6 +12,12 @@ import { StockPriceQuote } from '../entity/stock-price-quote';
 export interface StockPriceQuoteContainer
 {
     /**
+     * Get the ticker symbol.
+     * @return {string}
+     */
+    getTickerSymbol(): string;
+
+    /**
      * Get the stock price quote.
      * @return {StockPriceQuote}
      */

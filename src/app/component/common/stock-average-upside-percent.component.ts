@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
+import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 import { StockAnalystConsensusBaseComponent } from './stock-analyst-consensus-base.component';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { ToastsManager } from 'ng2-toastr';

@@ -11,7 +11,7 @@ import { SessionService } from "./session.service";
 import { CookieService } from "ngx-cookie-service";
 import { CustomerFactory } from "../model/factory/customer.factory";
 import { CustomerService } from "./customer.service";
-import { StockAnalystConsensusCache } from './stock-analyst-consensus-cache';
+import { StockAnalystConsensusCache } from './cache/stock-analyst-consensus-cache';
 
 /**
  * This is the service that identifies the login status of a user and performs the login and logout functionality.
