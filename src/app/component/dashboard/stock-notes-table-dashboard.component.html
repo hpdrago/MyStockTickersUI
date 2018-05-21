@@ -61,7 +61,8 @@
               header="Last Price"
               [style]="{'width':'80px','text-align':'right'}">
         <ng-template let-col let-stockNotes="rowData" pTemplate="body">
-            <stock-quote-last-price [stockFullQuote]="stockNotes">
+            <stock-quote-last-price [stockPriceQuoteContainer]="stockNotes"
+                                    [stockQuoteContainer]="stockNotes">
             </stock-quote-last-price>
         </ng-template>
     </p-column>

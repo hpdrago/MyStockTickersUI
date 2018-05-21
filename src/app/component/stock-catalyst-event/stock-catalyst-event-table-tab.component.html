@@ -63,7 +63,8 @@
                   [style]="{'width':'80px'}"
                   [sortable]="false">
             <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
-                <stock-quote-last-price [stockFullQuote]="stockCatalystEvent">
+                <stock-quote-last-price [stockQuoteContainer]="stockCatalystEvent"
+                                        [stockPriceQuoteContainer]="stockCatalystEvent">
                 </stock-quote-last-price>
             </ng-template>
         </p-column>
