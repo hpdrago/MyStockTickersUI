@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { StockPriceQuote } from "../model/entity/stock-price-quote";
+import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { Observable } from "rxjs/Observable";
-import { StockPriceQuoteService } from "./crud/stock-price-quote.service";
+import { StockPriceQuoteService } from "../crud/stock-price-quote.service";
 import { ToastsManager } from "ng2-toastr";
-import { AsyncCacheService } from './common/async-cache.service';
-import { StockPriceQuoteFactory } from '../model/factory/stock-price-quote.factory';
+import { AsyncCacheService } from './async-cache.service';
+import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 
 /**
  * This class caches stock prices by ticker symbol.

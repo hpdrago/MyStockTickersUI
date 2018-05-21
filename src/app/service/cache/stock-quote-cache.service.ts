@@ -1,9 +1,9 @@
-import { AsyncCacheService } from './common/async-cache.service';
-import { StockQuote } from '../model/entity/stock-quote';
+import { AsyncCacheService } from './async-cache.service';
+import { StockQuote } from '../../model/entity/stock-quote';
 import { ToastsManager } from 'ng2-toastr';
-import { StockQuoteFactory } from '../model/factory/stock-quote.factory';
+import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
 import { Observable } from 'rxjs/Observable';
-import { StockQuoteService } from './crud/stock-quote.service';
+import { StockQuoteService } from '../crud/stock-quote.service';
 import { Injectable } from '@angular/core';
 
 /**

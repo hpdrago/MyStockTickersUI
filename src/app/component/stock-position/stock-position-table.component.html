@@ -79,7 +79,8 @@
                               [sortable]="true"
                               [style]="{'width':'30px','text-align':'right'}">
                         <ng-template let-col let-stockPosition="rowData" pTemplate="body">
-                            <stock-quote-last-price [stockQuoteContainer]="stockPosition">
+                            <stock-quote-last-price [stockPriceQuoteContainer]="stockPosition"
+                                                    [stockQuoteContainer]="stockPosition">
                             </stock-quote-last-price>
                         </ng-template>
                     </p-column>

@@ -14,7 +14,7 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { Subject } from 'rxjs/Subject';
 import { StockPriceQuoteService } from './stock-price-quote.service';
-import { StockPriceQuoteCacheService } from '../stock-price-quote-cache.service';
+import { StockPriceQuoteCacheService } from '../cache/stock-price-quote-cache.service';
 
 @Injectable()
 export class StockCompanyService extends ReadRestService<StockCompany>

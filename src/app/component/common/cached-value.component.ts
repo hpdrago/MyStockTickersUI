@@ -26,7 +26,7 @@ import { CacheStateContainer } from '../../model/common/cache-state-container';
                 {{staleMessage}}
             </div>
             <div *ngSwitchCase="CachedValueState.FAILURE">
-                {{failureMessage}}
+                <i pTooltip="{{cachedStateContainer.getCacheError()}}">ERROR</i>
             </div>
             <div *ngSwitchCase="CachedValueState.NOT_FOUND">
                 {{notFoundMessage}}
@@ -38,15 +38,23 @@ export class CachedValueComponent extends BaseComponent
 {
     protected CachedValueState = CachedValueState;
 
+    /**
+     * Object reference that contains the cache state.
+     */
     @Input()
     protected cachedStateContainer: CacheStateContainer<string>;
 
+    /**
+     * Displays this message when the cache state is STALE.  Defaults to 'Loading...'
+     * @type {string}
+     */
     @Input()
     protected staleMessage: string = 'Loading...';
 
-    @Input()
-    protected failureMessage: string = 'Failure';
-
+    /**
+     * Displays this message when the cache entity is not found.
+     * @type {string}
+     */
     @Input()
     protected notFoundMessage: string = 'Not Found';
 

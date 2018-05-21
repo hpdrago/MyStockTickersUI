@@ -117,7 +117,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
         let methodName = 'fetchData';
         if ( isNullOrUndefined( key ))
         {
-            throw new ReferenceError( key + ' is null or undefined' );
+            throw new ReferenceError( 'key argument is null or undefined' );
         }
         this.debug( methodName + ' ' + key );
         this.workingMap

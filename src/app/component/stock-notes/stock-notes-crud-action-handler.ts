@@ -8,8 +8,8 @@ import { StockNotesActionTaken } from '../../common/stock-notes-action-taken.enu
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockToBuyController } from '../stock-to-buy/stock-to-buy-controller';
 import { StockNotesStock } from '../../model/entity/stock-notes-stock';
-import { StockPriceQuoteCacheService } from '../../service/stock-price-quote-cache.service';
-import { StockQuoteCacheService } from '../../service/stock-quote-cache.service';
+import { StockPriceQuoteCacheService } from '../../service/cache/stock-price-quote-cache.service';
+import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { StockModelObjectCrudActionHandler } from '../crud/common/stock-model-object-crud-action-handler';
 
 /**

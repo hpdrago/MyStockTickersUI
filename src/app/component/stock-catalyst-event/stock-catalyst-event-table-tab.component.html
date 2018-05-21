@@ -48,11 +48,24 @@
                   [style]="{'width':'150px'}"
                   [sortable]="false">
             <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
-                <stock-quote [tickerSymbol]="stockCatalystEvent.tickerSymbol"
-                             (stockQuote)="stockCatalystEvent.stockQuote">
-                    <currency [currencyValue]="stockCatalystEvent.stockQuote.openPrice">
-                    </currency>
+                <stock-quote (stockQuoteChange)="stockCatalystEvent.stockQuote">
+                    {{stockCatalystEvent.stockQuote.companyName}}
                 </stock-quote>
+            </ng-template>
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        LAST PRICE
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="lastPrice"
+                  field="lastPrice"
+                  header="Last Price"
+                  [style]="{'width':'80px'}"
+                  [sortable]="false">
+            <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
+                <stock-quote-last-price [stockQuoteContainer]="stockCatalystEvent"
+                                        [stockPriceQuoteContainer]="stockCatalystEvent">
+                </stock-quote-last-price>
             </ng-template>
         </p-column>
 

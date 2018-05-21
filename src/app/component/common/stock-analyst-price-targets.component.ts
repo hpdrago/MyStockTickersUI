@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensus';
-import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
+import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 
 /**
  * This component displays the low, avg, and high analyst price targets.

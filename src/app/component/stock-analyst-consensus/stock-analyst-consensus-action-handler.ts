@@ -5,7 +5,7 @@ import { ToastsManager } from 'ng2-toastr';
 import { RestErrorReporter } from '../../service/rest-error-reporter';
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
 import { Observable } from 'rxjs/Observable';
-import { StockAnalystConsensusCache } from '../../service/stock-analyst-consensus-cache';
+import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 
 /**
  * Action handler class.  This class is called by the controller to perform the handle the crud operations triggered
