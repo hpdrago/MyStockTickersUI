@@ -1,7 +1,9 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SelectedStockCompanyList } from './selected-stock-company.list';
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
+import { StockCompany } from '../../model/entity/stock-company';
+import { StockCompanyService } from '../../service/crud/stock-company.service';
 
 /**
  * This component displays the ticker symbols, last prices, and company names vertically based off of stock companies
@@ -59,15 +61,75 @@ import { ToastsManager } from 'ng2-toastr';
  })
 export class SelectedStockCompaniesComponent extends BaseComponent
 {
+    /**
+     * Identifies how many companies can be added.
+     * @type {number} Defaults to one company.
+     */
     @Input()
+    protected maxCompanies: number = 1;
+
+    /**
+     * This list of the selected companies.
+     */
     protected stockCompanies: SelectedStockCompanyList;
 
     /**
      * Constructor
      * @param {ToastsManager} toaster
      */
-    public constructor( protected toaster: ToastsManager )
+    public constructor( protected toaster: ToastsManager,
+                        private stockCompanyService: StockCompanyService )
     {
         super( toaster );
+        this.stockCompanies = new SelectedStockCompanyList( stockCompanyService );
+    }
+
+    /**
+     * Adds the stock company to the list.
+     * @param {StockCompany} stockCompany
+     */
+    public addCompany( stockCompany: StockCompany )
+    {
+        if ( this.maxCompanies == 1 )
+        {
+            this.stockCompanies
+                .clear();
+        }
+        this.stockCompanies
+            .addCompany( stockCompany );
+    }
+
+    /**
+     * Loads a stock company for the ticker symbol
+     * @param {string} tickerSymbol
+     */
+    public loadCompany( tickerSymbol: string )
+    {
+        if ( this.maxCompanies == 1 )
+        {
+            this.stockCompanies
+                .clear();
+        }
+        this.stockCompanies
+            .loadCompany( tickerSymbol );
+    }
+
+    /**
+     * Clears the companies list.
+     */
+    public reset()
+    {
+        this.stockCompanies
+            .clear();
+    }
+
+    /**
+     * Get a list of the stock companies.
+     * @return {Array<StockCompany>}
+     */
+    public getCompanies(): Array<StockCompany>
+    {
+        return this.stockCompanies
+                   .toArray();
     }
 }

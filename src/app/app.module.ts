@@ -241,6 +241,8 @@ import { StockPriceGainLossComponent } from './component/common/stock-price-gain
 import { StockCompanyCacheService } from './service/cache/stock-company-cache.service';
 import { StockNotesSourceSelectionComponent } from './component/common/stock-notes-source-selection.component';
 import { SelectedStockCompaniesComponent } from './component/common/selected-stock-companies.component';
+import { StockSearchSelectedCompaniesComponent } from './component/common/stock-search-selected-companies.component';
+import { StockSearchDisplayTickerSymbolComponent } from './component/common/stock-search-display-ticker-symbol.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     align: "left",
@@ -436,13 +438,15 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockQuoteDayPercentChangeComponent,
         StockPriceGainLossComponent,
 
-        StockCompanyComponent,
-        SelectedStockCompaniesComponent,
-
         StockAutoCompleteComponent,
-        StockSearchComponent,
         StockAverageUpsidePercentComponent,
         StockCommentsComponent,
+
+        StockCompanyComponent,
+        SelectedStockCompaniesComponent,
+        StockSearchComponent,
+        StockSearchDisplayTickerSymbolComponent,
+        StockSearchSelectedCompaniesComponent,
 
         StockPriceQuoteComponent,
 

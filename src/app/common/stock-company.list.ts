@@ -79,4 +79,13 @@ export class StockCompanyList
     {
         this.stockCompanies = [];
     }
+
+    /**
+     * Get the list of stock companies.
+     * @return {Array<StockCompany>}
+     */
+    public toArray(): Array<StockCompany>
+    {
+        return this.stockCompanies;
+    }
 }

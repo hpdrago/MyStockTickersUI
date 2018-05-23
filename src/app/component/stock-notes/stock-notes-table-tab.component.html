@@ -108,7 +108,7 @@
                       [style]="{'width':'80px','text-align':'right'}">
                 <ng-template let-col let-stockNotes="rowData" pTemplate="body">
                     <stock-quote [tickerSymbol]="stockNotes.tickerSymbol"
-                                 (stockQuote)="stockNotes.stockQuote">
+                                 (stockQuote)="stockNotes.setStockQuote($event)">
                         <currency [currencyValue]="stockNotes.stockQuote.openPrice">
                         </currency>
                     </stock-quote>

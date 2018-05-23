@@ -10,7 +10,6 @@ import { isNullOrUndefined } from "util";
 import { StockNotesSentiment } from "../../common/stock-notes-sentiment.enum";
 import { StockNotesActionTaken } from "../../common/stock-notes-action-taken.enum";
 import { StockPriceQuoteService } from "../../service/crud/stock-price-quote.service";
-import { StockAutoCompleteComponent } from "../common/stock-autocomplete.component";
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
@@ -18,7 +17,7 @@ import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.servi
 import { CrudFormComponent } from '../crud/form/crud-form.component';
 import { StockCompany } from '../../model/entity/stock-company';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
-import { SelectedStockCompanyList } from '../common/selected-stock-company.list';
+import { StockSearchSelectedCompaniesComponent } from '../common/stock-search-selected-companies.component';
 
 /**
  * This is the StockCompany Note Form Component class.
@@ -39,16 +38,9 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     /**
      * Reference to the stock search
      */
-    @ViewChild(StockAutoCompleteComponent)
-    protected stockAutoCompletedComponent: StockAutoCompleteComponent;
+    @ViewChild(StockSearchSelectedCompaniesComponent)
+    protected stockSearchSelectedCompaniesComponent: StockSearchSelectedCompaniesComponent;
 
-    protected stockCompany: StockCompany;
-    protected stockCompanies: SelectedStockCompanyList;
-
-    /**
-     * The string the user enters the ticker symbols or company name to search for
-     */
-    protected stockSearch: string = "";
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -78,7 +70,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
                stockNotesController,
                stockNotesFactory,
                stockNotesCrudService )
-        this.stockCompanies = new SelectedStockCompanyList( stockCompanyService );
     }
 
     /**
@@ -102,6 +93,24 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     }
 
     /**
+     * Initialize the sub components.
+     */
+    public ngAfterViewInit(): void
+    {
+        super.ngAfterViewInit();
+        if ( this.isCrudUpdateOperation() || this.isCrudDeleteOperation() )
+        {
+            this.stockSearchSelectedCompaniesComponent
+                .loadCompany( this.modelObject.tickerSymbol );
+        }
+        if ( this.isCrudDeleteOperation() )
+        {
+            this.stockSearchSelectedCompaniesComponent
+                .setDisabled( true );
+        }
+    }
+
+    /**
      * Set the initial values for new notes and when the form resets.
      * @return {any}
      */
@@ -112,17 +121,14 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         this.modelObject.bullOrBear = 1;
         this.modelObject.actionTaken = StockNotesActionTaken.NONE;
         this.modelObject.notesDate = new Date( Date.now() );
-        this.stockSearch = '';
-        this.stockCompany = null;
-        this.stockCompanies = new SelectedStockCompanyList( this.stockCompanyService );
     }
 
     protected resetForm(): void
     {
         super.resetForm();
-        if ( this.stockAutoCompletedComponent )
+        if ( this.stockSearchSelectedCompaniesComponent )
         {
-            this.stockAutoCompletedComponent.reset();
+            this.stockSearchSelectedCompaniesComponent.reset();
         }
     }
 
@@ -161,24 +167,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             'actionTakenShares': new FormControl( this.modelObject.actionTakenShares ),
             'actionTakenPrice':  new FormControl( this.modelObject.actionTakenPrice )
         } );
-        stockNoteForm.addControl( 'stockSearch', new FormControl( this.stockSearch ));
-        stockNoteForm.addControl( 'tickerSymbols', new FormControl( this.stockCompanies.tickerSymbols ));
-        stockNoteForm.addControl( 'tickerSymbol', new FormControl( this.modelObject.tickerSymbol ));
-        /*
-         * Add the specific fields based on the crud operation
-         */
-        if ( this.isCrudCreateOperation() )
-        {
-            stockNoteForm.controls['stockSearch'].enable();
-            stockNoteForm.controls['tickerSymbols'].enable();
-            stockNoteForm.controls['tickerSymbol'].disable();
-        }
-        else
-        {
-            stockNoteForm.controls['stockSearch'].disable();
-            stockNoteForm.controls['tickerSymbols'].disable();
-            stockNoteForm.controls['tickerSymbol'].enable();
-        }
         return stockNoteForm;
     }
 
@@ -203,7 +191,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             }
             if ( !isNullOrUndefined( modelObject.tickerSymbol ))
             {
-                this.stockCompanies
+                this.stockSearchSelectedCompaniesComponent
                     .loadCompany( modelObject.tickerSymbol );
             }
         }
@@ -211,7 +199,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
         {
             if ( !isNullOrUndefined( modelObject.tickerSymbol ))
             {
-                this.stockCompanies
+                this.stockSearchSelectedCompaniesComponent
                     .loadCompany( modelObject.tickerSymbol );
             }
         }
@@ -233,13 +221,13 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             .stocks
             .forEach( (stockNoteStock: StockNotesStock) =>
                       {
-                          this.debug( methodName + " getting stock quote: " + stockNoteStock.tickerSymbol );
+                          this.debug( methodName + " getting stock company: " + stockNoteStock.tickerSymbol );
                           this.stockCompanyService
                               .getStockCompany( stockNoteStock.tickerSymbol )
                               .subscribe( (stockCompany: StockCompany) =>
                                           {
-                                              this.debug( methodName + " getting stock quote: " + stockNoteStock.tickerSymbol );
-                                              this.onStockSelected( stockCompany )
+                                              this.stockSearchSelectedCompaniesComponent
+                                                  .addCompany( stockCompany )
                                           }
                               );
                       } );
@@ -252,51 +240,29 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     public onStockSelected( stockCompany: StockCompany )
     {
         this.log( "onStockSelected: " + JSON.stringify( stockCompany ) );
-        /*
-         * Only one company allowed when modifying, that is, you can change the original company.
-         */
-        if ( this.isCrudUpdateOperation() )
-        {
-            this.stockCompanies
-                .clear();
-        }
-        this.stockCompanies
-            .addCompany( stockCompany );
         this.modelObject.tickerSymbol = stockCompany.tickerSymbol;
-        this.stockCompany = stockCompany;
-        this.stockSearch = '';
         this.modelObject.stockPriceWhenCreated = stockCompany.lastPrice;
-        (<FormControl>this.formGroup.controls['tickerSymbol']).setValue( stockCompany.tickerSymbol );
-        (<FormControl>this.formGroup.controls['stockSearch']).setValue( '' );
-        this.setStockNoteStocks();
     }
 
     /**
-     * Populates the stockNotStocks on the StockNotes instance.
+     * Before saving, get the selected stock companies and add them to the stock note stock list.
      */
-    protected setStockNoteStocks()
+    protected prepareToSave(): void
     {
-        this.log( "setStockNotes.begin " + JSON.stringify( this.modelObject ));
-        if ( this.isCrudCreateOperation() )
-        {
-            this.log( "setStockNotes tickerSymbols " + this.stockCompanies.tickerSymbols );
-            /*
-             * The ticker symbols should be separated by commas.
-             * Each ticker symbol is pushed into the stocks array of the StockNotes model object
-             */
-            let stocks = this.stockCompanies
-                             .tickerSymbols
-                             .split( "," );
-            this.modelObject.stocks = [];
-            stocks.forEach( stock =>
-            {
-                let stockNoteStock: StockNotesStock = new StockNotesStock();
-                stockNoteStock.tickerSymbol = stock.trim();
-                this.modelObject.stocks.push( stockNoteStock );
-            });
-        }
+        this.stockSearchSelectedCompaniesComponent
+            .getCompanies()
+            .forEach( (stockCompany: StockCompany) =>
+                      {
+                          let stockNoteStock: StockNotesStock = new StockNotesStock();
+                          stockNoteStock.tickerSymbol = stockCompany.tickerSymbol
+                          stockNoteStock.stockPrice = stockCompany.lastPrice;
+                          stockNoteStock.customerId = this.modelObject
+                                                          .customerId;
+                          this.modelObject
+                              .stocks
+                              .push( stockNoteStock );
+                      });
         super.prepareToSave();
-        this.log( "setStockNotes.end " + JSON.stringify( this.modelObject ));
     }
 
     /**

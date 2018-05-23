@@ -84,6 +84,7 @@ export class BaseClass implements OnDestroy
      */
     protected showError( message: string )//: Promise<Toast>
     {
+        this.log( "show: " + message );
         return this.showErrorWithDelay( message, 10 );
     }
 
@@ -94,6 +95,7 @@ export class BaseClass implements OnDestroy
      */
     protected showLongError( message: string )//: Promise<Toast>
     {
+        this.log( "showLongError: " + message );
         return this.showErrorWithDelay( message, 20 );
     }
 
@@ -105,6 +107,7 @@ export class BaseClass implements OnDestroy
      */
     protected showErrorWithDelay( message: string, seconds: number ): Promise<Toast>
     {
+        this.log( "showErrorWithDelay: " + message + " second: " + seconds )
         this.checkToasterInstance();
         return this.toaster.error( message, "Error", {toastLife: seconds * 1000 } );
     }
@@ -116,6 +119,7 @@ export class BaseClass implements OnDestroy
      */
     protected showWarning( message: string ): Promise<Toast>
     {
+        this.log( "showWarning: " + message )
         this.checkToasterInstance();
         return this.toaster.warning( message );
     }
@@ -127,6 +131,7 @@ export class BaseClass implements OnDestroy
      */
     protected showInfo( message: string )// : Promise<Toast>
     {
+        this.log( "showInfo: " + message )
         this.checkToasterInstance();
         return this.toaster.info( message );
     }

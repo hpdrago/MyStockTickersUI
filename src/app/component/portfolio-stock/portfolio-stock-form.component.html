@@ -1,4 +1,4 @@
-<div *ngIf="dataLoaded" xmlns="http://www.w3.org/1999/html">
+<div xmlns="http://www.w3.org/1999/html">
     <form id="stockForm" [formGroup]="formGroup">
         <p-tabView id="tabView">
             <!--
@@ -33,7 +33,7 @@
                             </div>
                         </div>
 
-                        <selected-stock-companies [stockCompanies]="selectedStockCompanies">
+                        <selected-stock-companies>
                         </selected-stock-companies>
 
                         <!-- need to move this to the selected companies ... maybe -->

@@ -77,9 +77,16 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
      */
     protected inputPropertyChange( property: string, previousValue: any, currentValue: any )
     {
-        let previous = JSON.stringify( previousValue );
-        let newValue = JSON.stringify( currentValue );
-        this.debug( `inputPropertyChange property: ${property} ${previous} ==> ${newValue}`)
+        try
+        {
+            let previous = JSON.stringify( previousValue );
+            let newValue = JSON.stringify( currentValue );
+            this.debug( `inputPropertyChange property: ${property} ${previous} ==> ${newValue}`)
+        }
+        catch ( e )
+        {
+            // ignore, was getting circular reference issues doing JSON.stringify
+        }
     }
 
     /**

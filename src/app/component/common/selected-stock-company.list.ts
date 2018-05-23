@@ -37,6 +37,10 @@ export class SelectedStockCompanyList extends StockCompanyList
         super( stockCompanyService )
     }
 
+    /**
+     * Adds a stock company to the list.
+     * @param {StockCompany} stockCompany
+     */
     protected addCompanyToList( stockCompany: StockCompany ): void
     {
         super.addCompanyToList( stockCompany );
@@ -58,4 +62,14 @@ export class SelectedStockCompanyList extends StockCompanyList
                       });
     }
 
+    /**
+     * Clears the list and the display values.
+     */
+    public clear(): void
+    {
+        super.clear();
+        this.tickerSymbols += ''
+        this.lastPrices += ''
+        this.companies += ''
+    }
 }

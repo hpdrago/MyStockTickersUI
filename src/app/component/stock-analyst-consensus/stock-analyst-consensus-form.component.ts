@@ -1,5 +1,5 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockCompany } from "../../model/entity/stock-company";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
@@ -11,6 +11,7 @@ import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
 import { CrudOperation } from '../crud/common/crud-operation';
 import { CrudFormComponent } from '../crud/form/crud-form.component';
+import { StockSearchDisplayTickerSymbolComponent } from '../common/stock-search-display-ticker-symbol.component';
 
 /**
  * This is the StockCompany AnalystConsensus Form Component class.
@@ -25,6 +26,9 @@ import { CrudFormComponent } from '../crud/form/crud-form.component';
             } )
 export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockAnalystConsensus>
 {
+    @ViewChild(StockSearchDisplayTickerSymbolComponent)
+    private stockSearchDisplayTickerSymbolComponent: StockSearchDisplayTickerSymbolComponent;
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -49,6 +53,13 @@ export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockA
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,
                stockAnalystConsensusCrudService );
+    }
+
+    protected clearForm(): void
+    {
+        super.clearForm();
+        this.stockSearchDisplayTickerSymbolComponent
+            .reset();
     }
 
     /**

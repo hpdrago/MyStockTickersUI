@@ -5,52 +5,11 @@
             <div *ngIf="isCrudCreateOperation(); then createDiv else modifyDiv" class="crud-form ui-grid-row">
             </div>
             <!----------------------------------------------------------------------------------------------------------
-            IF CREATING NOTES
+            SEARCH
             ------------------------------------------------------------------------------------------------------------>
-            <ng-template #createDiv>
-                <!----------------------------------------------------------------------------------------------------------
-                SEARCH
-                ------------------------------------------------------------------------------------------------------------>
-                <div class="crud-form ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-2">
-                    </div>
-                    <div class="ui-grid-col-10">
-                        When specifying multiple stocks, the note information will be duplicated for each stock
-                    </div>
-                </div>
-                <div class="crud-form ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-2">
-                        <label class="crud-form" for="stockSearchCreate">Stock Search:</label>
-                    </div>
-                    <div class="ui-grid-col-10">
-                        <stock-autocomplete id="stockSearchCreate"
-                                            (stockSelected)="onStockSelected( $event )">
-                        </stock-autocomplete>
-                    </div>
-                </div>
 
-                <selected-stock-companies [stockCompanies]="stockCompanies">
-                </selected-stock-companies>
-            </ng-template>
-
-            <!----------------------------------------------------------------------------------------------------------
-            IF MODIFYING/DELETING NOTES
-            ------------------------------------------------------------------------------------------------------------>
-            <ng-template #modifyDiv>
-                <div class="crud-form ui-grid-row">
-                    <div class="crud-form-label ui-grid-col-2">
-                        <label class="crud-form" for="stockSearchModify">Stock Search:</label>
-                    </div>
-                    <div class="ui-grid-col-10">
-                        <stock-autocomplete id="stockSearchModify"
-                                            (stockSelected)="onStockSelected( $event )">
-                        </stock-autocomplete>
-                    </div>
-                </div>
-
-                <selected-stock-companies [stockCompanies]="stockCompanies">
-                </selected-stock-companies>
-            </ng-template>
+            <stock-search-selected-companies (stockSelected)="onStockSelected($event)">
+            </stock-search-selected-companies>
 
             <!----------------------------------------------------------------------------------------------------------
             NOTES

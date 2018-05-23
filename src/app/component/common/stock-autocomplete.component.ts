@@ -5,7 +5,6 @@ import { ToastsManager } from "ng2-toastr";
 import { StockCompany } from "../../model/entity/stock-company";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { isNullOrUndefined } from "util";
-import { StockPriceQuote } from "../../model/entity/stock-price-quote";
 import { BaseComponent } from "./base.component";
 import { RestErrorReporter } from "../../service/rest-error-reporter";
 import { RestException } from '../../common/rest-exception';
