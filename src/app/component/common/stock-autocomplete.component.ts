@@ -27,7 +27,7 @@ import { CachedValueState } from '../../common/cached-value-state.enum';
                                 (onBlur)="onBlur( $event )"
                                 uppercase
                                 [disabled]="disabledState || disabled"
-                                placeholder="Enter company name or ticker symbol. Tab for expanded search">
+                                placeholder="Enter company name or ticker symbol. Tab for expanded search when no results found">
                </p-autoComplete>
     `,
     providers: [
@@ -46,6 +46,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
     protected stockCompany: StockCompany;
     protected disabledState: boolean = false;
     private isStockSelected : boolean;
+    private emittedTickerSymbol = '';
 
     /**
      * Constructor.
@@ -77,6 +78,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
         this.log( "reset" );
         this.setDisabledState( false );
         this.isStockSelected = false;
+        this.emittedTickerSymbol = '';
     }
 
     /**
@@ -86,7 +88,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
      */
     protected onStockSearch( event ): void
     {
-        let methodName = 'onStockSearch';
+        const methodName = 'onStockSearch';
         let query: string = event.query;
         this.log( methodName + ' ' + query );
         if ( this.disabledState )
@@ -128,7 +130,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
              !isNullOrUndefined( this.stockCompany.tickerSymbol ) &&
              this.stockCompany.tickerSymbol.length > 0 )
         {
-            this.getStockQuote();
+            this.getStockCompany();
         }
     }
 
@@ -149,22 +151,30 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
              */
             this.stockCompany.tickerSymbol = this.stockCompany.tickerSymbol.toUpperCase();
             this.propagateChange( this.stockCompany.tickerSymbol );
-            this.getStockQuote();
+            this.getStockCompany();
         }
     }
 
     /**
-     * Get a stock quote
+     * Look up the the full StockCompany information for the selected stock company.
      */
-    private getStockQuote()
+    private getStockCompany()
     {
-        if ( !isNullOrUndefined( this.stockCompany.tickerSymbol ))
+        const methodName = 'getStockCompany';
+        this.logMethodBegin( methodName + ' ' + this.stockCompany.tickerSymbol + ' ' + this.emittedTickerSymbol );
+        if ( !isNullOrUndefined( this.stockCompany.tickerSymbol ) &&
+             this.stockCompany.tickerSymbol != this.emittedTickerSymbol ) // prevent duplicate emits caused by onBlur and selection
         {
+            /*
+             * Assume we will emit the company since the user is presented with valid companies, we don't expect to
+             * get any errors and we want to prevent duplicate searches and subsequent emits of stock companies.
+             */
+            this.emittedTickerSymbol = this.stockCompany.tickerSymbol;
             this.stockCompanyService
                 .getStockCompany( this.stockCompany.tickerSymbol )
                 .subscribe( ( stockCompany: StockCompany ) =>
                             {
-                                this.log( 'onStockSearchSelected ' + JSON.stringify( stockCompany ) );
+                                this.log( methodName + ' ' + JSON.stringify( stockCompany ) );
                                 if ( CachedValueState.isNotFound( stockCompany.cacheState ))
                                 {
                                     this.showError( stockCompany.tickerSymbol + ' was not found' );
@@ -178,6 +188,7 @@ export class StockAutoCompleteComponent extends BaseComponent implements Control
                             },
                             error =>
                             {
+                                this.emittedTickerSymbol = '';
                                 let restException = new RestException( error );
                                 if ( restException.isNotFoundError() )
                                 {
