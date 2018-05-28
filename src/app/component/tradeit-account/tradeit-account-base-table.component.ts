@@ -58,7 +58,7 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
      */
     protected onRowSelect( event ): void
     {
-        let methodName = "onRowSelect";
+        const methodName = "onRowSelect";
         this.log( methodName + ".begin " + JSON.stringify( event ));
         let modelObject: TradeItAccount = this.createModelObjectFromRowSelectionEvent( event );
         this.tradeItOAuthService
@@ -107,7 +107,7 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
      */
     protected onModelObjectCreated( tradeItAccount: TradeItAccount )
     {
-        let methodName = "onAccountAdded";
+        const methodName = "onAccountAdded";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
         super.onModelObjectDeleted( tradeItAccount );
         this.tradeItOAuthService
@@ -154,14 +154,14 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
 
     public notifyAuthenticationSuccess( tradeItAccount: TradeItAccount )
     {
-        let methodName = "notifyAuthenticationSuccess";
+        const methodName = "notifyAuthenticationSuccess";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
         this.log( methodName + ".end" );
     }
 
     public receiveMessage( event: any )
     {
-        let methodName = "receiveMessage";
+        const methodName = "receiveMessage";
         this.log( methodName + ".begin " + JSON.stringify( event ) );
         this.log( methodName + ".end" );
     }

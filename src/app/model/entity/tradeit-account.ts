@@ -48,7 +48,7 @@ export class TradeItAccount extends ModelObject<TradeItAccount>
      */
     public isAuthenticated(): boolean
     {
-        let methodName = "isAuthenticated";
+        const methodName = "isAuthenticated";
         console.log( methodName + " authTimestamp: " + this.authTimestamp );
         if ( isNullOrUndefined( this.authTimestamp ) )
         {

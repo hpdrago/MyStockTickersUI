@@ -38,7 +38,7 @@ export class StockAnalystConsensusCache extends BaseClass
      */
     public load()
     {
-        let methodName = 'load';
+        const methodName = 'load';
         this.debug( methodName + '.begin' );
         let stockAnalystConsensus: StockAnalystConsensus = new StockAnalystConsensus();
         stockAnalystConsensus.customerId = this.session.getLoggedInUserId();

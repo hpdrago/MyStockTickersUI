@@ -76,7 +76,7 @@ export class StockQuoteComponent extends BaseComponent implements OnInit
      */
     private onReceiveStockQuote( stockQuote: StockQuote )
     {
-        let methodName = 'onReceiveStockQuote';
+        const methodName = 'onReceiveStockQuote';
         this.log( methodName + ' ' + JSON.stringify( stockQuote ));
         if ( stockQuote != null )
         {

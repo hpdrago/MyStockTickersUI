@@ -165,7 +165,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public sendTableEditButtonClickedEvent()
     {
-        let methodName = 'sendTableEditButtonClickedEvent';
+        const methodName = 'sendTableEditButtonClickedEvent';
         this.debug( methodName );
         this.crudStateStore
             .sendCrudOperationChangedEvent( CrudOperation.UPDATE );
@@ -179,7 +179,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public subscribeToTableSelectionChangeEvent( fn: ( modelObject: T ) => any ): Subscription
     {
-        let methodName = 'subscribeToTableSelectionChangeEvent';
+        const methodName = 'subscribeToTableSelectionChangeEvent';
         let subscription = this.tableSelectionChangedSubject
                                .asObservable()
                                .subscribe( fn );
@@ -362,7 +362,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public sendTableAddButtonClickedEvent()
     {
-        let methodName = 'sendTableAddButtonClickedEvent';
+        const methodName = 'sendTableAddButtonClickedEvent';
         this.debug( methodName + this.getToObserversMessage( this.tableAddButtonClickedSubject ));
         let modelObject: T = this.modelObjectFactory
                                  .newModelObject();
@@ -773,7 +773,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public deleteModelObject( modelObject: T ): Observable<void>
     {
-        let methodName = "deleteModelObject";
+        const methodName = "deleteModelObject";
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         return this.crudActionHandler
                    .deleteModelObject( modelObject )
@@ -802,7 +802,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public sendModelObjectDeletedEvent( modelObject: T )
     {
-        let methodName = 'sendModelObjectDeletedEvent';
+        const methodName = 'sendModelObjectDeletedEvent';
         this.debug( methodName + '.begin to' + this.getToObserversMessage( this.modelObjectDeletedSubject ));
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.modelObjectDeletedSubject
@@ -819,7 +819,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public addModelObject( modelObject: T ): Observable<T>
     {
-        let methodName = "addModelObject";
+        const methodName = "addModelObject";
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         return this.crudActionHandler
                    .addModelObject( modelObject )
@@ -850,7 +850,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public sendModelObjectAddedEvent( modelObject: T )
     {
-        let methodName = 'sendModelObjectAddedEvent';
+        const methodName = 'sendModelObjectAddedEvent';
         this.debug( methodName + '.begin' + this.getToObserversMessage( this.modelObjectAddedSubject ));
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.modelObjectAddedSubject
@@ -867,7 +867,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public saveModelObject( modelObject: T ): Observable<T>
     {
-        let methodName = "saveModelObject";
+        const methodName = "saveModelObject";
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         return this.crudActionHandler
                    .saveModelObject( modelObject )
@@ -884,7 +884,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public sendModelObjectSavedEvent( modelObject: T )
     {
-        let methodName = 'sendModelObjectSavedEvent';
+        const methodName = 'sendModelObjectSavedEvent';
         this.debug( methodName + '.begin' + this.getToObserversMessage( this.modelObjectSavedSubject ));
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         this.modelObjectSavedSubject

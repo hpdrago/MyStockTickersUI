@@ -107,7 +107,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToServiceEvents()
     {
-        let methodName = "subscribeToServiceEvents";
+        const methodName = "subscribeToServiceEvents";
         this.debug( methodName + ".begin" );
         this.subscribeToCrudTableButtonEvents();
         this.debug( methodName + ".end" );
@@ -119,7 +119,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected lazyLoadTable( event: LazyLoadEvent ): void
     {
-        let methodName = "lazyLoadTable";
+        const methodName = "lazyLoadTable";
         this.debug( methodName + '.begin ' + JSON.stringify( event ) );
         this.crudRestService
             .getPage( this.modelObject, event )
@@ -215,7 +215,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onTableLoad( modelObjects: T[] ): void
     {
-        let methodName = "onTableLoad";
+        const methodName = "onTableLoad";
         this.debug( "onTableLoad.begin" );
         if ( !isNullOrUndefined( modelObjects ) && modelObjects.length > 0 )
         {
@@ -235,7 +235,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected subscribeToCrudTableButtonEvents(): void
     {
-        let methodName = 'subscribeToCrudTableButtonEvents';
+        const methodName = 'subscribeToCrudTableButtonEvents';
         this.debug( methodName + '.begin' );
         if ( this.isAllowAdds() )
         {
@@ -358,7 +358,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected updateModelObjectInTable( modelObject: T, addIfNotFound: boolean )
     {
-        let methodName = "updateModelObjectInTable";
+        const methodName = "updateModelObjectInTable";
         this.debug( methodName + ".begin " + JSON.stringify( modelObject ) + " " + addIfNotFound );
         this.modelObject = modelObject;
         var index = this.indexOf( this.modelObject );
@@ -509,7 +509,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onRowSelect( event ): void
     {
-        let methodName = "onRowSelect";
+        const methodName = "onRowSelect";
         this.debug( methodName +  ".begin " + JSON.stringify( event ) );
         this.selectedModelObject = this.createModelObjectFromRowSelectionEvent( event );
         var index = this.indexOf( this.selectedModelObject );
@@ -550,7 +550,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onModelObjectSelected( modelObject: T )
     {
-        let methodName = "onModelObjectSelected";
+        const methodName = "onModelObjectSelected";
         this.debug( methodName + ".begin " + JSON.stringify( modelObject ) );
         this.modelObject = modelObject;
         /*
@@ -570,7 +570,7 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      */
     protected onRowUnSelect( event ): void
     {
-        let methodName = "onRowUnSelect";
+        const methodName = "onRowUnSelect";
         this.debug( methodName + ".begin " + JSON.stringify( event ) );
         this.crudStateStore
             .sendModelObjectChangedEvent( this, null );

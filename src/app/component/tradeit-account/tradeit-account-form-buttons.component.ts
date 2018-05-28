@@ -84,7 +84,7 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
      */
     protected onAddButtonClick(): void
     {
-        let methodName = "onAddButtonClick";
+        const methodName = "onAddButtonClick";
         this.log( methodName + ".begin" );
         /*
          * Need to setup the necessary window listeners so that the authentication (OAuth) window can be popped up.
@@ -104,7 +104,7 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
      */
     public receiveMessage( event: any )
     {
-        let methodName = "receiveMessage";
+        const methodName = "receiveMessage";
         this.log( methodName + ".begin" );
         /*
          * Just forward the call back to the OAuth service.
@@ -127,7 +127,7 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
      */
     public notifyAuthenticationSuccess( tradeItAccount: TradeItAccount )
     {
-        let methodName = "notifyAuthenticationSuccess";
+        const methodName = "notifyAuthenticationSuccess";
         this.log( methodName + ".begin " + CrudOperation.getName( this.crudOperation ) + " " + JSON.stringify( tradeItAccount ) );
         /*
          * Notify that the account has been linked.

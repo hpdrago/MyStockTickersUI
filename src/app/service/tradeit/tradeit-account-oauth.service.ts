@@ -50,7 +50,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
      */
     public register( oAuthComponent: TradeItOAuthComponent )
     {
-        let methodName = "register";
+        const methodName = "register";
         this.log( methodName + ".begin" );
         this.oAuthComponent = oAuthComponent;
         /*
@@ -82,7 +82,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
      */
     public openOAuthPopup( oAuthComponent: TradeItOAuthComponent, broker: string  ): void// Observable<string>
     {
-        let methodName = "openOAuthPopup";
+        const methodName = "openOAuthPopup";
         this.log( methodName + " broker: " + broker );
         this.register( this.oAuthComponent );
         this.tradeItService
@@ -104,7 +104,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
      */
     private handleOpenOAuthPopup( getOauthPopupURLResult: TradeItGetOauthPopupURLResult )
     {
-        let methodName = "handleOpenOAuthPopup";
+        const methodName = "handleOpenOAuthPopup";
         this.log( methodName + "begin " + JSON.stringify( getOauthPopupURLResult ));
         if ( getOauthPopupURLResult.status == "ERROR" )
         {
@@ -178,7 +178,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
     public checkAuthentication( tradeItAccount: TradeItAccount,
                                 tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent ): Observable<TradeItAuthenticateResult>
     {
-        let methodName = "checkAuthentication";
+        const methodName = "checkAuthentication";
         this.log( methodName + ".begin isAuthenticated: " + tradeItAccount.isAuthenticated() );
         this.log( methodName + " modelObject: " + JSON.stringify( tradeItAccount ));
         let observable: Observable<TradeItAuthenticateResult> = null;
@@ -212,7 +212,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
     private authenticate( tradeItAccount: TradeItAccount,
                           tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent ): Observable<TradeItAuthenticateResult>
     {
-        let methodName = "authenticate";
+        const methodName = "authenticate";
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         let authenticateResultSubject = new Subject<TradeItAuthenticateResult>();
         this.tradeItService
@@ -252,7 +252,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
     private keepSessionAlive( tradeItAccount: TradeItAccount,
                               tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent ): Observable<TradeItAuthenticateResult>
     {
-        let methodName = "keepSessionAlive";
+        const methodName = "keepSessionAlive";
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         let keepSessionAliveSubject = new Subject<TradeItAuthenticateResult>();
         this.tradeItService
@@ -311,7 +311,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
                                     tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent,
                                     keepSessionAliveSubject: Subject<TradeItAuthenticateResult> )
     {
-        let methodName = 'handleKeepAliveFailure';
+        const methodName = 'handleKeepAliveFailure';
         this.debug( methodName + ".begin" );
         if ( TradeItAPIResultEnum.isSessionExpiredError( keepAliveResult ) ||
              TradeItAPIResultEnum.isParamsError( keepAliveResult ) )
@@ -342,7 +342,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
     private oAuthTokenUpdate( tradeItAccount: TradeItAccount,
                               tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent ): void
     {
-        let methodName = "oAuthTokenUpdate";
+        const methodName = "oAuthTokenUpdate";
         this.log( methodName + ".begin" );
         this.tradeItService
             .getOAuthTokenUpdateURL( tradeItAccount )
@@ -367,7 +367,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
      */
     public receiveMessage( event: any )
     {
-        let methodName = "receiveMessage";
+        const methodName = "receiveMessage";
         this.log( methodName + " " + JSON.stringify( event ));
         let observable: Observable<TradeItAccount> = this.handleOAuthResult( event );
         if ( observable != null )
@@ -403,7 +403,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
                                        tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent ,
                                        tradeItAPIResult: TradeItAPIResult )
     {
-        let methodName = "handleAuthenticationError";
+        const methodName = "handleAuthenticationError";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAPIResult ));
         switch( tradeItAPIResult.code )
         {

@@ -43,7 +43,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     protected stockSearchSelectedCompaniesComponent: StockSearchSelectedCompaniesComponent;
 
     @ViewChild(StockNotesSourceSelectionComponent)
-    protected stockNotesSourceSelectionComponent = StockNotesSourceSelectionComponent;
+    protected stockNotesSourceSelectionComponent: StockNotesSourceSelectionComponent;
 
     /**
      * Constructor.
@@ -129,13 +129,13 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected setDefaultValues()
     {
-        let methodName = 'setDefaultValues';
+        const methodName = 'setDefaultValues';
         this.log( methodName + '.begin' );
-        super.setDefaultValues();
         this.modelObject.notesRating = 3;
         this.modelObject.bullOrBear = 1;
         this.modelObject.actionTaken = StockNotesActionTaken.NONE;
-        this.modelObject.notesDate = new Date( Date.now() );
+        this.modelObject.notesDate = new Date( Date.now() )
+        super.setDefaultValues();
         this.log( methodName + '.end' );
     }
 
@@ -144,7 +144,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected resetForm(): void
     {
-        let methodName = 'resetForm';
+        const methodName = 'resetForm';
         this.log( methodName + '.begin' );
         super.resetForm();
         if ( this.stockSearchSelectedCompaniesComponent )
@@ -187,7 +187,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected setFormValues( modelObject: StockNotes )
     {
-        let methodName = "setFormValues";
+        const methodName = "setFormValues";
         this.log( methodName + " modelObject: " + JSON.stringify( modelObject ));
         this.log( methodName + " crudOperation: " + CrudOperation.getName( this.crudOperation ) );
         if ( this.isCrudCreateOperation() )
@@ -209,7 +209,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
      */
     protected prepareToDisplay(): void
     {
-        let methodName = "prepareToDisplay";
+        const methodName = "prepareToDisplay";
         this.log( methodName + '.begin' );
         super.prepareToDisplay();
         /*
@@ -327,6 +327,11 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             this.stockSearchSelectedCompaniesComponent
                 .setDisabled( false );
         }
+        if ( !isNullOrUndefined( this.stockNotesSourceSelectionComponent ))
+        {
+            this.stockNotesSourceSelectionComponent
+                .setDisabled( false );
+        }
         /*
         if ( !isNullOrUndefined( this.stockNotesSourceSelectionComponent ))
         {
@@ -344,12 +349,10 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             this.stockSearchSelectedCompaniesComponent
                 .setDisabled( true );
         }
-        /*
         if ( !isNullOrUndefined( this.stockNotesSourceSelectionComponent ))
         {
             this.stockNotesSourceSelectionComponent
                 .setDisabled( true );
         }
-        */
     }
 }

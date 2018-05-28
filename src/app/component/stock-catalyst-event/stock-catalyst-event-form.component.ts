@@ -113,7 +113,7 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
 
     protected onDateOrTimePeriodChange( event )
     {
-        let methodName = 'onDateOrTimePeriodChange';
+        const methodName = 'onDateOrTimePeriodChange';
         this.log( methodName + ' ' + JSON.stringify( event ));
         this.modelObject.dateOrTimePeriod = event.value;
         this.enableDisableDateAndTimerPeriodFields();

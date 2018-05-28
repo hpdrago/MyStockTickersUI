@@ -12,11 +12,11 @@ import { ToastsManager } from 'ng2-toastr';
     template: `<div *ngIf="stockAnalystConsensus != null; then foundTemplate else notFoundTemplate">
                </div>
                <ng-template #foundTemplate>
-                   <span class="strongBuy">{{stockAnalystConsensus.analystStrongBuyCount}}</span><!--
-                   --><span class="buy">{{stockAnalystConsensus.analystBuyCount}}</span><!--
-                   --><span class="hold">{{stockAnalystConsensus.analystHoldCount}}</span><!--
-                   --><span class="underPerform">{{stockAnalystConsensus.analystUnderPerformCount}}</span><!--
-                   --><span class="sell">{{stockAnalystConsensus.analystSellCount}}</span>
+                   <span class="strongBuy">{{getValue(stockAnalystConsensus.analystStrongBuyCount)}}</span><!--
+                   --><span class="buy">{{getValue(stockAnalystConsensus.analystBuyCount)}}</span><!--
+                   --><span class="hold">{{getValue(stockAnalystConsensus.analystHoldCount)}}</span><!--
+                   --><span class="underPerform">{{getValue(stockAnalystConsensus.analystUnderPerformCount)}}</span><!--
+                   --><span class="sell">{{getValue(stockAnalystConsensus.analystSellCount)}}</span>
                </ng-template>
                <ng-template #notFoundTemplate>
                </ng-template>
@@ -32,5 +32,10 @@ export class StockAnalystConsensusComponent extends StockAnalystConsensusBaseCom
                  protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
         super( toaster, stockAnalystConsensusCache );
+    }
+
+    protected getValue( count: number )
+    {
+        return count == null ? 0 : count;
     }
 }

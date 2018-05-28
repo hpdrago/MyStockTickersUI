@@ -62,7 +62,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      */
     public ngOnDestroy(): void
     {
-        let methodName = "ngOnDestroy";
+        const methodName = "ngOnDestroy";
         this.debug( methodName + ".begin" );
         super.ngOnDestroy();
         this.resetsServiceSubscriptions();
@@ -74,7 +74,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      */
     protected subscribeToControllerEvents()
     {
-        let methodName = 'subscribeTooControllerEvents';
+        const methodName = 'subscribeTooControllerEvents';
         this.debug( methodName + ".begin" );
         /*
         this.addSubscription( methodName,
@@ -177,7 +177,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      */
     protected onPanelAddButtonClickCompletedEvent()
     {
-        let methodName = 'onPanelAddButtonClickCompletedEvent';
+        const methodName = 'onPanelAddButtonClickCompletedEvent';
         this.debug( methodName + ' ' + JSON.stringify( this.modelObject ) );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
@@ -205,7 +205,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      */
     protected onPanelSaveButtonClickCompleted()
     {
-        let methodName = 'onPanelSaveButtonClickCompleted';
+        const methodName = 'onPanelSaveButtonClickCompleted';
         this.debug( methodName + " " + JSON.stringify( this.modelObject ) );
         if ( !isNullOrUndefined( this.modelObject ) )
         {
@@ -218,7 +218,7 @@ export class CrudDialogComponent<T extends ModelObject<T>> extends CrudPanelComp
      */
     protected closeDialog(): void
     {
-        let methodName = "closeDialog";
+        const methodName = "closeDialog";
         this.debug( methodName + ".begin" );
         this.displayDialog = false;
         //this.resetsServiceSubscriptions();

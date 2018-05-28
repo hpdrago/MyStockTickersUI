@@ -84,7 +84,7 @@ export class TradeItSecurityQuestionDialogComponent extends BaseComponent
      */
     protected onOkButtonClick(): void
     {
-        let methodName = "onButtonClick";
+        const methodName = "onButtonClick";
         this.log( methodName );
         this.tradeItService
             .answerSecurityQuestion( this.customerAccount.id, this.answer )

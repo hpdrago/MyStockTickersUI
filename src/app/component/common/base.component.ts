@@ -66,7 +66,7 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
      */
     protected addSubscription( subjectName: string, subscription: Subscription )
     {
-        let methodName = 'addSubscription';
+        const methodName = 'addSubscription';
         this.debug( methodName + " subscribing to " + subjectName );
         this.subscriptions.push( subscription );
     }

@@ -136,6 +136,13 @@ export class StockNotesSourceSelectionComponent extends BaseComponent implements
 
     public registerOnTouched( fn: any ): void {}
 
-
+    /**
+     * {@code ControlValueAccess}
+     * @param {boolean} isDisabled
+     */
+    public setDisabledState( isDisabled: boolean ): void
+    {
+        super.setDisabled( isDisabled );
+    }
 
 }

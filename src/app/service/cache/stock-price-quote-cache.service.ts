@@ -33,7 +33,7 @@ export class StockPriceQuoteCacheService extends AsyncCacheService<string,StockP
      */
     protected fetchCachedDataFromBackend( tickerSymbol: string ): Observable<StockPriceQuote>
     {
-        let methodName = 'fetchCachedDataFromBackend';
+        const methodName = 'fetchCachedDataFromBackend';
         this.debug( methodName + ' ' + tickerSymbol );
         return this.stockService
                    .getStockPriceQuote( tickerSymbol )

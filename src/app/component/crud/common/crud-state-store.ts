@@ -70,7 +70,7 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
      */
     public subscribeToModelObjectChangedEvent( fn: ( modelObject: ModelObjectChangedEvent<T> ) => any ): Subscription
     {
-        let methodName = "subscribeToModelObjectChangedEvent";
+        const methodName = "subscribeToModelObjectChangedEvent";
         this.debug( methodName + ".begin" );
         var observable: Observable<ModelObjectChangedEvent<T>> = this.modelObjectChangedSubject.asObservable();
         var subscription: Subscription = observable.subscribe( fn );
@@ -84,7 +84,7 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
      */
     public subscribeToCrudOperationChangeEvent( fn: ( CrudOperation ) => any ): Subscription
     {
-        let methodName = "subscribeToCrudOperationChangeEvent";
+        const methodName = "subscribeToCrudOperationChangeEvent";
         this.debug( methodName );
         var observable: Observable<CrudOperation> = this.crudOperationChangedSubject.asObservable();
         var subscription: Subscription = observable.subscribe( fn );
@@ -100,7 +100,7 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
      */
     public sendModelObjectChangedEvent( sender: any, modelObject: T )
     {
-        let methodName = "sendModelObjectChangedEvent";
+        const methodName = "sendModelObjectChangedEvent";
         /*
         if ( sender === this.modelObjectChangedSubject.getValue().sender &&
              modelObject.isEqualProperties( this.modelObjectChangedSubject.getValue().modelObject ))
@@ -149,7 +149,7 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
      */
     public sendCrudOperationChangedEvent( crudOperation: CrudOperation )
     {
-        let methodName = "sendCrudOperationChangedEvent";
+        const methodName = "sendCrudOperationChangedEvent";
         this.debug( methodName + " " + CrudOperation.getName( crudOperation ));
         this.debug( methodName + this.getToObserversMessage( this.modelObjectChangedSubject ));
         this.crudOperationChangedSubject.next( crudOperation );

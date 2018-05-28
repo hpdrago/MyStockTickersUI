@@ -48,7 +48,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
      */
     public subscribeToChanges( key: K, receiveCachedData: ( cachedData: T ) => any ): Subscription
     {
-        let methodName = "subscribeToChanges";
+        const methodName = "subscribeToChanges";
         this.debug( methodName + " " + key  );
         if ( isNullOrUndefined( key ))
         {
@@ -97,7 +97,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
      */
     private checkDataExpiration( subject: BehaviorSubject<T>, key: K )
     {
-        let methodName = 'checkDataExpiration';
+        const methodName = 'checkDataExpiration';
         this.debug( methodName + ' ' + key );
         if ( !isNullOrUndefined( subject ) &&
              !isNullOrUndefined( subject.getValue() ))
@@ -128,7 +128,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
      */
     private fetchData( key: K )
     {
-        let methodName = 'fetchData';
+        const methodName = 'fetchData';
         if ( isNullOrUndefined( key ))
         {
             throw new ReferenceError( 'key argument is null or undefined' );
@@ -174,7 +174,7 @@ export abstract class AsyncCacheService<K,T extends CacheStateContainer<K>> exte
      */
     public sendCachedDataChange( key: K, cachedData: T )
     {
-        let methodName = 'sendCachedDataChange';
+        const methodName = 'sendCachedDataChange';
         this.debug( methodName + ' ' + key + ' ' + JSON.stringify( cachedData ) );
         let subject = this.cacheSubjectMap
                           .get( key );

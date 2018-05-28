@@ -76,7 +76,7 @@ export abstract class StockToBuyBaseTableComponent extends StockModelObjectTable
      */
     protected onBuyButtonClick( stockToBuy: StockToBuy )
     {
-        let methodName: string = 'onBuyButtonClick ';
+        const methodName: string = 'onBuyButtonClick ';
         this.log( methodName + " " + JSON.stringify( stockToBuy ));
         /*
          * Convert the StockToBuy information into a StockNote instance so that the user can record the buy

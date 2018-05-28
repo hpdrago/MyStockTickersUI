@@ -58,7 +58,7 @@ export class StockCompanyComponent extends BaseCachedValueComponent implements O
      */
     private onStockCompanyChange( stockCompany: StockCompany )
     {
-        let methodName = 'onStockCompanyChange';
+        const methodName = 'onStockCompanyChange';
         this.debug( methodName + ' ' + JSON.stringify( stockCompany ));
         if ( !isNullOrUndefined( stockCompany ))
         {

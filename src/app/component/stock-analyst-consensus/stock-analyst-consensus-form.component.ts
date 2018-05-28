@@ -4,14 +4,14 @@ import { ToastsManager } from "ng2-toastr";
 import { StockCompany } from "../../model/entity/stock-company";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { SessionService } from "../../service/session.service";
-import { CustomerCrudService } from "../../service/crud/customer-crud.service";
 import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
 import { StockAnalystConsensusController } from './stock-analyst-consensus-controller';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
 import { CrudOperation } from '../crud/common/crud-operation';
 import { CrudFormComponent } from '../crud/form/crud-form.component';
-import { StockSearchDisplayTickerSymbolComponent } from '../common/stock-search-display-ticker-symbol.component';
+import { isNullOrUndefined } from 'util';
+import { StockSearchSelectedCompaniesComponent } from '../common/stock-search-selected-companies.component';
 
 /**
  * This is the StockCompany AnalystConsensus Form Component class.
@@ -26,8 +26,8 @@ import { StockSearchDisplayTickerSymbolComponent } from '../common/stock-search-
             } )
 export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockAnalystConsensus>
 {
-    @ViewChild(StockSearchDisplayTickerSymbolComponent)
-    private stockSearchDisplayTickerSymbolComponent: StockSearchDisplayTickerSymbolComponent;
+    @ViewChild(StockSearchSelectedCompaniesComponent)
+    private stockSearchSelectedCompaniesComponent: StockSearchSelectedCompaniesComponent;
 
     /**
      * Constructor.
@@ -57,10 +57,11 @@ export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockA
                stockAnalystConsensusCrudService );
     }
 
-    protected clearForm(): void
+    protected resetForm(): void
     {
-        super.clearForm();
-        this.stockSearchDisplayTickerSymbolComponent
+        this.debug( "resetForm" );
+        super.resetForm();
+        this.stockSearchSelectedCompaniesComponent
             .reset();
     }
 
@@ -97,8 +98,12 @@ export class StockAnalystConsensusFormComponent extends CrudFormComponent<StockA
      */
     public onStockSelected( stockCompany: StockCompany )
     {
-        let methodName = 'onStockSelected';
+        const methodName = 'onStockSelected';
         this.debug( methodName + " " + JSON.stringify( stockCompany ) );
+        if ( isNullOrUndefined( stockCompany ))
+        {
+            return;
+        }
         this.modelObject.getStockQuote().companyName = stockCompany.companyName;
         this.modelObject.getStockPriceQuote().lastPrice = stockCompany.lastPrice;
         this.modelObject.tickerSymbol = stockCompany.tickerSymbol;

@@ -51,7 +51,7 @@ export class StockPositionBaseTableComponent extends StockModelObjectTableCompon
      */
     public setTradeItAccount( tradeItAccount: TradeItAccount )
     {
-        let methodName = 'setTradeItAccount';
+        const methodName = 'setTradeItAccount';
         this.log( methodName + " " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
         this.linkedAccount = null;
@@ -64,7 +64,7 @@ export class StockPositionBaseTableComponent extends StockModelObjectTableCompon
      */
     public setLinkedAccount( linkedAccount: LinkedAccount )
     {
-        let methodName = 'setLinkedAccount';
+        const methodName = 'setLinkedAccount';
         this.log( methodName + ".begin " + JSON.stringify( linkedAccount ));
         /*
          * This method gets called twice, once for the table row click which initiates a keep session alive with TradeIt

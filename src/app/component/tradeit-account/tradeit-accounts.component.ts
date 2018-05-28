@@ -72,7 +72,7 @@ export class TradeItAccountsComponent extends BaseComponent implements OnInit
      */
     private onTradeItTableSelectionChange( tradeItAccount: TradeItAccount )
     {
-        let methodName = 'onTradeItTableSelectionChange';
+        const methodName = 'onTradeItTableSelectionChange';
         this.log( methodName + '.begin ' + JSON.stringify( tradeItAccount ) );
         this.tradeItAccount = tradeItAccount;
         this.linkedAccountTableComponent
@@ -89,7 +89,7 @@ export class TradeItAccountsComponent extends BaseComponent implements OnInit
      */
     private onLinkedAccountTableSelectionChange( linkedAccount: LinkedAccount )
     {
-        let methodName = 'onLinkedAccountTableSelectionChange';
+        const methodName = 'onLinkedAccountTableSelectionChange';
         this.log( methodName + '.begin ' + JSON.stringify( linkedAccount ) );
         this.linkedAccount = linkedAccount;
         this.stockPositionTableComponent

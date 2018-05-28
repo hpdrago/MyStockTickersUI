@@ -44,7 +44,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getCreateModelObjectUrl(): string
     {
-        let methodName = 'getCreateModelObjectUrl';
+        const methodName = 'getCreateModelObjectUrl';
         this.debug( methodName + '.begin' );
         let contextURL = this.getContextBaseURL();
         if ( isNullOrUndefined( contextURL ) )
@@ -66,7 +66,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getReadModelObjectURL( modelObject: T ): string
     {
-        let methodName = 'getReadModelObjectURL';
+        const methodName = 'getReadModelObjectURL';
         let contextURL = this.getContextURL( modelObject, false );
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         if ( isNullOrUndefined( contextURL ) )
@@ -89,7 +89,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getCompleteURL( contextURL: string, customerURL: string )
     {
-        let methodName = 'getCompleteURL';
+        const methodName = 'getCompleteURL';
         this.debug( `${methodName} contextURL: ${contextURL} customerURL: ${customerURL}` );
         let url = this.appConfig.getBaseURL() + contextURL + (customerURL == null ? "" : customerURL);
         return url;
@@ -111,7 +111,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getContextURL( modelObject: T, pageable: boolean = false ): string
     {
-        let methodName = 'getContextURL';
+        const methodName = 'getContextURL';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         let contextURL = this.getContextBaseURL() + (pageable ? "/page" : "" );
         contextURL = this.addContextURLKeyValues( modelObject, contextURL );
@@ -127,7 +127,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getContextURLFrom( contextURL: string, modelObject: T, pageable: boolean = false ): string
     {
-        let methodName = 'getContextURLFrom';
+        const methodName = 'getContextURLFrom';
         this.debug( methodName + ' ' + contextURL + ' ' + JSON.stringify( modelObject ) );
         contextURL = this.getContextBaseURL() + (pageable ? "/page" : "" ) + contextURL;
         contextURL = this.addContextURLKeyValues( modelObject, contextURL );
@@ -167,7 +167,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getContextURLKeyValues( modelObject: T ): KeyValuePairs<string,any>
     {
-        let methodName = 'getContextURLKeyValues';
+        const methodName = 'getContextURLKeyValues';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         let primaryKeyValue: any = null;
 
@@ -218,7 +218,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected getReadModelObjectListUrl( modelObject: T, pageable: boolean = false ): string
     {
-        let methodName = 'getReadModelObjectListUrl';
+        const methodName = 'getReadModelObjectListUrl';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         let customerURL = this.getCustomerURL();
         if ( isNullOrUndefined( customerURL ) )
@@ -262,7 +262,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     public getModelObject( modelObject: T ): Observable<T>
     {
-        let methodName = 'getModelObject';
+        const methodName = 'getModelObject';
         this.debug( methodName + ' query for: ' + JSON.stringify( modelObject ) );
         if ( isNullOrUndefined( modelObject ) )
         {
@@ -285,7 +285,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected httpRequestModelObject( url: string ): Observable<T>
     {
-        let methodName = 'httpRequestModelObject';
+        const methodName = 'httpRequestModelObject';
         this.debug( methodName + ' ' + url );
         return this.http
                    .get<T>( url ) // ...using put request
@@ -311,7 +311,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     public getModelObjectList( modelObject: T ): Observable<Array<T>>
     {
-        let methodName = 'getModelObjectList';
+        const methodName = 'getModelObjectList';
         this.debug( methodName + ' modelObject: ' + this.serialize( modelObject ) );
         if ( isNullOrUndefined( modelObject ) )
         {
@@ -334,7 +334,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     protected httpRequestModelObjects( url: string ): Observable<Array<T>>
     {
-        let methodName = 'httpRequestModelObjects';
+        const methodName = 'httpRequestModelObjects';
         this.debug( methodName + '.begin ' + url );
         return this.http
                    .get<Array<T>>( url )
@@ -375,7 +375,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
      */
     public getPage( modelObject: T, lazyLoadEvent: LazyLoadEvent ): Observable<PaginationPage<T>>
     {
-        let methodName = 'getPage';
+        const methodName = 'getPage';
         let url = this.getPaginationURL( this.getReadModelObjectListUrl( modelObject, true ) ).getPage( lazyLoadEvent );
         this.logger.log( `${methodName} url: ${url}` );
         return this.http

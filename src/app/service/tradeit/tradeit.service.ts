@@ -54,7 +54,7 @@ export class TradeItService extends BaseService
      */
     public authenticateAccount( accountId: string ): Observable<TradeItAuthenticateResult>
     {
-        let methodName = "authenticateAccount";
+        const methodName = "authenticateAccount";
         this.debug( methodName + ".begin accountId: " + accountId );
         let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.AUTHENTICATE_URL}`;
         url += `/accountId/${accountId}`;
@@ -85,7 +85,7 @@ export class TradeItService extends BaseService
      */
     public answerSecurityQuestion( accountId: string, securityQuestionAnswer: string ): Observable<TradeItAuthenticateResult>
     {
-        let methodName = "answerSecurityQuestion";
+        const methodName = "answerSecurityQuestion";
         let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.ANSWER_SECURITY_QUESTION_URL}`;
         url += `/accountId/${accountId}`;
         url += `/customerId/${this.sessionService.getLoggedInUserId()}`;
@@ -114,7 +114,7 @@ export class TradeItService extends BaseService
      */
     public getOAuthAccessToken( broker: string, accountName: string, oAuthVerifier: string ): Observable<TradeItOAuthAccessResult>
     {
-        let methodName = "getOAuthAccessToken";
+        const methodName = "getOAuthAccessToken";
         let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.GET_OAUTH_ACCESS_TOKEN_URL}`;
         url += `/customerId/${this.sessionService.getLoggedInUserId()}`;
         url += `/broker/${broker}`
@@ -141,7 +141,7 @@ export class TradeItService extends BaseService
      */
     public getOAuthPopupURL( broker: string ): Observable<TradeItGetOauthPopupURLResult>
     {
-        let methodName = "getOAuthPopupURL";
+        const methodName = "getOAuthPopupURL";
         let url = this.appConfig.getBaseURL() + this.CONTEXT_URL + this.GET_REQUEST_OAUTH_POPUP_URL + "/" + broker;
         this.debug( methodName + " url: " + url );
         return this.http
@@ -160,7 +160,7 @@ export class TradeItService extends BaseService
      */
     public getBrokers(): Observable<TradeItBrokerListResult>
     {
-        let methodName = "getBrokers";
+        const methodName = "getBrokers";
         let url = this.appConfig.getBaseURL() + this.CONTEXT_URL + this.GET_BROKERS_URL;
         this.debug( methodName + " url: " + url );
         return this.http
@@ -207,7 +207,7 @@ export class TradeItService extends BaseService
      */
     public keepSessionAlive( tradeItAccount: TradeItAccount ): Observable<TradeItKeepSessionAliveResult>
     {
-        let methodName = "keepSessionAlive";
+        const methodName = "keepSessionAlive";
         this.debug( methodName + " " + JSON.stringify( tradeItAccount ));
         let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.KEEP_SESSION_ALIVE}/tradeItAccountId/${tradeItAccount.id}/customerId/${this.sessionService.getLoggedInUserId()}`;
         this.debug( methodName + " url: " + url );
@@ -230,7 +230,7 @@ export class TradeItService extends BaseService
      */
     public getOAuthTokenUpdateURL( tradeItAccount: TradeItAccount ): Observable<GetOAuthTokenUpdateURLResult>
     {
-        let methodName = "getOAuthTokenUpdateURL";
+        const methodName = "getOAuthTokenUpdateURL";
         this.debug( methodName + " " + JSON.stringify( tradeItAccount ));
         let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.GET_OAUTH_TOKEN_UPDATE_URL}/accountId/${tradeItAccount.id}/customerId/${this.sessionService.getLoggedInUserId()}`;
         this.debug( methodName + " url: " + url );

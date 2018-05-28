@@ -128,7 +128,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     public ngAfterViewInit(): void
     {
-        let methodName = "ngAfterViewInit";
+        const methodName = "ngAfterViewInit";
         this.debug( methodName + ".begin" );
         this.debug( methodName + " crudOperation: " + this.CrudOperation.getName( this.crudOperation ) );
         this.debug( methodName + " modelObject: " + JSON.stringify( this.modelObject ));
@@ -222,7 +222,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected subscribeToCrudFormServiceEvents(): void
     {
-        let methodName = 'subscribeToCrudFormServiceEvents';
+        const methodName = 'subscribeToCrudFormServiceEvents';
         this.debug( methodName + '.begin' );
         /*
          * Reset button
@@ -314,10 +314,13 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
 
     /**
      * This method is called when a new model object is being created or when the reset button is clicked.
+     * This method only calls {@code setFormValue} so for subclasses that override this method, set the model object
+     * value sand then call {@code super.setDefaultValues()}.
      */
     protected setDefaultValues(): void
     {
         this.debug( "setDefaultValues" );
+        this.setFormValues( this.modelObject );
     }
 
     /**
@@ -327,7 +330,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected setFormValues( modelObject: T ): void
     {
-        let methodName = 'setFormValues';
+        const methodName = 'setFormValues';
         this.debug( methodName + '.begin: ' + JSON.stringify( modelObject ));
         if ( isNullOrUndefined( this.modelObject ) )
         {
@@ -390,7 +393,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected clearForm(): void
     {
-        let methodName = 'clearForm';
+        const methodName = 'clearForm';
         this.debug( methodName + '.begin' );
         let modelObject: T = this.modelObjectFactory
                                  .newModelObject();
@@ -423,7 +426,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected onFormChange( formData: any ): void
     {
-        let methodName = "onFormChange";
+        const methodName = "onFormChange";
         //this.debug( "onFormChange.begin " + JSON.stringify( formData ) );
         this.emitFormDirtyChange();
         this.emitFormValidChange();
@@ -455,7 +458,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
                 }
             }
             this.crudController.sendFormErrors( errors );
-            //this.log( JSON.stringify( errors ));
+            this.log( JSON.stringify( errors ));
         }
         else
         {
@@ -522,7 +525,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected shouldDisable()
     {
-        let methodName = 'shouldDisable';
+        const methodName = 'shouldDisable';
         var readOnly: boolean = this.isModelObjectReadOnly( this.modelObject );
         this.debug( methodName + " crudOperation: " + CrudOperation.getName( this.crudOperation ));
         this.debug( methodName + " isModelObjectReadOnly: " + readOnly );
@@ -651,7 +654,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected onSaveButtonClicked(): void
     {
-        let methodName = "onSaveButtonClicked";
+        const methodName = "onSaveButtonClicked";
         this.debug( methodName + " " + JSON.stringify( this.modelObject ) );
         this.prepareToSave();
     }
@@ -662,7 +665,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected onAddButtonClicked(): void
     {
-        let methodName = "onAddButtonClicked";
+        const methodName = "onAddButtonClicked";
         this.debug( methodName + " " + JSON.stringify( this.modelObject ) );
         this.prepareToDisplay()
     }
@@ -675,7 +678,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected onModelObjectCreated( modelObject: T ): void
     {
-        let methodName = 'onModelObjectCreated';
+        const methodName = 'onModelObjectCreated';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         //super.onModelObjectCreated( modelObject );
         this.modelObject = this.modelObjectFactory.newModelObject();
@@ -689,7 +692,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected onModelObjectSaved( modelObject: T ): void
     {
-        let methodName = 'onModelObjectSaved';
+        const methodName = 'onModelObjectSaved';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         //super.onModelObjectSaved( modelObject );
         //this.clearForm();
@@ -703,7 +706,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
      */
     protected onModelObjectDeleted( modelObject: T ): void
     {
-        let methodName = 'onModelObjectDeleted';
+        const methodName = 'onModelObjectDeleted';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         //super.onModelObjectDeleted( modelObject );
         this.modelObject = this.modelObjectFactory.newModelObject();

@@ -69,7 +69,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      */
     public setTradeItAccount( tradeItAccount: TradeItAccount )
     {
-        let methodName = "setTradeItAccount";
+        const methodName = "setTradeItAccount";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
         this.tradeItAccount = tradeItAccount;
         if ( !isNullOrUndefined( this.tradeItAccount ))
@@ -96,7 +96,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      */
     protected updateLinkedAccounts()
     {
-        let methodName = 'updateLinkedAccounts'
+        const methodName = 'updateLinkedAccounts'
         /*
          * Make a separate HTTP request for each linked account.
          */
@@ -122,7 +122,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      */
     protected onRowSelect( event ): void
     {
-        let methodName = "onRowSelect";
+        const methodName = "onRowSelect";
         this.log( methodName + ".begin " + JSON.stringify( event ));
         super.onRowSelect( event );
         this.tradeItOAuthService
@@ -164,14 +164,14 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
 
     public notifyAuthenticationSuccess( tradeItAccount: TradeItAccount )
     {
-        let methodName = "notifyAuthenticationSuccess";
+        const methodName = "notifyAuthenticationSuccess";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
         this.log( methodName + ".end" );
     }
 
     public receiveMessage( event: any )
     {
-        let methodName = "receiveMessage";
+        const methodName = "receiveMessage";
         this.log( methodName + ".begin " + JSON.stringify( event ) );
         this.log( methodName + ".end" );
     }

@@ -36,7 +36,7 @@ export abstract class CrudActionHandler<T extends ModelObject<T>> extends BaseSe
      */
     public deleteModelObject( modelObject: T ): Observable<void>
     {
-        let methodName = 'deleteModelObject';
+        const methodName = 'deleteModelObject';
         this.debug( methodName + ' ' + JSON.stringify( modelObject ) );
         return this.crudRestService
                    .deleteModelObject( modelObject )

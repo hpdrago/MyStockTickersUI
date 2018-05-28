@@ -52,7 +52,7 @@ export class PortfolioCrudService extends CrudRestService<Portfolio>
      */
     public addPortfolio( customerId: string, portfolioName: string ): Observable<any>
     {
-        let methodName = "addPortfolio";
+        const methodName = "addPortfolio";
         this.logger.debug( `${methodName} customerId: ${customerId} portfolioName: ${portfolioName}`);
         /*
          * Create a Portfolio object and fill it in

@@ -56,7 +56,7 @@ export class StockPriceQuoteService extends BaseService
      */
     public getStockPriceQuote( tickerSymbol: string ): Observable<StockPriceQuote>
     {
-        let methodName = "getStockPriceQuote";
+        const methodName = "getStockPriceQuote";
         this.debug( methodName + " " + tickerSymbol );
         if ( isNullOrUndefined( tickerSymbol ) || tickerSymbol.length == 0 )
         {

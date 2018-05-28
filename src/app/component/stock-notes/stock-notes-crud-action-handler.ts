@@ -51,7 +51,7 @@ export class StockNotesCrudActionHandler extends StockModelObjectCrudActionHandl
      */
     public addModelObject( stockNotes: StockNotes ): Observable<StockNotes>
     {
-        let methodName = 'addModelObject.override';
+        const methodName = 'addModelObject.override';
         this.debug( methodName + ' ' + JSON.stringify( stockNotes ))
         let returnObservable: Observable<StockNotes>;
         /*

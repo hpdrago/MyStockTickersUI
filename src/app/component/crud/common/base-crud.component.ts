@@ -71,7 +71,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     public ngOnInit()
     {
-        let methodName = "ngOnInit";
+        const methodName = "ngOnInit";
         this.debug( methodName + ".begin" );
         /*
          * Initial the values from the state store directly.  Do not call "on" method as that might trigger
@@ -92,7 +92,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     public ngAfterViewInit(): void
     {
-        let methodName = 'ngAfterViewInit';
+        const methodName = 'ngAfterViewInit';
         this.logMethodBegin( methodName )
         this.logMethodEnd( methodName );
     }
@@ -102,7 +102,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     protected subscribeToCrudStateStoreEvents()
     {
-        let methodName = 'subscribeToCrudStateStoreEvents';
+        const methodName = 'subscribeToCrudStateStoreEvents';
         this.debug( methodName );
         this.addSubscription( 'subscribeToCrudOperationChangeEvent',
                               this.crudStateStore
@@ -153,7 +153,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     private subscribeToModelObjectChangeEvents()
     {
-        let methodName = 'subscribeToModelObjectChangeEvents';
+        const methodName = 'subscribeToModelObjectChangeEvents';
         this.debug( methodName + '.begin' );
         this.addSubscription( 'subscribeToModelObjectSavedEvent',
             this.crudController
@@ -175,7 +175,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     protected isReceivedOurOwnEvent( callingMethodName: string, modelObjectChangedEvent: ModelObjectChangedEvent<T> ): boolean
     {
-        let methodName = 'isReceivedOurOwnEvent';
+        const methodName = 'isReceivedOurOwnEvent';
         let senderMatches = this === modelObjectChangedEvent.sender;
         let modelObjectMatches = this.modelObject === modelObjectChangedEvent.modelObject;
         this.debug( `${methodName} senderMatches: ${senderMatches} modelObjectMatches: ${modelObjectMatches}` );
@@ -238,7 +238,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     */
    protected onModelObjectChanged( modelObject: T ): void
    {
-       let methodName = "onModelObjectChanged";
+       const methodName = "onModelObjectChanged";
        this.debug( methodName + " " + JSON.stringify( modelObject ) );
        this.modelObject = modelObject;
    }
@@ -250,7 +250,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     protected onModelObjectDeleted( modelObject: T ): void
     {
-        let methodName = "onModelObjectDeleted";
+        const methodName = "onModelObjectDeleted";
         this.debug( methodName + " " + JSON.stringify( modelObject ) );
         this.modelObject = modelObject;
     }
@@ -262,7 +262,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     protected onModelObjectCreated( modelObject: T ): void
     {
-        let methodName = "onModelObjectCreated";
+        const methodName = "onModelObjectCreated";
         this.debug( methodName + " " + JSON.stringify( modelObject ) );
         this.modelObject = modelObject;
     }
@@ -274,7 +274,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     protected onModelObjectSaved( modelObject: T ): void
     {
-        let methodName = "onModelObjectSaved";
+        const methodName = "onModelObjectSaved";
         this.debug( methodName + " " + JSON.stringify( modelObject ) );
         this.modelObject = modelObject;
     }
@@ -285,7 +285,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     private crudOperationChangedEvent( crudOperation: CrudOperation )
     {
-        let methodName = "crudOperationChangedEvent";
+        const methodName = "crudOperationChangedEvent";
         this.debug( methodName + " change " + CrudOperation.getName( crudOperation ) );
         this.onCrudOperationChanged( crudOperation );
     }

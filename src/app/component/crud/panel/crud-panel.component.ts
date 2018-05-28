@@ -56,7 +56,7 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      */
     protected subscribeToCrudPanelServiceEvents(): void
     {
-        let methodName = 'subscribeToCrudPanelServiceEvents';
+        const methodName = 'subscribeToCrudPanelServiceEvents';
         this.debug( methodName + ".begin" );
         this.addSubscription( 'subscribeToCancelButtonClickedEvent',
             this.crudController

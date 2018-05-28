@@ -57,7 +57,7 @@ export abstract class StockModelObjectCrudActionHandler<T extends StockModelObje
     {
         if ( !isNullOrUndefined( stockPriceQuote ))
         {
-            let methodName = 'onStockPriceQuoteChange';
+            const methodName = 'onStockPriceQuoteChange';
             this.debug( methodName + ' ' + stockPriceQuote.tickerSymbol )
             stockModelObject.stockPriceQuote = stockPriceQuote;
         }
@@ -72,7 +72,7 @@ export abstract class StockModelObjectCrudActionHandler<T extends StockModelObje
     {
         if ( !isNullOrUndefined( stockQuote ))
         {
-            let methodName = 'onStockQuoteChange';
+            const methodName = 'onStockQuoteChange';
             this.debug( methodName + ' ' + stockQuote.tickerSymbol )
             stockModelObject.stockQuote = stockQuote;
         }

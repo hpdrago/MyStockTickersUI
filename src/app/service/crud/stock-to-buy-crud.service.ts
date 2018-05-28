@@ -55,16 +55,4 @@ export class StockToBuyCrudService extends CrudRestService<StockToBuy>
         keyColumns.addPair( "tickerSymbol", stockToBuy.tickerSymbol );
         return keyColumns;
     }
-
-    /*
-    protected getReadModelObjectListUrl( stockToBuy: StockToBuy ): string
-    {
-        var url: string = super.getReadModelObjectListUrl( stockToBuy, true );
-        if ( !isNullOrUndefined( stockToBuy.tickerSymbol ) )
-        {
-            url += '/' + stockToBuy.tickerSymbol;
-        }
-        return url;
-    }
-    */
 }

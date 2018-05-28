@@ -69,7 +69,7 @@ export class PaginationURL
      */
     public getPage( lazyLoadEvent: LazyLoadEvent  ): string
     {
-        let methodName = "getPage";
+        const methodName = "getPage";
         /*
          * Need to calculate the page number from the rowOffSet
          */

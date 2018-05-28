@@ -90,9 +90,15 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
         super( toaster );
     }
 
+    /**
+     * Initialize the component.
+     */
     public ngOnInit(): void
     {
-        if ( !isNullOrUndefined( this.tickerSymbol ))
+        const methodName = 'ngOnInit';
+        this.debug( methodName + ' @input tickerSymbol=' + this.tickerSymbol)
+        this.debug( methodName + ' @input maxStocks=' + this.maxStocks)
+        if ( !isNullOrUndefined( this.tickerSymbol ) && this.tickerSymbol.length > 0 )
         {
             this.selectedStockCompaniesComponent
                 .loadCompany( this.tickerSymbol );
@@ -131,8 +137,11 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
     public loadCompany( tickerSymbol: string )
     {
         this.debug( "loadCompany: " + tickerSymbol );
-        this.selectedStockCompaniesComponent
-            .loadCompany( tickerSymbol );
+        if ( !isNullOrUndefined( tickerSymbol ))
+        {
+            this.selectedStockCompaniesComponent
+                .loadCompany( tickerSymbol );
+        }
     }
 
     /**
@@ -143,7 +152,7 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
      */
     protected onStockSelected( stockCompany: StockCompany ): void
     {
-        let methodName = 'onStockSelected';
+        const methodName = 'onStockSelected';
         this.debug( methodName + ' ' + JSON.stringify( stockCompany ) );
         this.stockSelected.emit( stockCompany );
         this.addCompany( stockCompany );
@@ -165,6 +174,7 @@ export class StockSearchSelectedCompaniesComponent extends BaseComponent
      */
     public setDisabled( disabled: boolean ): void
     {
+        this.debug( 'setDisabled: " + disabled: ' + disabled );
         super.setDisabled( disabled );
         this.selectedStockCompaniesComponent
             .setDisabled( disabled );

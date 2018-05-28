@@ -85,9 +85,20 @@ export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
      */
     protected onStockSelected( stockCompany: StockCompany )
     {
+        const methodName = 'onStockSelected';
+        this.logMethodBegin( methodName + ' ' + JSON.stringify( stockCompany ));
         super.onStockSelected( stockCompany );
+        this.modelObject
+            .tickerSymbol = stockCompany.tickerSymbol;
+        this.setFormValue( 'tickerSymbol', stockCompany.tickerSymbol );
+        /*
+         * There can only one stock to buy for a customer and ticker symbol combination.
+         */
+        let stockToBuy = this.stockToBuyFactory
+                             .newModelObject();
+        stockToBuy.tickerSymbol = stockCompany.tickerSymbol;
         this.crudRestService
-            .getModelObject( this.modelObject )
+            .getModelObject( stockToBuy )
             .subscribe( (existingStockToBuy: StockToBuy) =>
             {
                 if ( !isNullOrUndefined( existingStockToBuy ))
@@ -96,5 +107,6 @@ export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
                         existingStockToBuy.getTickerSymbol() );
                 }
             });
+        this.logMethodEnd( methodName );
     }
 }

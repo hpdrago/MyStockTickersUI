@@ -62,7 +62,7 @@ export class TradeItAccountTableComponent extends TradeItAccountBaseTableCompone
      */
     private onAccountLinkedEvent( tradeItAccount: TradeItAccount )
     {
-        let methodName = 'onAccountLinkedEvent';
+        const methodName = 'onAccountLinkedEvent';
         this.log( methodName + ' ' + JSON.stringify( tradeItAccount ));
         this.refreshTable();
     }
