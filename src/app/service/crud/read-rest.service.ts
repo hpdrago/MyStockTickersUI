@@ -90,7 +90,7 @@ export abstract class ReadRestService<T extends ModelObject<T>>
     protected getCompleteURL( contextURL: string, customerURL: string )
     {
         const methodName = 'getCompleteURL';
-        this.debug( `${methodName} contextURL: ${contextURL} customerURL: ${customerURL}` );
+        //this.debug( `${methodName} contextURL: ${contextURL} customerURL: ${customerURL}` );
         let url = this.appConfig.getBaseURL() + contextURL + (customerURL == null ? "" : customerURL);
         return url;
     }

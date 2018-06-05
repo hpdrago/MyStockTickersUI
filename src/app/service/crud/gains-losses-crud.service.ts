@@ -7,6 +7,8 @@ import { HttpClient } from '@angular/common/http';
 import { KeyValuePairs } from '../../common/key-value-pairs';
 import { GainsLosses } from '../../model/entity/gains-losses';
 import { GainsLossesFactory } from '../../model/factory/gains-losses.factory';
+import { Observable } from 'rxjs/Observable';
+import { StringDTO } from '../../model/entity/string-d-t-o';
 
 /**
  * This class provides all CRUD REST services for StockCompany To Buy.
@@ -60,9 +62,23 @@ export class GainsLossesCrudService extends CrudRestService<GainsLosses>
      * Get the URL to upload a file.
      * @return {string}
      */
-    public getFileUploadURL(): string
+    public getImportURL(): string
     {
-        return this.getCompleteURL( this.getContextBaseURL() + '/upload',
+        return this.getCompleteURL( this.getContextBaseURL() + '/import',
                                     this.getCustomerURL() );
+    }
+
+    /**
+     * Get the import results.
+     * @return {Observable<string>}
+     */
+    public getImportResults(): Observable<StringDTO>
+    {
+        let methodName = 'getImportResults';
+        this.log( methodName )
+        let url = this.getCompleteURL( this.getContextBaseURL() + '/importResults',
+                                                 this.getCustomerURL() );
+        return this.http
+                   .get<StringDTO>( url );
     }
 }

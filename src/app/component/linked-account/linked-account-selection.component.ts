@@ -7,6 +7,9 @@ import { LinkedAccountFactory } from '../../model/factory/linked-account.factory
 import { LinkedAccount } from '../../model/entity/linked-account';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+/**
+ * Displays a drop down list of linked account;
+ */
 @Component
 ({
     selector: 'linked-account-selection',

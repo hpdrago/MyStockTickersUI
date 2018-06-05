@@ -10,6 +10,12 @@
           [(visible)]="displayDialog">
 
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+            <div *ngIf="importing">
+                <p-progressBar mode="indeterminate"></p-progressBar>
+            </div>
+            <!----------------------------------------------------------------------------------------------------------
+             DELETE ENTRIES
+            ----------------------------------------------------------------------------------------------------------->
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
                     <label class="crud-form" for="clearEntries">Delete All Gains/Losses:</label>
@@ -19,12 +25,26 @@
                     </p-toggleButton>
                 </div>
             </div>
+            <!----------------------------------------------------------------------------------------------------------
+             LINKED ACCOUNT
+            ----------------------------------------------------------------------------------------------------------->
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-3">
+                    <label class="crud-form" for="account">Account:</label>
+                </div>
+                <div class="ui-grid-col-4" id="account">
+                    <linked-account-selection [(ngModel)]="linkedAccountId" >
+                    </linked-account-selection>
+                </div>
+            </div>
             <div class="crud-form ui-grid-row">
                 <div class="crud-form-label ui-grid-col-3">
                     <label class="crud-form" for="importFormat">Import Format:</label>
                 </div>
                 <div class="ui-grid-col-4" id="importFormat">
                     <p-dropdown [options]="importFormats"
+                                [style]="{'width':'225px'}"
+                                placeholder="Select a Format"
                                 [(ngModel)]="importFormat">
                     </p-dropdown>
                 </div>
@@ -32,7 +52,7 @@
             <div class="crud-form ui-grid-row">
                 <div class="ui-grid-col-12">
                     <p-fileUpload name="files"
-                                  url="{{gainsLossesService.getFileUploadURL()}}"
+                                  url="{{gainsLossesService.getImportURL()}}"
                                   accept=".xls,.xlsx"
                                   maxFileSize="10000000"
                                   [multiple]="true"
@@ -44,6 +64,27 @@
                                   (onError)="onError($event)">
                     </p-fileUpload>
                 </div>
+            </div>
+            <div *ngIf="importErrorResults != null" style="margin: 10px">
+                <div class="crud-form ui-grid-row">
+                    <div class="ui-grid-col-12" style="background-color: red;color: white">
+                        <pre style="background-color: red;color: white">{{importErrorResults}}</pre>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="importSuccessResults != null">
+                <div class="crud-form ui-grid-row" style="margin: 10px">
+                    <div class="ui-grid-col-12" style="background-color: green;color: white">
+                        <pre style="background-color: green;color: white">{{importSuccessResults}}</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="crud-form-button" style="float: bottom">
+                <button pButton
+                        type="button"
+                        (click)="onOkButtonClick()"
+                        label="OK">
+                </button>
             </div>
         </div>
 </p-dialog>

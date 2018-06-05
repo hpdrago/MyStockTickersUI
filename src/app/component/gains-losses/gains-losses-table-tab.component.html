@@ -48,18 +48,39 @@
                   [style]="{'width':'150px'}"
                   [sortable]="false">
             <ng-template let-col let-gainsLosses="rowData" pTemplate="body">
-                <stock-company [tickerSymbol]="gainsLosses.tickerSymbol">
+                <stock-company [tickerSymbol]="gainsLosses.tickerSymbol"
+                               (stockCompanyChange)="gainsLosses.setStockCompany($event)">
+                    {{gainsLosses.stockCompany.companyName}}
                 </stock-company>
             </ng-template>
         </p-column>
 
+        <!----------------------------------------------------------------------------------------------------------
+        ACCOUNT NAME
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="accountName"
+                  field="linkedAccount.accountName"
+                  header="Account Name"
+                  [style]="{'width':'50px'}"
+                  [sortable]="true">
+        </p-column>
+
+        <!----------------------------------------------------------------------------------------------------------
+        ACCOUNT NUMBER
+        ------------------------------------------------------------------------------------------------------------>
+        <p-column id="accountNumber"
+                  field="linkedAccount.accountNumber"
+                  header="Account Number"
+                  [style]="{'width':'50px'}"
+                  [sortable]="true">
+        </p-column>
         <!----------------------------------------------------------------------------------------------------------
         GAINS
         ------------------------------------------------------------------------------------------------------------>
         <p-column id="gains"
                   field="gains"
                   header="Realized Gains"
-                  [style]="{'width':'10px','text-align':'right'}">
+                  [style]="{'width':'50px','text-align':'right'}">
             <ng-template let-col let-gainsLosses="rowData" pTemplate="body">
                 <gain-loss-currency [currencyValue]="gainsLosses[col.field]">
                 </gain-loss-currency>
@@ -72,7 +93,7 @@
         <p-column id="losses"
                   field="losses"
                   header="Realized losses"
-                  [style]="{'width':'10px','text-align':'right'}">
+                  [style]="{'width':'50px','text-align':'right'}">
             <ng-template let-col let-gainsLosses="rowData" pTemplate="body">
                 <gain-loss-currency [currencyValue]="gainsLosses[col.field]">
                 </gain-loss-currency>
@@ -85,10 +106,10 @@
         <p-column id="totalGainsLosses"
                   field="totalGainsLosses"
                   header="Total Gains/Losses"
-                  [style]="{'width':'10px','text-align':'right'}">
+                  [style]="{'width':'50px','text-align':'right'}">
             <ng-template let-col let-gainsLosses="rowData" pTemplate="body">
-                <currency [currencyValue]="gainsLosses[col.field]">
-                </currency>
+                <gain-loss-currency [currencyValue]="gainsLosses[col.field]">
+                </gain-loss-currency>
             </ng-template>
         </p-column>
 

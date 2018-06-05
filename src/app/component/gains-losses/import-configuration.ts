@@ -5,8 +5,8 @@
 export class ImportConfiguration
 {
     public clearEntries: boolean;
-    public skipFirstRow: boolean;
-    public skipLastRow: boolean;
+    public skipHeaderRows: number;
+    public skipFooterRows: number;
     public tickerSymbolEmbeddedWithParens: boolean;
     public tickerSymbolColumn: number;
     public gainsColumn: number;

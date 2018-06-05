@@ -69,7 +69,7 @@ export class GainsLossesFormComponent extends CrudFormComponent<GainsLosses>
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
                 'tickerSymbol':     new FormControl( this.modelObject.tickerSymbol, Validators.required ),
-                'linkedAccountId':  new FormControl( this.modelObject.linkedAccountId, Validators.required ),
+                'linkedAccountId':  new FormControl( this.modelObject.linkedAccount.id, Validators.required ),
                 'gains':            new FormControl( this.modelObject.gains ),
                 'losses':           new FormControl( this.modelObject.losses ),
             } );

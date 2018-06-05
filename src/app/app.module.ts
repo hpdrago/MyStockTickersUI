@@ -38,7 +38,10 @@ import {
     TabMenuModule,
     TabViewModule,
     TooltipModule,
-    FileUploadModule, ToggleButtonModule
+    FileUploadModule,
+    ToggleButtonModule,
+    ProgressSpinnerModule,
+    ProgressBarModule
 } from "primeng/primeng";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
 import { AutoCompleteModule } from "primeng/components/autocomplete/autocomplete";
@@ -329,6 +332,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         TableModule,
         FileUploadModule,
         ToggleButtonModule,
+        ProgressSpinnerModule,
         // Third Party modules,
         ToastModule.forRoot(),
 

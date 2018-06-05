@@ -6,13 +6,13 @@ import { BaseClass } from '../../common/base-class';
 import { ToastsManager } from 'ng2-toastr';
 
 /**
- * Contains all of the stock analyst consensus entities for a single customer.
- * This information is cached because it contains a limited number of stocks and not updated that often.
+ * Contains all of the gains/losses for a single customer.
+ * This information is cached because it contains a limited number of stocks and they are not updated that often.
  *
  * Created by mike on 3/24/2018
  */
 @Injectable()
-export class StockAnalystConsensusCache extends BaseClass
+export class GainsLossesCache extends BaseClass
 {
     /**
      * Contains the current stock analyst consensus information for each stock.
