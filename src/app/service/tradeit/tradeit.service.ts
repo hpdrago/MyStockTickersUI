@@ -31,6 +31,7 @@ export class TradeItService extends BaseService
     private readonly ANSWER_SECURITY_QUESTION_URL = "/authenticate";
     private readonly KEEP_SESSION_ALIVE = "/keepSessionAlive";
     private readonly GET_OAUTH_TOKEN_UPDATE_URL=  "/getOAuthTokenUpdateURL";
+    private jsonConvert: JsonConvert = new JsonConvert();
 
     /**
      * Constructor.
@@ -45,6 +46,8 @@ export class TradeItService extends BaseService
                  protected appConfig: AppConfigurationService )
     {
         super( toaster );
+        this.jsonConvert.operationMode = OperationMode.LOGGING;
+        this.jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
     }
 
     /**
@@ -65,11 +68,8 @@ export class TradeItService extends BaseService
                    .map( ( authenticateResult: TradeItAuthenticateResult ) =>
                          {
                              this.checkResponse( methodName, authenticateResult );
-                             let jsonConvert: JsonConvert = new JsonConvert();
-                             jsonConvert.operationMode = OperationMode.LOGGING;
-                             jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
-                             let authenticate: TradeItAuthenticateResult = jsonConvert.deserialize( authenticateResult,
-                                                                                                    TradeItAuthenticateResult );
+                             let authenticate: TradeItAuthenticateResult = this.jsonConvert.deserialize( authenticateResult,
+                                                                                                         TradeItAuthenticateResult );
                              this.debug( methodName + ": " + JSON.stringify( authenticate ) );
                              return  authenticate;
                          });
@@ -95,11 +95,9 @@ export class TradeItService extends BaseService
                    .map( ( authenticationResult: TradeItAuthenticateResult ) =>
                          {
                              this.checkResponse( methodName, authenticationResult );
-                             let jsonConvert: JsonConvert = new JsonConvert();
-                             jsonConvert.operationMode = OperationMode.LOGGING;
-                             jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
-                             let authenticate: TradeItAuthenticateResult = jsonConvert.deserialize( authenticationResult,
-                                                                                                    TradeItAuthenticateResult );
+                             let authenticate: TradeItAuthenticateResult = this.jsonConvert
+                                                                               .deserialize( authenticationResult,
+                                                                                             TradeItAuthenticateResult );
                              this.debug( methodName + " authenticateAccount: " + JSON.stringify( authenticate ) );
                              return  authenticate;
                          });
@@ -127,9 +125,6 @@ export class TradeItService extends BaseService
                          {
                              let tradeItAPIResult: TradeItAPIResult = this.checkResponse( methodName, oAuthAccessResult );
                              this.debug( methodName + " result: " + JSON.stringify( tradeItAPIResult ));
-                             let jsonConvert: JsonConvert = new JsonConvert();
-                             jsonConvert.operationMode = OperationMode.LOGGING;
-                             jsonConvert.valueCheckingMode = ValueCheckingMode.ALLOW_NULL;
                              return oAuthAccessResult;
                          } );
     }
@@ -216,9 +211,10 @@ export class TradeItService extends BaseService
                    .map( ( keepSessionAliveResult: TradeItKeepSessionAliveResult ) =>
                          {
                              this.debug( methodName + " received: " + JSON.stringify( keepSessionAliveResult ));
-                             let keepAliveResult: TradeItKeepSessionAliveResult = TradeItKeepSessionAliveResult
-                                 .newInstance( keepSessionAliveResult );
-                             return keepAliveResult;
+                             keepSessionAliveResult = this.jsonConvert
+                                                          .deserialize( keepSessionAliveResult,
+                                                                        TradeItKeepSessionAliveResult );
+                             return keepSessionAliveResult;
                          });
     }
 

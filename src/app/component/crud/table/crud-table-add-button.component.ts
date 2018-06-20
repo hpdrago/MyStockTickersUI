@@ -5,6 +5,7 @@ import { CrudStateStore } from '../common/crud-state-store';
 import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
+import { CrudOperation } from '../common/crud-operation';
 
 /**
  * Add button for standard CRUD based table
@@ -19,11 +20,11 @@ export abstract class CrudTableAddButtonComponent<T extends ModelObject<T>> exte
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    constructor( protected toaster: ToastsManager,
-                 protected crudStateStore: CrudStateStore<T>,
-                 protected crudController: CrudController<T>,
-                 protected modelObjectFactory: ModelObjectFactory<T>,
-                 protected crudRestService: CrudRestService<T> )
+    protected constructor( protected toaster: ToastsManager,
+                           protected crudStateStore: CrudStateStore<T>,
+                           protected crudController: CrudController<T>,
+                           protected modelObjectFactory: ModelObjectFactory<T>,
+                           protected crudRestService: CrudRestService<T> )
     {
         super( toaster,
                crudStateStore,
@@ -41,7 +42,7 @@ export abstract class CrudTableAddButtonComponent<T extends ModelObject<T>> exte
 
     protected onButtonClick(): void
     {
-        this.debug( "onAddButtonClick " );
+        this.debug( "onButtonClick " );
         this.crudController
             .sendTableAddButtonClickedEvent();
     }

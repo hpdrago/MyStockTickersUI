@@ -41,9 +41,6 @@ export class StockNotesTableAddButtonComponent extends CrudTableAddButtonCompone
 
     protected onButtonClick(): void
     {
-        let modelObject = this.stockNotesFactory.newModelObject();
-        this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.CREATE );
-        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
         super.onButtonClick();
     }
 }

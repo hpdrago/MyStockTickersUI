@@ -366,12 +366,21 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         this.debug( methodName + this.getToObserversMessage( this.tableAddButtonClickedSubject ));
         let modelObject: T = this.modelObjectFactory
                                  .newModelObject();
+        this.setDefaultValues( modelObject );
         this.crudStateStore
             .sendCrudOperationChangedEvent( CrudOperation.CREATE );
         this.crudStateStore
             .sendModelObjectChangedEvent( this, modelObject );
         this.tableAddButtonClickedSubject
             .next();
+    }
+
+    /**
+     * This method is called after creating a new model object as  the result of the table add button being clicked.
+     * @param {T} modelObject
+     */
+    protected setDefaultValues( modelObject: T )
+    {
     }
 
     /**

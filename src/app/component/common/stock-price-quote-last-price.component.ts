@@ -7,6 +7,7 @@ import { StockQuoteContainer } from '../../model/common/stock-quote-container';
 import { isNullOrUndefined } from 'util';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { StockQuote } from '../../model/entity/stock-quote';
+import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 
 /**
  * This component is used for StockPriceQuoteModelObject which contains a stock price -- last price.  The stock quote last
@@ -23,6 +24,7 @@ import { StockQuote } from '../../model/entity/stock-quote';
                             (stockQuoteChange)="onStockQuoteChange( $event )">
                    <stock-price-quote [tickerSymbol]="tickerSymbol" 
                                       (stockPriceQuoteChange)="onStockPriceQuoteChange( $event )">
+                       
                        <div *ngIf="isValidData(); then isValidDataTemplate else noValidDataTemplate">
                        </div>
                        
@@ -60,9 +62,12 @@ export class StockPriceQuoteLastPriceComponent extends BaseComponent
      * @param {StockPriceQuoteCacheService} stockPriceCache
      */
     constructor( protected toaster: ToastsManager,
-                 private stockPriceCache: StockPriceQuoteCacheService )
+                 private stockPriceCache: StockPriceQuoteCacheService,
+                 private stockPriceQuoteFactory: StockPriceQuoteFactory )
     {
         super( toaster );
+        this.stockPriceQuote = this.stockPriceQuoteFactory
+                                   .newModelObject();
     }
 
     /**
@@ -86,18 +91,6 @@ export class StockPriceQuoteLastPriceComponent extends BaseComponent
     }
 
     /**
-     * Detrmines if the valid data has been received for the StockQuote and StockPriceQuote.
-     * @return {boolean}
-     */
-    protected isValidData(): boolean
-    {
-        return !isNullOrUndefined( this.stockPriceQuote ) &&
-               !isNullOrUndefined( this.stockQuote ) &&
-               !isNullOrUndefined( this.stockPriceQuote.lastPrice ) &&
-               !isNullOrUndefined( this.stockQuote.openPrice );
-    }
-
-    /**
      * Calculate the change amount.
      * @return {number}
      */
@@ -117,5 +110,17 @@ export class StockPriceQuoteLastPriceComponent extends BaseComponent
         {
             return 0;
         }
+    }
+
+    /**
+     * Detrmines if the valid data has been received for the StockQuote and StockPriceQuote.
+     * @return {boolean}
+     */
+    protected isValidData(): boolean
+    {
+        return !isNullOrUndefined( this.stockPriceQuote ) &&
+               !isNullOrUndefined( this.stockQuote ) &&
+               !isNullOrUndefined( this.stockPriceQuote.lastPrice ) &&
+               !isNullOrUndefined( this.stockQuote.openPrice );
     }
 }

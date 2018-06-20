@@ -97,6 +97,7 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
     protected updateLinkedAccounts()
     {
         const methodName = 'updateLinkedAccounts'
+        this.debug( methodName + ' ' + JSON.stringify( this.tradeItAccount ));
         /*
          * Make a separate HTTP request for each linked account.
          */

@@ -115,7 +115,7 @@
         <p-column id="analystSentimentDate"
                   field="analystSentimentDate"
                   header="Sentiment Date"
-                  [style]="{'width':'40px'}"
+                  [style]="{'width':'50px'}"
                   [sortable]="true">
             <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
                 {{stockAnalystConsensus[col.field] | date: 'y-MM-dd' }}
@@ -181,7 +181,7 @@
         <p-column id="analystPriceDate"
                   field="analystPriceDate"
                   header="PT Date"
-                  [style]="{'width':'40px'}">
+                  [style]="{'width':'50px'}">
             <ng-template let-col let-stockAnalystConsensus="rowData" pTemplate="body">
                 {{stockAnalystConsensus[col.field] | date: 'y-MM-dd' }}
             </ng-template>

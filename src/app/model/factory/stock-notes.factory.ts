@@ -30,7 +30,7 @@ export class StockNotesFactory extends StockModelObjectFactory<StockNotes>
      * Create a new StockNotes instance
      * @returns {StockNotes}
      */
-    newModelObject(): StockNotes
+    public newModelObject(): StockNotes
     {
         var stockNote = new StockNotes();
         stockNote.id = '';

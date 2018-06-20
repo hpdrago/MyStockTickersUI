@@ -48,10 +48,8 @@
                   [style]="{'width':'150px'}"
                   [sortable]="false">
             <ng-template let-col let-stockCatalystEvent="rowData" pTemplate="body">
-                <stock-quote [tickerSymbol]="stockCatalystEvent.tickerSymbol"
-                             (stockQuoteChange)="stockCatalystEvent.setStockQuote($event)">
-                    {{stockCatalystEvent.stockQuote.companyName}}
-                </stock-quote>
+                <stock-company-name [tickerSymbol]="stockCatalystEvent.tickerSymbol">
+                </stock-company-name>
             </ng-template>
         </p-column>
 

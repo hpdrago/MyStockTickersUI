@@ -1,9 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { isNullOrUndefined } from "util";
 import { StockModelObject } from '../../model/common/stock-model-object';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
+import { StockPriceQuoteCacheService } from '../../service/cache/stock-price-quote-cache.service';
 
 /**
  * This component displays the percent the price has changed since the model object was created.
@@ -14,11 +15,12 @@ import { ToastsManager } from 'ng2-toastr';
     selector: 'stock-quote-percent-change-since-created',
     template: `<stock-price-quote [tickerSymbol]="stockModelObject.tickerSymbol"
                                   (stockPriceQuoteChange)="onStockPriceQuoteChange( $event )">
-                   <gain-loss-percent [percentValue]="calculatePercentChange(stockModelObject)"></gain-loss-percent>
+                   <gain-loss-percent [percentValue]="calculatePercentChange()"></gain-loss-percent>
                </stock-price-quote>
     `
 })
 export class StockQuotePercentChangeSinceCreatedComponent extends BaseComponent
+    implements OnInit
 {
     /**
      * The stock model object from which the ticker symbol is used to register for stock price quote changes.
@@ -35,9 +37,22 @@ export class StockQuotePercentChangeSinceCreatedComponent extends BaseComponent
      * Constructor
      * @param {ToastsManager} toaster
      */
-    public constructor( protected toaster: ToastsManager )
+    public constructor( protected toaster: ToastsManager,
+                        private stockPriceQuoteCache: StockPriceQuoteCacheService )
     {
         super( toaster );
+    }
+
+    public ngOnInit(): void
+    {
+        this.addSubscription( 'stockPriceQuoteCache',
+            this.stockPriceQuoteCache
+                .subscribe( this.stockModelObject.tickerSymbol,
+                            (stockPriceQuote) =>
+                            {
+                                this.onStockPriceQuoteChange( stockPriceQuote );
+                            }));
+
     }
 
     /**
@@ -54,9 +69,9 @@ export class StockQuotePercentChangeSinceCreatedComponent extends BaseComponent
      * Determines the percent of change from the original price to the last price.
      * @return A percent of change.
      */
-    protected calculatePercentChange( stockModelObject: StockModelObject<any> ): number
+    protected calculatePercentChange(): number
     {
-        if ( isNullOrUndefined( stockModelObject ) ||
+        if ( isNullOrUndefined( this.stockModelObject ) ||
              isNullOrUndefined( this.stockPriceQuote ))
         {
             return 0;
@@ -68,12 +83,12 @@ export class StockQuotePercentChangeSinceCreatedComponent extends BaseComponent
             {
                 return 0;
             }
-            if ( isNullOrUndefined( stockModelObject.stockPriceWhenCreated ) ||
-                 stockModelObject.stockPriceWhenCreated == 0 )
+            if ( isNullOrUndefined( this.stockModelObject.stockPriceWhenCreated ) ||
+                 this.stockModelObject.stockPriceWhenCreated == 0 )
             {
                 return 0;
             }
-            let percentChanged = 1.0 - ( stockModelObject.stockPriceWhenCreated / this.stockPriceQuote.lastPrice );
+            let percentChanged = 1.0 - ( this.stockModelObject.stockPriceWhenCreated / this.stockPriceQuote.lastPrice );
             return percentChanged;
         }
     }

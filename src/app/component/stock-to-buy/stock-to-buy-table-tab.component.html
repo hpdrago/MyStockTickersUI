@@ -41,7 +41,6 @@
 
         <!----------------------------------------------------------------------------------------------------------
         COMPLETED
-        ------------------------------------------------------------------------------------------------------------>
         <p-column id="completed"
                   field="completed"
                   header="Completed"
@@ -51,6 +50,7 @@
                 <p-checkbox disabled="true" name="completed" value="stockToBuy[col.field] == 'Y' ? true : false"></p-checkbox>
             </ng-template>
         </p-column>
+        ------------------------------------------------------------------------------------------------------------>
 
         <!----------------------------------------------------------------------------------------------------------
         COMPANY NAME
@@ -230,10 +230,8 @@
             </stock-to-buy-table-buttons>
         </p-footer>
     </p-dataTable>
-    <div *ngIf="!isCrudNoneOperation()">
-        <stock-to-buy-dialog>
-        </stock-to-buy-dialog>
-        <stock-notes-dialog>
-        </stock-notes-dialog>
-    </div>
+    <stock-to-buy-dialog>
+    </stock-to-buy-dialog>
+    <stock-notes-dialog>
+    </stock-notes-dialog>
 </p-panel>

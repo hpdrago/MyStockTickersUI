@@ -125,22 +125,6 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
     }
 
     /**
-     * Set the initial values for new notes and when the form resets.
-     * @return {any}
-     */
-    protected setDefaultValues()
-    {
-        const methodName = 'setDefaultValues';
-        this.log( methodName + '.begin' );
-        this.modelObject.notesRating = 3;
-        this.modelObject.bullOrBear = 1;
-        this.modelObject.actionTaken = StockNotesActionTaken.NONE;
-        this.modelObject.notesDate = new Date( Date.now() )
-        super.setDefaultValues();
-        this.log( methodName + '.end' );
-    }
-
-    /**
      * Clear out the form.
      */
     protected resetForm(): void
