@@ -26,12 +26,6 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
      * I N P U T S
      */
     @Input()
-    protected modelObjectFactory: ModelObjectFactory<any>;
-
-    @Input()
-    protected crudController: CrudController<any>;
-
-    @Input()
     protected buttonsTemplate: TemplateRef<any>;
 
     @Input()
@@ -137,6 +131,10 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
     private selectedColumnsCookieName: string;
     private availableColumnsCookieName: string;
 
+    private _modelObjectFactory: ModelObjectFactory<any>;
+    private _crudController: CrudController<any>;
+
+
     /**
      * Constructor.
      * @param {ToastsManager} toaster
@@ -161,15 +159,6 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
      */
     public ngAfterViewInit()
     {
-        if ( isNullOrUndefined( this.modelObjectFactory ) )
-        {
-            throw new ReferenceError( "modelObjectFactory input parameter cannot be null" );
-        }
-        if ( isNullOrUndefined( this.crudController ) )
-        {
-            throw new ReferenceError( "crudController input parameter cannot be null" );
-        }
-        this.loadColumns();
         /*
          * Subscribe to the OK button being clicked to customize the column layout.
          */
@@ -179,12 +168,6 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
                                   this.crudTableColumnSelectorDialogComponent
                                       .subscribeToOkButtonClicked( () => this.columnsCustomized() ) );
         }
-        /*
-         * Subscribe to customize button click
-         */
-        this.addSubscription( 'subscribeToCustomizeButtonClickedEvent',
-                              this.crudController
-                                  .subscribeToCustomizeButtonClickedEvent( () => this.customizeColumns() ) );
     }
 
     /**
@@ -193,7 +176,7 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
     protected loadColumns(): void
     {
         const methodName = 'loadColumns';
-        let modelObject: ModelObject<any> = this.modelObjectFactory
+        let modelObject: ModelObject<any> = this._modelObjectFactory
                                                 .newModelObject();
         let crudTableColumns: CrudTableColumns = modelObject.getCrudTableColumns();
         this.selectedColumnsCookieName = this.getClassName() + ".SelectedColumns";
@@ -265,4 +248,32 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent impleme
                            .toArray();
     }
 
+    /**
+     * Set the model object factory.
+     * @param {ModelObjectFactory<any>} modelObjectFactory
+     */
+    public set modelObjectFactory( modelObjectFactory: ModelObjectFactory<any> )
+    {
+        const methodName = 'setModelObjectFactory';
+        this.log( methodName )
+        this._modelObjectFactory = modelObjectFactory;
+        this.loadColumns();
+    }
+
+    /**
+     * Set crud controller.
+     * @param {CrudController<any>} crudController
+     */
+    public set crudController( crudController: CrudController<any> )
+    {
+        const methodName = 'setCrudController';
+        this.log( methodName )
+        this._crudController = crudController;
+        /*
+         * Subscribe to customize button click
+         */
+        this.addSubscription( 'subscribeToCustomizeButtonClickedEvent',
+                              this._crudController
+                                  .subscribeToCustomizeButtonClickedEvent( () => this.customizeColumns() ) );
+    }
 }

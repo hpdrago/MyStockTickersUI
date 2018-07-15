@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { CrudTableLayoutComponent } from '../crud/table/crud-table-layout.component';
 import { StockCompany } from '../../model/entity/stock-company';
 import { StockSearchComponent } from '../common/stock-search.component';
 import { CrudTableLayoutBaseComponent } from '../crud/table/crud-table-layout-base.component';

@@ -2,7 +2,7 @@
     <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
         <div class="ui-grid-row">
             <div class="ui-grid-col-12">
-                <p-dataTable [value]="rows"
+                <p-dataTable [value]="modelObjectRows"
                              [ngClass]="{'editing-table': crudOperation != CrudOperation.NONE }"
                              selectionMode="single"
                              [(selection)]="selectedModelObject"

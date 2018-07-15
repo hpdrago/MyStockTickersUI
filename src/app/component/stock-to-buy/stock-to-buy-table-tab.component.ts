@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { AfterViewInit, Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockToBuyBaseTableComponent } from "./stock-to-buy-base-table.component";
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
@@ -12,27 +12,24 @@ import { StockToBuyCrudActionHandler } from './stock-to-buy-action-handler';
 import { StockNotesCrudActionHandler } from '../stock-notes/stock-notes-crud-action-handler';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
+import { StockModelObjectTableLayoutComponent } from '../stock-table/stock-model-object-table-layout.component';
 
 /**
  * This component displays a list of Stocks to buy.
  *
- * Created by mike on 10/24/2017.
+ * Created by mike on 07/10/2018.
  */
 @Component(
-    {
-        selector:    'stock-to-buy-tab-table',
-        styleUrls:   ['./stock-to-buy-table.component.css'],
-        templateUrl: './stock-to-buy-table-tab.component.html',
-        providers: [StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler,
-                    StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler ]
-    } )
-export class StockToBuyTableTabComponent extends StockToBuyBaseTableComponent
 {
-    /*
-     * Need to make these visible to the template so that they can be passed to the table layout component.
-     */
-    protected stockToBuyControllerTemplateRef: StockToBuyController;
-    protected stockToBuyFactoryTemplateRef: StockToBuyFactory;
+    styleUrls:   ['./stock-to-buy-table.component.css'],
+    templateUrl: './stock-to-buy-table-tab.component.html',
+    providers: [StockToBuyStateStore, StockToBuyController, StockToBuyCrudActionHandler,
+                StockNotesStateStore, StockNotesController, StockNotesCrudActionHandler ]
+})
+export class StockToBuyTableTabComponent extends StockToBuyBaseTableComponent implements AfterViewInit
+{
+    @ViewChild(StockModelObjectTableLayoutComponent)
+    private stockModelObjectTableLayoutComponent: StockModelObjectTableLayoutComponent;
 
     /**
      * Constructor.
@@ -68,7 +65,18 @@ export class StockToBuyTableTabComponent extends StockToBuyBaseTableComponent
                stockNotesFactory,
                stockQuoteCacheService,
                cookieService );
-        this.stockToBuyControllerTemplateRef = this.stockToBuyController;
-        this.stockToBuyFactory = this.stockToBuyFactory;
+    }
+
+    public ngAfterViewInit(): void
+    {
+        debugger
+        super.ngAfterViewInit();
+        /*
+         * Need to pass the crud objects to the table layout.
+         */
+        this.stockModelObjectTableLayoutComponent
+            .crudController = this.stockToBuyController;
+        this.stockModelObjectTableLayoutComponent
+            .modelObjectFactory = this.stockToBuyFactory;
     }
 }
