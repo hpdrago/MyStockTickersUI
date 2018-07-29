@@ -662,7 +662,6 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         const methodName = "onRowUnSelect";
         this.debug( methodName + ".begin " + JSON.stringify( event ) );
-        debugger
         this.crudStateStore
             .sendModelObjectChangedEvent( this, null );
         this.crudController

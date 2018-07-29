@@ -25,7 +25,8 @@ TABLE DEFINITION
 ------------------------------------------------------------------------------------------------------------>
 <stock-model-object-table-layout [buttonsTemplate]="buttonsTemplate"
                                  [columnsTemplate]="columnsTemplate"
-                                 cookieContext="getCookieContext()"
+                                 cookieContext="StockPositionTable"
+                                 cookieContext="{{getCookieContext()}}"
                                  [modelObjectRows]="modelObjectRows"
                                  [(displayColumns)]="displayColumns"
                                  [defaultColumns]="defaultColumns"

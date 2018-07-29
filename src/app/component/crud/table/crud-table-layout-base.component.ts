@@ -373,7 +373,7 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     private restoreSelectedColumns()
     {
         const methodName = 'restoreSelectedColumns';
-        this.logMethodBegin( methodName );
+        this.debug( methodName + ' cookie context: ' + this.selectedColumnsCookieName );
         let cookieColumns: CrudTableColumns = CrudTableColumns.fromJSON( this.cookieService.get( this.selectedColumnsCookieName ) );
         /*
          * Loop through these columns and add columns to the selected columns list by colId in case the column definition
@@ -393,6 +393,9 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
                                    if ( isNullOrUndefined( allColumn ))
                                    {
                                        this.logError( 'Could not find column ' + cookieColumn.colId + ' in the all columns list' );
+                                       /*
+                                       this.log( 'Default columns: ' + JSON.stringify( this.defaultColumns ));
+                                       this.log( 'Additional columns: ' + JSON.stringify( this.additionalColumns ));*/
                                    }
                                    else
                                    {
