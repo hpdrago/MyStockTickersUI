@@ -2,7 +2,7 @@
  * Created by mike on 3/10/2018
  */
 import { StockNotesSource } from '../../model/entity/stock-notes-source';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { StockNotesSourceCrudService } from '../../service/crud/stock-notes-source-crud.service';
 import { StockNotesSourceController } from './stock-notes-source-controller';
 import { StockNotesSourceStateStore } from './stock-notes-source-state-store';
@@ -27,14 +27,16 @@ export class StockNotesSourceTableRefreshButtonComponent extends CrudTableRefres
      * @param {StockNotesSourceFactory} stockNotesSourceFactory
      * @param {StockNotesSourceCrudService} stockNotesSourceCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private stockNotesSourceStateStore: StockNotesSourceStateStore,
                  private stockNotesSourceController: StockNotesSourceController,
                  private stockNotesSourceFactory: StockNotesSourceFactory,
                  private stockNotesSourceCrudService: StockNotesSourceCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockNotesSourceStateStore,
                stockNotesSourceController,
                stockNotesSourceFactory,

@@ -7,7 +7,7 @@ import { CrudStateStore } from '../common/crud-state-store';
 import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
-import { Input } from '@angular/core';
+import { ChangeDetectorRef, Input } from '@angular/core';
 
 /**
  * This class manages the set of buttons for a model object dialog.
@@ -34,13 +34,15 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      * @param {boolean} showContinuousAddButton
      */
-    protected constructor( protected toaster: ToastsManager,
+    protected constructor( protected changeDetector: ChangeDetectorRef,
+                           protected toaster: ToastsManager,
                            protected crudStateStore: CrudStateStore<T>,
                            protected crudController: CrudController<T>,
                            protected modelObjectFactory: ModelObjectFactory<T>,
                            protected crudRestService: CrudRestService<T> )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                crudStateStore,
                crudController,
                modelObjectFactory,
@@ -71,15 +73,12 @@ export abstract class CrudFormButtonsComponent<T extends ModelObject<T>> extends
      */
     protected CloseButtonEvent = DialogCloseEventType;
 
-    /**
-     * Initialize the class
-     */
-    public ngOnInit()
+    public ngAfterViewInit(): void
     {
-        this.debug( "ngOnInit.begin" );
-        super.ngOnInit();
+        super.ngAfterViewInit();
+        this.debug( "ngAfterViewInit.begin" );
         this.subscribeToCrudFormServiceEvents();
-        this.debug( "ngOnInit.end" );
+        this.debug( "ngAfterViewInit.end" );
     }
 
     /**

@@ -2,7 +2,7 @@
  * Created by mike on 3/10/2018
  */
 import { GainsLosses } from '../../model/entity/gains-losses';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { GainsLossesCrudService } from '../../service/crud/gains-losses-crud.service';
 import { GainsLossesFactory } from '../../model/factory/gains-losses.factory';
 import { GainsLossesController } from './gains-losses-controller';
@@ -27,14 +27,16 @@ export class GainsLossesTableRefreshButtonComponent extends CrudTableRefreshButt
      * @param {GainsLossesFactory} gainsLossesFactory
      * @param {GainsLossesCrudService} gainsLossesCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private gainsLossesStateStore: GainsLossesStateStore,
                  private gainsLossesController: GainsLossesController,
                  private gainsLossesFactory: GainsLossesFactory,
                  private gainsLossesCrudService: GainsLossesCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                gainsLossesStateStore,
                gainsLossesController,
                gainsLossesFactory,

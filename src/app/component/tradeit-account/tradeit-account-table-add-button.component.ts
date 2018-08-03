@@ -1,6 +1,6 @@
 import { CrudTableAddButtonComponent } from '../crud/table/crud-table-add-button.component';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { SessionService } from '../../service/session.service';
 import { ToastsManager } from 'ng2-toastr';
 import { TradeItAccountStateStore } from './tradeit-account-state-store';
@@ -24,14 +24,16 @@ export class TradeItAccountTableAddButtonComponent extends CrudTableAddButtonCom
      * @param {TradeItAccountCrudService} tradeItAccountCrudService
      * @param {ToastsManager} toaster
      */
-    constructor( protected session: SessionService,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected session: SessionService,
                  protected toaster: ToastsManager,
                  protected tradeItAccountStateStore: TradeItAccountStateStore,
                  protected tradeItAccountController: TradeItAccountController,
                  protected tradeItAccountFactory: TradeItAccountFactory,
                  protected tradeItAccountCrudService: TradeItAccountCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                tradeItAccountStateStore,
                tradeItAccountController,
                tradeItAccountFactory,

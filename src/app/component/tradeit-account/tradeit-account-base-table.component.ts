@@ -2,7 +2,7 @@ import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItAuthenticateResult } from "../../service/tradeit/apiresults/tradeit-authenticate-result";
 import { TradeItSecurityQuestionDialogComponent } from "../tradeit/tradeit-security-question-dialog.component";
-import { OnInit, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, OnInit, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
@@ -37,7 +37,8 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
      * @param {TradeItAccountOAuthService} tradeItOAuthService
      * @param {CookieService} cookieService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
                  protected tradeItAccountStateStore: TradeItAccountStateStore,
                  protected tradeItAccountController: TradeItAccountController,
@@ -47,7 +48,8 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
                  protected tradeItOAuthService: TradeItAccountOAuthService,
                  protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.ALL_ON_CREATE,
+        super( changeDetector,
+               TableLoadingStrategy.ALL_ON_CREATE,
                toaster,
                tradeItAccountStateStore,
                tradeItAccountController,
@@ -107,6 +109,10 @@ export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeIt
                                 this.loading = false;
                                 this.reportRestError( error );
                             } );
+        }
+        else
+        {
+            super.onRowSelect( event );
         }
         this.log( methodName + ".end" );
     }

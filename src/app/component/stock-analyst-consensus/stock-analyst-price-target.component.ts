@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 import { StockAnalystConsensusBaseComponent } from './stock-analyst-consensus-base.component';
 import { ToastsManager } from 'ng2-toastr';
@@ -43,10 +43,11 @@ export class StockAnalystPriceTargetComponent extends StockAnalystConsensusBaseC
      * @param {ToastsManager} toaster
      * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
-        super( toaster, stockAnalystConsensusCache );
+        super( changeDetector, toaster, stockAnalystConsensusCache );
     }
 
     /**

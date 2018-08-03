@@ -1,7 +1,7 @@
 import { CrudTableDeleteButtonComponent } from '../crud/table/crud-table-delete-button.component';
 import { SessionService } from '../../service/session.service';
 import { ToastsManager } from 'ng2-toastr';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { LinkedAccount } from '../../model/entity/linked-account';
 import { LinkedAccountStateStore } from './linked-account-state-store';
 import { LinkedAccountController } from './linked-account-controller';
@@ -24,14 +24,16 @@ export class LinkedAccountTableDeleteButtonComponent extends CrudTableDeleteButt
      * @param {LinkedAccountFactory} linkedAccountFactory
      * @param {LinkedAccountCrudService} linkedAccountCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private linkedAccountStateStore: LinkedAccountStateStore,
                  private linkedAccountController: LinkedAccountController,
                  private linkedAccountFactory: LinkedAccountFactory,
                  private linkedAccountCrudService: LinkedAccountCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                linkedAccountStateStore,
                linkedAccountController,
                linkedAccountFactory,

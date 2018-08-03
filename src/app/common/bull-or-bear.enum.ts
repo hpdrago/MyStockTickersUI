@@ -9,10 +9,10 @@ export enum BullOrBear
 }
 export namespace BullOrBear
 {
-    export function getName( action: any ): string
+    export function getName( bullOrBear: any ): string
     {
-        let returnValue = 'ERROR ' + action;
-        switch( action )
+        let returnValue = 'ERROR ' + bullOrBear;
+        switch( bullOrBear )
         {
             case 0:
                 returnValue = 'NEUTRAL';

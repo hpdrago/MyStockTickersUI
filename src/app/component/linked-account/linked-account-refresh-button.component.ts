@@ -2,7 +2,7 @@
  * Created by mike on 3/10/2018
  */
 import { LinkedAccount } from '../../model/entity/linked-account';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud.service';
 import { LinkedAccountFactory } from '../../model/factory/linked-account.factory';
 import { LinkedAccountController } from './linked-account-controller';
@@ -27,14 +27,16 @@ export class LinkedAccountTableRefreshButtonComponent extends CrudTableRefreshBu
      * @param {LinkedAccountFactory} linkedAccountFactory
      * @param {LinkedAccountCrudService} linkedAccountCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private linkedAccountStateStore: LinkedAccountStateStore,
                  private linkedAccountController: LinkedAccountController,
                  private linkedAccountFactory: LinkedAccountFactory,
                  private linkedAccountCrudService: LinkedAccountCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                linkedAccountStateStore,
                linkedAccountController,
                linkedAccountFactory,

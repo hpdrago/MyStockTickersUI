@@ -6,6 +6,7 @@ import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { isNullOrUndefined } from 'util';
+import { ChangeDetectorRef } from '@angular/core';
 
 /**
  * Delete button for standard CRUD based table
@@ -20,13 +21,15 @@ export abstract class CrudTableDeleteButtonComponent<T extends ModelObject<T>> e
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    constructor( protected toaster: ToastsManager,
-                 protected crudStateStore: CrudStateStore<T>,
-                 protected crudController: CrudController<T>,
-                 protected modelObjectFactory: ModelObjectFactory<T>,
-                 protected crudRestService: CrudRestService<T> )
+    protected constructor( protected changeDetector: ChangeDetectorRef,
+                           protected toaster: ToastsManager,
+                           protected crudStateStore: CrudStateStore<T>,
+                           protected crudController: CrudController<T>,
+                           protected modelObjectFactory: ModelObjectFactory<T>,
+                           protected crudRestService: CrudRestService<T> )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                crudStateStore,
                crudController,
                modelObjectFactory,

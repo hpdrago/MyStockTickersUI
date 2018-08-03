@@ -11,7 +11,7 @@ import { TickerSymbolContainer } from '../../model/common/ticker-symbol-containe
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { StockQuoteContainer } from '../../model/common/stock-quote-container';
 import { CookieService } from 'ngx-cookie-service';
-import { Input } from '@angular/core';
+import { ChangeDetectorRef, Input } from '@angular/core';
 
 /**
  * This is a base class for all tables that contain model objects containing a ticker symbol
@@ -33,7 +33,8 @@ export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & 
      * @param {StockQuoteCacheService} stockQuoteCacheService
      * @param {CookieService} cookieService
      */
-    protected constructor( protected tableLoadingStrategy: TableLoadingStrategy,
+    protected constructor( protected changeDetector: ChangeDetectorRef,
+                           protected tableLoadingStrategy: TableLoadingStrategy,
                            protected toaster: ToastsManager,
                            protected stockStateStore: CrudStateStore<T>,
                            protected stockController: CrudController<T>,
@@ -41,7 +42,8 @@ export abstract class StockModelObjectTableComponent<T extends ModelObject<T> & 
                            protected stockCrudService: CrudRestService<T>,
                            protected cookieService: CookieService )
     {
-        super( tableLoadingStrategy,
+        super( changeDetector,
+               tableLoadingStrategy,
                toaster,
                stockStateStore,
                stockController,

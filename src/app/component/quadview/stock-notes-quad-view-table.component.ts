@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { SessionService } from "../../service/session.service";
 import { ToastsManager } from "ng2-toastr";
 import { StockNotesTableComponent } from "../stock-notes/stock-notes-table.component";
@@ -17,10 +17,10 @@ import { CrudTableColumn } from '../crud/table/crud-table-column';
  */
 @Component(
 {
-    selector: 'stock-notes-dashboard-table',
+    selector:    'stock-notes-quad-view-table',
     templateUrl: '../stock-notes/stock-notes-table.component.html'
 })
-export class StockNotesDashboardTableComponent extends StockNotesTableComponent
+export class StockNotesQuadViewTableComponent extends StockNotesTableComponent
 {
     /**
      * Constructor.
@@ -33,19 +33,22 @@ export class StockNotesDashboardTableComponent extends StockNotesTableComponent
      * @param {StockQuoteCacheService} stockQuoteCacheService
      * @param {CookieService} cookieService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected stockNotesStateStore: StockNotesStateStore,
                  protected stockNotesController: StockNotesController,
                  protected stockNotesFactory: StockNotesFactory,
                  protected stockNotesCrudService: StockNotesCrudService,
                  protected cookieService: CookieService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockNotesStateStore,
                stockNotesController,
                stockNotesFactory,
                stockNotesCrudService,
                cookieService );
+        this.showHeaderButtons = false;
     }
 
     /**

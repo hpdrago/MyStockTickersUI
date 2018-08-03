@@ -10,7 +10,7 @@ import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst
 import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 
 /**
  * This component lists all stock notes
@@ -42,7 +42,8 @@ export class StockCatalystEventTableComponent extends StockModelObjectTableCompo
      * @param {StockQuoteCacheService} stockQuoteCacheService
      * @param {CookieService} cookieService
      */
-    public constructor( protected toaster: ToastsManager,
+    public constructor( protected changeDetector: ChangeDetectorRef,
+                        protected toaster: ToastsManager,
                         protected stockCatalystEventStateStore: StockCatalystEventStateStore,
                         protected stockCatalystEventController: StockCatalystEventController,
                         protected stockCatalystEventFactory: StockCatalystEventFactory,
@@ -50,7 +51,8 @@ export class StockCatalystEventTableComponent extends StockModelObjectTableCompo
                         protected stockQuoteCacheService: StockQuoteCacheService,
                         protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.LAZY_ON_CREATE,
+        super( changeDetector,
+               TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
                stockCatalystEventStateStore,
                stockCatalystEventController,

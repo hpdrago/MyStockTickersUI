@@ -1,4 +1,4 @@
-<div *ngIf="!isCrudNoneOperation()">
+<div *ngIf="isInitialized()">
     <p-dialog header="Portfolio - {{portfolio.name}}"
                          [modal]="true"
                          [closable]="false"

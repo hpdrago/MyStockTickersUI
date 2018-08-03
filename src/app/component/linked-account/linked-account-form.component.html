@@ -1,6 +1,30 @@
-<div *ngIf="!isCrudNoneOperation()">
+<div *ngIf="isInitialized()">
     <form [formGroup]="formGroup">
         <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px;">
+            <!----------------------------------------------------------------------------------------------------------
+            BROKERAGE
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                    <label style="float: right" for="accountName">Brokerage:</label>
+                </div>
+                <div *ngIf="tradeItAccount" class="ui-grid-col-8">
+                    {{tradeItAccount.brokerage}}
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            BROKERAGE ACCOUNT
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                    <label style="float: right" for="accountName">Account Name:</label>
+                </div>
+                <div *ngIf="tradeItAccount" class="ui-grid-col-8">
+                    {{tradeItAccount.name}}
+                </div>
+            </div>
+
             <!----------------------------------------------------------------------------------------------------------
             ACCOUNT NAME
             ------------------------------------------------------------------------------------------------------------>
@@ -12,12 +36,30 @@
                     <input id="accountName"
                            formControlName="accountName"
                            placeholder="Required"
+                           maxlength="40"
+                           required
+                           type="text"
+                           pInputText
+                           [ngClass]="{'ui-state-disabled': isModelObjectReadOnly()}">
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            ACCOUNT NAME
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-4">
+                    <label style="float: right" for="accountNumber">Account Number:</label>
+                </div>
+                <div class="ui-grid-col-8">
+                    <input id="accountNumber"
+                           formControlName="accountNumber"
+                           placeholder="Required"
                            maxlength="20"
                            required
                            type="text"
                            pInputText
-                           [ngClass]="{'ui-state-disabled': isModelObjectReadOnly()}"
-                           [(ngModel)]="modelObject.accountName"/>
+                           [ngClass]="{'ui-state-disabled': isModelObjectReadOnly()}">
                 </div>
             </div>
 

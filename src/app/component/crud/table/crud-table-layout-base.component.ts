@@ -152,7 +152,7 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
      * Flag to indicate whether the crud table buttons show be displayed on the header (top of table).
      */
     @Input()
-    protected showHeaderButtons: boolean = false;
+    protected showHeaderButtons: boolean = true;
 
     /**
      * Flag to indicate whether the crud table buttons show be displayed on the header (top of table).

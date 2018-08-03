@@ -1,6 +1,6 @@
 import { CrudTableDeleteButtonComponent } from '../crud/table/crud-table-delete-button.component';
 import { Portfolio } from '../../model/entity/portfolio';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { PortfolioCrudService } from '../../service/crud/portfolio-crud.service';
 import { PortfolioFactory } from '../../model/factory/portfolio.factory';
 import { PortfolioController } from './portfolio-controller';
@@ -24,14 +24,16 @@ export class PortfolioTableDeleteButtonComponent extends CrudTableDeleteButtonCo
      * @param {PortfolioFactory} portfolioFactory
      * @param {PortfolioCrudService} portfolioCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private portfolioStateStore: PortfolioStateStore,
                  private portfolioController: PortfolioController,
                  private portfolioFactory: PortfolioFactory,
                  private portfolioCrudService: PortfolioCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                portfolioStateStore,
                portfolioController,
                portfolioFactory,

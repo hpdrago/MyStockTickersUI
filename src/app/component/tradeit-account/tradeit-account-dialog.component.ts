@@ -1,5 +1,5 @@
 import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
@@ -24,13 +24,15 @@ export class TradeItAccountDialogComponent extends CrudDialogComponent<TradeItAc
      * @param {TradeItAccountFactory} tradeItAccountFactory
      * @param {TradeItAccountCrudService} tradeItAccountCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private tradeItAccountStateStore: TradeItAccountStateStore,
                  private tradeItAccountController: TradeItAccountController,
                  private tradeItAccountFactory: TradeItAccountFactory,
                  private tradeItAccountCrudService: TradeItAccountCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                tradeItAccountStateStore,
                tradeItAccountController,
                tradeItAccountFactory,

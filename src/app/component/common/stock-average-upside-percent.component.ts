@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 import { StockAnalystConsensusBaseComponent } from '../stock-analyst-consensus/stock-analyst-consensus-base.component';
 import { StockPriceQuote } from '../../model/entity/stock-price-quote';
@@ -25,11 +25,12 @@ export class StockAverageUpsidePercentComponent extends StockAnalystConsensusBas
      * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      * @param {StockPriceQuoteCacheService} stockPriceQuoteCache
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected stockAnalystConsensusCache: StockAnalystConsensusCache,
                  private stockPriceQuoteCache: StockPriceQuoteCacheService )
     {
-        super( toaster, stockAnalystConsensusCache );
+        super( changeDetector, toaster, stockAnalystConsensusCache);
     }
 
     /**

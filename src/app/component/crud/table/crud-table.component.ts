@@ -6,7 +6,7 @@
 
 import { ModelObject } from "../../../model/common/model-object";
 import { BaseCrudComponent } from "../common/base-crud.component";
-import { EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { isNullOrUndefined } from "util";
 import { ModelObjectChangedEvent } from "../../../service/crud/model-object-changed.event";
@@ -99,6 +99,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * This is the array of column definitions that are sent to the PrimeNg Table component.
      */
     protected displayColumns: any[];
+    /**
+     * Determines if the table buttons will be duplicated at the top of the table in addition to the bottom of the table.
+     * @type {boolean}
+     */
+    protected showHeaderButtons: boolean = true;
 
     /**
      * Constructor.
@@ -110,7 +115,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      * @param {CookieService} cookieService
      */
-    protected constructor( protected tableLoadingStrategy: TableLoadingStrategy,
+    protected constructor( protected changeDetector: ChangeDetectorRef,
+                           protected tableLoadingStrategy: TableLoadingStrategy,
                            protected toaster: ToastsManager,
                            protected crudStateStore: CrudStateStore<T>,
                            protected crudController: CrudController<T>,
@@ -118,7 +124,8 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
                            protected crudRestService: CrudRestService<T>,
                            protected cookieService: CookieService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                crudStateStore,
                crudController,
                modelObjectFactory,
@@ -135,6 +142,11 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         super.ngOnInit();
         this.defaultColumns = this.getDefaultColumns();
         this.additionalColumns = this.getAdditionalColumns();
+    }
+
+    public ngAfterViewInit(): void
+    {
+        super.ngAfterViewInit();
         this.subscribeToServiceEvents();
         if ( TableLoadingStrategy.isLoadOnCreate( this.tableLoadingStrategy ))
         {
@@ -198,24 +210,28 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     {
         const methodName = "lazyLoadTable";
         this.debug( methodName + '.begin ' + JSON.stringify( event ) );
-        this.loading = true;
+        this.setLoading( true );
         this.crudRestService
             .getPage( this.modelObject, event )
             .catch( error =>
                     {
-                        this.loading = false;
+                        this.setLoading( false );
                         this.showError( error );
                         return Observable.throw( error );
                     })
             .subscribe( page =>
                         {
-                            this.loading = false;
+                            this.setLoading( false );
+                            this.changeDetector
+                                .detectChanges();
                             this.onPageLoad( page );
                             this.debug( methodName + '.end');
                         },
                         err =>
                         {
-                            this.loading = false;
+                            this.setLoading( false );
+                            this.changeDetector
+                                .detectChanges();
                             this.logError( err );
                             this.debug( methodName + '.end');
                         } );
@@ -281,18 +297,18 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         }
         else
         {
-            this.loading = true;
+            this.setLoading( true );
             this.crudRestService
                 .getModelObjectList( this.modelObject )
                 .catch( error =>
                         {
-                            this.loading = false;
+                            this.setLoading( false );
                             this.showError( error );
                             return Observable.throw( error );
                         })
                 .subscribe( ( modelObjects: T[] ) =>
                             {
-                                this.loading = false;
+                                this.setLoading( false );
                                 this.onTableLoad( modelObjects );
                                 this.debug( "loadTable.end" );
                             });
@@ -729,5 +745,16 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     protected isAllowUpdates(): boolean
     {
         return true;
+    }
+
+    /**
+     * Sets the loading flag and calls detect changes because this flag is set asynchronously when the table loads.
+     * @param {boolean} loading
+     */
+    protected setLoading( loading: boolean )
+    {
+        this.loading = loading;
+        this.changeDetector
+            .detectChanges();
     }
 }

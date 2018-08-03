@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
@@ -50,7 +50,8 @@ export class StockToBuyTableComponent extends StockModelObjectTableComponent<Sto
      * @param {StockQuoteCacheService} stockQuoteCacheService
      * @param {CookieService} cookieService
      */
-    public constructor( protected toaster: ToastsManager,
+    public constructor( protected changeDetector: ChangeDetectorRef,
+                        protected toaster: ToastsManager,
                         protected stockToBuyStateStore: StockToBuyStateStore,
                         protected stockToBuyController: StockToBuyController,
                         protected stockToBuyFactory: StockToBuyFactory,
@@ -61,7 +62,8 @@ export class StockToBuyTableComponent extends StockModelObjectTableComponent<Sto
                         protected stockQuoteCacheService: StockQuoteCacheService,
                         protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.LAZY_ON_CREATE,
+        super( changeDetector,
+               TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
                stockToBuyStateStore,
                stockToBuyController,

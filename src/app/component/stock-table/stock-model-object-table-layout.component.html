@@ -2,7 +2,7 @@
 DEFINE THE FILTER TEMPLATE TO INCLUDE THE STOCK SYMBOL SEARCH
 <ng-template *ngIf="displayStockSearchFilter" #filterTemplate>
 ------------------------------------------------------------------------------------------------------------>
-<ng-template #filterTemplate>
+<ng-template *ngIf="displayStockSearchFilter" #filterTemplate>
     <div class="crud-form ui-grid-row">
         <div class="ui-grid-col-8 ui-state-default">
             <stock-search (stockSelected)="onStockSelected( $event )"
@@ -44,5 +44,6 @@ DEFINE THE TABLE LAYOUT
                    [(selection)]="selectedModelObject"
                    [scrollable]="scrollable"
                    (rowSelected)="onRowSelect($event)"
+                   [showHeaderButtons]="showHeaderButtons"
                    [lazy]="true">
 </crud-table-layout>

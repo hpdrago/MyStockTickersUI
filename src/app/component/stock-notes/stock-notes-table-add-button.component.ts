@@ -1,6 +1,6 @@
 import { CrudTableAddButtonComponent } from '../crud/table/crud-table-add-button.component';
 import { StockNotes } from '../../model/entity/stock-notes';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { SessionService } from '../../service/session.service';
 import { ToastsManager } from 'ng2-toastr';
 import { StockNotesStateStore } from './stock-notes-state-store';
@@ -24,14 +24,16 @@ export class StockNotesTableAddButtonComponent extends CrudTableAddButtonCompone
      * @param {StockNotesCrudService} stockNotesCrudService
      * @param {ToastsManager} toaster
      */
-    constructor( protected session: SessionService,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected session: SessionService,
                  protected toaster: ToastsManager,
                  protected stockNotesStateStore: StockNotesStateStore,
                  protected stockNotesController: StockNotesController,
                  protected stockNotesFactory: StockNotesFactory,
                  protected stockNotesCrudService: StockNotesCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockNotesStateStore,
                stockNotesController,
                stockNotesFactory,

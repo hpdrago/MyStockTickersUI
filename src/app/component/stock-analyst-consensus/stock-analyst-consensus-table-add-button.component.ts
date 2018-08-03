@@ -1,6 +1,6 @@
 import { CrudTableAddButtonComponent } from '../crud/table/crud-table-add-button.component';
 import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensus';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { SessionService } from '../../service/session.service';
 import { ToastsManager } from 'ng2-toastr';
 import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
@@ -24,14 +24,16 @@ export class StockAnalystConsensusTableAddButtonComponent extends CrudTableAddBu
      * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
      * @param {ToastsManager} toaster
      */
-    constructor( protected session: SessionService,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected session: SessionService,
                  protected toaster: ToastsManager,
                  protected stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
                  protected stockAnalystConsensusController: StockAnalystConsensusController,
                  protected stockAnalystConsensusFactory: StockAnalystConsensusFactory,
                  protected stockAnalystConsensusCrudService: StockAnalystConsensusCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockAnalystConsensusStateStore,
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,

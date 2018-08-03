@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesController } from '../stock-notes/stock-notes-controller';
@@ -19,11 +19,11 @@ import { CrudTableColumn } from '../crud/table/crud-table-column';
  */
 @Component
 ({
-    selector:    'stock-to-buy-dashboard-table',
+    selector:    'stock-to-buy-quad-view-table',
     styleUrls:   ['../stock-to-buy/stock-to-buy-table.component.css'],
     templateUrl: '../stock-to-buy/stock-to-buy-table.component.html',
 })
-export class StockToBuyDashboardTableComponent extends StockToBuyTableComponent
+export class StockToBuyQuadViewTableComponent extends StockToBuyTableComponent
 {
     /**
      * Constructor.
@@ -38,7 +38,8 @@ export class StockToBuyDashboardTableComponent extends StockToBuyTableComponent
      * @param {StockQuoteCacheService} stockQuoteCacheService
      * @param {CookieService} cookieService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected stockToBuyStateStore: StockToBuyStateStore,
                  protected stockToBuyController: StockToBuyController,
                  protected stockToBuyFactory: StockToBuyFactory,
@@ -49,7 +50,8 @@ export class StockToBuyDashboardTableComponent extends StockToBuyTableComponent
                  protected stockQuoteCacheService: StockQuoteCacheService,
                  protected cookieService: CookieService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockToBuyStateStore,
                stockToBuyController,
                stockToBuyFactory,
@@ -59,6 +61,7 @@ export class StockToBuyDashboardTableComponent extends StockToBuyTableComponent
                stockNotesFactory,
                stockQuoteCacheService,
                cookieService );
+        this.showHeaderButtons = false;
     }
 
     /**

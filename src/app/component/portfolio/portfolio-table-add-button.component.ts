@@ -1,6 +1,6 @@
 import { CrudTableAddButtonComponent } from '../crud/table/crud-table-add-button.component';
 import { Portfolio } from '../../model/entity/portfolio';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { SessionService } from '../../service/session.service';
 import { ToastsManager } from 'ng2-toastr';
 import { PortfolioStateStore } from './portfolio-state-store';
@@ -33,7 +33,8 @@ export class PortfolioTableAddButtonComponent extends CrudTableAddButtonComponen
      * @param {PortfolioCrudService} portfolioCrudService
      * @param {LinkedAccountController} linkedAccountController
      */
-    constructor( protected session: SessionService,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected session: SessionService,
                  protected toaster: ToastsManager,
                  protected portfolioStateStore: PortfolioStateStore,
                  protected portfolioController: PortfolioController,
@@ -41,7 +42,8 @@ export class PortfolioTableAddButtonComponent extends CrudTableAddButtonComponen
                  protected portfolioCrudService: PortfolioCrudService,
                  protected linkedAccountController: LinkedAccountController )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                portfolioStateStore,
                portfolioController,
                portfolioFactory,

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { Portfolio } from "../../model/entity/portfolio";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
 import { CrudTableComponent } from "../crud/table/crud-table.component";
@@ -47,7 +47,8 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
      * @param {TradeItAccountController} tradeItAccountController
      * @param {CookieService} cookieService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected session: SessionService,
                  protected portfolioStockStateStore: PortfolioStockStateStore,
                  protected portfolioStockController: PortfolioStockController,
@@ -58,7 +59,8 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
                  protected tradeItAccountController: TradeItAccountController,
                  protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.ALL_ON_DEMAND,
+        super( changeDetector,
+               TableLoadingStrategy.ALL_ON_DEMAND,
                toaster,
                portfolioStockStateStore,
                portfolioStockController,

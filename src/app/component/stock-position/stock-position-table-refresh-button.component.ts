@@ -2,7 +2,7 @@
  * Created by mike on 3/10/2018
  */
 import { StockPosition } from '../../model/entity/stock-position';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { StockPositionCrudService } from '../../service/crud/stock-position-crud.service';
 import { StockPositionController } from './stock-position-controller';
 import { StockPositionStateStore } from './stock-position-state-store';
@@ -35,14 +35,16 @@ export class StockPositionTableRefreshButtonComponent extends CrudTableRefreshBu
      * @param {StockPositionFactory} portfolioStockFactory
      * @param {StockPositionCrudService} portfolioStockCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private portfolioStockStateStore: StockPositionStateStore,
                  private portfolioStockController: StockPositionController,
                  private portfolioStockFactory: StockPositionFactory,
                  private portfolioStockCrudService: StockPositionCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                portfolioStockStateStore,
                portfolioStockController,
                portfolioStockFactory,

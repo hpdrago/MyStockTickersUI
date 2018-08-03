@@ -1,6 +1,6 @@
 import { CrudTableDeleteButtonComponent } from '../crud/table/crud-table-delete-button.component';
 import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensus';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { StockAnalystConsensusCrudService } from '../../service/crud/stock-analyst-consensus-crud.service';
 import { StockAnalystConsensusFactory } from '../../model/factory/stock-analyst-consensus.factory';
 import { SessionService } from '../../service/session.service';
@@ -24,14 +24,16 @@ export class StockAnalystConsensusTableDeleteButtonComponent extends CrudTableDe
      * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
      * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
                  private stockAnalystConsensusController: StockAnalystConsensusController,
                  private stockAnalystConsensusFactory: StockAnalystConsensusFactory,
                  private stockAnalystConsensusCrudService: StockAnalystConsensusCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockAnalystConsensusStateStore,
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,

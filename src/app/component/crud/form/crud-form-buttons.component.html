@@ -1,4 +1,4 @@
-<div *ngIf="modelObject" style="text-align: center;min-width: 500px" >
+<div *ngIf="modelObject && crudOperation" style="text-align: center;min-width: 500px" >
     <div *ngIf="isShowDeleteButton()" class="crud-form-delete-message">
         <p>
         {{getDeleteMessage(modelObject)}}

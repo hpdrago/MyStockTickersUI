@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockNotesStateStore } from './stock-notes-state-store';
 import { StockNotesController } from './stock-notes-controller';
@@ -33,14 +33,16 @@ export class StockNotesTableComponent  extends StockModelObjectTableComponent<St
      * @param {StockNotesCrudService} stockNotesCrudService
      * @param {CookieService} cookieService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected stockNotesStateStore: StockNotesStateStore,
                  protected stockNotesController: StockNotesController,
                  protected stockNotesFactory: StockNotesFactory,
                  protected stockNotesCrudService: StockNotesCrudService,
                  protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.LAZY_ON_CREATE,
+        super( changeDetector,
+               TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
                stockNotesStateStore,
                stockNotesController,

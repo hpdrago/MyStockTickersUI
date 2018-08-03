@@ -2,7 +2,7 @@
  * Created by mike on 9/16/2016.
  */
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './component/dashboard/dashboard.component';
+import { QuadViewComponent } from './component/quadview/quad-view.component';
 import { PortfolioStockFormComponent } from "./component/portfolio-stock/portfolio-stock-form.component";
 import { StockNotesTableComponent } from "./component/stock-notes/stock-notes-table.component";
 import { StockToBuyTableComponent } from "./component/stock-to-buy/stock-to-buy-table.component";
@@ -95,8 +95,8 @@ const routes: Routes = [
     },
     */
     {
-        path: 'dashboard',
-        component: DashboardComponent,
+        path:        'quadview',
+        component:   QuadViewComponent,
         canActivate: [AuthGuardService]
     },
     {
@@ -106,7 +106,7 @@ const routes: Routes = [
     },
     {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'quadview',
         pathMatch: 'full',
         canActivate: [AuthGuardService]
     }

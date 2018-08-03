@@ -9,6 +9,9 @@ import { LinkedAccountFactory } from '../../model/factory/linked-account.factory
 import { LinkedAccountController } from './linked-account-controller';
 import { LinkedAccountStateStore } from './linked-account-state-store';
 import { LinkedAccount } from '../../model/entity/linked-account';
+import { TradeItAccountController } from '../tradeit-account/tradeit-account-controller';
+import { TradeItAccount } from '../../model/entity/tradeit-account';
+import { TradeItAccountStateStore } from '../tradeit-account/tradeit-account-state-store';
 
 /**
  * This is the Customer Account Form Component class.
@@ -23,6 +26,7 @@ import { LinkedAccount } from '../../model/entity/linked-account';
 export class LinkedAccountFormComponent extends CrudFormComponent<LinkedAccount>
 {
     private brokerageItems: SelectItem[];
+    protected tradeItAccount: TradeItAccount;
 
     /**
      * Constructor.
@@ -42,7 +46,8 @@ export class LinkedAccountFormComponent extends CrudFormComponent<LinkedAccount>
                  private linkedAccountStateStore: LinkedAccountStateStore,
                  private linkedAccountController: LinkedAccountController,
                  private linkedAccountFactory: LinkedAccountFactory,
-                 private linkedAccountCrudService: LinkedAccountCrudService )
+                 private linkedAccountCrudService: LinkedAccountCrudService,
+                 private tradeItAccountStateStore: TradeItAccountStateStore )
     {
         super( changeDetector,
                toaster,
@@ -50,6 +55,14 @@ export class LinkedAccountFormComponent extends CrudFormComponent<LinkedAccount>
                linkedAccountController,
                linkedAccountFactory,
                linkedAccountCrudService );
+    }
+
+    public ngAfterViewInit(): void
+    {
+        super.ngAfterViewInit();
+        this.tradeItAccount = this.tradeItAccountStateStore
+                                  .getModelObject();
+        this.log( 'ngAfterViewInit ' + JSON.stringify( this.tradeItAccount ));
     }
 
     /**
@@ -67,4 +80,13 @@ export class LinkedAccountFormComponent extends CrudFormComponent<LinkedAccount>
         return stockNoteForm;
     }
 
+    /**
+     * Need to set the TradeItAccount id from the table selection value.
+     */
+    protected prepareToSave(): void
+    {
+        super.prepareToSave();
+        this.checkArgument( 'tradeItAccount', this.tradeItAccount );
+        this.modelObject.tradeItAccountId = this.tradeItAccount.id;
+    }
 }

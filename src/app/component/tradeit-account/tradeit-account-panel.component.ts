@@ -1,5 +1,5 @@
 import { CrudPanelComponent } from "../crud/panel/crud-panel.component";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { SessionService } from "../../service/session.service";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
@@ -27,14 +27,16 @@ export class TradeItAccountPanelComponent extends CrudPanelComponent<TradeItAcco
      * @param {TradeItAccountFactory} tradeItAccountFactory
      * @param {TradeItAccountCrudService} tradeItCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected sessionService: SessionService,
                  private tradeItAccountStateStore: TradeItAccountStateStore,
                  private tradeItAccountController: TradeItAccountController,
                  private tradeItAccountFactory: TradeItAccountFactory,
                  private tradeItCrudService: TradeItAccountCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                tradeItAccountStateStore,
                tradeItAccountController,
                tradeItAccountFactory,

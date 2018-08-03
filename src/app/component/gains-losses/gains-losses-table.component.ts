@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { GainsLossesFactory } from '../../model/factory/gains-losses.factory';
 import { GainsLossesStateStore } from './gains-losses-state-store';
@@ -30,14 +30,16 @@ export class GainsLossesTableComponent extends StockModelObjectTableComponent<Ga
      * @param {GainsLossesCrudService} gainsLossesCrudService
      * @param {CookieService} cookieService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected gainsLossesStateStore: GainsLossesStateStore,
                  protected gainsLossesController: GainsLossesController,
                  protected gainsLossesFactory: GainsLossesFactory,
                  protected gainsLossesCrudService: GainsLossesCrudService,
                  protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.LAZY_ON_CREATE,
+        super( changeDetector,
+               TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
                gainsLossesStateStore,
                gainsLossesController,

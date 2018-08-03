@@ -2,7 +2,7 @@
  * Created by mike on 3/10/2018
  */
 import { PortfolioStock } from '../../model/entity/portfolio-stock';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { PortfolioStockCrudService } from '../../service/crud/portfolio-stock-crud.service';
 import { PortfolioStockFactory } from '../../model/factory/portfolio-stock.factory';
 import { PortfolioStockController } from './portfolio-stock-controller';
@@ -36,7 +36,8 @@ export class PortfolioStockTableAddButtonComponent extends CrudTableAddButtonCom
      * @param {PortfolioStockCrudService} portfolioStockCrudService
      * @param {LinkedAccountController} linkedAccountController
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private portfolioStockStateStore: PortfolioStockStateStore,
                  private portfolioStockController: PortfolioStockController,
@@ -44,7 +45,8 @@ export class PortfolioStockTableAddButtonComponent extends CrudTableAddButtonCom
                  private portfolioStockCrudService: PortfolioStockCrudService,
                  private linkedAccountController: LinkedAccountController )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                portfolioStockStateStore,
                portfolioStockController,
                portfolioStockFactory,

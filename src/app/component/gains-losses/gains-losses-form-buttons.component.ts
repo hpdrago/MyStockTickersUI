@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { GainsLosses } from "../../model/entity/gains-losses";
@@ -27,13 +27,15 @@ export class GainsLossesFormButtonsComponent extends CrudFormButtonsComponent<Ga
      * @param {GainsLossesFactory} gainsLossesFactory
      * @param {GainsLossesCrudService} gainsLossesCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private gainsLossesStateStore: GainsLossesStateStore,
                  private gainsLossesController: GainsLossesController,
                  private gainsLossesFactory: GainsLossesFactory,
                  private gainsLossesCrudService: GainsLossesCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                gainsLossesStateStore,
                gainsLossesController,
                gainsLossesFactory,

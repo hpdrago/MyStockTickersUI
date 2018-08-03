@@ -91,7 +91,7 @@ export class StockCatalystEvent extends ModelObject<StockCatalystEvent>
         crudTableColumns.addColumn( {
                                         colId: 'catalystDesc',
                                         header: 'Description',
-                                        dataType: CrudTableColumnType.STRING,
+                                        dataType: CrudTableColumnType.COMMENTS,
                                         field: 'catalystDesc',
                                         sortable: true
                                     } );

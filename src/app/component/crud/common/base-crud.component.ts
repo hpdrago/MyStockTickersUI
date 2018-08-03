@@ -13,7 +13,7 @@ import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { CrudRestErrorReporter } from '../../../service/crud/crud-rest-error-reporter';
-import { OnInit } from '@angular/core';
+import { ChangeDetectorRef, OnInit } from '@angular/core';
 
 /**
  * This class is the base class for all CRUD components
@@ -52,7 +52,8 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected crudStateStore: CrudStateStore<T>,
                  protected crudController: CrudController<T>,
                  protected modelObjectFactory: ModelObjectFactory<T>,
@@ -73,8 +74,6 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     {
         const methodName = "ngOnInit";
         this.debug( methodName + ".begin" );
-        this.subscribeToModelObjectChangeEvents();
-        this.subscribeToCrudStateStoreEvents();
         this.debug( methodName + ".end" );
     }
 
@@ -84,8 +83,11 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
      */
     public ngAfterViewInit(): void
     {
-        //const methodName = 'ngAfterViewInit';
-        //this.logMethodBegin( methodName )
+        const methodName = "ngAfterViewInit";
+        this.debug( methodName + ".begin" );
+        this.subscribeToModelObjectChangeEvents();
+        this.subscribeToCrudStateStoreEvents();
+        this.debug( methodName + ".end" );
         //this.logMethodEnd( methodName );
     }
 
@@ -95,7 +97,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     protected subscribeToCrudStateStoreEvents()
     {
         const methodName = 'subscribeToCrudStateStoreEvents';
-        //this.debug( methodName );
+        this.logMethodBegin( methodName );
         this.addSubscription( 'subscribeToCrudOperationChangeEvent',
                               this.crudStateStore
                                   .subscribeToCrudOperationChangeEvent(
@@ -107,6 +109,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
                                                                        {
                                                                             this.onModelObjectChanged( modelObjectChangeEvent.modelObject );
                                                                        }));
+        this.logMethodEnd( methodName );
     }
 
     /**
@@ -146,7 +149,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
     private subscribeToModelObjectChangeEvents()
     {
         const methodName = 'subscribeToModelObjectChangeEvents';
-        //this.debug( methodName + '.begin' );
+        this.debug( methodName + '.begin' );
         this.addSubscription( 'subscribeToModelObjectSavedEvent',
             this.crudController
                 .subscribeToModelObjectSavedEvent( (modelObject: T) => this.onModelObjectSaved( modelObject )));
@@ -156,7 +159,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         this.addSubscription( 'subscribeToModelObjectAddedEvent',
             this.crudController
                 .subscribeToModelObjectAddedEvent( ( modelObject: T) => this.onModelObjectCreated( modelObject )));
-        //this.debug( methodName + '.end' );
+        this.debug( methodName + '.end' );
     }
 
     /**
@@ -237,6 +240,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
        const methodName = "onModelObjectChanged";
        //this.debug( methodName + " " + JSON.stringify( modelObject ) );
        this.modelObject = modelObject;
+       this.changeDetector.detectChanges();
    }
 
     /**
@@ -249,6 +253,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         const methodName = "onModelObjectDeleted";
         //this.debug( methodName + " " + JSON.stringify( modelObject ) );
         this.modelObject = modelObject;
+        this.changeDetector.detectChanges();
     }
 
     /**
@@ -261,6 +266,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         const methodName = "onModelObjectCreated";
         //this.debug( methodName + " " + JSON.stringify( modelObject ) );
         this.modelObject = modelObject;
+        this.changeDetector.detectChanges();
     }
 
     /**
@@ -273,6 +279,7 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         const methodName = "onModelObjectSaved";
         //this.debug( methodName + " " + JSON.stringify( modelObject ) );
         this.modelObject = modelObject;
+        this.changeDetector.detectChanges();
     }
 
     /**
@@ -284,6 +291,8 @@ export class BaseCrudComponent<T extends ModelObject<T>> extends BaseComponent i
         const methodName = "crudOperationChangedEvent";
         //this.debug( methodName + " change " + CrudOperation.getName( crudOperation ) );
         this.onCrudOperationChanged( crudOperation );
+        this.changeDetector.detectChanges();
+        //this.tickThenRun( ()=> this.onCrudOperationChanged( crudOperation ));
     }
 
     /**

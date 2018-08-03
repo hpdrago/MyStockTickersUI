@@ -22,7 +22,7 @@ export class MenuBarComponent
     {
         this.menuItems =
             [
-                { label: 'Dashboard', icon: 'fa-area-chart', routerLink: ['/dashboard'] },
+                { label: 'Quad View', icon: 'fa-area-chart', routerLink: ['/quadview'] },
                 { label: 'Stock Notes',
                    icon: 'fa-sticky-note',
                   items: [{

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { Customer } from "../../model/entity/customer";
@@ -19,13 +19,15 @@ import { CustomerCrudService } from '../../service/crud/customer-crud.service';
 })
 export class CustomerFormButtonsComponent extends CrudFormButtonsComponent<Customer>
 {
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected customerStateStore: CustomerStateStore,
                  protected customerController: CustomerController,
                  protected customerFactory: CustomerFactory,
                  protected customerCrudService: CustomerCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                customerStateStore,
                customerController,
                customerFactory,

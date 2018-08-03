@@ -1,5 +1,5 @@
 import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
@@ -24,13 +24,15 @@ export class StockCatalystEventDialogComponent extends CrudDialogComponent<Stock
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
      * @param {StockCatalystEventCrudService} stockCatalystEventCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private stockCatalystEventStateStore: StockCatalystEventStateStore,
                  private stockCatalystEventController: StockCatalystEventController,
                  private stockCatalystEventFactory: StockCatalystEventFactory,
                  private stockCatalystEventCrudService: StockCatalystEventCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockCatalystEventStateStore,
                stockCatalystEventController,
                stockCatalystEventFactory,

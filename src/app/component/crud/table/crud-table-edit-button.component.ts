@@ -6,6 +6,7 @@ import { CrudController } from '../common/crud-controller';
 import { CrudStateStore } from '../common/crud-state-store';
 import { ToastsManager } from 'ng2-toastr';
 import { isNullOrUndefined } from "util";
+import { ChangeDetectorRef } from '@angular/core';
 
 /**
  * Edit button for standard CRUD based table
@@ -20,13 +21,15 @@ export abstract class CrudTableEditButtonComponent<T extends ModelObject<T>> ext
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    protected constructor( protected toaster: ToastsManager,
+    protected constructor( protected changeDetector: ChangeDetectorRef,
+                           protected toaster: ToastsManager,
                            protected crudStateStore: CrudStateStore<T>,
                            protected crudController: CrudController<T>,
                            protected modelObjectFactory: ModelObjectFactory<T>,
                            protected crudRestService: CrudRestService<T> )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                crudStateStore,
                crudController,
                modelObjectFactory,

@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { ChangeDetectorRef, Component, Input } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
@@ -33,13 +33,15 @@ export class PortfolioStockDialogComponent extends CrudDialogComponent<Portfolio
      * @param {PortfolioStockFactory} portfolioStockFactory
      * @param {PortfolioStockCrudService} portfolioStockCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private portfolioStockStateStore: PortfolioStockStateStore,
                  private portfolioStockController: PortfolioStockController,
                  private portfolioStockFactory: PortfolioStockFactory,
                  private portfolioStockCrudService: PortfolioStockCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                portfolioStockStateStore,
                portfolioStockController,
                portfolioStockFactory,

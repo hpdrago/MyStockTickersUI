@@ -5,6 +5,7 @@ import { CrudStateStore } from '../common/crud-state-store';
 import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
+import { ChangeDetectorRef } from '@angular/core';
 
 /**
  * This is the base class for crud operation buttons.
@@ -27,13 +28,15 @@ export abstract class CrudTableButtonComponent<T extends ModelObject<T>> extends
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    protected constructor( protected toaster: ToastsManager,
+    protected constructor( protected changeDetector: ChangeDetectorRef,
+                           protected toaster: ToastsManager,
                            protected crudStateStore: CrudStateStore<T>,
                            protected crudController: CrudController<T>,
                            protected modelObjectFactory: ModelObjectFactory<T>,
                            protected crudRestService: CrudRestService<T> )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                crudStateStore,
                crudController,
                modelObjectFactory,

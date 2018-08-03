@@ -1,5 +1,5 @@
 import { CrudTableAddButtonComponent } from '../crud/table/crud-table-add-button.component';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CrudOperation } from '../crud/common/crud-operation';
 import { SessionService } from '../../service/session.service';
 import { ToastsManager } from 'ng2-toastr';
@@ -30,7 +30,8 @@ export class LinkedAccountTableAddButtonComponent extends CrudTableAddButtonComp
      * @param {LinkedAccountCrudService} linkedAccountCrudService
      * @param {ToastsManager} toaster
      */
-    constructor( protected session: SessionService,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected session: SessionService,
                  protected toaster: ToastsManager,
                  protected linkedAccountStateStore: LinkedAccountStateStore,
                  protected linkedAccountController: LinkedAccountController,
@@ -38,7 +39,8 @@ export class LinkedAccountTableAddButtonComponent extends CrudTableAddButtonComp
                  protected linkedAccountCrudService: LinkedAccountCrudService,
                  protected tradeItAccountController: TradeItAccountController )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                linkedAccountStateStore,
                linkedAccountController,
                linkedAccountFactory,

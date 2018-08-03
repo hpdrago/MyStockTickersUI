@@ -2,7 +2,7 @@
  * Created by mike on 3/10/2018
  */
 import { StockToBuy } from '../../model/entity/stock-to-buy';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { StockToBuyCrudService } from '../../service/crud/stock-to-buy-crud.service';
 import { StockToBuyFactory } from '../../model/factory/stock-to-buy.factory';
 import { SessionService } from '../../service/session.service';
@@ -27,14 +27,16 @@ export class StockToBuyTableEditButtonComponent extends CrudTableEditButtonCompo
      * @param {StockToBuyFactory} stockToBuyFactory
      * @param {StockToBuyCrudService} stockToBuyCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private stockToBuyStateStore: StockToBuyStateStore,
                  private stockToBuyController: StockToBuyController,
                  private stockToBuyFactory: StockToBuyFactory,
                  private stockToBuyCrudService: StockToBuyCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockToBuyStateStore,
                stockToBuyController,
                stockToBuyFactory,

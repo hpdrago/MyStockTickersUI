@@ -119,6 +119,7 @@ export abstract class CrudStateStore<T extends ModelObject<T>> extends BaseClass
     public sendModelObjectChangedEvent( sender: any, modelObject: T )
     {
         const methodName = "sendModelObjectChangedEvent";
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
         /*
         if ( sender === this.modelObjectChangedSubject.getValue().sender &&
              modelObject.isEqualProperties( this.modelObjectChangedSubject.getValue().modelObject ))

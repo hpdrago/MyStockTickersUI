@@ -1,6 +1,6 @@
 import { CrudTableComponent } from "../crud/table/crud-table.component";
 import { LinkedAccount } from "../../model/entity/linked-account";
-import { Component, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TableLoadingStrategy } from "../common/table-loading-strategy";
 import { TradeItAccount } from "../../model/entity/tradeit-account";
@@ -46,7 +46,8 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
      * @param {TradeItAccountStateStore} tradeItAccountStateStore
      * @param {CookieService} cookieService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected linkedAccountStateStore: LinkedAccountStateStore,
                  protected linkedAccountController: LinkedAccountController,
                  protected linkedAccountFactory: LinkedAccountFactory,
@@ -57,7 +58,8 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
                  protected tradeItAccountStateStore: TradeItAccountStateStore,
                  protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.ALL_ON_DEMAND,
+        super( changeDetector,
+               TableLoadingStrategy.ALL_ON_DEMAND,
                toaster,
                linkedAccountStateStore,
                linkedAccountController,

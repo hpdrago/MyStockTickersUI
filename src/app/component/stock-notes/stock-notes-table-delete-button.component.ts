@@ -1,6 +1,6 @@
 import { CrudTableDeleteButtonComponent } from '../crud/table/crud-table-delete-button.component';
 import { StockNotes } from '../../model/entity/stock-notes';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { StockNotesCrudService } from '../../service/crud/stock-notes-crud.service';
 import { StockNotesFactory } from '../../model/factory/stock-notes.factory';
 import { StockNotesController } from './stock-notes-controller';
@@ -24,14 +24,16 @@ export class StockNotesTableDeleteButtonComponent extends CrudTableDeleteButtonC
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockNotesCrudService} stockNotesCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private stockNotesStateStore: StockNotesStateStore,
                  private stockNotesController: StockNotesController,
                  private stockNotesFactory: StockNotesFactory,
                  private stockNotesCrudService: StockNotesCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockNotesStateStore,
                stockNotesController,
                stockNotesFactory,

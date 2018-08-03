@@ -1,6 +1,6 @@
 import { CrudTableDeleteButtonComponent } from '../crud/table/crud-table-delete-button.component';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { SessionService } from '../../service/session.service';
@@ -24,14 +24,16 @@ export class TradeItAccountTableDeleteButtonComponent extends CrudTableDeleteBut
      * @param {TradeItAccountFactory} tradeItAccountFactory
      * @param {TradeItAccountCrudService} tradeItAccountCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private tradeItAccountStateStore: TradeItAccountStateStore,
                  private tradeItAccountController: TradeItAccountController,
                  private tradeItAccountFactory: TradeItAccountFactory,
                  private tradeItAccountCrudService: TradeItAccountCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                tradeItAccountStateStore,
                tradeItAccountController,
                tradeItAccountFactory,

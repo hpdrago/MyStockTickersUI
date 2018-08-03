@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
@@ -29,14 +29,16 @@ export class PortfolioFormButtonsComponent extends CrudFormButtonsComponent<Port
      * @param {PortfolioFactory} portfolioFactory
      * @param {PortfolioCrudService} portfolioCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private portfolioStateStore: PortfolioStateStore,
                  private portfolioController: PortfolioController,
                  private portfolioFactory: PortfolioFactory,
                  private portfolioCrudService: PortfolioCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                portfolioStateStore,
                portfolioController,
                portfolioFactory,

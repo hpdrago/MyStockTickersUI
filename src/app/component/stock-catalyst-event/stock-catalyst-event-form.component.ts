@@ -93,7 +93,7 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
     protected createFormGroup(): FormGroup
     {
         this.debug( "initializeForm " );
-        var stockNoteForm: FormGroup = this.formBuilder.group(
+        var formGroup: FormGroup = this.formBuilder.group(
             {
                 'tickerSymbol':     new FormControl( this.modelObject.tickerSymbol, Validators.required ),
                 'dateOrTimePeriod': new FormControl( this.modelObject.dateOrTimePeriod, Validators.required ),
@@ -102,7 +102,7 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
                 'timePeriodYear':   new FormControl( this.modelObject.timePeriodYear ),
                 'catalystDesc':     new FormControl( this.modelObject.catalystDesc, Validators.required )
             } );
-        return stockNoteForm;
+        return formGroup;
     }
 
     protected isTimePeriod(): boolean
@@ -124,6 +124,7 @@ export class StockCatalystEventFormComponent extends CrudFormComponent<StockCata
     protected setDefaultValues(): void
     {
         super.setDefaultValues();
+        super.setFormValue( 'dateOrTimePeriod', DateOrTimePeriod.DATE );
         this.modelObject.dateOrTimePeriod = DateOrTimePeriod.DATE;
         this.enableDisableDateAndTimerPeriodFields();
     }

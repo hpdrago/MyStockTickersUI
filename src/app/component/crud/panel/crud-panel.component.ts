@@ -1,7 +1,7 @@
 import { ToastsManager } from "ng2-toastr";
 import { ModelObject } from "../../../model/common/model-object";
 import { BaseCrudComponent } from "../common/base-crud.component";
-import { OnInit } from "@angular/core";
+import { ChangeDetectorRef, OnInit } from "@angular/core";
 import { CrudStateStore } from '../common/crud-state-store';
 import { CrudController } from '../common/crud-controller';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
@@ -26,28 +26,27 @@ export abstract class CrudPanelComponent<T extends ModelObject<T>>
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected crudStateStore: CrudStateStore<T>,
                  protected crudController: CrudController<T>,
                  protected modelObjectFactory: ModelObjectFactory<T>,
                  protected crudRestService: CrudRestService<T> )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                crudStateStore,
                crudController,
                modelObjectFactory,
                crudRestService );
     }
 
-    /**
-     * Initialize the class
-     */
-    public ngOnInit()
+    public ngAfterViewInit(): void
     {
-        this.log( "CrudPanelComponent.ngOnInit.begin" );
-        super.ngOnInit();
+        this.log( "CrudPanelComponent.ngAfterViewInit.begin" );
         this.subscribeToCrudPanelServiceEvents();
-        this.log( "CurdPanelComponent.ngOnInit.end" );
+        super.ngAfterViewInit();
+        this.log( "CurdPanelComponent.ngAfterViewInit.end" );
     }
 
     /**

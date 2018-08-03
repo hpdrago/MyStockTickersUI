@@ -1,5 +1,5 @@
 import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockNotes } from "../../model/entity/stock-notes";
 import { StockNotesStateStore } from './stock-notes-state-store';
@@ -24,13 +24,15 @@ export class StockNotesDialogComponent extends CrudDialogComponent<StockNotes>
      * @param {StockNotesFactory} stockNotesFactory
      * @param {StockNotesCrudService} stockNotesCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private stockNotesCrudStateStore: StockNotesStateStore,
                  private stockNotesController: StockNotesController,
                  private stockNotesFactory: StockNotesFactory,
                  private stockNotesCrudService: StockNotesCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockNotesCrudStateStore,
                stockNotesController,
                stockNotesFactory,

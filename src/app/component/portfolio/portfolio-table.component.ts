@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from "@angular/core";
 import { SessionService } from "../../service/session.service";
 import { Portfolio } from "../../model/entity/portfolio";
 import { MenuItem } from "primeng/primeng";
@@ -44,7 +44,8 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
      * @param {LinkedAccountController} linkedAccountController
      * @param {CookieService} cookieService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected session: SessionService,
                  protected portfolioStateStore: PortfolioStateStore,
                  protected portfolioController: PortfolioController,
@@ -54,7 +55,8 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
                  protected linkedAccountController: LinkedAccountController,
                  protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.ALL_ON_CREATE,
+        super( changeDetector,
+               TableLoadingStrategy.ALL_ON_CREATE,
                toaster,
                portfolioStateStore,
                portfolioController,

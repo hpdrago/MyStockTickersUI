@@ -42,8 +42,8 @@ export class StockNotesCountService extends ReadRestService<StockNoteCount>
 
     public getStockNoteCounts( customerId: string ): Observable<Array<StockNoteCount>>
     {
-        const methodName = "getStockNotes";
-        this.logger.debug( `${methodName} customerId: ${customerId}` );
+        //const methodName = "getStockNotes";
+        //this.logger.debug( `${methodName} customerId: ${customerId}` );
         var stockNoteCount: StockNoteCount = this.modelObjectFactory.newModelObject();
         stockNoteCount.customerId = customerId;
         return super.getModelObjectList( stockNoteCount );

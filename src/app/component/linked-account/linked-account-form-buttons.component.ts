@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { TradeItAccountOAuthService } from "../../service/tradeit/tradeit-account-oauth.service";
@@ -29,14 +29,16 @@ export class LinkedAccountFormButtonsComponent extends CrudFormButtonsComponent<
      * @param {LinkedAccountCrudService} linkedAccountCrudService
      * @param {TradeItAccountOAuthService} tradeItAccountOAuthService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private linkedAccountStateStore: LinkedAccountStateStore,
                  private linkedAccountController: LinkedAccountController,
                  private linkedAccountFactory: LinkedAccountFactory,
                  private linkedAccountCrudService: LinkedAccountCrudService,
                  private tradeItAccountOAuthService: TradeItAccountOAuthService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                linkedAccountStateStore,
                linkedAccountController,
                linkedAccountFactory,

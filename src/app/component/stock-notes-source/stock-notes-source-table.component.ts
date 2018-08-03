@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { StockNotesSourceStateStore } from './stock-notes-source-state-store';
@@ -30,7 +30,8 @@ export class StockNotesSourceTableComponent extends CrudTableComponent<StockNote
      * @param {StockNotesSourceCrudService} stockNotesSourceCrudService
      * @param {CookieService} cookieService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
                  protected stockNotesSourceStateStore: StockNotesSourceStateStore,
                  protected stockNotesSourceController: StockNotesSourceController,
@@ -38,7 +39,8 @@ export class StockNotesSourceTableComponent extends CrudTableComponent<StockNote
                  protected stockNotesSourceCrudService: StockNotesSourceCrudService,
                  protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.ALL_ON_CREATE,
+        super( changeDetector,
+               TableLoadingStrategy.ALL_ON_CREATE,
                toaster,
                stockNotesSourceStateStore,
                stockNotesSourceController,

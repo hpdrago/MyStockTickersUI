@@ -1,4 +1,4 @@
-import { Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Input, OnInit } from '@angular/core';
 import { StockAnalystConsensus } from '../../model/entity/stock-analyst-consensus';
 import { StockAnalystConsensusCache } from '../../service/cache/stock-analyst-consensus-cache';
 import { BaseComponent } from '../common/base.component';
@@ -17,10 +17,12 @@ export class StockAnalystConsensusBaseComponent extends BaseComponent implements
 
     /**
      * Constructor.
+     * @param {ChangeDetectorRef} changeDetector
      * @param {ToastsManager} toaster
      * @param {StockAnalystConsensusCache} stockAnalystConsensusCache
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected stockAnalystConsensusCache: StockAnalystConsensusCache )
     {
         super( toaster );
@@ -40,8 +42,14 @@ export class StockAnalystConsensusBaseComponent extends BaseComponent implements
             .subscribe( this.tickerSymbol, (stockAnalystConsensus) => this.stockAnalystConsensusChange( stockAnalystConsensus ));
     }
 
+    /**
+     * This method is called when a new value is received in the cache.
+     * @param {StockAnalystConsensus} stockAnalystConsensus
+     */
     private stockAnalystConsensusChange( stockAnalystConsensus: StockAnalystConsensus )
     {
+        this.changeDetector
+            .markForCheck();
         this.stockAnalystConsensus = stockAnalystConsensus;
     }
 }

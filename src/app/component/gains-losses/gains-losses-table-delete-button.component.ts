@@ -1,6 +1,6 @@
 import { CrudTableDeleteButtonComponent } from '../crud/table/crud-table-delete-button.component';
 import { GainsLosses } from '../../model/entity/gains-losses';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { GainsLossesCrudService } from '../../service/crud/gains-losses-crud.service';
 import { GainsLossesFactory } from '../../model/factory/gains-losses.factory';
 import { SessionService } from '../../service/session.service';
@@ -24,14 +24,16 @@ export class GainsLossesTableDeleteButtonComponent extends CrudTableDeleteButton
      * @param {GainsLossesFactory} gainsLossesFactory
      * @param {GainsLossesCrudService} gainsLossesCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private gainsLossesStateStore: GainsLossesStateStore,
                  private gainsLossesController: GainsLossesController,
                  private gainsLossesFactory: GainsLossesFactory,
                  private gainsLossesCrudService: GainsLossesCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                gainsLossesStateStore,
                gainsLossesController,
                gainsLossesFactory,

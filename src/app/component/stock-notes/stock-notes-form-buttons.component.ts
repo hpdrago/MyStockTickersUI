@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { SessionService } from "../../service/session.service";
@@ -35,7 +35,8 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
      * @param {StockToBuyFactory} stockToBuyFactory
      * @param {StockToBuyCrudService} stockToBuyCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private stockNotesStateStore: StockNotesStateStore,
                  private stockNotesController: StockNotesController,
@@ -45,7 +46,8 @@ export class StockNotesFormButtonsComponent extends CrudFormButtonsComponent<Sto
                  private stockToBuyFactory: StockToBuyFactory,
                  private stockToBuyCrudService: StockToBuyCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockNotesStateStore,
                stockNotesController,
                stockNotesFactory,

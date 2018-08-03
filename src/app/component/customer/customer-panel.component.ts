@@ -1,6 +1,6 @@
 import { CrudPanelComponent } from '../crud/panel/crud-panel.component';
 import { Customer } from '../../model/entity/customer';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ToastsManager } from 'ng2-toastr';
 import { CustomerController } from './customer-controller';
 import { CustomerFactory } from '../../model/factory/customer.factory';
@@ -25,13 +25,15 @@ export class CustomerPanelComponent extends CrudPanelComponent<Customer>
      * @param {CustomerFactory} customerFactory
      * @param {CustomerCrudService} customerCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private customerStateStore: CustomerStateStore,
                  private customerController: CustomerController,
                  private customerFactory: CustomerFactory,
                  private customerCrudService: CustomerCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                customerStateStore,
                customerController,
                customerFactory,

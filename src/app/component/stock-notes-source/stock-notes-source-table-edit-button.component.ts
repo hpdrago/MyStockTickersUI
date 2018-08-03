@@ -1,7 +1,7 @@
 /**
  * Created by mike on 3/10/2018
  */
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { SessionService } from '../../service/session.service';
 import { ToastsManager } from 'ng2-toastr';
 import { CrudTableEditButtonComponent } from '../crud/table/crud-table-edit-button.component';
@@ -27,14 +27,16 @@ export class StockNotesSourceTableEditButtonComponent extends CrudTableEditButto
      * @param {StockNotesSourceFactory} stockNotesSourceFactory
      * @param {StockNotesSourceCrudService} stockNotesSourceCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private stockNotesSourceStateStore: StockNotesSourceStateStore,
                  private stockNotesSourceController: StockNotesSourceController,
                  private stockNotesSourceFactory: StockNotesSourceFactory,
                  private stockNotesSourceCrudService: StockNotesSourceCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockNotesSourceStateStore,
                stockNotesSourceController,
                stockNotesSourceFactory,

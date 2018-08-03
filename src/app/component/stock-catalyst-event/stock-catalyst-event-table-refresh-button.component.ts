@@ -2,7 +2,7 @@
  * Created by mike on 3/10/2018
  */
 import { StockCatalystEvent } from '../../model/entity/stock-catalyst-event';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 import { StockCatalystEventController } from './stock-catalyst-event-controller';
@@ -27,14 +27,16 @@ export class StockCatalystEventTableRefreshButtonComponent extends CrudTableRefr
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
      * @param {StockCatalystEventCrudService} stockCatalystEventCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private stockCatalystEventStateStore: StockCatalystEventStateStore,
                  private stockCatalystEventController: StockCatalystEventController,
                  private stockCatalystEventFactory: StockCatalystEventFactory,
                  private stockCatalystEventCrudService: StockCatalystEventCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockCatalystEventStateStore,
                stockCatalystEventController,
                stockCatalystEventFactory,

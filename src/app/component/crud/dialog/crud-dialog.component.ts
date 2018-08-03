@@ -7,7 +7,7 @@ import { ModelObjectFactory } from '../../../model/factory/model-object.factory'
 import { CrudController } from '../common/crud-controller';
 import { CrudStateStore } from '../common/crud-state-store';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
-import { Input } from '@angular/core';
+import { ChangeDetectorRef, Input } from '@angular/core';
 
 /**
  * This is the base class for Modal dialogs that provide CRUD operations on a model object.
@@ -57,13 +57,15 @@ export abstract class CrudDialogComponent<T extends ModelObject<T>> extends Crud
      * @param {ModelObjectFactory<T extends ModelObject<T>>} modelObjectFactory
      * @param {CrudRestService<T extends ModelObject<T>>} crudRestService
      */
-    public constructor( protected toaster: ToastsManager,
-                        protected crudStateStore: CrudStateStore<T>,
-                        protected crudController: CrudController<T>,
-                        protected modelObjectFactory: ModelObjectFactory<T>,
-                        protected crudRestService: CrudRestService<T> )
+    protected constructor( protected changeDetector: ChangeDetectorRef,
+                           protected toaster: ToastsManager,
+                           protected crudStateStore: CrudStateStore<T>,
+                           protected crudController: CrudController<T>,
+                           protected modelObjectFactory: ModelObjectFactory<T>,
+                           protected crudRestService: CrudRestService<T> )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                crudStateStore,
                crudController,
                modelObjectFactory,
@@ -76,9 +78,25 @@ export abstract class CrudDialogComponent<T extends ModelObject<T>> extends Crud
     public ngOnInit()
     {
         this.log( "ngOnInit.begin" );
-        this.subscribeToControllerEvents();
         super.ngOnInit();
         this.log( "ngOnInit.end" );
+    }
+
+    public ngAfterViewInit(): void
+    {
+        super.ngAfterViewInit();
+        this.subscribeToControllerEvents();
+    }
+
+    /**
+     * Determines if all of the required data/gui components are initialized in order for the form to function.
+     * @return {boolean}
+     */
+    public isInitialized()
+    {
+        return !isNullOrUndefined( this.crudOperation ) &&
+               !isNullOrUndefined( this.modelObject ) &&
+               !this.isCrudNoneOperation();
     }
 
     /**

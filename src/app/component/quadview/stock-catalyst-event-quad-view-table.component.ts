@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockCatalystEventStateStore } from '../stock-catalyst-event/stock-catalyst-event-state-store';
 import { StockCatalystEventController } from '../stock-catalyst-event/stock-catalyst-event-controller';
@@ -16,10 +16,10 @@ import { CrudTableColumn } from '../crud/table/crud-table-column';
  */
 @Component(
     {
-        selector: 'stock-catalyst-event-dashboard-table',
+        selector:    'stock-catalyst-event-quad-view-table',
         templateUrl: '../stock-catalyst-event/stock-catalyst-event-table.component.html'
     } )
-export class StockCatalystEventDashboardTableComponent extends StockCatalystEventTableComponent
+export class StockCatalystEventQuadViewTableComponent extends StockCatalystEventTableComponent
 {
     /**
      * Constructor.
@@ -31,7 +31,8 @@ export class StockCatalystEventDashboardTableComponent extends StockCatalystEven
      * @param {StockQuoteCacheService} stockQuoteCacheService
      * @param {CookieService} cookieService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected stockCatalystEventStateStore: StockCatalystEventStateStore,
                  protected stockCatalystEventController: StockCatalystEventController,
                  protected stockCatalystEventFactory: StockCatalystEventFactory,
@@ -39,13 +40,15 @@ export class StockCatalystEventDashboardTableComponent extends StockCatalystEven
                  protected stockQuoteCacheService: StockQuoteCacheService,
                  protected cookieService: CookieService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockCatalystEventStateStore,
                stockCatalystEventController,
                stockCatalystEventFactory,
                stockCatalystEventCrudService,
                stockQuoteCacheService,
                cookieService );
+        this.showHeaderButtons = false;
     }
 
     /**

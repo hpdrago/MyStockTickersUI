@@ -1,5 +1,5 @@
 import { ToastsManager } from "ng2-toastr";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { TradeItErrorReporter } from "../tradeit/tradeit-error-reporter";
 import { StockPositionController } from './stock-position-controller';
 import { StockPositionStateStore } from './stock-position-state-store';
@@ -33,16 +33,19 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
 
     /**
      * Constructor.
+     * @param {ChangeDetectorRef} changeDetector
      * @param {ToastsManager} toaster
      * @param {TradeItErrorReporter} tradeItErrorReporter
      * @param {StockPositionStateStore} stockPositionStateStore
      * @param {StockPositionController} stockPositionController
      * @param {StockPositionFactory} stockPositionFactory
      * @param {StockPositionCrudService} stockPositionCrudService
-     * @param {StockQuoteCacheService} stockQuoteCacheService
+     * @param {TradeItAccountController} tradeItAccountController
+     * @param {LinkedAccountController} linkedAccountController
      * @param {CookieService} cookieService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
                  protected stockPositionStateStore: StockPositionStateStore,
                  protected stockPositionController: StockPositionController,
@@ -52,7 +55,8 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
                  protected linkedAccountController: LinkedAccountController,
                  protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.ALL_ON_DEMAND,
+        super( changeDetector,
+               TableLoadingStrategy.ALL_ON_DEMAND,
                toaster,
                stockPositionStateStore,
                stockPositionController,

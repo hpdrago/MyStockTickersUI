@@ -8,7 +8,7 @@ import { TableLoadingStrategy } from '../common/table-loading-strategy';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 import { StockQuoteCacheService } from '../../service/cache/stock-quote-cache.service';
 import { CookieService } from 'ngx-cookie-service';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 
 /**
  * This is the base class for the tab and dashboard table for StockCompany Analyst Consensus information
@@ -31,14 +31,16 @@ export class StockAnalystConsensusTableComponent extends StockModelObjectTableCo
      * @param {StockQuoteCacheService} stockQuoteCacheService
      * @param {CookieService} cookieService
      */
-    public constructor( protected toaster: ToastsManager,
+    public constructor( protected changeDetector: ChangeDetectorRef,
+                        protected toaster: ToastsManager,
                         protected stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
                         protected stockAnalystConsensusController: StockAnalystConsensusController,
                         protected stockAnalystConsensusFactory: StockAnalystConsensusFactory,
                         protected stockAnalystConsensusCrudService: StockAnalystConsensusCrudService,
                         protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.LAZY_ON_CREATE,
+        super( changeDetector,
+               TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
                stockAnalystConsensusStateStore,
                stockAnalystConsensusController,

@@ -1,5 +1,5 @@
 import { CrudDialogComponent } from "../crud/dialog/crud-dialog.component";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockAnalystConsensus } from "../../model/entity/stock-analyst-consensus";
 import { StockAnalystConsensusStateStore } from './stock-analyst-consensus-state-store';
@@ -24,13 +24,15 @@ export class StockAnalystConsensusDialogComponent extends CrudDialogComponent<St
      * @param {StockAnalystConsensusFactory} stockAnalystConsensusFactory
      * @param {StockAnalystConsensusCrudService} stockAnalystConsensusCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private stockAnalystConsensusStateStore: StockAnalystConsensusStateStore,
                  private stockAnalystConsensusController: StockAnalystConsensusController,
                  private stockAnalystConsensusFactory: StockAnalystConsensusFactory,
                  private stockAnalystConsensusCrudService: StockAnalystConsensusCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockAnalystConsensusStateStore,
                stockAnalystConsensusController,
                stockAnalystConsensusFactory,

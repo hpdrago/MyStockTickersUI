@@ -2,7 +2,7 @@
  * Created by mike on 3/10/2018
  */
 import { StockCatalystEvent } from '../../model/entity/stock-catalyst-event';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { StockCatalystEventCrudService } from '../../service/crud/stock-catalyst-event-crud.service';
 import { StockCatalystEventFactory } from '../../model/factory/stock-catalyst-event.factory';
 import { SessionService } from '../../service/session.service';
@@ -27,14 +27,16 @@ export class StockCatalystEventTableEditButtonComponent extends CrudTableEditBut
      * @param {StockCatalystEventFactory} stockNotesFactory
      * @param {StockCatalystEventCrudService} stockNotesCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private stockNotesStateStore: StockCatalystEventStateStore,
                  private stockNotesController: StockCatalystEventController,
                  private stockNotesFactory: StockCatalystEventFactory,
                  private stockNotesCrudService: StockCatalystEventCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockNotesStateStore,
                stockNotesController,
                stockNotesFactory,

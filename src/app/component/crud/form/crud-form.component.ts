@@ -52,11 +52,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
                            protected modelObjectFactory: ModelObjectFactory<T>,
                            protected crudRestService: CrudRestService<T> )
     {
-        super( toaster,
-               crudStateStore,
-               crudController,
-               modelObjectFactory,
-               crudRestService );
+        super( changeDetector, toaster, crudStateStore, crudController, modelObjectFactory, crudRestService );
     }
 
     /**
@@ -68,37 +64,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.logMethodBegin( methodName );
         this.resourceLoaders = this.loadResources();
         super.ngOnInit();
-        this.initializeForm();
-        if ( this.isCrudDeleteOperation() ||
-             this.isCrudUpdateOperation() )
-        {
-            this.setFormValues( this.modelObject );
-        }
-        else
-        {
-            this.setDefaultValues();
-        }
-        this.subscribeToCrudFormServiceEvents();
-        this.crudController
-            .sendFormLogStateRequest();
-        if ( this.resourceLoaders.length > 0 )
-        {
-            this.debug( "Waiting for " + this.resourceLoaders.length + " resource loaders" );
-            /*
-             * Run all of the loaders and wait for them to complete.
-             */
-            Observable.forkJoin( this.resourceLoaders )
-                      .subscribe( results =>
-                       {
-                           this.debug( "CrudFormComponent.ngOnInit results: " + JSON.stringify( results ));
-                           this.debug( "CrudFormComponent.ngOnInit.end" );
-                           this.sendNgOnInitCompletedEvent();
-                       });
-        }
-        else
-        {
-            this.sendNgOnInitCompletedEvent();
-        }
         this.logMethodEnd( methodName );
     }
 
@@ -136,6 +101,37 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.debug( methodName + " crudOperation: " + this.CrudOperation.getName( this.crudOperation ) );
         this.debug( methodName + " modelObject: " + JSON.stringify( this.modelObject ));
         super.ngAfterViewInit();
+        this.initializeForm();
+        if ( this.isCrudDeleteOperation() ||
+            this.isCrudUpdateOperation() )
+        {
+            this.setFormValues( this.modelObject );
+        }
+        else
+        {
+            this.setDefaultValues();
+        }
+        this.subscribeToCrudFormServiceEvents();
+        this.crudController
+            .sendFormLogStateRequest();
+        if ( this.resourceLoaders.length > 0 )
+        {
+            this.debug( "Waiting for " + this.resourceLoaders.length + " resource loaders" );
+            /*
+             * Run all of the loaders and wait for them to complete.
+             */
+            Observable.forkJoin( this.resourceLoaders )
+                      .subscribe( results =>
+                                  {
+                                      this.debug( "CrudFormComponent.ngOnInit results: " + JSON.stringify( results ));
+                                      this.debug( "CrudFormComponent.ngOnInit.end" );
+                                      this.sendNgOnInitCompletedEvent();
+                                  });
+        }
+        else
+        {
+            this.sendNgOnInitCompletedEvent();
+        }
         /*
          * Notify the dialog or panel that the form is ready to be displayed.
          * Need to run this on the next change cycle.
@@ -154,6 +150,18 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         this.changeDetector
             .detectChanges();
         this.debug( methodName + '.end' );
+    }
+
+    /**
+     * Determines if all of the required data/gui components are initialized in order for the form to function.
+     * @return {boolean}
+     */
+    public isInitialized()
+    {
+        return !isNullOrUndefined( this.crudOperation ) &&
+               !isNullOrUndefined( this.modelObject ) &&
+               !isNullOrUndefined( this.formGroup )  &&
+               !this.isCrudNoneOperation();
     }
 
     /**

@@ -2,7 +2,7 @@
  * Created by mike on 3/10/2018
  */
 import { TradeItAccount } from '../../model/entity/tradeit-account';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-crud.service';
 import { TradeItAccountFactory } from '../../model/factory/tradeit-account.factory';
 import { TradeItAccountController } from './tradeit-account-controller';
@@ -27,14 +27,16 @@ export class TradeItAccountTableRefreshButtonComponent extends CrudTableRefreshB
      * @param {TradeItAccountFactory} tradeItAccountFactory
      * @param {TradeItAccountCrudService} tradeItAccountCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private session: SessionService,
                  private tradeItAccountStateStore: TradeItAccountStateStore,
                  private tradeItAccountController: TradeItAccountController,
                  private tradeItAccountFactory: TradeItAccountFactory,
                  private tradeItAccountCrudService: TradeItAccountCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                tradeItAccountStateStore,
                tradeItAccountController,
                tradeItAccountFactory,

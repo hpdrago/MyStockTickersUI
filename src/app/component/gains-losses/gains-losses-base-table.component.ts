@@ -7,6 +7,7 @@ import { GainsLossesFactory } from '../../model/factory/gains-losses.factory';
 import { GainsLossesCrudService } from '../../service/crud/gains-losses-crud.service';
 import { StockModelObjectTableComponent } from '../common/stock-model-object-table-component';
 import { CookieService } from 'ngx-cookie-service';
+import { ChangeDetectorRef } from '@angular/core';
 
 /**
  * This component displays a list of Stocks to buy.
@@ -24,14 +25,16 @@ export abstract class GainsLossesBaseTableComponent extends StockModelObjectTabl
      * @param {GainsLossesCrudService} gainsLossesCrudService
      * @param {CookieService} cookieService
      */
-    protected constructor( protected toaster: ToastsManager,
+    protected constructor( protected changeDetector: ChangeDetectorRef,
+                           protected toaster: ToastsManager,
                            protected gainsLossesStateStore: GainsLossesStateStore,
                            protected gainsLossesController: GainsLossesController,
                            protected gainsLossesFactory: GainsLossesFactory,
                            protected gainsLossesCrudService: GainsLossesCrudService,
                            protected cookieService: CookieService )
     {
-        super( TableLoadingStrategy.LAZY_ON_CREATE,
+        super( changeDetector,
+               TableLoadingStrategy.LAZY_ON_CREATE,
                toaster,
                gainsLossesStateStore,
                gainsLossesController,

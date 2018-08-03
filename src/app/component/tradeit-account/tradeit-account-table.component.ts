@@ -1,5 +1,5 @@
 import { ToastsManager } from "ng2-toastr";
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { TradeItAccountBaseTableComponent } from "./tradeit-account-base-table.component";
 import { TradeItService } from "../../service/tradeit/tradeit.service";
 import { TradeItAccountOAuthService } from "../../service/tradeit/tradeit-account-oauth.service";
@@ -36,7 +36,8 @@ export class TradeItAccountTableComponent extends TradeItAccountBaseTableCompone
      * @param {TradeItAccountOAuthService} tradeItOAuthService
      * @param {CookieService} cookieService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  protected tradeItErrorReporter: TradeItErrorReporter,
                  protected tradeItAccountStateStore: TradeItAccountStateStore,
                  protected tradeItAccountController: TradeItAccountController,
@@ -46,7 +47,8 @@ export class TradeItAccountTableComponent extends TradeItAccountBaseTableCompone
                  protected tradeItOAuthService: TradeItAccountOAuthService,
                  protected cookieService: CookieService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                tradeItErrorReporter,
                tradeItAccountStateStore,
                tradeItAccountController,

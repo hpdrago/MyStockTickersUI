@@ -62,7 +62,7 @@ import { SessionService } from "./service/session.service";
 import { AppConfigurationService } from "./service/app-configuration.service";
 import { AppComponent } from "./app.component";
 import { MenuBarComponent } from "./component/menubar/menu-bar.component";
-import { DashboardComponent } from "./component/dashboard/dashboard.component";
+import { QuadViewComponent } from "./component/quadview/quad-view.component";
 import { UppercaseDirective } from "./directives/uppercase.directive";
 import { PortfolioStockFormComponent } from "./component/portfolio-stock/portfolio-stock-form.component";
 import { PortfolioStockTableComponent } from "./component/portfolio-stock/portfolio-stock-table.component";
@@ -277,10 +277,10 @@ import { GainsLossesCache } from './service/cache/gains-losses-cache';
 import { CrudTableCustomizeButtonComponent } from './component/crud/table/crud-table-customize-button.component';
 import { StockAnalystConsensusTableComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table.component';
 import { StockCatalystEventTableComponent } from './component/stock-catalyst-event/stock-catalyst-event-table.component';
-import { StockToBuyDashboardTableComponent } from './component/dashboard/stock-to-buy-dashboard-table.component';
-import { StockNotesDashboardTableComponent } from './component/dashboard/stock-notes-dashboard-table.component';
-import { StockCatalystEventDashboardTableComponent } from './component/dashboard/stock-catalyst-event-dashboard-table.component';
-import { StockAnalystConsensusDashboardTableComponent } from './component/dashboard/stock-analyst-consensus-dashboard-table.component';
+import { StockToBuyQuadViewTableComponent } from './component/quadview/stock-to-buy-quad-view-table.component';
+import { StockNotesQuadViewTableComponent } from './component/quadview/stock-notes-quad-view-table.component';
+import { StockCatalystEventQuadViewTableComponent } from './component/quadview/stock-catalyst-event-quad-view-table.component';
+import { StockAnalystConsensusQuadViewTableComponent } from './component/quadview/stock-analyst-consensus-quad-view-table.component';
 import { CustomerCrudActionHandler } from './component/customer/customer-crud-action-handler';
 import { TradeItAccountCrudActionHandler } from './component/tradeit-account/tradeit-account-crud-action-handler';
 import { LinkedAccountCrudActionHandler } from './component/linked-account/linked-account-crud-action-handler';
@@ -469,7 +469,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockNotesAddComponent,
         StockNotesTableComponent,
-        StockNotesDashboardTableComponent,
+        StockNotesQuadViewTableComponent,
         StockNotesFormComponent,
         StockNotesDialogComponent,
         StockNotesTableButtonsComponent,
@@ -491,7 +491,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockAnalystConsensusAddComponent,
         StockAnalystConsensusTableComponent,
-        StockAnalystConsensusDashboardTableComponent,
+        StockAnalystConsensusQuadViewTableComponent,
         StockAnalystConsensusFormComponent,
         StockAnalystConsensusDialogComponent,
         StockAnalystConsensusTableButtonsComponent,
@@ -506,7 +506,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockCatalystEventAddComponent,
         StockCatalystEventTableComponent,
-        StockCatalystEventDashboardTableComponent,
+        StockCatalystEventQuadViewTableComponent,
         StockCatalystEventFormComponent,
         StockCatalystEventDialogComponent,
         StockCatalystEventTableButtonsComponent,
@@ -518,7 +518,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         StockToBuyAddComponent,
         StockToBuyTableComponent,
-        StockToBuyDashboardTableComponent,
+        StockToBuyQuadViewTableComponent,
         StockToBuyFormComponent,
         StockToBuyDialogComponent,
         StockToBuyTableButtonsComponent,
@@ -571,7 +571,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
 
         CachedValueComponent,
         StockNotesSourceSelectionComponent,
-        DashboardComponent,
+        QuadViewComponent,
         FormErrorsComponent,
         UppercaseDirective,
         UppercaseValueDirective,

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { ChangeDetectorRef, Component } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { StockCatalystEvent } from "../../model/entity/stock-catalyst-event";
@@ -27,13 +27,15 @@ export class StockCatalystEventFormButtonsComponent extends CrudFormButtonsCompo
      * @param {StockCatalystEventFactory} stockCatalystEventFactory
      * @param {StockCatalystEventCrudService} stockCatalystEventCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private stockCatalystEventStateStore: StockCatalystEventStateStore,
                  private stockCatalystEventController: StockCatalystEventController,
                  private stockCatalystEventFactory: StockCatalystEventFactory,
                  private stockCatalystEventCrudService: StockCatalystEventCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                stockCatalystEventStateStore,
                stockCatalystEventController,
                stockCatalystEventFactory,

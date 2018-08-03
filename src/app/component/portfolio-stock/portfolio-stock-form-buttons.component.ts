@@ -1,5 +1,5 @@
 import { PortfolioStock } from "../../model/entity/portfolio-stock";
-import { Component, Input } from "@angular/core";
+import { ChangeDetectorRef, Component, Input } from "@angular/core";
 import { CrudFormButtonsComponent } from "../crud/form/crud-form-buttons.component";
 import { ToastsManager } from "ng2-toastr";
 import { Portfolio } from "../../model/entity/portfolio";
@@ -31,13 +31,15 @@ export class PortfolioStockFormButtonsComponent extends CrudFormButtonsComponent
      * @param {PortfolioStockFactory} portfolioStockFactory
      * @param {PortfolioStockCrudService} portfolioStockCrudService
      */
-    constructor( protected toaster: ToastsManager,
+    constructor( protected changeDetector: ChangeDetectorRef,
+                 protected toaster: ToastsManager,
                  private portfolioStockStateStore: PortfolioStockStateStore,
                  private portfolioStockController: PortfolioStockController,
                  private portfolioStockFactory: PortfolioStockFactory,
                  private portfolioStockCrudService: PortfolioStockCrudService )
     {
-        super( toaster,
+        super( changeDetector,
+               toaster,
                portfolioStockStateStore,
                portfolioStockController,
                portfolioStockFactory,

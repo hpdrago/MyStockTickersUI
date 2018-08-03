@@ -5,6 +5,7 @@ import { CrudTableColumn } from './crud-table-column';
 import { CrudTableColumnType } from './crud-table-column-type';
 import { ToastsManager } from 'ng2-toastr';
 import { isNullOrUndefined } from 'util';
+import { BullOrBear } from '../../../common/bull-or-bear.enum';
 
 /**
  * Handles the displaying of a model object generic property on a crud table.
@@ -71,6 +72,9 @@ import { isNullOrUndefined } from 'util';
                 <stock-analyst-price-targets [tickerSymbol]="getProperty( modelObject, 'tickerSymbol' )">
                 </stock-analyst-price-targets>
             </div>
+            <div *ngSwitchCase="CrudTableColumnType.BULL_OR_BEAR">
+                {{BullOrBear.getName(getProperty( modelObject, column.field ))}}
+            </div>
             <div *ngSwitchDefault>
                 No switch case for data type {{column.dataType}}
             </div>
@@ -80,6 +84,7 @@ import { isNullOrUndefined } from 'util';
 export class CrudTableColumnByDataTypeComponent extends BaseComponent
 {
     protected CrudTableColumnType = CrudTableColumnType;
+    protected BullOrBear = BullOrBear;
 
     /**
      * The model object from which the property will be extracted.
