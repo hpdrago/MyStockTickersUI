@@ -119,22 +119,6 @@ export class PortfolioTableComponent extends CrudTableComponent<Portfolio> imple
     }
 
     /**
-     * @param {LazyLoadEvent} event
-     */
-    protected lazyLoadTable( event: LazyLoadEvent ): void
-    {
-        /*
-         * Don't load until we know the accounts.
-         * The PrimeNG table attempts to load the table even when Lazy is off.
-         */
-        if ( !isNullOrUndefined( this.linkedAccount ) &&
-             !isNullOrUndefined( this.tradeItAccount ))
-        {
-            super.lazyLoadTable( event );
-        }
-    }
-
-    /**
      * Load the portfolios for the customer
      */
     protected loadTable()

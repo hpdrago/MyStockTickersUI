@@ -79,15 +79,6 @@ export class StockPositionTableComponent extends StockModelObjectTableComponent<
                                   linkedAccount => this.onLinkedAccountTableSelectionChange( linkedAccount )));
     }
 
-    protected lazyLoadTable( event: LazyLoadEvent ): void
-    {
-        if ( !isNullOrUndefined( this.tradeItAccount ) &&
-             !isNullOrUndefined( this.linkedAccount ))
-        {
-            super.lazyLoadTable( event );
-        }
-    }
-
     /**
      * This method is called when the user selects a row on the trade it table accounts.
      * @param {TradeItAccount} tradeItAccount

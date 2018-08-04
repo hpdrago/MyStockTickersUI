@@ -84,19 +84,6 @@ export class PortfolioStockTableComponent extends CrudTableComponent<PortfolioSt
     }
 
     /**
-     * Don't load the table until we know the account information.
-     * @param {LazyLoadEvent} event
-     */
-    protected lazyLoadTable( event: LazyLoadEvent ): void
-    {
-        if ( !isNullOrUndefined( this.tradeItAccount ) &&
-             !isNullOrUndefined( this.linkedAccount ))
-        {
-            super.lazyLoadTable( event );
-        }
-    }
-
-    /**
      * Load the stocks of the portfolio
      * @param portfolio
      */

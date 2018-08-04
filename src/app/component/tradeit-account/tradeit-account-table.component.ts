@@ -71,12 +71,6 @@ export class TradeItAccountTableComponent extends TradeItAccountBaseTableCompone
                                                                       { this.onAccountLinkedEvent( tradeItAccount ); }));
     }
 
-    protected lazyLoadTable( event: LazyLoadEvent ): void
-    {
-        if ( !isNullOrUndefined( this.tradeItAcc))
-        super.lazyLoadTable( event );
-    }
-
     /**
      * This event indicates that a new account was added which is done outside the normal added operations so
      * we need to refresh the table.
