@@ -18,11 +18,12 @@ import { TradeItAccountStateStore } from '../tradeit-account/tradeit-account-sta
  *
  * Created by mike on 10/17/2017.
  */
-@Component( {
-                selector: 'linked-account-form',
-                styleUrls: ['../crud/form/crud-form.component.css'],
-                templateUrl: './linked-account-form.component.html'
-            } )
+@Component
+({
+    selector: 'linked-account-form',
+    styleUrls: ['../crud/form/crud-form.component.css'],
+    templateUrl: './linked-account-form.component.html'
+} )
 export class LinkedAccountFormComponent extends CrudFormComponent<LinkedAccount>
 {
     private brokerageItems: SelectItem[];
@@ -38,6 +39,7 @@ export class LinkedAccountFormComponent extends CrudFormComponent<LinkedAccount>
      * @param {LinkedAccountController} linkedAccountController
      * @param {LinkedAccountFactory} linkedAccountFactory
      * @param {LinkedAccountCrudService} linkedAccountCrudService
+     * @param {TradeItAccountStateStore} tradeItAccountStateStore
      */
     constructor( protected changeDetector: ChangeDetectorRef,
                  protected toaster: ToastsManager,
@@ -55,6 +57,8 @@ export class LinkedAccountFormComponent extends CrudFormComponent<LinkedAccount>
                linkedAccountController,
                linkedAccountFactory,
                linkedAccountCrudService );
+        this.tradeItAccount = this.tradeItAccountStateStore
+                                  .getModelObject();
     }
 
     public ngAfterViewInit(): void
@@ -76,6 +80,8 @@ export class LinkedAccountFormComponent extends CrudFormComponent<LinkedAccount>
             {
                 'accountName': new FormControl( this.modelObject.accountName, Validators.compose( [Validators.required,
                                                                                                   Validators.maxLength( 40 )])),
+                'accountNumber': new FormControl( this.modelObject.accountNumber, Validators.compose( [Validators.required,
+                                                                                                      Validators.maxLength( 20 )]))
             } );
         return stockNoteForm;
     }

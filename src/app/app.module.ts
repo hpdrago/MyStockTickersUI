@@ -188,7 +188,7 @@ import { StockToBuyTableAddButtonComponent } from './component/stock-to-buy/stoc
 import { StockToBuyTableRefreshButtonComponent } from './component/stock-to-buy/stock-to-buy-table-refresh-button.component';
 import { TradeItAccountTableEditButtonComponent } from './component/tradeit-account/tradeit-account-table-edit-button.component';
 import { TradeItAccountTableDeleteButtonComponent } from './component/tradeit-account/tradeit-account-table-delete-button.component';
-import { LinkedAccountTableAddButtonComponent } from './component/linked-account/linked-account-add-button.component';
+import { LinkedAccountTableAddButtonComponent } from './component/linked-account/linked-account-table-add-button.component';
 import { LinkedAccountTableEditButtonComponent } from './component/linked-account/linked-account-table-edit-button.component';
 import { PortfolioTableAddButtonComponent } from './component/portfolio/portfolio-table-add-button.component';
 import { PortfolioTableEditButtonComponent } from './component/portfolio/portfolio-table-edit-button.component';
@@ -196,8 +196,8 @@ import { StockToBuyTableDeleteButtonComponent } from './component/stock-to-buy/s
 import { StockToBuyTableEditButtonComponent } from './component/stock-to-buy/stock-to-buy-table-edit-button.component';
 import { StockAnalystConsensusTableAddButtonComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table-add-button.component';
 import { StockAnalystConsensusTableRefreshButtonComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table-refresh-button.component';
-import { LinkedAccountTableDeleteButtonComponent } from './component/linked-account/linked-account-delete-button.component';
-import { LinkedAccountTableRefreshButtonComponent } from './component/linked-account/linked-account-refresh-button.component';
+import { LinkedAccountTableDeleteButtonComponent } from './component/linked-account/linked-account-table-delete-button.component';
+import { LinkedAccountTableRefreshButtonComponent } from './component/linked-account/linked-account-table-refresh-button.component';
 import { PortfolioTableDeleteButtonComponent } from './component/portfolio/portfolio-table-delete-button.component';
 import { PortfolioTableRefreshButtonComponent } from './component/portfolio/portfolio-table-refresh-button.component';
 import { StockNotesTableEditButtonComponent } from './component/stock-notes/stock-notes-table-edit-button.component';

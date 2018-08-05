@@ -15,5 +15,4 @@ export interface CrudTableColumn
     field?: string;
     style?: any;
     sortable?: boolean;
-    handled?: boolean;
 }

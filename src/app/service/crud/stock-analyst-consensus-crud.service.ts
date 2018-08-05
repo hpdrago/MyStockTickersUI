@@ -13,6 +13,7 @@ import { StockQuoteFactory } from '../../model/factory/stock-quote.factory';
 import { StockPriceQuoteFactory } from '../../model/factory/stock-price-quote.factory';
 import { Observable } from 'rxjs/Observable';
 import { CachedValueState } from '../../common/cached-value-state.enum';
+import { isNullOrUndefined } from 'util';
 
 /**
  * This class provides all CRUD REST services for StockCompany Summary.
@@ -70,9 +71,12 @@ export class StockAnalystConsensusCrudService extends BaseStockService<StockAnal
     protected getContextURLKeyValues( stockAnalystConsensus: StockAnalystConsensus ): KeyValuePairs<string,any>
     {
         let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
-        if ( stockAnalystConsensus.tickerSymbol )
+        if ( !isNullOrUndefined( stockAnalystConsensus ))
         {
-            keyColumns.addPair( "tickerSymbol", stockAnalystConsensus.tickerSymbol );
+            if ( stockAnalystConsensus.tickerSymbol )
+            {
+                keyColumns.addPair( "tickerSymbol", stockAnalystConsensus.tickerSymbol );
+            }
         }
         return keyColumns;
     }

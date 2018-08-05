@@ -72,9 +72,12 @@ export class StockToBuyCrudService extends BaseStockService<StockToBuy>
     protected getContextURLKeyValues( stockToBuy: StockToBuy ): KeyValuePairs<string,any>
     {
         let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
-        if ( !isNullOrUndefined( stockToBuy.tickerSymbol ))
+        if ( !isNullOrUndefined( stockToBuy ))
         {
-            keyColumns.addPair( "tickerSymbol", stockToBuy.tickerSymbol );
+            if ( !isNullOrUndefined( stockToBuy.tickerSymbol ) )
+            {
+                keyColumns.addPair( "tickerSymbol", stockToBuy.tickerSymbol );
+            }
         }
         return keyColumns;
     }

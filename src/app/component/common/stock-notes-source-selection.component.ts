@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { BaseComponent } from './base.component';
 import { ToastsManager } from 'ng2-toastr';
@@ -33,8 +33,19 @@ import { isNullOrUndefined } from 'util';
 })
 export class StockNotesSourceSelectionComponent extends BaseComponent implements OnInit, ControlValueAccessor
 {
+    /**
+     * The model object container of the source values.
+     */
     @Input()
     protected modelObject: StockNotesSourceContainer;
+
+    /**
+     * Event when the source is selected.  Allows parent components get the value and the id for the source
+     * from the SelectItem.
+     * @type {EventEmitter<SelectItem>}
+     */
+    @Output()
+    protected sourceSelectionEvent: EventEmitter<SelectItem> = new EventEmitter<SelectItem>();
 
     protected sourceItems: SelectItem[] = [];
     protected notesSourceId: string;
@@ -104,6 +115,8 @@ export class StockNotesSourceSelectionComponent extends BaseComponent implements
                                          };
             this.sourceItems.push( selectItem );
         }
+        this.sourceSelectionEvent
+            .emit( event );
         this.propagateChange( this.notesSourceId );
     }
 

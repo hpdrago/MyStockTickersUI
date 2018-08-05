@@ -59,5 +59,6 @@ export class StockCatalystEventTableComponent extends StockModelObjectTableCompo
                stockCatalystEventFactory,
                stockCatalystEventCrudService,
                cookieService );
+        this.displayStockSearchFilter = true;
     }
 }

@@ -80,13 +80,16 @@ export class StockPositionCrudService extends BaseStockService<StockPosition>
     protected getContextURLKeyValues( stockPosition: StockPosition ): KeyValuePairs<string,any>
     {
         let keyColumns: KeyValuePairs<string,any> = super.getContextURLKeyValues( stockPosition );
-        if ( !isNullOrUndefined( stockPosition.linkedAccountId ))
+        if ( !isNullOrUndefined( stockPosition ))
         {
-            keyColumns.addPair( "linkedAccountId", stockPosition.linkedAccountId );
-        }
-        if ( !isNullOrUndefined( stockPosition.tradeItAccountId ))
-        {
-            keyColumns.addPair( "tradeItAccountId", stockPosition.tradeItAccountId );
+            if ( !isNullOrUndefined( stockPosition.linkedAccountId ) )
+            {
+                keyColumns.addPair( "linkedAccountId", stockPosition.linkedAccountId );
+            }
+            if ( !isNullOrUndefined( stockPosition.tradeItAccountId ) )
+            {
+                keyColumns.addPair( "tradeItAccountId", stockPosition.tradeItAccountId );
+            }
         }
         return keyColumns;
     }

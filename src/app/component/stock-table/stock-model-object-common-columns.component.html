@@ -49,14 +49,6 @@ Find columns by column id first.
         </div>
     </div>
     <!----------------------------------------------------------------------------------------------------------
-    ANALYST AVG PRICE TARGET
-    ------------------------------------------------------------------------------------------------------------>
-    <div *ngSwitchCase="'avgAnalystPriceTarget'">
-        <stock-analyst-price-target [tickerSymbol]="modelObject.tickerSymbol"
-                                    [target]="'avg'">
-        </stock-analyst-price-target>
-    </div>
-    <!----------------------------------------------------------------------------------------------------------
     ANALYST CONSENSUS COMPONENT
     ------------------------------------------------------------------------------------------------------------>
     <div *ngSwitchCase="'analystConsensus'">

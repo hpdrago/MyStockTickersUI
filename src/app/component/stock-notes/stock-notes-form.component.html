@@ -68,6 +68,7 @@
                 <div class="ui-grid-col-2">
                     <stock-notes-source id="notesSourceId"
                                         formControlName="notesSourceId"
+                                        (sourceSelectionEvent)="onSourceSelected($event)"
                                         [(ngModel)]="modelObject.notesSourceId">
                     </stock-notes-source>
                 </div>

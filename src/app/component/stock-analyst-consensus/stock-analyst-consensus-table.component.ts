@@ -47,5 +47,6 @@ export class StockAnalystConsensusTableComponent extends StockModelObjectTableCo
                stockAnalystConsensusFactory,
                stockAnalystConsensusCrudService,
                cookieService );
+        this.displayStockSearchFilter = true;
     }
 }

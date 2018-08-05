@@ -1,6 +1,7 @@
 import { CrudTableColumn } from './crud-table-column';
 import { isNullOrUndefined } from 'util';
 import { Column } from 'primeng/shared';
+import { CrudTableColumnCachedDataType } from './crud-table-column-cached-data-type';
 
 /**
  * Manages a list of {@code CrudTableColumns}.
@@ -146,5 +147,16 @@ export class CrudTableColumns
             return null;
         }
         return filteredColumns[0];
+    }
+
+    /**
+     * Set the cache data type on all of the columns
+     * @param {CrudTableColumnCachedDataType} cachedDataType
+     */
+    public setCacheDataType( cachedDataType: CrudTableColumnCachedDataType ): CrudTableColumns
+    {
+        this.columns
+            .forEach( column => column.cachedDataType = cachedDataType );
+        return this;
     }
 }

@@ -61,9 +61,12 @@ export class LinkedAccountCrudService extends CrudRestService<LinkedAccount>
     protected getContextURLKeyValues( linkedAccount: LinkedAccount ): KeyValuePairs<string, any>
     {
         let keyColumns: KeyValuePairs<string,any> = super.getContextURLKeyValues( linkedAccount );
-        if ( !isNullOrUndefined( linkedAccount.tradeItAccountId ))
+        if ( !isNullOrUndefined( linkedAccount ))
         {
-            keyColumns.addPair( "tradeItAccountId", linkedAccount.tradeItAccountId );
+            if ( !isNullOrUndefined( linkedAccount.tradeItAccountId ) )
+            {
+                keyColumns.addPair( "tradeItAccountId", linkedAccount.tradeItAccountId );
+            }
         }
         return keyColumns;
     }

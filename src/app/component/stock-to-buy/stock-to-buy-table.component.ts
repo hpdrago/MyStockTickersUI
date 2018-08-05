@@ -70,6 +70,7 @@ export class StockToBuyTableComponent extends StockModelObjectTableComponent<Sto
                stockToBuyFactory,
                stockToBuyCrudService,
                cookieService );
+        this.displayStockSearchFilter = true;
     }
 
     /**

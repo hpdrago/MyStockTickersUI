@@ -20,7 +20,9 @@ import { CookieService } from 'ngx-cookie-service';
  * This is the base class for table components that list TradeIt accounts. Whenever a user selects a {@code TradeItLinkedAccount}
  * it is checked for authentication.
  */
-export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeItAccount> implements OnInit, TradeItOAuthComponent
+export class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeItAccount>
+                                              implements OnInit,
+                                                         TradeItOAuthComponent
 {
     @ViewChild(TradeItSecurityQuestionDialogComponent)
     private tradeItSecurityQuestionDialog: TradeItSecurityQuestionDialogComponent;

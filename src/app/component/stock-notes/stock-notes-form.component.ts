@@ -19,6 +19,7 @@ import { StockCompany } from '../../model/entity/stock-company';
 import { StockSearchSelectedCompaniesComponent } from '../common/stock-search-selected-companies.component';
 import { StockNotesSourceSelectionComponent } from '../common/stock-notes-source-selection.component';
 import { StockCompanyPriceQuoteService } from '../../service/stock-company-price-quote.service';
+import { BullOrBear } from '../../common/bull-or-bear.enum';
 
 /**
  * This is the StockCompany Note Form Component class.
@@ -187,6 +188,7 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             {
                 modelObject.actionTakenShares = 0;
             }
+            modelObject.bullOrBear = BullOrBear.BULL;
         }
         super.setFormValues( modelObject );
     }
@@ -305,5 +307,16 @@ export class StockNotesFormComponent extends CrudFormComponent<StockNotes>
             return this.modelObject.actionTaken == StockNotesActionTaken.NONE ||
                    this.modelObject.actionTaken == StockNotesActionTaken.BUY_LATER;
         }
+    }
+
+    /**
+     * This method is called when a source is selected.
+     * @param {SelectItem} source
+     */
+    protected onSourceSelected( source: SelectItem )
+    {
+        this.log( 'onSourceSelected ' + JSON.stringify( source ));
+        this.modelObject.notesSourceId = source.value;
+        this.modelObject.notesSourceName = source.label;
     }
 }

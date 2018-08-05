@@ -56,7 +56,9 @@ TABLE DEFINITION
                                  (onLazyLoad)="lazyLoadTable($event)"
                                  [loadingData]="loading"
                                  [showHeaderButtons]="showHeaderButtons"
+                                 [displayStockSearchFilter]="displayStockSearchFilter"
                                  [lazy]="true"
+                                 (resetButtonClicked)="resetTable()"
                                  (stockSelected)="onStockSelected($event)"
                                  (onLazyLoadEvent)="lazyLoadTable($event)"
                                  (onRowDblclick)="onRowDoubleClick($event)">

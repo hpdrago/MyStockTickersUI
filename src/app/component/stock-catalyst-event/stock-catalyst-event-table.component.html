@@ -59,5 +59,6 @@ TABLE DEFINITION
                                  [showHeaderButtons]="showHeaderButtons"
                                  [displayStockSearchFilter]="displayStockSearchFilter"
                                  (stockSelected)="onStockSelected($event)"
+                                 (resetButtonClicked)="resetTable()"
                                  (onRowDblclick)="onRowDoubleClick($event)">
 </stock-model-object-table-layout>

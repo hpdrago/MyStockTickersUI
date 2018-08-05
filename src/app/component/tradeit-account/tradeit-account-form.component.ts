@@ -16,11 +16,12 @@ import { TradeItAccountCrudService } from '../../service/crud/tradeit-account-cr
  *
  * Created by mike on 10/17/2017.
  */
-@Component( {
-                selector: 'tradeit-account-form',
-                styleUrls: ['../crud/form/crud-form.component.css'],
-                templateUrl: './tradeit-account-form.component.html'
-            } )
+@Component
+({
+    selector: 'tradeit-account-form',
+    styleUrls: ['../crud/form/crud-form.component.css'],
+    templateUrl: './tradeit-account-form.component.html'
+})
 export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccount>
 {
     protected brokerageItems: SelectItem[];
@@ -74,7 +75,24 @@ export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccoun
                         });
     }
 
-
+    protected enableDisableInputs(): void
+    {
+        super.enableDisableInputs();
+        /*
+         * Can't change the account source once it is set.
+         */
+        if ( this.isCrudUpdateOperation() )
+        {
+            this.disableField('accountSource' );
+        }
+        /*
+         * Can't change a trade it's account brokerage after it has been set.
+         */
+        if ( this.modelObject.isTradeItAccount() )
+        {
+            this.disableField('brokerage' );
+        }
+    }
 
     /**
      * Creates and identifies the fields for the FormGroup instance for the stock notes form.
@@ -83,13 +101,16 @@ export class TradeItAccountFormComponent extends CrudFormComponent<TradeItAccoun
     protected createFormGroup(): FormGroup
     {
         this.debug( "initializeForm " );
-        this.modelObject
-            .tradeItAccountFlag = true;
+        if ( this.isCrudCreateOperation() )
+        {
+            this.modelObject
+                .tradeItAccount = true;
+        }
         var stockNoteForm: FormGroup = this.formBuilder.group(
             {
                 'name':           new FormControl( this.modelObject.name, Validators.compose( [Validators.required,
                                                                                                              Validators.maxLength( 20 )])),
-                'accountSource':  new FormControl( this.modelObject.tradeItAccountFlag, Validators.required ),
+                'accountSource':  new FormControl( this.modelObject.tradeItAccount, Validators.required ),
                 'brokerage':      new FormControl( this.modelObject.brokerage, Validators.required )
             } );
         return stockNoteForm;

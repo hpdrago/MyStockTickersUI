@@ -53,11 +53,14 @@ export class LinkedAccountTableAddButtonComponent extends CrudTableAddButtonComp
     public ngOnInit()
     {
         super.ngOnInit();
-        this.tradeItAccountController
-            .subscribeToTableSelectionChangeEvent( tradeItAccount =>
-                                                   {
-                                                       return this.onTradeItAccountTableSelectionChange( tradeItAccount );
-                                                   });
+        // disabled until a TradeItAccount is selected.
+        this.disabled = true;
+        this.addSubscription( 'TradeItAccountTableSelectionChange',
+            this.tradeItAccountController
+                .subscribeToTableSelectionChangeEvent( tradeItAccount =>
+                                                       {
+                                                           return this.onTradeItAccountTableSelectionChange( tradeItAccount );
+                                                       }));
     }
 
     protected onButtonClick(): void
@@ -83,7 +86,11 @@ export class LinkedAccountTableAddButtonComponent extends CrudTableAddButtonComp
         if ( isNullOrUndefined( this.tradeItAccount ) ||
              this.tradeItAccount.isTradeItAccount() )
         {
-            this.disabled = true;
+            this.setDisabled( true );
+        }
+        else
+        {
+            this.setDisabled( false );
         }
     }
 }

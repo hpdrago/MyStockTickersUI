@@ -14,7 +14,7 @@ export abstract class CrudTableButtonComponent<T extends ModelObject<T>> extends
 {
     private _selectedModelObject: T;
     private _showButton: boolean = true;
-    private _buttonDisabled: boolean = false;
+    //private _buttonDisabled: boolean = false;
     private _buttonClass: string;
     private _buttonDivClass: string;
     private _buttonIcon: string;
@@ -105,12 +105,12 @@ export abstract class CrudTableButtonComponent<T extends ModelObject<T>> extends
 
     public get buttonDisabled(): boolean
     {
-        return this._buttonDisabled;
+        return this.disabled;
     }
 
     public set buttonDisabled( value: boolean )
     {
-        this._buttonDisabled = value;
+        this.disabled = value;
     }
 
     public get buttonClass(): string
@@ -151,10 +151,5 @@ export abstract class CrudTableButtonComponent<T extends ModelObject<T>> extends
     public set buttonDivClass( value: string )
     {
         this._buttonDivClass = value;
-    }
-
-    public isDisabled(): boolean
-    {
-        return this._buttonDisabled;
     }
 }

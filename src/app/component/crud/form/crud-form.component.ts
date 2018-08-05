@@ -103,7 +103,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         super.ngAfterViewInit();
         this.initializeForm();
         if ( this.isCrudDeleteOperation() ||
-            this.isCrudUpdateOperation() )
+             this.isCrudUpdateOperation() )
         {
             this.setFormValues( this.modelObject );
         }

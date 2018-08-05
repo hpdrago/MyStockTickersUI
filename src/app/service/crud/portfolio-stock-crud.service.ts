@@ -65,13 +65,16 @@ export class PortfolioStockCrudService extends BaseStockService<PortfolioStock>
     protected getContextURLKeyValues( portfolioStock: PortfolioStock ): KeyValuePairs<string, any>
     {
         let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
-        if ( !isNullOrUndefined( portfolioStock.tickerSymbol ))
+        if ( !isNullOrUndefined( portfolioStock ))
         {
-            keyColumns.addPair( "tickerSymbol", portfolioStock.tickerSymbol );
-        }
-        if ( !isNullOrUndefined( portfolioStock.portfolioId ))
-        {
-            keyColumns.addPair( "portfolioId", portfolioStock.portfolioId );
+            if ( !isNullOrUndefined( portfolioStock.tickerSymbol ) )
+            {
+                keyColumns.addPair( "tickerSymbol", portfolioStock.tickerSymbol );
+            }
+            if ( !isNullOrUndefined( portfolioStock.portfolioId ) )
+            {
+                keyColumns.addPair( "portfolioId", portfolioStock.portfolioId );
+            }
         }
         return keyColumns;
     }

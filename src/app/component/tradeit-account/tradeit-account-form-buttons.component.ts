@@ -149,4 +149,12 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
             .resetSubjects();
         this.log( methodName + ".end" )
     }
+
+    protected isShowAddButton(): boolean
+    {
+        return this.tradeItAccountStateStore
+                   .getModelObject()
+                   .isTradeItAccount() &&
+               this.isCrudCreateOperation();
+    }
 }

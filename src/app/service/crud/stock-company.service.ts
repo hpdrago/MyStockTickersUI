@@ -59,13 +59,16 @@ export class StockCompanyService extends ReadRestService<StockCompany>
     protected getContextURLKeyValues( stockCompany: StockCompany ): KeyValuePairs<string,any>
     {
         let keyColumns: KeyValuePairs<string,any> = new KeyValuePairs<string, any>();
-        if ( !isNullOrUndefined( stockCompany.tickerSymbol ))
+        if ( !isNullOrUndefined( stockCompany ))
         {
-            keyColumns.addPair( "tickerSymbol", stockCompany.tickerSymbol );
-        }
-        else
-        {
-            throw new ReferenceError( 'stockCompany.tickerSymbol cannot be null' );
+            if ( !isNullOrUndefined( stockCompany.tickerSymbol ) )
+            {
+                keyColumns.addPair( "tickerSymbol", stockCompany.tickerSymbol );
+            }
+            else
+            {
+                throw new ReferenceError( 'stockCompany.tickerSymbol cannot be null' );
+            }
         }
         return keyColumns;
     }
