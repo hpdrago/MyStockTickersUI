@@ -8,7 +8,6 @@ import { LinkedAccountFactory } from '../../model/factory/linked-account.factory
 import { LinkedAccountController } from './linked-account-controller';
 import { LinkedAccountCrudService } from '../../service/crud/linked-account-crud.service';
 import { LinkedAccountStateStore } from './linked-account-state-store';
-import { TradeItOAuthReceiver } from '../tradeit-account/trade-it-o-auth-receiver';
 import { TradeItAccountOAuthService } from '../../service/tradeit/tradeit-account-oauth.service';
 import { TradeItSecurityQuestionDialogComponent } from '../tradeit/tradeit-security-question-dialog.component';
 import { TradeItAuthenticateResult } from '../../service/tradeit/apiresults/tradeit-authenticate-result';
@@ -19,6 +18,7 @@ import { isNullOrUndefined } from 'util';
 import { CookieService } from 'ngx-cookie-service';
 import { ConfirmDialogComponent } from '../common/confirm-dialog-component-child.component';
 import { TradeitTokenUpdateOauthReceiver } from './tradeit-token-update-oauth-receiver';
+import { TradeItOAuthReceiver } from '../tradeit-account/trade-it-o-auth-receiver';
 
 /**
  * This table displays all of the linked account for a TradeItAccount instance.
@@ -139,6 +139,11 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
                                               this.log( methodName + " updating " + JSON.stringify( updatedLinkedAccount ))
                                               this.loading = false;
                                               this.updateModelObjectRow( updatedLinkedAccount );
+                                          },
+                                          error =>
+                                          {
+                                              this.loading = false;
+                                              this.reportRestError( error );
                                           });
                       });
 
@@ -196,9 +201,16 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
         return this.tradeItAccount;
     }
 
-    public notifyAuthenticationSuccess( tradeItAccount: TradeItAccount )
+    public notifyAccountLinkSuccess( tradeItAccount: TradeItAccount )
     {
-        const methodName = "notifyAuthenticationSuccess";
+        const methodName = "notifyAccountLinkSuccess";
+        this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
+        this.log( methodName + ".end" );
+    }
+
+    public notifyAccountTokenUpdateSuccess( tradeItAccount: TradeItAccount )
+    {
+        const methodName = "notifyAccountTokenUpdateSuccess";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
         this.log( methodName + ".end" );
     }
@@ -229,5 +241,4 @@ export class LinkedAccountTableComponent extends CrudTableComponent<LinkedAccoun
         return !isNullOrUndefined( this.tradeItAccount ) &&
                !this.tradeItAccount.isTradeItAccount();
     }
-
 }

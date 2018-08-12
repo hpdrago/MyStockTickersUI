@@ -1,7 +1,7 @@
-import { TradeItOAuthReceiver } from '../tradeit-account/trade-it-o-auth-receiver';
 import { TradeItAccount } from '../../model/entity/tradeit-account';
 import { BaseClass } from '../../common/base-class';
 import { TradeItAccountOAuthService } from '../../service/tradeit/tradeit-account-oauth.service';
+import { TradeItOAuthReceiver } from '../tradeit-account/trade-it-o-auth-receiver';
 
 /**
  * This class handles the call backs from the TradeIt Token Update process.  The token update process is required when
@@ -11,17 +11,32 @@ export class TradeitTokenUpdateOauthReceiver extends BaseClass
                                              implements TradeItOAuthReceiver
 {
     constructor( private tradeItOAuthService: TradeItAccountOAuthService,
-                 private tradeItAccount: TradeItAccount )
+                 private tradeItAccount: TradeItAccount )// ,
+                 //private tradeItAccountController: TradeItAccountController,
+                 ////private tradeItAccountStateStore: TradeItAccountStateStore )
     {
         super();
     }
 
     /**
-     * This method is called when the user has successfully authenticated a brokerage account.
+     * This method will not be called since this is just the update token receiver.
+     * @param {TradeItAccount} tradeItAccount
      */
-    public notifyAuthenticationSuccess( tradeItAccount: TradeItAccount )
+    public notifyAccountLinkSuccess( tradeItAccount: TradeItAccount )
     {
-        const methodName = "notifyAuthenticationSuccess";
+        const methodName = "notifyAccountLinkSuccess";
+        this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ) );
+        this.tradeItAccount = tradeItAccount;
+        this.log( methodName + ".end" )
+    }
+
+    /**
+     * This method is called when the user had re-authenicated the access tokne.
+     * @param {TradeItAccount} tradeItAccount
+     */
+    public notifyAccountTokenUpdateSuccess( tradeItAccount: TradeItAccount )
+    {
+        const methodName = "notifyAccountTokenUpdateSuccess";
         this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ) );
         this.tradeItAccount = tradeItAccount;
         this.log( methodName + ".end" )
@@ -41,7 +56,8 @@ export class TradeitTokenUpdateOauthReceiver extends BaseClass
         /*
          * Just forward the call back to the OAuth service.
          */
-        this.tradeItOAuthService.receiveMessage( event );
+        this.tradeItOAuthService
+            .receiveMessage( event, true );
         this.log( methodName + ".end" );
     }
 
@@ -49,5 +65,4 @@ export class TradeitTokenUpdateOauthReceiver extends BaseClass
     {
         return this.tradeItAccount;
     }
-
 }

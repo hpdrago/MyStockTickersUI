@@ -93,7 +93,8 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
              * Need to setup the necessary window listeners so that the authentication (OAuth) window can be popped up.
              */
             this.tradeItOAuthService
-                .openOAuthPopup( this, this.modelObject.brokerage );
+                .openOAuthPopup( this, this.modelObject.brokerage )
+                .subscribe();
         }
         else
         {
@@ -116,7 +117,7 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
         /*
          * Just forward the call back to the OAuth service.
          */
-        this.tradeItOAuthService.receiveMessage( event );
+        this.tradeItOAuthService.receiveMessage( event, false );
         this.log( methodName + ".end" );
     }
 
@@ -132,9 +133,9 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
     /**
      * This method is called when the user has successfully authenticated a brokerage account.
      */
-    public notifyAuthenticationSuccess( tradeItAccount: TradeItAccount )
+    public notifyAccountLinkSuccess( tradeItAccount: TradeItAccount )
     {
-        const methodName = "notifyAuthenticationSuccess";
+        const methodName = "notifyAccountLinkSuccess";
         this.log( methodName + ".begin " + CrudOperation.getName( this.crudOperation ) + " " + JSON.stringify( tradeItAccount ) );
         /*
          * Notify that the account has been linked.
@@ -146,6 +147,11 @@ export class TradeItAccountFormButtonsComponent extends CrudFormButtonsComponent
         this.tradeItAccountStateStore
             .resetSubjects();
         this.log( methodName + ".end" )
+    }
+
+    public notifyAccountTokenUpdateSuccess( tradeItAccount: TradeItAccount )
+    {
+        // not called in this context.
     }
 
     protected isShowAddButton(): boolean

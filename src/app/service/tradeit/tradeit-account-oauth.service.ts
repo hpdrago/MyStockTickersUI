@@ -9,16 +9,13 @@ import { TradeItAuthenticateResult } from './apiresults/tradeit-authenticate-res
 import { TradeItSecurityQuestionDialogComponent } from '../../component/tradeit/tradeit-security-question-dialog.component';
 import { TradeItAPIResult } from './apiresults/tradeit-api-result';
 import { ToastsManager } from 'ng2-toastr';
-import { GetOAuthTokenUpdateURLResult } from './apiresults/tradeit-get-oath-token-update-url-result';
-import { TradeItOAuthReceiver } from '../../component/tradeit-account/trade-it-o-auth-receiver';
 import { BaseTradeItService } from './base-tradeit.service';
 import { RestErrorReporter } from '../rest-error-reporter';
 import { TradeItAPIResultEnum, } from './apiresults/tradeit-api-result-error-code';
-import { TradeItAccountController } from '../../component/tradeit-account/tradeit-account-controller';
 import { RestException } from '../../common/rest-exception';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogComponent } from '../../component/common/confirm-dialog-component-child.component';
-import { isNullOrUndefined } from 'util';
+import { TradeItOAuthReceiver } from '../../component/tradeit-account/trade-it-o-auth-receiver';
 
 /**
  * This class contains all of the necessary functionality necessary to create and maintain OAuth tokens necessary to
@@ -93,7 +90,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
     /**
      * Get the OAuth URL from TradeIt and popup a window with the URL provided by TradeIt that prompts the user to
      * authenticate their brokerage account.
-     * @param {TradeItOAuthReceiver} tradeItOAuthReceiver
+     * @param {TradeItOAuthAccountCreationReceiver} tradeItOAuthReceiver
      * @param {TradeItAccount} tradeItAccount
      */
     public openOAuthTokenUpdatePopup( tradeItOAuthReceiver: TradeItOAuthReceiver, tradeItAccount: TradeItAccount )
@@ -130,7 +127,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
 
     /**
      * Creates the necessary windows listeners to create OAuth popup windows for TradeIt Account Broker authentication.
-     * @param {TradeItOAuthReceiver} tradeItOAuthReceiver
+     * @param {TradeItOAuthAccountCreationReceiver} tradeItOAuthReceiver
      */
     private register( tradeItOAuthReceiver: TradeItOAuthReceiver )
     {
@@ -182,10 +179,10 @@ export class TradeItAccountOAuthService extends BaseTradeItService
     /**
      * Handles OAuth results sent from the OAuth login popup to the calling component.
      * @param event
-     * @param {TradeItAccount} tradeItAccount
-     * @return {Observable<TradeItAccount>} will return null until a valid result is returned.
+     * @param {boolean} tokenUpdate
+     * @return {Observable<TradeItAccount>}
      */
-    public handleOAuthResult( event: any ): Observable<TradeItAccount>
+    public handleOAuthResult( event: any, tokenUpdate: boolean ): Observable<TradeItAccount>
     {
         var methodName = 'handleOAuthResult';
         this.log( `${methodName} + ' event.data: ${event.data} requestInProcess: ${this.requestInProcess} 
@@ -205,7 +202,10 @@ export class TradeItAccountOAuthService extends BaseTradeItService
                 let tradeItAccount: TradeItAccount = this.tradeItOAuthReceiver.getTradeItAccount();
                 this.log( methodName + ' tradeItAccount ' + JSON.stringify( tradeItAccount ) );
                 return this.tradeItService
-                           .getOAuthAccessToken( tradeItAccount.brokerage, tradeItAccount.name, oAuthVerifier )
+                           .getOAuthAccessToken( tradeItAccount.brokerage,
+                                                 tradeItAccount.name,
+                                                 oAuthVerifier,
+                                                 tokenUpdate )
                            .map( ( oAuthAccessResult: TradeItOAuthAccessResult ) =>
                                  {
                                      this.log( methodName + ' oAuthAccessResult: ' + JSON.stringify( oAuthAccessResult ) +
@@ -241,7 +241,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
      * Evaluates the the current TradeIt account to see if it needs to be authenticated with TradeIt.
      * @param {TradeItAccount} tradeItAccount
      * @param {TradeItSecurityQuestionDialogComponent} tradeItSecurityQuestionDialog
-     * @param {TradeItOAuthReceiver} tokenUpdateOAuthComponent
+     * @param {TradeItOAuthAccountCreationReceiver} tokenUpdateOAuthComponent
      * @param {ConfirmDialogComponent} updateTokenConfirmDialog
      * @return {Observable<TradeItAuthenticateResult>}
      */
@@ -278,7 +278,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
      * Authenticate the account.
      * @param {TradeItAccount} tradeItAccount
      * @param {TradeItSecurityQuestionDialogComponent} tradeItSecurityQuestionDialog
-     * @param {TradeItOAuthReceiver} tokenUpdateOAuthComponent
+     * @param {TradeItOAuthAccountCreationReceiver} tokenUpdateOAuthComponent
      * @param {ConfirmDialogComponent} updateTokenConfirmDialog
      * @return {Observable<TradeItAuthenticateResult>}
      */
@@ -351,7 +351,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
      * Keep session alive.
      * @param {TradeItAccount} tradeItAccount
      * @param {TradeItSecurityQuestionDialogComponent} tradeItSecurityQuestionDialog
-     * @param {TradeItOAuthReceiver} tokenUpdateOAuthComponent
+     * @param {TradeItOAuthAccountCreationReceiver} tokenUpdateOAuthComponent
      * @param {Subject<TradeItAccount>} completionSubject
      */
     private keepSessionAlive( tradeItAccount: TradeItAccount,
@@ -438,7 +438,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
      * @param {TradeItAuthenticateResult} keepAliveResult
      * @param {TradeItAccount} tradeItAccount
      * @param {TradeItSecurityQuestionDialogComponent} tradeItSecurityQuestionDialog
-     * @param {TradeItOAuthReceiver} tokenUpdateOAuthComponent
+     * @param {TradeItOAuthAccountCreationReceiver} tokenUpdateOAuthComponent
      * @param {ConfirmDialogComponent} updateTokenConfirmDialog
      */
     private handleKeepAliveFailure( keepAliveResult: TradeItAuthenticateResult,
@@ -497,11 +497,11 @@ export class TradeItAccountOAuthService extends BaseTradeItService
      * requestCompleted, and destroyed flags are used to prevent errors showing up as the second call results in a error from TradeIt.
      * @param event
      */
-    public receiveMessage( event: any )
+    public receiveMessage( event: any, isTokenUpdate: boolean )
     {
         const methodName = 'receiveMessage';
         this.log( methodName + ' ' + JSON.stringify( event ));
-        let observable: Observable<TradeItAccount> = this.handleOAuthResult( event );
+        let observable: Observable<TradeItAccount> = this.handleOAuthResult( event, isTokenUpdate );
         if ( observable != null )
         {
             observable.subscribe((tradeItAccount: TradeItAccount) =>
@@ -509,7 +509,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
                                      this.log( methodName + '.begin' );
                                      this.log( methodName + ' linked account: ' + JSON.stringify( tradeItAccount ) );
                                      this.showInfo( tradeItAccount.name + ' was successfully linked.' )
-                                     this.tradeItOAuthReceiver.notifyAuthenticationSuccess( tradeItAccount );
+                                     this.tradeItOAuthReceiver.notifyAccountLinkSuccess( tradeItAccount );
                                      this.log( methodName + '.end' );
                                  },
                                  error =>
@@ -531,7 +531,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
      * This method evaluates the error codes returned from from TradeIt API calls.
      * @param {TradeItAccount} tradeItAccount
      * @param {TradeItSecurityQuestionDialogComponent} tradeItSecurityQuestionDialog
-     * @param {TradeItOAuthReceiver} tokenUpdateOAuthComponent
+     * @param {TradeItOAuthAccountCreationReceiver} tokenUpdateOAuthComponent
      * @param {ConfirmDialogComponent} updateTokenConfirmDialog
      * @param {TradeItAPIResult} tradeItAPIResult
      * @param {Subject<TradeItAuthenticateResult>} asyncSubject
@@ -586,7 +586,7 @@ export class TradeItAccountOAuthService extends BaseTradeItService
      * This method is called when a TradeIt transaction resulted in an token expired error (700).
      * The user will be prompted to update the token.
      * @param {TradeItAccount} tradeItAccount
-     * @param {TradeItOAuthReceiver} tokenUpdateOAuthComponent
+     * @param {TradeItOAuthAccountCreationReceiver} tokenUpdateOAuthComponent
      * @param {ConfirmDialogComponent} updateTokenConfirmDialog
      */
     private handleTokenExpired( tradeItAccount: TradeItAccount,

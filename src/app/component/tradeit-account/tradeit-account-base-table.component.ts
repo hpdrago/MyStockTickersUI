@@ -23,8 +23,7 @@ import { TradeitTokenUpdateOauthReceiver } from '../linked-account/tradeit-token
  * it is checked for authentication.
  */
 export abstract class TradeItAccountBaseTableComponent extends CrudTableComponent<TradeItAccount>
-                                                       implements OnInit,
-                                                                  TradeItOAuthReceiver
+                                                       implements OnInit
 {
     private tradeItSecurityQuestionDialogChild: TradeItSecurityQuestionDialogComponent;
     private confirmDialogChild: ConfirmDialogComponent;
@@ -189,28 +188,6 @@ export abstract class TradeItAccountBaseTableComponent extends CrudTableComponen
     public getTradeItAccount(): TradeItAccount
     {
         return this.modelObject;
-    }
-
-    /**
-     * This method is called when the authentication is successful.
-     * @param {TradeItAccount} tradeItAccount
-     */
-    public notifyAuthenticationSuccess( tradeItAccount: TradeItAccount )
-    {
-        const methodName = "notifyAuthenticationSuccess";
-        this.log( methodName + ".begin " + JSON.stringify( tradeItAccount ));
-        this.log( methodName + ".end" );
-    }
-
-    /**
-     * This method is called by the TradeIt authentication process.
-     * @param event
-     */
-    public receiveMessage( event: any )
-    {
-        const methodName = "receiveMessage";
-        this.log( methodName + ".begin " + JSON.stringify( event ) );
-        this.log( methodName + ".end" );
     }
 
     public setTradeItSecurityQuestionDialog( value: TradeItSecurityQuestionDialogComponent )

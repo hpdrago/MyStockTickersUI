@@ -106,16 +106,23 @@ export class TradeItService extends BaseService
     /**
      * Get the user id and access token using the {@code oAuthVerifier}
      * https://www.trade.it/quickstart#web-guide#completing-linking
+     * @param {string} broker
+     * @param {string} accountName
      * @param {string} oAuthVerifier
-     * @returns {Observable<string>} The URL for the popup.
+     * @param {boolean} tokenUpdate
+     * @return {Observable<TradeItOAuthAccessResult>}
      */
-    public getOAuthAccessToken( broker: string, accountName: string, oAuthVerifier: string ): Observable<TradeItOAuthAccessResult>
+    public getOAuthAccessToken( broker: string,
+                                accountName: string,
+                                oAuthVerifier: string,
+                                tokenUpdate: boolean ): Observable<TradeItOAuthAccessResult>
     {
         const methodName = "getOAuthAccessToken";
         let url = `${this.appConfig.getBaseURL()}${this.CONTEXT_URL}${this.GET_OAUTH_ACCESS_TOKEN_URL}`;
         url += `/customerId/${this.sessionService.getLoggedInUserId()}`;
         url += `/broker/${broker}`
         url += `/accountName/${accountName}`
+        url += `/tokenUpdate/${tokenUpdate}`
         url += `/oAuthVerifier/${oAuthVerifier}`;
         this.debug( methodName + " url: " + url );
         return this.http

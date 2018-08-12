@@ -20,5 +20,10 @@ export interface TradeItOAuthReceiver
     /**
      * Notify that the authentication succeeded.
      */
-    notifyAuthenticationSuccess( tradeItAccount: TradeItAccount );
+    notifyAccountLinkSuccess( tradeItAccount: TradeItAccount );
+
+    /**
+     * Notify that the authentication succeeded.
+     */
+    notifyAccountTokenUpdateSuccess( tradeItAccount: TradeItAccount );
 }

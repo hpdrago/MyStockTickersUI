@@ -8,7 +8,7 @@ import { JsonConvert, JsonObject, JsonProperty, OperationMode, ValueCheckingMode
 export class TradeItGetOauthPopupURLResult extends TradeItAPIResult
 {
     @JsonProperty( "oAuthURL", String )
-    public oAuthURL: string;
+    public oAuthURL: string = undefined;
 
     /**
      * Converts the rawJson into a TradeItAPIResult instance.
