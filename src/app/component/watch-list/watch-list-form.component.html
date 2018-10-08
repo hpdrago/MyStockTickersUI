@@ -1,0 +1,41 @@
+<div *ngIf="isInitialized()">
+    <form [formGroup]="formGroup">
+        <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+
+            <!----------------------------------------------------------------------------------------------------------
+            NAME
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-2">
+                    <label class="crud-form" for="name">Watch List Name:</label>
+                </div>
+                <div class="ui-grid-col-10">
+                    <input id="name"
+                           maxlength="30"
+                           formControlName="name"
+                           [(ngModel)]="modelObject.name"
+                           pInputText
+                    />
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            SEARCH
+            ------------------------------------------------------------------------------------------------------------>
+            <stock-search-selected-companies (stockSelected)="onStockSelected($event)"
+                                             [maxStocks]="100">
+            </stock-search-selected-companies>
+        </div>
+        <!--
+        <div *ngIf="displayProgressBar">
+            <md-progress-bar mode="indeterminate"></md-progress-bar>
+        </div>
+        <div *ngIf="displayProgressBar == true">
+            <h1>Progress XXX</h1>
+        </div>
+        <div *ngIf="!displayProgressBar">
+            <h1>Progress BAR</h1>
+        </div>
+        -->
+    </form>
+</div>

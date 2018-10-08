@@ -138,6 +138,6 @@ export class StockToBuyTableComponent extends StockModelObjectTableComponent<Sto
         this.stockNotesStateStore
             .sendModelObjectChangedEvent( this, stockNotes );
         this.stockNotesController
-            .sendDialogDisplayEvent();
+            .sendDialogDisplay( true );
     }
 }

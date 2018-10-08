@@ -1,5 +1,5 @@
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { ChangeDetectorRef, Component } from "@angular/core";
+import { ChangeDetectorRef, Component, ViewChild } from "@angular/core";
 import { ToastsManager } from "ng2-toastr";
 import { StockToBuy } from "../../model/entity/stock-to-buy";
 import { SessionService } from "../../service/session.service";
@@ -12,6 +12,7 @@ import { StockPriceQuote } from '../../model/entity/stock-price-quote';
 import { StockCrudFormComponent } from '../common/stock-crud-form.component';
 import { StockCompanyService } from '../../service/crud/stock-company.service';
 import { StockCompany } from '../../model/entity/stock-company';
+import { StockSearchSelectedCompaniesComponent } from '../common/stock-search-selected-companies.component';
 
 /**
  * This is the StockCompany ToBuy Form Component class.
@@ -25,6 +26,9 @@ import { StockCompany } from '../../model/entity/stock-company';
             } )
 export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
 {
+    @ViewChild(StockSearchSelectedCompaniesComponent)
+    private stockSearchSelectedCompaniesComponent: StockSearchSelectedCompaniesComponent;
+
     /**
      * Constructor.
      * @param {ChangeDetectorRef} changeDetector
@@ -109,5 +113,11 @@ export class StockToBuyFormComponent extends StockCrudFormComponent<StockToBuy>
                             } );
         }
         this.logMethodEnd( methodName );
+    }
+
+    protected resetForm(): void
+    {
+        super.resetForm();
+        this.stockSearchSelectedCompaniesComponent.reset();
     }
 }

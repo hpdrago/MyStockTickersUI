@@ -108,6 +108,13 @@ export class CrudTableColumnByDataTypeComponent extends BaseComponent
         super( toaster );
     }
 
+    protected inputPropertyChange( property: string, previousValue: any, currentValue: any ): void
+    {
+        let previous = JSON.stringify( previousValue );
+        let newValue = JSON.stringify( currentValue );
+        //this.debug( `inputPropertyChange property: ${property} ${previous} ==> ${newValue}`);
+    }
+
     protected isValidProperty( object: any ): boolean
     {
         return !isNullOrUndefined( object );

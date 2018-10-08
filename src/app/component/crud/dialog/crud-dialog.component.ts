@@ -7,7 +7,7 @@ import { ModelObjectFactory } from '../../../model/factory/model-object.factory'
 import { CrudController } from '../common/crud-controller';
 import { CrudStateStore } from '../common/crud-state-store';
 import { CrudRestService } from '../../../service/crud/crud-rest.serivce';
-import { ChangeDetectorRef, Input } from '@angular/core';
+import { ChangeDetectorRef, EventEmitter, Input, Output } from '@angular/core';
 
 /**
  * This is the base class for Modal dialogs that provide CRUD operations on a model object.
@@ -21,6 +21,8 @@ export abstract class CrudDialogComponent<T extends ModelObject<T>> extends Crud
      */
     @Input()
     protected displayDialog: boolean;
+    @Output()
+    protected displayDialogChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     /**
      * Controls the display of the close button.
@@ -48,6 +50,9 @@ export abstract class CrudDialogComponent<T extends ModelObject<T>> extends Crud
      */
     @Input()
     protected modal: boolean = true;
+
+    private receivedFormReadyToDisplay: boolean = false;
+    private receivedDisplayDialog: boolean = false;
 
     /**
      * Constructor.
@@ -120,11 +125,51 @@ export abstract class CrudDialogComponent<T extends ModelObject<T>> extends Crud
         this.debug( methodName + ".begin" );
         this.addSubscription( 'subscribeToFormReadyToDisplay',
                               this.crudController
-                                  .subscribeToFormReadyToDisplay( () => this.setDisplayDialog() ));
-        this.addSubscription( 'subscribeToDialogDisplayEvent',
+                                  .subscribeToFormReadyToDisplay( ( formReadyToDisplay: boolean ) =>
+                                                                      this.onReceiveFormReadyToDisplay( formReadyToDisplay ) ));
+        this.addSubscription( 'subscribeToDialogDisplay',
                               this.crudController
-                                  .subscribeToDialogDisplayEvent( () => this.setDisplayDialog() ));
+                                  .subscribeToDialogDisplay( ( displayDialog: boolean ) =>
+                                                                 this.onReceiveDialogDisplayEvent( displayDialog ) ));
         this.debug( methodName + ".end" );
+    }
+
+    /**
+     * Called when the form has completed initializing.
+     */
+    private onReceiveFormReadyToDisplay( formReadyToDisplay: boolean )
+    {
+        const methodName = 'onReceiveFormReadyToDisplay';
+        this.log( methodName );
+        this.receivedFormReadyToDisplay = formReadyToDisplay;
+        this.checkDisplayDialog();
+    }
+
+    /**
+     * Called when an event has triggered the display (showing of) the dialog.
+     */
+    private onReceiveDialogDisplayEvent( displayDialog: boolean )
+    {
+        const methodName = 'onReceiveDialogDisplayEvent';
+        this.log( methodName );
+        this.receivedDisplayDialog = displayDialog;
+        this.checkDisplayDialog();
+        this.checkDisplayDialog();
+    }
+
+    /**
+     * Will display the dialog (set displayDialog=true) when two events have been received:
+     * 1. The form is ready to be displayed.
+     * 2. The display dialog event has been received.
+     */
+    private checkDisplayDialog()
+    {
+        const methodName = 'checkDisplayDialog';
+        this.log( methodName + ' ' + this.receivedFormReadyToDisplay + ' ' + this.receivedDisplayDialog );
+        if ( this.receivedFormReadyToDisplay && this.receivedDisplayDialog )
+        {
+            this.setDisplayDialog();
+        }
     }
 
     /**
@@ -245,6 +290,7 @@ export abstract class CrudDialogComponent<T extends ModelObject<T>> extends Crud
     {
         const methodName = "closeDialog";
         this.debug( methodName + ".begin" );
+        this.displayDialogChange.emit( false );
         this.displayDialog = false;
         //this.resetsServiceSubscriptions();
         this.debug( methodName + ".end" );

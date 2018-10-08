@@ -133,12 +133,6 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
         {
             this.sendNgOnInitCompletedEvent();
         }
-        /*
-         * Notify the dialog or panel that the form is ready to be displayed.
-         * Need to run this on the next change cycle.
-         */
-        this.crudController
-            .sendFormReadyToDisplay();
         this.crudController
             .sendFormLogStateRequest();
         /*
@@ -146,7 +140,7 @@ export abstract class CrudFormComponent<T extends ModelObject<T>> extends BaseCr
          * Need to run this on the next change cycle.
          */
         this.tickThenRun( () => this.crudController
-                                    .sendFormReadyToDisplay() );
+                                        .sendFormReadyToDisplay( true ) );
         this.enableDisableInputs()
         this.changeDetector
             .detectChanges();

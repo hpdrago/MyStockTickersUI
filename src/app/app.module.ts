@@ -42,7 +42,8 @@ import {
     TabViewModule,
     ToggleButtonModule,
     SpinnerModule,
-    TooltipModule
+    TooltipModule,
+    KeyFilterModule
 } from "primeng/primeng";
 import { TieredMenuModule } from "primeng/components/tieredmenu/tieredmenu";
 import { AutoCompleteModule } from "primeng/components/autocomplete/autocomplete";
@@ -320,6 +321,36 @@ import { ConfirmDialogComponent } from './component/common/confirm-dialog-compon
 import { StockPositionTableAddButtonComponent } from './component/stock-position/stock-position-table-add-button.component';
 import { StockPositionTableDeleteButtonComponent } from './component/stock-position/stock-position-table-delete-button.component';
 import { StockPositionTableEditButtonComponent } from './component/stock-position/stock-position-table-edit-button.component';
+import { WatchListFactory } from './model/factory/watch-list.factory';
+import { WatchListStockFactory } from './model/factory/watch-list-stock.factory';
+import { WatchListCrudService } from './service/crud/watch-list-crud.service';
+import { WatchListCrudActionHandler } from './component/watch-list/watch-list-action-handler';
+import { WatchListController } from './component/watch-list/watch-list-controller';
+import { WatchListStateStore } from './component/watch-list/watch-list-state-store.service';
+import { WatchListDialogComponent } from './component/watch-list/watch-list-dialog.component';
+import { WatchListFormButtonsComponent } from './component/watch-list/watch-list-form-buttons.component';
+import { WatchListTableEditButtonComponent } from './component/watch-list/watch-list-table-edit-button.component';
+import { WatchListTableRefreshButtonComponent } from './component/watch-list/watch-list-table-refresh-button.component';
+import { WatchListTableDeleteButtonComponent } from './component/watch-list/watch-list-table-delete-button.component';
+import { WatchListTableAddButtonComponent } from './component/watch-list/watch-list-table-add-button.component';
+import { WatchListTableButtonsComponent } from './component/watch-list/watch-list-table-buttons.component';
+import { WatchListFormComponent } from './component/watch-list/watch-list-form.component';
+import { WatchListTableComponent } from './component/watch-list/watch-list-table.component';
+import { WatchListAddComponent } from './component/watch-list/watch-list-add.component';
+import { WatchListStockTableComponent } from './component/watch-list-stock/watch-list-stock-table.component';
+import { WatchListStockDialogComponent } from './component/watch-list-stock/watch-list-stock-dialog.component';
+import { WatchListStockTableAddButtonComponent } from './component/watch-list-stock/watch-list-stock-table-add-button.component';
+import { WatchListStockTableRefreshButtonComponent } from './component/watch-list-stock/watch-list-stock-table-refresh-button.component';
+import { WatchListStockTableEditButtonComponent } from './component/watch-list-stock/watch-list-stock-table-edit-button.component';
+import { WatchListStockTableDeleteButtonComponent } from './component/watch-list-stock/watch-list-stock-table-delete-button.component';
+import { WatchListStockFormButtonsComponent } from './component/watch-list-stock/watch-list-stock-form-buttons.component';
+import { WatchListStockTableButtonsComponent } from './component/watch-list-stock/watch-list-stock-table-buttons.component';
+import { WatchListStockFormComponent } from './component/watch-list-stock/watch-list-stock-form.component';
+import { WatchListStockAddComponent } from './component/watch-list-stock/watch-list-stock-add.component';
+import { WatchListStockController } from './component/watch-list-stock/watch-list-stock-controller';
+import { WatchListStockStateStore } from './component/watch-list-stock/watch-list-stock-state-store.service';
+import { WatchListStockCrudActionHandler } from './component/watch-list-stock/watch-list-stock-action-handler';
+import { WatchListStockCrudService } from './service/crud/watch-list-stock-crud.service';
 
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
@@ -396,6 +427,7 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         ProgressSpinnerModule,
         PickListModule,
         SpinnerModule,
+        KeyFilterModule,
         // Third Party modules,
         ToastModule.forRoot(),
 
@@ -548,6 +580,28 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         GainsLossesTableDeleteButtonComponent,
         GainsLossesTableEditButtonComponent,
         GainsLossesTableRefreshButtonComponent,
+
+        WatchListAddComponent,
+        WatchListTableComponent,
+        WatchListFormComponent,
+        WatchListDialogComponent,
+        WatchListTableButtonsComponent,
+        WatchListFormButtonsComponent,
+        WatchListTableAddButtonComponent,
+        WatchListTableDeleteButtonComponent,
+        WatchListTableEditButtonComponent,
+        WatchListTableRefreshButtonComponent,
+
+        WatchListStockAddComponent,
+        WatchListStockTableComponent,
+        WatchListStockFormComponent,
+        WatchListStockDialogComponent,
+        WatchListStockTableButtonsComponent,
+        WatchListStockFormButtonsComponent,
+        WatchListStockTableAddButtonComponent,
+        WatchListStockTableDeleteButtonComponent,
+        WatchListStockTableEditButtonComponent,
+        WatchListStockTableRefreshButtonComponent,
 
         TradeItSecurityQuestionDialogComponent,
 
@@ -703,6 +757,18 @@ const CUSTOM_VALUE_ACCESSOR = new Provider(
         StockCompanyService,
         StockCompanyCacheService,
         StockCompanyPriceQuoteService,
+
+        WatchListCrudService,
+        WatchListCrudActionHandler,
+        WatchListStateStore,
+        WatchListController,
+        WatchListFactory,
+
+        WatchListStockCrudService,
+        WatchListStockCrudActionHandler,
+        WatchListStockStateStore,
+        WatchListStockController,
+        WatchListStockFactory,
 
         RestErrorReporter,
         SessionService,

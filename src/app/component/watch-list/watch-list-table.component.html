@@ -2,24 +2,19 @@
 BUTTONS TEMPLATE
 ------------------------------------------------------------------------------------------------------------>
 <ng-template #buttonsTemplate>
-    <linked-account-table-buttons>
-    </linked-account-table-buttons>
+    <watch-list-table-buttons>
+    </watch-list-table-buttons>
 </ng-template>
 
 <!----------------------------------------------------------------------------------------------------------
 DIALOG TEMPLATE
 ------------------------------------------------------------------------------------------------------------>
 <ng-template #dialogTemplate>
-    <linked-account-dialog>
-    </linked-account-dialog>
-    <tradeit-security-question-dialog>
-    </tradeit-security-question-dialog>
-    <confirm-dialog>
-    </confirm-dialog>
+    <watch-list-dialog>
+    </watch-list-dialog>
 </ng-template>
 
 <!----------------------------------------------------------------------------------------------------------
-CUSTOM STOCK TO BUY COLUMNS TEMPLATE
 column and modelObject are parameters to the template
 ------------------------------------------------------------------------------------------------------------>
 <ng-template #columnsTemplate let-column="column" let-modelObject="modelObject">
@@ -38,20 +33,20 @@ TABLE DEFINITION
 <crud-table-layout [buttonsTemplate]="buttonsTemplate"
                    [columnsTemplate]="columnsTemplate"
                    [dialogTemplate]="dialogTemplate"
-                   cookieContext="LinkedAccountTable"
                    [modelObjectRows]="modelObjectRows"
                    [(displayColumns)]="displayColumns"
+                   cookieContext="WatchList"
                    [defaultColumns]="defaultColumns"
-                   [additionalColumns]="additionalColumns"
+                   [rowsToDisplay]="rowsToDisplay"
+                   [rowsPerPageOptions]="rowsPerPageOptions"
                    [totalRecords]="totalRows"
                    [(selection)]="selectedModelObject"
                    (rowSelected)="onRowSelect($event)"
                    (rowUnselected)="onRowUnSelect($event)"
                    (onLazyLoad)="lazyLoadTable($event)"
                    [lazy]="false"
-                   [showCustomizeButton]="false"
-                   [showHeaderButtons]="false"
                    [loadingData]="loading"
+                   [showHeaderButtons]="showHeaderButtons"
                    (onLazyLoadEvent)="lazyLoadTable($event)"
                    (onRowDblclick)="onRowDoubleClick($event)">
 </crud-table-layout>

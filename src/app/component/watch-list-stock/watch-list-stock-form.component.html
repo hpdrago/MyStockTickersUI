@@ -1,0 +1,75 @@
+<div *ngIf="isInitialized()">
+    <form [formGroup]="formGroup">
+        <div class="ui-grid ui-grid-responsive ui-grid-pad ui-fluid" style="margin: 10px 0px">
+
+            <!----------------------------------------------------------------------------------------------------------
+            TICKER SYMBOL
+            ------------------------------------------------------------------------------------------------------------>
+            <stock-search-selected-companies (stockSelected)="onStockSelected($event)"
+                                             [maxStocks]="1"
+                                             [tickerSymbol]="modelObject.tickerSymbol">
+            </stock-search-selected-companies>
+
+            <!----------------------------------------------------------------------------------------------------------
+            SHARES
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-2">
+                    <label class="crud-form" for="shares">Shares:</label>
+                </div>
+                <div class="ui-grid-col-2">
+                    <input id="shares"
+                           formControlName="shares"
+                           [(ngModel)]="modelObject.shares"
+                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
+                           pKeyFilter="pint"/>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            SHARES
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-2">
+                    <label class="crud-form" for="costBasis">Cost Basis:</label>
+                </div>
+                <div class="ui-grid-col-2">
+                    <input id="costBasis"
+                           formControlName="costBasis"
+                           [(ngModel)]="modelObject.costBasis"
+                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
+                           pKeyFilter="pint"/>
+                </div>
+            </div>
+
+            <!----------------------------------------------------------------------------------------------------------
+            NOTES
+            ------------------------------------------------------------------------------------------------------------>
+            <div class="crud-form ui-grid-row">
+                <div class="crud-form-label ui-grid-col-2">
+                    <label class="crud-form" for="notes">Notes:</label>
+                </div>
+                <div class="ui-grid-col-10">
+                    <input id="notes"
+                           maxlength="30"
+                           formControlName="notes"
+                           [(ngModel)]="modelObject.notes"
+                           class="crud-form ui-inputtext ui-widget-content ui-corner-all ui-state-default ui-state-filled"
+                           pInputText/>
+                </div>
+            </div>
+
+        </div>
+        <!--
+        <div *ngIf="displayProgressBar">
+            <md-progress-bar mode="indeterminate"></md-progress-bar>
+        </div>
+        <div *ngIf="displayProgressBar == true">
+            <h1>Progress XXX</h1>
+        </div>
+        <div *ngIf="!displayProgressBar">
+            <h1>Progress BAR</h1>
+        </div>
+        -->
+    </form>
+</div>

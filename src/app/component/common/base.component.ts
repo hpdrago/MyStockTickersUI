@@ -136,10 +136,9 @@ export abstract class BaseComponent extends BaseClass implements OnChanges, OnDe
     protected getProperty( object: any, property: string ): any
     {
         let value = _.get( object, property );
-        /*
-        this.debug( "getProperty object: " + JSON.stringify( object ) );
-        this.debug( "getProperty object: property: " + property + " modelObject: " + JSON.stringify(this.modelObject));
-        */
+        //this.debug( "getProperty object: " + JSON.stringify( object ) );
+        //this.debug( "getProperty object: property: " + property + " object: " + JSON.stringify(object));
+        //this.debug( "getProperty value=" + value );
         return value;
     }
 

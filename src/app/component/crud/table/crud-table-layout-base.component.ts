@@ -244,7 +244,7 @@ export abstract class CrudTableLayoutBaseComponent extends BaseComponent
     {
         this.debug( "ngOnInit.begin" );
         this.checkArgument( 'defaultColumns', this.defaultColumns );
-        this.checkArgument( 'additionalColumns', this.additionalColumns );
+        //this.checkArgument( 'additionalColumns', this.additionalColumns );
         this.loadColumns();
     }
 

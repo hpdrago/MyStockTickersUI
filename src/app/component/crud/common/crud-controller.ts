@@ -12,13 +12,15 @@ import { CrudStateStore } from './crud-state-store';
 import { CrudOperation } from './crud-operation';
 import { ModelObjectFactory } from '../../../model/factory/model-object.factory';
 import { CrudActionHandler } from './crud-action-handler';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 /**
  * This is the controller class for a set of CRUD based components.
  * It contains all of the events that enable tables, dialogs, forms, panels, and buttons to send and receive messages
  * from each other.
  */
-export class CrudController<T extends ModelObject<T>> extends BaseClass
+export class CrudController<T extends ModelObject<T>>
+    extends BaseClass
 {
     /*
      * TABLE Subjects
@@ -42,7 +44,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      * DIALOG Subjects.
      */
     private dialogCloseButtonClickedSubject: Subject<DialogCloseEventType>;
-    private dialogDisplaySubject: Subject<void>;
+    private dialogDisplaySubject: BehaviorSubject<boolean>;
 
     /*
      * FORM Subjects
@@ -56,7 +58,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     private formPrepareToSaveSubject: Subject<void> = new Subject<void>();
     private formPrepareToDisplaySubject: Subject<void> = new Subject<void>();
     private formModelObjectVersionUpdateSubject: Subject<T>;
-    private formReadyToDisplay: Subject<void>;
+    private formReadyToDisplay: BehaviorSubject<boolean>;
 
     /*
      * Model Object Subjects
@@ -104,7 +106,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         this.tableContentChangedSubject = new Subject<void>();
         this.panelCancelButtonClickedSubject = new Subject<void>();
         this.dialogCloseButtonClickedSubject = new Subject<DialogCloseEventType>();
-        this.dialogDisplaySubject = new Subject<void>();
+        this.dialogDisplaySubject = new BehaviorSubject<boolean>( false );
         this.formErrorsSubject = new Subject<string[]>();
         this.formDirtySubject = new Subject<boolean>();
         this.formTouchedSubject = new Subject<boolean>();
@@ -114,7 +116,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
         this.formPrepareToSaveSubject = new Subject<void>();
         //this.formPrepareToDisplaySubject = new Subject<void>();
         this.formModelObjectVersionUpdateSubject = new Subject<T>();
-        this.formReadyToDisplay = new Subject<void>();
+        this.formReadyToDisplay = new BehaviorSubject<boolean>( false );
         this.modelObjectDeletedSubject = new Subject<T>();
         this.modelObjectSavedSubject = new Subject<T>();
         this.modelObjectAddedSubject = new Subject<T>();
@@ -137,7 +139,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public sendRefreshButtonClickedEvent()
     {
-        this.debug( 'sendRefreshButtonClickedEvent' + this.getToObserversMessage( this.tableRefreshButtonClickedSubject ));
+        this.debug( 'sendRefreshButtonClickedEvent' + this.getToObserversMessage(
+            this.tableRefreshButtonClickedSubject ) );
         this.tableRefreshButtonClickedSubject
             .next();
     }
@@ -150,8 +153,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToTableEditButtonClickedEvent( fn: () => any ): Subscription
     {
         //this.debug( 'subscribeToTableEditButtonClickedEvent' );
-        return this.tableEditButtonClickedSubject
-                   .asObservable()
+        return this.tableEditButtonClickedSubject.asObservable()
                    .subscribe( fn );
     }
 
@@ -162,10 +164,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     {
         const methodName = 'sendTableEditButtonClickedEvent';
         this.debug( methodName );
-        this.crudStateStore
-            .sendCrudOperationChangedEvent( CrudOperation.UPDATE );
-        this.tableEditButtonClickedSubject
-            .next();
+        this.crudStateStore.sendCrudOperationChangedEvent( CrudOperation.UPDATE );
+        this.tableEditButtonClickedSubject.next();
     }
 
     /**
@@ -175,8 +175,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToTableSelectionChangeEvent( fn: ( modelObject: T ) => any ): Subscription
     {
         const methodName = 'subscribeToTableSelectionChangeEvent';
-        let subscription = this.tableSelectionChangedSubject
-                               .asObservable()
+        let subscription = this.tableSelectionChangedSubject.asObservable()
                                .subscribe( fn );
         //this.debug( methodName + this.getTotalSubscribersMessage( this.tableSelectionChangedSubject ));
         return subscription;
@@ -191,10 +190,9 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     {
         this.debug( 'sendTableSelectionChangeEvent ' + JSON.stringify( modelObject ) +
             this.getToObserversMessage( this.tableSelectionChangedSubject ) );
-        this.crudStateStore
-            .sendModelObjectChangedEvent( this, this.modelObjectFactory.newModelObjectFromJSON( modelObject ));
-        this.tableSelectionChangedSubject
-            .next( modelObject );
+        this.crudStateStore.sendModelObjectChangedEvent( this, this.modelObjectFactory.newModelObjectFromJSON(
+            modelObject ) );
+        this.tableSelectionChangedSubject.next( modelObject );
     }
 
     /**
@@ -204,8 +202,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToTableContentChangeEvent( fn: () => any ): Subscription
     {
         //this.debug( 'subscribeToTableContentChangeEvent' );
-        return this.tableContentChangedSubject
-                   .asObservable()
+        return this.tableContentChangedSubject.asObservable()
                    .subscribe( fn );
     }
 
@@ -214,9 +211,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public sendTableContentChangeEvent()
     {
-        this.debug( 'sendTableContentChangeEvent' + this.getToObserversMessage( this.tableContentChangedSubject ));
-        this.tableContentChangedSubject
-            .next();
+        this.debug( 'sendTableContentChangeEvent' + this.getToObserversMessage( this.tableContentChangedSubject ) );
+        this.tableContentChangedSubject.next();
     }
 
     /**
@@ -227,30 +223,27 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToPanelCancelButtonClickedEvent( fn: () => any ): Subscription
     {
         //this.debug( 'subscribeToPanelCancelButtonClickedEvent' );
-        return this.panelCancelButtonClickedSubject
-                   .asObservable()
+        return this.panelCancelButtonClickedSubject.asObservable()
                    .subscribe( fn );
     }
 
     /**
      * Subscribe to be notified when the form is ready to be displayed.
      */
-    public subscribeToFormReadyToDisplay( fn: () => any ): Subscription
+    public subscribeToFormReadyToDisplay( fn: ( formReadyToDisplay: boolean ) => any ): Subscription
     {
         //this.debug( 'subscribeToDisplayFormRequestEvent' );
-        return this.formReadyToDisplay
-                   .asObservable()
+        return this.formReadyToDisplay.asObservable()
                    .subscribe( fn );
     }
 
     /**
      * Send a notification that the form is ready to display.
      */
-    public sendFormReadyToDisplay()
+    public sendFormReadyToDisplay( formReadyToDisplay: boolean )
     {
-        this.debug( 'FormReadyToDisplay' + this.getToObserversMessage( this.formReadyToDisplay ));
-        this.formReadyToDisplay
-            .next( null );
+        this.debug( 'FormReadyToDisplay' + this.getToObserversMessage( this.formReadyToDisplay ) );
+        this.formReadyToDisplay.next( formReadyToDisplay );
     }
 
     /**
@@ -262,8 +255,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToTableNavigateToModelObjectEvent(): Subscription
     {
         //this.debug( 'subscribeToTableNavigateToModelObjectEvent' );
-        var observable: Observable<T> = this.tableNavigateToModelObjectSubject
-                                            .asObservable();
+        var observable: Observable<T> = this.tableNavigateToModelObjectSubject.asObservable();
         return observable.subscribe();
     }
 
@@ -274,11 +266,10 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public sendTableNavigateToModelObjectEvent( modelObject: T )
     {
-        this.debug( 'sendTableNavigateToModelObjectEvent' + this.getToObserversMessage( this.tableNavigateToModelObjectSubject ));
-        this.crudStateStore
-            .sendModelObjectChangedEvent( this, modelObject );
-        this.tableNavigateToModelObjectSubject
-            .next();
+        this.debug( 'sendTableNavigateToModelObjectEvent' + this.getToObserversMessage(
+            this.tableNavigateToModelObjectSubject ) );
+        this.crudStateStore.sendModelObjectChangedEvent( this, modelObject );
+        this.tableNavigateToModelObjectSubject.next();
     }
 
     /**
@@ -288,8 +279,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToTableAddButtonClickedEvent( fn: () => any ): Subscription
     {
         //this.debug( 'subscribeToAddButtonClickedEvent' );
-        return this.tableAddButtonClickedSubject
-                   .asObservable()
+        return this.tableAddButtonClickedSubject.asObservable()
                    .subscribe( fn );
     }
 
@@ -300,8 +290,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public subscribeToTableContinuousAddButtonClickedEvent( fn: () => any ): Subscription
     {
         //this.debug( 'subscribeToContinuousAddButtonClickedEvent' );
-        return this.tableContinuousAddButtonClickedSubject
-                   .asObservable()
+        return this.tableContinuousAddButtonClickedSubject.asObservable()
                    .subscribe( fn );
     }
 
@@ -312,9 +301,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendTableAddButtonClickedEvent()
     {
         const methodName = 'sendTableAddButtonClickedEvent';
-        this.debug( methodName + this.getToObserversMessage( this.tableAddButtonClickedSubject ));
-        let modelObject: T = this.modelObjectFactory
-                                 .newModelObject();
+        this.debug( methodName + this.getToObserversMessage( this.tableAddButtonClickedSubject ) );
+        let modelObject: T = this.modelObjectFactory.newModelObject();
         this.setDefaultValues( modelObject );
         this.crudStateStore
             .sendCrudOperationChangedEvent( CrudOperation.CREATE );
@@ -322,6 +310,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
             .sendModelObjectChangedEvent( this, modelObject );
         this.tableAddButtonClickedSubject
             .next();
+        this.sendDialogDisplay( true );
     }
 
     /**
@@ -331,7 +320,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendTableContinuousAddButtonClickedEvent()
     {
         const methodName = 'sendTableContinuousAddButtonClickedEvent';
-        this.debug( methodName + this.getToObserversMessage( this.tableContinuousAddButtonClickedSubject ));
+        this.debug( methodName + this.getToObserversMessage( this.tableContinuousAddButtonClickedSubject ) );
         let modelObject: T = this.modelObjectFactory
                                  .newModelObject();
         this.setDefaultValues( modelObject );
@@ -370,7 +359,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public sendTableDeleteButtonClickedEvent( modelObject: T )
     {
-        this.debug( 'sendTableDeleteButtonClickedEvent' + this.getToObserversMessage( this.tableDeleteButtonClickedSubject ));
+        this.debug( 'sendTableDeleteButtonClickedEvent' + this.getToObserversMessage(
+            this.tableDeleteButtonClickedSubject ) );
         this.crudStateStore
             .sendCrudOperationChangedEvent( CrudOperation.DELETE );
         this.crudStateStore
@@ -399,7 +389,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendDialogCloseButtonClickedEvent( event: DialogCloseEventType )
     {
         this.debug( 'sendDialogCloseButtonClickedEvent ' + DialogCloseEventType.getName( event ) +
-            this.getToObserversMessage( this.dialogCloseButtonClickedSubject ));
+            this.getToObserversMessage( this.dialogCloseButtonClickedSubject ) );
         this.dialogCloseButtonClickedSubject
             .next( event );
     }
@@ -410,7 +400,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendTableCustomizeButtonClickedEvent()
     {
         this.debug( 'sendTableCustomizeButtonClickedEvent ' +
-            this.getToObserversMessage( this.tableCustomizeButtonClickedSubject ));
+            this.getToObserversMessage( this.tableCustomizeButtonClickedSubject ) );
         this.tableCustomizeButtonClickedSubject
             .next( event );
     }
@@ -434,10 +424,12 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      * button is clicked on the panel.
      * @return Subscription
      */
-    public subscribeToDialogDisplayEvent( fn: () => any ): Subscription
+    public subscribeToDialogDisplay( fn: ( displayDialog: boolean ) => any ): Subscription
     {
-        var subscription: Subscription = this.dialogDisplaySubject.asObservable().subscribe( fn );
-        //this.debug( 'subscribeToDialogDisplayEvent subscribers: ' + this.dialogDisplaySubject
+        var subscription: Subscription = this.dialogDisplaySubject
+                                             .asObservable()
+                                             .subscribe( fn );
+        //this.debug( 'subscribeToDialogDisplay subscribers: ' + this.dialogDisplaySubject
         //                                                                .observers
         //                                                                .length );
         return subscription;
@@ -446,11 +438,11 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     /**
      * The {@code CrudPanelComponent will call this method when the user clicks the close button.
      */
-    public sendDialogDisplayEvent()
+    public sendDialogDisplay( displayDialog: boolean )
     {
-        this.debug( 'sendDialogDisplayEvent' + this.getToObserversMessage( this.dialogDisplaySubject ));
+        this.debug( 'sendDialogDisplay' + this.getToObserversMessage( this.dialogDisplaySubject ) );
         this.dialogDisplaySubject
-            .next();
+            .next( displayDialog );
     }
 
     /**
@@ -545,7 +537,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public sendFormErrors( errors: string[] )
     {
-        this.debug( 'sendFormErrors' + this.getToObserversMessage( this.formResetSubject ));
+        this.debug( 'sendFormErrors' + this.getToObserversMessage( this.formResetSubject ) );
         this.formErrorsSubject
             .next( errors );
     }
@@ -612,7 +604,7 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
      */
     public sendFormPrepareToSaveEvent()
     {
-        this.debug( 'sendFormPrepareToSaveEvent' + this.getToObserversMessage( this.formPrepareToDisplaySubject ));
+        this.debug( 'sendFormPrepareToSaveEvent' + this.getToObserversMessage( this.formPrepareToDisplaySubject ) );
         this.formPrepareToSaveSubject
             .next();
     }
@@ -625,13 +617,12 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public deleteModelObject( modelObject: T ): Observable<void>
     {
         const methodName = "deleteModelObject";
-        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ) );
         return this.crudActionHandler
                    .deleteModelObject( modelObject )
-                   .map( () =>
-                         {
-                             this.sendModelObjectDeletedEvent( modelObject );
-                         });
+                   .map( () => {
+                       this.sendModelObjectDeletedEvent( modelObject );
+                   } );
     }
 
     /**
@@ -654,8 +645,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendModelObjectDeletedEvent( modelObject: T )
     {
         const methodName = 'sendModelObjectDeletedEvent';
-        this.debug( methodName + '.begin to' + this.getToObserversMessage( this.modelObjectDeletedSubject ));
-        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        this.debug( methodName + '.begin to' + this.getToObserversMessage( this.modelObjectDeletedSubject ) );
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ) );
         this.modelObjectDeletedSubject
             .next( modelObject );
         this.crudStateStore
@@ -672,15 +663,14 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public addModelObject( modelObject: T, continuousAdd: boolean ): Observable<T>
     {
         const methodName = "addModelObject";
-        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ) );
         return this.crudActionHandler
                    .addModelObject( modelObject )
-                   .map( ( modelObject: T ) =>
-                         {
-                             this.debug( methodName + ' received: ' + JSON.stringify( modelObject ) )
-                             this.sendModelObjectAddedEvent( modelObject, continuousAdd );
-                             return modelObject;
-                         });
+                   .map( ( modelObject: T ) => {
+                       this.debug( methodName + ' received: ' + JSON.stringify( modelObject ) )
+                       this.sendModelObjectAddedEvent( modelObject, continuousAdd );
+                       return modelObject;
+                   } );
     }
 
     /**
@@ -704,8 +694,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendModelObjectAddedEvent( modelObject: T, continuousAdd: boolean )
     {
         const methodName = 'sendModelObjectAddedEvent';
-        this.debug( methodName + '.begin' + this.getToObserversMessage( this.modelObjectAddedSubject ));
-        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        this.debug( methodName + '.begin' + this.getToObserversMessage( this.modelObjectAddedSubject ) );
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ) );
         this.modelObjectAddedSubject
             .next( modelObject );
         this.crudStateStore
@@ -737,14 +727,13 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public saveModelObject( modelObject: T ): Observable<T>
     {
         const methodName = "saveModelObject";
-        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ) );
         return this.crudActionHandler
                    .saveModelObject( modelObject )
-                   .map( ( updatedModelObject: T ) =>
-                         {
-                             this.sendModelObjectSavedEvent( updatedModelObject )
-                             return updatedModelObject;
-                         });
+                   .map( ( updatedModelObject: T ) => {
+                       this.sendModelObjectSavedEvent( updatedModelObject )
+                       return updatedModelObject;
+                   } );
     }
 
     /**
@@ -754,8 +743,8 @@ export class CrudController<T extends ModelObject<T>> extends BaseClass
     public sendModelObjectSavedEvent( modelObject: T )
     {
         const methodName = 'sendModelObjectSavedEvent';
-        this.debug( methodName + '.begin' + this.getToObserversMessage( this.modelObjectSavedSubject ));
-        this.debug( methodName + ' ' + JSON.stringify( modelObject ));
+        this.debug( methodName + '.begin' + this.getToObserversMessage( this.modelObjectSavedSubject ) );
+        this.debug( methodName + ' ' + JSON.stringify( modelObject ) );
         this.modelObjectSavedSubject
             .next( modelObject );
         this.crudStateStore

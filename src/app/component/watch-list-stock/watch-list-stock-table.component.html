@@ -2,34 +2,55 @@
 BUTTONS TEMPLATE
 ------------------------------------------------------------------------------------------------------------>
 <ng-template #buttonsTemplate>
-    <linked-account-table-buttons>
-    </linked-account-table-buttons>
+    <watch-list-stock-table-buttons>
+    </watch-list-stock-table-buttons>
 </ng-template>
 
 <!----------------------------------------------------------------------------------------------------------
 DIALOG TEMPLATE
 ------------------------------------------------------------------------------------------------------------>
 <ng-template #dialogTemplate>
-    <linked-account-dialog>
-    </linked-account-dialog>
-    <tradeit-security-question-dialog>
-    </tradeit-security-question-dialog>
-    <confirm-dialog>
-    </confirm-dialog>
+    <watch-list-stock-dialog>
+    </watch-list-stock-dialog>
+    <!-----
+    When the add button on the filter area of the table is clicked, the user can add a new watch list.
+    ---->
+    <watch-list-dialog [modal]="true"
+                       [showContinuousAddButton]="false"
+                       [showAddButton]="true"
+                       [showCloseButton]="true">
+    </watch-list-dialog>
 </ng-template>
 
 <!----------------------------------------------------------------------------------------------------------
-CUSTOM STOCK TO BUY COLUMNS TEMPLATE
+FILTER TEMPLATE
+------------------------------------------------------------------------------------------------------------>
+<ng-template #filterTemplate>
+    <div>
+        <span style="font-size: large;margin-right: 10px;margin-bottom: 10px">Watch List:</span>
+        <p-dropdown [options]="watchlistItems"
+                    [(ngModel)]="watchListId"
+                    [style]="{'width':'225px','margin-bottom':'10px'}"
+                    (onChange)="onWatchListSelected($event)" >
+        </p-dropdown>
+        <button pButton
+                type="button"
+                class="ui-button-info"
+                label="Add"
+                icon="fa fa-plus"
+                style="width: 100px;margin-bottom: 10px"
+                (click)="onAddWatchListButtonClick()">
+        </button>
+    </div>
+</ng-template>
+
+<!----------------------------------------------------------------------------------------------------------
 column and modelObject are parameters to the template
 ------------------------------------------------------------------------------------------------------------>
 <ng-template #columnsTemplate let-column="column" let-modelObject="modelObject">
-    <div [ngSwitch]="column.colId">
-        <div *ngSwitchDefault>
-            <crud-table-column-by-data-type [modelObject]="modelObject"
-                                            [column]="column">
-            </crud-table-column-by-data-type>
-        </div>
-    </div>
+    <stock-model-object-common-columns [modelObject]="modelObject"
+                                       [column]="column">
+    </stock-model-object-common-columns>
 </ng-template>
 
 <!----------------------------------------------------------------------------------------------------------
@@ -38,20 +59,21 @@ TABLE DEFINITION
 <crud-table-layout [buttonsTemplate]="buttonsTemplate"
                    [columnsTemplate]="columnsTemplate"
                    [dialogTemplate]="dialogTemplate"
-                   cookieContext="LinkedAccountTable"
+                   [filterTemplate]="filterTemplate"
                    [modelObjectRows]="modelObjectRows"
                    [(displayColumns)]="displayColumns"
+                   cookieContext="WatchListStock"
                    [defaultColumns]="defaultColumns"
-                   [additionalColumns]="additionalColumns"
+                   [rowsToDisplay]="rowsToDisplay"
+                   [rowsPerPageOptions]="rowsPerPageOptions"
                    [totalRecords]="totalRows"
                    [(selection)]="selectedModelObject"
                    (rowSelected)="onRowSelect($event)"
                    (rowUnselected)="onRowUnSelect($event)"
                    (onLazyLoad)="lazyLoadTable($event)"
                    [lazy]="false"
-                   [showCustomizeButton]="false"
-                   [showHeaderButtons]="false"
                    [loadingData]="loading"
+                   [showHeaderButtons]="showHeaderButtons"
                    (onLazyLoadEvent)="lazyLoadTable($event)"
                    (onRowDblclick)="onRowDoubleClick($event)">
 </crud-table-layout>

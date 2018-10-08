@@ -23,12 +23,24 @@ export class MenuBarComponent
         this.menuItems =
             [
                 { label: 'Quad View', icon: 'fa fa-area-chart', routerLink: ['/quadview'] },
+                { label: 'Watch List',
+                    icon: 'fa fa-binoculars',
+                    items: [{
+                               label: 'Add',
+                               icon: 'fa fa-plus',
+                               routerLink: ['/watchList/add']
+                           },
+                           {
+                               label: 'View',
+                               icon: 'fa fa-list',
+                               routerLink: ['watchStockList/view']
+                           }]},
                 { label: 'Stock Notes',
                    icon: 'fa fa-sticky-note',
                   items: [{
-                            label: 'Add',
-                            icon: 'fa fa-plus',
-                            routerLink: ['/stockNotes/add']
+                              label: 'Add',
+                              icon: 'fa fa-plus',
+                              routerLink: ['/stockNotes/add']
                           },
                           {
                               label: 'View',

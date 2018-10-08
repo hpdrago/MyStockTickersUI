@@ -1,0 +1,23 @@
+<div *ngIf="isInitialized()">
+    <p-dialog header="Watch List Stock"
+              [modal]="modal"
+              [closable]="false"
+              [closeOnEscape]="false"
+              [responsive]="true"
+              [width]="600"
+              [height]="390"
+              [resizable]="false"
+              [contentStyle]="{'overflow':'visible'}"
+              [(visible)]="displayDialog">
+            <div>
+                <watch-list-stock-form>
+                </watch-list-stock-form>
+            </div>
+            <p-footer>
+                <watch-list-stock-form-buttons [showContinuousAddButton]="showContinuousAddButton"
+                                               [showAddButton]="showAddButton"
+                                               [showCloseButton]="showCloseButton">
+                </watch-list-stock-form-buttons>
+            </p-footer>
+    </p-dialog>
+</div>

@@ -21,6 +21,7 @@ import { Observable } from 'rxjs/Rx';
 import { CookieService } from 'ngx-cookie-service';
 import { CrudTableColumn } from './crud-table-column';
 import { ErrorObservable } from 'rxjs/src/observable/ErrorObservable';
+import { DialogCloseEventType } from '../common/close-button-event';
 
 
 /**
@@ -145,6 +146,17 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
     public ngOnInit()
     {
         this.debug( "ngOnInit.begin" );
+        this.crudController
+            .sendDialogCloseButtonClickedEvent( DialogCloseEventType.CANCEL_BUTTON );
+        /*
+         * The next two commands reset the the subjects in the controller to false.  Dialogs are not only dispalyed
+         * from a table but also directly from the menu.  In the latter case, these flags are true and need to be
+         * set to false.
+         */
+        this.crudController
+            .sendDialogDisplay( false );
+        this.crudController
+            .sendFormReadyToDisplay( false );
         this.resetFilterModelObject();
         super.ngOnInit();
         this.defaultColumns = this.getDefaultColumns();
@@ -464,8 +476,9 @@ export abstract class CrudTableComponent<T extends ModelObject<T>> extends BaseC
         {
             this.checkModelObjectVersion();
         }
+        this.crudController
+            .sendDialogDisplay( true );
     }
-
 
     /**
      * The model object has been saved so update the table.

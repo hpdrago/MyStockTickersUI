@@ -17,6 +17,10 @@ import { StockAnalystConsensusAddComponent } from './component/stock-analyst-con
 import { StockCatalystEventAddComponent } from './component/stock-catalyst-event/stock-catalyst-event-add.component';
 import { StockAnalystConsensusTableComponent } from './component/stock-analyst-consensus/stock-analyst-consensus-table.component';
 import { StockCatalystEventTableComponent } from './component/stock-catalyst-event/stock-catalyst-event-table.component';
+import { WatchListAddComponent } from './component/watch-list/watch-list-add.component';
+import { WatchListTableComponent } from './component/watch-list/watch-list-table.component';
+import { WatchListStockAddComponent } from './component/watch-list-stock/watch-list-stock-add.component';
+import { WatchListStockTableComponent } from './component/watch-list-stock/watch-list-stock-table.component';
 
 const routes: Routes = [
     {
@@ -77,6 +81,31 @@ const routes: Routes = [
     {
         path: 'stockToBuy/view',
         component: StockToBuyTableComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'gainsLosses',
+        component: GainsLossesTableComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'watchList/add',
+        component: WatchListAddComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'watchList/view',
+        component: WatchListTableComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'watchListStock/add',
+        component: WatchListStockAddComponent,
+        canActivate: [AuthGuardService]
+    },
+    {
+        path: 'watchStockList/view',
+        component: WatchListStockTableComponent,
         canActivate: [AuthGuardService]
     },
     {
